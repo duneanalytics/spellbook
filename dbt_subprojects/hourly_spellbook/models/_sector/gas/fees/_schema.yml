@@ -4,6 +4,7 @@ models:
   - name: gas_fees
     meta:
       sector: gas
+      short_description: "Gas fees paid per transaction across all EVM-compatible chains, including base fee, priority fee, and USD-denominated cost."
       contributors: soispoke, ilemi, 0xRob, jeff-dude, hosuke, tomfutago
     description: >
         Gas Fees across chains

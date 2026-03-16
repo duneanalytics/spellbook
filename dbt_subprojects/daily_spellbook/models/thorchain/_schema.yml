@@ -183,6 +183,9 @@ models:
   - name: thorchain_silver_withdraw_events
 
   - name: thorchain_core_block
+    description: "Block dimension table for THORChain with temporal bucketing (hour, day, week, month, quarter, year)."
+    meta:
+      short_description: "Block dimension table for THORChain with temporal bucketing (hour, day, week, month, quarter, year)."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -190,6 +193,9 @@ models:
             - dim_block_id
 
   - name: thorchain_core_instantiate_events
+    description: "Contract instantiation events on THORChain."
+    meta:
+      short_description: "Contract instantiation events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -197,6 +203,9 @@ models:
             - fact_instantiate_events_id
 
   - name: thorchain_core_network_version_events
+    description: "Network version change events on THORChain, tracking protocol upgrades."
+    meta:
+      short_description: "Network version change events on THORChain, tracking protocol upgrades."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -204,6 +213,9 @@ models:
             - fact_network_version_events_id
 
   - name: thorchain_core_set_mimir_events
+    description: "Mimir parameter change events on THORChain, tracking governance-controlled protocol settings."
+    meta:
+      short_description: "Mimir parameter change events on THORChain, tracking governance-controlled protocol settings."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -211,6 +223,9 @@ models:
             - fact_set_mimir_events_id
 
   - name: thorchain_core_thorname_change_events
+    description: "THORName registration and update events, tracking human-readable name assignments."
+    meta:
+      short_description: "THORName registration and update events, tracking human-readable name assignments."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -218,6 +233,9 @@ models:
             - fact_thorname_change_events_id
 
   - name: thorchain_core_transfer_events
+    description: "Low-level transfer events on THORChain."
+    meta:
+      short_description: "Low-level transfer events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -225,6 +243,9 @@ models:
             - fact_transfer_events_id
 
   - name: thorchain_core_transfers
+    description: "RUNE token transfers on THORChain with USD values, enriched with block timestamps."
+    meta:
+      short_description: "RUNE token transfers on THORChain with USD values, enriched with block timestamps."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -232,6 +253,9 @@ models:
             - fact_transfers_id
 
   - name: thorchain_core_tss_keygen_failure_events
+    description: "TSS (Threshold Signature Scheme) key generation failure events on THORChain."
+    meta:
+      short_description: "TSS (Threshold Signature Scheme) key generation failure events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -239,6 +263,9 @@ models:
             - fact_tss_keygen_failure_events_id
 
   - name: thorchain_core_tss_keygen_success_events
+    description: "TSS key generation success events on THORChain."
+    meta:
+      short_description: "TSS key generation success events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -246,6 +273,9 @@ models:
             - fact_tss_keygen_success_events_id
 
   - name: thorchain_core_wasm_contracts_events
+    description: "WASM smart contract events on THORChain."
+    meta:
+      short_description: "WASM smart contract events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -253,6 +283,9 @@ models:
             - fact_wasm_contracts_events_id
 
   - name: thorchain_defi_active_vault_events
+    description: "Active vault rotation events on THORChain, tracking when new Asgard vaults become active."
+    meta:
+      short_description: "Active vault rotation events on THORChain, tracking when new Asgard vaults become active."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -260,6 +293,9 @@ models:
             - fact_active_vault_events_id
 
   - name: thorchain_defi_add_events
+    description: "Liquidity add events on THORChain pools."
+    meta:
+      short_description: "Liquidity add events on THORChain pools."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -267,6 +303,9 @@ models:
             - fact_add_events_id
 
   - name: thorchain_defi_affiliate_fee_events
+    description: "Affiliate fee collection events on THORChain swaps."
+    meta:
+      short_description: "Affiliate fee collection events on THORChain swaps."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -274,6 +313,9 @@ models:
             - fact_affiliate_fee_events_id
 
   - name: thorchain_defi_asgard_fund_yggdrasil_events
+    description: "Asgard-to-Yggdrasil vault funding events on THORChain."
+    meta:
+      short_description: "Asgard-to-Yggdrasil vault funding events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -281,12 +323,18 @@ models:
             - fact_asgard_fund_yggdrasil_events_id
 
   - name: thorchain_defi_block_pool_depths
+    description: "Per-block pool depth snapshots on THORChain, tracking asset and RUNE depths."
+    meta:
+      short_description: "Per-block pool depth snapshots on THORChain, tracking asset and RUNE depths."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_pool_depths_id
 
   - name: thorchain_defi_block_rewards
+    description: "Per-block reward distribution events on THORChain."
+    meta:
+      short_description: "Per-block reward distribution events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -294,18 +342,27 @@ models:
             - fact_block_rewards_id
 
   - name: thorchain_defi_bond_actions
+    description: "Validator bond actions (bond/unbond) on THORChain."
+    meta:
+      short_description: "Validator bond actions (bond/unbond) on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_bond_actions_id
 
   - name: thorchain_defi_bond_events
+    description: "Validator bond change events on THORChain."
+    meta:
+      short_description: "Validator bond change events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_bond_events_id
 
   - name: thorchain_defi_daily_earnings
+    description: "Daily aggregate earnings for THORChain liquidity providers and node operators."
+    meta:
+      short_description: "Daily aggregate earnings for THORChain liquidity providers and node operators."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -313,6 +370,9 @@ models:
             - fact_daily_earnings_id
 
   - name: thorchain_defi_daily_pool_stats
+    description: "Daily aggregate statistics per THORChain liquidity pool."
+    meta:
+      short_description: "Daily aggregate statistics per THORChain liquidity pool."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -320,6 +380,9 @@ models:
             - fact_daily_pool_stats_id
 
   - name: thorchain_defi_daily_tvl
+    description: "Daily total value locked across all THORChain pools."
+    meta:
+      short_description: "Daily total value locked across all THORChain pools."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -327,6 +390,9 @@ models:
             - fact_daily_tvl_id
 
   - name: thorchain_defi_errata_events
+    description: "Errata correction events on THORChain, fixing accounting discrepancies."
+    meta:
+      short_description: "Errata correction events on THORChain, fixing accounting discrepancies."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -334,6 +400,9 @@ models:
             - fact_errata_events_id
 
   - name: thorchain_defi_failed_deposit_messages
+    description: "Failed deposit messages on THORChain, capturing rejected inbound transactions."
+    meta:
+      short_description: "Failed deposit messages on THORChain, capturing rejected inbound transactions."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -341,6 +410,9 @@ models:
             - fact_failed_deposit_messages_id
 
   - name: thorchain_defi_fee_events
+    description: "Fee collection events on THORChain transactions."
+    meta:
+      short_description: "Fee collection events on THORChain transactions."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -349,6 +421,9 @@ models:
             - event_id
 
   - name: thorchain_defi_gas_events
+    description: "Gas consumption events for THORChain outbound transactions."
+    meta:
+      short_description: "Gas consumption events for THORChain outbound transactions."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -356,6 +431,9 @@ models:
             - fact_gas_events_id
 
   - name: thorchain_defi_inactive_vault_events
+    description: "Vault deactivation events on THORChain when vaults are retired."
+    meta:
+      short_description: "Vault deactivation events on THORChain when vaults are retired."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -363,6 +441,9 @@ models:
             - fact_inactive_vault_events_id
 
   - name: thorchain_defi_liquidity_actions
+    description: "Unified liquidity add and withdraw actions on THORChain pools."
+    meta:
+      short_description: "Unified liquidity add and withdraw actions on THORChain pools."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -370,6 +451,9 @@ models:
             - fact_liquidity_actions_id
 
   - name: thorchain_defi_loan_open_events
+    description: "Loan opening events on THORChain's lending protocol."
+    meta:
+      short_description: "Loan opening events on THORChain's lending protocol."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -377,6 +461,9 @@ models:
             - fact_loan_open_events_id
 
   - name: thorchain_defi_loan_repayment_events
+    description: "Loan repayment events on THORChain's lending protocol."
+    meta:
+      short_description: "Loan repayment events on THORChain's lending protocol."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -384,6 +471,9 @@ models:
             - fact_loan_repayment_events_id
 
   - name: thorchain_defi_mint_burn_events
+    description: "Synthetic asset mint and burn events on THORChain."
+    meta:
+      short_description: "Synthetic asset mint and burn events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -391,6 +481,9 @@ models:
             - fact_mint_burn_events_id
 
   - name: thorchain_defi_outbound_events
+    description: "Outbound transaction events on THORChain, tracking assets sent to destination chains."
+    meta:
+      short_description: "Outbound transaction events on THORChain, tracking assets sent to destination chains."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -398,6 +491,9 @@ models:
             - fact_outbound_events_id
 
   - name: thorchain_defi_pending_liquidity_events
+    description: "Pending (asymmetric) liquidity deposit events awaiting pairing on THORChain."
+    meta:
+      short_description: "Pending (asymmetric) liquidity deposit events awaiting pairing on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -405,6 +501,9 @@ models:
             - fact_pending_liquidity_events_id
 
   - name: thorchain_defi_pool_balance_change_events
+    description: "Pool balance change events on THORChain triggered by non-swap activity."
+    meta:
+      short_description: "Pool balance change events on THORChain triggered by non-swap activity."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -412,6 +511,9 @@ models:
             - fact_pool_balance_change_events_id
 
   - name: thorchain_defi_pool_block_balances
+    description: "Per-block pool balance snapshots on THORChain."
+    meta:
+      short_description: "Per-block pool balance snapshots on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -419,6 +521,9 @@ models:
             - fact_pool_block_balances_id
 
   - name: thorchain_defi_pool_block_fees
+    description: "Per-block fee accrual snapshots for THORChain pools."
+    meta:
+      short_description: "Per-block fee accrual snapshots for THORChain pools."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -426,6 +531,9 @@ models:
             - fact_pool_block_fees_id
 
   - name: thorchain_defi_pool_block_statistics
+    description: "Per-block aggregate statistics for THORChain pools."
+    meta:
+      short_description: "Per-block aggregate statistics for THORChain pools."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -433,6 +541,9 @@ models:
             - fact_pool_block_statistics_id
 
   - name: thorchain_defi_pool_events
+    description: "Pool lifecycle events on THORChain (creation, suspension, activation)."
+    meta:
+      short_description: "Pool lifecycle events on THORChain (creation, suspension, activation)."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -440,6 +551,9 @@ models:
             - fact_pool_events_id
 
   - name: thorchain_defi_refund_events
+    description: "Refund events on THORChain for failed or rejected transactions."
+    meta:
+      short_description: "Refund events on THORChain for failed or rejected transactions."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -447,6 +561,9 @@ models:
             - fact_refund_events_id
 
   - name: thorchain_defi_reserve_events
+    description: "Reserve module events on THORChain, tracking the protocol reserve balance."
+    meta:
+      short_description: "Reserve module events on THORChain, tracking the protocol reserve balance."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -454,12 +571,18 @@ models:
             - fact_reserve_events_id
 
   - name: thorchain_defi_rewards_event_entries
+    description: "Individual reward entries per pool from THORChain block reward distributions."
+    meta:
+      short_description: "Individual reward entries per pool from THORChain block reward distributions."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_rewards_event_entries_id
 
   - name: thorchain_defi_rewards_events
+    description: "Aggregate reward distribution events on THORChain."
+    meta:
+      short_description: "Aggregate reward distribution events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -467,6 +590,9 @@ models:
             - fact_rewards_events_id
 
   - name: thorchain_defi_rune_pool_deposit_events
+    description: "RUNE pool deposit events on THORChain."
+    meta:
+      short_description: "RUNE pool deposit events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -474,6 +600,9 @@ models:
             - fact_rune_pool_deposit_events_id
 
   - name: thorchain_defi_rune_pool_withdraw_events
+    description: "RUNE pool withdrawal events on THORChain."
+    meta:
+      short_description: "RUNE pool withdrawal events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -481,6 +610,9 @@ models:
             - fact_rune_pool_withdraw_events_id
 
   - name: thorchain_defi_scheduled_outbound_events
+    description: "Scheduled outbound transactions queued for execution on THORChain."
+    meta:
+      short_description: "Scheduled outbound transactions queued for execution on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -488,6 +620,9 @@ models:
             - fact_scheduled_outbound_events_id
 
   - name: thorchain_defi_secure_asset_deposit_events
+    description: "Secure asset deposit events on THORChain."
+    meta:
+      short_description: "Secure asset deposit events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -495,6 +630,9 @@ models:
             - event_id
 
   - name: thorchain_defi_secure_asset_withdraw_events
+    description: "Secure asset withdrawal events on THORChain."
+    meta:
+      short_description: "Secure asset withdrawal events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -502,6 +640,9 @@ models:
             - event_id
 
   - name: thorchain_defi_send_messages
+    description: "Send messages processed by the THORChain network."
+    meta:
+      short_description: "Send messages processed by the THORChain network."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -509,6 +650,9 @@ models:
             - fact_send_messages_id
 
   - name: thorchain_defi_stake_events
+    description: "Legacy staking events on THORChain (pre-multichain)."
+    meta:
+      short_description: "Legacy staking events on THORChain (pre-multichain)."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -516,6 +660,9 @@ models:
             - fact_stake_events_id
 
   - name: thorchain_defi_streaming_swap_details_events
+    description: "Streaming swap sub-swap detail events on THORChain, tracking partial fills of large swaps."
+    meta:
+      short_description: "Streaming swap sub-swap detail events on THORChain, tracking partial fills of large swaps."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -524,18 +671,27 @@ models:
             - event_id
 
   - name: thorchain_defi_swap_events
+    description: "Individual swap events on THORChain, capturing each leg of cross-chain and single-chain swaps."
+    meta:
+      short_description: "Individual swap events on THORChain, capturing each leg of cross-chain and single-chain swaps."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_swap_events_id
 
   - name: thorchain_defi_swaps
+    description: "Enriched swap data on THORChain with USD values, fees, and slip metrics."
+    meta:
+      short_description: "Enriched swap data on THORChain with USD values, fees, and slip metrics."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_swaps_id
 
   - name: thorchain_defi_switch_events
+    description: "RUNE token switch events (BEP2/ERC20 to native RUNE) on THORChain."
+    meta:
+      short_description: "RUNE token switch events (BEP2/ERC20 to native RUNE) on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -543,6 +699,9 @@ models:
             - fact_switch_events_id
 
   - name: thorchain_defi_tcy_claim_events
+    description: "TCY (Trade Capital Yield) claim events on THORChain."
+    meta:
+      short_description: "TCY (Trade Capital Yield) claim events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -550,6 +709,9 @@ models:
             - fact_tcy_claim_events_id
 
   - name: thorchain_defi_tcy_distribution_events
+    description: "TCY distribution events on THORChain."
+    meta:
+      short_description: "TCY distribution events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -557,6 +719,9 @@ models:
             - fact_tcy_distribution_events_id
 
   - name: thorchain_defi_tcy_stake_events
+    description: "TCY staking events on THORChain."
+    meta:
+      short_description: "TCY staking events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -564,6 +729,9 @@ models:
             - fact_tcy_stake_events_id
 
   - name: thorchain_defi_tcy_unstake_events
+    description: "TCY unstaking events on THORChain."
+    meta:
+      short_description: "TCY unstaking events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -571,12 +739,18 @@ models:
             - fact_tcy_unstake_events_id
 
   - name: thorchain_defi_total_block_rewards
+    description: "Total block reward amounts on THORChain per block."
+    meta:
+      short_description: "Total block reward amounts on THORChain per block."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_total_block_rewards_id
 
   - name: thorchain_defi_total_value_locked
+    description: "Historical total value locked across all THORChain pools."
+    meta:
+      short_description: "Historical total value locked across all THORChain pools."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -584,6 +758,9 @@ models:
             - fact_total_value_locked_id
 
   - name: thorchain_defi_trade_account_deposit_events
+    description: "Trade account deposit events on THORChain."
+    meta:
+      short_description: "Trade account deposit events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -591,6 +768,9 @@ models:
             - event_id
 
   - name: thorchain_defi_trade_account_withdraw_events
+    description: "Trade account withdrawal events on THORChain."
+    meta:
+      short_description: "Trade account withdrawal events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -598,24 +778,36 @@ models:
             - event_id
 
   - name: thorchain_defi_update_node_account_status_events
+    description: "Node operator status change events on THORChain (active, standby, disabled)."
+    meta:
+      short_description: "Node operator status change events on THORChain (active, standby, disabled)."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_update_node_account_status_events_id
 
   - name: thorchain_defi_upgrades
+    description: "Protocol upgrade events on THORChain."
+    meta:
+      short_description: "Protocol upgrade events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_upgrades_id
 
   - name: thorchain_defi_withdraw_events
+    description: "Liquidity withdrawal events from THORChain pools."
+    meta:
+      short_description: "Liquidity withdrawal events from THORChain pools."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - fact_withdraw_events_id
 
   - name: thorchain_gov_new_node_events
+    description: "New validator node registration events on THORChain."
+    meta:
+      short_description: "New validator node registration events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -623,6 +815,9 @@ models:
             - fact_new_node_events_id
 
   - name: thorchain_gov_set_ip_address_events
+    description: "Validator IP address update events on THORChain."
+    meta:
+      short_description: "Validator IP address update events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -630,6 +825,9 @@ models:
             - fact_set_ip_address_events_id
 
   - name: thorchain_gov_set_node_keys_events
+    description: "Validator key assignment events on THORChain."
+    meta:
+      short_description: "Validator key assignment events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -637,6 +835,9 @@ models:
             - fact_set_node_keys_events_id
 
   - name: thorchain_gov_set_node_mimir_events
+    description: "Node-level Mimir vote events on THORChain governance."
+    meta:
+      short_description: "Node-level Mimir vote events on THORChain governance."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -644,6 +845,9 @@ models:
             - fact_set_node_mimir_events_id
 
   - name: thorchain_gov_set_version_events
+    description: "Node version declaration events on THORChain."
+    meta:
+      short_description: "Node version declaration events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -651,6 +855,9 @@ models:
             - fact_set_version_events_id
 
   - name: thorchain_gov_slash_events
+    description: "Validator slashing events on THORChain for misbehavior or downtime."
+    meta:
+      short_description: "Validator slashing events on THORChain for misbehavior or downtime."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -658,6 +865,9 @@ models:
             - fact_slash_events_id
 
   - name: thorchain_gov_slash_points_events
+    description: "Slash point accrual events for THORChain validators."
+    meta:
+      short_description: "Slash point accrual events for THORChain validators."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -665,6 +875,9 @@ models:
             - fact_slash_points_id
 
   - name: thorchain_gov_validator_request_leave_events
+    description: "Validator leave request events on THORChain."
+    meta:
+      short_description: "Validator leave request events on THORChain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

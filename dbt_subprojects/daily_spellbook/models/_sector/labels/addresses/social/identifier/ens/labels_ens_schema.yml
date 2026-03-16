@@ -6,6 +6,7 @@ models:
       blockchain: ethereum
       sector: labels
       category: ens
+      short_description: "ENS (Ethereum Name Service) name-to-address mappings, providing human-readable labels for Ethereum addresses."
       contributors:  0xRob
     config:
       tags: ['query','labels', 'ethereum', 'ens', 'ENS resolver', 'ENS reverse']

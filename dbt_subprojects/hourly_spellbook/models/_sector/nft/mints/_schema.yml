@@ -8,6 +8,7 @@ models:
       sector: nft
       contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, lgingerich
       docs_slug: /curated/trading/NFT/nft-mints
+      short_description: "NFT minting events across supported chains, including mint price, platform fees, royalty fees, and aggregator details."
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal', 'zksync']
     description: >

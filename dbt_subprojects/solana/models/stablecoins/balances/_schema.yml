@@ -140,6 +140,7 @@ models:
       blockchain: solana
       sector: stablecoin
       project: stablecoin
+      short_description: "Stablecoin balances on Solana, with daily balance snapshots per holder in USD."
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']

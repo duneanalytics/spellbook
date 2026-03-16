@@ -6,6 +6,7 @@ models:
       blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora, scroll, mantle, blast, sei,
       sector: nft
       contributors: hildobby, rantum, petertherock
+      short_description: "All NFT token transfers (ERC721 and ERC1155) across supported chains, including sender, receiver, and token ID."
     config:
       tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
     description: >
