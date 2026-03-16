@@ -1,6 +1,8 @@
 {{ config(
         schema = 'balancer',
-        alias = 'liquidity'
+        alias = 'liquidity',
+        materialized = 'table',
+        file_format = 'delta'
         , post_hook='{{ hide_spells() }}'
         )
 }}
@@ -48,4 +50,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
