@@ -10,10 +10,21 @@
 	merge_skip_unchanged = false,
 ) }}
 
-{{ transfers_base(
-	blockchain = 'abstract',
-	traces = source('abstract', 'traces'),
-	transactions = source('abstract', 'transactions'),
-	erc20_transfers = source('erc20_abstract', 'evt_Transfer'),
-	include_traces = false,
-) }}
+with base as (
+	{{ transfers_base(
+		blockchain = 'abstract',
+		traces = source('abstract', 'traces'),
+		transactions = source('abstract', 'transactions'),
+		erc20_transfers = source('erc20_abstract', 'evt_Transfer'),
+		include_traces = false,
+	) }}
+)
+
+select
+	*
+from
+	base
+{% if not is_incremental() -%}
+where
+	block_date >= current_date - interval '30' day
+{% endif -%}
