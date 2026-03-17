@@ -20,10 +20,11 @@ with base as (
 )
 
 select
-	*
+	base.*
+	, current_timestamp as _updated_at
 from
 	base
 {% if not is_incremental() -%}
 where
-	block_date >= current_date - interval '30' day
+	base.block_date >= current_date - interval '30' day
 {% endif -%}
