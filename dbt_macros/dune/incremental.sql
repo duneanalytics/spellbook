@@ -222,6 +222,21 @@
     {%- set merge_exclude_columns = config.get('merge_exclude_columns') -%}
     {%- set update_columns = get_merge_update_columns(merge_update_columns, merge_exclude_columns, dest_columns) -%}
     {%- set sql_header = config.get('sql_header', none) -%}
+    {%- set merge_skip_unchanged = config.get('merge_skip_unchanged') if config.get('merge_skip_unchanged') is not none else var('merge_skip_unchanged', false) -%}
+    {%- set merge_compare_columns = config.get('merge_compare_columns', none) -%}
+    {%- if merge_skip_unchanged and merge_compare_columns is none %}
+        {%- set unique_key_list = [unique_key] if unique_key is string else (unique_key if unique_key is sequence and unique_key is not mapping else []) -%}
+        {%- set exclude_for_hash = unique_key_list + ['_updated_at'] -%}
+        {%- set exclude_lower = exclude_for_hash | map('lower') | list -%}
+        {%- set compare_columns = [] -%}
+        {%- for col in dest_columns -%}
+            {%- if col.name | lower not in exclude_lower -%}
+                {%- do compare_columns.append(col) -%}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- elif merge_skip_unchanged and merge_compare_columns is not none %}
+        {%- set compare_columns = merge_compare_columns -%}
+    {%- endif -%}
 
     {% if unique_key %}
         {% if unique_key is sequence and unique_key is not mapping and unique_key is not string %}
@@ -245,11 +260,23 @@
             on {{"(" ~ predicates | join(") and (") ~ ")"}}
 
         {% if unique_key %}
+        {% if merge_skip_unchanged and (compare_columns | default([]) | length > 0) %}
+        when matched and ({{ row_hash('DBT_INTERNAL_SOURCE', compare_columns) }} <> {{ row_hash('DBT_INTERNAL_DEST', compare_columns) }}) then update set
+            {% for column_name in update_columns -%}
+                {%- if column_name == '_updated_at' %}
+                {{ adapter.quote('_updated_at') }} = current_timestamp
+                {%- else %}
+                {{ column_name }} = DBT_INTERNAL_SOURCE.{{ column_name }}
+                {%- endif %}
+                {%- if not loop.last %}, {%- endif %}
+            {%- endfor %}
+        {% else %}
         when matched then update set
             {% for column_name in update_columns -%}
                 {{ column_name }} = DBT_INTERNAL_SOURCE.{{ column_name }}
                 {%- if not loop.last %}, {%- endif %}
             {%- endfor %}
+        {% endif %}
         {% endif %}
 
         when not matched then insert
