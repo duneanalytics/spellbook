@@ -802,7 +802,7 @@ FROM
         ('chsb-swissborg', 'solana', 'BORG', '3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z', 9),
         --Tokenized Equities Xstocks
         ('tslax-tesla-tokenized-stock-xstock','solana','TSLAX','XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB',8),
-        ('tnvdax-nvidia-tokenized-stock-xstock','solana','NVDAX','Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh',8),
+        ('nvdax-nvidia-tokenized-stock-xstock','solana','NVDAX','Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh',8),
         --Tokenized Equities Rstocks
         ('tslar-tesla-rstock','solana','TSLAR','FJug3z58gssSTDhVNkTse5fP8GRZzuidf9SRtfB2RhDe',9),
         --Tokenized Equities Ondo
