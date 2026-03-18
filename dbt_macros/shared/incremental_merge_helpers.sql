@@ -5,7 +5,8 @@
 		when {{ col_ref }} is null then '__dbt_null__'
 		else
 			{%- if is_array_type %}
-			array_join({{ col_ref }}, ',')
+			{#- two-arg array_join skips null elements; use null_replacement so position/count of nulls affects the hash #}
+			array_join({{ col_ref }}, ',', '__dbt_array_elem_null__')
 			{%- else %}
 			cast({{ col_ref }} as varchar)
 			{%- endif %}
