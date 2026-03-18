@@ -1,12 +1,9 @@
 {{ config(
-tags=['prod_exclude'],
-        schema = 'bridge',
-        alias = 'flows',
-        post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
-                                "sector",
-                                "bridge",
-                                \'["msilb7","soispoke"]\') }}'
-        )
+    tags=['prod_exclude'],
+    schema = 'bridge',
+    alias = 'flows',
+    post_hook = '{{ hide_spells() }}'
+    )
 }}
 
 /*
