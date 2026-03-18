@@ -225,6 +225,28 @@ with day_rows as (
         , m.coin_decimals
     from {{ ref('dex_sui_coin_info') }} m
 )
+, cctp_supply_txs as (
+    select distinct
+        e.transaction_digest as tx_digest
+        , case
+            when e.event_type like '%message_transmitter%MessageReceived%' then 'mint'
+            when e.event_type like '%DepositForBurn%' then 'burn'
+        end as supply_event_type
+    from {{ source('sui', 'events') }} e
+    inner join (
+        select distinct f.tx_digest
+        from filtered f
+    ) ftx
+        on e.transaction_digest = ftx.tx_digest
+    where (
+            e.event_type like '%message_transmitter%MessageReceived%'
+            or e.event_type like '%DepositForBurn%'
+        )
+        and e.date >= date '{{ sui_transfer_start_date }}'
+        {% if is_incremental() %}
+        and {{ incremental_predicate('e.date') }}
+        {% endif %}
+)
 , tx_reconciliation as (
     select
         f.tx_digest
@@ -275,14 +297,25 @@ select
     , f.prev_owner
     , f.has_ownership_change
     , case
-        when f.object_status = 'Created' then 'mint'
-        when f.object_status = 'Deleted' then 'coin_consumed'
+        when f.object_status = 'Created' then 'object_created'
+        when f.object_status = 'Deleted' then 'object_deleted'
         when f.has_ownership_change and f.balance_delta != 0 then 'transfer_with_balance_change'
         when f.has_ownership_change then 'ownership_transfer'
         when f.balance_delta > 0 then 'balance_increase'
         when f.balance_delta < 0 then 'balance_decrease'
         else 'other'
     end as transfer_type
+    , case
+        when f.object_status = 'Created' then f.tx_sender
+        else coalesce(f.prev_owner, f.tx_sender)
+    end != f.receiver as is_cross_address_transfer
+    , cctp.supply_event_type is not null as is_supply_event
+    , cctp.supply_event_type as supply_event_type
+    , case
+        when f.balance_delta > 0 then 'credit'
+        when f.balance_delta < 0 then 'debit'
+        else 'neutral'
+    end as transfer_direction
     , r.tx_net_delta
     , r.tx_distinct_receivers
     , r.tx_distinct_senders
@@ -291,5 +324,7 @@ from filtered f
 left join tx_reconciliation r
     on f.tx_digest = r.tx_digest
     and f.coin_type = r.coin_type
+left join cctp_supply_txs cctp
+    on f.tx_digest = cctp.tx_digest
 left join coin_metadata m
     on lower(f.coin_type) = m.coin_type

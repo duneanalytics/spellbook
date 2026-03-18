@@ -10,8 +10,14 @@ models:
     description: >
       Sui coin transfer model derived from object ownership and balance deltas.
       Tracks coin objects through their version lineage to detect ownership transfers,
-      balance changes, and mints. Includes signed balance deltas and per-transaction
-      reconciliation columns for validation.
+      balance changes, and object creation/deletion. Includes signed balance deltas,
+      per-transaction reconciliation, and supply event detection.
+
+      IMPORTANT: A single logical transfer (e.g. Alice sends 100 USDC to Bob) typically
+      produces 2-4 rows (SplitCoins + MergeCoins + TransferObjects). ~95% of rows are
+      same-address bookkeeping (splits, merges). Use is_cross_address_transfer = true
+      to filter to actual address-to-address movements, and transfer_direction = 'credit'
+      for volume calculations to avoid double-counting.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -49,19 +55,19 @@ models:
       - name: decimals
         description: "Token decimals from coin metadata"
       - name: amount_raw
-        description: "Transfer amount: coin_balance for mints and ownership-only transfers, abs(balance_delta) for balance changes"
+        description: "Transfer amount: coin_balance for object_created and ownership-only transfers, abs(balance_delta) for balance changes. Always positive — use transfer_direction or balance_delta for signed accounting."
       - name: balance_delta
-        description: "Signed balance change for the object (positive = increase, negative = decrease)"
+        description: "Signed balance change for the object (positive = increase, negative = decrease). Sums to ~0 for balanced txs."
       - name: object_id
         description: "Sui object ID for the coin"
       - name: version
         description: "Object version at this mutation"
       - name: object_status
-        description: "Created or Mutated"
+        description: "Created, Mutated, or Deleted"
       - name: owner_type
         description: "Sui object owner type: AddressOwner (wallet), Shared (protocol/pool), ObjectOwner (wrapped)"
       - name: coin_balance
-        description: "Object balance at this version"
+        description: "Object balance at this version (0 for Deleted)"
       - name: prev_balance
         description: "Object balance at previous version (null for first seen)"
       - name: prev_owner
@@ -70,11 +76,23 @@ models:
         description: "True when a Mutated object changed owner (prev_owner != receiver)"
       - name: transfer_type
         description: >
-          Object-level classification: mint (Created), coin_consumed (Deleted via merge),
-          ownership_transfer (owner changed, delta=0), transfer_with_balance_change (owner changed
-          and delta!=0), balance_increase (same owner, delta>0), balance_decrease (same owner, delta<0)
+          Object-level classification: object_created (new coin via SplitCoins or real mint),
+          object_deleted (coin consumed via MergeCoins or real burn),
+          ownership_transfer (owner changed, delta=0),
+          transfer_with_balance_change (owner changed and delta!=0),
+          balance_increase (same owner, delta>0),
+          balance_decrease (same owner, delta<0).
+          NOTE: object_created/object_deleted do NOT imply supply events — use is_supply_event for that.
+      - name: is_cross_address_transfer
+        description: "True when from != to — indicates an actual address-to-address movement rather than same-address bookkeeping (splits, merges). Use this to find real transfers."
+      - name: is_supply_event
+        description: "True when the transaction involves Circle CCTP mint (MessageReceived) or burn (DepositForBurn) events. Only these represent actual USDC supply changes on Sui."
+      - name: supply_event_type
+        description: "Type of supply event: 'mint' (Circle CCTP bridge-in), 'burn' (Circle CCTP bridge-out), or null"
+      - name: transfer_direction
+        description: "credit (balance_delta > 0), debit (balance_delta < 0), or neutral (delta = 0). Use with amount_raw to avoid double-counting: SUM(amount_raw) WHERE transfer_direction = 'credit' gives inflow volume."
       - name: tx_net_delta
-        description: "Sum of all balance_deltas for this (tx, coin_type). Non-zero indicates gas cost or untracked movements."
+        description: "Sum of all balance_deltas for this (tx, coin_type). Zero means fully balanced. Non-zero indicates supply events or untracked object types."
       - name: tx_distinct_receivers
         description: "Count of distinct receivers in this transaction for this coin type"
       - name: tx_distinct_senders
