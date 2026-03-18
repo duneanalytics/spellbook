@@ -263,7 +263,7 @@
         {% if merge_skip_unchanged and (compare_columns | default([]) | length > 0) %}
         when matched and ({{ row_hash('DBT_INTERNAL_SOURCE', compare_columns) }} <> {{ row_hash('DBT_INTERNAL_DEST', compare_columns) }}) then update set
             {% for column_name in update_columns -%}
-                {%- if column_name == '_updated_at' %}
+                {%- if column_name == adapter.quote('_updated_at') %}
                 {{ adapter.quote('_updated_at') }} = current_timestamp
                 {%- else %}
                 {{ column_name }} = DBT_INTERNAL_SOURCE.{{ column_name }}
