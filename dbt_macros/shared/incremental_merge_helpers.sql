@@ -18,13 +18,14 @@
 	{% if columns is none or columns | length == 0 %}
 		md5(to_utf8('__no_compare__'))
 	{% else %}
+		{#- per-column md5 avoids cross-column delimiter collisions (e.g. ('a','b|c') vs ('a|b','c')) #}
 		md5(
 			to_utf8(
 				concat(
 					{% for col in columns %}
 						{%- set col_name = col if col is string else col.name -%}
 						{%- set col_type = none if col is string else (col.data_type | default(none)) -%}
-						{{ trino_safe_column_value(alias, col_name, col_type) }}
+						to_hex(md5(to_utf8({{ trino_safe_column_value(alias, col_name, col_type) }})))
 						{%- if not loop.last %}, '|', {% endif -%}
 					{% endfor %}
 				)
