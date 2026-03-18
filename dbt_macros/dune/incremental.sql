@@ -214,6 +214,18 @@
     )
 {%- endmacro %}
 
+{#-
+  Merge audit column (default _updated_at): excluded from row_hash; on insert/update uses
+  current_timestamp at merge. Name: model config merge_audit_column, else var merge_audit_column.
+#}
+{% macro merge_staging_expr(quoted_ident, audit_name_lower) -%}
+	{%- if (quoted_ident | string).strip('`"') | lower == audit_name_lower -%}
+current_timestamp
+	{%- else -%}
+DBT_INTERNAL_SOURCE.{{ quoted_ident }}
+	{%- endif -%}
+{%- endmacro %}
+
 {% macro trino__get_merge_sql(target, source, unique_key, dest_columns, incremental_predicates) -%}
     {%- set predicates = [] if incremental_predicates is none else [] + incremental_predicates -%}
     {%- set dest_cols_csv = get_quoted_csv(dest_columns | map(attribute="name")) -%}
@@ -222,12 +234,16 @@
     {%- set merge_exclude_columns = config.get('merge_exclude_columns') -%}
     {%- set update_columns = get_merge_update_columns(merge_update_columns, merge_exclude_columns, dest_columns) -%}
     {%- set sql_header = config.get('sql_header', none) -%}
+    {%- set merge_audit_col = (
+        config.get('merge_audit_column')
+        if config.get('merge_audit_column') is not none
+        else var('merge_audit_column', '_updated_at')
+    ) | lower -%}
     {%- set merge_skip_unchanged = config.get('merge_skip_unchanged') if config.get('merge_skip_unchanged') is not none else var('merge_skip_unchanged', false) -%}
     {%- set merge_compare_columns = config.get('merge_compare_columns', none) -%}
     {%- if merge_skip_unchanged and merge_compare_columns is none %}
         {%- set unique_key_list = [unique_key] if unique_key is string else (unique_key if unique_key is sequence and unique_key is not mapping else []) -%}
-        {%- set exclude_for_hash = unique_key_list + ['_updated_at'] -%}
-        {%- set exclude_lower = exclude_for_hash | map('lower') | list -%}
+        {%- set exclude_lower = (unique_key_list + [merge_audit_col]) | map('lower') | list -%}
         {%- set compare_columns = [] -%}
         {%- for col in dest_columns -%}
             {%- if col.name | lower not in exclude_lower -%}
@@ -235,7 +251,13 @@
             {%- endif -%}
         {%- endfor -%}
     {%- elif merge_skip_unchanged and merge_compare_columns is not none %}
-        {%- set compare_columns = merge_compare_columns -%}
+        {%- set compare_columns = [] -%}
+        {%- for col in merge_compare_columns -%}
+            {%- set _cmp_name = col if col is string else col.name -%}
+            {%- if _cmp_name | lower != merge_audit_col -%}
+                {%- do compare_columns.append(col) -%}
+            {%- endif -%}
+        {%- endfor -%}
     {%- endif -%}
 
     {% if unique_key %}
@@ -263,17 +285,13 @@
         {% if merge_skip_unchanged and (compare_columns | default([]) | length > 0) %}
         when matched and ({{ row_hash('DBT_INTERNAL_SOURCE', compare_columns) }} <> {{ row_hash('DBT_INTERNAL_DEST', compare_columns) }}) then update set
             {% for column_name in update_columns -%}
-                {%- if column_name == adapter.quote('_updated_at') %}
-                {{ adapter.quote('_updated_at') }} = current_timestamp
-                {%- else %}
-                {{ column_name }} = DBT_INTERNAL_SOURCE.{{ column_name }}
-                {%- endif %}
+                {{ column_name }} = {{ merge_staging_expr(column_name, merge_audit_col) }}
                 {%- if not loop.last %}, {%- endif %}
             {%- endfor %}
         {% else %}
         when matched then update set
             {% for column_name in update_columns -%}
-                {{ column_name }} = DBT_INTERNAL_SOURCE.{{ column_name }}
+                {{ column_name }} = {{ merge_staging_expr(column_name, merge_audit_col) }}
                 {%- if not loop.last %}, {%- endif %}
             {%- endfor %}
         {% endif %}
@@ -283,7 +301,7 @@
             ({{ dest_cols_csv }})
         values
             ({% for dest_cols in dest_cols_csv_source -%}
-                DBT_INTERNAL_SOURCE.{{ dest_cols }}
+                {{ merge_staging_expr(dest_cols, merge_audit_col) }}
                 {%- if not loop.last %}, {% endif %}
             {%- endfor %})
 
