@@ -229,8 +229,8 @@ with day_rows as (
     select distinct
         e.transaction_digest as tx_digest
         , case
-            when e.event_type like '%message_transmitter%MessageReceived%' then 'mint'
-            when e.event_type like '%DepositForBurn%' then 'burn'
+            when e.event_type like '%treasury::Mint<{{ sui_transfer_coin_type }}>%' then 'mint'
+            when e.event_type like '%treasury::Burn<{{ sui_transfer_coin_type }}>%' then 'burn'
         end as supply_event_type
     from {{ source('sui', 'events') }} e
     inner join (
@@ -239,8 +239,8 @@ with day_rows as (
     ) ftx
         on e.transaction_digest = ftx.tx_digest
     where (
-            e.event_type like '%message_transmitter%MessageReceived%'
-            or e.event_type like '%DepositForBurn%'
+            e.event_type like '%treasury::Mint<{{ sui_transfer_coin_type }}>%'
+            or e.event_type like '%treasury::Burn<{{ sui_transfer_coin_type }}>%'
         )
         and e.date >= date '{{ sui_transfer_start_date }}'
         {% if is_incremental() %}

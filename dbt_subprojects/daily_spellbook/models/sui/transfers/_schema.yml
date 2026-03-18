@@ -86,9 +86,9 @@ models:
       - name: is_cross_address_transfer
         description: "True when from != to — indicates an actual address-to-address movement rather than same-address bookkeeping (splits, merges). Use this to find real transfers."
       - name: is_supply_event
-        description: "True when the transaction involves Circle CCTP mint (MessageReceived) or burn (DepositForBurn) events. Only these represent actual USDC supply changes on Sui."
+        description: "True when the transaction involves Circle treasury Mint or Burn events for this coin type. Only these represent actual supply changes on Sui."
       - name: supply_event_type
-        description: "Type of supply event: 'mint' (Circle CCTP bridge-in), 'burn' (Circle CCTP bridge-out), or null"
+        description: "Type of supply event: 'mint' (treasury::Mint — new supply), 'burn' (treasury::Burn — supply destruction), or null"
       - name: transfer_direction
         description: "credit (balance_delta > 0), debit (balance_delta < 0), or neutral (delta = 0). Use with amount_raw to avoid double-counting: SUM(amount_raw) WHERE transfer_direction = 'credit' gives inflow volume."
       - name: tx_net_delta
