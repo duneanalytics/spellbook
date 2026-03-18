@@ -281,7 +281,6 @@ DBT_INTERNAL_SOURCE.{{ quoted_ident }}
             using {{ source }} as DBT_INTERNAL_SOURCE
             on {{"(" ~ predicates | join(") and (") ~ ")"}}
 
-        {% if unique_key %}
         {% if merge_skip_unchanged and (compare_columns | default([]) | length > 0) %}
         when matched and ({{ row_hash('DBT_INTERNAL_SOURCE', compare_columns) }} <> {{ row_hash('DBT_INTERNAL_DEST', compare_columns) }}) then update set
             {% for column_name in update_columns -%}
@@ -294,7 +293,6 @@ DBT_INTERNAL_SOURCE.{{ quoted_ident }}
                 {{ column_name }} = {{ merge_staging_expr(column_name, merge_audit_col) }}
                 {%- if not loop.last %}, {%- endif %}
             {%- endfor %}
-        {% endif %}
         {% endif %}
 
         when not matched then insert
