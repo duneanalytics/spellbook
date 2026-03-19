@@ -801,11 +801,11 @@ FROM
         ('met-meteora','solana','MET','METvsvVRapdj9cFLzq4Tr43xK4tAjQfwX76z3n6mWQL',6),
         ('chsb-swissborg', 'solana', 'BORG', '3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z', 9),
         --Tokenized Equities Xstocks
-        ('tslax-tesla-tokenized-stock-xstock','solana','TSLAX','XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB',8),
-        ('nvdax-nvidia-tokenized-stock-xstock','solana','NVDAX','Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh',8),
+        ('tslax-tesla-tokenized-stock-xstock','solana','TSLAx','XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB',8),
+        ('nvdax-nvidia-tokenized-stock-xstock','solana','NVDAx','Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh',8),
         --Tokenized Equities Rstocks
-        ('tslar-tesla-rstock','solana','TSLAR','FJug3z58gssSTDhVNkTse5fP8GRZzuidf9SRtfB2RhDe',9),
+        ('tslar-tesla-rstock','solana','TSLAr','FJug3z58gssSTDhVNkTse5fP8GRZzuidf9SRtfB2RhDe',9),
         --Tokenized Equities Ondo
-        ('tslaon-tesla-tokenized-stock-ondo','solana','TSLAON','KeGv7bsfR4MheC1CkmnAVceoApjrkvBhHYjWb67ondo',9),
+        ('tslaon-tesla-tokenized-stock-ondo','solana','TSLAon','KeGv7bsfR4MheC1CkmnAVceoApjrkvBhHYjWb67ondo',9),
         
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
