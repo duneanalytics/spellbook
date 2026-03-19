@@ -806,6 +806,6 @@ FROM
         --Tokenized Equities Rstocks
         ('tslar-tesla-rstock','solana','TSLAr','FJug3z58gssSTDhVNkTse5fP8GRZzuidf9SRtfB2RhDe',9),
         --Tokenized Equities Ondo
-        ('tslaon-tesla-tokenized-stock-ondo','solana','TSLAon','KeGv7bsfR4MheC1CkmnAVceoApjrkvBhHYjWb67ondo',9),
+        ('tslaon-tesla-tokenized-stock-ondo','solana','TSLAon','KeGv7bsfR4MheC1CkmnAVceoApjrkvBhHYjWb67ondo',9)
         
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
