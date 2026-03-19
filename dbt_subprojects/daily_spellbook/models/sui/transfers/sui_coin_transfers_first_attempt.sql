@@ -233,11 +233,6 @@ with day_rows as (
             when e.event_type like '%treasury::Burn<{{ sui_transfer_coin_type }}>%' then 'burn'
         end as supply_event_type
     from {{ source('sui', 'events') }} e
-    inner join (
-        select distinct f.tx_digest
-        from filtered f
-    ) ftx
-        on e.transaction_digest = ftx.tx_digest
     where (
             e.event_type like '%treasury::Mint<{{ sui_transfer_coin_type }}>%'
             or e.event_type like '%treasury::Burn<{{ sui_transfer_coin_type }}>%'
