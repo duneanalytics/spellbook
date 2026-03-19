@@ -1,7 +1,7 @@
 {{ config(
     schema = 'sui_transfers'
     , alias = 'coin_transfers_first_attempt'
-    , partition_by = ['block_month']
+    , partition_by = ['block_date']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -36,13 +36,6 @@ with day_rows as (
         and {{ incremental_predicate('o.date') }}
         {% endif %}
 )
-, pre_range_usdc_ids as (
-    select distinct p.object_id
-    from {{ source('sui', 'objects') }} p
-    where p.coin_type = '{{ sui_transfer_coin_type }}'
-        and p.object_status in ('Created', 'Mutated')
-        and p.date < date '{{ sui_transfer_start_date }}'
-)
 , deleted_rows as (
     select
         o.object_id
@@ -65,8 +58,6 @@ with day_rows as (
         {% endif %}
         and o.object_id in (
             select d.object_id from day_rows d
-            union
-            select p.object_id from pre_range_usdc_ids p
         )
 )
 , anchors as (
