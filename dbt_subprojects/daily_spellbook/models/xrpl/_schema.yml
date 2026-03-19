@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: gas_xrpl_fees
+    meta:
+      blockchain: xrpl
+      project: gas
+      short_description: "Transaction fees paid on the XRP Ledger."
+    config:
+      tags: ['xrpl','gas']
+    description: "Transaction fees paid on the XRP Ledger."
+
+  - name: tokens_xrpl_transfers
+    meta:
+      blockchain: xrpl
+      project: tokens
+      short_description: "Token transfers on the XRP Ledger (payments, payment channels, check cashes, escrow finishes, AMM deposits/withdrawals), including XRP and issued tokens."
+    config:
+      tags: ['xrpl','tokens','transfers']
+    description: "Token transfers on the XRP Ledger (payments, payment channels, check cashes, escrow finishes, AMM deposits/withdrawals), including XRP and issued tokens."

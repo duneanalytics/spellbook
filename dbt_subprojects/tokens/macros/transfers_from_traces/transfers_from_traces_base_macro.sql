@@ -79,7 +79,7 @@ where
     {% if is_incremental() -%}
     and {{ incremental_predicate('block_time') }}
     {%- elif blockchain == 'megaeth' %}
-    and block_time >= timestamp '2026-01-30'
+    and block_time >= timestamp '2025-11-01'
     {%- endif %}
 
 

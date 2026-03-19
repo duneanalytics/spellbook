@@ -5,3 +5,5 @@ sources:
     tables:
       - name: poolfactory_evt_poolcreated
       - name: pool_evt_swap
+      - name: clfactory_evt_poolcreated
+      - name: clpool_evt_swap

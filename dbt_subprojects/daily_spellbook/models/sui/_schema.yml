@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: dex_sui_trades
+    meta:
+      blockchain: sui
+      project: dex
+      short_description: "Decentralized exchange trades on the Sui blockchain, recording swap events across Sui DEX protocols."
+    config:
+      tags: ['sui','dex']
+    description: "Decentralized exchange trades on the Sui blockchain, recording swap events across Sui DEX protocols."
+
+  - name: sui_daily_stats
+    meta:
+      blockchain: sui
+      project: sui
+      short_description: "Daily aggregate statistics for Sui, including unique senders, programmable transaction blocks (PTBs), success rates, sponsored/zkLogin usage, and gas costs."
+    config:
+      tags: ['sui','stats']
+    description: "Daily aggregate statistics for Sui, including unique senders, programmable transaction blocks (PTBs), success rates, sponsored/zkLogin usage, and gas costs."
+
+  - name: sui_tvl_btc_ecosystem
+    meta:
+      blockchain: sui
+      project: sui
+      short_description: "TVL for Bitcoin-related assets on Sui across DEX pools, lending markets, and supply registries, with per-protocol breakdowns."
+    config:
+      tags: ['sui','tvl']
+    description: "TVL for Bitcoin-related assets on Sui across DEX pools, lending markets, and supply registries, with per-protocol breakdowns."
+
+  - name: sui_walrus_base_table
+    meta:
+      blockchain: sui
+      project: walrus
+      short_description: "Walrus decentralized storage blob registrations and certifications on Sui, including blob hash, size, epoch range, and sender."
+    config:
+      tags: ['sui','walrus']
+    description: "Walrus decentralized storage blob registrations and certifications on Sui, including blob hash, size, epoch range, and sender."

@@ -5,6 +5,7 @@ models:
     meta:
       blockchain: aptos
       project: aptos_indexer
+      short_description: "Full metadata history for fungible assets on Aptos, including name, symbol, and decimals."
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
@@ -61,6 +62,7 @@ models:
     meta:
       blockchain: aptos
       project: aptos_indexer
+      short_description: "Historical fungible asset balances per address on Aptos."
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
@@ -158,6 +160,7 @@ models:
     meta:
       blockchain: aptos
       project: aptos_indexer
+      short_description: "Token activity events (transfers, mints, burns) for fungible assets on the Aptos blockchain."
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
@@ -268,6 +271,7 @@ models:
     meta:
       blockchain: aptos
       project: aptos_indexer
+      short_description: "Current metadata snapshot for fungible assets on Aptos, providing the latest name, symbol, and decimals."
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
@@ -396,6 +400,7 @@ models:
     meta:
       blockchain: aptos
       project: aptos_stablecoins
+      short_description: "USDT stablecoin transfers on Aptos, with session tracking and mint/burn flags for each transfer."
       contributors: ying-w
     config:
       tags: ['aptos','stablecoins']
@@ -451,6 +456,7 @@ models:
     meta:
       blockchain: aptos
       project: aptos_stablecoins
+      short_description: "USDC stablecoin transfers on Aptos, with session tracking and mint/burn flags for each transfer."
       contributors: ying-w
     config:
       tags: ['aptos','stablecoins']

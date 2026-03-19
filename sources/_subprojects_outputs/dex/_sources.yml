@@ -13,6 +13,7 @@ sources:
       - name: sandwiches
       - name: sandwiched
       - name: info
+      - name: flashloans
   - name: dex_aggregator
     tables:
       - name: trades

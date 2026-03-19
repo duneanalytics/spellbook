@@ -1,0 +1,66 @@
+---
+description: Schema YML requirements and testing conventions. Auto-loads when editing _schema.yml files.
+globs:
+  - "**/_schema.yml"
+---
+
+# Schema & Testing Conventions
+
+## Every Model Must Have a `_schema.yml` Entry
+
+Each model SQL file must have a corresponding entry in a `_schema.yml` file in the same directory.
+
+### Required Fields
+
+```yaml
+version: 2
+
+models:
+  - name: model_name_matching_sql_file
+    description: "What this model produces and its purpose"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - col_a
+            - col_b
+    columns:
+      - name: col_a
+        description: "Column description"
+        tests:
+          - not_null
+      - name: col_b
+        tests:
+          - not_null
+```
+
+### Key Rules
+
+- **Model name** must match the SQL file name (without `.sql`)
+- **`dbt_utils.unique_combination_of_columns`** test is required for all materialized models (incremental/table). Columns must exactly match the `unique_key` in the config block.
+- **`not_null`** test is required on each column in the unique key. NULLs cause silent merge failures in Trino.
+- **Descriptions** for the model and key columns
+
+## Seed Tests (Sector-Level Spells)
+
+For sector-level spells (e.g., platforms feeding into `dex.trades`), seed tests are required:
+
+```yaml
+data_tests:
+  - dbt_utils.unique_combination_of_columns:
+      combination_of_columns:
+        - block_date
+        - tx_hash
+        - evt_index
+  - check_dex_base_trades_seed:
+      seed_file: ref('aerodrome_base_base_trades_seed')
+      filter:
+        version: 2
+```
+
+- Seed match columns must exactly match the config `unique_key` columns
+- The comparison macro lives in `dbt_macros/generic-tests/check_seed_macro.sql`
+
+## Tags
+
+- `prod_exclude` — for failing models or models not intended for production
+- `static` — for table-materialized spells with hardcoded static data that only re-run when modified
