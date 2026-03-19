@@ -77,6 +77,8 @@ models:
       - &amount_usd_transfer
         name: amount_usd
         description: "The USD amount of the transfer"
+      - name: _updated_at
+        description: "Timestamp when this row was last written"
 
   - name: tokens_net_transfers_daily
     meta:
