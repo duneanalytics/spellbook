@@ -5,13 +5,17 @@ sources:
       - name: transfers
   - name: tokens_abstract
     tables:
-      - name: transfers 
+      - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_apechain
     tables:
       - name: transfers     
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_arbitrum
     tables:
@@ -28,11 +32,15 @@ sources:
   - name: tokens_b3
     tables:
       - name: transfers
-      - name: net_transfers_daily 
-          
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
+
   - name: tokens_base
     tables:
       - name: transfers
+      - name: base_transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
@@ -40,6 +48,9 @@ sources:
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
 
   - name: transfers_bitcoin
     tables:
@@ -66,27 +77,39 @@ sources:
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_boba
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
 
   - name: tokens_celo
     tables:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_corn
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
 
   - name: tokens_degen
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_ethereum
     tables:
@@ -100,10 +123,20 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_flow
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
   - name: tokens_flare
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
 
   - name: tokens_gnosis
     tables:
@@ -116,15 +149,34 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_goerli
     tables:
       - name: transfers
 
+  - name: tokens_hemi
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
+  - name: tokens_henesys
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
   - name: tokens_ink
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
 
   - name: tokens_kaia
     tables:
@@ -148,32 +200,63 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_megaeth
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
   - name: tokens_monad
     tables:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_nova
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
 
   - name: tokens_opbnb
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_optimism
     tables:
       - name: transfers
+      - name: base_transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+
+  - name: tokens_peaq
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
+  - name: tokens_plasma
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_plume
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_polygon
     tables:
@@ -186,48 +269,80 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_scroll
     tables:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_sei
     tables:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_katana
     tables:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_solana
     tables:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: spl_stablecoins
 
   - name: tokens_shape
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
 
   - name: tokens_sepolia
     tables:
       - name: transfers
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_sonic
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
+  - name: tokens_somnia
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_sophon
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
+  - name: tokens_superseed
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
         
   - name: tokens_ton
     tables:
@@ -238,16 +353,24 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: trc20_stablecoins
+      - name: trc20_stablecoins_core
+      - name: trc20_stablecoins_extended
 
   - name: tokens_unichain
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
 
   - name: tokens_viction
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_worldchain
     tables:   
@@ -259,12 +382,22 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_zksync
     tables:
       - name: transfers
+      - name: base_transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+
+  - name: tokens_xlayer
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_zora
     tables:
@@ -276,8 +409,20 @@ sources:
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
+
+
+  - name: tokens_tac
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended
 
   - name: tokens_taiko
     tables:
       - name: transfers
       - name: net_transfers_daily
+      - name: erc20_stablecoins_core
+      - name: erc20_stablecoins_extended

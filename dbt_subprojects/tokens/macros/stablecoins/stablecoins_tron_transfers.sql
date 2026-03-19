@@ -10,7 +10,7 @@ select
   t.evt_index,
   t.trace_address,
   t.token_standard,
-  t.contract_address as token_address,
+  t.contract_address_varchar as token_address,
   t.symbol as token_symbol,
   s.currency,
   t.amount_raw,
@@ -37,8 +37,9 @@ left join {{ source('prices', 'fx_exchange_rates') }} fx
   on fx.base_currency = s.currency
   and fx.target_currency = 'USD'
   and fx.date = t.block_date
+where t.amount_raw > UINT256 '0'
 {% if is_incremental() %}
-where {{ incremental_predicate('t.block_date') }}
+  and {{ incremental_predicate('t.block_date') }}
 {% endif %}
 
 {%- endmacro -%}

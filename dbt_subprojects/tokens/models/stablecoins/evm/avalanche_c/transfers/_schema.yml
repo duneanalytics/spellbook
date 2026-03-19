@@ -52,6 +52,9 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR)"
       - &amount_raw
         name: amount_raw
         description: "Raw transfer amount"
@@ -103,6 +106,7 @@ models:
       - *token_standard
       - *token_address
       - *token_symbol
+      - *currency
       - *amount_raw
       - *amount
       - *price_usd
@@ -132,12 +136,7 @@ models:
       - *token_standard
       - *token_address
       - *token_symbol
-      - &token_backing
-        name: token_backing
-        description: "Stablecoin backing type"
-      - &token_name
-        name: token_name
-        description: "Stablecoin name"
+      - *currency
       - *amount_raw
       - *amount
       - *price_usd

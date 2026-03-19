@@ -16,18 +16,15 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address for the stablecoin token"
-      - &backing
-        name: backing
-        description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR, BRL)"
       - &symbol
         name: symbol
         description: "Token symbol"
       - &decimals
         name: decimals
         description: "Number of decimals for the token"
-      - &name
-        name: name
-        description: "Name or protocol of the stablecoin"
 
   - name: tokens_erc20_stablecoins_metadata
     meta:
@@ -40,15 +37,18 @@ models:
     columns:
       - *blockchain
       - *contract_address
-      - *backing
+      - name: backing
+        description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
       - *symbol
       - *decimals
-      - *name
+      - name: name
+        description: "Name or protocol of the stablecoin"
 
   - name: stablecoins_transfers
     meta:
       sector: stablecoin
       project: stablecoin
+      short_description: "Stablecoin transfers across all EVM chains, enriched with token metadata and USD prices using FX rate conversion when required."
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
@@ -85,12 +85,7 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Symbol for the token"
-      - &token_backing
-        name: token_backing
-        description: "Stablecoin backing type"
-      - &token_name
-        name: token_name
-        description: "Stablecoin name"
+      - *currency
       - &amount_raw
         name: amount_raw
         description: "Raw transfer amount"

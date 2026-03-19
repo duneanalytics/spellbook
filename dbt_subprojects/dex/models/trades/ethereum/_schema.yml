@@ -772,6 +772,44 @@ models:
           filter:
             version: 1
 
+  - name: supernova_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: supernova
+      contributors: 0xnabeel
+    config:
+      tags: ["ethereum", "dex", "trades", "supernova", "uniswap", "v2"]
+    description: "Supernova ethereum v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('supernova_ethereum_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: supernova_v3_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: supernova
+      contributors: 0xnabeel
+    config:
+      tags: ["ethereum", "dex", "trades", "supernova", "uniswap", "v3"]
+    description: "Supernova ethereum v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('supernova_ethereum_base_trades_seed')
+          filter:
+            version: 3
+
 
   - name: dex_ethereum_token_volumes_daily
     data_tests:

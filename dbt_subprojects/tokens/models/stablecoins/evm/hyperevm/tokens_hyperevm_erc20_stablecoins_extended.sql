@@ -13,10 +13,9 @@
 -- extended list: new stablecoin addresses added after the core list was frozen
 -- add new stablecoins here (not in tokens_hyperevm_erc20_stablecoins_core)
 
-select '{{chain}}' as blockchain, contract_address
+select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
-     (0x0000000000000000000000000000000000000000)
+     (0x866d66f64fb81461903e1e38d998e747ecf35e78, 'USD')  -- rUSD
 
-) as temp_table (contract_address)
-where contract_address != 0x0000000000000000000000000000000000000000
+) as temp_table (contract_address, currency)

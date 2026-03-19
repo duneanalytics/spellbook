@@ -6,6 +6,7 @@ models:
       blockchain: near
       sector: bridge
       project: omni_bridge
+      short_description: "Omni Bridge transactions on NEAR with inbound/outbound direction, source/destination chain IDs, and mint/burn flags."
       contributors: krishgka
     config:
       tags: ["near", "bridge", "cross-chain"]
@@ -80,6 +81,7 @@ models:
       blockchain: near
       sector: defi
       project: intents
+      short_description: "Intent-based token transfer events on NEAR, capturing owner changes, amounts, referrals, and DIP-4 versioning."
       contributors: krishgka
     config:
       tags: ["near", "defi", "intents"]

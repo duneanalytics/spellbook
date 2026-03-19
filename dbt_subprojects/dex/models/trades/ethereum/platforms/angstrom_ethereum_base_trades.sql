@@ -1,6 +1,5 @@
 {{ config(
-    tags = ['prod_exclude']
-    , schema = 'angstrom_ethereum'
+    schema = 'angstrom_ethereum'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'

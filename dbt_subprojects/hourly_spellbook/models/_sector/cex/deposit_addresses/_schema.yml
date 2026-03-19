@@ -5,6 +5,7 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, gnosis, optimism, polygon, scroll, zora, berachain, ink, katana, nova, opbnb, unichain
       sector: cex
+      short_description: "Identified user deposit addresses for centralized exchanges, with deposit/consolidation counts, amounts, and first-seen timestamps."
       contributors: hildobby
     config:
       tags: ['cex','deposit']
