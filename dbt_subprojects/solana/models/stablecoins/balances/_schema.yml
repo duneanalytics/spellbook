@@ -166,3 +166,31 @@ models:
       - *balance
       - *balance_usd
       - *last_updated
+
+  - name: stablecoins_solana_non_circulating_inventory_accounts
+    meta:
+      blockchain: solana
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: >
+      Solana SPL stablecoin inventory token accounts treated as non-circulating, with observed owners derived from stablecoin transfers.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_mint_address
+            - token_account
+    columns:
+      - *blockchain
+      - <<: *token_mint_address
+        data_tests:
+          - not_null
+      - name: token_account
+        description: "SPL token account excluded from circulating balance accounting"
+        data_tests:
+          - not_null
+      - name: observed_owners
+        description: "Observed owner addresses for the excluded token account (historical)"
+      - name: sources
+        description: "Comma-separated provenance tags for the exclusion derivation"

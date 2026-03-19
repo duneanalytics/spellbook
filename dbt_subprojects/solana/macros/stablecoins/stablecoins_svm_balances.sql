@@ -12,7 +12,7 @@ with non_circulating_inventory_accounts as (
     blockchain,
     token_mint_address,
     token_account
-  from {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_non_circulating_inventory_owners') }}
+  from {{ ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_accounts') }}
 ),
 
 transfers_in as (

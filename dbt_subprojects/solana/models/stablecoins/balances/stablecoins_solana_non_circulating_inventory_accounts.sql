@@ -3,8 +3,8 @@
 
 {{
   config(
-    schema = 'tokens_' ~ chain,
-    alias = 'spl_stablecoins_non_circulating_inventory_owners',
+    schema = 'stablecoins_' ~ chain,
+    alias = 'non_circulating_inventory_accounts',
     materialized = 'table',
     file_format = 'delta',
     tags = ['static'],
@@ -15,7 +15,7 @@
 -- non-circulating inventory token accounts for spl stablecoins on solana
 -- approach:
 -- 1) curate known non-circulating token accounts inline via values() (not dbt seed-backed)
--- 2) derive their owners from transfer history
+-- 2) derive observed owners from stablecoin transfer history via from/to token-account matches
 -- this keeps exclusions generic in runtime logic (no stale-age/threshold heuristics)
 -- source: https://github.com/solana-labs/token-list/blob/main/src/tokens/solana.tokenlist.json
 -- ref: https://www.circle.com/blog/gateway-new-pre-mint-address-for-usdc-on-solana
@@ -54,14 +54,23 @@ owner_candidates as (
   select
     a.token_mint_address,
     a.token_account,
-    case
-      when a.token_account = t.from_token_account then t.from_owner
-      when a.token_account = t.to_token_account then t.to_owner
-    end as address
+    t.from_owner as address
   from token_accounts_agg as a
-  inner join {{ source('tokens_' ~ chain, 'transfers') }} as t
+  inner join {{ ref('stablecoins_' ~ chain ~ '_transfers') }} as t
     on t.token_mint_address = a.token_mint_address
-    and (a.token_account = t.from_token_account or a.token_account = t.to_token_account)
+    and a.token_account = t.from_token_account
+  where t.block_date >= date '{{ owners_observation_start_date }}'
+
+  union all
+
+  select
+    a.token_mint_address,
+    a.token_account,
+    t.to_owner as address
+  from token_accounts_agg as a
+  inner join {{ ref('stablecoins_' ~ chain ~ '_transfers') }} as t
+    on t.token_mint_address = a.token_mint_address
+    and a.token_account = t.to_token_account
   where t.block_date >= date '{{ owners_observation_start_date }}'
 ),
 
