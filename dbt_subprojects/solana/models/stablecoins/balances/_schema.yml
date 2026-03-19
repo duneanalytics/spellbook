@@ -175,7 +175,8 @@ models:
     config:
       tags: ['stablecoin', 'balances']
     description: >
-      Solana SPL stablecoin inventory token accounts treated as non-circulating, with observed owners derived from stablecoin transfers.
+      Solana SPL stablecoin inventory token accounts used as a helper list for circulating balance exclusions,
+      with source classification and observed owners derived from stablecoin transfers.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -187,10 +188,18 @@ models:
         data_tests:
           - not_null
       - name: token_account
-        description: "SPL token account excluded from circulating balance accounting"
+        description: "SPL token account tracked in the non-circulating inventory helper list"
+        data_tests:
+          - not_null
+      - name: source_class
+        description: "Classification of the inventory token account source (official Circle premint or legacy inventory)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['official_circle_premint', 'legacy_inventory']
+      - name: excluded
+        description: "Whether this token account is excluded from circulating balance computations"
         data_tests:
           - not_null
       - name: observed_owners
-        description: "Observed owner addresses for the excluded token account (historical)"
-      - name: sources
-        description: "Comma-separated provenance tags for the exclusion derivation"
+        description: "Observed owner addresses for the inventory token account (historical)"

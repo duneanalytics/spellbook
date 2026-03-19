@@ -21,7 +21,7 @@
 -- ref: https://www.circle.com/blog/gateway-new-pre-mint-address-for-usdc-on-solana
 
 with token_accounts as (
-  select token_mint_address, token_account, source
+  select token_mint_address, token_account, source_class
   from (
     values
       -- usdc mint
@@ -38,16 +38,7 @@ with token_accounts as (
       ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 'FYAFDcQsZCgJJdj5YJNLPsWazYyqDTWmgyX7hFk4mM95', 'legacy_inventory'),
       ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 'fBQG6bx8SFgAVcS3vtr3rJDFKHnVcKw4CpbL3o7obBu', 'legacy_inventory'),
       ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '9tKZxccYcSGDYTTgkme8mG2XbZpaYJaKK6DmrT8ZHy9R', 'legacy_inventory')
-  ) as t(token_mint_address, token_account, source)
-),
-
-token_accounts_agg as (
-  select
-    token_mint_address,
-    token_account,
-    array_join(array_sort(array_agg(distinct source)), ', ') as sources
-  from token_accounts
-  group by 1, 2
+  ) as t(token_mint_address, token_account, source_class)
 ),
 
 owner_candidates as (
@@ -55,7 +46,7 @@ owner_candidates as (
     a.token_mint_address,
     a.token_account,
     t.from_owner as address
-  from token_accounts_agg as a
+  from token_accounts as a
   inner join {{ ref('stablecoins_' ~ chain ~ '_transfers') }} as t
     on t.token_mint_address = a.token_mint_address
     and a.token_account = t.from_token_account
@@ -67,7 +58,7 @@ owner_candidates as (
     a.token_mint_address,
     a.token_account,
     t.to_owner as address
-  from token_accounts_agg as a
+  from token_accounts as a
   inner join {{ ref('stablecoins_' ~ chain ~ '_transfers') }} as t
     on t.token_mint_address = a.token_mint_address
     and a.token_account = t.to_token_account
@@ -88,9 +79,10 @@ select
   '{{ chain }}' as blockchain,
   a.token_mint_address,
   a.token_account,
-  o.observed_owners,
-  a.sources
-from token_accounts_agg as a
+  a.source_class,
+  cast(a.source_class = 'legacy_inventory' as boolean) as excluded,
+  o.observed_owners
+from token_accounts as a
 left join observed_owners as o
   on o.token_mint_address = a.token_mint_address
   and o.token_account = a.token_account

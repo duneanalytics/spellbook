@@ -13,6 +13,7 @@ with non_circulating_inventory_accounts as (
     token_mint_address,
     token_account
   from {{ ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_accounts') }}
+  where excluded
 ),
 
 transfers_in as (
