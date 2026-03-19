@@ -7,35 +7,53 @@
 -- use uint256_max_double for safe double comparison
 {% set uint256_max_double = '1.0e77' %}
 
-with transfers_in as (
+with non_circulating_inventory_accounts as (
   select
-    block_date as day,
-    block_time,
-    to_owner as address,
+    blockchain,
     token_mint_address,
-    amount_raw as inflow,
+    token_account
+  from {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_non_circulating_inventory_owners') }}
+),
+
+transfers_in as (
+  select
+    t.block_date as day,
+    t.block_time,
+    t.to_owner as address,
+    t.token_mint_address,
+    t.amount_raw as inflow,
     uint256 '0' as outflow
-  from {{ ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_transfers') }}
-  where to_owner is not null
-    and block_date >= date '{{start_date}}'
+  from {{ ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_transfers') }} as t
+  left join non_circulating_inventory_accounts as nci
+    on nci.blockchain = '{{ blockchain }}'
+    and nci.token_mint_address = t.token_mint_address
+    and nci.token_account = t.to_token_account
+  where t.to_owner is not null
+    and nci.token_account is null
+    and t.block_date >= date '{{start_date}}'
   {% if is_incremental() %}
-    and {{ incremental_predicate('block_date') }}
+    and {{ incremental_predicate('t.block_date') }}
   {% endif %}
 ),
 
 transfers_out as (
   select
-    block_date as day,
-    block_time,
-    from_owner as address,
-    token_mint_address,
+    t.block_date as day,
+    t.block_time,
+    t.from_owner as address,
+    t.token_mint_address,
     uint256 '0' as inflow,
-    amount_raw as outflow
-  from {{ ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_transfers') }}
-  where from_owner is not null
-    and block_date >= date '{{start_date}}'
+    t.amount_raw as outflow
+  from {{ ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_transfers') }} as t
+  left join non_circulating_inventory_accounts as nci
+    on nci.blockchain = '{{ blockchain }}'
+    and nci.token_mint_address = t.token_mint_address
+    and nci.token_account = t.from_token_account
+  where t.from_owner is not null
+    and nci.token_account is null
+    and t.block_date >= date '{{start_date}}'
   {% if is_incremental() %}
-    and {{ incremental_predicate('block_date') }}
+    and {{ incremental_predicate('t.block_date') }}
   {% endif %}
 ),
 
@@ -164,11 +182,6 @@ from forward_fill
 where 1=1
   and (balance_raw > uint256 '0'
     or (balance_raw = uint256 '0' and cast(last_updated as date) = day))  -- keep actual zero-balance changes, not forward-fills
-  -- exclude anomalous balances
-  and not (address in (
-    'BQhyvitcaYRYuyrkSacfP2aixjPsDqmhrt7uANjPcqZR',
-    '5BpFBfXx5srPGtg3JGsumWARNh4UVagANgf7dGb1MYY1'
-  ))
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}
