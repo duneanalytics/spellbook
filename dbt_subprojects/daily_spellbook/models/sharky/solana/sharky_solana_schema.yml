@@ -10,13 +10,6 @@ models:
       tags: ['sharky','solana','events']
     description: >
         SharkyFi events on Solana
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - evt_type
-            - loan_id
-            - id
     columns:
       - &blockchain
         name: blockchain

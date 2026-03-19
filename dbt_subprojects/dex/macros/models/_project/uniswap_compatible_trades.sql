@@ -129,6 +129,8 @@ FROM
     , taker_column_name = null
     , maker_column_name = null
     , filter_angstrom_addr = null
+    , pool_manager_addr = '0x' 
+    , start_date = '2024-12-01'
     )
 %}
 WITH dexs AS
@@ -231,7 +233,7 @@ WITH dexs AS
         , sqrtPriceX96
         , tick
     FROM {{ PoolManager_evt_Swap }}
-    WHERE 1=1
+    WHERE 1 = 1
         {%- if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
         {%- endif %}
@@ -269,6 +271,60 @@ WITH dexs AS
 
 )
 
+, token_transfers as (
+    SELECT 
+        tx_hash
+        , evt_index
+        , trace_address
+        , block_date
+        , block_number 
+        , "to" as taker 
+        , contract_address as token_address 
+        , amount_raw as amount 
+        , case 
+            when token_standard = 'erc20' then array[evt_index]
+            when token_standard = 'native' then trace_address 
+        end as token_index 
+    FROM {{ source('tokens', 'transfers') }}
+    WHERE block_date >= date '{{start_date}}'
+    AND "from" = {{ pool_manager_addr }}
+    AND blockchain = '{{blockchain}}'
+        {%- if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+        {%- endif %}
+)
+
+, rank_token_transfers as (
+    SELECT 
+        * 
+        , row_number() over (partition by tx_hash, token_address order by token_index) as token_rank 
+    FROM 
+    token_transfers
+)
+
+, rank_swap_events as (
+    SELECT 
+        *
+        , row_number() over (partition by tx_hash, token_bought_address order by evt_index) as token_rank 
+    FROM 
+    dexs 
+)
+
+, get_taker as (
+    SELECT 
+        rse.*
+        , rtt.taker as transfers_taker 
+    FROM 
+    rank_swap_events rse 
+    left join 
+    rank_token_transfers rtt 
+        on rse.block_number = rtt.block_number 
+        and rse.tx_hash = rtt.tx_hash 
+        and rse.token_bought_address = rtt.token_address 
+        and rse.token_rank = rtt.token_rank 
+)
+
+
 SELECT
     {% if blockchain -%} '{{ blockchain }}' {% else -%} 'Unassigned' {% endif -%} as blockchain
     , '{{ project }}' AS project
@@ -281,7 +337,7 @@ SELECT
     , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
     , dexs.token_bought_address
     , dexs.token_sold_address
-    , dexs.taker
+    , coalesce(dexs.taker, dexs.transfers_taker) as taker
     , dexs.maker
     , dexs.project_contract_address
     , dexs.tx_hash
@@ -295,5 +351,5 @@ SELECT
     , dexs.tick
     , dexs.call_trace_address
 FROM
-    dexs
+    get_taker dexs 
 {% endmacro %}

@@ -13,7 +13,7 @@
 
 {{ transfers_enrich(
     base_transfers = ref('tokens_megaeth_base_transfers'),
-    transfers_start_date = '2025-11-10',
+    transfers_start_date = '2025-11-01',
     blockchain = 'megaeth'
   ) 
 }}

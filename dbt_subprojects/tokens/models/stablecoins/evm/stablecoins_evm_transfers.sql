@@ -44,7 +44,7 @@
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
         spell_type = "sector",
-        spell_name = "stablecoins",
+        spell_name = "stablecoins_evm",
         contributors = \'["tomfutago"]\') }}'
   )
 }}
@@ -62,8 +62,6 @@ select
   token_address,
   token_symbol,
   currency,
-  token_backing,
-  token_name,
   amount_raw,
   amount,
   price_usd,

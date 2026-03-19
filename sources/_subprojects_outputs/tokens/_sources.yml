@@ -1183,10 +1183,15 @@ sources:
       - name: core_transfers
       - name: extended_transfers
 
+  - name: stablecoins_evm
+    tables:
+      - name: transfers
+
   - name: stablecoins_tron
     tables:
       - name: core_transfers
       - name: extended_transfers
+      - name: transfers
 
   - name: stablecoins_unichain
     tables:
