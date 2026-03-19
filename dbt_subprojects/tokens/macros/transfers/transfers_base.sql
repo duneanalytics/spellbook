@@ -33,8 +33,8 @@ with transfers as (
 		and value > uint256 '0'
 	{% if is_incremental() -%}
 		and {{ incremental_predicate('block_time') }}
-	{% elif blockchain == 'megaeth' -%}
-		and block_time >= timestamp '2025-11-01'
+	{% else -%}
+		and {{ transfers_base_full_refresh_time_filter('block_time') }}
 	{% endif -%}
 	{% if blockchain == 'polygon' -%}
 		and case
@@ -89,9 +89,9 @@ with transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('evt_block_time') }}
-	{% elif blockchain == 'megaeth' -%}
+	{% else -%}
 	where
-		evt_block_time >= timestamp '2025-11-01'
+		{{ transfers_base_full_refresh_time_filter('t.evt_block_time') }}
 	{% endif -%}
 )
 
@@ -127,7 +127,7 @@ inner join {{ transactions }} as tx
 	and tx.hash = t.tx_hash
 	{% if is_incremental() -%}
 	and {{ incremental_predicate('tx.block_time') }}
-	{% elif blockchain == 'megaeth' -%}
-	and tx.block_time >= timestamp '2025-11-01'
+	{% else -%}
+	and {{ transfers_base_full_refresh_time_filter('tx.block_time') }}
 	{% endif -%}
 {% endmacro -%}

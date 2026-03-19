@@ -35,18 +35,23 @@ SELECT
     , tx.to as tx_to
     , to_tron_address(tx.to) as tx_to_varchar
     , t.value AS amount_raw
+    , current_timestamp as _updated_at
 FROM {{ source('erc20_tron','evt_Transfer') }} t
 INNER JOIN {{ source('tron','transactions') }} tx 
     ON tx.block_date = t.evt_block_date
     AND tx.block_time = t.evt_block_time 
     AND tx.block_number = t.evt_block_number
     AND tx.hash = t.evt_tx_hash
-    {% if is_incremental() %}
-    AND {{incremental_predicate('tx.block_time')}}
-    {% endif %}
-{% if is_incremental() %}
-WHERE {{incremental_predicate('t.evt_block_time')}}
-{% endif %}
+    {% if is_incremental() -%}
+    AND {{ incremental_predicate('tx.block_time') }}
+    {% else -%}
+    AND {{ transfers_base_full_refresh_time_filter('tx.block_time') }}
+    {% endif -%}
+{% if is_incremental() -%}
+WHERE {{ incremental_predicate('t.evt_block_time') }}
+{% else -%}
+WHERE {{ transfers_base_full_refresh_time_filter('t.evt_block_time') }}
+{% endif -%}
 
 UNION ALL
 
@@ -75,9 +80,12 @@ SELECT
     , tx.to as tx_to
     , to_tron_address(tx.to) as tx_to_varchar
     , tx.value AS amount_raw
+    , current_timestamp as _updated_at
 FROM {{ source('tron','transactions') }} tx
 WHERE tx.success = true
     AND tx.value > UINT256 '0'
-    {% if is_incremental() %}
-    AND {{incremental_predicate('tx.block_time')}}
-    {% endif %}
+    {% if is_incremental() -%}
+    AND {{ incremental_predicate('tx.block_time') }}
+    {% else -%}
+    AND {{ transfers_base_full_refresh_time_filter('tx.block_time') }}
+    {% endif -%}
