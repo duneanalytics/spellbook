@@ -38,10 +38,10 @@ models:
       blockchain: ton
       sector: infrastructure
       contributors: markysha, pshuvalov
+      short_description: "Latest .ton domain info: NFT owner, minter, ownership type (mint/sale/transfer), and wallet delegation."
     config:
       tags: ['ton', 'dns', 'infrastructure']
-    description: >
-      TON Domains latest info: owner, minter, delegate
+    description: "Latest .ton domain info: NFT owner, minter, ownership type (mint/sale/transfer), and wallet delegation."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -67,10 +67,10 @@ models:
       blockchain: ton
       sector: infrastructure
       contributors: pshuvalov
+      short_description: "Mapping between TON addresses and their best-matching .ton domain name."
     config:
       tags: ['ton', 'dns', 'infrastructure']
-    description: >
-      Mapping between addresses and their best matching .ton domain
+    description: "Mapping between TON addresses and their best-matching .ton domain name."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

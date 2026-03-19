@@ -1,0 +1,40 @@
+---
+description: Seed file conventions and best practices. Auto-loads when editing seed files.
+globs:
+  - "**/seeds/**"
+---
+
+# Seed Conventions
+
+## When Seeds Are Required
+
+- **Sector-level spells** (e.g., platforms feeding `dex.trades`): seeds are required for test-driven development
+- **Standalone project spells**: encouraged but not strictly required
+
+## Creating a Seed
+
+1. **Register in `_schema.yml`** — add the seed to the directory's `_schema.yml` with proper column data types
+   - Example: `dbt_subprojects/dex/seeds/trades/_schema.yml`
+
+2. **Build the CSV** with:
+   - All unique key columns (for join conditions in seed tests)
+   - Fields you want to test against model output
+   - **Keep it small** — a handful of representative rows is sufficient. Large seeds slow down CI.
+
+3. **Call the generic seed test** in the model's `_schema.yml`:
+   ```yaml
+   data_tests:
+     - check_dex_base_trades_seed:
+         seed_file: ref('my_project_chain_base_trades_seed')
+         filter:
+           version: 1
+   ```
+
+4. **Comparison logic** lives in `dbt_macros/generic-tests/check_seed_macro.sql` — the test joins model output against seed rows and fails if values don't match
+
+## Key Rules
+
+- Seed unique key columns must exactly match the model's `unique_key` config
+- Seed column types in `_schema.yml` must match the DuneSQL types the model produces
+- CI runs `dbt seed` for modified seeds, then compares model output against them during `dbt test`
+- If a seed test fails in CI, either the seed data or the model logic needs fixing

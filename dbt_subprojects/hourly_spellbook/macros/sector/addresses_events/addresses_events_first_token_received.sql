@@ -2,7 +2,14 @@
 
 WITH finding_transfer AS (
     SELECT tt.to
-    , MIN_BY(tt.unique_key, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS unique_key
+    , MIN_BY(
+        tt.unique_key
+        , (
+            COALESCE(tt.block_number, -1)
+            , COALESCE(tt.tx_index, -1)
+            , COALESCE(TRANSFORM(tt.trace_address, x -> COALESCE(x, -1)), ARRAY[COALESCE(tt.evt_index, -1)])
+        )
+    ) AS unique_key
     FROM {{token_transfers}} tt
     {% if is_incremental() %}
     LEFT JOIN {{this}} t

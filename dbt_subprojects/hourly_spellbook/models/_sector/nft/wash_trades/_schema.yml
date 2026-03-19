@@ -7,6 +7,7 @@ models:
       sector: nft
       contributors: hildobby
       docs_slug: /curated/trading/NFT/nft-wash-trades
+      short_description: "Identified potential wash trading activity in NFT transactions, flagging suspicious trades across marketplaces and blockchains."
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'optimism', 'polygon', 'wash_trades', 'zksync', 'base', 'scroll', 'zora']
     description: >

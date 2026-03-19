@@ -7,6 +7,7 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
+      short_description: "Identified Ethereum staking entities (Lido, Coinbase, etc.), mapping validators and depositors to known organizations."
       contributors: hildobby, sankinyue
     config:
       tags: ['ethereum', 'staking', 'entities']
@@ -66,6 +67,7 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
+      short_description: "Ethereum Beacon Chain staking deposit events, including validator pubkey, amount, and depositor address."
       contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'deposits']
@@ -119,6 +121,7 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
+      short_description: "Combined Ethereum staking deposits and withdrawals, providing a unified view of ETH flowing into and out of the Beacon Chain."
       contributors: hildobby, 0xBoxer
     config:
       tags: ['ethereum', 'staking', 'deposits', 'withdrawals']

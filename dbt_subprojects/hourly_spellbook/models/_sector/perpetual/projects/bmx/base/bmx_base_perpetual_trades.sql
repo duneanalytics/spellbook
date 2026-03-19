@@ -6,6 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     )
 }}
 
@@ -71,10 +72,12 @@ FROM (SELECT event.*,
       FROM all_executed_positions event
       INNER JOIN {{ source('base', 'transactions') }} trx
       ON event.evt_tx_hash = trx.hash
+          AND event.evt_block_number = trx.block_number
+          AND CAST(date_trunc('day', event.evt_block_time) AS date) = trx.block_date
           {% if not is_incremental() %}
-          AND event.evt_block_time >= DATE '{{project_start_date}}'
+          AND trx.block_time >= DATE '{{project_start_date}}'
           {% else %}
-          AND {{ incremental_predicate('event.evt_block_time') }}
+          AND {{ incremental_predicate('trx.block_time') }}
           {% endif %}
       INNER JOIN {{ source('tokens', 'erc20') }} tokens
           ON event.indexToken = tokens.contract_address
