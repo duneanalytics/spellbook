@@ -48,6 +48,8 @@ models:
         description: "The contract address of the transfer"
       - name: amount_raw
         description: "The raw amount of the transfer"
+      - name: _updated_at
+        description: "Timestamp when this row was last written"
 
   - name: tokens_optimism_transfers
     meta:
