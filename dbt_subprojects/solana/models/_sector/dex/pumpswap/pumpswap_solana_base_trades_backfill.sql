@@ -8,7 +8,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
     , event_time = 'block_time'
-    , begin = '2025-02-20'
+    , begin = '2026-03-06'
     , batch_size = var('pumpswap_batch_size', 'day')
     , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
@@ -16,7 +16,7 @@
   )
 }}
 
-{% set begin = '2025-02-20' %}
+{% set begin = '2026-03-06' %}
 {% set batch_start = model.batch.event_time_start if model.batch else begin %}
 {% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
@@ -48,9 +48,10 @@ WITH pools AS (
         , account_pool_quote_token_account
         , account_protocol_fee_recipient_token_account
         , base_amount
+        , quote_amount
         , is_buy
         , surrogate_key
-    FROM {{ ref('pumpswap_solana_stg_decoded_swaps') }}
+    FROM {{ ref('pumpswap_solana_int_all_swaps') }}
     WHERE
         block_time >= TIMESTAMP '{{ batch_start }}'
         AND block_time < TIMESTAMP '{{ batch_end }}'
@@ -98,6 +99,7 @@ WITH pools AS (
 )
 
 , swaps_with_transfers AS (
+    -- Old events: require transfer match
     SELECT
           sf.*
         , sf.base_amount AS base_token_amount
@@ -129,6 +131,18 @@ WITH pools AS (
                     END
             )
         )
+         WHERE sf.quote_amount IS NULL  -- Only old events need transfer lookup
+
+            UNION ALL
+
+            -- New events: already have quote_token_amount
+            SELECT
+                sf.*
+                , sf.base_amount AS base_token_amount
+                , sf.quote_amount  AS quote_token_amount
+                , 1 AS rn 
+            FROM swaps_with_fees sf
+         WHERE sf.quote_amount IS NOT NULL  
 )
 
 , trades AS (
