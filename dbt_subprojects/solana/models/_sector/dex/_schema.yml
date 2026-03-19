@@ -19,6 +19,7 @@ models:
       blockchain: solana
       contributors: ["ilemi", "0xRob"]
       docs_slug: /curated/trading/solana/dex-solana-trades
+      short_description: "Detailed data on trades executed via decentralized exchanges (DEXs) on Solana, containing one or many trades per transaction with Solana-specific fields like block_slot, fee_tier, and token vaults."
     config:
       tags: ['solana','dex']
     description: >

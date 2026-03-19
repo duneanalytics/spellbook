@@ -3,10 +3,7 @@
         schema = 'balancer_v2_polygon',
         alias = 'lbps',
         unique_key = ['pool_id'],
-        post_hook='{{ expose_spells_hide_trino(\'["polygon"]\',
-                                    "project",
-                                    "balancer_v2",
-                                    \'["stefenon"]\') }}'
+        post_hook = '{{ hide_spells() }}'
     )
 }}
 
