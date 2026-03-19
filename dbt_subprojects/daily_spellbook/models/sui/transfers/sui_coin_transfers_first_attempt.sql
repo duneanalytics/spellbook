@@ -10,7 +10,7 @@
     , tags = ['sui', 'tokens', 'transfers']
 ) }}
 
-{% set sui_transfer_start_date = var('sui_transfer_start_date', '2026-01-01') %}
+{% set sui_transfer_start_date = var('sui_transfer_start_date', '2024-09-18') %}
 {% set sui_transfer_coin_type = '0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC' %}
 
 with day_rows as (
