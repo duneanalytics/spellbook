@@ -22,6 +22,7 @@ ref('balancer_v1_ethereum_liquidity')
 , ref('balancer_v3_gnosis_liquidity')
 , ref('balancer_v3_arbitrum_liquidity')
 , ref('balancer_v3_base_liquidity')
+, ref('balancer_v3_avalanche_c_liquidity')
 ] %}
 
 
