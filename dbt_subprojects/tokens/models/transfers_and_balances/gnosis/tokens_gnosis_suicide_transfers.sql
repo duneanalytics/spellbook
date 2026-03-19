@@ -5,6 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date','unique_key'],
     )
@@ -117,6 +118,7 @@ SELECT
     , t2.refund_address AS to
     , CAST(NULL AS varbinary) AS contract_address
     , CAST(t1.amount_raw AS UINT256) AS amount_raw
+    , current_timestamp AS _updated_at
 FROM 
     suicide_balances t1
 INNER JOIN
@@ -133,4 +135,4 @@ INNER JOIN {{ source('gnosis', 'transactions') }} tx ON
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
 WHERE  
-    CAST(t1.amount_raw AS UINT256) > UINT256 '0'
+    t1.amount_raw > 0
