@@ -45,13 +45,9 @@ INNER JOIN {{ source('tron','transactions') }} tx
     AND tx.hash = t.evt_tx_hash
     {% if is_incremental() -%}
     AND {{ incremental_predicate('tx.block_time') }}
-    {% else -%}
-    AND {{ transfers_base_full_refresh_time_filter('tx.block_time') }}
     {% endif -%}
 {% if is_incremental() -%}
 WHERE {{ incremental_predicate('t.evt_block_time') }}
-{% else -%}
-WHERE {{ transfers_base_full_refresh_time_filter('t.evt_block_time') }}
 {% endif -%}
 
 UNION ALL
@@ -87,6 +83,4 @@ WHERE tx.success = true
     AND tx.value > UINT256 '0'
     {% if is_incremental() -%}
     AND {{ incremental_predicate('tx.block_time') }}
-    {% else -%}
-    AND {{ transfers_base_full_refresh_time_filter('tx.block_time') }}
     {% endif -%}

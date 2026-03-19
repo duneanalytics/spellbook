@@ -24,9 +24,9 @@ with base_transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('block_date') }}
-	{% else -%}
+	{% elif transfers_start_date is not none and transfers_start_date | trim != '' -%}
 	where
-		{{ transfers_full_refresh_time_filter('block_date', transfers_start_date) }}
+		block_date >= date '{{ transfers_start_date }}'
 	{% endif -%}
 )
 , prices as (
@@ -42,9 +42,9 @@ with base_transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('timestamp') }}
-	{% else -%}
+	{% elif transfers_start_date is not none and transfers_start_date | trim != '' -%}
 	where
-		{{ transfers_full_refresh_time_filter('timestamp', transfers_start_date) }}
+		timestamp >= timestamp '{{ transfers_start_date }}'
 	{% endif -%}
 )
 , trusted_tokens as (

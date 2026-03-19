@@ -75,8 +75,6 @@ where
 	and w.amount > 0
 {% if is_incremental() -%}
 	and {{ incremental_predicate('w.block_time') }}
-{% else -%}
-	and {{ transfers_base_full_refresh_time_filter('w.block_time') }}
 {% endif -%}
 
 union all
@@ -122,8 +120,6 @@ inner join (
 		and block_number <= 15537393
 		{% if is_incremental() -%}
 		and {{ incremental_predicate('block_time') }}
-		{% else -%}
-		and {{ transfers_base_full_refresh_time_filter('block_time') }}
 		{% endif -%}
 	group by
 		1
@@ -135,6 +131,4 @@ where
 	b.number <= 15537393
 {% if is_incremental() -%}
 	and {{ incremental_predicate('b.time') }}
-{% else -%}
-	and {{ transfers_base_full_refresh_time_filter('b.time') }}
 {% endif -%}
