@@ -4,7 +4,7 @@ models:
   - name: prices_tempo_tokens
     meta:
       blockchain: tempo
-      sector: tokens
+      sector: prices
       contributors: amonit
     config:
       tags: ['tokens', 'tempo', 'prices']
