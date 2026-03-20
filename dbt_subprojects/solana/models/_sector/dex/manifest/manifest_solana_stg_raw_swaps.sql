@@ -29,7 +29,7 @@ WITH swaps AS (
 
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE 1=1
-        AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
+        AND executing_account = 'MNFSTqtC93rEfYHB6hF82sKdZpUDFWkViLByLd1k1Ms'
         AND tx_success = true
         AND BYTEARRAY_SUBSTRING(data, 1, 1) IN (0x0d, 0x04)
         AND cardinality(account_arguments) > 8
