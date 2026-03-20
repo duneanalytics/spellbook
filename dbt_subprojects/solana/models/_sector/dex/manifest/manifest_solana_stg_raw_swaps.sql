@@ -13,19 +13,21 @@
 
 WITH swaps AS (
    SELECT
-    block_time,
-    block_slot,
-    block_date,
-    tx_id,
-    tx_index,
-    outer_instruction_index,
-    outer_executing_account,
-    COALESCE(inner_instruction_index, 0) AS inner_instruction_index,
-    cast(null as varchar) AS pool,
-    account_arguments[6] AS vault_a,
-    account_arguments[7] AS vault_b,
-    account_arguments[8] AS vault_c,
-    BYTEARRAY_SUBSTRING(data, 1, 1) as disc
+    block_slot
+    , CAST(date_trunc('month', block_date) AS DATE) AS block_month
+    , block_date
+    , block_time
+    , COALESCE(inner_instruction_index, 0) AS inner_instruction_index
+    , outer_instruction_index
+    , outer_executing_account
+    , is_inner
+    , tx_id
+    , tx_signer
+    , tx_index
+    , account_arguments[6] AS vault_a
+    , account_arguments[7] AS vault_b
+    , account_arguments[8] AS vault_c
+    , BYTEARRAY_SUBSTRING(data, 1, 1) as disc
 
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE 1=1
