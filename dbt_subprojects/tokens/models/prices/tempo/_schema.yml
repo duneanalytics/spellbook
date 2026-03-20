@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: tempo
       sector: prices
-      contributors: amonit
+      contributors: jeff-dude
     config:
       tags: ['tokens', 'tempo', 'prices']
     description: "Token prices and metadata on Tempo"
