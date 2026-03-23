@@ -8,7 +8,7 @@ models:
       docs_slug: /curated/asset-tracking/prices/prices_latest
     config:
       tags: ['prices', 'usd', 'latest']
-    description: "Latest price data for tokens in USD"
+    description: "Latest price data for tokens in USD. Multiple tokens can share the same symbol (for example, many tokens use symbol ETH). Always identify tokens by the (blockchain, contract_address) pair and never rely on symbol alone."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,11 +20,11 @@ models:
       - name: minute
         description: "UTC event block time truncated to the minute mark"
       - name: blockchain
-        description: "Native blockchain of the token"
+        description: "Native blockchain of the token. Use with contract_address as the unique token identifier."
       - name: contract_address
-        description: "Contract address of the token"
+        description: "Contract address of the token. Use with blockchain as the unique token identifier."
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol. Not unique across tokens and should not be used as a standalone identifier."
       - name: decimals
         description: "Token decimals"
       - name: price
@@ -36,7 +36,7 @@ models:
       contributors: 0xRob
     config:
       tags: [ 'prices', 'usd', 'forward_fill' ]
-    description: "View on prices that does a forward fill on the last 24h till the current timestamp"
+    description: "View on prices that does a forward fill on the last 24h till the current timestamp. Multiple tokens can share the same symbol (for example, many tokens use symbol ETH). Always identify tokens by the (blockchain, contract_address) pair and never rely on symbol alone."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -53,11 +53,11 @@ models:
       - name: minute
         description: "UTC event block time truncated to the minute mark"
       - name: blockchain
-        description: "Native blockchain of the token"
+        description: "Native blockchain of the token. Use with contract_address as the unique token identifier."
       - name: contract_address
-        description: "Contract address of the token"
+        description: "Contract address of the token. Use with blockchain as the unique token identifier."
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol. Not unique across tokens and should not be used as a standalone identifier."
       - name: decimals
         description: "Token decimals"
       - name: price
@@ -72,7 +72,7 @@ models:
       docs_slug: /curated/asset-tracking/prices/prices_daily
     config:
       tags: ['prices', 'usd', 'daily']
-    description: "Daily aggregated prices table across blockchains"
+    description: "Daily aggregated prices table across blockchains. Multiple tokens can share the same symbol (for example, many tokens use symbol ETH). Always identify tokens by the (blockchain, contract_address) pair and never rely on symbol alone."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -84,11 +84,11 @@ models:
       - name: day
         description: "UTC event block time truncated to the day mark"
       - name: blockchain
-        description: "Native blockchain of the token"
+        description: "Native blockchain of the token. Use with contract_address as the unique token identifier."
       - name: contract_address
-        description: "Contract address of the token"
+        description: "Contract address of the token. Use with blockchain as the unique token identifier."
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol. Not unique across tokens and should not be used as a standalone identifier."
       - name: decimals
         description: "Token decimals"
       - name: price

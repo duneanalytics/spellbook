@@ -5,16 +5,16 @@ sources:
     description: "Price data from various sources and time granularities"
     tables:
       - name: day
-        description: "Daily token prices aggregated from various sources"
+        description: "Daily token prices aggregated from various sources. Multiple tokens can share the same symbol (for example, many tokens use symbol ETH). Always identify tokens by the (blockchain, contract_address) pair and never rely on symbol alone."
         columns:
           - name: blockchain
-            description: "Native blockchain of the token"
+            description: "Native blockchain of the token. Use with contract_address as the unique token identifier."
             type: varchar
           - name: contract_address
-            description: "Contract address of the token"
+            description: "Contract address of the token. Use with blockchain as the unique token identifier."
             type: varbinary
           - name: symbol
-            description: "Token symbol"
+            description: "Token symbol. Not unique across tokens and should not be used as a standalone identifier."
             type: varchar
           - name: timestamp
             description: "UTC timestamp for the day"
@@ -36,16 +36,16 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: hour
-        description: "Hourly token prices aggregated from various sources"
+        description: "Hourly token prices aggregated from various sources. Multiple tokens can share the same symbol (for example, many tokens use symbol ETH). Always identify tokens by the (blockchain, contract_address) pair and never rely on symbol alone."
         columns:
           - name: blockchain
-            description: "Native blockchain of the token"
+            description: "Native blockchain of the token. Use with contract_address as the unique token identifier."
             type: varchar
           - name: contract_address
-            description: "Contract address of the token"
+            description: "Contract address of the token. Use with blockchain as the unique token identifier."
             type: varbinary
           - name: symbol
-            description: "Token symbol"
+            description: "Token symbol. Not unique across tokens and should not be used as a standalone identifier."
             type: varchar
           - name: timestamp
             description: "UTC timestamp for the hour"
@@ -67,16 +67,16 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: minute
-        description: "Minute-level token prices aggregated from various sources"
+        description: "Minute-level token prices aggregated from various sources. Multiple tokens can share the same symbol (for example, many tokens use symbol ETH). Always identify tokens by the (blockchain, contract_address) pair and never rely on symbol alone."
         columns:
           - name: blockchain
-            description: "Native blockchain of the token"
+            description: "Native blockchain of the token. Use with contract_address as the unique token identifier."
             type: varchar
           - name: contract_address
-            description: "Contract address of the token"
+            description: "Contract address of the token. Use with blockchain as the unique token identifier."
             type: varbinary
           - name: symbol
-            description: "Token symbol"
+            description: "Token symbol. Not unique across tokens and should not be used as a standalone identifier."
             type: varchar
           - name: timestamp
             description: "UTC timestamp for the minute"
