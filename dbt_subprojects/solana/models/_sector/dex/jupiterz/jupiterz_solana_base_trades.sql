@@ -7,7 +7,6 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}')
 }}
 
@@ -33,7 +32,6 @@ with
             ,COALESCE(call_inner_instruction_index, 0) AS inner_instruction_index
             ,call_tx_index as tx_index
             ,call_tx_id as tx_id
-            ,{{ dbt_utils.generate_surrogate_key(['call_tx_id', 'call_outer_instruction_index', 'COALESCE(call_inner_instruction_index, 0)', 'call_tx_index']) }} as surrogate_key
         FROM {{ source('jupiter_solana','order_engine_call_fill') }}
          WHERE 1=1
     {% if is_incremental() %}
@@ -67,5 +65,4 @@ SELECT
     , outer_instruction_index
     , inner_instruction_index
     , tx_index
-    , surrogate_key
 FROM bonding_curves
