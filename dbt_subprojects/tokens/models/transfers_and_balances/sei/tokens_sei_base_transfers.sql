@@ -16,3 +16,17 @@
 	transactions=source('sei', 'transactions'),
 	erc20_transfers=source('erc20_sei', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='sei',
+			transactions=source('sei', 'transactions'),
+			wrapped_token_deposit=source('wsei_sei', 'wsei_evt_deposit'),
+			wrapped_token_withdrawal=source('wsei_sei', 'wsei_evt_withdrawal'),
+		) }}
+	)
