@@ -9,16 +9,16 @@ sources:
       - name: fx_exchange_rates
         description: "Daily FX exchange rates between currency pairs"
       - name: usd
-        description: "USD prices across blockchains. Multiple tokens can share the same symbol (for example, many tokens use symbol ETH). Always identify tokens by the (blockchain, contract_address) pair and never rely on symbol alone."
+        description: "USD prices across blockchains. Token symbols are not unique; use (blockchain, contract_address) to identify a token."
         meta:
           docs_slug: /curated/asset-tracking/prices/prices
         columns:
           - name: minute
             description: "UTC event block time truncated to the minute mark"
           - name: blockchain
-            description: "Native blockchain of the token. Use with contract_address as the unique token identifier."
+            description: "Native blockchain of the token"
           - name: contract_address
-            description: "Contract address of the token. Use with blockchain as the unique token identifier."
+            description: "Contract address of the token"
           - name: symbol
             description: "Token symbol. Not unique across tokens and should not be used as a standalone identifier."
           - name: price
