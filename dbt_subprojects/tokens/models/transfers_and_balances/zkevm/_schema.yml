@@ -48,6 +48,8 @@ models:
         description: "The contract address of the transfer"
       - name: amount_raw
         description: "The raw amount of the transfer"
+      - name: _updated_at
+        description: "Timestamp when this row was last written"
 
   - name: tokens_zkevm_transfers
     meta:
@@ -104,6 +106,8 @@ models:
         description: "The USD price used to calculate the amount_usd"
       - name: amount_usd
         description: "The USD amount of the transfer"
+      - name: _updated_at
+        description: "Timestamp when this row was last written"
   
   - name: tokens_zkevm_net_transfers_daily
     meta:
