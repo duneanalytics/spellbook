@@ -22,7 +22,8 @@
     ref('balancer_v3_base_protocol_fee'),
     ref('balancer_v3_avalanche_c_protocol_fee'),
     ref('balancer_v3_hyperevm_protocol_fee'),
-    ref('balancer_v3_monad_protocol_fee')
+    ref('balancer_v3_monad_protocol_fee'),
+    ref('balancer_v3_plasma_protocol_fee')
 ] %}
 
 SELECT *

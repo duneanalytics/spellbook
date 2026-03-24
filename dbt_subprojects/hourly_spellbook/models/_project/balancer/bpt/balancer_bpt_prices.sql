@@ -20,7 +20,8 @@
     ref('balancer_v3_base_bpt_prices'),
     ref('balancer_v3_avalanche_c_bpt_prices'),
     ref('balancer_v3_hyperevm_bpt_prices'),
-    ref('balancer_v3_monad_bpt_prices')
+    ref('balancer_v3_monad_bpt_prices'),
+    ref('balancer_v3_plasma_bpt_prices')
 ] %}
 
 SELECT *

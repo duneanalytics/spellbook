@@ -10,7 +10,8 @@
     ref('balancer_v3_avalanche_c_lbps'),
     ref('balancer_v3_base_lbps'),
     ref('balancer_v3_ethereum_lbps'),
-    ref('balancer_v3_gnosis_lbps')
+    ref('balancer_v3_gnosis_lbps'),
+    ref('balancer_v3_plasma_lbps')
 ] %}
 
 

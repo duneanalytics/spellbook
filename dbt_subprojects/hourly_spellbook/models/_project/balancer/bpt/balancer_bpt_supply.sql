@@ -20,7 +20,8 @@
     ref('balancer_v3_base_bpt_supply'),
     ref('balancer_v3_avalanche_c_bpt_supply'),
     ref('balancer_v3_hyperevm_bpt_supply'),
-    ref('balancer_v3_monad_bpt_supply')
+    ref('balancer_v3_monad_bpt_supply'),
+    ref('balancer_v3_plasma_bpt_supply')
 ] %}
 
 SELECT *

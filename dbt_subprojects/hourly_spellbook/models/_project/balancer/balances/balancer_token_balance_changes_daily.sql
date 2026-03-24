@@ -20,7 +20,8 @@
     ref('balancer_v3_base_token_balance_changes_daily'),
     ref('balancer_v3_avalanche_c_token_balance_changes_daily'),
     ref('balancer_v3_hyperevm_token_balance_changes_daily'),
-    ref('balancer_v3_monad_token_balance_changes_daily')
+    ref('balancer_v3_monad_token_balance_changes_daily'),
+    ref('balancer_v3_plasma_token_balance_changes_daily')
 ] %}
 
 SELECT *
