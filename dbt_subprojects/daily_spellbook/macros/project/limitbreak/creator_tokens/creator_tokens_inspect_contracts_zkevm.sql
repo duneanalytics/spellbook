@@ -44,6 +44,7 @@ WITH clones AS (
         {{ source(blockchain, 'traces') }}
     WHERE 
         to = 0x000000000000000000000000000000000000800e 
+        AND output IS NOT NULL -- guard against NULL output in traces_0011+
         AND varbinary_position(input, 0xf5e69a47) = 1
         AND varbinary_position(input, 0x0000000000000000000000000000000000000000000000000000000023b872dd) > 0 
         AND varbinary_position(input, 0x0000000000000000000000000000000000000000000000000000000042842e0e) > 0 
@@ -59,6 +60,7 @@ WITH clones AS (
         {{ source(blockchain, 'traces') }}
     WHERE 
         to = 0x000000000000000000000000000000000000800e 
+        AND output IS NOT NULL -- guard against NULL output in traces_0011+
         AND varbinary_position(input, 0xf5e69a47) = 1
         AND varbinary_position(input, 0x00000000000000000000000000000000000000000000000000000000f242432a) > 0 
         AND varbinary_position(input, 0x000000000000000000000000000000000000000000000000000000002eb2c2d6) > 0 

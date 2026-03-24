@@ -31,3 +31,4 @@ WHERE
     traces."to" = (SELECT router FROM {{ref('chainlink_ccip_network_meta')}} WHERE blockchain = 'base' AND "version" = 'v1.2.0')
   )
   AND bytearray_substring(input, 1, 4) = 0x96f4e9f9
+  AND traces.call_type = 'call' -- exclude staticcall traces (traces_0011+ compatibility)

@@ -86,7 +86,7 @@ select
     , input as call_input
     , value as call_value
     , length(input) as call_input_length
-    , output as call_output
+    , coalesce(output, 0x) as call_output -- guard: output may be NULL for some traces in traces_0011+
     , auxiliary
     , date_trunc('minute', block_time) as minute
     , block_date

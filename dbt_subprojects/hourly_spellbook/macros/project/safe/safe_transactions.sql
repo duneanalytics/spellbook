@@ -20,7 +20,7 @@ select
     tr.error,
     tr.code,
     tr.input,
-    tr.output,
+    coalesce(tr.output, 0x) as output, -- guard: output may be NULL for some delegatecall traces in traces_0011+
     case
         when bytearray_substring(tr.input, 1, 4) = 0x6a761202 then 'execTransaction'
         when bytearray_substring(tr.input, 1, 4) = 0x468721a7 then 'execTransactionFromModule'

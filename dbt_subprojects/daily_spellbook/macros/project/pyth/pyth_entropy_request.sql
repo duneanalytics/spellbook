@@ -25,6 +25,7 @@ WHERE
     and tx_success
     and call_type = 'call'
     and success
+    and output is not null -- guard against NULL output in traces_0011+
     and to = {{ entropy_address }}
 {% if is_incremental() %}
     AND {{ incremental_predicate('block_date') }}
@@ -58,6 +59,7 @@ WHERE
     and tx_success
     and call_type = 'call'
     and success
+    and output is not null -- guard against NULL output in traces_0011+
     and to = {{ entropy_address }}
     and element_at(trace_address, -1) = 0
 {% if is_incremental() %}
