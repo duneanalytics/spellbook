@@ -12,5 +12,5 @@
         unique_key = ['block_date', 'unique_key'],
     )
 }}
-
+-- stamp 1
 {{ transfers_from_traces_macro(blockchain=blockchain, transfers_start_date='2015-08-07') }}
