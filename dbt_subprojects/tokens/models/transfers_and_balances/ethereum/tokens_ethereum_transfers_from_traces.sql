@@ -13,4 +13,4 @@
     )
 }}
 -- stamp 1
-{{ transfers_from_traces_macro(blockchain=blockchain, transfers_start_date='2015-08-07') }}
+{{ transfers_from_traces_macro(blockchain=blockchain, transfers_start_date='2015-08-07', easy_dates=true) }}
