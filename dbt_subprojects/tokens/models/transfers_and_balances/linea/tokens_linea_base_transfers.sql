@@ -16,3 +16,17 @@
 	transactions=source('linea', 'transactions'),
 	erc20_transfers=source('erc20_linea', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='linea',
+			transactions=source('linea', 'transactions'),
+			wrapped_token_deposit=source('linea_linea', 'weth9_evt_deposit'),
+			wrapped_token_withdrawal=source('linea_linea', 'weth9_evt_withdrawal'),
+		) }}
+	)
