@@ -20,7 +20,10 @@ with transfers as (
 		) as contract_address
 		, 'native' as token_standard
 		, "from"
-		, coalesce(to, address) as to
+		, case
+			when type = 'suicide' and refund_address is not null then refund_address
+			else coalesce(to, address)
+		end as to
 		, value as amount_raw
 	from
 		{{ traces }}
