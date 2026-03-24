@@ -18,7 +18,8 @@
     ref('balancer_v3_gnosis_token_balance_changes'),
     ref('balancer_v3_arbitrum_token_balance_changes'),
     ref('balancer_v3_base_token_balance_changes'),
-    ref('balancer_v3_avalanche_c_token_balance_changes')
+    ref('balancer_v3_hyperevm_token_balance_changes'),
+    ref('balancer_v3_avalanche_c_token_balance_changes') 
 ] %}
 
 SELECT *
