@@ -6,8 +6,8 @@ sources:
       - name: owner_addresses
         description: "Verified owner labels of addresses"
         meta:
-          docs_slug: /curated/labels/owners/owner-addresses
+          docs_slug: /curated/labels/owner-addresses
       - name: owner_details
         description: "Verified owner labels of addresses"
         meta:
-          docs_slug: /curated/labels/owners/owner-details
+          docs_slug: /curated/labels/owner-details

@@ -5,7 +5,7 @@ models:
     meta:
       sector: prices
       contributors: hildobby, 0xRob
-      docs_slug: /curated/asset-tracking/prices/prices_latest
+      docs_slug: /curated/prices/prices_latest
     config:
       tags: ['prices', 'usd', 'latest']
     description: "Latest price data for tokens in USD"
@@ -69,7 +69,7 @@ models:
     meta:
       sector: prices
       contributors: aalan3
-      docs_slug: /curated/asset-tracking/prices/prices_daily
+      docs_slug: /curated/prices/prices_day
     config:
       tags: ['prices', 'usd', 'daily']
     description: "Daily aggregated prices table across blockchains"

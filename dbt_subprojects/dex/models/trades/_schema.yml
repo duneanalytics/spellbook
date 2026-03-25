@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_trades
     meta:
-      docs_slug: /curated/trading/DEX/dex-trades
+      docs_slug: /curated/dex-trades/evm/dex-trades
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain, sophon
       sector: dex
       short_description: "Detailed data on trades executed via decentralized exchanges (DEXs), containing one or many trades per transaction across all EVM chains."
