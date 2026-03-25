@@ -33,8 +33,8 @@
         blockchain = 'celo',
         project = 'velodrome',
         version = '2_cl',
-        Pair_evt_Swap = 'clpool_evt_swap',
-        Factory_evt_PoolCreated = 'clfactory_evt_poolcreated',
+        Pair_evt_Swap = clpool_evt_swap,
+        Factory_evt_PoolCreated = clfactory_evt_poolcreated,
         optional_columns = []
     )
 }}
