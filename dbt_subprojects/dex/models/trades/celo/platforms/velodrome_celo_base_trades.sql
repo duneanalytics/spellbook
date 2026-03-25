@@ -15,7 +15,7 @@
     select
         *
     from {{ source('velodrome_multichain', 'clpool_evt_swap') }}
-    where chain = 'celo'
+    where lower(chain) like 'celo%'
 )
 {% endset %}
 
@@ -24,7 +24,7 @@
     select
         *
     from {{ source('velodrome_multichain', 'clfactory_evt_poolcreated') }}
-    where chain = 'celo'
+    where lower(chain) like 'celo%'
 )
 {% endset %}
 
