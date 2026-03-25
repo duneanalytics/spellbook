@@ -16,3 +16,17 @@
 	transactions=source('flow', 'transactions'),
 	erc20_transfers=source('erc20_flow', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='flow',
+			transactions=source('flow', 'transactions'),
+			wrapped_token_deposit=source('wflow_flow', 'wflow_evt_deposit'),
+			wrapped_token_withdrawal=source('wflow_flow', 'wflow_evt_withdrawal'),
+		) }}
+	)
