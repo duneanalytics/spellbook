@@ -31,3 +31,7 @@ sources:
       - name: PoolManager_evt_Swap
       - name: PoolManager_evt_Initialize
       - name: PoolManager_call_Swap
+  - name: velodrome_multichain
+    tables:
+      - name: clpool_evt_swap
+      - name: clfactory_evt_poolcreated
