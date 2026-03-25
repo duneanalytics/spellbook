@@ -38,6 +38,28 @@ sources:
           - name: checkpoint
             description: "Sui checkpoint number"
 
+      - name: transaction_objects
+        description: "Object references touched by each Sui transaction (inputs and outputs)."
+        columns:
+          - name: object_id
+            description: "Object identifier"
+          - name: version
+            description: "Object version"
+          - name: transaction_digest
+            description: "Transaction hash"
+          - name: checkpoint
+            description: "Sui checkpoint number"
+          - name: epoch
+            description: "Sui epoch number"
+          - name: timestamp_ms
+            description: "Object change timestamp in milliseconds"
+          - name: date
+            description: "Object change date"
+          - name: input_kind
+            description: "Input classification for the object in this transaction"
+          - name: object_status
+            description: "Object status in this transaction context"
+
       - name: objects
         description: "Sui blockchain objects"
         columns:

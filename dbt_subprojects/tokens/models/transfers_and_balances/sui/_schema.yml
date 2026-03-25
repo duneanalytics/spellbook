@@ -1,0 +1,315 @@
+version: 2
+
+models:
+  - name: tokens_sui_base_transfers
+    meta:
+      blockchain: sui
+      sector: tokens
+      contributors: tomasz
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Sui fungible-token base transfers reconstructed as net owner-to-owner value movements from canonical object ownership and balance changes, including deleted-object lineage recovery for merge-side outflows."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row."
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain of the transfers."
+      - name: block_date
+        description: "The date of the checkpoint that includes the transfer."
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "The timestamp of the transfer transaction."
+      - name: block_number
+        description: "The Sui checkpoint number."
+      - name: tx_hash
+        description: "The transaction digest, decoded to varbinary."
+      - name: tx_digest
+        description: "The original Base58-encoded Sui transaction digest."
+      - name: evt_index
+        description: "Event index when applicable (null for this model)."
+      - name: trace_address
+        description: "Trace address when applicable (null for this model)."
+      - name: token_standard
+        description: "Token standard marker: native for SUI, coin for non-native Sui coins."
+      - name: tx_from
+        description: "The transaction sender."
+      - name: tx_to
+        description: "The transaction receiver when a top-level receiver exists (null on Sui canonical txs)."
+      - name: tx_index
+        description: "Transaction position inside the checkpoint."
+      - name: transfer_type
+        description: "Reconstructed transfer classification: transfer, mint, or burn."
+      - name: from_owner_type
+        description: "Sui owner type for the sender side (for example AddressOwner, ObjectOwner, Shared, Immutable, synthetic)."
+      - name: to_owner_type
+        description: "Sui owner type for the receiver side (for example AddressOwner, ObjectOwner, Shared, Immutable, synthetic)."
+      - name: from
+        description: "Owner address or object ID that sent value."
+      - name: to
+        description: "Owner address or object ID that received value."
+      - name: from_owner_object_id
+        description: "Sender-side owner object ID when the owner type is ObjectOwner."
+      - name: to_owner_object_id
+        description: "Receiver-side owner object ID when the owner type is ObjectOwner."
+      - name: contract_address
+        description: "The package address portion of the Sui coin type."
+      - name: amount_raw
+        description: "Raw transfer amount."
+      - name: coin_type
+        description: "Fully qualified Sui coin type (for precise metadata joins)."
+
+  - name: tokens_sui_transfers
+    meta:
+      blockchain: sui
+      sector: tokens
+      contributors: tomasz
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Sui fungible-token transfers enriched with token metadata and USD pricing, represented as reconstructed net owner-to-owner value movements."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row."
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain of the transfers."
+      - name: block_date
+        description: "The date of the checkpoint that includes the transfer."
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "The timestamp of the transfer transaction."
+      - name: block_number
+        description: "The Sui checkpoint number."
+      - name: tx_hash
+        description: "The transaction digest, decoded to varbinary."
+      - name: tx_digest
+        description: "The original Base58-encoded Sui transaction digest."
+      - name: evt_index
+        description: "Event index when applicable (null for this model)."
+      - name: trace_address
+        description: "Trace address when applicable (null for this model)."
+      - name: token_standard
+        description: "Token standard marker: native for SUI, coin for non-native Sui coins."
+      - name: tx_from
+        description: "The transaction sender."
+      - name: tx_to
+        description: "The transaction receiver when a top-level receiver exists (null on Sui canonical txs)."
+      - name: tx_index
+        description: "Transaction position inside the checkpoint."
+      - name: transfer_type
+        description: "Reconstructed transfer classification: transfer, mint, or burn."
+      - name: from_owner_type
+        description: "Sui owner type for the sender side (for example AddressOwner, ObjectOwner, Shared, Immutable, synthetic)."
+      - name: to_owner_type
+        description: "Sui owner type for the receiver side (for example AddressOwner, ObjectOwner, Shared, Immutable, synthetic)."
+      - name: from
+        description: "Owner address or object ID that sent value."
+      - name: to
+        description: "Owner address or object ID that received value."
+      - name: from_owner_object_id
+        description: "Sender-side owner object ID when the owner type is ObjectOwner."
+      - name: to_owner_object_id
+        description: "Receiver-side owner object ID when the owner type is ObjectOwner."
+      - name: contract_address
+        description: "The package address portion of the Sui coin type."
+      - name: coin_type
+        description: "Fully qualified Sui coin type (canonical token identifier)."
+      - name: symbol
+        description: "Token symbol transferred."
+      - name: amount_raw
+        description: "Raw transfer amount."
+      - name: amount
+        description: "Formatted transfer amount."
+      - name: price_usd
+        description: "USD price used for valuation."
+      - name: amount_usd
+        description: "Transfer amount expressed in USD."
+
+  - name: tokens_sui_transfer_activity_legs_base
+    meta:
+      blockchain: sui
+      sector: tokens
+      contributors: tomasz
+    config:
+      tags: ['tokens', 'transfers', 'sui', 'activity', 'base']
+    description: "Base candidate mappings between reconstructed Sui transfer rows and on-chain event-level activity legs within the same transaction."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row."
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain of the transfer activity leg."
+      - name: block_date
+        description: "The date of the checkpoint that includes the transfer activity leg."
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "The timestamp of the event."
+      - name: block_number
+        description: "The Sui checkpoint number."
+      - name: tx_hash
+        description: "The transaction digest, decoded to varbinary."
+      - name: tx_digest
+        description: "The original Base58-encoded Sui transaction digest."
+      - name: transfer_unique_key
+        description: "Foreign key to tokens_sui_base_transfers.unique_key."
+      - name: tx_from
+        description: "The transaction sender."
+      - name: tx_index
+        description: "Transaction position inside the checkpoint."
+      - name: coin_type
+        description: "Canonical Sui coin type for the transfer row."
+      - name: transfer_type
+        description: "Reconstructed transfer classification: transfer, mint, or burn."
+      - name: from
+        description: "Sender owner from reconstructed transfer row."
+      - name: to
+        description: "Receiver owner from reconstructed transfer row."
+      - name: amount_raw
+        description: "Raw transfer amount from reconstructed transfer row."
+      - name: event_index
+        description: "Event index within the transaction."
+      - name: event_sender
+        description: "Event sender address."
+      - name: event_package
+        description: "Sui package address that emitted the event."
+      - name: event_type
+        description: "Fully qualified Move event type."
+      - name: event_module
+        description: "Move module inferred from event_type."
+      - name: event_name
+        description: "Event name inferred from event_type."
+      - name: event_type_params
+        description: "Type parameters extracted from event_type when present."
+      - name: coin_type_hint
+        description: "Primary coin type hint extracted from event JSON or event type."
+      - name: coin_type_in_hint
+        description: "Input-side coin type hint extracted from event JSON when present."
+      - name: coin_type_out_hint
+        description: "Output-side coin type hint extracted from event JSON when present."
+      - name: match_reason
+        description: "Heuristic describing why this event was matched to the transfer row."
+      - name: event_json
+        description: "Raw event JSON payload for protocol-specific downstream parsing."
+
+  - name: tokens_sui_transfer_activity_legs
+    meta:
+      blockchain: sui
+      sector: tokens
+      contributors: tomasz
+    config:
+      tags: ['tokens', 'transfers', 'sui', 'activity']
+    description: "Enriched transfer-activity leg mappings with token metadata, valuation fields, and match-quality metrics."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row."
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain of the transfer activity leg."
+      - name: block_date
+        description: "The date of the checkpoint that includes the transfer activity leg."
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "The timestamp of the event."
+      - name: block_number
+        description: "The Sui checkpoint number."
+      - name: tx_hash
+        description: "The transaction digest, decoded to varbinary."
+      - name: tx_digest
+        description: "The original Base58-encoded Sui transaction digest."
+      - name: transfer_unique_key
+        description: "Foreign key to tokens_sui_base_transfers.unique_key."
+      - name: tx_from
+        description: "The transaction sender."
+      - name: tx_index
+        description: "Transaction position inside the checkpoint."
+      - name: coin_type
+        description: "Canonical Sui coin type for the transfer row."
+      - name: transfer_type
+        description: "Reconstructed transfer classification: transfer, mint, or burn."
+      - name: from
+        description: "Sender owner from reconstructed transfer row."
+      - name: to
+        description: "Receiver owner from reconstructed transfer row."
+      - name: amount_raw
+        description: "Raw transfer amount from reconstructed transfer row."
+      - name: token_standard
+        description: "Token standard marker inherited from the transfer model."
+      - name: contract_address
+        description: "Package address portion of the Sui coin type."
+      - name: symbol
+        description: "Token symbol from transfer enrichment."
+      - name: amount
+        description: "Formatted token amount from transfer enrichment."
+      - name: price_usd
+        description: "USD price from transfer enrichment."
+      - name: amount_usd
+        description: "USD amount from transfer enrichment."
+      - name: event_index
+        description: "Event index within the transaction."
+      - name: event_sender
+        description: "Event sender address."
+      - name: event_package
+        description: "Sui package address that emitted the event."
+      - name: event_type
+        description: "Fully qualified Move event type."
+      - name: event_module
+        description: "Move module inferred from event_type."
+      - name: event_name
+        description: "Event name inferred from event_type."
+      - name: event_type_params
+        description: "Type parameters extracted from event_type when present."
+      - name: coin_type_hint
+        description: "Primary coin type hint extracted from event JSON or event type."
+      - name: coin_type_in_hint
+        description: "Input-side coin type hint extracted from event JSON when present."
+      - name: coin_type_out_hint
+        description: "Output-side coin type hint extracted from event JSON when present."
+      - name: match_reason
+        description: "Heuristic describing why this event was matched to the transfer row."
+      - name: event_json
+        description: "Raw event JSON payload for protocol-specific downstream parsing."
+      - name: match_priority
+        description: "Numeric match quality ranking (lower is better)."
+      - name: match_confidence
+        description: "Categorical match confidence derived from match_priority."
+      - name: transfer_match_rank
+        description: "Rank of this event match within a transfer."
+      - name: is_primary_match
+        description: "True when this row is the best-ranked event match for its transfer."
+      - name: transfer_match_count
+        description: "Number of event matches linked to the same transfer."
+      - name: event_match_count
+        description: "Number of transfers linked to the same tx/event tuple."
+      - name: allocation_weight
+        description: "Equal-weight allocation factor across matches for a transfer."
+      - name: allocated_amount_usd
+        description: "amount_usd weighted by allocation_weight to reduce overcounting risk."
+
