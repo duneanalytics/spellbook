@@ -14,7 +14,8 @@
 (
     select
         *
-    from {{ source('velodrome_celo', 'clpool_evt_swap') }}
+    from {{ source('velodrome_v2_multichain', 'clpool_evt_swap') }}
+    where chain = 'celo'
 )
 {% endset %}
 
@@ -22,7 +23,8 @@
 (
     select
         *
-    from {{ source('velodrome_celo', 'clfactory_evt_poolcreated') }}
+    from {{ source('velodrome_multichain', 'clfactory_evt_poolcreated') }}
+    where chain = 'celo'
 )
 {% endset %}
 
