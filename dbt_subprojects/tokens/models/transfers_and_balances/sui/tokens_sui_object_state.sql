@@ -37,55 +37,23 @@ source_rows as (
     {% endif %}
 ),
 
-latest_incremental as (
+-- rank all versions: rn=1 is latest (current state), rn=2 is previous
+ranked as (
   select
-    s.object_id,
-    s.version,
-    s.timestamp_ms,
-    s.block_date,
-    s.block_month,
-    s.checkpoint,
-    s.owner_type,
-    s.receiver,
-    s.coin_type,
-    s.coin_balance
-  from (
-    select
-      s.*,
-      row_number() over (partition by s.object_id order by s.version desc) as rn
-    from source_rows s
-  ) s
-  where s.rn = 1
+    s.*,
+    row_number() over (partition by s.object_id order by s.version desc) as rn
+  from source_rows s
 ),
 
+latest as (
+  select * from ranked where rn = 1
+),
+
+{% if is_incremental() %}
+-- incremental: previous state from existing table, with fallback to
+-- second-latest version in current batch for newly seen objects
 existing_state as (
-  {% if is_incremental() %}
-  select
-    e.object_id,
-    e.version,
-    e.timestamp_ms,
-    e.block_date,
-    e.block_month,
-    e.checkpoint,
-    e.owner_type,
-    e.receiver,
-    e.coin_type,
-    e.coin_balance
-  from {{ this }} e
-  {% else %}
-  select
-    cast(null as varbinary) as object_id,
-    cast(null as bigint) as version,
-    cast(null as bigint) as timestamp_ms,
-    cast(null as date) as block_date,
-    cast(null as date) as block_month,
-    cast(null as bigint) as checkpoint,
-    cast(null as varchar) as owner_type,
-    cast(null as varbinary) as receiver,
-    cast(null as varchar) as coin_type,
-    cast(null as bigint) as coin_balance
-  where false
-  {% endif %}
+  select * from {{ this }}
 )
 
 select
@@ -99,16 +67,52 @@ select
   s.receiver,
   s.coin_type,
   s.coin_balance,
-  e.version as previous_version,
-  e.timestamp_ms as previous_timestamp_ms,
-  e.block_date as previous_block_date,
-  e.block_month as previous_block_month,
-  e.checkpoint as previous_checkpoint,
-  e.owner_type as previous_owner_type,
-  e.receiver as previous_receiver,
-  e.coin_type as previous_coin_type,
-  e.coin_balance as previous_coin_balance,
+  coalesce(e.version, p.version) as previous_version,
+  coalesce(e.timestamp_ms, p.timestamp_ms) as previous_timestamp_ms,
+  coalesce(e.block_date, p.block_date) as previous_block_date,
+  coalesce(e.block_month, p.block_month) as previous_block_month,
+  coalesce(e.checkpoint, p.checkpoint) as previous_checkpoint,
+  coalesce(e.owner_type, p.owner_type) as previous_owner_type,
+  coalesce(e.receiver, p.receiver) as previous_receiver,
+  coalesce(e.coin_type, p.coin_type) as previous_coin_type,
+  coalesce(e.coin_balance, p.coin_balance) as previous_coin_balance,
   current_timestamp as _updated_at
-from latest_incremental s
+from latest s
 left join existing_state e
   on s.object_id = e.object_id
+left join ranked p
+  on s.object_id = p.object_id and p.rn = 2
+
+{% else %}
+-- full refresh: second-latest version per object = previous state.
+-- no dependency on {{ this }} which is empty during full refresh.
+second_latest as (
+  select * from ranked where rn = 2
+)
+
+select
+  s.object_id,
+  s.version,
+  s.timestamp_ms,
+  s.block_date,
+  s.block_month,
+  s.checkpoint,
+  s.owner_type,
+  s.receiver,
+  s.coin_type,
+  s.coin_balance,
+  p.version as previous_version,
+  p.timestamp_ms as previous_timestamp_ms,
+  p.block_date as previous_block_date,
+  p.block_month as previous_block_month,
+  p.checkpoint as previous_checkpoint,
+  p.owner_type as previous_owner_type,
+  p.receiver as previous_receiver,
+  p.coin_type as previous_coin_type,
+  p.coin_balance as previous_coin_balance,
+  current_timestamp as _updated_at
+from latest s
+left join second_latest p
+  on s.object_id = p.object_id
+
+{% endif %}
