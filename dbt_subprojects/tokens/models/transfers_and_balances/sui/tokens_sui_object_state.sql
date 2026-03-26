@@ -31,9 +31,9 @@ source_rows as (
   where o.object_status in ('Created', 'Mutated')
     and o.coin_type is not null
     and o.date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() -%}
+    {% if is_incremental() %}
     and {{ incremental_predicate('o.date') }}
-    {% endif -%}
+    {% endif %}
 ),
 
 latest_incremental as (
@@ -58,7 +58,7 @@ latest_incremental as (
 ),
 
 existing_state as (
-  {% if is_incremental() -%}
+  {% if is_incremental() %}
   select
     e.object_id,
     e.version,
@@ -71,7 +71,7 @@ existing_state as (
     e.coin_type,
     e.coin_balance
   from {{ this }} e
-  {% else -%}
+  {% else %}
   select
     cast(null as varbinary) as object_id,
     cast(null as bigint) as version,
@@ -84,7 +84,7 @@ existing_state as (
     cast(null as varchar) as coin_type,
     cast(null as bigint) as coin_balance
   where false
-  {% endif -%}
+  {% endif %}
 )
 
 select

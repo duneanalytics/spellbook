@@ -22,9 +22,9 @@ base_transfers as (
     *
   from {{ ref('tokens_sui_base_transfers') }}
   where block_date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() -%}
+    {% if is_incremental() %}
     and {{ incremental_predicate('block_date') }}
-    {% endif -%}
+    {% endif %}
 ),
 
 prices as (
@@ -37,9 +37,9 @@ prices as (
   from {{ source('prices_external', 'hour') }}
   where blockchain = 'sui'
     and timestamp >= timestamp '{{ sui_transfer_start_date }}'
-    {% if is_incremental() -%}
+    {% if is_incremental() %}
     and {{ incremental_predicate('timestamp') }}
-    {% endif -%}
+    {% endif %}
 ),
 
 coin_metadata as (

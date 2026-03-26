@@ -28,9 +28,9 @@ events_filtered as (
     regexp_extract(lower(e.event_type), 'treasury::(?:mint|burn)<([^>]+)>', 1) as generic_coin_type
   from {{ source('sui', 'events') }} e
   where e.date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() -%}
+    {% if is_incremental() %}
     and {{ incremental_predicate('e.date') }}
-    {% endif -%}
+    {% endif %}
 ),
 
 package_coin_types as (

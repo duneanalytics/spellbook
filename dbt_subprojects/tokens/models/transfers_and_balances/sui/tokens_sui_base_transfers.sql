@@ -36,9 +36,9 @@ day_rows as (
     -- coin_type is populated only for fungible Coin<T> objects; non-coin objects have null coin_type.
     and o.coin_type is not null
     and o.date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() -%}
+    {% if is_incremental() %}
     and {{ incremental_predicate('o.date') }}
-    {% endif -%}
+    {% endif %}
 ),
 
 deleted_rows as (
@@ -58,9 +58,9 @@ deleted_rows as (
   from {{ source('sui', 'objects') }} o
   where o.object_status = 'Deleted'
     and o.date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() -%}
+    {% if is_incremental() %}
     and {{ incremental_predicate('o.date') }}
-    {% endif -%}
+    {% endif %}
 ),
 
 affected_objects as (
@@ -283,9 +283,9 @@ tx_senders as (
   ) d
     on t.transaction_digest = d.tx_digest
   where t.date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() -%}
+    {% if is_incremental() %}
     and {{ incremental_predicate('t.date') }}
-    {% endif -%}
+    {% endif %}
 ),
 
 enriched as (
@@ -349,9 +349,9 @@ supply_signals as (
     s.has_cctp_deposit_for_burn
   from {{ ref('tokens_sui_supply_signals') }} s
   where s.block_date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() -%}
+    {% if is_incremental() %}
     and {{ incremental_predicate('s.block_date') }}
-    {% endif -%}
+    {% endif %}
 ),
 
 tx_reconciliation as (
