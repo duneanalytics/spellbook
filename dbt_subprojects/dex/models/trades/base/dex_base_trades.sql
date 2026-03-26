@@ -65,7 +65,7 @@ WITH balancer_v3 AS (
         , tx_from
         , tx_to
         , evt_index
-        , _updated_at
+        , current_timestamp as _updated_at
     FROM
         {{ cte }}
     {% if not loop.last %}
