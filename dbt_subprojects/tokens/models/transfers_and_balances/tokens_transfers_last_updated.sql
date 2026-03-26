@@ -20,6 +20,6 @@ group by
 	t.blockchain
 	, t.block_month
 )
-{% if is_incremental -%}
-	where {{incremental_predicate(last_update_date)}}
+{% if is_incremental() -%}
+	where {{incremental_predicate('last_update_date')}}
 {% endif -%}
