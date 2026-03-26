@@ -16,3 +16,17 @@
 	transactions=source('avalanche_c', 'transactions'),
 	erc20_transfers=source('erc20_avalanche_c', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='avalanche_c',
+			transactions=source('avalanche_c', 'transactions'),
+			wrapped_token_deposit=source('wavax_avalanche_c', 'wavax_evt_deposit'),
+			wrapped_token_withdrawal=source('wavax_avalanche_c', 'wavax_evt_withdrawal'),
+		) }}
+	)

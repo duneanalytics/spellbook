@@ -16,3 +16,17 @@
 	transactions=source('monad', 'transactions'),
 	erc20_transfers=source('erc20_monad', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='monad',
+			transactions=source('monad', 'transactions'),
+			wrapped_token_deposit=source('wmon_monad', 'wmon_evt_deposit'),
+			wrapped_token_withdrawal=source('wmon_monad', 'wmon_evt_withdrawal'),
+		) }}
+	)

@@ -16,3 +16,17 @@
 	transactions=source('hyperevm', 'transactions'),
 	erc20_transfers=source('erc20_hyperevm', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='hyperevm',
+			transactions=source('hyperevm', 'transactions'),
+			wrapped_token_deposit=source('whype_hyperevm', 'weth9_evt_deposit'),
+			wrapped_token_withdrawal=source('whype_hyperevm', 'weth9_evt_withdrawal'),
+		) }}
+	)
