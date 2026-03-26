@@ -358,7 +358,8 @@ tx_reconciliation as (
   select
     f.tx_digest,
     f.coin_type,
-    sum(f.balance_delta) as tx_net_delta,
+    -- aggregate in high-precision decimal to avoid bigint overflow on large net-delta txs
+    sum(cast(f.balance_delta as decimal(38, 0))) as tx_net_delta,
     count(distinct f.receiver) as tx_distinct_receivers,
     count(distinct f.prev_owner) filter (where f.prev_owner is not null) as tx_distinct_senders,
     bool_or(f.balance_delta > 0) and bool_or(f.balance_delta < 0) as tx_has_bidirectional_deltas
