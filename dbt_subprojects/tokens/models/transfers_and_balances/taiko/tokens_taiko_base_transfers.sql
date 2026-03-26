@@ -16,3 +16,17 @@
 	transactions=source('taiko', 'transactions'),
 	erc20_transfers=source('erc20_taiko', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='taiko',
+			transactions=source('taiko', 'transactions'),
+			wrapped_token_deposit=source('weth_taiko', 'weth9_evt_deposit'),
+			wrapped_token_withdrawal=source('weth_taiko', 'weth9_evt_withdrawal'),
+		) }}
+	)
