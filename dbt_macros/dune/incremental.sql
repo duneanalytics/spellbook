@@ -9,11 +9,8 @@
   Adds merge_skip_unchanged model config: when true, the MERGE only updates
   rows where at least one tracked column actually changed (via IS DISTINCT FROM).
   Tracked columns = all dest columns minus unique_key, merge_exclude_columns,
-  and CHANGE_TRACKING_EXCLUDED_COLUMNS (hardcoded below).
+  and change_tracking_excluded_columns (hardcoded inside the macro).
 -#}
-
-{#-- [dune] Columns always excluded from change tracking comparison. --#}
-{%- set CHANGE_TRACKING_EXCLUDED_COLUMNS = ['_updated_at'] -%}
 
 {#-- Kept in sync with upstream; [dune] blocks are the only additions. --#}
 {% macro trino__get_merge_sql(target, source, unique_key, dest_columns, incremental_predicates) -%}
@@ -26,12 +23,12 @@
     {%- set sql_header = config.get('sql_header', none) -%}
 
     {#-- [dune] merge_skip_unchanged: skip updating rows where no tracked column changed.
-         Tracked columns = all dest columns minus unique_key, merge_exclude_columns, and CHANGE_TRACKING_EXCLUDED_COLUMNS. --#}
+         Tracked columns = all dest columns minus unique_key, merge_exclude_columns, and change_tracking_excluded_columns. --#}
     {%- set merge_skip_unchanged = config.get('merge_skip_unchanged', false) -%}
     {%- if merge_skip_unchanged %}
         {%- set unique_key_list = [unique_key] if unique_key is string else (unique_key if unique_key is sequence and unique_key is not mapping else []) -%}
         {%- set excluded_cols = merge_exclude_columns if merge_exclude_columns is not none else [] -%}
-        {%- set change_tracking_excluded_columns = (unique_key_list + excluded_cols + CHANGE_TRACKING_EXCLUDED_COLUMNS) | map('lower') | list -%}
+        {%- set change_tracking_excluded_columns = (unique_key_list + excluded_cols + ['_updated_at']) | map('lower') | list -%}
         {%- set change_tracking_columns = [] -%}
         {%- for col in dest_columns -%}
             {%- if col.name | lower not in change_tracking_excluded_columns -%}
