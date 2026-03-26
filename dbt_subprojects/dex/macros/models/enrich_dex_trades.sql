@@ -112,6 +112,7 @@ SELECT
     , tx_from
     , tx_to
     , CAST(evt_index AS bigint) AS evt_index
+    , current_timestamp AS _updated_at
 FROM
     enrichments_with_prices
 
