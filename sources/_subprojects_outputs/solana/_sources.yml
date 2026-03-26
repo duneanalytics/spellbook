@@ -10,7 +10,7 @@ sources:
       - name: trades
       - name: prices
         meta:
-          docs_slug: /curated/prices/dex_solana_prices
+          docs_slug: /curated/prices/dex_solana_price_hour
   - name: stablecoins_svm
     tables:
       - name: balances
