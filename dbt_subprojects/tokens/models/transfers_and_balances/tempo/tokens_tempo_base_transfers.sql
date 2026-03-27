@@ -10,11 +10,7 @@
 	merge_skip_unchanged=true,
 ) }}
 
-with tip20_contracts as (
-	select distinct contract_address
-	from {{ source('tip20_tempo', 'evt_Transfer') }}
-),
-tip20_transfers as (
+with tip20_transfers as (
 	select
 		cast(date_trunc('day', t.evt_block_time) as date) as block_date
 		, t.evt_block_time as block_time
@@ -63,19 +59,26 @@ tip20_base as (
 		{% if is_incremental() -%}
 		and {{ incremental_predicate('tx.block_time') }}
 		{% endif -%}
+),
+erc20_base as (
+	select * from (
+		{{ transfers_base(
+			blockchain='tempo',
+			traces=source('tempo', 'traces'),
+			transactions=source('tempo', 'transactions'),
+			erc20_transfers=source('erc20_tempo', 'evt_Transfer'),
+		) }}
+	) as m
+	where not exists (
+		select 1
+		from tip20_transfers as t
+		where t.tx_hash = m.tx_hash
+			and t.evt_index = m.evt_index
+	)
 )
 
-select * from (
-	{{ transfers_base(
-		blockchain='tempo',
-		traces=source('tempo', 'traces'),
-		transactions=source('tempo', 'transactions'),
-		erc20_transfers=source('erc20_tempo', 'evt_Transfer'),
-	) }}
-) as erc20_base
-where erc20_base.token_standard = 'native'
-	or erc20_base.contract_address not in (select contract_address from tip20_contracts)
+select * from tip20_base
 
 union all
 
-select * from tip20_base
+select * from erc20_base
