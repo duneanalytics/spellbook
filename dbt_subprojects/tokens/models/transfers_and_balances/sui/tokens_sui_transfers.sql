@@ -8,6 +8,7 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    merge_skip_unchanged = true,
     tags = ['sui', 'tokens', 'transfers'],
     post_hook = '{{ hide_spells() }}',
   )
