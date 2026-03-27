@@ -8,7 +8,6 @@
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
-    tags = ['sui', 'tokens', 'transfers'],
   )
 }}
 
@@ -36,7 +35,7 @@ events_filtered as (
 package_coin_types as (
   select
     lower(split_part(m.coin_type, '::', 1)) as package_address,
-    max_by(lower(m.coin_type), lower(m.coin_type)) as resolved_coin_type,
+    min(lower(m.coin_type)) as resolved_coin_type,
     count(distinct lower(m.coin_type)) as coin_type_count
   from {{ source('dex_sui', 'coin_info') }} m
   group by 1
@@ -136,22 +135,6 @@ aggregated as (
     u.block_date,
     u.tx_digest,
     lower(u.coin_type) as coin_type,
-    bool_or(
-      u.signal_source in ('treasury_generic', 'treasury_package')
-      and u.supply_event_type = 'mint'
-    ) as has_treasury_mint,
-    bool_or(
-      u.signal_source in ('treasury_generic', 'treasury_package')
-      and u.supply_event_type = 'burn'
-    ) as has_treasury_burn,
-    bool_or(
-      u.signal_source = 'cctp'
-      and u.supply_event_type = 'mint'
-    ) as has_cctp_message_received,
-    bool_or(
-      u.signal_source = 'cctp'
-      and u.supply_event_type = 'burn'
-    ) as has_cctp_deposit_for_burn,
     bool_or(u.supply_event_type = 'mint') as has_mint_signal,
     bool_or(u.supply_event_type = 'burn') as has_burn_signal
   from unioned u
@@ -163,10 +146,6 @@ select
   a.block_date,
   a.tx_digest,
   a.coin_type,
-  a.has_treasury_mint,
-  a.has_treasury_burn,
-  a.has_cctp_message_received,
-  a.has_cctp_deposit_for_burn,
   case
     when a.has_mint_signal and not a.has_burn_signal then 'mint'
     when a.has_burn_signal and not a.has_mint_signal then 'burn'

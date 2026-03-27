@@ -9,7 +9,6 @@
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
-    tags = ['sui', 'tokens', 'transfers'],
     post_hook = '{{ hide_spells() }}',
   )
 }}
@@ -31,8 +30,15 @@ base_transfers as (
 
 prices as (
   select
+    blockchain,
     timestamp,
-    contract_address,
+    cast(
+      regexp_replace(
+        lower(from_utf8(contract_address)),
+        '^0x0*([0-9a-f]+)$',
+        '0x$1'
+      ) as varbinary
+    ) as contract_address,
     decimals,
     symbol,
     price
@@ -54,7 +60,13 @@ coin_metadata as (
 
 trusted_tokens as (
   select
-    contract_address
+    cast(
+      regexp_replace(
+        lower(from_utf8(contract_address)),
+        '^0x0*([0-9a-f]+)$',
+        '0x$1'
+      ) as varbinary
+    ) as contract_address
   from {{ source('prices', 'trusted_tokens') }}
   where blockchain = 'sui'
 ),
@@ -106,7 +118,8 @@ transfers as (
   left join trusted_tokens tt
     on tt.contract_address = t.contract_address
   left join prices p
-    on date_trunc('hour', t.block_time) = p.timestamp
+    on t.blockchain = p.blockchain
+    and date_trunc('hour', t.block_time) = p.timestamp
     and t.contract_address = p.contract_address
 )
 select

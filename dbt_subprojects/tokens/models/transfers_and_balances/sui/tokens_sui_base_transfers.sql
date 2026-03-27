@@ -9,7 +9,6 @@
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
-    tags = ['sui', 'tokens', 'transfers'],
   )
 }}
 
@@ -18,7 +17,7 @@
 
 with
 
-day_rows as (
+coin_object_history as (
   select
     h.object_id,
     h.version,
@@ -48,7 +47,7 @@ known_coin_ids as (
   from {{ ref('tokens_sui_coin_object_history') }} h
 ),
 
-deleted_rows as (
+deleted_objects as (
   select
     o.object_id,
     o.version,
@@ -79,12 +78,12 @@ first_window_versions as (
     select
       d.object_id,
       d.version
-    from day_rows d
+    from coin_object_history d
     union all
     select
       dr.object_id,
       dr.version
-    from deleted_rows dr
+    from deleted_objects dr
   ) u
   group by u.object_id
 ),
@@ -110,7 +109,7 @@ history_anchors as (
   group by h.object_id
 ),
 
-unioned as (
+object_timeline as (
   select
     a.object_id,
     a.version,
@@ -139,7 +138,7 @@ unioned as (
     d.coin_type,
     d.object_status,
     d.coin_balance
-  from day_rows d
+  from coin_object_history d
   union all
   select
     dr.object_id,
@@ -154,10 +153,10 @@ unioned as (
     dr.coin_type,
     dr.object_status,
     dr.coin_balance
-  from deleted_rows dr
+  from deleted_objects dr
 ),
 
-calc as (
+object_state_deltas as (
   select
     u.object_id,
     u.version,
@@ -177,7 +176,7 @@ calc as (
     u.coin_balance,
     lag(u.receiver) over w as prev_owner,
     lag(u.coin_balance) over w as prev_balance
-  from unioned u
+  from object_timeline u
   window w as (partition by u.object_id order by u.version)
 ),
 
@@ -186,7 +185,7 @@ calc as (
 -- without any tx lookup. only look up tx_sender for Created + unanchored
 -- rows (~5% of filtered), reducing the transactions scan by ~95%.
 
-enriched as (
+transfer_event_features as (
   select
     c.object_id,
     c.version,
@@ -210,21 +209,21 @@ enriched as (
         and c.prev_owner != c.receiver then true
       else false
     end as has_ownership_change
-  from calc c
+  from object_state_deltas c
   where c.object_status != 'ANCHOR'
 ),
 
-filtered as (
+transfer_event_candidates as (
   select
     e.*
-  from enriched e
+  from transfer_event_features e
   where e.balance_delta != 0
     or e.has_ownership_change
 ),
 
 -- classify: rows with known prev_owner pass cross-address filter immediately;
 -- rows needing tx_sender (Created + unanchored) are kept for the tx lookup.
-pre_cross as (
+cross_address_precheck as (
   select
     f.*,
     case
@@ -236,11 +235,11 @@ pre_cross as (
       when f.object_status = 'Created' or f.prev_owner is null then true
       else false
     end as needs_tx_sender
-  from filtered f
+  from transfer_event_candidates f
 ),
 
 -- only look up tx_sender for the small subset that needs it
-tx_senders as (
+required_tx_senders as (
   select
     t.transaction_digest as tx_digest,
     t.sender as tx_sender
@@ -248,7 +247,7 @@ tx_senders as (
   inner join (
     select distinct
       p.tx_digest
-    from pre_cross p
+    from cross_address_precheck p
     where p.needs_tx_sender
       and p.passes_cross_filter
       and p.tx_digest is not null
@@ -260,12 +259,12 @@ tx_senders as (
     {% endif %}
 ),
 
-cross_address_filtered as (
+cross_address_transfers as (
   -- rows with known prev_owner: already filtered, no tx lookup needed
   select
     p.*,
     cast(null as varbinary) as tx_sender
-  from pre_cross p
+  from cross_address_precheck p
   where p.passes_cross_filter
     and not p.needs_tx_sender
   union all
@@ -273,8 +272,8 @@ cross_address_filtered as (
   select
     p.*,
     s.tx_sender
-  from pre_cross p
-  left join tx_senders s
+  from cross_address_precheck p
+  left join required_tx_senders s
     on p.tx_digest = s.tx_digest
   where p.needs_tx_sender
     and (
@@ -297,7 +296,7 @@ supply_signals as (
     {% endif %}
 ),
 
-tx_reconciliation as (
+tx_coin_reconciliation as (
   select
     f.tx_digest,
     f.coin_type,
@@ -306,7 +305,7 @@ tx_reconciliation as (
     count(distinct f.receiver) as tx_distinct_receivers,
     count(distinct f.prev_owner) filter (where f.prev_owner is not null) as tx_distinct_senders,
     bool_or(f.balance_delta > 0) and bool_or(f.balance_delta < 0) as tx_has_bidirectional_deltas
-  from filtered f
+  from transfer_event_candidates f
   group by f.tx_digest, f.coin_type
 )
 
@@ -325,7 +324,17 @@ select
     else coalesce(f.prev_owner, f.tx_sender)
   end as "from",
   f.receiver as to,
-  cast(split_part(f.coin_type, '::', 1) as varbinary) as contract_address,
+  cast(
+    regexp_replace(
+      case
+        when starts_with(lower(split_part(f.coin_type, '::', 1)), '0x')
+          then lower(split_part(f.coin_type, '::', 1))
+        else concat('0x', lower(split_part(f.coin_type, '::', 1)))
+      end,
+      '^0x0*([0-9a-f]+)$',
+      '0x$1'
+    ) as varbinary
+  ) as contract_address,
   f.coin_type as contract_address_full,
   case
     when f.object_status = 'Created' then f.coin_balance
@@ -371,8 +380,8 @@ select
   r.tx_distinct_senders,
   r.tx_has_bidirectional_deltas,
   current_timestamp as _updated_at
-from cross_address_filtered f
-left join tx_reconciliation r
+from cross_address_transfers f
+left join tx_coin_reconciliation r
   on f.tx_digest = r.tx_digest
   and f.coin_type = r.coin_type
 left join supply_signals supply

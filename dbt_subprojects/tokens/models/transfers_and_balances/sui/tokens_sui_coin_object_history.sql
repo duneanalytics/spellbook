@@ -4,11 +4,11 @@
     alias = 'coin_object_history',
     materialized = 'incremental',
     file_format = 'delta',
+    partition_by = ['block_date'],
     incremental_strategy = 'merge',
-    unique_key = ['object_id', 'version'],
+    unique_key = ['block_date', 'object_id', 'version'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
-    tags = ['sui', 'tokens', 'transfers'],
   )
 }}
 
@@ -21,7 +21,7 @@ source_rows as (
   select
     o.object_id,
     o.version,
-    o.previous_transaction as tx_digest,
+    o.previous_transaction as tx_digest, -- tx digest tied to that object version
     o.timestamp_ms,
     o.date as block_date,
     cast(date_trunc('month', o.date) as date) as block_month,
