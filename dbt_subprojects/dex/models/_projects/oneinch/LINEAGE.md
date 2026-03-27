@@ -3,7 +3,7 @@
 ## Streams:
 - **ar** - classic swaps (aggregation router)
 - **lo** - limit swaps (limit order protocol)
-- **cc** - cross-chain swaps
+- **cc** - cross-chain swaps 
 
 ## Model layers:
 1. **raw_calls** - 1inch calls data from `traces` models
