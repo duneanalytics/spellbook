@@ -329,7 +329,17 @@ select
     else coalesce(f.prev_owner, f.tx_sender)
   end as "from",
   f.receiver as to,
-  cast(split_part(f.coin_type, '::', 1) as varbinary) as contract_address,
+  cast(
+    regexp_replace(
+      split_part(
+        case
+          when starts_with(lower(f.coin_type), '0x') then lower(f.coin_type)
+          else concat('0x', lower(f.coin_type))
+        end, '::', 1
+      ),
+      '^0x0*([0-9a-f]+)$', '0x$1'
+    ) as varbinary
+  ) as contract_address,
   f.coin_type as contract_address_full,
   case
     when f.object_status = 'Created' then f.coin_balance
