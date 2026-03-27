@@ -89,7 +89,7 @@ with transfers as (
 		, 'tip20' as token_standard
 		, t."from"
 		, t.to
-		, t.value as amount_raw
+		, t.amount as amount_raw
 	from
 		{{ source('tip20_tempo', 'evt_Transfer') }} as t
 	{% if is_incremental() -%}

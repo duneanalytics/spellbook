@@ -335,7 +335,7 @@ sources:
             description: "Address of the token sender"
           - name: to
             description: "Address of the token recipient"
-          - name: value
+          - name: amount
             description: "Amount of TIP20 tokens transferred, in the token's native decimal representation (raw value)"
 
   # ===========================================
