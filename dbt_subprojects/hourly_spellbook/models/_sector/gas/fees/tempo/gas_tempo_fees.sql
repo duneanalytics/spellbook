@@ -1,5 +1,8 @@
 {% set blockchain = 'tempo' %}
 {% set default_fee_token = '0x20c0000000000000000000000000000000000000' %}
+{% set default_fee_token_symbol = 'pathUSD' %}
+{% set default_fee_token_decimals = 18 %}
+{% set default_fee_token_price = 1.0 %}
 
 {{ config(
     schema = 'gas_' + blockchain
@@ -58,41 +61,67 @@ WITH base_model as (
     {% endif %}
 )
 
+, with_prices as (
+    SELECT
+        b.block_time
+        ,b.block_number
+        ,b.tx_hash
+        ,b.tx_index
+        ,b.tx_from
+        ,b.tx_to
+        ,b.gas_price
+        ,b.gas_used
+        ,b.tx_fee_raw
+        ,b.tx_fee_breakdown_raw
+        ,b.block_proposer
+        ,b.max_fee_per_gas
+        ,b.priority_fee_per_gas
+        ,b.max_priority_fee_per_gas
+        ,b.base_fee_per_gas
+        ,b.gas_limit
+        ,b.gas_limit_usage
+        ,b.fee_token
+        ,coalesce(p.symbol, case when b.fee_token = {{default_fee_token}} then '{{default_fee_token_symbol}}' end) as currency_symbol
+        ,coalesce(p.decimals, case when b.fee_token = {{default_fee_token}} then {{default_fee_token_decimals}} end) as token_decimals
+        ,coalesce(p.price, case when b.fee_token = {{default_fee_token}} then {{default_fee_token_price}} end) as token_price
+    FROM base_model b
+    LEFT JOIN {{ source('prices', 'day') }} as p
+        ON p.blockchain = '{{blockchain}}'
+        AND p.contract_address = b.fee_token
+        AND p.timestamp = date_trunc('day', b.block_time)
+        {% if is_incremental() -%}
+        AND {{ incremental_predicate('p.timestamp') }}
+        {%- endif %}
+)
+
 SELECT
     '{{blockchain}}' as blockchain
-    ,CAST(date_trunc('month', b.block_time) AS DATE) AS block_month
-    ,CAST(date_trunc('day', b.block_time) AS DATE) AS block_date
-    ,b.block_time
-    ,b.block_number
-    ,b.tx_hash
-    ,b.tx_index
-    ,b.tx_from
-    ,b.tx_to
-    ,b.gas_price
-    ,b.gas_used
-    ,p.symbol as currency_symbol
-    ,coalesce(b.tx_fee_raw, uint256 '0') as tx_fee_raw
-    ,coalesce(b.tx_fee_raw, uint256 '0') / pow(10,p.decimals) as tx_fee
-    ,coalesce(b.tx_fee_raw, uint256 '0') / pow(10,p.decimals) * p.price as tx_fee_usd
-    ,transform_values(b.tx_fee_breakdown_raw,
+    ,CAST(date_trunc('month', w.block_time) AS DATE) AS block_month
+    ,CAST(date_trunc('day', w.block_time) AS DATE) AS block_date
+    ,w.block_time
+    ,w.block_number
+    ,w.tx_hash
+    ,w.tx_index
+    ,w.tx_from
+    ,w.tx_to
+    ,w.gas_price
+    ,w.gas_used
+    ,w.currency_symbol
+    ,coalesce(w.tx_fee_raw, uint256 '0') as tx_fee_raw
+    ,coalesce(w.tx_fee_raw, uint256 '0') / pow(10, w.token_decimals) as tx_fee
+    ,coalesce(w.tx_fee_raw, uint256 '0') / pow(10, w.token_decimals) * w.token_price as tx_fee_usd
+    ,transform_values(w.tx_fee_breakdown_raw,
             (k,v) -> coalesce(v, uint256 '0')) as tx_fee_breakdown_raw
-    ,transform_values(b.tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, uint256 '0') / pow(10,p.decimals) ) as tx_fee_breakdown
-    ,transform_values(b.tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, uint256 '0') / pow(10,p.decimals) * p.price) as tx_fee_breakdown_usd
-    ,b.fee_token as tx_fee_currency
-    ,b.block_proposer
-    ,b.max_fee_per_gas
-    ,b.priority_fee_per_gas
-    ,b.max_priority_fee_per_gas
-    ,b.base_fee_per_gas
-    ,b.gas_limit
-    ,b.gas_limit_usage
-FROM base_model as b
-LEFT JOIN {{ source('prices', 'day') }} as p
-    ON p.blockchain = '{{blockchain}}'
-    AND p.contract_address = b.fee_token
-    AND p.timestamp = date_trunc('day', b.block_time)
-    {% if is_incremental() -%}
-    AND {{ incremental_predicate('p.timestamp') }}
-    {%- endif %}
+    ,transform_values(w.tx_fee_breakdown_raw,
+            (k,v) -> coalesce(v, uint256 '0') / pow(10, w.token_decimals)) as tx_fee_breakdown
+    ,transform_values(w.tx_fee_breakdown_raw,
+            (k,v) -> coalesce(v, uint256 '0') / pow(10, w.token_decimals) * w.token_price) as tx_fee_breakdown_usd
+    ,w.fee_token as tx_fee_currency
+    ,w.block_proposer
+    ,w.max_fee_per_gas
+    ,w.priority_fee_per_gas
+    ,w.max_priority_fee_per_gas
+    ,w.base_fee_per_gas
+    ,w.gas_limit
+    ,w.gas_limit_usage
+FROM with_prices w
