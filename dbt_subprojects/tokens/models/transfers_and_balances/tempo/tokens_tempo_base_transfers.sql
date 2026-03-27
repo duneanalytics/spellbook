@@ -67,6 +67,7 @@ erc20_base as (
 			traces=source('tempo', 'traces'),
 			transactions=source('tempo', 'transactions'),
 			erc20_transfers=source('erc20_tempo', 'evt_Transfer'),
+			include_traces=false,
 		) }}
 	) as m
 	where not exists (
