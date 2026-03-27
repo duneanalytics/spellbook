@@ -47,7 +47,7 @@ select
         else price_usd
     end as price_usd
     , case
-        when contract_address = 0x20c0000000000000000000000000000000000000 then coalesce(amount_usd, amount * 1.0)
+        when contract_address = 0x20c0000000000000000000000000000000000000 then coalesce(amount_usd, amount * 1.0, amount_raw / power(10, 6) * 1.0)
         else amount_usd
     end as amount_usd
     , _updated_at
