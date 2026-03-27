@@ -42,6 +42,15 @@ day_rows as (
     {% endif %}
 ),
 
+-- filter deleted to known coin objects only; without this filter non-coin
+-- deleted objects (76% of all deletes) enter the window function and cause
+-- a 9x performance regression.
+known_coin_ids as (
+  select object_id from {{ ref('tokens_sui_object_state') }}
+  union
+  select distinct object_id from day_rows
+),
+
 deleted_rows as (
   select
     o.object_id,
@@ -62,6 +71,7 @@ deleted_rows as (
     {% if is_incremental() %}
     and {{ incremental_predicate('o.date') }}
     {% endif %}
+    and o.object_id in (select object_id from known_coin_ids)
 ),
 
 affected_objects as (
@@ -271,23 +281,10 @@ calc as (
   window w as (partition by u.object_id order by u.version)
 ),
 
-tx_senders as (
-  select
-    t.transaction_digest as tx_digest,
-    t.sender as tx_sender
-  from {{ source('sui', 'transactions') }} t
-  inner join (
-    select distinct
-      c.tx_digest
-    from calc c
-    where c.tx_digest is not null
-  ) d
-    on t.transaction_digest = d.tx_digest
-  where t.date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('t.date') }}
-    {% endif %}
-),
+-- deferred tx join: compute enriched + filtered WITHOUT tx_sender first.
+-- rows with a known prev_owner (anchored) can be cross-address filtered
+-- without any tx lookup. only look up tx_sender for Created + unanchored
+-- rows (~5% of filtered), reducing the transactions scan by ~95%.
 
 enriched as (
   select
@@ -305,7 +302,6 @@ enriched as (
     c.coin_balance,
     c.prev_owner,
     c.prev_balance,
-    s.tx_sender,
     c.coin_balance - coalesce(c.prev_balance, 0) as balance_delta,
     case
       when c.object_status in ('Created', 'Deleted') then false
@@ -315,8 +311,6 @@ enriched as (
       else false
     end as has_ownership_change
   from calc c
-  left join tx_senders s
-    on c.tx_digest = s.tx_digest
   where c.object_status != 'ANCHOR'
 ),
 
@@ -328,16 +322,67 @@ filtered as (
     or e.has_ownership_change
 ),
 
-cross_address_filtered as (
+-- classify: rows with known prev_owner pass cross-address filter immediately;
+-- rows needing tx_sender (Created + unanchored) are kept for the tx lookup.
+pre_cross as (
   select
-    e.*
-  from filtered e
-  where (
+    f.*,
+    case
+      when f.prev_owner is not null
+        then (f.prev_owner is distinct from f.receiver)
+      else true  -- needs tx_sender to decide; keep for now
+    end as passes_cross_filter,
+    case
+      when f.object_status = 'Created' or f.prev_owner is null then true
+      else false
+    end as needs_tx_sender
+  from filtered f
+),
+
+-- only look up tx_sender for the small subset that needs it
+tx_senders as (
+  select
+    t.transaction_digest as tx_digest,
+    t.sender as tx_sender
+  from {{ source('sui', 'transactions') }} t
+  inner join (
+    select distinct
+      p.tx_digest
+    from pre_cross p
+    where p.needs_tx_sender
+      and p.passes_cross_filter
+      and p.tx_digest is not null
+  ) d
+    on t.transaction_digest = d.tx_digest
+  where t.date >= date '{{ sui_transfer_start_date }}'
+    {% if is_incremental() %}
+    and {{ incremental_predicate('t.date') }}
+    {% endif %}
+),
+
+cross_address_filtered as (
+  -- rows with known prev_owner: already filtered, no tx lookup needed
+  select
+    p.*,
+    cast(null as varbinary) as tx_sender
+  from pre_cross p
+  where p.passes_cross_filter
+    and not p.needs_tx_sender
+  union all
+  -- rows needing tx_sender: join and apply cross-address filter
+  select
+    p.*,
+    s.tx_sender
+  from pre_cross p
+  left join tx_senders s
+    on p.tx_digest = s.tx_digest
+  where p.needs_tx_sender
+    and (
       case
-        when e.object_status = 'Created' then e.tx_sender
-        else coalesce(e.prev_owner, e.tx_sender)
+        when p.object_status = 'Created' then s.tx_sender
+        else coalesce(p.prev_owner, s.tx_sender)
       end
-    ) is distinct from e.receiver
+    ) is distinct from p.receiver
 ),
 
 supply_signals as (

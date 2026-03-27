@@ -23,9 +23,9 @@ events_filtered as (
     e.date as block_date,
     e.transaction_digest as tx_digest,
     lower(e.event_type) as event_type_lower,
-    lower(regexp_extract(e.event_type, '^(0x[0-9a-f]+)::', 1)) as package_address,
-    lower(regexp_extract(e.event_type, '^0x[0-9a-f]+::([^:]+)::', 1)) as module_name,
-    lower(regexp_extract(e.event_type, '^0x[0-9a-f]+::[^:]+::([^<]+)', 1)) as event_name,
+    regexp_extract(lower(e.event_type), '^(0x[0-9a-f]+)::', 1) as package_address,
+    regexp_extract(lower(e.event_type), '^0x[0-9a-f]+::([^:]+)::', 1) as module_name,
+    regexp_extract(lower(e.event_type), '^0x[0-9a-f]+::[^:]+::([^<]+)', 1) as event_name,
     regexp_extract(lower(e.event_type), 'treasury::(?:mint|burn)<([^>]+)>', 1) as generic_coin_type
   from {{ source('sui', 'events') }} e
   where e.date >= date '{{ sui_transfer_start_date }}'
