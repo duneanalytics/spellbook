@@ -71,12 +71,6 @@ deleted_rows as (
     and o.object_id in (select k.object_id from known_coin_ids k)
 ),
 
-affected_objects as (
-  select object_id from day_rows
-  union
-  select object_id from deleted_rows
-),
-
 first_window_versions as (
   select
     u.object_id,
@@ -116,82 +110,6 @@ history_anchors as (
   group by h.object_id
 ),
 
-missing_anchor_objects as (
-  select
-    a.object_id
-  from affected_objects a
-  left join history_anchors h
-    on a.object_id = h.object_id
-  where h.object_id is null
-),
-
-start_anchors as (
-  select
-    p.object_id,
-    max(p.version) as version,
-    cast(null as varchar) as tx_digest,
-    max_by(p.timestamp_ms, p.version) as timestamp_ms,
-    cast(date '{{ sui_transfer_start_date }}' as date) as block_date,
-    cast(date_trunc('month', date '{{ sui_transfer_start_date }}') as date) as block_month,
-    max_by(p.checkpoint, p.version) as checkpoint,
-    max_by(p.owner_type, p.version) as owner_type,
-    max_by(p.owner_address, p.version) as receiver,
-    p.coin_type,
-    cast('ANCHOR' as varchar) as object_status,
-    max_by(try_cast(p.coin_balance as bigint), p.version) as coin_balance
-  from {{ source('sui', 'objects') }} p
-  inner join first_window_versions f
-    on p.object_id = f.object_id
-  where p.object_status in ('Created', 'Mutated')
-    and p.coin_type is not null
-    and p.date < date '{{ sui_transfer_start_date }}'
-    and p.version < f.first_window_version
-    and p.object_id in (select m.object_id from missing_anchor_objects m)
-  group by p.object_id, p.coin_type
-),
-
-anchors as (
-  select
-    a.object_id,
-    max(a.version) as version,
-    cast(null as varchar) as tx_digest,
-    max_by(a.timestamp_ms, a.version) as timestamp_ms,
-    cast(max_by(a.block_date, a.version) as date) as block_date,
-    cast(date_trunc('month', max_by(a.block_date, a.version)) as date) as block_month,
-    max_by(a.checkpoint, a.version) as checkpoint,
-    max_by(a.owner_type, a.version) as owner_type,
-    max_by(a.receiver, a.version) as receiver,
-    max_by(a.coin_type, a.version) as coin_type,
-    cast('ANCHOR' as varchar) as object_status,
-    max_by(a.coin_balance, a.version) as coin_balance
-  from (
-    select
-      h.object_id,
-      h.version,
-      h.timestamp_ms,
-      h.block_date,
-      h.checkpoint,
-      h.owner_type,
-      h.receiver,
-      h.coin_type,
-      h.coin_balance
-    from history_anchors h
-    union all
-    select
-      sa.object_id,
-      sa.version,
-      sa.timestamp_ms,
-      sa.block_date,
-      sa.checkpoint,
-      sa.owner_type,
-      sa.receiver,
-      sa.coin_type,
-      sa.coin_balance
-    from start_anchors sa
-  ) a
-  group by a.object_id
-),
-
 unioned as (
   select
     a.object_id,
@@ -206,7 +124,7 @@ unioned as (
     a.coin_type,
     a.object_status,
     a.coin_balance
-  from anchors a
+  from history_anchors a
   union all
   select
     d.object_id,
