@@ -1,7 +1,5 @@
 {% set blockchain = 'tempo' %}
 {% set default_fee_token = '0x20c0000000000000000000000000000000000000' %}
-{% set default_fee_token_symbol = 'pathUSD' %}
-{% set default_fee_token_decimals = 18 %}
 {% set default_fee_token_price = 1.0 %}
 
 {{ config(
@@ -81,10 +79,13 @@ WITH base_model as (
         ,b.gas_limit
         ,b.gas_limit_usage
         ,b.fee_token
-        ,coalesce(p.symbol, case when b.fee_token = {{default_fee_token}} then '{{default_fee_token_symbol}}' end) as currency_symbol
-        ,coalesce(p.decimals, case when b.fee_token = {{default_fee_token}} then {{default_fee_token_decimals}} end) as token_decimals
+        ,t.symbol as currency_symbol
+        ,t.decimals as token_decimals
         ,coalesce(p.price, case when b.fee_token = {{default_fee_token}} then {{default_fee_token_price}} end) as token_price
     FROM base_model b
+    LEFT JOIN {{ source('tokens', 'erc20') }} as t
+        ON t.blockchain = '{{blockchain}}'
+        AND t.contract_address = b.fee_token
     LEFT JOIN {{ source('prices', 'day') }} as p
         ON p.blockchain = '{{blockchain}}'
         AND p.contract_address = b.fee_token
