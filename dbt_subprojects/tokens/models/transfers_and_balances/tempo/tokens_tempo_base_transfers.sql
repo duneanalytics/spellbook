@@ -75,6 +75,15 @@ erc20_base as (
 		where t.tx_hash = m.tx_hash
 			and t.evt_index = m.evt_index
 	)
+	and not (
+		m.evt_index is null
+		and exists (
+			select 1
+			from tip20_transfers as t
+			where t.tx_hash = m.tx_hash
+				and t.contract_address = m.contract_address
+		)
+	)
 )
 
 select * from tip20_base
