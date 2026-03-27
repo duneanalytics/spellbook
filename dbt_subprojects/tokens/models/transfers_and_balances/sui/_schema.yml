@@ -1,28 +1,31 @@
 version: 2
 
 models:
-  - name: tokens_sui_object_state
+  - name: tokens_sui_coin_object_history
     meta:
       blockchain: sui
       sector: tokens
-      short_description: "Latest Sui Coin<T> state per object_id."
+      short_description: "Full Coin<T> object state history by object_id + version."
       contributors: tomfutago
     config:
       tags: ['tokens', 'transfers', 'sui']
-    description: "Latest known Coin<T> object state per object_id, including previous state snapshot for incremental continuity anchors."
+    description: "Incremental history of Sui Coin<T> object states (Created/Mutated), one row per object_id + version."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - object_id
+            - version
     columns:
-      - name: object_id
+      - &object_id
+        name: object_id
         description: "Sui coin object identifier."
         data_tests:
           - not_null
-      - name: version
-        description: "Latest object version seen in objects source."
-      - name: previous_version
-        description: "Previous persisted version before the latest update for this object_id."
+      - &version
+        name: version
+        description: "Object version at this historical state."
+        data_tests:
+          - not_null
 
   - name: tokens_sui_supply_signals
     meta:

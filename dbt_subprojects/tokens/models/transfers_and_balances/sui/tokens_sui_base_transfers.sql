@@ -20,25 +20,22 @@ with
 
 day_rows as (
   select
-    o.object_id,
-    o.version,
-    o.previous_transaction as tx_digest,
-    o.timestamp_ms,
-    o.date as block_date,
-    cast(date_trunc('month', o.date) as date) as block_month,
-    o.checkpoint,
-    o.owner_type,
-    o.owner_address as receiver,
-    o.coin_type,
-    o.object_status,
-    try_cast(o.coin_balance as bigint) as coin_balance
-  from {{ source('sui', 'objects') }} o
-  where o.object_status in ('Created', 'Mutated')
-    -- coin_type is populated only for fungible Coin<T> objects; non-coin objects have null coin_type.
-    and o.coin_type is not null
-    and o.date >= date '{{ sui_transfer_start_date }}'
+    h.object_id,
+    h.version,
+    h.tx_digest,
+    h.timestamp_ms,
+    h.block_date,
+    h.block_month,
+    h.checkpoint,
+    h.owner_type,
+    h.receiver,
+    h.coin_type,
+    h.object_status,
+    h.coin_balance
+  from {{ ref('tokens_sui_coin_object_history') }} h
+  where h.block_date >= date '{{ sui_transfer_start_date }}'
     {% if is_incremental() %}
-    and {{ incremental_predicate('o.date') }}
+    and {{ incremental_predicate('h.block_date') }}
     {% endif %}
 ),
 
@@ -46,9 +43,9 @@ day_rows as (
 -- deleted objects (76% of all deletes) enter the window function and cause
 -- a 9x performance regression.
 known_coin_ids as (
-  select object_id from {{ ref('tokens_sui_object_state') }}
-  union
-  select distinct object_id from day_rows
+  select distinct
+    h.object_id
+  from {{ ref('tokens_sui_coin_object_history') }} h
 ),
 
 deleted_rows as (
@@ -71,7 +68,7 @@ deleted_rows as (
     {% if is_incremental() %}
     and {{ incremental_predicate('o.date') }}
     {% endif %}
-    and o.object_id in (select object_id from known_coin_ids)
+    and o.object_id in (select k.object_id from known_coin_ids k)
 ),
 
 affected_objects as (
@@ -80,70 +77,52 @@ affected_objects as (
   select object_id from deleted_rows
 ),
 
-day_object_ids as (
-  select distinct
-    d.object_id
-  from day_rows d
+first_window_versions as (
+  select
+    u.object_id,
+    min(u.version) as first_window_version
+  from (
+    select
+      d.object_id,
+      d.version
+    from day_rows d
+    union all
+    select
+      dr.object_id,
+      dr.version
+    from deleted_rows dr
+  ) u
+  group by u.object_id
 ),
 
-state_anchors as (
+history_anchors as (
   select
-    s.object_id,
-    case
-      when d.object_id is not null then s.previous_version
-      else s.version
-    end as version,
+    h.object_id,
+    max(h.version) as version,
     cast(null as varchar) as tx_digest,
-    case
-      when d.object_id is not null then s.previous_timestamp_ms
-      else s.timestamp_ms
-    end as timestamp_ms,
-    case
-      when d.object_id is not null then s.previous_block_date
-      else s.block_date
-    end as block_date,
-    case
-      when d.object_id is not null then s.previous_block_month
-      else s.block_month
-    end as block_month,
-    case
-      when d.object_id is not null then s.previous_checkpoint
-      else s.checkpoint
-    end as checkpoint,
-    case
-      when d.object_id is not null then s.previous_owner_type
-      else s.owner_type
-    end as owner_type,
-    case
-      when d.object_id is not null then s.previous_receiver
-      else s.receiver
-    end as receiver,
-    case
-      when d.object_id is not null then s.previous_coin_type
-      else s.coin_type
-    end as coin_type,
+    max_by(h.timestamp_ms, h.version) as timestamp_ms,
+    cast(max_by(h.block_date, h.version) as date) as block_date,
+    cast(date_trunc('month', max_by(h.block_date, h.version)) as date) as block_month,
+    max_by(h.checkpoint, h.version) as checkpoint,
+    max_by(h.owner_type, h.version) as owner_type,
+    max_by(h.receiver, h.version) as receiver,
+    max_by(h.coin_type, h.version) as coin_type,
     cast('ANCHOR' as varchar) as object_status,
-    case
-      when d.object_id is not null then s.previous_coin_balance
-      else s.coin_balance
-    end as coin_balance
-  from {{ ref('tokens_sui_object_state') }} s
-  left join day_object_ids d
-    on s.object_id = d.object_id
-  where s.object_id in (select a.object_id from affected_objects a)
-    and (
-      (d.object_id is not null and s.previous_version is not null)
-      or (d.object_id is null and s.version is not null)
-    )
+    max_by(h.coin_balance, h.version) as coin_balance
+  from {{ ref('tokens_sui_coin_object_history') }} h
+  inner join first_window_versions f
+    on h.object_id = f.object_id
+    and h.version < f.first_window_version
+  group by h.object_id
 ),
 
 missing_anchor_objects as (
   select
     a.object_id
   from affected_objects a
-  left join state_anchors s
-    on a.object_id = s.object_id
-  where s.object_id is null
+  left join history_anchors h
+    on a.object_id = h.object_id
+  where h.object_id is null
 ),
 
 start_anchors as (
@@ -161,9 +140,12 @@ start_anchors as (
     cast('ANCHOR' as varchar) as object_status,
     max_by(try_cast(p.coin_balance as bigint), p.version) as coin_balance
   from {{ source('sui', 'objects') }} p
+  inner join first_window_versions f
+    on p.object_id = f.object_id
   where p.object_status in ('Created', 'Mutated')
     and p.coin_type is not null
     and p.date < date '{{ sui_transfer_start_date }}'
+    and p.version < f.first_window_version
     and p.object_id in (select m.object_id from missing_anchor_objects m)
   group by p.object_id, p.coin_type
 ),
@@ -184,16 +166,16 @@ anchors as (
     max_by(a.coin_balance, a.version) as coin_balance
   from (
     select
-      s.object_id,
-      s.version,
-      s.timestamp_ms,
-      s.block_date,
-      s.checkpoint,
-      s.owner_type,
-      s.receiver,
-      s.coin_type,
-      s.coin_balance
-    from state_anchors s
+      h.object_id,
+      h.version,
+      h.timestamp_ms,
+      h.block_date,
+      h.checkpoint,
+      h.owner_type,
+      h.receiver,
+      h.coin_type,
+      h.coin_balance
+    from history_anchors h
     union all
     select
       sa.object_id,
