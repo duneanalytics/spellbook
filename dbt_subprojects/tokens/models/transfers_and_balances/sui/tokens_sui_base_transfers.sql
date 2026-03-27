@@ -317,13 +317,9 @@ select
   f.block_date,
   from_unixtime(f.timestamp_ms / 1000) as block_time,
   f.checkpoint as block_number,
-  from_base58(f.tx_digest) as tx_hash,
-  cast(null as bigint) as evt_index,
-  cast(null as array(bigint)) as trace_address,
+  f.tx_digest,
   'sui_coin' as token_standard,
   f.tx_sender as tx_from,
-  cast(null as varbinary) as tx_to,
-  cast(null as bigint) as tx_index,
   case
     when f.object_status = 'Created' then f.tx_sender
     else coalesce(f.prev_owner, f.tx_sender)

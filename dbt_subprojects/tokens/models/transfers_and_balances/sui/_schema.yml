@@ -26,6 +26,38 @@ models:
         description: "Object version at this historical state."
         data_tests:
           - not_null
+      - &tx_digest
+        name: tx_digest
+        description: "Sui transaction digest."
+      - &timestamp_ms
+        name: timestamp_ms
+        description: "Transaction timestamp in milliseconds since unix epoch."
+      - name: block_date
+        description: "The date of the object state."
+      - &block_month
+        name: block_month
+        description: "Month bucket derived from block_date."
+      - &checkpoint
+        name: checkpoint
+        description: "Sui checkpoint number for this object state."
+      - &owner_type
+        name: owner_type
+        description: "Sui owner type associated with the object state."
+      - &receiver
+        name: receiver
+        description: "Owner address at this object version."
+      - &coin_type
+        name: coin_type
+        description: "Full Sui coin type for the object."
+      - &object_status
+        name: object_status
+        description: "Sui object lifecycle status for this version."
+      - &coin_balance
+        name: coin_balance
+        description: "Coin object balance at this version."
+      - &updated_at
+        name: _updated_at
+        description: "Row update timestamp."
 
   - name: tokens_sui_supply_signals
     meta:
@@ -52,8 +84,7 @@ models:
         description: "Surrogate key for tx_digest + coin_type signal row."
         data_tests:
           - not_null
-      - name: tx_digest
-        description: "Sui transaction digest."
+      - *tx_digest
       - name: coin_type
         description: "Normalized Sui coin type for the signal."
       - name: has_treasury_mint
@@ -66,6 +97,7 @@ models:
         description: "True when CCTP deposit-for-burn signal is detected."
       - name: supply_event_type
         description: "Normalized supply event label per tx_digest + coin_type ('mint'/'burn'); null when signal directions are ambiguous."
+      - *updated_at
 
   - name: tokens_sui_base_transfers
     meta:
@@ -84,8 +116,29 @@ models:
     columns:
       - *block_date
       - *unique_key
-      - name: tx_hash
-        description: "Transaction hash as varbinary."
+      - &blockchain
+        name: blockchain
+        description: "Blockchain identifier."
+      - *block_month
+      - &block_time
+        name: block_time
+        description: "Block timestamp."
+      - &block_number
+        name: block_number
+        description: "Sui checkpoint number."
+      - *tx_digest
+      - &token_standard
+        name: token_standard
+        description: "Token standard label for transfer records."
+      - &tx_from
+        name: tx_from
+        description: "Resolved transaction sender address."
+      - &from_address
+        name: "from"
+        description: "Transfer sender address."
+      - &to_address
+        name: to
+        description: "Transfer receiver address."
       - &contract_address
         name: contract_address
         description: "Coin package address."
@@ -95,14 +148,51 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw transfer amount."
-      - name: transfer_type
+      - &balance_delta
+        name: balance_delta
+        description: "Signed balance change on this object version."
+      - *object_id
+      - *version
+      - *object_status
+      - *owner_type
+      - *coin_balance
+      - &prev_balance
+        name: prev_balance
+        description: "Previous observed balance for the same object."
+      - &prev_owner
+        name: prev_owner
+        description: "Previous observed owner address for the same object."
+      - &has_ownership_change
+        name: has_ownership_change
+        description: "True when ownership changed between consecutive object versions."
+      - &transfer_type
+        name: transfer_type
         description: "Object-lifecycle transfer label (for example object_created/object_deleted), not a standalone economic intent label."
-      - name: is_cross_address_transfer
+      - &is_cross_address_transfer
+        name: is_cross_address_transfer
         description: "True when resolved sender and receiver addresses differ."
-      - name: is_supply_event
+      - &is_supply_event
+        name: is_supply_event
         description: "True only when supply-event signals and transaction net delta direction agree."
-      - name: supply_event_type
+      - &supply_event_type
+        name: supply_event_type
         description: "Conservative mint/burn classification derived from treasury/CCTP-like event patterns."
+      - &transfer_direction
+        name: transfer_direction
+        description: "Direction of balance movement based on balance_delta sign."
+      - &tx_net_delta
+        name: tx_net_delta
+        description: "Net signed delta per tx_digest + coin_type across filtered rows."
+      - &tx_distinct_receivers
+        name: tx_distinct_receivers
+        description: "Distinct receiver count per tx_digest + coin_type."
+      - &tx_distinct_senders
+        name: tx_distinct_senders
+        description: "Distinct sender count per tx_digest + coin_type."
+      - &tx_has_bidirectional_deltas
+        name: tx_has_bidirectional_deltas
+        description: "True when both positive and negative balance deltas exist in the same tx_digest + coin_type."
+      - *updated_at
 
   - name: tokens_sui_transfers
     meta:
@@ -121,6 +211,15 @@ models:
     columns:
       - *block_date
       - *unique_key
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_digest
+      - *token_standard
+      - *tx_from
+      - *from_address
+      - *to_address
       - *contract_address
       - *contract_address_full
       - name: symbol
@@ -134,3 +233,22 @@ models:
         description: "Hourly USD price."
       - name: amount_usd
         description: "USD value of transfer amount."
+      - *balance_delta
+      - *object_id
+      - *version
+      - *object_status
+      - *owner_type
+      - *coin_balance
+      - *prev_balance
+      - *prev_owner
+      - *has_ownership_change
+      - *transfer_type
+      - *is_cross_address_transfer
+      - *is_supply_event
+      - *supply_event_type
+      - *transfer_direction
+      - *tx_net_delta
+      - *tx_distinct_receivers
+      - *tx_distinct_senders
+      - *tx_has_bidirectional_deltas
+      - *updated_at
