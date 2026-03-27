@@ -10,7 +10,11 @@
 	merge_skip_unchanged=true,
 ) }}
 
-with tip20_transfers as (
+with tip20_contracts as (
+	select distinct contract_address
+	from {{ source('tip20_tempo', 'evt_Transfer') }}
+),
+tip20_transfers as (
 	select
 		cast(date_trunc('day', t.evt_block_time) as date) as block_date
 		, t.evt_block_time as block_time
@@ -69,7 +73,8 @@ select * from (
 		erc20_transfers=source('erc20_tempo', 'evt_Transfer'),
 	) }}
 ) as erc20_base
-where bytearray_substring(erc20_base.contract_address, 1, 12) != 0x20c000000000000000000000
+where erc20_base.token_standard = 'native'
+	or erc20_base.contract_address not in (select contract_address from tip20_contracts)
 
 union all
 
