@@ -71,9 +71,10 @@ with transfers as (
 	) as d
 		on d.name = 'tempo'
 		and d.token_address = t.contract_address
-	{% if is_incremental() -%}
 	where
-		{{ incremental_predicate('evt_block_time') }}
+		bytearray_substring(t.contract_address, 1, 12) != 0x20c000000000000000000000
+	{% if is_incremental() -%}
+		and {{ incremental_predicate('evt_block_time') }}
 	{% endif -%}
 
 	union all
