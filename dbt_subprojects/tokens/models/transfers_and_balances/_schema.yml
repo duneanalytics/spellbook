@@ -77,6 +77,8 @@ models:
       - &amount_usd_transfer
         name: amount_usd
         description: "The USD amount of the transfer"
+      - name: _updated_at
+        description: "Timestamp when this row was last written"
 
   - name: tokens_net_transfers_daily
     meta:
@@ -137,6 +139,35 @@ models:
       - <<: *amount_transfer
       - <<: *price_usd_transfer
       - <<: *amount_usd_transfer
+
+  - name: tokens_transfers_last_updated
+    meta:
+      sector: tokens
+      short_description: "Per-blockchain, per-month metadata showing when tokens.transfers was last updated."
+      contributors: jeff-dude
+    config:
+      tags: ['tokens','transfers','metadata']
+    description: >
+      Metadata table tracking the last update timestamp for each blockchain and block_month partition
+      in tokens.transfers. Used for monitoring data freshness and shared via Databricks.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_month
+    columns:
+      - name: blockchain
+        description: "The blockchain of the transfers partition"
+        data_tests:
+          - not_null
+      - name: block_month
+        description: "The month of the transfers partition"
+        data_tests:
+          - not_null
+      - name: last_update_date
+        description: "The most recent _updated_at timestamp across all rows in this blockchain/block_month partition"
+        data_tests:
+          - not_null
 
   - name: tokens_multichain_transfers
     meta:

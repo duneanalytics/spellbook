@@ -8,7 +8,7 @@ models:
       docs_slug: /curated/prices/prices_latest
     config:
       tags: ['prices', 'usd', 'latest']
-    description: "Latest price data for tokens in USD"
+    description: "Latest token prices in USD. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -24,7 +24,7 @@ models:
       - name: contract_address
         description: "Contract address of the token"
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol (not unique across tokens)"
       - name: decimals
         description: "Token decimals"
       - name: price
@@ -36,7 +36,7 @@ models:
       contributors: 0xRob
     config:
       tags: [ 'prices', 'usd', 'forward_fill' ]
-    description: "View on prices that does a forward fill on the last 24h till the current timestamp"
+    description: "Forward-filled USD token prices over the last 24 hours. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -57,7 +57,7 @@ models:
       - name: contract_address
         description: "Contract address of the token"
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol (not unique across tokens)"
       - name: decimals
         description: "Token decimals"
       - name: price
@@ -72,7 +72,7 @@ models:
       docs_slug: /curated/prices/prices_day
     config:
       tags: ['prices', 'usd', 'daily']
-    description: "Daily aggregated prices table across blockchains"
+    description: "Daily aggregated token prices across blockchains. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -88,7 +88,7 @@ models:
       - name: contract_address
         description: "Contract address of the token"
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol (not unique across tokens)"
       - name: decimals
         description: "Token decimals"
       - name: price

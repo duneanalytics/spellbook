@@ -84,3 +84,5 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
+      - name: _updated_at
+        description: "Timestamp when this row was last written or updated by the pipeline"

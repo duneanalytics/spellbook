@@ -3,11 +3,11 @@ version: 2
 sources:
   - name: prices
     description: "Price data from various sources and time granularities"
+    meta:
+      docs_slug: /curated/prices/prices_day
     tables:
       - name: day
-        description: "Daily token prices aggregated from various sources"
-        meta:
-          docs_slug: /curated/prices/prices_day
+        description: "Daily token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
         columns:
           - name: blockchain
             description: "Native blockchain of the token"
@@ -16,7 +16,7 @@ sources:
             description: "Contract address of the token"
             type: varbinary
           - name: symbol
-            description: "Token symbol"
+            description: "Token symbol (not unique; do not use as a standalone identifier)"
             type: varchar
           - name: timestamp
             description: "UTC timestamp for the day"
@@ -38,7 +38,7 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: hour
-        description: "Hourly token prices aggregated from various sources"
+        description: "Hourly token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
         meta:
           docs_slug: /curated/prices/prices_hour
         columns:
@@ -49,7 +49,7 @@ sources:
             description: "Contract address of the token"
             type: varbinary
           - name: symbol
-            description: "Token symbol"
+            description: "Token symbol (not unique; do not use as a standalone identifier)"
             type: varchar
           - name: timestamp
             description: "UTC timestamp for the hour"
@@ -71,7 +71,7 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: minute
-        description: "Minute-level token prices aggregated from various sources"
+        description: "Minute-level token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
         meta:
           docs_slug: /curated/prices/prices_minute
         columns:
@@ -82,7 +82,7 @@ sources:
             description: "Contract address of the token"
             type: varbinary
           - name: symbol
-            description: "Token symbol"
+            description: "Token symbol (not unique; do not use as a standalone identifier)"
             type: varchar
           - name: timestamp
             description: "UTC timestamp for the minute"
@@ -104,7 +104,7 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: latest
-        description: "Latest available token prices from various sources"
+        description: "Latest available token prices from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens. "
         meta:
           docs_slug: /curated/prices/prices_latest
         columns:
