@@ -5,6 +5,7 @@ models:
     meta:
       blockchain: sui
       sector: tokens
+      short_description: "Latest Sui Coin<T> state per object_id."
       contributors: tomfutago
     config:
       tags: ['tokens', 'transfers', 'sui']
@@ -27,10 +28,11 @@ models:
     meta:
       blockchain: sui
       sector: tokens
+      short_description: "Per-tx Sui supply signals with mint/burn type."
       contributors: tomfutago
     config:
       tags: ['tokens', 'transfers', 'sui']
-    description: "Per-transaction, per-coin supply signals on Sui from generic treasury events, package-aware treasury events, and CCTP message patterns."
+    description: "Per-transaction, per-coin supply signals on Sui from generic treasury events, package-aware treasury events, and CCTP message patterns, with one normalized supply_event_type output."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -59,12 +61,15 @@ models:
         description: "True when CCTP message receive signal is detected."
       - name: has_cctp_deposit_for_burn
         description: "True when CCTP deposit-for-burn signal is detected."
+      - name: supply_event_type
+        description: "Normalized supply event label per tx_digest + coin_type ('mint'/'burn'); null when signal directions are ambiguous."
 
   - name: tokens_sui_base_transfers
     meta:
       blockchain: sui
       sector: tokens
-      contributors: tomfutago
+      short_description: "Base Sui Coin<T> cross-address transfers with supply flags."
+      contributors: 0xboxer, tomfutago, 0xRob
     config:
       tags: ['tokens', 'transfers', 'sui']
     description: "Sui Coin<T> base transfers for all fungible coin types, restricted to cross-address movements and enriched with supply-event signals only."
@@ -100,6 +105,7 @@ models:
     meta:
       blockchain: sui
       sector: tokens
+      short_description: "Sui Coin<T> transfers with metadata and USD values."
       contributors: tomfutago
     config:
       tags: ['tokens', 'transfers', 'sui']

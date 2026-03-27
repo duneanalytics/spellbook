@@ -389,10 +389,7 @@ supply_signals as (
   select
     s.tx_digest,
     s.coin_type,
-    s.has_treasury_mint,
-    s.has_treasury_burn,
-    s.has_cctp_message_received,
-    s.has_cctp_deposit_for_burn
+    s.supply_event_type
   from {{ ref('tokens_sui_supply_signals') }} s
   where s.block_date >= date '{{ sui_transfer_start_date }}'
     {% if is_incremental() %}
@@ -459,37 +456,13 @@ select
   end as transfer_type,
   true as is_cross_address_transfer,
   case
-    when coalesce(supply.has_treasury_mint, false)
-      and not coalesce(supply.has_treasury_burn, false)
-      and r.tx_net_delta > 0 then true
-    when coalesce(supply.has_treasury_burn, false)
-      and not coalesce(supply.has_treasury_mint, false)
-      and r.tx_net_delta < 0 then true
-    when not coalesce(supply.has_treasury_mint, false)
-      and not coalesce(supply.has_treasury_burn, false)
-      and coalesce(supply.has_cctp_message_received, false)
-      and r.tx_net_delta > 0 then true
-    when not coalesce(supply.has_treasury_mint, false)
-      and not coalesce(supply.has_treasury_burn, false)
-      and coalesce(supply.has_cctp_deposit_for_burn, false)
-      and r.tx_net_delta < 0 then true
+    when supply.supply_event_type = 'mint' and r.tx_net_delta > 0 then true
+    when supply.supply_event_type = 'burn' and r.tx_net_delta < 0 then true
     else false
   end as is_supply_event,
   case
-    when coalesce(supply.has_treasury_mint, false)
-      and not coalesce(supply.has_treasury_burn, false)
-      and r.tx_net_delta > 0 then 'mint'
-    when coalesce(supply.has_treasury_burn, false)
-      and not coalesce(supply.has_treasury_mint, false)
-      and r.tx_net_delta < 0 then 'burn'
-    when not coalesce(supply.has_treasury_mint, false)
-      and not coalesce(supply.has_treasury_burn, false)
-      and coalesce(supply.has_cctp_message_received, false)
-      and r.tx_net_delta > 0 then 'mint'
-    when not coalesce(supply.has_treasury_mint, false)
-      and not coalesce(supply.has_treasury_burn, false)
-      and coalesce(supply.has_cctp_deposit_for_burn, false)
-      and r.tx_net_delta < 0 then 'burn'
+    when supply.supply_event_type = 'mint' and r.tx_net_delta > 0 then 'mint'
+    when supply.supply_event_type = 'burn' and r.tx_net_delta < 0 then 'burn'
     else cast(null as varchar)
   end as supply_event_type,
   case

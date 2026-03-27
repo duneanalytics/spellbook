@@ -2,7 +2,6 @@
   config(
     schema = 'tokens_sui',
     alias = 'supply_signals',
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -37,58 +36,45 @@ events_filtered as (
 package_coin_types as (
   select
     lower(split_part(m.coin_type, '::', 1)) as package_address,
-    lower(m.coin_type) as coin_type
+    max_by(lower(m.coin_type), lower(m.coin_type)) as resolved_coin_type,
+    count(distinct lower(m.coin_type)) as coin_type_count
   from {{ source('dex_sui', 'coin_info') }} m
-),
-
-unambiguous_package_coin_types as (
-  select
-    p.package_address,
-    max_by(p.coin_type, p.coin_type) as coin_type
-  from package_coin_types p
   group by 1
-  having count(distinct p.coin_type) = 1
 ),
 
 generic_treasury_signals as (
   select
     e.block_date,
     e.tx_digest,
-    e.generic_coin_type as coin_type,
+    lower(e.generic_coin_type) as coin_type,
     case
-      when e.event_type_lower like '%treasury::mint<%' then true
-      else false
-    end as has_treasury_mint,
-    case
-      when e.event_type_lower like '%treasury::burn<%' then true
-      else false
-    end as has_treasury_burn,
-    false as has_cctp_message_received,
-    false as has_cctp_deposit_for_burn
+      when e.event_type_lower like '%treasury::mint<%' then 'mint'
+      else 'burn'
+    end as supply_event_type,
+    'treasury_generic' as signal_source
   from events_filtered e
   where e.generic_coin_type is not null
+    and e.event_type_lower like '%treasury::%'
 ),
 
 package_treasury_signals as (
   select
     e.block_date,
     e.tx_digest,
-    p.coin_type,
+    p.resolved_coin_type as coin_type,
     case
-      when e.module_name = 'treasury' and e.event_name = 'mint' then true
-      else false
-    end as has_treasury_mint,
-    case
-      when e.module_name = 'treasury' and e.event_name = 'burn' then true
-      else false
-    end as has_treasury_burn,
-    false as has_cctp_message_received,
-    false as has_cctp_deposit_for_burn
+      when e.event_name = 'mint' then 'mint'
+      else 'burn'
+    end as supply_event_type,
+    'treasury_package' as signal_source
   from events_filtered e
-  inner join unambiguous_package_coin_types p
+  inner join package_coin_types p
     on e.package_address = p.package_address
   where e.module_name = 'treasury'
     and e.event_name in ('mint', 'burn')
+    -- ambiguous package->coin mappings are excluded intentionally because they
+    -- cannot be resolved to one deterministic coin_type for downstream joins.
+    and p.coin_type_count = 1
 ),
 
 cctp_usdc_signals as (
@@ -96,16 +82,11 @@ cctp_usdc_signals as (
     e.block_date,
     e.tx_digest,
     lower('0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::usdc') as coin_type,
-    false as has_treasury_mint,
-    false as has_treasury_burn,
     case
-      when e.module_name = 'message_transmitter' and e.event_name = 'messagereceived' then true
-      else false
-    end as has_cctp_message_received,
-    case
-      when e.module_name = 'deposit_for_burn' and e.event_name = 'depositforburn' then true
-      else false
-    end as has_cctp_deposit_for_burn
+      when e.module_name = 'message_transmitter' and e.event_name = 'messagereceived' then 'mint'
+      else 'burn'
+    end as supply_event_type,
+    'cctp' as signal_source
   from events_filtered e
   where (e.module_name, e.event_name) in (
     ('message_transmitter', 'messagereceived'),
@@ -118,42 +99,67 @@ unioned as (
     g.block_date,
     g.tx_digest,
     g.coin_type,
-    g.has_treasury_mint,
-    g.has_treasury_burn,
-    g.has_cctp_message_received,
-    g.has_cctp_deposit_for_burn
+    g.supply_event_type,
+    g.signal_source
   from generic_treasury_signals g
   union all
   select
     p.block_date,
     p.tx_digest,
     p.coin_type,
-    p.has_treasury_mint,
-    p.has_treasury_burn,
-    p.has_cctp_message_received,
-    p.has_cctp_deposit_for_burn
+    p.supply_event_type,
+    p.signal_source
   from package_treasury_signals p
   union all
   select
     c.block_date,
     c.tx_digest,
     c.coin_type,
-    c.has_treasury_mint,
-    c.has_treasury_burn,
-    c.has_cctp_message_received,
-    c.has_cctp_deposit_for_burn
+    c.supply_event_type,
+    c.signal_source
   from cctp_usdc_signals c
+),
+
+aggregated as (
+  select
+    u.block_date,
+    u.tx_digest,
+    lower(u.coin_type) as coin_type,
+    bool_or(
+      u.signal_source in ('treasury_generic', 'treasury_package')
+      and u.supply_event_type = 'mint'
+    ) as has_treasury_mint,
+    bool_or(
+      u.signal_source in ('treasury_generic', 'treasury_package')
+      and u.supply_event_type = 'burn'
+    ) as has_treasury_burn,
+    bool_or(
+      u.signal_source = 'cctp'
+      and u.supply_event_type = 'mint'
+    ) as has_cctp_message_received,
+    bool_or(
+      u.signal_source = 'cctp'
+      and u.supply_event_type = 'burn'
+    ) as has_cctp_deposit_for_burn,
+    bool_or(u.supply_event_type = 'mint') as has_mint_signal,
+    bool_or(u.supply_event_type = 'burn') as has_burn_signal
+  from unioned u
+  group by 1, 2, 3
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['u.tx_digest', 'u.coin_type']) }} as unique_key,
-  u.block_date,
-  u.tx_digest,
-  u.coin_type,
-  bool_or(u.has_treasury_mint) as has_treasury_mint,
-  bool_or(u.has_treasury_burn) as has_treasury_burn,
-  bool_or(u.has_cctp_message_received) as has_cctp_message_received,
-  bool_or(u.has_cctp_deposit_for_burn) as has_cctp_deposit_for_burn,
+  {{ dbt_utils.generate_surrogate_key(['a.tx_digest', 'a.coin_type']) }} as unique_key,
+  a.block_date,
+  a.tx_digest,
+  a.coin_type,
+  a.has_treasury_mint,
+  a.has_treasury_burn,
+  a.has_cctp_message_received,
+  a.has_cctp_deposit_for_burn,
+  case
+    when a.has_mint_signal and not a.has_burn_signal then 'mint'
+    when a.has_burn_signal and not a.has_mint_signal then 'burn'
+    else cast(null as varchar)
+  end as supply_event_type,
   current_timestamp as _updated_at
-from unioned u
-group by 1, 2, 3, 4
+from aggregated a
