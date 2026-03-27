@@ -77,21 +77,32 @@ package_treasury_signals as (
     and p.coin_type_count = 1
 ),
 
+cctp_event_signatures (
+  package_address,
+  module_name,
+  event_name,
+  supply_event_type
+) as (
+  -- circle cctp v1 sui mainnet package ids:
+  -- https://developers.circle.com/cctp/v1/sui-packages
+  values
+    ('0x08d87d37ba49e785dde270a83f8e979605b03dc552b5548f26fdf2f49bf7ed1b', 'message_transmitter', 'messagereceived', 'mint'),
+    ('0x410d70c8baad60f310f45c13b9656ecbfed46fdf970e051f0cac42891a848856', 'deposit_for_burn', 'depositforburn', 'burn'),
+    ('0x2aa6c5d56376c371f88a6cc42e852824994993cb9bab8d3e6450cbe3cb32b94e', 'deposit_for_burn', 'depositforburn', 'burn')
+),
+
 cctp_usdc_signals as (
   select
     e.block_date,
     e.tx_digest,
     lower('0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::usdc') as coin_type,
-    case
-      when e.module_name = 'message_transmitter' and e.event_name = 'messagereceived' then 'mint'
-      else 'burn'
-    end as supply_event_type,
+    c.supply_event_type,
     'cctp' as signal_source
   from events_filtered e
-  where (e.module_name, e.event_name) in (
-    ('message_transmitter', 'messagereceived'),
-    ('deposit_for_burn', 'depositforburn')
-  )
+  inner join cctp_event_signatures c
+    on e.package_address = c.package_address
+    and e.module_name = c.module_name
+    and e.event_name = c.event_name
 ),
 
 unioned as (
