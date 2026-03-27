@@ -1,27 +1,38 @@
 version: 2
 
 models:
-  - name: tokens_sui_object_state
+  - name: tokens_sui_coin_objects
     meta:
       blockchain: sui
       sector: tokens
       contributors: tomfutago
     config:
       tags: ['tokens', 'transfers', 'sui']
-    description: "Latest known Coin<T> object state per object_id, including previous state snapshot for incremental continuity anchors."
+    description: "Pre-filtered subset of sui.objects containing only Coin<T> mutations (Created/Mutated with non-null coin_type). Reduces downstream scans from ~12.7 TB to ~2 TB."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - object_id
+            - block_date
+            - unique_key
     columns:
+      - &block_date
+        name: block_date
+        description: "The date of the object mutation."
+        data_tests:
+          - not_null
+      - &unique_key
+        name: unique_key
+        description: "Surrogate key."
+        data_tests:
+          - not_null
       - name: object_id
         description: "Sui coin object identifier."
         data_tests:
           - not_null
-      - name: version
-        description: "Latest object version seen in objects source."
-      - name: previous_version
-        description: "Previous persisted version before the latest update for this object_id."
+      - name: coin_type
+        description: "Coin type (e.g. 0x2::sui::SUI)."
+        data_tests:
+          - not_null
 
   - name: tokens_sui_supply_signals
     meta:
@@ -37,16 +48,8 @@ models:
             - block_date
             - unique_key
     columns:
-      - &block_date
-        name: block_date
-        description: "The date of the signal event."
-        data_tests:
-          - not_null
-      - &unique_key
-        name: unique_key
-        description: "Surrogate key for tx_digest + coin_type signal row."
-        data_tests:
-          - not_null
+      - *block_date
+      - *unique_key
       - name: tx_digest
         description: "Sui transaction digest."
       - name: coin_type
