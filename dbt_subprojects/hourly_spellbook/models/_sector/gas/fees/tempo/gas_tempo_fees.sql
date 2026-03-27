@@ -1,6 +1,7 @@
 {% set blockchain = 'tempo' %}
 {% set default_fee_token = '0x20c0000000000000000000000000000000000000' %}
 {% set default_fee_token_price = 1.0 %}
+{% set default_fee_token_decimals = 18 %}
 
 {{ config(
     schema = 'gas_' + blockchain
@@ -80,7 +81,7 @@ WITH base_model as (
         ,b.gas_limit_usage
         ,b.fee_token
         ,t.symbol as currency_symbol
-        ,t.decimals as token_decimals
+        ,coalesce(t.decimals, case when b.fee_token = {{default_fee_token}} then {{default_fee_token_decimals}} end) as token_decimals
         ,coalesce(p.price, case when b.fee_token = {{default_fee_token}} then {{default_fee_token_price}} end) as token_price
     FROM base_model b
     LEFT JOIN {{ source('tokens', 'erc20') }} as t
