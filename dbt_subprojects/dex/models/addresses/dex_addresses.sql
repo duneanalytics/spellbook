@@ -12,6 +12,8 @@
     ref('dex_arbitrum_addresses')
     ,ref('dex_base_addresses')
     ,ref('dex_bnb_addresses')
+
+        
     ,ref('dex_ethereum_addresses')
     ,ref('dex_optimism_addresses')
     ,ref('dex_polygon_addresses')
