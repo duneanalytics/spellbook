@@ -99,10 +99,14 @@ deleted_rows as (
     and {{ incremental_predicate('o.date') }}
     {% endif %}
     and o.object_id in (
-      select distinct object_id from day_rows
       {% if is_incremental() %}
+      -- incremental: filter to objects seen in current window + anchor
+      select distinct object_id from day_rows
       union
       select object_id from anchor_state
+      {% else %}
+      -- full refresh: use the full coin object universe
+      select distinct object_id from {{ ref('tokens_sui_coin_objects') }}
       {% endif %}
     )
 ),
