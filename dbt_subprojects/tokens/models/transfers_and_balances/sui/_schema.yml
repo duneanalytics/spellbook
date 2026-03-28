@@ -203,8 +203,10 @@ models:
     columns:
       - *block_date
       - *unique_key
-      - *object_id
-      - *version
+      - name: object_id
+        description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
+      - name: version
+        description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
       - *tx_digest
       - *timestamp_ms
       - *block_month
