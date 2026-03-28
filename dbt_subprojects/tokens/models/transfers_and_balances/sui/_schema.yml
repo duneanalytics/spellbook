@@ -149,8 +149,10 @@ models:
     columns:
       - *block_date
       - *unique_key
-      - *object_id
-      - *version
+      - name: object_id
+        description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
+      - name: version
+        description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
       - *tx_digest
       - *timestamp_ms
       - *block_month
@@ -280,8 +282,10 @@ models:
       - &balance_delta
         name: balance_delta
         description: "Signed balance change on this object version."
-      - *object_id
-      - *version
+      - name: object_id
+        description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
+      - name: version
+        description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
       - *object_status
       - *owner_type
       - *coin_balance
@@ -363,8 +367,10 @@ models:
       - name: amount_usd
         description: "USD value of transfer amount."
       - *balance_delta
-      - *object_id
-      - *version
+      - name: object_id
+        description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
+      - name: version
+        description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
       - *object_status
       - *owner_type
       - *coin_balance
