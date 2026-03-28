@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: jupiter_solana
+    description: "Jupiter decoded tables on Solana"
+    tables:
+      - name: order_engine_call_fill

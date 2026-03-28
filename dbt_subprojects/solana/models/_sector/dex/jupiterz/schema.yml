@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: jupiterz_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ Eekeyguy ]
+    config:
+      tags: [ 'solana', 'dex', 'jupiterz' ]
+    description: JupiterZ DEX base trades on Solana.
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index' ]
+
+  - name: jupiterz_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [ Eekeyguy ]
+    config:
+      tags: [ 'solana', 'dex', 'jupiterz' ]
+    description: JupiterZ DEX trades on Solana (from dex_solana_trades).
