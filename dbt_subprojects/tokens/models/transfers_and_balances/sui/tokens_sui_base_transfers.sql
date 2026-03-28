@@ -12,8 +12,8 @@
   )
 }}
 
--- temporary ci filter: original start date '2023-04-12', bumped to '2025-01-01' to reduce scan and unblock ci run
-{% set sui_transfer_start_date = '2025-01-01' %}
+-- temporary ci filter: original start date '2023-04-12', bumped to '2026-01-01' to reduce scan and unblock ci run
+{% set sui_transfer_start_date = '2026-01-01' %}
 
 with
 
@@ -60,7 +60,7 @@ deleted_objects as (
     cast(null as varbinary) as receiver,
     cast(null as varchar) as coin_type,
     o.object_status,
-    cast(0 as bigint) as coin_balance
+    cast(0 as decimal(38, 0)) as coin_balance
   from {{ source('sui', 'objects') }} o
   where o.object_status = 'Deleted'
     and o.date >= date '{{ sui_transfer_start_date }}'

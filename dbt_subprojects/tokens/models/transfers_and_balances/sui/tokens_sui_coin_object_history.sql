@@ -12,8 +12,8 @@
   )
 }}
 
--- temporary ci filter: original start date '2023-04-12', bumped to '2025-01-01' to reduce scan and unblock ci run
-{% set sui_transfer_start_date = '2025-01-01' %}
+-- temporary ci filter: original start date '2023-04-12', bumped to '2026-01-01' to reduce scan and unblock ci run
+{% set sui_transfer_start_date = '2026-01-01' %}
 
 with
 
@@ -30,7 +30,7 @@ source_rows as (
     o.owner_address as receiver,
     o.coin_type,
     o.object_status,
-    try_cast(o.coin_balance as bigint) as coin_balance
+    try_cast(o.coin_balance as decimal(38, 0)) as coin_balance
   from {{ source('sui', 'objects') }} o
   where o.object_status in ('Created', 'Mutated')
     and o.coin_type is not null
