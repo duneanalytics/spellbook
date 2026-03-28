@@ -17,6 +17,9 @@ sources:
   - name: dex_aggregator
     tables:
       - name: trades
+  - name: dex_sui
+    tables:
+      - name: coin_info
   - name: balancer_v2_optimism
     tables:
       - name: trades
