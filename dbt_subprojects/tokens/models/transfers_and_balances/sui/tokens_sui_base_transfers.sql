@@ -321,16 +321,14 @@ select
     else coalesce(f.prev_owner, f.tx_sender)
   end as "from",
   f.receiver as to,
-  cast(
-    regexp_replace(
-      case
-        when starts_with(lower(split_part(f.coin_type, '::', 1)), '0x')
-          then lower(split_part(f.coin_type, '::', 1))
-        else concat('0x', lower(split_part(f.coin_type, '::', 1)))
-      end,
-      '^0x0*([0-9a-f]+)$',
-      '0x$1'
-    ) as varbinary
+  regexp_replace(
+    case
+      when starts_with(lower(split_part(f.coin_type, '::', 1)), '0x')
+        then lower(split_part(f.coin_type, '::', 1))
+      else concat('0x', lower(split_part(f.coin_type, '::', 1)))
+    end,
+    '^0x0*([0-9a-f]+)$',
+    '0x$1'
   ) as contract_address,
   f.coin_type as contract_address_full,
   case

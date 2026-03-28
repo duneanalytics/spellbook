@@ -32,12 +32,10 @@ prices as (
   select
     blockchain,
     timestamp,
-    cast(
-      regexp_replace(
-        lower(from_utf8(contract_address)),
-        '^0x0*([0-9a-f]+)$',
-        '0x$1'
-      ) as varbinary
+    regexp_replace(
+      lower(from_utf8(contract_address)),
+      '^0x0*([0-9a-f]+)$',
+      '0x$1'
     ) as contract_address,
     decimals,
     symbol,
@@ -60,12 +58,10 @@ coin_metadata as (
 
 trusted_tokens as (
   select
-    cast(
-      regexp_replace(
-        lower(from_utf8(contract_address)),
-        '^0x0*([0-9a-f]+)$',
-        '0x$1'
-      ) as varbinary
+    regexp_replace(
+      lower(from_utf8(contract_address)),
+      '^0x0*([0-9a-f]+)$',
+      '0x$1'
     ) as contract_address
   from {{ source('prices', 'trusted_tokens') }}
   where blockchain = 'sui'
@@ -81,9 +77,9 @@ transfers as (
     t.block_number,
     t.tx_digest,
     t.token_standard,
-    t.tx_from,
-    t."from",
-    t.to,
+    cast(t.tx_from as varchar) as tx_from,
+    cast(t."from" as varchar) as "from",
+    cast(t.to as varchar) as to,
     t.contract_address,
     t.contract_address_full,
     coalesce(m.coin_symbol, p.symbol) as symbol,
@@ -94,13 +90,13 @@ transfers as (
     t.amount_raw / power(10, coalesce(m.coin_decimals, p.decimals)) * p.price as amount_usd,
     case when tt.contract_address is not null then true else false end as is_trusted_token,
     t.balance_delta,
-    t.object_id,
+    cast(t.object_id as varchar) as object_id,
     t.version,
     t.object_status,
     t.owner_type,
     t.coin_balance,
     t.prev_balance,
-    t.prev_owner,
+    cast(t.prev_owner as varchar) as prev_owner,
     t.has_ownership_change,
     t.transfer_type,
     t.is_cross_address_transfer,
@@ -122,6 +118,7 @@ transfers as (
     and date_trunc('hour', t.block_time) = p.timestamp
     and t.contract_address = p.contract_address
 )
+
 select
   unique_key,
   blockchain,
