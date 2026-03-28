@@ -180,7 +180,6 @@ object_state_deltas as (
 -- rows with a known prev_owner (anchored) can be cross-address filtered
 -- without any tx lookup. only look up tx_sender for Created + unanchored
 -- rows (~5% of filtered), reducing the transactions scan by ~95%.
-
 transfer_event_features as (
   select
     c.object_id,
@@ -210,8 +209,7 @@ transfer_event_features as (
 ),
 
 transfer_event_candidates as (
-  select
-    e.*
+  select e.*
   from transfer_event_features e
   where e.balance_delta != 0
     or e.has_ownership_change
@@ -245,7 +243,7 @@ required_tx_senders as (
       p.tx_digest
     from cross_address_precheck p
     where p.needs_tx_sender
-      and p.passes_cross_filter
+      and (p.passes_cross_filter or p.object_status = 'Created')
       and p.tx_digest is not null
   ) d on t.transaction_digest = d.tx_digest
   where t.date >= date '{{ sui_transfer_start_date }}'
@@ -272,11 +270,231 @@ cross_address_transfers as (
     on p.tx_digest = s.tx_digest
   where p.needs_tx_sender
     and (
-      case
-        when p.object_status = 'Created' then s.tx_sender
-        else coalesce(p.prev_owner, s.tx_sender)
-      end
-    ) is distinct from p.receiver
+      (
+        p.object_status = 'Created'
+        and s.tx_sender is not null
+        and s.tx_sender is distinct from p.receiver
+      )
+      or (
+        p.object_status != 'Created'
+        and coalesce(p.prev_owner, s.tx_sender) is distinct from p.receiver
+      )
+    )
+),
+
+-- direct rows keep cross-address intent; amount reflects what moved to receiver
+-- on ownership changes (`coin_balance`) rather than object delta.
+direct_transfer_rows as (
+  select
+    f.object_id,
+    f.version,
+    f.tx_digest,
+    f.timestamp_ms,
+    f.block_date,
+    f.block_month,
+    f.checkpoint,
+    f.owner_type,
+    f.receiver,
+    f.coin_type,
+    f.object_status,
+    f.coin_balance,
+    f.prev_owner,
+    f.prev_balance,
+    f.balance_delta,
+    f.has_ownership_change,
+    f.tx_sender,
+    cast('direct' as varchar) as owner_net_leg,
+    case
+      when f.object_status = 'Created' then f.tx_sender
+      else coalesce(f.prev_owner, f.tx_sender)
+    end as row_from,
+    f.receiver as row_to,
+    case
+      when f.object_status = 'Created' then f.coin_balance
+      when f.has_ownership_change then f.coin_balance
+      else abs(f.balance_delta)
+    end as amount_raw
+  from cross_address_transfers f
+),
+
+-- exact owner-net deltas from object-state transitions (all rows, not only cross-address).
+owner_true_delta_rows as (
+  select
+    f.tx_digest,
+    f.coin_type,
+    f.receiver as owner,
+    cast(f.coin_balance as decimal(38, 0)) as owner_delta_raw
+  from transfer_event_features f
+  where f.object_status = 'Created'
+    and f.receiver is not null
+    and f.coin_balance is not null
+  union all
+  select
+    f.tx_digest,
+    f.coin_type,
+    f.prev_owner as owner,
+    cast(-f.prev_balance as decimal(38, 0)) as owner_delta_raw
+  from transfer_event_features f
+  where f.object_status = 'Deleted'
+    and f.prev_owner is not null
+    and f.prev_balance is not null
+  union all
+  select
+    f.tx_digest,
+    f.coin_type,
+    f.prev_owner as owner,
+    cast(-f.prev_balance as decimal(38, 0)) as owner_delta_raw
+  from transfer_event_features f
+  where f.object_status = 'Mutated'
+    and f.has_ownership_change
+    and f.prev_owner is not null
+    and f.prev_balance is not null
+  union all
+  select
+    f.tx_digest,
+    f.coin_type,
+    f.receiver as owner,
+    cast(f.coin_balance as decimal(38, 0)) as owner_delta_raw
+  from transfer_event_features f
+  where f.object_status = 'Mutated'
+    and f.has_ownership_change
+    and f.receiver is not null
+    and f.coin_balance is not null
+  union all
+  select
+    f.tx_digest,
+    f.coin_type,
+    f.receiver as owner,
+    cast(f.balance_delta as decimal(38, 0)) as owner_delta_raw
+  from transfer_event_features f
+  where f.object_status = 'Mutated'
+    and not f.has_ownership_change
+    and f.receiver is not null
+    and f.balance_delta != 0
+),
+
+owner_true_net as (
+  select
+    r.tx_digest,
+    r.coin_type,
+    r.owner,
+    sum(r.owner_delta_raw) as owner_net_delta_raw
+  from owner_true_delta_rows r
+  where r.owner is not null
+  group by 1, 2, 3
+),
+
+owner_direct_delta_rows as (
+  select
+    d.tx_digest,
+    d.coin_type,
+    d.row_from as owner,
+    cast(-d.amount_raw as decimal(38, 0)) as owner_delta_raw
+  from direct_transfer_rows d
+  where d.row_from is not null
+    and d.amount_raw != 0
+  union all
+  select
+    d.tx_digest,
+    d.coin_type,
+    d.row_to as owner,
+    cast(d.amount_raw as decimal(38, 0)) as owner_delta_raw
+  from direct_transfer_rows d
+  where d.row_to is not null
+    and d.amount_raw != 0
+),
+
+owner_direct_net as (
+  select
+    r.tx_digest,
+    r.coin_type,
+    r.owner,
+    sum(r.owner_delta_raw) as owner_net_delta_raw
+  from owner_direct_delta_rows r
+  where r.owner is not null
+  group by 1, 2, 3
+),
+
+tx_coin_context as (
+  select
+    d.tx_digest,
+    d.coin_type,
+    max_by(d.block_month, d.timestamp_ms) as block_month,
+    max_by(d.block_date, d.timestamp_ms) as block_date,
+    max(d.timestamp_ms) as timestamp_ms,
+    max_by(d.checkpoint, d.timestamp_ms) as checkpoint,
+    max_by(d.tx_sender, d.timestamp_ms) as tx_sender
+  from direct_transfer_rows d
+  group by 1, 2
+),
+
+owner_residual_net as (
+  select
+    coalesce(t.tx_digest, d.tx_digest) as tx_digest,
+    coalesce(t.coin_type, d.coin_type) as coin_type,
+    coalesce(t.owner, d.owner) as owner,
+    coalesce(t.owner_net_delta_raw, cast(0 as decimal(38, 0)))
+      - coalesce(d.owner_net_delta_raw, cast(0 as decimal(38, 0))) as residual_delta_raw
+  from owner_true_net t
+  full outer join owner_direct_net d
+    on t.tx_digest = d.tx_digest
+    and t.coin_type = d.coin_type
+    and t.owner = d.owner
+  inner join tx_coin_context c
+    on coalesce(t.tx_digest, d.tx_digest) = c.tx_digest
+    and coalesce(t.coin_type, d.coin_type) = c.coin_type
+  where coalesce(t.owner, d.owner) is not null
+),
+
+owner_residual_rows as (
+  select
+    cast(null as varbinary) as object_id,
+    cast(null as decimal(20, 0)) as version,
+    r.tx_digest,
+    c.timestamp_ms,
+    c.block_date,
+    c.block_month,
+    c.checkpoint,
+    cast(null as varchar) as owner_type,
+    case
+      when r.residual_delta_raw > 0 then r.owner
+      else cast(null as varbinary)
+    end as receiver,
+    r.coin_type,
+    cast('Residual' as varchar) as object_status,
+    cast(null as decimal(38, 0)) as coin_balance,
+    case
+      when r.residual_delta_raw < 0 then r.owner
+      else cast(null as varbinary)
+    end as prev_owner,
+    cast(null as decimal(38, 0)) as prev_balance,
+    r.residual_delta_raw as balance_delta,
+    cast(false as boolean) as has_ownership_change,
+    c.tx_sender,
+    case
+      when r.residual_delta_raw < 0 then cast('owner_residual_debit' as varchar)
+      else cast('owner_residual_credit' as varchar)
+    end as owner_net_leg,
+    case
+      when r.residual_delta_raw < 0 then r.owner
+      else cast(null as varbinary)
+    end as row_from,
+    case
+      when r.residual_delta_raw > 0 then r.owner
+      else cast(null as varbinary)
+    end as row_to,
+    abs(r.residual_delta_raw) as amount_raw
+  from owner_residual_net r
+  inner join tx_coin_context c
+    on r.tx_digest = c.tx_digest
+    and r.coin_type = c.coin_type
+  where r.residual_delta_raw != 0
+),
+
+owner_net_transfer_rows as (
+  select * from direct_transfer_rows
+  union all
+  select * from owner_residual_rows
 ),
 
 supply_signals as (
@@ -305,7 +523,7 @@ tx_coin_reconciliation as (
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.object_id', 'f.version']) }} as unique_key,
+  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', 'f.owner_net_leg', 'f.row_from', 'f.row_to', 'f.object_id', 'f.version']) }} as unique_key,
   'sui' as blockchain,
   f.block_month,
   f.block_date,
@@ -314,11 +532,8 @@ select
   f.tx_digest,
   'sui_coin' as token_standard,
   f.tx_sender as tx_from,
-  case
-    when f.object_status = 'Created' then f.tx_sender
-    else coalesce(f.prev_owner, f.tx_sender)
-  end as "from",
-  f.receiver as to,
+  f.row_from as "from",
+  f.row_to as to,
   regexp_replace(
     case
       when starts_with(lower(split_part(f.coin_type, '::', 1)), '0x')
@@ -329,11 +544,7 @@ select
     '0x$1'
   ) as contract_address,
   f.coin_type as contract_address_full,
-  case
-    when f.object_status = 'Created' then f.coin_balance
-    when f.has_ownership_change and f.balance_delta = 0 then f.coin_balance
-    else abs(f.balance_delta)
-  end as amount_raw,
+  f.amount_raw,
   f.balance_delta,
   f.object_id,
   f.version,
@@ -344,6 +555,8 @@ select
   f.prev_owner,
   f.has_ownership_change,
   case
+    when f.owner_net_leg = 'owner_residual_debit' then 'ownership_balance_spend'
+    when f.owner_net_leg = 'owner_residual_credit' then 'ownership_balance_topup'
     when f.object_status = 'Created' then 'object_created'
     when f.object_status = 'Deleted' then 'object_deleted'
     when f.has_ownership_change and f.balance_delta != 0 then 'transfer_with_balance_change'
@@ -364,6 +577,8 @@ select
     else cast(null as varchar)
   end as supply_event_type,
   case
+    when f.owner_net_leg = 'owner_residual_debit' then 'debit'
+    when f.owner_net_leg = 'owner_residual_credit' then 'credit'
     when f.balance_delta > 0 then 'credit'
     when f.balance_delta < 0 then 'debit'
     else 'neutral'
@@ -373,7 +588,7 @@ select
   r.tx_distinct_senders,
   r.tx_has_bidirectional_deltas,
   current_timestamp as _updated_at
-from cross_address_transfers f
+from owner_net_transfer_rows f
 left join tx_coin_reconciliation r
   on f.tx_digest = r.tx_digest
   and f.coin_type = r.coin_type

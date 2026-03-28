@@ -142,7 +142,7 @@ models:
         description: "Full Sui coin type."
       - &amount_raw
         name: amount_raw
-        description: "Raw transfer amount."
+        description: "Raw owner-net transfer leg amount."
       - &balance_delta
         name: balance_delta
         description: "Signed balance change on this object version."
@@ -162,7 +162,7 @@ models:
         description: "True when ownership changed between consecutive object versions."
       - &transfer_type
         name: transfer_type
-        description: "Object-lifecycle transfer label (for example object_created/object_deleted), not a standalone economic intent label."
+        description: "Object-lifecycle and owner-net leg label (for example object_created, transfer_with_balance_change, ownership_balance_spend/topup)."
       - &is_cross_address_transfer
         name: is_cross_address_transfer
         description: "True when resolved sender and receiver addresses differ."
@@ -174,7 +174,7 @@ models:
         description: "Conservative mint/burn classification derived from treasury/CCTP-like event patterns."
       - &transfer_direction
         name: transfer_direction
-        description: "Direction of balance movement based on balance_delta sign."
+        description: "Direction of owner-net leg movement. Residual owner-net legs map directly to debit/credit; other rows use balance_delta sign."
       - &tx_net_delta
         name: tx_net_delta
         description: "Net signed delta per tx_digest + coin_type across filtered rows."
