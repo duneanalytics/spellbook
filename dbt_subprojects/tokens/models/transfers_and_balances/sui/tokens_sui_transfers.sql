@@ -2,9 +2,9 @@
   config(
     schema = 'tokens_sui',
     alias = 'transfers',
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
+    partition_by = ['block_date'],
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
@@ -13,8 +13,8 @@
   )
 }}
 
--- temporary ci filter: original start date '2023-04-12', bumped to '2026-01-01' to reduce scan and unblock ci run
-{% set sui_transfer_start_date = '2026-01-01' %}
+-- temporary ci filter: original start date '2023-04-12', bumped to '2025-01-01' to reduce scan and unblock ci run
+{% set sui_transfer_start_date = '2025-01-01' %}
 
 with
 

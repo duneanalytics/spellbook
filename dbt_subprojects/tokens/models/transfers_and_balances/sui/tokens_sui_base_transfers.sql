@@ -2,9 +2,9 @@
   config(
     schema = 'tokens_sui',
     alias = 'base_transfers',
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
+    partition_by = ['block_date'],
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
@@ -12,8 +12,8 @@
   )
 }}
 
--- temporary ci filter: original start date '2023-04-12', bumped to '2026-01-01' to reduce scan and unblock ci run
-{% set sui_transfer_start_date = '2026-01-01' %}
+-- temporary ci filter: original start date '2023-04-12', bumped to '2025-01-01' to reduce scan and unblock ci run
+{% set sui_transfer_start_date = '2025-01-01' %}
 
 with
 
@@ -60,11 +60,10 @@ deleted_objects as (
     and {{ incremental_predicate('o.date') }}
     {% endif %}
     and exists (
-    select
-      1
-    from {{ ref('tokens_sui_coin_object_history') }} h
-    where h.object_id = o.object_id
-  )
+      select 1
+      from {{ ref('tokens_sui_coin_object_history') }} h
+      where h.object_id = o.object_id
+    )
 ),
 
 first_window_versions as (
@@ -82,7 +81,7 @@ first_window_versions as (
       dr.version
     from deleted_objects dr
   ) u
-  group by u.object_id
+  group by 1
 ),
 
 history_anchors as (
@@ -103,7 +102,7 @@ history_anchors as (
   inner join first_window_versions f
     on h.object_id = f.object_id
     and h.version < f.first_window_version
-  group by h.object_id
+  group by 1
 ),
 
 object_timeline as (
@@ -248,8 +247,7 @@ required_tx_senders as (
     where p.needs_tx_sender
       and p.passes_cross_filter
       and p.tx_digest is not null
-  ) d
-    on t.transaction_digest = d.tx_digest
+  ) d on t.transaction_digest = d.tx_digest
   where t.date >= date '{{ sui_transfer_start_date }}'
     {% if is_incremental() %}
     and {{ incremental_predicate('t.date') }}
@@ -303,7 +301,7 @@ tx_coin_reconciliation as (
     count(distinct f.prev_owner) filter (where f.prev_owner is not null) as tx_distinct_senders,
     bool_or(f.balance_delta > 0) and bool_or(f.balance_delta < 0) as tx_has_bidirectional_deltas
   from transfer_event_candidates f
-  group by f.tx_digest, f.coin_type
+  group by 1, 2
 )
 
 select
