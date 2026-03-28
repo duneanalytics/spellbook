@@ -245,7 +245,6 @@ required_tx_senders as (
       p.tx_digest
     from cross_address_precheck p
     where p.needs_tx_sender
-      and p.passes_cross_filter
       and p.tx_digest is not null
   ) d on t.transaction_digest = d.tx_digest
   where t.date >= date '{{ sui_transfer_start_date }}'
