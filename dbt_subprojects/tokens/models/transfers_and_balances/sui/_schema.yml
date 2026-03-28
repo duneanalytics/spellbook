@@ -94,6 +94,140 @@ models:
         description: "Normalized supply event label per tx_digest + coin_type ('mint'/'burn'); null when signal directions are ambiguous."
       - *updated_at
 
+  - name: tokens_sui_object_event_deltas
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Coin object lifecycle deltas with ownership-change flags."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Per object_id + version Coin<T> lifecycle features used by downstream direct-transfer and owner-net reconciliation models."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - object_id
+            - version
+    columns:
+      - *block_date
+      - *object_id
+      - *version
+      - *tx_digest
+      - *timestamp_ms
+      - *block_month
+      - *checkpoint
+      - *owner_type
+      - *receiver
+      - *coin_type
+      - *object_status
+      - *coin_balance
+      - name: prev_balance
+        description: "Previous observed balance for the same object."
+      - name: prev_owner
+        description: "Previous observed owner address for the same object."
+      - name: balance_delta
+        description: "Signed balance change on this object version."
+      - name: has_ownership_change
+        description: "True when ownership changed between consecutive object versions."
+      - *updated_at
+
+  - name: tokens_sui_direct_transfers
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Cross-address direct transfer legs before owner-net reconciliation."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Direct cross-address transfer legs derived from object event deltas, including deferred tx sender resolution for Created/unanchored cases."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - *block_date
+      - *unique_key
+      - *object_id
+      - *version
+      - *tx_digest
+      - *timestamp_ms
+      - *block_month
+      - *checkpoint
+      - *owner_type
+      - *receiver
+      - *coin_type
+      - *object_status
+      - *coin_balance
+      - name: prev_balance
+        description: "Previous observed balance for the same object."
+      - name: prev_owner
+        description: "Previous observed owner address for the same object."
+      - name: balance_delta
+        description: "Signed balance change on this object version."
+      - name: has_ownership_change
+        description: "True when ownership changed between consecutive object versions."
+      - &tx_sender
+        name: tx_sender
+        description: "Resolved transaction sender used for cross-address filtering when previous owner is unavailable."
+      - &owner_net_leg
+        name: owner_net_leg
+        description: "Leg type marker for owner-net reconciliation ('direct' in this helper)."
+      - &row_from
+        name: row_from
+        description: "Resolved sender side of the direct transfer leg."
+      - &row_to
+        name: row_to
+        description: "Resolved receiver side of the direct transfer leg."
+      - name: amount_raw
+        description: "Raw owner-net transfer leg amount."
+      - *updated_at
+
+  - name: tokens_sui_owner_net_transfers
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Owner-net transfer legs including residual reconciliation rows."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Owner-net transfer legs formed by combining direct cross-address legs with residual owner deltas so tx+coin owner nets reconcile."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - *block_date
+      - *unique_key
+      - *object_id
+      - *version
+      - *tx_digest
+      - *timestamp_ms
+      - *block_month
+      - *checkpoint
+      - *owner_type
+      - *receiver
+      - *coin_type
+      - *object_status
+      - *coin_balance
+      - name: prev_balance
+        description: "Previous observed balance for the same object."
+      - name: prev_owner
+        description: "Previous observed owner address for the same object."
+      - name: balance_delta
+        description: "Signed balance change on this object version."
+      - name: has_ownership_change
+        description: "True when ownership changed between consecutive object versions."
+      - *tx_sender
+      - *owner_net_leg
+      - *row_from
+      - *row_to
+      - name: amount_raw
+        description: "Raw owner-net transfer leg amount."
+      - *updated_at
+
   - name: tokens_sui_base_transfers
     meta:
       blockchain: sui
