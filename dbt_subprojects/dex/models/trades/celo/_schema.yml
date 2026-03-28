@@ -200,6 +200,25 @@ models:
           seed_file: ref('uniswap_celo_base_trades_seed')
           filter:
             version: 4
+
+  - name: velodrome_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: velodrome
+      contributors: cursor
+    config:
+      tags: [ 'celo', 'dex', 'trades', 'velodrome', 'v2_cl' ]
+    description: "velodrome celo concentrated liquidity base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velodrome_celo_base_trades_seed')
+          filter:
+            version: 2_cl
   - name: dex_celo_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
