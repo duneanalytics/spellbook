@@ -38,15 +38,7 @@ coin_object_history as (
     {% endif %}
 ),
 
--- filter deleted to known coin objects only; without this filter non-coin
--- deleted objects (76% of all deletes) enter the window function and cause
--- a 9x performance regression.
-known_coin_ids as (
-  select distinct
-    h.object_id
-  from {{ ref('tokens_sui_coin_object_history') }} h
-),
-
+-- delete candidates filtered to known coin objects via exists probe
 deleted_objects as (
   select
     o.object_id,
@@ -67,7 +59,12 @@ deleted_objects as (
     {% if is_incremental() %}
     and {{ incremental_predicate('o.date') }}
     {% endif %}
-    and o.object_id in (select k.object_id from known_coin_ids k)
+    and exists (
+    select
+      1
+    from {{ ref('tokens_sui_coin_object_history') }} h
+    where h.object_id = o.object_id
+  )
 ),
 
 first_window_versions as (
