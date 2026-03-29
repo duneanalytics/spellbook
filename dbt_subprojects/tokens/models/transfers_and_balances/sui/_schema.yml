@@ -149,7 +149,8 @@ models:
       - *checkpoint
       - *owner_type
       - *receiver
-      - *coin_type
+      - name: coin_type
+        description: "Normalized full Sui coin type."
       - *object_status
       - *coin_balance
       - &prev_balance
