@@ -293,6 +293,27 @@ models:
       - &to_address
         name: to
         description: "Transfer receiver address."
+      - &from_resolved
+        name: from_resolved
+        description: "Resolved sender address with deterministic fallbacks for one-sided rows; remains null when no reliable counterparty can be inferred."
+      - &from_resolution_type
+        name: from_resolution_type
+        description: "Resolution provenance for from_resolved (observed, derived_tx_sender, derived_prev_owner, mirrored_to, unresolved_null)."
+        data_tests:
+          - not_null
+      - &to_resolved
+        name: to_resolved
+        description: "Resolved receiver address with deterministic fallbacks for one-sided rows; remains null when no reliable counterparty can be inferred."
+      - &to_resolution_type
+        name: to_resolution_type
+        description: "Resolution provenance for to_resolved (observed, derived_tx_sender, derived_prev_owner, mirrored_from, unresolved_null)."
+        data_tests:
+          - not_null
+      - &is_counterparty_assumed
+        name: is_counterparty_assumed
+        description: "True when at least one side of the observed pair is missing and resolved counterparties rely on assumptions."
+        data_tests:
+          - not_null
       - &contract_address
         name: contract_address
         description: "Coin package address."
@@ -364,6 +385,11 @@ models:
       - *tx_from
       - *from_address
       - *to_address
+      - *from_resolved
+      - *from_resolution_type
+      - *to_resolved
+      - *to_resolution_type
+      - *is_counterparty_assumed
       - *contract_address
       - *contract_address_full
       - name: symbol
