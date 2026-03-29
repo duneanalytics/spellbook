@@ -91,11 +91,7 @@ tx_coin_reconciliation as (
   select
     f.tx_digest,
     f.coin_type,
-    -- aggregate in high-precision decimal to avoid bigint overflow on large net-delta txs
-    sum(cast(f.balance_delta as decimal(38, 0))) as tx_net_delta,
-    count(distinct f.receiver) as tx_distinct_receivers,
-    count(distinct f.prev_owner) filter (where f.prev_owner is not null) as tx_distinct_senders,
-    bool_or(f.balance_delta > 0) and bool_or(f.balance_delta < 0) as tx_has_bidirectional_deltas
+    sum(cast(f.balance_delta as decimal(38, 0))) as tx_net_delta
   from transfer_event_candidates f
   group by 1, 2
 )
@@ -106,7 +102,7 @@ select
   f.block_month,
   f.block_date,
   from_unixtime(f.timestamp_ms / 1000) as block_time,
-  f.checkpoint as block_number,
+  f.checkpoint,
   f.tx_digest,
   'sui_coin' as token_standard,
   f.tx_sender as tx_from,
@@ -115,50 +111,38 @@ select
   coalesce(
     f.row_from,
     case
-      when f.tx_sender is not null
-        and f.tx_sender is distinct from f.row_to
-        then f.tx_sender
+      when f.tx_sender is not null and f.tx_sender is distinct from f.row_to then f.tx_sender
       else cast(null as varbinary)
     end,
     case
-      when f.prev_owner is not null
-        and f.prev_owner is distinct from f.row_to
-        then f.prev_owner
+      when f.prev_owner is not null and f.prev_owner is distinct from f.row_to then f.prev_owner
       else cast(null as varbinary)
     end,
     f.row_to
   ) as from_resolved,
   case
     when f.row_from is not null then 'observed'
-    when f.tx_sender is not null
-      and f.tx_sender is distinct from f.row_to then 'derived_tx_sender'
-    when f.prev_owner is not null
-      and f.prev_owner is distinct from f.row_to then 'derived_prev_owner'
+    when f.tx_sender is not null and f.tx_sender is distinct from f.row_to then 'derived_tx_sender'
+    when f.prev_owner is not null and f.prev_owner is distinct from f.row_to then 'derived_prev_owner'
     when f.row_to is not null then 'mirrored_to'
     else 'unresolved_null'
   end as from_resolution_type,
   coalesce(
     f.row_to,
     case
-      when f.tx_sender is not null
-        and f.tx_sender is distinct from f.row_from
-        then f.tx_sender
+      when f.tx_sender is not null and f.tx_sender is distinct from f.row_from then f.tx_sender
       else cast(null as varbinary)
     end,
     case
-      when f.prev_owner is not null
-        and f.prev_owner is distinct from f.row_from
-        then f.prev_owner
+      when f.prev_owner is not null and f.prev_owner is distinct from f.row_from then f.prev_owner
       else cast(null as varbinary)
     end,
     f.row_from
   ) as to_resolved,
   case
     when f.row_to is not null then 'observed'
-    when f.tx_sender is not null
-      and f.tx_sender is distinct from f.row_from then 'derived_tx_sender'
-    when f.prev_owner is not null
-      and f.prev_owner is distinct from f.row_from then 'derived_prev_owner'
+    when f.tx_sender is not null and f.tx_sender is distinct from f.row_from then 'derived_tx_sender'
+    when f.prev_owner is not null and f.prev_owner is distinct from f.row_from then 'derived_prev_owner'
     when f.row_from is not null then 'mirrored_from'
     else 'unresolved_null'
   end as to_resolution_type,
@@ -197,7 +181,6 @@ select
     when f.balance_delta < 0 then 'balance_decrease'
     else 'other'
   end as transfer_type,
-  true as is_cross_address_transfer,
   case
     when supply.supply_event_type = 'mint' and r.tx_net_delta > 0 then true
     when supply.supply_event_type = 'burn' and r.tx_net_delta < 0 then true
@@ -216,9 +199,6 @@ select
     else 'neutral'
   end as transfer_direction,
   r.tx_net_delta,
-  r.tx_distinct_receivers,
-  r.tx_distinct_senders,
-  r.tx_has_bidirectional_deltas,
   current_timestamp as _updated_at
 from owner_net_transfers f
 left join tx_coin_reconciliation r

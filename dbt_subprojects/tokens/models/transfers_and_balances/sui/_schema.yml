@@ -283,9 +283,7 @@ models:
       - &block_time
         name: block_time
         description: "Block timestamp."
-      - &block_number
-        name: block_number
-        description: "Sui checkpoint number."
+      - *checkpoint
       - *tx_digest
       - &token_standard
         name: token_standard
@@ -337,9 +335,6 @@ models:
       - &transfer_type
         name: transfer_type
         description: "Object-lifecycle and owner-net leg label (for example object_created, transfer_with_balance_change, ownership_balance_spend/topup)."
-      - &is_cross_address_transfer
-        name: is_cross_address_transfer
-        description: "True when resolved sender and receiver addresses differ."
       - &is_supply_event
         name: is_supply_event
         description: "True only when supply-event signals and transaction net delta direction agree."
@@ -352,15 +347,6 @@ models:
       - &tx_net_delta
         name: tx_net_delta
         description: "Net signed delta per tx_digest + coin_type across filtered rows."
-      - &tx_distinct_receivers
-        name: tx_distinct_receivers
-        description: "Distinct receiver count per tx_digest + coin_type."
-      - &tx_distinct_senders
-        name: tx_distinct_senders
-        description: "Distinct sender count per tx_digest + coin_type."
-      - &tx_has_bidirectional_deltas
-        name: tx_has_bidirectional_deltas
-        description: "True when both positive and negative balance deltas exist in the same tx_digest + coin_type."
       - *updated_at
 
   - name: tokens_sui_transfers
@@ -383,17 +369,12 @@ models:
       - *blockchain
       - *block_month
       - *block_time
-      - *block_number
+      - *checkpoint
       - *tx_digest
       - *token_standard
       - *tx_from
       - *from_address
       - *to_address
-      - *from_resolved
-      - *from_resolution_type
-      - *to_resolved
-      - *to_resolution_type
-      - *is_counterparty_assumed
       - *contract_address
       - *contract_address_full
       - *symbol
@@ -415,12 +396,7 @@ models:
       - *prev_owner
       - *has_ownership_change
       - *transfer_type
-      - *is_cross_address_transfer
       - *is_supply_event
       - *supply_event_type
       - *transfer_direction
-      - *tx_net_delta
-      - *tx_distinct_receivers
-      - *tx_distinct_senders
-      - *tx_has_bidirectional_deltas
       - *updated_at
