@@ -51,8 +51,8 @@ prices as (
 coin_metadata as (
   select
     lower(m.coin_type) as coin_type,
-    m.coin_symbol,
-    m.coin_decimals
+    m.symbol,
+    m.decimals
   from {{ ref('sui_coin_info') }} m
 ),
 
@@ -87,12 +87,12 @@ transfers as (
     t.is_counterparty_assumed,
     t.contract_address,
     t.contract_address_full,
-    coalesce(m.coin_symbol, p.symbol) as symbol,
-    coalesce(m.coin_decimals, p.decimals) as decimals,
+    coalesce(m.symbol, p.symbol) as symbol,
+    coalesce(m.decimals, p.decimals) as decimals,
     t.amount_raw,
-    t.amount_raw / power(10, coalesce(m.coin_decimals, p.decimals)) as amount,
+    t.amount_raw / power(10, coalesce(m.decimals, p.decimals)) as amount,
     p.price as price_usd,
-    t.amount_raw / power(10, coalesce(m.coin_decimals, p.decimals)) * p.price as amount_usd,
+    t.amount_raw / power(10, coalesce(m.decimals, p.decimals)) * p.price as amount_usd,
     case when tt.contract_address is not null then true else false end as is_trusted_token,
     t.balance_delta,
     t.object_id,

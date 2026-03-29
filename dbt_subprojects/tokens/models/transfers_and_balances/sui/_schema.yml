@@ -20,9 +20,14 @@ models:
         description: "Normalized full Sui coin type."
         data_tests:
           - not_null
-      - name: coin_symbol
+      - &contract_address
+        name: contract_address
+        description: "Normalized package address extracted from coin_type."
+      - &symbol
+        name: symbol
         description: "Coin ticker symbol."
-      - name: coin_decimals
+      - &decimals
+        name: decimals
         description: "Display decimals for the coin."
       - name: checkpoint_latest
         description: "Latest checkpoint observed for this coin metadata row."
@@ -314,9 +319,7 @@ models:
         description: "True when at least one side of the observed pair is missing and resolved counterparties rely on assumptions."
         data_tests:
           - not_null
-      - &contract_address
-        name: contract_address
-        description: "Coin package address."
+      - *contract_address
       - &contract_address_full
         name: contract_address_full
         description: "Full Sui coin type."
@@ -392,10 +395,8 @@ models:
       - *is_counterparty_assumed
       - *contract_address
       - *contract_address_full
-      - name: symbol
-        description: "Token symbol from sui.coin_info, with prices symbol fallback."
-      - name: decimals
-        description: "Token decimals from sui.coin_info, with prices decimals fallback."
+      - *symbol
+      - *decimals
       - *amount_raw
       - name: amount
         description: "Transfer amount scaled by decimals."
