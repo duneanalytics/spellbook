@@ -136,12 +136,14 @@ select
     case
       when f.prev_owner is not null and f.prev_owner is distinct from f.row_from then f.prev_owner
       else cast(null as varbinary)
-    end
+    end,
+    f.row_from
   ) as to_resolved,
   case
     when f.row_to is not null then 'observed'
     when f.tx_sender is not null and f.tx_sender is distinct from f.row_from then 'derived_tx_sender'
     when f.prev_owner is not null and f.prev_owner is distinct from f.row_from then 'derived_prev_owner'
+    when f.row_from is not null then 'mirrored_from'
     else 'unresolved_null'
   end as to_resolution_type,
   case
