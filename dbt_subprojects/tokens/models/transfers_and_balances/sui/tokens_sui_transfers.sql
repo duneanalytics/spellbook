@@ -53,7 +53,7 @@ coin_metadata as (
     lower(m.coin_type) as coin_type,
     m.coin_symbol,
     m.coin_decimals
-  from {{ source('dex_sui', 'coin_info') }} m
+  from {{ ref('sui_coin_info') }} m
 ),
 
 trusted_tokens as (
@@ -77,9 +77,9 @@ transfers as (
     t.block_number,
     t.tx_digest,
     t.token_standard,
-    cast(t.tx_from as varchar) as tx_from,
-    cast(t."from" as varchar) as "from",
-    cast(t.to as varchar) as to,
+    t.tx_from,
+    t."from",
+    t.to,
     t.contract_address,
     t.contract_address_full,
     coalesce(m.coin_symbol, p.symbol) as symbol,
@@ -90,13 +90,13 @@ transfers as (
     t.amount_raw / power(10, coalesce(m.coin_decimals, p.decimals)) * p.price as amount_usd,
     case when tt.contract_address is not null then true else false end as is_trusted_token,
     t.balance_delta,
-    cast(t.object_id as varchar) as object_id,
+    t.object_id,
     t.version,
     t.object_status,
     t.owner_type,
     t.coin_balance,
     t.prev_balance,
-    cast(t.prev_owner as varchar) as prev_owner,
+    t.prev_owner,
     t.has_ownership_change,
     t.transfer_type,
     t.is_cross_address_transfer,

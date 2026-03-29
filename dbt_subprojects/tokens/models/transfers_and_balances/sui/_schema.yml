@@ -1,6 +1,34 @@
 version: 2
 
 models:
+  - name: sui_coin_info
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Canonical Sui coin metadata combining legacy CoinMetadata and coin_registry standards."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Sui coin metadata keyed by coin_type, combining legacy 0x2::coin::CoinMetadata<T> with coin_registry metadata object types and manual fallback rows for backward compatibility."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - coin_type
+    columns:
+      - &coin_type
+        name: coin_type
+        description: "Normalized full Sui coin type."
+        data_tests:
+          - not_null
+      - name: coin_symbol
+        description: "Coin ticker symbol."
+      - name: coin_decimals
+        description: "Display decimals for the coin."
+      - name: checkpoint_latest
+        description: "Latest checkpoint observed for this coin metadata row."
+      - name: version_latest
+        description: "Latest metadata object version observed for this coin metadata row."
+
   - name: tokens_sui_coin_object_history
     meta:
       blockchain: sui
@@ -49,9 +77,7 @@ models:
       - &receiver
         name: receiver
         description: "Owner address at this object version."
-      - &coin_type
-        name: coin_type
-        description: "Full Sui coin type for the object."
+      - *coin_type
       - &object_status
         name: object_status
         description: "Sui object lifecycle status for this version."
@@ -88,8 +114,7 @@ models:
         data_tests:
           - not_null
       - *tx_digest
-      - name: coin_type
-        description: "Normalized Sui coin type for the signal."
+      - *coin_type
       - name: supply_event_type
         description: "Normalized supply event label per tx_digest + coin_type ('mint'/'burn'); null when signal directions are ambiguous."
       - *updated_at
@@ -122,13 +147,17 @@ models:
       - *coin_type
       - *object_status
       - *coin_balance
-      - name: prev_balance
+      - &prev_balance
+        name: prev_balance
         description: "Previous observed balance for the same object."
-      - name: prev_owner
+      - &prev_owner
+        name: prev_owner
         description: "Previous observed owner address for the same object."
-      - name: balance_delta
+      - &balance_delta
+        name: balance_delta
         description: "Signed balance change on this object version."
-      - name: has_ownership_change
+      - &has_ownership_change
+        name: has_ownership_change
         description: "True when ownership changed between consecutive object versions."
       - *updated_at
 
@@ -149,9 +178,11 @@ models:
     columns:
       - *block_date
       - *unique_key
-      - name: object_id
+      - &object_id_nullable
+        name: object_id
         description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
-      - name: version
+      - &version_nullable
+        name: version
         description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
       - *tx_digest
       - *timestamp_ms
@@ -162,14 +193,10 @@ models:
       - *coin_type
       - *object_status
       - *coin_balance
-      - name: prev_balance
-        description: "Previous observed balance for the same object."
-      - name: prev_owner
-        description: "Previous observed owner address for the same object."
-      - name: balance_delta
-        description: "Signed balance change on this object version."
-      - name: has_ownership_change
-        description: "True when ownership changed between consecutive object versions."
+      - *prev_balance
+      - *prev_owner
+      - *balance_delta
+      - *has_ownership_change
       - &tx_sender
         name: tx_sender
         description: "Resolved transaction sender used for cross-address filtering when previous owner is unavailable."
@@ -182,7 +209,8 @@ models:
       - &row_to
         name: row_to
         description: "Resolved receiver side of the direct transfer leg."
-      - name: amount_raw
+      - &amount_raw
+        name: amount_raw
         description: "Raw owner-net transfer leg amount."
       - *updated_at
 
@@ -203,10 +231,8 @@ models:
     columns:
       - *block_date
       - *unique_key
-      - name: object_id
-        description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
-      - name: version
-        description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
+      - *object_id_nullable
+      - *version_nullable
       - *tx_digest
       - *timestamp_ms
       - *block_month
@@ -216,20 +242,15 @@ models:
       - *coin_type
       - *object_status
       - *coin_balance
-      - name: prev_balance
-        description: "Previous observed balance for the same object."
-      - name: prev_owner
-        description: "Previous observed owner address for the same object."
-      - name: balance_delta
-        description: "Signed balance change on this object version."
-      - name: has_ownership_change
-        description: "True when ownership changed between consecutive object versions."
+      - *prev_balance
+      - *prev_owner
+      - *balance_delta
+      - *has_ownership_change
       - *tx_sender
       - *owner_net_leg
       - *row_from
       - *row_to
-      - name: amount_raw
-        description: "Raw owner-net transfer leg amount."
+      - *amount_raw
       - *updated_at
 
   - name: tokens_sui_base_transfers
@@ -278,28 +299,16 @@ models:
       - &contract_address_full
         name: contract_address_full
         description: "Full Sui coin type."
-      - &amount_raw
-        name: amount_raw
-        description: "Raw owner-net transfer leg amount."
-      - &balance_delta
-        name: balance_delta
-        description: "Signed balance change on this object version."
-      - name: object_id
-        description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
-      - name: version
-        description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
+      - *amount_raw
+      - *balance_delta
+      - *object_id_nullable
+      - *version_nullable
       - *object_status
       - *owner_type
       - *coin_balance
-      - &prev_balance
-        name: prev_balance
-        description: "Previous observed balance for the same object."
-      - &prev_owner
-        name: prev_owner
-        description: "Previous observed owner address for the same object."
-      - &has_ownership_change
-        name: has_ownership_change
-        description: "True when ownership changed between consecutive object versions."
+      - *prev_balance
+      - *prev_owner
+      - *has_ownership_change
       - &transfer_type
         name: transfer_type
         description: "Object-lifecycle and owner-net leg label (for example object_created, transfer_with_balance_change, ownership_balance_spend/topup)."
@@ -358,9 +367,9 @@ models:
       - *contract_address
       - *contract_address_full
       - name: symbol
-        description: "Token symbol from dex_sui.coin_info, with prices symbol fallback."
+        description: "Token symbol from sui.coin_info, with prices symbol fallback."
       - name: decimals
-        description: "Token decimals from dex_sui.coin_info, with prices decimals fallback."
+        description: "Token decimals from sui.coin_info, with prices decimals fallback."
       - *amount_raw
       - name: amount
         description: "Transfer amount scaled by decimals."
@@ -369,10 +378,8 @@ models:
       - name: amount_usd
         description: "USD value of transfer amount."
       - *balance_delta
-      - name: object_id
-        description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
-      - name: version
-        description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
+      - *object_id_nullable
+      - *version_nullable
       - *object_status
       - *owner_type
       - *coin_balance

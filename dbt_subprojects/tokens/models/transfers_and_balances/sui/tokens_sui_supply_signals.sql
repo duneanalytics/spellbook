@@ -37,7 +37,7 @@ package_coin_types as (
     lower(split_part(m.coin_type, '::', 1)) as package_address,
     min(lower(m.coin_type)) as resolved_coin_type,
     count(distinct lower(m.coin_type)) as coin_type_count
-  from {{ source('dex_sui', 'coin_info') }} m
+  from {{ ref('sui_coin_info') }} m
   group by 1
 ),
 
