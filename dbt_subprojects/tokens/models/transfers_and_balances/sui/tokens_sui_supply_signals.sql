@@ -22,6 +22,11 @@ events_filtered as (
     e.transaction_digest as tx_digest,
     lower(e.event_type) as event_type_lower,
     regexp_extract(lower(e.event_type), '^(0x[0-9a-f]+)::', 1) as package_address,
+    regexp_replace(
+      regexp_extract(lower(e.event_type), '^(0x[0-9a-f]+)::', 1),
+      '^0x0*([0-9a-f]+)$',
+      '0x$1'
+    ) as package_address_normalized,
     regexp_extract(lower(e.event_type), '^0x[0-9a-f]+::([^:]+)::', 1) as module_name,
     regexp_extract(lower(e.event_type), '^0x[0-9a-f]+::[^:]+::([^<]+)', 1) as event_name,
     regexp_extract(lower(e.event_type), 'treasury::(?:mint|burn)<([^>]+)>', 1) as generic_coin_type
@@ -68,7 +73,7 @@ package_treasury_signals as (
     'treasury_package' as signal_source
   from events_filtered e
   inner join package_coin_types p
-    on e.package_address = p.package_address
+    on e.package_address_normalized = p.package_address
   where e.module_name = 'treasury'
     and e.event_name in ('mint', 'burn')
     -- ambiguous package->coin mappings are excluded intentionally because they
