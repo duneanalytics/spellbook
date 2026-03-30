@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: tempoexchange_tempo
+    tables:
+      - name: stablecoindex_call_swapexactamountin
+      - name: stablecoindex_call_swapexactamountout
+      - name: stablecoindex_evt_paircreated
