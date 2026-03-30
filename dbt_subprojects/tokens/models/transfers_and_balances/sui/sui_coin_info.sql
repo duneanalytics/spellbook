@@ -11,7 +11,14 @@
 }}
 
 -- temp filter to unblock ci run (original start date '2023-04-12')
-{% set sui_transfer_start_date = '2025-01-01' %}
+{% set sui_transfer_start_date = '2026-01-01' %}
+
+-- source priority (highest to lowest):
+-- 1) manual overrides
+-- 2) 0x2::coin_registry::Currency<T>
+-- 3) 0x2::coin_registry::CoinData<T>
+-- 4) 0x2::coin::CoinMetadata<T>
+-- for the same priority, latest checkpoint/version wins.
 
 with
 
@@ -31,25 +38,21 @@ objects_base as (
     and o.object_status in ('Created', 'Mutated')
     and o.date >= date '{{ sui_transfer_start_date }}'
     {% if is_incremental() %}
-    and o.checkpoint > coalesce((select max(t.checkpoint_latest) from {{ this }} t), 0)
+    and {{ incremental_predicate('o.date') }}
     {% endif %}
 ),
 
-metadata_prep as (
+metadata_candidates as (
   select
-    r.type_tag,
-    r.object_json,
-    r.checkpoint,
-    r.version,
     regexp_replace(
-      lower(regexp_extract(r.type_tag, '<(.*)>', 1)),
+      lower(regexp_extract(o.type_tag, '<(.*)>', 1)),
       '^0x0*([0-9a-f]+)(::.*)$',
       '0x$1$2'
     ) as coin_type,
     regexp_replace(
       split_part(
         regexp_replace(
-          lower(regexp_extract(r.type_tag, '<(.*)>', 1)),
+          lower(regexp_extract(o.type_tag, '<(.*)>', 1)),
           '^0x0*([0-9a-f]+)(::.*)$',
           '0x$1$2'
         ),
@@ -58,125 +61,36 @@ metadata_prep as (
       ),
       '^0x0*([0-9a-f]+)$',
       '0x$1'
-    ) as contract_address
-  from objects_base r
-),
-
-legacy_metadata as (
-  select
-    r.coin_type,
-    r.contract_address,
-    cast(json_extract_scalar(r.object_json, '$.symbol') as varchar) as symbol,
-    try_cast(json_extract_scalar(r.object_json, '$.decimals') as integer) as decimals,
-    r.checkpoint as checkpoint_latest,
-    r.version as version_latest,
-    1 as source_priority
-  from metadata_prep r
-  where r.type_tag like '0x2::coin::CoinMetadata<%'
-),
-
-registry_metadata as (
-  select
-    r.coin_type,
-    r.contract_address,
+    ) as contract_address,
     cast(
-      coalesce(
-        json_extract_scalar(r.object_json, '$.symbol'),
-        json_extract_scalar(r.object_json, '$.currency.symbol'),
-        json_extract_scalar(r.object_json, '$.metadata.symbol')
-      ) as varchar
+      case
+        when o.type_tag like '0x2::coin::CoinMetadata<%' then json_extract_scalar(o.object_json, '$.symbol')
+        else coalesce(
+          json_extract_scalar(o.object_json, '$.symbol'),
+          json_extract_scalar(o.object_json, '$.currency.symbol'),
+          json_extract_scalar(o.object_json, '$.metadata.symbol')
+        )
+      end as varchar
     ) as symbol,
     try_cast(
-      coalesce(
-        json_extract_scalar(r.object_json, '$.decimals'),
-        json_extract_scalar(r.object_json, '$.currency.decimals'),
-        json_extract_scalar(r.object_json, '$.metadata.decimals')
-      ) as integer
+      case
+        when o.type_tag like '0x2::coin::CoinMetadata<%' then json_extract_scalar(o.object_json, '$.decimals')
+        else coalesce(
+          json_extract_scalar(o.object_json, '$.decimals'),
+          json_extract_scalar(o.object_json, '$.currency.decimals'),
+          json_extract_scalar(o.object_json, '$.metadata.decimals')
+        )
+      end as integer
     ) as decimals,
-    r.checkpoint as checkpoint_latest,
-    r.version as version_latest,
+    o.checkpoint as checkpoint_latest,
+    o.version as version_latest,
     case
-      when r.type_tag like '0x2::coin_registry::Currency<%' then 3
-      else 2
+      when o.type_tag like '0x2::coin_registry::Currency<%' then 3
+      when o.type_tag like '0x2::coin_registry::CoinData<%' then 2
+      else 1
     end as source_priority
-  from metadata_prep r
-  where r.type_tag like '0x2::coin_registry::Currency<%'
-    or r.type_tag like '0x2::coin_registry::CoinData<%'
-),
-
-candidates as (
-  select
-    coin_type,
-    contract_address,
-    symbol,
-    decimals,
-    checkpoint_latest,
-    version_latest,
-    source_priority
-  from legacy_metadata
-  where coin_type is not null
-  union all
-  select
-    coin_type,
-    contract_address,
-    symbol,
-    decimals,
-    checkpoint_latest,
-    version_latest,
-    source_priority
-  from registry_metadata
-  where coin_type is not null
-),
-
-merged_candidates as (
-  select
-    n.coin_type,
-    n.contract_address,
-    n.symbol,
-    n.decimals,
-    n.checkpoint_latest,
-    n.version_latest,
-    n.source_priority
-  from candidates n
-  {% if is_incremental() %}
-  union all
-  select
-    t.coin_type,
-    t.contract_address,
-    t.symbol,
-    t.decimals,
-    t.checkpoint_latest,
-    t.version_latest,
-    0 as source_priority
-  from {{ this }} t
-  {% endif %}
-),
-
-ranked_candidates as (
-  select
-    u.coin_type,
-    u.contract_address,
-    u.symbol,
-    u.decimals,
-    u.checkpoint_latest,
-    u.version_latest,
-    row_number() over (
-      partition by u.coin_type
-      order by u.checkpoint_latest desc, u.version_latest desc, u.source_priority desc
-    ) as rn
-  from merged_candidates u
-),
-
-latest_metadata as (
-  select
-    r.coin_type,
-    r.contract_address,
-    r.symbol,
-    r.decimals,
-    r.checkpoint_latest,
-    r.version_latest
-  from ranked_candidates r
-  where r.rn = 1
+  from objects_base o
+  where regexp_extract(o.type_tag, '<(.*)>', 1) is not null
 ),
 
 manual_metadata as (
@@ -184,31 +98,58 @@ manual_metadata as (
     m.coin_type,
     regexp_replace(split_part(m.coin_type, '::', 1), '^0x0*([0-9a-f]+)$', '0x$1') as contract_address,
     m.symbol,
-    m.decimals
+    m.decimals,
+    cast(null as bigint) as checkpoint_latest,
+    cast(null as bigint) as version_latest,
+    4 as source_priority
   from (
     values
       (lower('0x2::sui::SUI'), 'SUI', 9),
       (lower('0x27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'), 'BTC', 8)
   ) as m(coin_type, symbol, decimals)
+),
+
+ranked as (
+  select
+    c.coin_type,
+    c.contract_address,
+    c.symbol,
+    c.decimals,
+    c.checkpoint_latest,
+    c.version_latest,
+    row_number() over (
+      partition by c.coin_type
+      order by c.source_priority desc, c.checkpoint_latest desc, c.version_latest desc
+    ) as rn
+  from (
+    select
+      c.coin_type,
+      c.contract_address,
+      c.symbol,
+      c.decimals,
+      c.checkpoint_latest,
+      c.version_latest,
+      c.source_priority
+    from metadata_candidates c
+    union all
+    select
+      m.coin_type,
+      m.contract_address,
+      m.symbol,
+      m.decimals,
+      m.checkpoint_latest,
+      m.version_latest,
+      m.source_priority
+    from manual_metadata m
+  ) c
 )
 
 select
-  l.coin_type,
-  l.contract_address,
-  l.symbol,
-  l.decimals,
-  l.checkpoint_latest,
-  l.version_latest
-from latest_metadata l
-union all
-select
-  m.coin_type,
-  m.contract_address,
-  m.symbol,
-  m.decimals,
-  cast(null as bigint) as checkpoint_latest,
-  cast(null as bigint) as version_latest
-from manual_metadata m
-left join latest_metadata l
-  on l.coin_type = m.coin_type
-where l.coin_type is null
+  r.coin_type,
+  r.contract_address,
+  r.symbol,
+  r.decimals,
+  r.checkpoint_latest,
+  r.version_latest
+from ranked r
+where r.rn = 1
