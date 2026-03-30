@@ -10,31 +10,13 @@
     )
 }}
 
-{% set clpool_evt_swap %}
-(
-    select
-        *
-    from {{ source('velodrome_v2_multichain', 'clpool_evt_swap') }}
-    where chain = 'celo'
-)
-{% endset %}
-
-{% set clfactory_evt_poolcreated %}
-(
-    select
-        *
-    from {{ source('velodrome_multichain', 'clfactory_evt_poolcreated') }}
-    where chain = 'celo'
-)
-{% endset %}
-
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'celo',
         project = 'velodrome',
         version = '2_cl',
-        Pair_evt_Swap = clpool_evt_swap,
-        Factory_evt_PoolCreated = clfactory_evt_poolcreated,
+        Pair_evt_Swap = source('velodrome_v2_celo', 'clpool_evt_swap'),
+        Factory_evt_PoolCreated = source('velodrome_celo', 'clfactory_evt_poolcreated'),
         optional_columns = []
     )
 }}
