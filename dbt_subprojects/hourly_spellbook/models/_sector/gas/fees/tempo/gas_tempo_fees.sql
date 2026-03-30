@@ -34,7 +34,8 @@ WITH base_model as (
             then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})])
             else map(array['base_fee','priority_fee'],
                      array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})
-                            ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})]
+                            ,(cast(gas_price as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}}
+                              - cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})]
                      )
         end as tx_fee_breakdown_raw
         ,blocks.miner AS block_proposer
