@@ -34,6 +34,6 @@ sources:
   - name: velodrome_v2_celo
     tables:
       - name: clpool_evt_swap
-  - name: velodrome_celo
+  - name: velodrome_v2_celo
     tables:
-      - name: clfactory_evt_poolcreated
+      - name: poolfactory_evt_poolcreated
