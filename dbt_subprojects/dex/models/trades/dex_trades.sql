@@ -110,6 +110,8 @@ WITH chain_trades AS (
     {%- else -%}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
+    {% else %}
+    WHERE block_time >= now() - interval '14' day -- temp CI filter, revert before merge
     {% endif %}
     {%- endif %}
     {% if not loop.last %}
@@ -152,6 +154,8 @@ WITH chain_trades AS (
     {%- else -%}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
+    {% else %}
+    WHERE block_time >= now() - interval '14' day -- temp CI filter, revert before merge
     {% endif %}
     {%- endif %}
     {% if not loop.last %}
