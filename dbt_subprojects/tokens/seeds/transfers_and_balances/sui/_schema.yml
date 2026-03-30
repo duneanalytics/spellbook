@@ -1,0 +1,13 @@
+version: 2
+
+seeds:
+  - name: tokens_sui_object_event_deltas_anchor_seed
+    config:
+      column_types:
+        block_date: date
+        object_id: varbinary
+        version: uint256
+        object_status: varchar
+        prev_owner: varbinary
+        prev_balance: uint256
+        has_ownership_change: boolean

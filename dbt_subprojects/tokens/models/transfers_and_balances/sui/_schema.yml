@@ -139,6 +139,17 @@ models:
             - block_date
             - object_id
             - version
+      - check_seed:
+          seed_file: ref('tokens_sui_object_event_deltas_anchor_seed')
+          match_columns:
+            - block_date
+            - object_id
+            - version
+          check_columns:
+            - object_status
+            - prev_owner
+            - prev_balance
+            - has_ownership_change
     columns:
       - *block_date
       - *object_id

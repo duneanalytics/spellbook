@@ -65,24 +65,6 @@ deleted_objects as (
     )
 ),
 
-first_window_versions as (
-  select
-    u.object_id,
-    min(u.version) as first_window_version
-  from (
-    select
-      d.object_id,
-      d.version
-    from coin_object_history d
-    union all
-    select
-      dr.object_id,
-      dr.version
-    from deleted_objects dr
-  ) u
-  group by 1
-),
-
 history_anchors as (
   select
     h.object_id,
@@ -98,57 +80,22 @@ history_anchors as (
     cast('ANCHOR' as varchar) as object_status,
     max_by(h.coin_balance, h.version) as coin_balance
   from {{ ref('tokens_sui_coin_object_history') }} h
-  inner join first_window_versions f
-    on h.object_id = f.object_id
-    and h.version < f.first_window_version
+  inner join (
+    select w.object_id
+    from (
+      select object_id from coin_object_history 
+      union all
+      select object_id from deleted_objects
+    ) w
+    group by 1
+  ) f on h.object_id = f.object_id
+  where 1 = 1
+    {% if is_incremental() %}
+    and not {{ incremental_predicate('h.block_date') }}
+    {% else %}
+    and h.block_date < date '{{ sui_transfer_start_date }}'
+    {% endif %}
   group by 1
-),
-
-object_timeline as (
-  select
-    a.object_id,
-    a.version,
-    a.tx_digest,
-    a.timestamp_ms,
-    a.block_date,
-    a.block_month,
-    a.checkpoint,
-    a.owner_type,
-    a.receiver,
-    a.coin_type,
-    a.object_status,
-    a.coin_balance
-  from history_anchors a
-  union all
-  select
-    d.object_id,
-    d.version,
-    d.tx_digest,
-    d.timestamp_ms,
-    d.block_date,
-    d.block_month,
-    d.checkpoint,
-    d.owner_type,
-    d.receiver,
-    d.coin_type,
-    d.object_status,
-    d.coin_balance
-  from coin_object_history d
-  union all
-  select
-    dr.object_id,
-    dr.version,
-    dr.tx_digest,
-    dr.timestamp_ms,
-    dr.block_date,
-    dr.block_month,
-    dr.checkpoint,
-    dr.owner_type,
-    dr.receiver,
-    dr.coin_type,
-    dr.object_status,
-    dr.coin_balance
-  from deleted_objects dr
 ),
 
 object_state_deltas as (
@@ -171,54 +118,39 @@ object_state_deltas as (
     u.coin_balance,
     lag(u.receiver) over w as prev_owner,
     lag(u.coin_balance) over w as prev_balance
-  from object_timeline u
+  from (
+    select * from history_anchors
+    union all
+    select * from coin_object_history
+    union all
+    select * from deleted_objects
+  ) u
   window w as (partition by u.object_id order by u.version)
-),
-
-transfer_event_features as (
-  select
-    c.object_id,
-    c.version,
-    c.tx_digest,
-    c.timestamp_ms,
-    c.block_date,
-    c.block_month,
-    c.checkpoint,
-    c.owner_type,
-    c.receiver,
-    c.coin_type,
-    c.object_status,
-    c.coin_balance,
-    c.prev_owner,
-    c.prev_balance,
-    c.coin_balance - coalesce(c.prev_balance, 0) as balance_delta,
-    case
-      when c.object_status in ('Created', 'Deleted') then false
-      when c.object_status = 'Mutated'
-        and c.prev_owner is not null
-        and c.prev_owner != c.receiver then true
-      else false
-    end as has_ownership_change
-  from object_state_deltas c
-  where c.object_status != 'ANCHOR'
 )
 
 select
-  f.object_id,
-  f.version,
-  f.tx_digest,
-  f.timestamp_ms,
-  f.block_date,
-  f.block_month,
-  f.checkpoint,
-  f.owner_type,
-  f.receiver,
-  f.coin_type,
-  f.object_status,
-  f.coin_balance,
-  f.prev_owner,
-  f.prev_balance,
-  f.balance_delta,
-  f.has_ownership_change,
+  c.object_id,
+  c.version,
+  c.tx_digest,
+  c.timestamp_ms,
+  c.block_date,
+  c.block_month,
+  c.checkpoint,
+  c.owner_type,
+  c.receiver,
+  c.coin_type,
+  c.object_status,
+  c.coin_balance,
+  c.prev_owner,
+  c.prev_balance,
+  c.coin_balance - coalesce(c.prev_balance, 0) as balance_delta,
+  case
+    when c.object_status in ('Created', 'Deleted') then false
+    when c.object_status = 'Mutated'
+      and c.prev_owner is not null
+      and c.prev_owner != c.receiver then true
+    else false
+  end as has_ownership_change,
   current_timestamp as _updated_at
-from transfer_event_features f
+from object_state_deltas c
+where c.object_status != 'ANCHOR'
