@@ -192,6 +192,18 @@ models:
           combination_of_columns:
             - block_date
             - unique_key
+      - check_seed:
+          seed_file: ref('tokens_sui_direct_transfers_deleted_seed')
+          match_columns:
+            - block_date
+            - object_id
+            - version
+          check_columns:
+            - object_status
+            - transfer_from
+            - transfer_to
+            - amount_raw
+            - owner_net_leg
     columns:
       - *block_date
       - *unique_key
@@ -220,11 +232,11 @@ models:
       - &owner_net_leg
         name: owner_net_leg
         description: "Leg type marker for owner-net reconciliation ('direct' in this helper)."
-      - &row_from
-        name: row_from
+      - &transfer_from
+        name: transfer_from
         description: "Resolved sender side of the direct transfer leg."
-      - &row_to
-        name: row_to
+      - &transfer_to
+        name: transfer_to
         description: "Resolved receiver side of the direct transfer leg."
       - &amount_raw
         name: amount_raw
@@ -265,8 +277,8 @@ models:
       - *has_ownership_change
       - *tx_sender
       - *owner_net_leg
-      - *row_from
-      - *row_to
+      - *transfer_from
+      - *transfer_to
       - *amount_raw
       - *updated_at
 

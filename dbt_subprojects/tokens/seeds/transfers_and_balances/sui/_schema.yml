@@ -11,3 +11,15 @@ seeds:
         prev_owner: varbinary
         prev_balance: uint256
         has_ownership_change: boolean
+
+  - name: tokens_sui_direct_transfers_deleted_seed
+    config:
+      column_types:
+        block_date: date
+        object_id: varbinary
+        version: uint256
+        object_status: varchar
+        transfer_from: varbinary
+        transfer_to: varbinary
+        amount_raw: uint256
+        owner_net_leg: varchar

@@ -38,8 +38,8 @@ owner_net_transfers as (
     f.has_ownership_change,
     f.tx_sender,
     f.owner_net_leg,
-    f.row_from,
-    f.row_to,
+    f.transfer_from,
+    f.transfer_to,
     f.amount_raw
   from {{ ref('tokens_sui_owner_net_transfers') }} f
   where f.block_date >= date '{{ sui_transfer_start_date }}'
@@ -106,48 +106,48 @@ select
   f.tx_digest,
   'sui_coin' as token_standard,
   f.tx_sender as tx_from,
-  f.row_from as "from",
-  f.row_to as to,
+  f.transfer_from as "from",
+  f.transfer_to as to,
   coalesce(
-    f.row_from,
+    f.transfer_from,
     case
-      when f.tx_sender is not null and f.tx_sender is distinct from f.row_to then f.tx_sender
+      when f.tx_sender is not null and f.tx_sender is distinct from f.transfer_to then f.tx_sender
       else cast(null as varbinary)
     end,
     case
-      when f.prev_owner is not null and f.prev_owner is distinct from f.row_to then f.prev_owner
+      when f.prev_owner is not null and f.prev_owner is distinct from f.transfer_to then f.prev_owner
       else cast(null as varbinary)
     end,
-    f.row_to
+    f.transfer_to
   ) as from_resolved,
   case
-    when f.row_from is not null then 'observed'
-    when f.tx_sender is not null and f.tx_sender is distinct from f.row_to then 'derived_tx_sender'
-    when f.prev_owner is not null and f.prev_owner is distinct from f.row_to then 'derived_prev_owner'
-    when f.row_to is not null then 'mirrored_to'
+    when f.transfer_from is not null then 'observed'
+    when f.tx_sender is not null and f.tx_sender is distinct from f.transfer_to then 'derived_tx_sender'
+    when f.prev_owner is not null and f.prev_owner is distinct from f.transfer_to then 'derived_prev_owner'
+    when f.transfer_to is not null then 'mirrored_to'
     else 'unresolved_null'
   end as from_resolution_type,
   coalesce(
-    f.row_to,
+    f.transfer_to,
     case
-      when f.tx_sender is not null and f.tx_sender is distinct from f.row_from then f.tx_sender
+      when f.tx_sender is not null and f.tx_sender is distinct from f.transfer_from then f.tx_sender
       else cast(null as varbinary)
     end,
     case
-      when f.prev_owner is not null and f.prev_owner is distinct from f.row_from then f.prev_owner
+      when f.prev_owner is not null and f.prev_owner is distinct from f.transfer_from then f.prev_owner
       else cast(null as varbinary)
     end,
-    f.row_from
+    f.transfer_from
   ) as to_resolved,
   case
-    when f.row_to is not null then 'observed'
-    when f.tx_sender is not null and f.tx_sender is distinct from f.row_from then 'derived_tx_sender'
-    when f.prev_owner is not null and f.prev_owner is distinct from f.row_from then 'derived_prev_owner'
-    when f.row_from is not null then 'mirrored_from'
+    when f.transfer_to is not null then 'observed'
+    when f.tx_sender is not null and f.tx_sender is distinct from f.transfer_from then 'derived_tx_sender'
+    when f.prev_owner is not null and f.prev_owner is distinct from f.transfer_from then 'derived_prev_owner'
+    when f.transfer_from is not null then 'mirrored_from'
     else 'unresolved_null'
   end as to_resolution_type,
   case
-    when f.row_from is not null and f.row_to is not null then false
+    when f.transfer_from is not null and f.transfer_to is not null then false
     else true
   end as is_counterparty_assumed,
   regexp_replace(

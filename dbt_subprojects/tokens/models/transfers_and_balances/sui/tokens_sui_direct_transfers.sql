@@ -17,54 +17,6 @@
 
 with
 
-transfer_event_features as (
-  select
-    f.object_id,
-    f.version,
-    f.tx_digest,
-    f.timestamp_ms,
-    f.block_date,
-    f.block_month,
-    f.checkpoint,
-    f.owner_type,
-    f.receiver,
-    f.coin_type,
-    f.object_status,
-    f.coin_balance,
-    f.prev_owner,
-    f.prev_balance,
-    f.balance_delta,
-    f.has_ownership_change
-  from {{ ref('tokens_sui_object_event_deltas') }} f
-  where f.block_date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('f.block_date') }}
-    {% endif %}
-),
-
-transfer_event_candidates as (
-  select
-    f.object_id,
-    f.version,
-    f.tx_digest,
-    f.timestamp_ms,
-    f.block_date,
-    f.block_month,
-    f.checkpoint,
-    f.owner_type,
-    f.receiver,
-    f.coin_type,
-    f.object_status,
-    f.coin_balance,
-    f.prev_owner,
-    f.prev_balance,
-    f.balance_delta,
-    f.has_ownership_change
-  from transfer_event_features f
-  where f.balance_delta != 0
-    or f.has_ownership_change
-),
-
 cross_address_precheck as (
   select
     f.object_id,
@@ -83,16 +35,17 @@ cross_address_precheck as (
     f.prev_balance,
     f.balance_delta,
     f.has_ownership_change,
-    case
-      when f.prev_owner is not null
-        then (f.prev_owner is distinct from f.receiver)
-      else true
-    end as passes_cross_filter,
-    case
-      when f.object_status = 'Created' or f.prev_owner is null then true
-      else false
-    end as needs_tx_sender
-  from transfer_event_candidates f
+    (f.prev_owner is null or f.prev_owner is distinct from f.receiver) as passes_cross_filter,
+    (f.object_status = 'Created' or f.prev_owner is null) as needs_tx_sender
+  from {{ ref('tokens_sui_object_event_deltas') }} f
+  where f.block_date >= date '{{ sui_transfer_start_date }}'
+    and (
+      f.balance_delta != 0
+      or f.has_ownership_change
+    )
+    {% if is_incremental() %}
+    and {{ incremental_predicate('f.block_date') }}
+    {% endif %}
 ),
 
 required_tx_senders as (
@@ -170,43 +123,10 @@ cross_address_transfers as (
         and coalesce(p.prev_owner, s.tx_sender) is distinct from p.receiver
       )
     )
-),
-
-direct_transfer_rows as (
-  select
-    f.object_id,
-    f.version,
-    f.tx_digest,
-    f.timestamp_ms,
-    f.block_date,
-    f.block_month,
-    f.checkpoint,
-    f.owner_type,
-    f.receiver,
-    f.coin_type,
-    f.object_status,
-    f.coin_balance,
-    f.prev_owner,
-    f.prev_balance,
-    f.balance_delta,
-    f.has_ownership_change,
-    f.tx_sender,
-    cast('direct' as varchar) as owner_net_leg,
-    case
-      when f.object_status = 'Created' then f.tx_sender
-      else coalesce(f.prev_owner, f.tx_sender)
-    end as row_from,
-    f.receiver as row_to,
-    case
-      when f.object_status = 'Created' then f.coin_balance
-      when f.has_ownership_change then f.coin_balance
-      else abs(f.balance_delta)
-    end as amount_raw
-  from cross_address_transfers f
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', 'f.owner_net_leg', 'f.row_from', 'f.row_to', 'f.object_id', 'f.version']) }} as unique_key,
+  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', "cast('direct' as varchar)", "case when f.object_status = 'Created' then f.tx_sender else coalesce(f.prev_owner, f.tx_sender) end", 'f.receiver', 'f.object_id', 'f.version']) }} as unique_key,
   f.object_id,
   f.version,
   f.tx_digest,
@@ -224,9 +144,15 @@ select
   f.balance_delta,
   f.has_ownership_change,
   f.tx_sender,
-  f.owner_net_leg,
-  f.row_from,
-  f.row_to,
-  f.amount_raw,
+  cast('direct' as varchar) as owner_net_leg,
+  case
+    when f.object_status = 'Created' then f.tx_sender
+    else coalesce(f.prev_owner, f.tx_sender)
+  end as transfer_from,
+  f.receiver as transfer_to,
+  case
+    when f.object_status = 'Created' or f.has_ownership_change then f.coin_balance
+    else abs(f.balance_delta)
+  end as amount_raw,
   current_timestamp as _updated_at
-from direct_transfer_rows f
+from cross_address_transfers f

@@ -62,8 +62,8 @@ direct_transfer_rows as (
     d.has_ownership_change,
     d.tx_sender,
     d.owner_net_leg,
-    d.row_from,
-    d.row_to,
+    d.transfer_from,
+    d.transfer_to,
     d.amount_raw
   from {{ ref('tokens_sui_direct_transfers') }} d
   where d.block_date >= date '{{ sui_transfer_start_date }}'
@@ -142,19 +142,19 @@ owner_direct_delta_rows as (
   select
     d.tx_digest,
     d.coin_type,
-    d.row_from as owner,
+    d.transfer_from as owner,
     cast(-d.amount_raw as decimal(38, 0)) as owner_delta_raw
   from direct_transfer_rows d
-  where d.row_from is not null
+  where d.transfer_from is not null
     and d.amount_raw != 0
   union all
   select
     d.tx_digest,
     d.coin_type,
-    d.row_to as owner,
+    d.transfer_to as owner,
     cast(d.amount_raw as decimal(38, 0)) as owner_delta_raw
   from direct_transfer_rows d
-  where d.row_to is not null
+  where d.transfer_to is not null
     and d.amount_raw != 0
 ),
 
@@ -232,11 +232,11 @@ owner_residual_transfers as (
     case
       when r.residual_delta_raw < 0 then r.owner
       else cast(null as varbinary)
-    end as row_from,
+    end as transfer_from,
     case
       when r.residual_delta_raw > 0 then r.owner
       else cast(null as varbinary)
-    end as row_to,
+    end as transfer_to,
     abs(r.residual_delta_raw) as amount_raw
   from owner_residual_net r
   inner join tx_coin_context c
@@ -265,8 +265,8 @@ owner_net_transfers as (
     d.has_ownership_change,
     d.tx_sender,
     d.owner_net_leg,
-    d.row_from,
-    d.row_to,
+    d.transfer_from,
+    d.transfer_to,
     d.amount_raw
   from direct_transfer_rows d
   union all
@@ -289,14 +289,14 @@ owner_net_transfers as (
     r.has_ownership_change,
     r.tx_sender,
     r.owner_net_leg,
-    r.row_from,
-    r.row_to,
+    r.transfer_from,
+    r.transfer_to,
     r.amount_raw
   from owner_residual_transfers r
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', 'f.owner_net_leg', 'f.row_from', 'f.row_to', 'f.object_id', 'f.version']) }} as unique_key,
+  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', 'f.owner_net_leg', 'f.transfer_from', 'f.transfer_to', 'f.object_id', 'f.version']) }} as unique_key,
   f.object_id,
   f.version,
   f.tx_digest,
@@ -315,8 +315,8 @@ select
   f.has_ownership_change,
   f.tx_sender,
   f.owner_net_leg,
-  f.row_from,
-  f.row_to,
+  f.transfer_from,
+  f.transfer_to,
   f.amount_raw,
   current_timestamp as _updated_at
 from owner_net_transfers f
