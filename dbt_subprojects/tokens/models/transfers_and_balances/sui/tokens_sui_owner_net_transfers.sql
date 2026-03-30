@@ -177,7 +177,7 @@ tx_coin_context as (
     max_by(d.block_date, d.timestamp_ms) as block_date,
     max(d.timestamp_ms) as timestamp_ms,
     max_by(d.checkpoint, d.timestamp_ms) as checkpoint,
-    max_by(d.tx_sender, d.timestamp_ms) as tx_sender
+    max(d.tx_sender) as tx_sender
   from direct_transfers d
   group by 1, 2
 ),
