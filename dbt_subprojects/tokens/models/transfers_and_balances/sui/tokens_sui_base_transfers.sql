@@ -48,33 +48,6 @@ owner_net_transfers as (
     {% endif %}
 ),
 
-transfer_event_features as (
-  select
-    f.tx_digest,
-    f.coin_type,
-    f.balance_delta,
-    f.receiver,
-    f.prev_owner,
-    f.has_ownership_change
-  from {{ ref('tokens_sui_object_event_deltas') }} f
-  where f.block_date >= date '{{ sui_transfer_start_date }}'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('f.block_date') }}
-    {% endif %}
-),
-
-transfer_event_candidates as (
-  select
-    f.tx_digest,
-    f.coin_type,
-    f.balance_delta,
-    f.receiver,
-    f.prev_owner
-  from transfer_event_features f
-  where f.balance_delta != 0
-    or f.has_ownership_change
-),
-
 supply_signals as (
   select
     s.tx_digest,
@@ -92,7 +65,15 @@ tx_coin_reconciliation as (
     f.tx_digest,
     f.coin_type,
     sum(cast(f.balance_delta as decimal(38, 0))) as tx_net_delta
-  from transfer_event_candidates f
+  from {{ ref('tokens_sui_object_event_deltas') }} f
+  where f.block_date >= date '{{ sui_transfer_start_date }}'
+    and (
+      f.balance_delta != 0
+      or f.has_ownership_change
+    )
+    {% if is_incremental() %}
+    and {{ incremental_predicate('f.block_date') }}
+    {% endif %}
   group by 1, 2
 )
 

@@ -28,7 +28,7 @@ seeds:
     config:
       column_types:
         block_date: date
-        tx_digest: varbinary
+        tx_digest: varchar
         coin_type: varchar
         object_id: varbinary
         version: uint256
@@ -40,3 +40,18 @@ seeds:
         prev_balance: uint256
         object_status: varchar
         has_ownership_change: boolean
+
+  - name: tokens_sui_base_transfers_seed
+    config:
+      column_types:
+        block_date: date
+        unique_key: varchar
+        transfer_type: varchar
+        object_status: varchar
+        has_ownership_change: boolean
+        transfer_direction: varchar
+        amount_raw: uint256
+        is_supply_event: boolean
+        supply_event_type: varchar
+        tx_net_delta: int256
+        contract_address_full: varchar

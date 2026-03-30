@@ -1,5 +1,20 @@
--- What it checks: for objects with pre-window history and in-window events, 
--- the first in-window non-Created row must have non-null prev_balance (anchor stitching check).
+-- Boundary-anchor invariant for object-event deltas.
+--
+-- Purpose:
+-- Ensure incremental window stitching preserves prior object state when an object
+-- has pre-window history and receives in-window events.
+--
+-- Scope note:
+-- The test targets objects that appear in the incremental window and also have
+-- history outside that window, then inspects the first in-window event row.
+--
+-- Invariant:
+-- For first in-window rows that are not `Created`, `prev_balance` must be non-null
+-- (i.e. an anchor state was successfully carried forward).
+--
+-- Failure interpretation:
+-- Any returned row means anchor reconstruction failed for that object boundary,
+-- which can distort downstream deltas/transfer derivation.
 
 with
 

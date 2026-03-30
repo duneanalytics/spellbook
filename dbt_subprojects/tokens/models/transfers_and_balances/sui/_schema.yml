@@ -313,6 +313,21 @@ models:
           combination_of_columns:
             - block_date
             - unique_key
+      - check_seed:
+          seed_file: ref('tokens_sui_base_transfers_seed')
+          match_columns:
+            - block_date
+            - unique_key
+          check_columns:
+            - transfer_type
+            - object_status
+            - has_ownership_change
+            - transfer_direction
+            - amount_raw
+            - is_supply_event
+            - supply_event_type
+            - tx_net_delta
+            - contract_address_full
     columns:
       - *block_date
       - *unique_key

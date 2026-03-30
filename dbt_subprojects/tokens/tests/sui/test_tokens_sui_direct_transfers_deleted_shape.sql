@@ -1,6 +1,18 @@
--- What it checks: deleted direct-transfer rows keep expected shape in recent partitions:
--- transfer_to stays null, transfer_from maps to prev_owner, amount_raw matches abs(balance_delta),
--- and ownership-change flag remains false.
+-- Shape invariant for deleted direct-transfer rows.
+--
+-- Purpose:
+-- Validate that deleted-object rows in `tokens_sui_direct_transfers` keep the
+-- expected direct-transfer representation in recent partitions.
+--
+-- Invariant:
+-- - `transfer_to` remains null (deleted rows are one-sided debit legs),
+-- - `transfer_from` matches `prev_owner`,
+-- - `amount_raw` equals `abs(balance_delta)`,
+-- - `has_ownership_change` remains false.
+--
+-- Failure interpretation:
+-- Any returned row indicates deleted-row shaping drift in direct-transfer output
+-- (for example, incorrect side assignment or amount derivation).
 
 select
   d.block_date,
