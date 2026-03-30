@@ -203,7 +203,7 @@ models:
             - transfer_from
             - transfer_to
             - amount_raw
-            - owner_net_leg
+            - owner_net_type
     columns:
       - *block_date
       - *unique_key
@@ -229,9 +229,9 @@ models:
       - &tx_sender
         name: tx_sender
         description: "Resolved transaction sender used for cross-address filtering when previous owner is unavailable."
-      - &owner_net_leg
-        name: owner_net_leg
-        description: "Leg type marker for owner-net reconciliation ('direct' in this helper)."
+      - &owner_net_type
+        name: owner_net_type
+        description: "Type label for owner-net reconciliation entries ('direct' in this helper)."
       - &transfer_from
         name: transfer_from
         description: "Resolved sender side of the direct transfer leg."
@@ -257,6 +257,23 @@ models:
           combination_of_columns:
             - block_date
             - unique_key
+      - check_seed:
+          seed_file: ref('tokens_sui_owner_net_transfers_seed')
+          match_columns:
+            - block_date
+            - tx_digest
+            - object_id
+            - version
+          check_columns:
+            - coin_type
+            - owner_net_type
+            - transfer_from
+            - transfer_to
+            - amount_raw
+            - prev_owner
+            - prev_balance
+            - object_status
+            - has_ownership_change
     columns:
       - *block_date
       - *unique_key
@@ -276,7 +293,7 @@ models:
       - *balance_delta
       - *has_ownership_change
       - *tx_sender
-      - *owner_net_leg
+      - *owner_net_type
       - *transfer_from
       - *transfer_to
       - *amount_raw

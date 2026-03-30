@@ -22,4 +22,21 @@ seeds:
         transfer_from: varbinary
         transfer_to: varbinary
         amount_raw: uint256
-        owner_net_leg: varchar
+        owner_net_type: varchar
+
+  - name: tokens_sui_owner_net_transfers_seed
+    config:
+      column_types:
+        block_date: date
+        tx_digest: varbinary
+        coin_type: varchar
+        object_id: varbinary
+        version: uint256
+        owner_net_type: varchar
+        transfer_from: varbinary
+        transfer_to: varbinary
+        amount_raw: uint256
+        prev_owner: varbinary
+        prev_balance: uint256
+        object_status: varchar
+        has_ownership_change: boolean

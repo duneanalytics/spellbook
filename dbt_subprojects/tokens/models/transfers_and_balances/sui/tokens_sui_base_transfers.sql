@@ -37,7 +37,7 @@ owner_net_transfers as (
     f.balance_delta,
     f.has_ownership_change,
     f.tx_sender,
-    f.owner_net_leg,
+    f.owner_net_type,
     f.transfer_from,
     f.transfer_to,
     f.amount_raw
@@ -171,8 +171,8 @@ select
   f.prev_owner,
   f.has_ownership_change,
   case
-    when f.owner_net_leg = 'owner_residual_debit' then 'ownership_balance_spend'
-    when f.owner_net_leg = 'owner_residual_credit' then 'ownership_balance_topup'
+    when f.owner_net_type = 'owner_residual_debit' then 'ownership_balance_spend'
+    when f.owner_net_type = 'owner_residual_credit' then 'ownership_balance_topup'
     when f.object_status = 'Created' then 'object_created'
     when f.object_status = 'Deleted' then 'object_deleted'
     when f.has_ownership_change and f.balance_delta != 0 then 'transfer_with_balance_change'
@@ -192,8 +192,8 @@ select
     else cast(null as varchar)
   end as supply_event_type,
   case
-    when f.owner_net_leg = 'owner_residual_debit' then 'debit'
-    when f.owner_net_leg = 'owner_residual_credit' then 'credit'
+    when f.owner_net_type = 'owner_residual_debit' then 'debit'
+    when f.owner_net_type = 'owner_residual_credit' then 'credit'
     when f.balance_delta > 0 then 'credit'
     when f.balance_delta < 0 then 'debit'
     else 'neutral'

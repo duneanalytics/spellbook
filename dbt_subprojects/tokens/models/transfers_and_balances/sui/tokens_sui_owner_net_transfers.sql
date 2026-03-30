@@ -42,7 +42,7 @@ transfer_event_features as (
     {% endif %}
 ),
 
-direct_transfer_rows as (
+direct_transfers as (
   select
     d.object_id,
     d.version,
@@ -61,7 +61,7 @@ direct_transfer_rows as (
     d.balance_delta,
     d.has_ownership_change,
     d.tx_sender,
-    d.owner_net_leg,
+    d.owner_net_type,
     d.transfer_from,
     d.transfer_to,
     d.amount_raw
@@ -72,7 +72,7 @@ direct_transfer_rows as (
     {% endif %}
 ),
 
-owner_true_delta_rows as (
+owner_true_deltas as (
   select
     f.tx_digest,
     f.coin_type,
@@ -133,18 +133,18 @@ owner_true_net as (
     r.coin_type,
     r.owner,
     sum(r.owner_delta_raw) as owner_net_delta_raw
-  from owner_true_delta_rows r
+  from owner_true_deltas r
   where r.owner is not null
   group by 1, 2, 3
 ),
 
-owner_direct_delta_rows as (
+owner_direct_deltas as (
   select
     d.tx_digest,
     d.coin_type,
     d.transfer_from as owner,
     cast(-d.amount_raw as decimal(38, 0)) as owner_delta_raw
-  from direct_transfer_rows d
+  from direct_transfers d
   where d.transfer_from is not null
     and d.amount_raw != 0
   union all
@@ -153,7 +153,7 @@ owner_direct_delta_rows as (
     d.coin_type,
     d.transfer_to as owner,
     cast(d.amount_raw as decimal(38, 0)) as owner_delta_raw
-  from direct_transfer_rows d
+  from direct_transfers d
   where d.transfer_to is not null
     and d.amount_raw != 0
 ),
@@ -164,7 +164,7 @@ owner_direct_net as (
     r.coin_type,
     r.owner,
     sum(r.owner_delta_raw) as owner_net_delta_raw
-  from owner_direct_delta_rows r
+  from owner_direct_deltas r
   where r.owner is not null
   group by 1, 2, 3
 ),
@@ -178,7 +178,7 @@ tx_coin_context as (
     max(d.timestamp_ms) as timestamp_ms,
     max_by(d.checkpoint, d.timestamp_ms) as checkpoint,
     max_by(d.tx_sender, d.timestamp_ms) as tx_sender
-  from direct_transfer_rows d
+  from direct_transfers d
   group by 1, 2
 ),
 
@@ -228,7 +228,7 @@ owner_residual_transfers as (
     case
       when r.residual_delta_raw < 0 then cast('owner_residual_debit' as varchar)
       else cast('owner_residual_credit' as varchar)
-    end as owner_net_leg,
+    end as owner_net_type,
     case
       when r.residual_delta_raw < 0 then r.owner
       else cast(null as varbinary)
@@ -264,11 +264,11 @@ owner_net_transfers as (
     d.balance_delta,
     d.has_ownership_change,
     d.tx_sender,
-    d.owner_net_leg,
+    d.owner_net_type,
     d.transfer_from,
     d.transfer_to,
     d.amount_raw
-  from direct_transfer_rows d
+  from direct_transfers d
   union all
   select
     r.object_id,
@@ -288,7 +288,7 @@ owner_net_transfers as (
     r.balance_delta,
     r.has_ownership_change,
     r.tx_sender,
-    r.owner_net_leg,
+    r.owner_net_type,
     r.transfer_from,
     r.transfer_to,
     r.amount_raw
@@ -296,7 +296,7 @@ owner_net_transfers as (
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', 'f.owner_net_leg', 'f.transfer_from', 'f.transfer_to', 'f.object_id', 'f.version']) }} as unique_key,
+  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', 'f.owner_net_type', 'f.transfer_from', 'f.transfer_to', 'f.object_id', 'f.version']) }} as unique_key,
   f.object_id,
   f.version,
   f.tx_digest,
@@ -314,7 +314,7 @@ select
   f.balance_delta,
   f.has_ownership_change,
   f.tx_sender,
-  f.owner_net_leg,
+  f.owner_net_type,
   f.transfer_from,
   f.transfer_to,
   f.amount_raw,

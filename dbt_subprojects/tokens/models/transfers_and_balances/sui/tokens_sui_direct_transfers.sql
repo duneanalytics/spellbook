@@ -144,7 +144,7 @@ select
   f.balance_delta,
   f.has_ownership_change,
   f.tx_sender,
-  cast('direct' as varchar) as owner_net_leg,
+  cast('direct' as varchar) as owner_net_type,
   case
     when f.object_status = 'Created' then f.tx_sender
     else coalesce(f.prev_owner, f.tx_sender)
