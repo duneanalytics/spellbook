@@ -1,8 +1,7 @@
 {% set blockchain = 'tempo' %}
 {% set default_fee_token = '0x20c0000000000000000000000000000000000000' %}
 {% set default_fee_token_price = 1.0 %}
--- Tempo gas_price is in attodollars (10^-18 USD) per gas. TIP-20 fee tokens have 6 decimals
--- (1 token unit = 10^-6 USD). Dividing attodollars by 10^12 converts to token smallest units.
+-- gas_price is attodollars/gas; fee in TIP-20 (6 dp) smallest units = gas_price * gas_used / 10^12.
 {% set attodollar_to_token_unit_divisor = 'uint256 \'1000000000000\'' %}
 
 {{ config(
