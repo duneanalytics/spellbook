@@ -31,9 +31,9 @@ sources:
       - name: PoolManager_evt_Swap
       - name: PoolManager_evt_Initialize
       - name: PoolManager_call_Swap
-  - name: velodrome_v2_multichain
+  - name: velodrome_v2_celo
     tables:
       - name: clpool_evt_swap
-  - name: velodrome_multichain
+  - name: velodrome_celo
     tables:
       - name: clfactory_evt_poolcreated
