@@ -30,13 +30,14 @@ objects_base as (
     o.checkpoint,
     o.version
   from {{ source('sui', 'objects') }} o
-  where (
+  where o.type_ is not null
+    and o.object_status in ('Created', 'Mutated')
+    and o.date >= date '{{ sui_transfer_start_date }}'
+    and (
       cast(o.type_ as varchar) like '0x2::coin::CoinMetadata<%'
       or cast(o.type_ as varchar) like '0x2::coin_registry::Currency<%'
       or cast(o.type_ as varchar) like '0x2::coin_registry::CoinData<%'
     )
-    and o.object_status in ('Created', 'Mutated')
-    and o.date >= date '{{ sui_transfer_start_date }}'
     {% if is_incremental() %}
     and {{ incremental_predicate('o.date') }}
     {% endif %}
@@ -90,7 +91,6 @@ metadata_candidates as (
       else 1
     end as source_priority
   from objects_base o
-  where regexp_extract(o.type_tag, '<(.*)>', 1) is not null
 ),
 
 manual_metadata as (
