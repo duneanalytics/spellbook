@@ -53,7 +53,6 @@
     "superseed",
     "tac",
     "taiko",
-    "tempo",
     "unichain",
     "viction",
     "worldchain",
