@@ -36,6 +36,25 @@ models:
           filter:
             version: 1
 
+  - name: uniswap_v4_tempo_base_trades
+    meta:
+      blockchain: tempo
+      sector: dex
+      project: uniswap
+      contributors: ['0xRob']
+    config:
+      tags: [ 'tempo', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap tempo v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_tempo_base_trades_seed')
+          filter:
+            version: 4
+
   - name: dex_tempo_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:

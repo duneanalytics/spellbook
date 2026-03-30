@@ -6,3 +6,6 @@ sources:
       - name: stablecoindex_call_swapexactamountin
       - name: stablecoindex_call_swapexactamountout
       - name: stablecoindex_evt_paircreated
+  - name: uniswap_v4_tempo
+    tables:
+      - name: PoolManager_call_Swap
