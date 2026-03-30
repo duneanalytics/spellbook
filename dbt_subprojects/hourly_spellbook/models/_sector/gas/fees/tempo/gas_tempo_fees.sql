@@ -1,6 +1,9 @@
 {% set blockchain = 'tempo' %}
 {% set default_fee_token = '0x20c0000000000000000000000000000000000000' %}
 {% set default_fee_token_price = 1.0 %}
+-- Tempo gas_price is in attodollars (10^-18 USD) per gas. TIP-20 fee tokens have 6 decimals
+-- (1 token unit = 10^-6 USD). Dividing attodollars by 10^12 converts to token smallest units.
+{% set attodollar_to_token_unit_divisor = 'uint256 \'1000000000000\'' %}
 
 {{ config(
     schema = 'gas_' + blockchain
@@ -26,12 +29,12 @@ WITH base_model as (
         ,txns.to AS tx_to
         ,cast(gas_price as uint256) as gas_price
         ,txns.gas_used as gas_used
-        ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
+        ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}} as tx_fee_raw
         ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
-            then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256))])
+            then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})])
             else map(array['base_fee','priority_fee'],
-                     array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
-                            ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                     array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})
+                            ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})]
                      )
         end as tx_fee_breakdown_raw
         ,blocks.miner AS block_proposer
