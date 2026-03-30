@@ -16,7 +16,7 @@
         project = 'velodrome',
         version = '2_cl',
         Pair_evt_Swap = source('velodrome_v2_celo', 'clpool_evt_swap'),
-        Factory_evt_PoolCreated = source('velodrome_v2_celo', 'poolfactory_evt_poolcreated'),
+        Factory_evt_PoolCreated = source('velodrome_celo', 'clfactory_evt_poolcreated'),
         optional_columns = []
     )
 }}
