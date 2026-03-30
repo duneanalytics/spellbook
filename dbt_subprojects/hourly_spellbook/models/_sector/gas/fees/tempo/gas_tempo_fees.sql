@@ -1,7 +1,7 @@
 {% set blockchain = 'tempo' %}
 {% set default_fee_token = '0x20c0000000000000000000000000000000000000' %}
 {% set default_fee_token_price = 1.0 %}
--- gas_price is attodollars/gas; fee in TIP-20 (6 dp) smallest units = gas_price * gas_used / 10^12.
+-- Attodollars to TIP-20 smallest units per Tempo spec: ceil(attodollars / 10^12) via (v + 10^12 - 1) / 10^12.
 {% set attodollar_to_token_unit_divisor = 'uint256 \'1000000000000\'' %}
 
 {{ config(
@@ -28,13 +28,13 @@ WITH base_model as (
         ,txns.to AS tx_to
         ,cast(gas_price as uint256) as gas_price
         ,txns.gas_used as gas_used
-        ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}} as tx_fee_raw
+        ,(cast(gas_price as uint256) * cast(txns.gas_used as uint256) + {{attodollar_to_token_unit_divisor}} - uint256 '1') / {{attodollar_to_token_unit_divisor}} as tx_fee_raw
         ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
-            then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})])
+            then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256) + {{attodollar_to_token_unit_divisor}} - uint256 '1') / {{attodollar_to_token_unit_divisor}})])
             else map(array['base_fee','priority_fee'],
-                     array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})
-                            ,(cast(gas_price as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}}
-                              - cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) / {{attodollar_to_token_unit_divisor}})]
+                     array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) + {{attodollar_to_token_unit_divisor}} - uint256 '1') / {{attodollar_to_token_unit_divisor}}
+                            ,(cast(gas_price as uint256) * cast(txns.gas_used as uint256) + {{attodollar_to_token_unit_divisor}} - uint256 '1') / {{attodollar_to_token_unit_divisor}}
+                              - (cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) + {{attodollar_to_token_unit_divisor}} - uint256 '1') / {{attodollar_to_token_unit_divisor}})]
                      )
         end as tx_fee_breakdown_raw
         ,blocks.miner AS block_proposer
