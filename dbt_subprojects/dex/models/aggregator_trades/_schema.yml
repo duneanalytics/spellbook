@@ -3,9 +3,9 @@ version: 2
 models:
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb, base, scroll, linea, polygon 
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb, base, scroll, linea, polygon, megaeth 
       sector: dex_aggregator
-      contributors: bh2smith, Henrystats, jeff-dude, rantum
+      contributors: bh2smith, Henrystats, jeff-dude, rantum, cursor
       docs_slug: /curated/dex-trades/evm/dex-aggregator-trades
       short_description: "Trades routed through DEX aggregators (e.g. 1inch, CowSwap, Paraswap), recording swap execution details across various aggregators and blockchains."
     config:
@@ -97,9 +97,9 @@ models:
         
   - name: dex_aggregator_base_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb, megaeth
       sector: dex_aggregator
-      contributors: hosuke
+      contributors: hosuke, cursor
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
