@@ -12,35 +12,55 @@
 
 {% set project_start_date = '2026-02-01' %}
 {% set composite_exchange = '0x5e3ae52eba0f9740364bd5dd39738e1336086a8b' %}
+{% set composite_exchange_event_tables = [
+    source('world_megaeth', 'compositeexchange_evt_erc20enabled'),
+    source('world_megaeth', 'compositeexchange_evt_lendorderbookregistered'),
+    source('world_megaeth', 'compositeexchange_evt_liquidationfeesreverted'),
+    source('world_megaeth', 'compositeexchange_evt_orderbookregistered'),
+    source('world_megaeth', 'compositeexchange_evt_perporderbookregistered'),
+    source('world_megaeth', 'compositeexchange_evt_perptrueup'),
+    source('world_megaeth', 'compositeexchange_evt_traderpermission')
+] %}
 
-with decoded_calls as (
+with decoded_events as (
+    {% for event_table in composite_exchange_event_tables %}
     select
-        td.block_time
-        , td.tx_hash
-        , td.trace_address
-        , td.to as project_contract_address
-        , row_number() over (
-            partition by td.tx_hash
-            order by coalesce(cardinality(td.trace_address), 0), cast(td.trace_address as varchar)
-        ) as tx_trace_rank
-    from {{ source('megaeth', 'traces_decoded') }} as td
-    where lower(td.namespace) = 'world'
-        and lower(td.contract_name) = 'compositeexchange'
-        and td.to = {{ composite_exchange }}
+        e.evt_block_time as block_time
+        , e.evt_tx_hash as tx_hash
+        , e.contract_address as project_contract_address
+        , e.evt_index
+    from {{ event_table }} as e
+    where e.contract_address = {{ composite_exchange }}
         {% if is_incremental() %}
-        and {{ incremental_predicate('td.block_time') }}
+        and {{ incremental_predicate('e.evt_block_time') }}
         {% else %}
-        and td.block_time >= timestamp '{{ project_start_date }}'
+        and e.evt_block_time >= timestamp '{{ project_start_date }}'
         {% endif %}
+    {% if not loop.last %}
+    union all
+    {% endif %}
+    {% endfor %}
 )
-, composite_calls as (
+, composite_events as (
     select
         block_time
         , tx_hash
-        , trace_address
         , project_contract_address
-    from decoded_calls
-    where tx_trace_rank = 1
+        , evt_index
+        , row_number() over (
+            partition by tx_hash, evt_index
+            order by block_time
+        ) as event_rank
+    from decoded_events
+)
+, base_events as (
+    select
+        block_time
+        , tx_hash
+        , project_contract_address
+        , evt_index
+    from composite_events
+    where event_rank = 1
 )
 , txs as (
     select
@@ -49,8 +69,8 @@ with decoded_calls as (
         , tx."from" as tx_from
         , tx.to as tx_to
     from {{ source('megaeth', 'transactions') }} as tx
-    inner join composite_calls as c
-        on c.tx_hash = tx.hash
+    inner join base_events as be
+        on be.tx_hash = tx.hash
     {% if is_incremental() %}
     where {{ incremental_predicate('tx.block_time') }}
     {% else %}
@@ -65,8 +85,8 @@ with decoded_calls as (
         , t.contract_address as token_address
         , cast(t.value as uint256) as amount_raw
     from {{ source('erc20_megaeth', 'evt_Transfer') }} as t
-    inner join composite_calls as c
-        on c.tx_hash = t.evt_tx_hash
+    inner join base_events as be
+        on be.tx_hash = t.evt_tx_hash
     {% if is_incremental() %}
     where {{ incremental_predicate('t.evt_block_time') }}
     {% else %}
@@ -122,9 +142,9 @@ select
     , c.tx_hash
     , tx.tx_from
     , tx.tx_to
-    , coalesce(c.trace_address, cast(array[-1] as array<bigint>)) as trace_address
-    , cast(-1 as integer) as evt_index
-from composite_calls as c
+    , cast(array[-1] as array<bigint>) as trace_address
+    , c.evt_index
+from base_events as c
 inner join txs as tx
     on tx.tx_hash = c.tx_hash
 left join sold_candidates as s
