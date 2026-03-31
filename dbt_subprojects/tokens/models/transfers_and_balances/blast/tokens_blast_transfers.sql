@@ -5,11 +5,12 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
     unique_key = ['block_date','unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags=['static'],
     post_hook='{{ hide_spells() }}'
-)
+    )
 }}
 
 {{
