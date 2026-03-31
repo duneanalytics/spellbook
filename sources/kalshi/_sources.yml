@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: kalshi
+    tables:
+      - name: trade_report
+        description: "Daily aggregated trade data for Kalshi event contracts"
+        meta:
+          docs_slug: /curated/prediction-markets/kalshi/trade_report
+      - name: market_report
+        description: "Market-level metadata for Kalshi event contracts"
+        meta:
+          docs_slug: /curated/prediction-markets/kalshi/market_report

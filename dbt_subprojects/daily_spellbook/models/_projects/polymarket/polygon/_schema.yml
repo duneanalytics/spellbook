@@ -130,6 +130,7 @@ models:
       project: polymarket
       short_description: "Trades on Polymarket prediction markets on Polygon, including outcome token, price, shares, fees, and maker/taker addresses."
       contributors: tomfutago
+      docs_slug: /curated/prediction-markets/polymarket/market_trades
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "All market activity including complementary matching (A buys shares from B), MINT matching (A wants to buy, but not enough sell orders in book, system mints shares if conditions are right), and MERGE matching (A wants to sell shares, but not enough buy orders in book, system matches yes and no shares to unlock collateral). Technically correct volume, but not directly comparable to dex volume or similar. The internal operations increase volume significantly."
@@ -274,6 +275,7 @@ models:
       project: polymarket
       short_description: "Metadata for Polymarket prediction markets, including event/market names, questions, outcome tokens, resolution status, and oracle details."
       contributors: tomfutago, 0xboxer
+      docs_slug: /curated/prediction-markets/polymarket/market_details
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: combined market data from on-chain and API sources"
@@ -366,6 +368,7 @@ models:
       project: polymarket
       short_description: "Daily snapshots of user positions on Polymarket, tracking outcome token balances per market with resolution status."
       contributors: tomfutago
+      docs_slug: /curated/prediction-markets/polymarket/positions
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
     description: "Polymarket: user positions in markets with market details"
@@ -454,6 +457,7 @@ models:
       project: polymarket
       short_description: "Hourly price snapshots for Polymarket outcome tokens, tracking how market odds evolve over time."
       contributors: 0xboxer
+      docs_slug: /curated/prediction-markets/polymarket/market_prices_hourly
     config:
       tags: ['polygon','prediction_markets','polymarket','prices']
     description: "Hourly market prices for Polymarket on Polygon"
@@ -515,6 +519,7 @@ models:
       project: polymarket
       short_description: "Mapping of Polymarket proxy wallets to owner addresses, with wallet type and initial funding details."
       contributors: 0xRob
+      docs_slug: /curated/prediction-markets/polymarket/users_address_lookup
     config:
       tags: ['polygon','prediction_markets','polymarket','users']
     description: "Comprehensive lookup table for Polymarket user addresses, including both Safe and Magic wallet proxies with funding information"
