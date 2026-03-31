@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs ls:*)",
+      "Bash(xargs -I {} find {} -name \"_sources.yml\" -o -name \"_schema.yml\" -o -name \"*_sources.yml\" -o -name \"sources.yml\")"
+    ]
+  }
+}
