@@ -87,6 +87,7 @@ sources:
       - name: balancer_v3_pools_base
       - name: balancer_v3_pools_hyperevm
       - name: balancer_v3_pools_monad
+      - name: balancer_v3_pools_plasma
       - name: balancer_v3_pools
   - name: uniswap_v3_optimism
     tables:
