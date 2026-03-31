@@ -13,7 +13,10 @@
     ref('balancer_gnosis_pools_tokens_weights'),
     ref('balancer_optimism_pools_tokens_weights'),
     ref('balancer_polygon_pools_tokens_weights'),
-    ref('balancer_zkevm_pools_tokens_weights')
+    ref('balancer_zkevm_pools_tokens_weights'),
+    ref('balancer_hyperevm_pools_tokens_weights'),
+    ref('balancer_monad_pools_tokens_weights'),
+    ref('balancer_plasma_pools_tokens_weights')
 ] %}
 
 

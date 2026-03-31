@@ -66,12 +66,12 @@ SELECT
     l.version,
     l.block_date,
     l.project_contract_address,
-    l.pool_symbol,
+    COALESCE(l.pool_symbol, erc.symbol) AS pool_symbol,
     l.pool_type,
-    t.swap_amount_usd,
+    COALESCE(t.swap_amount_usd, 0) AS swap_amount_usd,
     l.tvl_usd,
     l.tvl_eth,
-    f.fee_amount_usd
+    COALESCE(f.fee_amount_usd, 0) AS fee_amount_usd
 FROM liquidity l
 LEFT JOIN trades t ON l.block_date = t.block_date
 AND l.blockchain = t.blockchain
@@ -91,4 +91,7 @@ AND (
     -- v1 fees may only map by pool address
     OR (l.pool_id IS NULL AND l.project_contract_address = f.pool_address)
 )
+LEFT JOIN {{ source('tokens', 'erc20') }} erc
+    ON l.project_contract_address = erc.contract_address
+    AND l.blockchain = erc.blockchain
 ORDER BY 1 DESC, 7 DESC
