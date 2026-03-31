@@ -11,7 +11,7 @@
 }}
 
 {% set project_start_date = '2026-02-01' %}
-{% set composite_exchange = 0x5e3ae52eba0f9740364bd5dd39738e1336086a8b %}
+{% set composite_exchange = '0x5e3ae52eba0f9740364bd5dd39738e1336086a8b' %}
 
 with perp_events as (
     select
