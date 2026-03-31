@@ -6,6 +6,7 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov
+      short_description: "Withdrawal events on the EVAA lending protocol on TON."
     config:
       tags: ['ton', 'evaa', 'lending']
     description: "Withdrawal events on the EVAA lending protocol on TON."
@@ -54,6 +55,7 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov
+      short_description: "Supply (deposit) events on the EVAA lending protocol on TON."
     config:
       tags: ['ton', 'evaa', 'lending']
     description: "Supply (deposit) events on the EVAA lending protocol on TON."
@@ -100,6 +102,7 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov
+      short_description: "Liquidation events on the EVAA lending protocol on TON."
     config:
       tags: ['ton', 'evaa', 'lending']
     description: "Liquidation events on the EVAA lending protocol on TON."
@@ -162,6 +165,7 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov
+      short_description: "EVAA lending protocol asset mapping on TON: asset_id, asset_name, jetton_master address, and decimals."
     config:
       tags: ['ton', 'evaa', 'lending']
     description: "EVAA lending protocol asset mapping on TON: asset_id, asset_name, jetton_master address, and decimals."
