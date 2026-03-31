@@ -7,6 +7,7 @@ models:
       sector: cex
       short_description: "Identified user deposit addresses for centralized exchanges, with deposit/consolidation counts, amounts, and first-seen timestamps."
       contributors: hildobby
+      docs_slug: /curated/cex-flows/deposit_addresses
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses across EVM chains"
