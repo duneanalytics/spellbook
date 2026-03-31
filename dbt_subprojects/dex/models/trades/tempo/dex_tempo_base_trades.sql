@@ -12,6 +12,8 @@
 
 {% set base_models = [
     ref('tempo_exchange_tempo_base_trades')
+    , ref('uniswap_v2_tempo_base_trades')
+    , ref('uniswap_v3_tempo_base_trades')
     , ref('uniswap_v4_tempo_base_trades')
 ] %}
 with base_union as (
