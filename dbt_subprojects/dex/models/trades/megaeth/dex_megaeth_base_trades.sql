@@ -12,7 +12,8 @@
 
 {% set base_models = [
     ref('kumbaya_megaeth_base_trades'),
-    ref('prismfi_megaeth_base_trades')
+    ref('prismfi_megaeth_base_trades'),
+    ref('world_megaeth_base_trades')
 ] %}
 with base_union as (
         {% for base_model in base_models %}

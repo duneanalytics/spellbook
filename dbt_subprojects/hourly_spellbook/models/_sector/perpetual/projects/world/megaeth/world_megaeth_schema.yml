@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: world_megaeth_perpetual_trades
+    meta:
+      blockchain: megaeth
+      sector: perpetual
+      project: world
+      contributors: hosuke
+    config:
+      tags: ['megaeth', 'perpetual', 'perps', 'world']
+    description: >
+      World perpetual trades on megaeth from CompositeExchange perp orderbook registration events.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain where the perpetuals market is deployed"
+      - name: block_date
+        description: "Date of the transaction"
+      - name: block_time
+        description: "Time of the transaction"
+      - name: virtual_asset
+        description: "How the protocol represents the underlying asset"
+      - name: underlying_asset
+        description: "The real underlying asset that is represented in the swap"
+      - name: market
+        description: "The futures market involved in the transaction"
+      - name: market_address
+        description: "Contract address of the market"
+        data_tests:
+          - perpetual_trades_market_address:
+              perpetual_trades_seed: ref('perpetual_trades_seed')
+      - name: volume_usd
+        description: "The size of the position taken for the swap in USD; already in absolute value and decimal normalized"
+      - name: fee_usd
+        description: "The fees charged to the user for the swap in USD"
+      - name: margin_usd
+        description: "The amount of collateral/margin used in a trade in USD"
+      - name: trade
+        description: "Indicates the trade's direction whether a short, long, or if a position is being closed"
+      - name: project
+        description: "The underlying protocol/project where the swap took place"
+      - name: version
+        description: "The version of the protocol/project"
+      - name: frontend
+        description: "The frontend protocol/project where the specific swap was executed; built on top of the 'project' and defaults to the 'project' if no other frontend is specified"
+      - name: trader
+        description: "The address which made the swap in the protocol"
+      - name: volume_raw
+        description: "The size of the position in raw form"
+      - name: tx_hash
+        description: "The hash of the transaction"
+      - name: tx_from
+        description: "The address that originated the transaction; based on the megaeth.transactions table"
+      - name: tx_to
+        description: "The address receiving the transaction; based on the megaeth.transactions table"
+      - name: evt_index
+        description: "Event index number"
+      - name: block_month
+        description: "Month of the transaction"
