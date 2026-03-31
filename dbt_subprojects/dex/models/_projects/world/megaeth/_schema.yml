@@ -13,15 +13,14 @@ models:
       world CompositeExchange aggregator base trades on MegaETH for downstream dex_aggregator models.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - block_date
-              - blockchain
-              - project
-              - version
-              - tx_hash
-              - evt_index
-              - trace_address
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
