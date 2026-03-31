@@ -30,6 +30,11 @@ owner_net_transfers as (
     f.owner_type,
     f.receiver,
     f.coin_type,
+    regexp_replace(
+      lower(f.coin_type),
+      '^0x0*([0-9a-f]+)(::.*)$',
+      '0x$1$2'
+    ) as coin_type_normalized,
     f.object_status,
     f.coin_balance,
     f.prev_owner,
@@ -140,7 +145,7 @@ select
     '^0x0*([0-9a-f]+)$',
     '0x$1'
   ) as contract_address,
-  f.coin_type as contract_address_full,
+  f.coin_type,
   f.amount_raw,
   f.balance_delta,
   f.object_id,
@@ -187,4 +192,4 @@ left join tx_coin_reconciliation r
   and f.coin_type = r.coin_type
 left join supply_signals supply
   on f.tx_digest = supply.tx_digest
-  and lower(f.coin_type) = supply.coin_type
+  and f.coin_type_normalized = supply.coin_type

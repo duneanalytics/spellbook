@@ -327,7 +327,7 @@ models:
             - is_supply_event
             - supply_event_type
             - tx_net_delta
-            - contract_address_full
+            - coin_type
     columns:
       - *block_date
       - *unique_key
@@ -374,9 +374,7 @@ models:
         data_tests:
           - not_null
       - *contract_address
-      - &contract_address_full
-        name: contract_address_full
-        description: "Full Sui coin type."
+      - *coin_type
       - *amount_raw
       - *balance_delta
       - *object_id_nullable
@@ -427,11 +425,10 @@ models:
       - *checkpoint
       - *tx_digest
       - *token_standard
-      - *tx_from
       - *from_address
       - *to_address
       - *contract_address
-      - *contract_address_full
+      - *coin_type
       - *symbol
       - *decimals
       - *amount_raw

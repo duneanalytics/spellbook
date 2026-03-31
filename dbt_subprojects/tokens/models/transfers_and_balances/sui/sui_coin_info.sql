@@ -13,12 +13,15 @@
 -- temp filter to unblock ci run (original start date '2023-04-12')
 {% set sui_transfer_start_date = '2026-01-01' %}
 
+-- ranking policy:
+-- choose the most recent metadata snapshot first (checkpoint/version),
+-- then use source_priority only as a tie-breaker for equal recency.
 -- source priority (highest to lowest):
 -- 1) manual overrides
 -- 2) 0x2::coin_registry::Currency<T>
 -- 3) 0x2::coin_registry::CoinData<T>
 -- 4) 0x2::coin::CoinMetadata<T>
--- for the same priority, latest checkpoint/version wins.
+-- manual rows remain fallback candidates when no onchain metadata exists.
 
 with
 
@@ -119,7 +122,7 @@ ranked as (
     c.version_latest,
     row_number() over (
       partition by c.coin_type
-      order by c.source_priority desc, c.checkpoint_latest desc, c.version_latest desc
+      order by c.checkpoint_latest desc, c.version_latest desc, c.source_priority desc
     ) as rn
   from (
     select

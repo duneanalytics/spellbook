@@ -63,12 +63,16 @@ signals as (
   select
     e.block_date,
     e.tx_digest,
-    lower(
-      case
-        when c.supply_event_type is not null then '0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::usdc'
-        when e.generic_coin_type is not null then e.generic_coin_type
-        else p.resolved_coin_type
-      end
+    regexp_replace(
+      lower(
+        case
+          when c.supply_event_type is not null then '0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::usdc'
+          when e.generic_coin_type is not null then e.generic_coin_type
+          else p.resolved_coin_type
+        end
+      ),
+      '^0x0*([0-9a-f]+)(::.*)$',
+      '0x$1$2'
     ) as coin_type,
     case
       when c.supply_event_type is not null then c.supply_event_type

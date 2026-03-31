@@ -20,11 +20,16 @@ with
 
 base_transfers as (
   select
-    *
-  from {{ ref('tokens_sui_base_transfers') }}
-  where block_date >= date '{{ sui_transfer_start_date }}'
+    t.*,
+    regexp_replace(
+      lower(t.coin_type),
+      '^0x0*([0-9a-f]+)(::.*)$',
+      '0x$1$2'
+    ) as coin_type_normalized
+  from {{ ref('tokens_sui_base_transfers') }} t
+  where t.block_date >= date '{{ sui_transfer_start_date }}'
     {% if is_incremental() %}
-    and {{ incremental_predicate('block_date') }}
+    and {{ incremental_predicate('t.block_date') }}
     {% endif %}
 ),
 
@@ -50,7 +55,7 @@ prices as (
 
 coin_metadata as (
   select
-    lower(m.coin_type) as coin_type,
+    m.coin_type,
     m.symbol,
     m.decimals
   from {{ ref('sui_coin_info') }} m
@@ -81,7 +86,7 @@ transfers as (
     t.from_resolved as "from",
     t.to_resolved as to,
     t.contract_address,
-    t.contract_address_full,
+    t.coin_type,
     coalesce(m.symbol, p.symbol) as symbol,
     coalesce(m.decimals, p.decimals) as decimals,
     t.amount_raw,
@@ -105,7 +110,7 @@ transfers as (
     t._updated_at
   from base_transfers t
   left join coin_metadata m
-    on lower(t.contract_address_full) = m.coin_type
+    on t.coin_type_normalized = m.coin_type
   left join trusted_tokens tt
     on tt.contract_address = t.contract_address
   left join prices p
@@ -123,11 +128,10 @@ select
   checkpoint,
   tx_digest,
   token_standard,
-  tx_from,
   "from",
   to,
   contract_address,
-  contract_address_full,
+  coin_type,
   symbol,
   decimals,
   amount_raw,

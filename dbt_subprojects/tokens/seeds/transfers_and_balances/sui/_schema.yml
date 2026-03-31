@@ -54,4 +54,4 @@ seeds:
         is_supply_event: boolean
         supply_event_type: varchar
         tx_net_delta: int256
-        contract_address_full: varchar
+        coin_type: varchar
