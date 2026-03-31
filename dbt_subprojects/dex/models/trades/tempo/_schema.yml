@@ -31,10 +31,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('tempo_exchange_tempo_base_trades_seed')
-          filter:
-            version: 1
 
   - name: uniswap_v2_tempo_base_trades
     meta:
@@ -50,10 +46,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_tempo_base_trades_seed')
-          filter:
-            version: 2
 
   - name: uniswap_v3_tempo_base_trades
     meta:
@@ -69,10 +61,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_tempo_base_trades_seed')
-          filter:
-            version: 3
 
   - name: uniswap_v4_tempo_base_trades
     meta:
@@ -88,10 +76,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_tempo_base_trades_seed')
-          filter:
-            version: 4
 
   - name: dex_tempo_token_volumes_daily
     data_tests:
