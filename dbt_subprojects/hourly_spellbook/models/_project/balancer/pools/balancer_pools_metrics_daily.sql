@@ -50,13 +50,14 @@ fees AS(
         day,
         version,
         blockchain,
+        pool_id,
         pool_address,
         sum(protocol_fee_collected_usd) AS fee_amount_usd
     FROM {{ ref('balancer_protocol_fee') }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('day')}}
     {% endif %}
-    GROUP BY 1, 2, 3, 4
+    GROUP BY 1, 2, 3, 4, 5
 )
 
 SELECT
