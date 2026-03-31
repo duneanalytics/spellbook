@@ -313,6 +313,32 @@ sources:
             description: "Amount of ERC20 tokens approved for spending, in the token's native decimal representation (raw value)"
 
   # ===========================================
+  # TIP20 Source
+  # ===========================================
+  - name: tip20_tempo
+    description: "TIP20 token event tables for tempo"
+    tables:
+      - name: evt_Transfer
+        description: "Transfer events for TIP20 tokens on tempo"
+        columns:
+          - name: contract_address
+            description: "Address of the TIP20 token contract that emitted this event"
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: from
+            description: "Address of the token sender"
+          - name: to
+            description: "Address of the token recipient"
+          - name: amount
+            description: "Amount of TIP20 tokens transferred, in the token's native decimal representation (raw value)"
+
+  # ===========================================
   # ERC721 Source
   # ===========================================
   - name: erc721_tempo

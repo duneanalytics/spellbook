@@ -16,3 +16,17 @@
 	transactions=source('superseed', 'transactions'),
 	erc20_transfers=source('erc20_superseed', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='superseed',
+			transactions=source('superseed', 'transactions'),
+			wrapped_token_deposit=source('weth_superseed', 'wrappedether_evt_deposit'),
+			wrapped_token_withdrawal=source('weth_superseed', 'wrappedether_evt_withdrawal'),
+		) }}
+	)

@@ -142,6 +142,7 @@ models:
       project: stablecoin
       short_description: "Stablecoin balances on Solana, with daily balance snapshots per holder in USD."
       contributors: tomfutago
+      docs_slug: /curated/stablecoins/balances/stablecoins-solana-balances
     config:
       tags: ['stablecoin', 'balances']
     description: "Union of core and extended stablecoin balances with token metadata and USD prices"

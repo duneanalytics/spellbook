@@ -159,6 +159,8 @@ sources:
   - name: dune
     tables:
       - name: blockchains
+        meta:
+          docs_slug: /curated/utilities/blockchains
 
   - name: nft
     description: "output models of the NFT sector"

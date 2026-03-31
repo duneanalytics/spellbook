@@ -16,3 +16,17 @@
 	transactions=source('apechain', 'transactions'),
 	erc20_transfers=source('erc20_apechain', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='apechain',
+			transactions=source('apechain', 'transactions'),
+			wrapped_token_deposit=source('apechain_tokens_apechain', 'wape_evt_deposit'),
+			wrapped_token_withdrawal=source('apechain_tokens_apechain', 'wape_evt_withdrawal'),
+		) }}
+	)
