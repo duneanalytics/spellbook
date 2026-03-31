@@ -17,3 +17,5 @@ sources:
   - name: uniswap_v4_tempo
     tables:
       - name: PoolManager_call_Swap
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
