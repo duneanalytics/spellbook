@@ -189,19 +189,51 @@ WHERE CAST(date_trunc('day', dexs.block_time) AS date) != date '2025-11-12'
         project = '',
         version = '',
         project_decoded_as = 'balancer_v3',
-        Vault_evt_Swap = 'Vault_evt_Swap'
+        Vault_evt_Swap = 'Vault_evt_Swap',
+        Vault_evt_Wrap = 'Vault_evt_Wrap',
+        Vault_evt_Unwrap = 'Vault_evt_Unwrap'
     )
 %}
 
-WITH 
+WITH
 
 pool_labels AS (
     SELECT
-        blockchain, 
+        blockchain,
         address AS pool_address,
         name AS pool_symbol,
         pool_type
     FROM {{ ref('labels_balancer_v3_pools') }}
+),
+
+-- Wrap events: user deposits underlying tokens, receives vault shares
+-- depositedUnderlying = real token amount, mintedShares = internal share amount
+wraps AS (
+    SELECT
+        evt_tx_hash,
+        wrappedToken,
+        mintedShares,
+        depositedUnderlying,
+        evt_index
+    FROM {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Wrap) }}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+),
+
+-- Unwrap events: vault burns shares, user receives underlying tokens
+-- burnedShares = internal share amount, withdrawnUnderlying = real token amount
+unwraps AS (
+    SELECT
+        evt_tx_hash,
+        wrappedToken,
+        burnedShares,
+        withdrawnUnderlying,
+        evt_index
+    FROM {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Unwrap) }}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
 ),
 
 dexs AS (
@@ -210,8 +242,10 @@ dexs AS (
         swap.evt_block_time AS block_time,
         CAST(NULL AS VARBINARY) AS taker,
         CAST(NULL AS VARBINARY) AS maker,
-        swap.amountOut AS token_bought_amount_raw,
-        swap.amountIn AS token_sold_amount_raw,
+        -- For ERC4626 swaps: use underlying amounts from Unwrap/Wrap events
+        -- For regular swaps: fall back to Swap event amounts (no Wrap/Unwrap exists)
+        COALESCE(u.withdrawnUnderlying, swap.amountOut) AS token_bought_amount_raw,
+        COALESCE(w.depositedUnderlying, swap.amountIn) AS token_sold_amount_raw,
         swap.tokenOut AS token_bought_address,
         swap.tokenIn AS token_sold_address,
         swap.pool AS project_contract_address,
@@ -222,7 +256,17 @@ dexs AS (
         swap.evt_tx_hash AS tx_hash,
         swap.evt_index
     FROM {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Swap) }} swap
-    LEFT JOIN pool_labels l 
+    -- Match Wrap event: same tx, same wrapped token, shares minted = amount sold
+    LEFT JOIN wraps w
+        ON w.evt_tx_hash = swap.evt_tx_hash
+        AND w.wrappedToken = swap.tokenIn
+        AND w.mintedShares = swap.amountIn
+    -- Match Unwrap event: same tx, same wrapped token, shares burned = amount bought
+    LEFT JOIN unwraps u
+        ON u.evt_tx_hash = swap.evt_tx_hash
+        AND u.wrappedToken = swap.tokenOut
+        AND u.burnedShares = swap.amountOut
+    LEFT JOIN pool_labels l
         ON l.blockchain = '{{ blockchain }}'
         AND l.pool_address = swap.pool
     WHERE swap.tokenIn <> swap.pool
