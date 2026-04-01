@@ -62,16 +62,8 @@ with base_union as (
         )
     }}
 )
-, final as (
-    select
-        *
-        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
-    from
-        add_tx_columns
-)
+-- row_number() dedup removed: source tables verified duplicate-free via Dune queries 6935096-6935100, 6935776 (2026-04-01)
 select
     *
 from
-    final
-where
-    duplicates_rank = 1
+    add_tx_columns
