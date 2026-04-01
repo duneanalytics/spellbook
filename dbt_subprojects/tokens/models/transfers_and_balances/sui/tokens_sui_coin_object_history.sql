@@ -12,8 +12,7 @@
   )
 }}
 
--- temp filter to unblock ci run (original start date '2023-04-12')
-{% set sui_transfer_start_date = '2026-01-01' %}
+{% set sui_transfer_start_date = '2023-04-12' %}
 
 with
 
