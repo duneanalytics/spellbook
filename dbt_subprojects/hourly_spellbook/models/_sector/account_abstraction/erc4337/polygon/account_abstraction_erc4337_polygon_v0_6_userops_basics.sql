@@ -18,11 +18,48 @@
 {% set deployed_date = '2023-02-15' %}
 
 -- macros/models/sector/erc4337
-{{
-    erc4337_userops_basics(
-        blockchain = 'polygon',
-        version = 'v0.6',
-        userops_evt_model = source('erc4337_polygon','EntryPoint_v0_6_evt_UserOperationEvent'),
-        handleops_call_model = source('erc4337_polygon', 'EntryPoint_v0_6_call_handleOps')
-    )
-}}
+with base as (
+    {{
+        erc4337_userops_basics(
+            blockchain = 'polygon',
+            version = 'v0.6',
+            userops_evt_model = source('erc4337_polygon','EntryPoint_v0_6_evt_UserOperationEvent'),
+            handleops_call_model = source('erc4337_polygon', 'EntryPoint_v0_6_call_handleOps')
+        )
+    }}
+)
+, deduped as (
+    select
+          blockchain
+        , version
+        , block_month
+        , block_time
+        , entrypoint_contract
+        , tx_hash
+        , sender
+        , userop_hash
+        , success
+        , paymaster
+        , op_fee
+        , beneficiary
+        , row_number() over (
+            partition by userop_hash, tx_hash
+            order by (beneficiary is not null) desc, beneficiary desc
+        ) as _row_num
+    from base
+)
+select
+      blockchain
+    , version
+    , block_month
+    , block_time
+    , entrypoint_contract
+    , tx_hash
+    , sender
+    , userop_hash
+    , success
+    , paymaster
+    , op_fee
+    , beneficiary
+from deduped
+where _row_num = 1

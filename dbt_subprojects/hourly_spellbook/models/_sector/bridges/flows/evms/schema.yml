@@ -6,6 +6,8 @@ models:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba, abstract, apechain, bob, celo, kaia, katana, mantle, plume, ronin, sonic, sophon, story, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
+      short_description: "Bridge deposit events on EVM chains, capturing assets sent from a source chain to be bridged to a destination chain."
+      docs_slug: /curated/bridges/deposits
     config:
       tags: [ 'bridges', 'flows', 'deposits' ]
     description: "Bridge deposits events on EVM chains"
@@ -96,6 +98,8 @@ models:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle
       sector: bridges
       contributors: [ 'hildobby']
+      short_description: "Bridge withdrawal events on EVM chains, capturing assets received on a destination chain after being bridged."
+      docs_slug: /curated/bridges/withdrawals
     config:
       tags: [ 'bridges', 'flows', 'withdrawals' ]
     description: "Bridge withdrawals events on EVM chains"
@@ -205,6 +209,8 @@ models:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle, boba, abstract, apechain, bob, celo, kaia, katana, plume, ronin, sonic, sophon, story, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
+      short_description: "Matched bridge deposit-withdrawal pairs across EVM chains, linking source and destination chain details for each cross-chain transfer."
+      docs_slug: /curated/bridges/flows
     config:
       tags: [ 'bridges', 'flows' ]
     description: "Bridge flows on EVM chains"

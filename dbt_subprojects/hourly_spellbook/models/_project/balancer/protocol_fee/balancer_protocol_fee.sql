@@ -1,6 +1,8 @@
 {{ config(
     schema = 'balancer',
-    alias = 'protocol_fee'
+    alias = 'protocol_fee',
+    materialized = 'table',
+    file_format = 'delta'
     , post_hook='{{ hide_spells() }}'
     )
 }}
@@ -17,7 +19,11 @@
     ref('balancer_v3_ethereum_protocol_fee'),
     ref('balancer_v3_gnosis_protocol_fee'),
     ref('balancer_v3_arbitrum_protocol_fee'),
-    ref('balancer_v3_base_protocol_fee')  
+    ref('balancer_v3_base_protocol_fee'),
+    ref('balancer_v3_avalanche_c_protocol_fee'),
+    ref('balancer_v3_hyperevm_protocol_fee'),
+    ref('balancer_v3_monad_protocol_fee'),
+    ref('balancer_v3_plasma_protocol_fee')
 ] %}
 
 SELECT *
@@ -46,4 +52,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
+

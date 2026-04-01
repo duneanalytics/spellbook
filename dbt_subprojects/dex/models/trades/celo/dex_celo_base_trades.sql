@@ -20,7 +20,8 @@
     ref('carbonhood_celo_base_trades'),
     ref('carbon_defi_celo_base_trades'),
     ref('gooddollar_reserve_celo_base_trades'),
-    ref('uniswap_v4_celo_base_trades')
+    ref('uniswap_v4_celo_base_trades'),
+    ref('velodrome_celo_base_trades')
 ] %}
 
 with base_union as (

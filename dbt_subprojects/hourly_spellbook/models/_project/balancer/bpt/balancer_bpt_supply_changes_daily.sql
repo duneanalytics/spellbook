@@ -17,7 +17,11 @@
     ref('balancer_v3_ethereum_bpt_supply_changes_daily'),
     ref('balancer_v3_gnosis_bpt_supply_changes_daily'),
     ref('balancer_v3_arbitrum_bpt_supply_changes_daily'),
-    ref('balancer_v3_base_bpt_supply_changes_daily')      
+    ref('balancer_v3_base_bpt_supply_changes_daily'),
+    ref('balancer_v3_avalanche_c_bpt_supply_changes_daily'),
+    ref('balancer_v3_hyperevm_bpt_supply_changes_daily'),
+    ref('balancer_v3_monad_bpt_supply_changes_daily'),
+    ref('balancer_v3_plasma_bpt_supply_changes_daily')
 ] %}
 
 SELECT *

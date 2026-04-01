@@ -1,19 +1,32 @@
-{{config(
-     schema = 'tokens_apechain'
-     , alias = 'base_transfers'
-     , partition_by = ['block_month']
-     , materialized = 'incremental'
-     , file_format = 'delta'
-     , incremental_strategy = 'merge'
-     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-     , unique_key = ['block_date','unique_key']
- )
-}}
+{{ config(
+	schema='tokens_apechain',
+	alias='base_transfers',
+	partition_by=['block_month'],
+	materialized='incremental',
+	file_format='delta',
+	incremental_strategy='merge',
+	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+	unique_key=['block_date', 'unique_key'],
+	merge_skip_unchanged=true,
+) }}
 
-{{transfers_base(
-     blockchain='apechain'
-     , traces = source('apechain','traces')
-     , transactions = source('apechain','transactions')
-     , erc20_transfers = source('erc20_apechain','evt_Transfer')
-)
-}}
+{{ transfers_base(
+	blockchain='apechain',
+	traces=source('apechain', 'traces'),
+	transactions=source('apechain', 'transactions'),
+	erc20_transfers=source('erc20_apechain', 'evt_Transfer'),
+) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='apechain',
+			transactions=source('apechain', 'transactions'),
+			wrapped_token_deposit=source('apechain_tokens_apechain', 'wape_evt_deposit'),
+			wrapped_token_withdrawal=source('apechain_tokens_apechain', 'wape_evt_withdrawal'),
+		) }}
+	)

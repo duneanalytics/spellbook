@@ -3,10 +3,10 @@ version: 2
 models:
   - name: dex_trades
     meta:
-      docs_slug: /curated/trading/DEX/dex-trades
+      docs_slug: /curated/dex-trades/evm/dex-trades
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain, sophon
       sector: dex
-      short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
+      short_description: "Detailed data on trades executed via decentralized exchanges (DEXs), containing one or many trades per transaction across all EVM chains."
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
     config:
       tags: [ 'dex', 'trades']
@@ -84,3 +84,5 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
+      - name: _updated_at
+        description: "Timestamp when this row was last written or updated by the pipeline"

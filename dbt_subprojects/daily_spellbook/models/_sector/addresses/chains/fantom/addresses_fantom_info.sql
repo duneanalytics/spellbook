@@ -4,16 +4,14 @@
 	config(
 		schema = 'addresses_' + blockchain,
 		alias = 'info',
-		materialized = 'incremental',
+		materialized = 'table',
 		file_format = 'delta',
-		incremental_strategy = 'merge',
 		partition_by = ['address_prefix'],
-		unique_key = ['address_prefix', 'address'],
 	)
 }}
 
 {{
-	addresses_info_incremental(
+	addresses_info_from_staging(
 		blockchain = blockchain,
 		staging_model = ref('addresses_fantom_stg_info'),
 	)

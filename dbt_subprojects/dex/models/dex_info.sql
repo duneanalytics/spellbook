@@ -248,4 +248,5 @@ FROM (VALUES
     , ('kumbaya', 'Kumbaya', 'Direct', 'kumbaya')
     , ('prismfi', 'PrismFI', 'Direct', 'PrismFI')
     , ('supernova', 'Supernova', 'Direct', 'SupernovaDEX')
+    , ('sunswap', 'SunSwap', 'Direct', 'SunSwap')
 ) AS temp_table (project, name, marketplace_type, x_username)
