@@ -426,6 +426,55 @@ models:
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
 
+  - name: polymarket_polygon_ohlcv_hourly
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: 0xboxer
+    config:
+      tags: ['polygon','prediction_markets','polymarket','ohlcv','static']
+    description: "Polymarket: hourly OHLCV candles per market outcome token, with VWAP and volume metrics"
+    columns:
+      - name: hour
+        description: "UTC hour bucket for the candle"
+        tests:
+          - not_null
+      - name: market_id
+        description: "Condition ID cast to varchar, uniquely identifies the YES/NO pair"
+        tests:
+          - not_null
+      - name: market_name
+        description: "Market question text"
+      - name: outcome
+        description: "YES or NO token outcome"
+        tests:
+          - not_null
+      - name: category
+        description: "Market category tags from market details"
+      - name: open
+        description: "First trade price in the hour (0-1 scale)"
+      - name: high
+        description: "Highest trade price in the hour"
+      - name: low
+        description: "Lowest trade price in the hour"
+      - name: close
+        description: "Last trade price in the hour"
+      - name: vwap
+        description: "Volume-weighted average price for the hour"
+      - name: volume_contracts
+        description: "Total shares traded in the hour"
+      - name: volume_usd
+        description: "Total USD notional volume in the hour"
+      - name: trade_count
+        description: "Number of trades in the hour"
+      - name: market_end_time
+        description: "Market end time from market details (raw varchar)"
+      - name: market_outcome
+        description: "Resolved outcome of the market"
+      - name: event_market_name
+        description: "Overarching event name for negRisk markets"
+
   - name: polymarket_polygon_market_prices_daily
     meta:
       blockchain: polygon
