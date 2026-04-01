@@ -48,6 +48,7 @@ owner_net_transfers as (
     f.amount_raw
   from {{ ref('tokens_sui_owner_net_transfers') }} f
   where f.block_date >= date '{{ sui_transfer_start_date }}'
+    and f.amount_raw != 0
     {% if is_incremental() %}
     and {{ incremental_predicate('f.block_date') }}
     {% endif %}

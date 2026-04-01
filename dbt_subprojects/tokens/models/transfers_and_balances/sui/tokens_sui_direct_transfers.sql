@@ -17,6 +17,7 @@
 
 with
 
+-- load object event deltas and mark transfers that need sender fallback
 cross_address_precheck as (
   select
     f.object_id,
@@ -48,6 +49,7 @@ cross_address_precheck as (
     {% endif %}
 ),
 
+-- load tx senders only for transfers that need sender fallback
 required_tx_senders as (
   select
     t.transaction_digest as tx_digest,
@@ -67,6 +69,7 @@ required_tx_senders as (
     {% endif %}
 ),
 
+-- build cross-address transfers with sender fallback when needed
 cross_address_transfers as (
   select
     p.object_id,
@@ -126,7 +129,14 @@ cross_address_transfers as (
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', "cast('direct' as varchar)", "case when f.object_status = 'Created' then f.tx_sender else coalesce(f.prev_owner, f.tx_sender) end", 'f.receiver', 'f.object_id', 'f.version']) }} as unique_key,
+  {{ dbt_utils.generate_surrogate_key([
+    'f.tx_digest',
+    'f.coin_type',
+    "case when f.object_status = 'Created' then f.tx_sender else coalesce(f.prev_owner, f.tx_sender) end",
+    'f.receiver',
+    'f.object_id',
+    'f.version'
+  ]) }} as unique_key,
   f.object_id,
   f.version,
   f.tx_digest,

@@ -17,6 +17,7 @@
 
 with
 
+-- load incremental object-event features used to reconstruct owner deltas
 transfer_event_features as (
   select
     f.object_id,
@@ -42,6 +43,7 @@ transfer_event_features as (
     {% endif %}
 ),
 
+-- load direct cross-address transfers for the same incremental window
 direct_transfers as (
   select
     d.object_id,
@@ -72,6 +74,7 @@ direct_transfers as (
     {% endif %}
 ),
 
+-- expand object events into signed per-owner deltas
 owner_true_deltas as (
   select
     f.tx_digest,
@@ -127,6 +130,7 @@ owner_true_deltas as (
     and f.balance_delta != 0
 ),
 
+-- aggregate expected owner net delta per tx, coin and owner
 owner_true_net as (
   select
     r.tx_digest,
@@ -138,6 +142,7 @@ owner_true_net as (
   group by 1, 2, 3
 ),
 
+-- expand direct transfers into signed per-owner deltas
 owner_direct_deltas as (
   select
     d.tx_digest,
@@ -158,6 +163,7 @@ owner_direct_deltas as (
     and d.amount_raw != 0
 ),
 
+-- aggregate direct-transfer owner net delta per tx, coin and owner
 owner_direct_net as (
   select
     r.tx_digest,
@@ -169,6 +175,7 @@ owner_direct_net as (
   group by 1, 2, 3
 ),
 
+-- capture tx+coin context fields for residual reconciliation
 tx_coin_context as (
   select
     d.tx_digest,
@@ -182,6 +189,7 @@ tx_coin_context as (
   group by 1, 2
 ),
 
+-- compute residual per-owner delta not explained by direct transfers
 owner_residual_net as (
   select
     coalesce(t.tx_digest, d.tx_digest) as tx_digest,
@@ -200,6 +208,7 @@ owner_residual_net as (
   where coalesce(t.owner, d.owner) is not null
 ),
 
+-- materialize residual transfers that reconcile owner-level nets
 owner_residual_transfers as (
   select
     cast(null as varbinary) as object_id,
@@ -230,7 +239,7 @@ owner_residual_transfers as (
       else cast('owner_residual_credit' as varchar)
     end as owner_net_type,
     case
-      when r.residual_delta_raw < 0 then r.owner
+      when r.residual_delta_raw <= 0 then r.owner
       else cast(null as varbinary)
     end as transfer_from,
     case
@@ -242,61 +251,48 @@ owner_residual_transfers as (
   inner join tx_coin_context c
     on r.tx_digest = c.tx_digest
     and r.coin_type = c.coin_type
+  -- on full refresh, drop zero residual values because there is no stale state to neutralize
+  {% if not is_incremental() %}
   where r.residual_delta_raw != 0
+  {% endif %}
 ),
 
+-- assemble final owner-net output and normalized key components
 owner_net_transfers as (
   select
-    d.object_id,
-    d.version,
-    d.tx_digest,
-    d.timestamp_ms,
-    d.block_date,
-    d.block_month,
-    d.checkpoint,
-    d.owner_type,
-    d.receiver,
-    d.coin_type,
-    d.object_status,
-    d.coin_balance,
-    d.prev_owner,
-    d.prev_balance,
-    d.balance_delta,
-    d.has_ownership_change,
-    d.tx_sender,
-    d.owner_net_type,
-    d.transfer_from,
-    d.transfer_to,
-    d.amount_raw
-  from direct_transfers d
-  union all
-  select
-    r.object_id,
-    r.version,
-    r.tx_digest,
-    r.timestamp_ms,
-    r.block_date,
-    r.block_month,
-    r.checkpoint,
-    r.owner_type,
-    r.receiver,
-    r.coin_type,
-    r.object_status,
-    r.coin_balance,
-    r.prev_owner,
-    r.prev_balance,
-    r.balance_delta,
-    r.has_ownership_change,
-    r.tx_sender,
-    r.owner_net_type,
-    r.transfer_from,
-    r.transfer_to,
-    r.amount_raw
-  from owner_residual_transfers r
+    t.*,
+    case
+      when t.owner_net_type in ('owner_residual_debit', 'owner_residual_credit')
+      then cast('owner_residual' as varchar)
+      else t.owner_net_type
+    end as owner_net_type_normalized,
+    case
+      when t.owner_net_type in ('owner_residual_debit', 'owner_residual_credit')
+      then coalesce(t.transfer_from, t.transfer_to)
+      else t.transfer_from
+    end as transfer_from_normalized,
+    case
+      when t.owner_net_type in ('owner_residual_debit', 'owner_residual_credit')
+      then cast(null as varbinary)
+      else t.transfer_to
+    end as transfer_to_normalized
+  from (
+    select * from direct_transfers
+    union all
+    select * from owner_residual_transfers
+  ) t
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.coin_type', 'f.owner_net_type', 'f.transfer_from', 'f.transfer_to', 'f.object_id', 'f.version']) }} as unique_key,
+  {{ dbt_utils.generate_surrogate_key([
+    'f.tx_digest',
+    'f.coin_type',
+    'f.owner_net_type_normalized',
+    'f.transfer_from_normalized',
+    'f.transfer_to_normalized',
+    'f.object_id',
+    'f.version'
+  ]) }} as unique_key,
   f.object_id,
   f.version,
   f.tx_digest,

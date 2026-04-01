@@ -17,6 +17,7 @@
 
 with
 
+-- load created and mutated coin object history for the active window
 coin_object_history as (
   select
     h.object_id,
@@ -38,6 +39,7 @@ coin_object_history as (
     {% endif %}
 ),
 
+-- load deleted coin objects that have prior history
 deleted_objects as (
   select
     o.object_id,
@@ -65,6 +67,7 @@ deleted_objects as (
     )
 ),
 
+-- load latest prior object state per object as anchor context
 history_anchors as (
   select
     h.object_id,
@@ -98,6 +101,7 @@ history_anchors as (
   group by 1
 ),
 
+-- combine history and anchors to compute previous owner and balance
 object_state_deltas as (
   select
     u.object_id,
@@ -108,7 +112,7 @@ object_state_deltas as (
     u.block_month,
     u.checkpoint,
     coalesce(u.owner_type, lag(u.owner_type) over w) as owner_type,
-    -- keep deleted rows as owner -> null so burn-only deletions remain observable
+    -- keep deleted entries as owner -> null so burn-only deletions remain observable
     case
       when u.object_status = 'Deleted' then u.receiver
       else coalesce(u.receiver, lag(u.receiver) over w)
