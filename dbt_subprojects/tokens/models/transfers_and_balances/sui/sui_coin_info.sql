@@ -17,11 +17,9 @@
 -- choose the most recent metadata snapshot first (checkpoint/version),
 -- then use source_priority only as a tie-breaker for equal recency.
 -- source priority (highest to lowest):
--- 1) manual overrides
--- 2) 0x2::coin_registry::Currency<T>
--- 3) 0x2::coin_registry::CoinData<T>
--- 4) 0x2::coin::CoinMetadata<T>
--- manual rows remain fallback candidates when no onchain metadata exists.
+-- 1) 0x2::coin_registry::Currency<T>
+-- 2) 0x2::coin_registry::CoinData<T>
+-- 3) 0x2::coin::CoinMetadata<T>
 
 with
 
@@ -96,22 +94,6 @@ metadata_candidates as (
   from objects_base o
 ),
 
-manual_metadata as (
-  select
-    m.coin_type,
-    regexp_replace(split_part(m.coin_type, '::', 1), '^0x0*([0-9a-f]+)$', '0x$1') as contract_address,
-    m.symbol,
-    m.decimals,
-    cast(null as bigint) as checkpoint_latest,
-    cast(null as bigint) as version_latest,
-    4 as source_priority
-  from (
-    values
-      (lower('0x2::sui::SUI'), 'SUI', 9),
-      (lower('0x27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'), 'BTC', 8)
-  ) as m(coin_type, symbol, decimals)
-),
-
 ranked as (
   select
     c.coin_type,
@@ -124,27 +106,7 @@ ranked as (
       partition by c.coin_type
       order by c.checkpoint_latest desc, c.version_latest desc, c.source_priority desc
     ) as rn
-  from (
-    select
-      c.coin_type,
-      c.contract_address,
-      c.symbol,
-      c.decimals,
-      c.checkpoint_latest,
-      c.version_latest,
-      c.source_priority
-    from metadata_candidates c
-    union all
-    select
-      m.coin_type,
-      m.contract_address,
-      m.symbol,
-      m.decimals,
-      m.checkpoint_latest,
-      m.version_latest,
-      m.source_priority
-    from manual_metadata m
-  ) c
+  from metadata_candidates c
 )
 
 select
