@@ -189,7 +189,9 @@ WHERE CAST(date_trunc('day', dexs.block_time) AS date) != date '2025-11-12'
         project = '',
         version = '',
         project_decoded_as = 'balancer_v3',
-        Vault_evt_Swap = 'Vault_evt_Swap'
+        Vault_evt_Swap = 'Vault_evt_Swap',
+        Vault_evt_Wrap = 'Vault_evt_Wrap',
+        Vault_evt_Unwrap = 'Vault_evt_Unwrap'
     )
 %}
 
@@ -204,14 +206,80 @@ pool_labels AS (
     FROM {{ ref('labels_balancer_v3_pools') }}
 ),
 
+swaps_filtered AS (
+    SELECT
+        swap.*
+    FROM {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Swap) }} swap
+    WHERE swap.tokenIn <> swap.pool
+        AND swap.tokenOut <> swap.pool
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('swap.evt_block_time') }}
+        {% endif %}
+),
+
+{# Buffer swaps move underlying through Wrap/Unwrap; Vault_evt_Swap amounts are shares. Match closest Wrap before / Unwrap after swap by evt_index. #}
+wrap_for_swap AS (
+    SELECT
+        evt_tx_hash,
+        swap_evt_index,
+        depositedUnderlying
+    FROM (
+        SELECT
+            s.evt_tx_hash,
+            s.evt_index AS swap_evt_index,
+            w.depositedUnderlying,
+            ROW_NUMBER() OVER (
+                PARTITION BY s.evt_tx_hash, s.evt_index
+                ORDER BY w.evt_index DESC
+            ) AS rn
+        FROM swaps_filtered s
+        INNER JOIN {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Wrap) }} w
+            ON w.evt_tx_hash = s.evt_tx_hash
+            AND w.mintedShares = s.amountIn
+            AND w.wrappedToken = s.tokenIn
+            AND w.evt_index < s.evt_index
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('w.evt_block_time') }}
+            {% endif %}
+    ) t
+    WHERE t.rn = 1
+),
+
+unwrap_for_swap AS (
+    SELECT
+        evt_tx_hash,
+        swap_evt_index,
+        withdrawnUnderlying
+    FROM (
+        SELECT
+            s.evt_tx_hash,
+            s.evt_index AS swap_evt_index,
+            u.withdrawnUnderlying,
+            ROW_NUMBER() OVER (
+                PARTITION BY s.evt_tx_hash, s.evt_index
+                ORDER BY u.evt_index ASC
+            ) AS rn
+        FROM swaps_filtered s
+        INNER JOIN {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Unwrap) }} u
+            ON u.evt_tx_hash = s.evt_tx_hash
+            AND u.burnedShares = s.amountOut
+            AND u.wrappedToken = s.tokenOut
+            AND u.evt_index > s.evt_index
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('u.evt_block_time') }}
+            {% endif %}
+    ) t
+    WHERE t.rn = 1
+),
+
 dexs AS (
     SELECT
         swap.evt_block_number AS block_number,
         swap.evt_block_time AS block_time,
         CAST(NULL AS VARBINARY) AS taker,
         CAST(NULL AS VARBINARY) AS maker,
-        swap.amountOut AS token_bought_amount_raw,
-        swap.amountIn AS token_sold_amount_raw,
+        COALESCE(unwrap_for_swap.withdrawnUnderlying, swap.amountOut) AS token_bought_amount_raw,
+        COALESCE(wrap_for_swap.depositedUnderlying, swap.amountIn) AS token_sold_amount_raw,
         swap.tokenOut AS token_bought_address,
         swap.tokenIn AS token_sold_address,
         swap.pool AS project_contract_address,
@@ -221,15 +289,16 @@ dexs AS (
         swap.SwapFeePercentage / POWER(10, 18) AS swap_fee,
         swap.evt_tx_hash AS tx_hash,
         swap.evt_index
-    FROM {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Swap) }} swap
+    FROM swaps_filtered swap
+    LEFT JOIN wrap_for_swap
+        ON wrap_for_swap.evt_tx_hash = swap.evt_tx_hash
+        AND wrap_for_swap.swap_evt_index = swap.evt_index
+    LEFT JOIN unwrap_for_swap
+        ON unwrap_for_swap.evt_tx_hash = swap.evt_tx_hash
+        AND unwrap_for_swap.swap_evt_index = swap.evt_index
     LEFT JOIN pool_labels l 
         ON l.blockchain = '{{ blockchain }}'
         AND l.pool_address = swap.pool
-    WHERE swap.tokenIn <> swap.pool
-        AND swap.tokenOut <> swap.pool
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('swap.evt_block_time') }}
-        {% endif %}
 )
 
 SELECT
