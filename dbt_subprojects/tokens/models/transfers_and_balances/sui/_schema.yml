@@ -1,0 +1,454 @@
+version: 2
+
+models:
+  - name: sui_coin_info
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Canonical Sui coin metadata combining legacy CoinMetadata and coin_registry standards."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Sui coin metadata keyed by coin_type, combining legacy 0x2::coin::CoinMetadata<T> with coin_registry metadata object types and manual fallback rows for backward compatibility."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - coin_type
+    columns:
+      - &coin_type
+        name: coin_type
+        description: "Normalized full Sui coin type."
+        data_tests:
+          - not_null
+      - &contract_address
+        name: contract_address
+        description: "Normalized package address extracted from coin_type."
+      - &symbol
+        name: symbol
+        description: "Coin ticker symbol."
+      - &decimals
+        name: decimals
+        description: "Display decimals for the coin."
+      - name: checkpoint_latest
+        description: "Latest checkpoint observed for this coin metadata row."
+      - name: version_latest
+        description: "Latest metadata object version observed for this coin metadata row."
+
+  - name: tokens_sui_coin_object_history
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Full Coin<T> object state history by object_id + version."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Incremental history of Sui Coin<T> object states (Created/Mutated), one row per object_id + version."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - object_id
+            - version
+    columns:
+      - &object_id
+        name: object_id
+        description: "Sui coin object identifier."
+        data_tests:
+          - not_null
+      - &version
+        name: version
+        description: "Object version at this historical state."
+        data_tests:
+          - not_null
+      - &tx_digest
+        name: tx_digest
+        description: "Sui transaction digest."
+      - &timestamp_ms
+        name: timestamp_ms
+        description: "Transaction timestamp in milliseconds since unix epoch."
+      - name: block_date
+        description: "The date of the object state."
+        data_tests:
+          - not_null
+      - &block_month
+        name: block_month
+        description: "Month bucket derived from block_date."
+      - &checkpoint
+        name: checkpoint
+        description: "Sui checkpoint number for this object state."
+      - &owner_type
+        name: owner_type
+        description: "Sui owner type associated with the object state."
+      - &receiver
+        name: receiver
+        description: "Owner address at this object version."
+      - *coin_type
+      - &object_status
+        name: object_status
+        description: "Sui object lifecycle status for this version."
+      - &coin_balance
+        name: coin_balance
+        description: "Coin object balance at this version."
+      - &updated_at
+        name: _updated_at
+        description: "Row update timestamp."
+
+  - name: tokens_sui_supply_signals
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Per-tx Sui supply signals with mint/burn type."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Per-transaction, per-coin supply signals on Sui from generic treasury events, package-aware treasury events, and CCTP message patterns, with one normalized supply_event_type output."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - &block_date
+        name: block_date
+        description: "The date of the signal event."
+        data_tests:
+          - not_null
+      - &unique_key
+        name: unique_key
+        description: "Surrogate key for tx_digest + coin_type signal row."
+        data_tests:
+          - not_null
+      - *tx_digest
+      - *coin_type
+      - name: supply_event_type
+        description: "Normalized supply event label per tx_digest + coin_type ('mint'/'burn'); null when signal directions are ambiguous."
+      - *updated_at
+
+  - name: tokens_sui_object_event_deltas
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Coin object lifecycle deltas with ownership-change flags."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Per object_id + version Coin<T> lifecycle features used by downstream direct-transfer and owner-net reconciliation models."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - object_id
+            - version
+      - check_seed:
+          seed_file: ref('tokens_sui_object_event_deltas_anchor_seed')
+          match_columns:
+            - block_date
+            - object_id
+            - version
+          check_columns:
+            - object_status
+            - prev_owner
+            - prev_balance
+            - has_ownership_change
+    columns:
+      - *block_date
+      - *object_id
+      - *version
+      - *tx_digest
+      - *timestamp_ms
+      - *block_month
+      - *checkpoint
+      - *owner_type
+      - *receiver
+      - name: coin_type
+        description: "Normalized full Sui coin type."
+      - *object_status
+      - *coin_balance
+      - &prev_balance
+        name: prev_balance
+        description: "Previous observed balance for the same object."
+      - &prev_owner
+        name: prev_owner
+        description: "Previous observed owner address for the same object."
+      - &balance_delta
+        name: balance_delta
+        description: "Signed balance change on this object version."
+      - &has_ownership_change
+        name: has_ownership_change
+        description: "True when ownership changed between consecutive object versions."
+      - *updated_at
+
+  - name: tokens_sui_direct_transfers
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Cross-address direct transfer legs before owner-net reconciliation."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Direct cross-address transfer legs derived from object event deltas, including deferred tx sender resolution for Created/unanchored cases."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+      - check_seed:
+          seed_file: ref('tokens_sui_direct_transfers_deleted_seed')
+          match_columns:
+            - block_date
+            - object_id
+            - version
+          check_columns:
+            - object_status
+            - transfer_from
+            - transfer_to
+            - amount_raw
+            - owner_net_type
+    columns:
+      - *block_date
+      - *unique_key
+      - &object_id_nullable
+        name: object_id
+        description: "Sui coin object identifier. Nullable for residual owner-net reconciliation rows."
+      - &version_nullable
+        name: version
+        description: "Object version at this historical state. Nullable for residual owner-net reconciliation rows."
+      - *tx_digest
+      - *timestamp_ms
+      - *block_month
+      - *checkpoint
+      - *owner_type
+      - *receiver
+      - *coin_type
+      - *object_status
+      - *coin_balance
+      - *prev_balance
+      - *prev_owner
+      - *balance_delta
+      - *has_ownership_change
+      - &tx_sender
+        name: tx_sender
+        description: "Resolved transaction sender used for cross-address filtering when previous owner is unavailable."
+      - &owner_net_type
+        name: owner_net_type
+        description: "Type label for owner-net reconciliation entries ('direct' in this helper)."
+      - &transfer_from
+        name: transfer_from
+        description: "Resolved sender side of the direct transfer leg."
+      - &transfer_to
+        name: transfer_to
+        description: "Resolved receiver side of the direct transfer leg."
+      - &amount_raw
+        name: amount_raw
+        description: "Raw owner-net transfer leg amount."
+      - *updated_at
+
+  - name: tokens_sui_owner_net_transfers
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Owner-net transfer legs including residual reconciliation rows."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Owner-net transfer legs formed by combining direct cross-address legs with residual owner deltas so tx+coin owner nets reconcile."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+      - check_seed:
+          seed_file: ref('tokens_sui_owner_net_transfers_seed')
+          match_columns:
+            - block_date
+            - tx_digest
+            - object_id
+            - version
+          check_columns:
+            - coin_type
+            - owner_net_type
+            - transfer_from
+            - transfer_to
+            - amount_raw
+            - prev_owner
+            - prev_balance
+            - object_status
+            - has_ownership_change
+    columns:
+      - *block_date
+      - *unique_key
+      - *object_id_nullable
+      - *version_nullable
+      - *tx_digest
+      - *timestamp_ms
+      - *block_month
+      - *checkpoint
+      - *owner_type
+      - *receiver
+      - *coin_type
+      - *object_status
+      - *coin_balance
+      - *prev_balance
+      - *prev_owner
+      - *balance_delta
+      - *has_ownership_change
+      - *tx_sender
+      - *owner_net_type
+      - *transfer_from
+      - *transfer_to
+      - *amount_raw
+      - *updated_at
+
+  - name: tokens_sui_base_transfers
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Base Sui Coin<T> cross-address transfers with supply flags."
+      contributors: 0xboxer, tomfutago, 0xRob
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Sui Coin<T> base transfers for all fungible coin types, restricted to cross-address movements and enriched with supply-event signals only."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+      - check_seed:
+          seed_file: ref('tokens_sui_base_transfers_seed')
+          match_columns:
+            - block_date
+            - unique_key
+          check_columns:
+            - transfer_type
+            - object_status
+            - has_ownership_change
+            - transfer_direction
+            - amount_raw
+            - is_supply_event
+            - supply_event_type
+            - tx_net_delta
+            - coin_type
+    columns:
+      - *block_date
+      - *unique_key
+      - &blockchain
+        name: blockchain
+        description: "Blockchain identifier."
+      - *block_month
+      - &block_time
+        name: block_time
+        description: "Block timestamp."
+      - *checkpoint
+      - *tx_digest
+      - &token_standard
+        name: token_standard
+        description: "Token standard label for transfer records."
+      - &tx_from
+        name: tx_from
+        description: "Resolved transaction sender address."
+      - &from_address
+        name: "from"
+        description: "Transfer sender address."
+      - &to_address
+        name: to
+        description: "Transfer receiver address."
+      - &from_resolved
+        name: from_resolved
+        description: "Resolved sender address with deterministic fallbacks for one-sided rows; remains null when no reliable counterparty can be inferred."
+      - &from_resolution_type
+        name: from_resolution_type
+        description: "Resolution provenance for from_resolved (observed, derived_tx_sender, derived_prev_owner, mirrored_to, unresolved_null)."
+        data_tests:
+          - not_null
+      - &to_resolved
+        name: to_resolved
+        description: "Resolved receiver address with deterministic fallbacks for one-sided rows; remains null when no reliable counterparty can be inferred."
+      - &to_resolution_type
+        name: to_resolution_type
+        description: "Resolution provenance for to_resolved (observed, derived_tx_sender, derived_prev_owner, mirrored_from, unresolved_null)."
+        data_tests:
+          - not_null
+      - &is_counterparty_assumed
+        name: is_counterparty_assumed
+        description: "True when at least one side of the observed pair is missing and resolved counterparties rely on assumptions."
+        data_tests:
+          - not_null
+      - *contract_address
+      - *coin_type
+      - *amount_raw
+      - *balance_delta
+      - *object_id_nullable
+      - *version_nullable
+      - *object_status
+      - *owner_type
+      - *coin_balance
+      - *prev_balance
+      - *prev_owner
+      - *has_ownership_change
+      - &transfer_type
+        name: transfer_type
+        description: "Object-lifecycle and owner-net leg label (for example object_created, transfer_with_balance_change, ownership_balance_spend/topup)."
+      - &is_supply_event
+        name: is_supply_event
+        description: "True only when supply-event signals and transaction net delta direction agree."
+      - &supply_event_type
+        name: supply_event_type
+        description: "Conservative mint/burn classification derived from treasury/CCTP-like event patterns."
+      - &transfer_direction
+        name: transfer_direction
+        description: "Direction of owner-net leg movement. Residual owner-net legs map directly to debit/credit; other rows use balance_delta sign."
+      - &tx_net_delta
+        name: tx_net_delta
+        description: "Net signed delta per tx_digest + coin_type across filtered rows."
+      - *updated_at
+
+  - name: tokens_sui_transfers
+    meta:
+      blockchain: sui
+      sector: tokens
+      short_description: "Sui Coin<T> transfers with metadata and USD values."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'sui']
+    description: "Sui cross-address Coin<T> transfers enriched with coin metadata (symbol/decimals), USD valuation, and supply-event flags."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - *block_date
+      - *unique_key
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *checkpoint
+      - *tx_digest
+      - *token_standard
+      - *from_address
+      - *to_address
+      - *contract_address
+      - *coin_type
+      - *symbol
+      - *decimals
+      - *amount_raw
+      - name: amount
+        description: "Transfer amount scaled by decimals."
+      - name: price_usd
+        description: "Hourly USD price."
+      - name: amount_usd
+        description: "USD value of transfer amount."
+      - *balance_delta
+      - *object_id_nullable
+      - *version_nullable
+      - *object_status
+      - *owner_type
+      - *coin_balance
+      - *prev_balance
+      - *prev_owner
+      - *has_ownership_change
+      - *transfer_type
+      - *is_supply_event
+      - *supply_event_type
+      - *transfer_direction
+      - *updated_at
