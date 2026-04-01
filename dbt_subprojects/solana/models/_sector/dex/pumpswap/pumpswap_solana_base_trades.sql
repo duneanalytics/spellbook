@@ -13,6 +13,14 @@
 }}
 
 {% set project_start_date = '2026-02-20' %}
+{% set quote_mint_allowlist = [
+    'So11111111111111111111111111111111111111112',
+    'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So',
+    'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB',
+    'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn',
+    'DEkqHyPN7GMRJ5cArtQFAWefqbZb33Hyf6s5iCwjEonT'
+] %}
 
 WITH pools AS (
     SELECT
@@ -22,6 +30,11 @@ WITH pools AS (
         , baseMintDecimals
         , quoteMintDecimals
     FROM {{ ref('pumpswap_solana_pools') }}
+    WHERE quoteMint IN (
+        {% for mint in quote_mint_allowlist %}
+        '{{ mint }}'{% if not loop.last %},{% endif %}
+        {% endfor %}
+    )
 )
 
 , swaps_base AS (
@@ -193,7 +206,7 @@ WITH pools AS (
             else sp.account_pool_base_token_account
           end as token_sold_vault
     FROM swaps_with_transfers sp
-    LEFT JOIN pools p ON p.pool = sp.pool
+    INNER JOIN pools p ON p.pool = sp.pool
     WHERE sp.rn = 1 
 )
 

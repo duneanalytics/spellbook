@@ -133,7 +133,7 @@ models:
       contributors: [krishhh]
     config:
       tags: ['solana','dex', 'pumpswap']
-    description: "Pumpswap pools on Solana"
+    description: "Pumpswap pools on Solana, filtered to approved quote mints"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ pool]
