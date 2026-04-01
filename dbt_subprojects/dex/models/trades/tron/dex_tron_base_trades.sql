@@ -17,61 +17,8 @@
   ref('sunswap_v3_tron_base_trades')
 ] %}
 
-with base_union as (
-  {% for base_model in base_models %}
-  select
-    blockchain,
-    project,
-    version,
-    block_month,
-    block_date,
-    block_time,
-    block_number,
-    cast(token_bought_amount_raw as uint256) as token_bought_amount_raw,
-    cast(token_sold_amount_raw as uint256) as token_sold_amount_raw,
-    token_bought_address,
-    token_sold_address,
-    taker,
-    maker,
-    project_contract_address,
-    tx_hash,
-    evt_index
-  from {{ base_model }}
-  where token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-  {% if var('dev_dates', false) -%}
-    and block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
-  {%- else -%}
-    {% if is_incremental() %}
-      and {{ incremental_predicate('block_time') }}
-    {% endif %}
-  {%- endif %}
-  {% if not loop.last %}
-  union all
-  {% endif %}
-  {% endfor %}
-),
-
-add_tx_columns as (
-  {{
-    add_tx_columns(
-      model_cte = 'base_union',
-      blockchain = 'tron',
-      columns = ['from', 'to', 'index']
-    )
-  }}
-),
-
-final as (
-  select
-    *,
-    row_number() over (
-      partition by tx_hash, evt_index
-      order by block_time, block_number, tx_index, project_contract_address
-    ) as duplicates_rank
-  from add_tx_columns
-)
-
-select
-  *
-from final
-where duplicates_rank = 1
+{{ dex_base_trades_macro(
+    blockchain = 'tron',
+    base_models = base_models,
+    dedup_order_by = 'block_time, block_number, tx_index, project_contract_address'
+) }}
