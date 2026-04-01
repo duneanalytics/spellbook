@@ -25,6 +25,7 @@ WITH pools AS (
           pool
         , baseMint
         , quoteMint
+        , is_valid_pool
     FROM {{ ref('pumpswap_solana_pools') }}
 )
 
@@ -157,6 +158,7 @@ WITH pools AS (
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
     WHERE sp.rn = 1
+      AND COALESCE(p.is_valid_pool, false)
 )
 
 SELECT
