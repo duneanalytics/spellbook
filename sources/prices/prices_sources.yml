@@ -11,7 +11,7 @@ sources:
       - name: usd
         description: "USD prices across blockchains. Token symbols are not unique; use (blockchain, contract_address) to identify a token."
         meta:
-          docs_slug: /curated/asset-tracking/prices/prices
+          docs_slug: /curated/prices/prices_usd
         columns:
           - name: minute
             description: "UTC event block time truncated to the minute mark"

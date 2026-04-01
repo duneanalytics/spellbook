@@ -3,6 +3,8 @@ version: 2
 sources:
   - name: prices
     description: "Price data from various sources and time granularities"
+    meta:
+      docs_slug: /curated/prices/prices_day
     tables:
       - name: day
         description: "Daily token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
@@ -37,6 +39,8 @@ sources:
 
       - name: hour
         description: "Hourly token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
+        meta:
+          docs_slug: /curated/prices/prices_hour
         columns:
           - name: blockchain
             description: "Native blockchain of the token"
@@ -68,6 +72,8 @@ sources:
 
       - name: minute
         description: "Minute-level token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
+        meta:
+          docs_slug: /curated/prices/prices_minute
         columns:
           - name: blockchain
             description: "Native blockchain of the token"
@@ -98,7 +104,9 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: latest
-        description: "Latest available token prices from various sources"
+        description: "Latest available token prices from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens. "
+        meta:
+          docs_slug: /curated/prices/prices_latest
         columns:
           - name: blockchain
             description: "Native blockchain of the token"
@@ -129,16 +137,32 @@ sources:
     description: "Price data from CoinPaprika API"
     tables:
       - name: minute
+        meta:
+          docs_slug: /curated/prices/prices_external_minute
       - name: hour
+        meta:
+          docs_slug: /curated/prices/prices_external_hour
       - name: day
+        meta:
+          docs_slug: /curated/prices/prices_external_day
       - name: latest
+        meta:
+          docs_slug: /curated/prices/prices_external_latest
   - name: prices_dex
     description: "Price data from DEX pipeline"
     tables:
       - name: minute
+        meta:
+          docs_slug: /curated/prices/prices_dex_minute
       - name: hour
+        meta:
+          docs_slug: /curated/prices/prices_dex_hour
       - name: day
+        meta:
+          docs_slug: /curated/prices/prices_dex_day
       - name: latest
+        meta:
+          docs_slug: /curated/prices/prices_dex_latest
   - name: tokens_v2
     tables:
       - name: erc20
@@ -147,6 +171,8 @@ sources:
     tables:
       - name: fungible
         description: "Fungible Token Program Mint Addresses, Symbols and Decimals"
+        meta:
+          docs_slug: /curated/token-metadata/solana/token-metadata
         columns:
           - name: token_mint_address
             description: "fungible token mint address on Solana"
@@ -164,6 +190,8 @@ sources:
             description: "transaction that initialized the mint"
       - name: transfers
         description: "Solana token transfers"
+        meta:
+          docs_slug: /curated/token-transfers/solana/solana-token-transfers
         config:
           event_time: block_date
         columns:
