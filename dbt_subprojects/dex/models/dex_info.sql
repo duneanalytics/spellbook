@@ -249,5 +249,5 @@ FROM (VALUES
     , ('prismfi', 'PrismFI', 'Direct', 'PrismFI')
     , ('supernova', 'Supernova', 'Direct', 'SupernovaDEX')
     , ('sunswap', 'SunSwap', 'Direct', 'SunSwap')
-    , ('tempo_exchange', 'Tempo Exchange', 'Direct', 'tempo_xyz')
+    , ('tempo_exchange', 'Tempo Exchange', 'Direct', 'tempo')
 ) AS temp_table (project, name, marketplace_type, x_username)
