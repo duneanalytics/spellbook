@@ -20,15 +20,10 @@ WITH base_trades AS (
             Factory_evt_PoolCreated = source('hybra_hyperevm', 'uniswapv3factory_evt_poolcreated')
         )
     }}
-),
-
-deduplicated_trades AS (
-    SELECT *,
-           ROW_NUMBER() OVER (PARTITION BY tx_hash, evt_index ORDER BY block_time) as rn
-    FROM base_trades
 )
 
-SELECT 
+-- row_number() dedup removed: source tables verified duplicate-free via Dune queries 6935096-6935100, 6935776 (2026-04-01)
+SELECT
     blockchain,
     project,
     version,
@@ -45,5 +40,4 @@ SELECT
     project_contract_address,
     tx_hash,
     evt_index
-FROM deduplicated_trades
-WHERE rn = 1 
+FROM base_trades
