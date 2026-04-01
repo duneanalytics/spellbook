@@ -158,10 +158,13 @@ models:
       contributors: [ krishhh ]
     config:
       tags: ['solana','dex', 'pumpswap']
-    description: "Pumpswap pools on Solana, filtered to approved quote mints"
+    description: "Pumpswap pools on Solana with a quote-mint validity flag"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ pool ]
+    columns:
+      - name: is_valid_pool
+        description: "True when quote mint is in the approved Pumpswap quote-mint allowlist"
 
   - name: pumpswap_version_1_base_trades
     meta:

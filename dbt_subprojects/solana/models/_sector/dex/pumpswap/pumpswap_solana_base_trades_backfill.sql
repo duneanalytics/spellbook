@@ -19,26 +19,14 @@
 {% set begin = '2025-02-20' %}
 {% set batch_start = model.batch.event_time_start if model.batch else begin %}
 {% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
-{% set quote_mint_allowlist = [
-    'So11111111111111111111111111111111111111112',
-    'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So',
-    'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-    'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB',
-    'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn',
-    'DEkqHyPN7GMRJ5cArtQFAWefqbZb33Hyf6s5iCwjEonT'
-] %}
 
 WITH pools AS (
     SELECT
           pool
         , baseMint
         , quoteMint
+        , is_valid_pool
     FROM {{ ref('pumpswap_solana_pools') }}
-    WHERE quoteMint IN (
-        {% for mint in quote_mint_allowlist %}
-        '{{ mint }}'{% if not loop.last %},{% endif %}
-        {% endfor %}
-    )
 )
 
 , swaps AS (
@@ -168,8 +156,9 @@ WITH pools AS (
         , CASE WHEN sp.is_buy = 1 THEN sp.account_pool_base_token_account ELSE sp.account_pool_quote_token_account END AS token_bought_vault
         , CASE WHEN sp.is_buy = 1 THEN sp.account_pool_quote_token_account ELSE sp.account_pool_base_token_account END AS token_sold_vault
     FROM swaps_with_transfers sp
-    INNER JOIN pools p ON p.pool = sp.pool
+    LEFT JOIN pools p ON p.pool = sp.pool
     WHERE sp.rn = 1
+      AND COALESCE(p.is_valid_pool, false)
 )
 
 SELECT
