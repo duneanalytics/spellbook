@@ -87,6 +87,7 @@ token_windows as (
     cast(date_trunc('hour', min(t.block_time)) as timestamp) as start_hour
   from {{ ref('polymarket_polygon_market_trades_raw') }} t
   where t.asset_id is not null
+    and t.block_time >= timestamp '2026-03-26' -- temporary CI filter, revert before merge
   group by 1
 ),
 {% endif -%}
