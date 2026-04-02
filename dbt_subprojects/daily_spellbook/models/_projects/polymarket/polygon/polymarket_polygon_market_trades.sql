@@ -128,7 +128,7 @@ select
   t.taker,
   md.unique_key,
   md.token_outcome_name,
-  now() as updated_at
+  now() as _updated_at
 from source_trades t
 left join market_details md
   on t.asset_id = md.token_id
