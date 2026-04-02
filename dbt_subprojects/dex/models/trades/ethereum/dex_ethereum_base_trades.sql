@@ -62,4 +62,5 @@ WITH base AS (
     ) }}
 )
 SELECT * FROM base
+-- exclude tx with inflated volume (~10 trillion)
 WHERE tx_hash != 0x1c27c4d625429acfc0f97e466eda725fd09ebdc77550e529ba4cbdbc33beb97b
