@@ -197,6 +197,8 @@ models:
         description: "Unique key of the event or market"
       - name: token_outcome_name
         description: "Combination of token outcome and question"
+      - name: updated_at
+        description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
 
   - name: polymarket_polygon_users_capital_actions
     meta:

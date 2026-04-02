@@ -7,7 +7,6 @@
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
     unique_key = ['block_month', 'block_time', 'asset_id', 'evt_index', 'tx_hash'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
@@ -66,7 +65,7 @@ source_trades as (
     select
       t.*,
       row_number() over (
-        partition by t.block_time, t.asset_id, t.evt_index, t.tx_hash
+        partition by t.block_month, t.block_time, t.asset_id, t.evt_index, t.tx_hash
         order by t.block_time desc
       ) as rn
     from (
@@ -128,7 +127,8 @@ select
   t.maker,
   t.taker,
   md.unique_key,
-  md.token_outcome_name
+  md.token_outcome_name,
+  now() as updated_at
 from source_trades t
 left join market_details md
   on t.asset_id = md.token_id
