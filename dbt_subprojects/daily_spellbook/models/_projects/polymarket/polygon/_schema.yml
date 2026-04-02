@@ -328,7 +328,9 @@ models:
         description: "Outcome of the market"
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
-        
+      - name: last_uploaded_at
+        description: "Timestamp of the last API upload for this market record"
+
   - name: polymarket_polygon_positions_raw
     meta:
       blockchain: polygon
