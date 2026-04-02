@@ -252,6 +252,10 @@ select
   pc.condition_id,
   pc.token_id,
   pc.price,
+  {% if is_incremental() -%}
   now() as _updated_at
+  {% else -%}
+  pc.hour as _updated_at
+  {% endif -%}
 from price_correction pc
 where pc.price is not null

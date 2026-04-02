@@ -178,7 +178,7 @@ select
   market_end_time,
   market_outcome,
   resolved_on_timestamp,
-  now() as _updated_at
+  cast(day as timestamp) as _updated_at
 from positions
 
 {% endif -%}

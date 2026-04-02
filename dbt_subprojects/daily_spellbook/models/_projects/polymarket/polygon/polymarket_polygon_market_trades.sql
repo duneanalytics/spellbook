@@ -128,7 +128,11 @@ select
   t.taker,
   md.unique_key,
   md.token_outcome_name,
+  {% if is_incremental() -%}
   now() as _updated_at
+  {% else -%}
+  t.block_time as _updated_at
+  {% endif -%}
 from source_trades t
 left join market_details md
   on t.asset_id = md.token_id
