@@ -104,7 +104,6 @@ source_trades as (
     maker,
     taker
   from {{ ref('polymarket_polygon_market_trades_raw') }}
-  where block_time >= timestamp '2026-03-26' -- temporary CI filter, revert before merge
 )
 
 {% endif -%}

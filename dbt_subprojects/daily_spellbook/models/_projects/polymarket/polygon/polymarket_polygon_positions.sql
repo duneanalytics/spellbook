@@ -183,6 +183,5 @@ select
   resolved_on_timestamp,
   now() as _updated_at
 from positions
-where day >= date '2026-03-26' -- temporary CI filter, revert before merge
 
 {% endif -%}
