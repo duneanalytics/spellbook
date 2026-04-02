@@ -942,6 +942,10 @@ sources:
           - name: decimals
             data_type: integer
 
+  - name: tokens_sui
+    tables:
+      - name: transfers
+
   - name: tokens_tron
     tables:
       - name: erc20

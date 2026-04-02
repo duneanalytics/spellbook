@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: stablecoins_sui_balances
+    meta:
+      blockchain: sui
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Daily USDC balances for Sui addresses derived from `tokens_sui.transfers` with a fixed coin_type filter."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - name: blockchain
+        description: "Blockchain for the token."
+      - name: day
+        description: "Date on which the token balance is logged."
+        data_tests:
+          - not_null
+      - name: address
+        description: "Address for the token holder."
+        data_tests:
+          - not_null
+      - name: token_symbol
+        description: "Symbol for the token."
+      - name: token_address
+        description: "Sui coin type identifier used as token address."
+        data_tests:
+          - not_null
+      - name: token_standard
+        description: "Standard for the token."
+      - name: token_id
+        description: "Token id."
+      - name: balance_raw
+        description: "Raw balance for the user (not adjusted for decimals)."
+      - name: balance
+        description: "Balance for the user (adjusted for decimals)."
+      - name: balance_usd
+        description: "USD value of balance for the user."
+      - name: currency
+        description: "ISO 4217 currency code for the stablecoin's pegged currency."
+      - name: last_updated
+        description: "UTC timestamp when data was last updated."
