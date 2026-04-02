@@ -101,7 +101,6 @@ source_trades as (
     maker,
     taker
   from {{ ref('polymarket_polygon_market_trades_raw') }}
-  where block_time >= now() - interval '7' day -- TODO: revert before merge
 )
 
 {% endif -%}
