@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: stablecoins_sui_transfers
+    meta:
+      blockchain: sui
+      sector: stablecoin
+      short_description: "SUI USDC stablecoin transfers — direct sends, Circle CCTP mints, and burns"
+      contributors: Evan-Kim2028
+    config:
+      tags: ['sui', 'stablecoin', 'transfers']
+    description: >
+      SUI USDC stablecoin transfers derived from coin object ownership changes and Circle treasury events.
+
+      Covers three transfer types:
+        - direct_send: wallet-to-wallet coin transfers (from sui.objects Created objects where tx_sender != receiver)
+        - mint: Circle CCTP mints (from treasury::Mint events, amount in event JSON)
+        - burn: Circle CCTP burns (from treasury::Burn events, amount in event JSON)
+
+      Key design decision: burns MUST use events because Deleted objects on Sui lose their coin_type field,
+      making them invisible to coin_type-filtered queries. The prior approach (#9308) silently produced $0
+      burn volume. Verified: event-based mint amounts match object-based amounts exactly (188:188, zero discrepancy).
+
+      Scope: coin object ownership transfers only. DEX/protocol interactions where USDC moves inside shared
+      pool objects are intentionally excluded — those produce no coin object mutations and require event-based
+      DEX volume models.
+
+      Schema is compatible with stablecoins_multichain.transfers plus Sui-specific extras (object_id, transfer_type,
+      is_supply_event, supply_event_type, tx_sender).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key. Direct sends: hash of (tx_digest, object_id, version). Mints/burns: hash of (tx_digest, event_index)."
+      - name: blockchain
+        description: "Always 'sui'"
+      - name: block_month
+        description: "Month of the transfer (partition helper)"
+      - name: block_date
+        description: "Date of the transfer"
+      - name: block_time
+        description: "Timestamp of the transfer"
+      - name: block_number
+        description: "Sui checkpoint number"
+      - name: tx_hash
+        description: "Sui transaction digest"
+      - name: evt_index
+        description: "Event index for mints/burns, null for direct sends"
+      - name: token_standard
+        description: "Always 'sui_coin'"
+      - name: token_address
+        description: "Full Sui coin type string"
+      - name: token_symbol
+        description: "Token symbol (USDC)"
+      - name: currency
+        description: "ISO 4217 currency code (usd)"
+      - name: amount_raw
+        description: "Raw transfer amount in smallest denomination"
+      - name: amount
+        description: "Transfer amount adjusted for decimals"
+      - name: price_usd
+        description: "USD price at time of transfer"
+      - name: amount_usd
+        description: "USD value of transfer"
+      - name: from
+        description: "Sender address. For mints: Circle treasury operator. For burns: the burner."
+      - name: to
+        description: "Receiver address. For mints: the recipient. For burns: Circle treasury package."
+      - name: transfer_type
+        description: "'direct_send', 'mint', or 'burn'"
+      - name: is_supply_event
+        description: "True for mints and burns"
+      - name: supply_event_type
+        description: "'mint', 'burn', or null"
+      - name: object_id
+        description: "Sui coin object ID (direct sends only, null for event-based rows)"
+      - name: tx_sender
+        description: "Transaction signer address"
