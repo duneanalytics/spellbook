@@ -19,6 +19,5 @@
 ] %}
 {{ dex_base_trades_macro(
     blockchain = 'hyperevm',
-    base_models = base_models,
-    dedup = false
+    base_models = base_models
 ) }}

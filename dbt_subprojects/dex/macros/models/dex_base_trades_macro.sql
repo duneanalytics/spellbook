@@ -1,9 +1,6 @@
 {% macro dex_base_trades_macro(
     blockchain,
-    base_models,
-    dedup = true,
-    dedup_order_by = 'tx_hash',
-    extra_filters = []
+    base_models
 ) %}
 
 {%- if blockchain is none or blockchain == '' -%}
@@ -59,11 +56,10 @@ with base_union as (
         )
     }}
 )
-{% if dedup %}
 , final as (
     select
         *
-        , row_number() over (partition by tx_hash, evt_index order by {{ dedup_order_by }}) as duplicates_rank
+        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
     from
         add_tx_columns
 )
@@ -73,20 +69,5 @@ from
     final
 where
     duplicates_rank = 1
-    {% for filter in extra_filters %}
-    AND {{ filter }}
-    {% endfor %}
-{% else %}
-select
-    *
-from
-    add_tx_columns
-    {% if extra_filters | length > 0 %}
-where
-    {% for filter in extra_filters %}
-    {{ filter }}{% if not loop.last %} AND {% endif %}
-    {% endfor %}
-    {% endif %}
-{% endif %}
 
 {% endmacro %}

@@ -19,6 +19,5 @@
 
 {{ dex_base_trades_macro(
     blockchain = 'tron',
-    base_models = base_models,
-    dedup_order_by = 'block_time, block_number, tx_index, project_contract_address'
+    base_models = base_models
 ) }}

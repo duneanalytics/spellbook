@@ -55,9 +55,11 @@
     , ref('supernova_v2_ethereum_base_trades')
     , ref('supernova_v3_ethereum_base_trades')
 ] %}
-{# inflated volume (10trillion) — excluded per historical data quality fix #}
-{{ dex_base_trades_macro(
-    blockchain = 'ethereum',
-    base_models = base_models,
-    extra_filters = ["tx_hash != 0x1c27c4d625429acfc0f97e466eda725fd09ebdc77550e529ba4cbdbc33beb97b"]
-) }}
+WITH base AS (
+    {{ dex_base_trades_macro(
+        blockchain = 'ethereum',
+        base_models = base_models
+    ) }}
+)
+SELECT * FROM base
+WHERE tx_hash != 0x1c27c4d625429acfc0f97e466eda725fd09ebdc77550e529ba4cbdbc33beb97b
