@@ -7,6 +7,7 @@ models:
       sector: cex
       short_description: "Token flows into and out of centralized exchange wallets, tracking deposits and withdrawals from CEX-labeled addresses."
       contributors: hildobby
+      docs_slug: /curated/cex-flows/flows
     config:
       tags: ['cex','flows']
     description: "All CEX-tied flows identified across EVM chains"

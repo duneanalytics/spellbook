@@ -8,6 +8,7 @@ models:
       project: aave, compound
       contributors: tomfutago, hildobby
       short_description: "Token borrow events across lending protocols, tracking assets borrowed against deposited collateral."
+      docs_slug: /curated/lending/borrow
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
     description: "All lending transactions involving borrow transactions"

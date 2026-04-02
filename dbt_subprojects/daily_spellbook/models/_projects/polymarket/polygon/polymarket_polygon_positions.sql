@@ -127,7 +127,8 @@ select
   market_start_time,
   market_end_time,
   market_outcome,
-  resolved_on_timestamp
+  resolved_on_timestamp,
+  now() as _updated_at
 from recent_positions
 union all
 select
@@ -150,7 +151,8 @@ select
   market_start_time,
   market_end_time,
   market_outcome,
-  resolved_on_timestamp
+  resolved_on_timestamp,
+  now() as _updated_at
 from historical_changed_positions
 
 {% else -%}
@@ -175,7 +177,8 @@ select
   market_start_time,
   market_end_time,
   market_outcome,
-  resolved_on_timestamp
+  resolved_on_timestamp,
+  now() as _updated_at
 from positions
 
 {% endif -%}
