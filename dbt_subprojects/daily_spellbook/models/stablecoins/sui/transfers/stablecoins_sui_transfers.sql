@@ -13,20 +13,17 @@
 -- ============================================================
 -- SUI Stablecoin Transfers (USDC)
 --
--- Redesign of #9308. Three clean sources, no anchor lookback:
---   1. Direct sends  — Created objects where tx_sender != receiver
---   2. Mints         — Circle treasury::Mint events
---   3. Burns         — Circle treasury::Burn events
+-- Enhances #9308 with event-based Circle CCTP mint/burn tracking.
 --
 -- Key finding: burns MUST use events because Deleted objects
--- lose their coin_type on Sui, making them invisible to any
--- coin_type-filtered query. Verified: the #9308 approach
--- silently produces $0 for burn volume.
+-- lose their coin_type on Sui. The #9308 object-based approach
+-- silently produces $0 burn volume.
 --
--- Verification (Apr 1, 2026):
---   direct_send: 6,472 rows / $36.4M — exact match with #9308
---   mint:          188 rows / $9.6M  — exact match with #9308
---   burn:          293 rows / $5.1M  — #9308 produces 0 rows
+-- Mint/burn amounts are in the treasury event JSON payload:
+--   Mint: {"amount": "826829", "recipient": "0x39bb..."}
+--   Burn: {"amount": "13846570", "mint_cap": "0xee9b..."}
+--
+-- Direct sends use the same object-based approach as #9308.
 -- ============================================================
 
 {% set usdc_coin_type = '0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC' %}
@@ -36,7 +33,7 @@
 -- ============================================================
 -- 1. DIRECT SENDS
 --    Created coin objects where tx sender != object owner.
---    One row per recipient. Amount = coin_balance (exact).
+--    Same approach as #9308 credit-side. One row per recipient.
 -- ============================================================
 with direct_sends as (
     select
@@ -83,7 +80,13 @@ with direct_sends as (
 -- ============================================================
 -- 2. MINTS (Circle CCTP)
 --    Amount and recipient from treasury::Mint event JSON.
---    Verified 188:188 exact match with Created object balances.
+--    Verified exact match with object approach (188:188, $0 diff).
+--
+--    Sample query to find these events:
+--      SELECT transaction_digest, event_json
+--      FROM sui.events
+--      WHERE event_type LIKE '%treasury::Mint<...USDC...>%'
+--      AND date = DATE '2026-04-01'
 -- ============================================================
 , mints as (
     select
@@ -121,8 +124,14 @@ with direct_sends as (
 -- ============================================================
 -- 3. BURNS (Circle CCTP)
 --    Amount from treasury::Burn event JSON.
---    CRITICAL: Deleted objects lose coin_type on Sui — events
---    are the ONLY source for burn amounts.
+--    CRITICAL: Deleted objects lose coin_type on Sui — this is
+--    the ONLY working approach for burn amounts.
+--
+--    Sample query to find these events:
+--      SELECT transaction_digest, event_json
+--      FROM sui.events
+--      WHERE event_type LIKE '%treasury::Burn<...USDC...>%'
+--      AND date = DATE '2026-04-01'
 -- ============================================================
 , burns as (
     select
