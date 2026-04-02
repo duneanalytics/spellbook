@@ -7,6 +7,7 @@
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
     unique_key = ['block_month', 'block_time', 'asset_id', 'evt_index', 'tx_hash'],
+    merge_skip_unchanged = true,
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
