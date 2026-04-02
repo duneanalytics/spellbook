@@ -7,6 +7,7 @@
     incremental_strategy = 'merge',
     partition_by = ['day'],
     unique_key = ['day', 'address', 'token_id'],
+    merge_skip_unchanged = true,
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
@@ -46,7 +47,9 @@ with positions as (
   select distinct
     mm_check.token_id
   from {{ ref('polymarket_polygon_market_details') }} as mm_check
-  inner join {{ this }} as existing on mm_check.token_id = existing.token_id
+  inner join {{ this }} as existing
+    on mm_check.token_id = existing.token_id
+    and existing.day >= cast(try_cast(mm_check.market_start_time as timestamp) as date)
   where existing.active is distinct from mm_check.active
     or existing.closed is distinct from mm_check.closed
     or existing.accepting_orders is distinct from mm_check.accepting_orders
