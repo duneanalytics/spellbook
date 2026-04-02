@@ -29,7 +29,7 @@ tx_metadata as (
     t.version as tx_version,
     t.tx_index,
     from_hex(
-      '0x' || lpad(ltrim(t.sender, '0x'), 64, '0')
+      lpad(to_hex(t.sender), 64, '0')
     ) as tx_from
   from {{ source('aptos', 'user_transactions') }} t
   where t.block_time >= timestamp '{{ aptos_transfer_start_date }}'
