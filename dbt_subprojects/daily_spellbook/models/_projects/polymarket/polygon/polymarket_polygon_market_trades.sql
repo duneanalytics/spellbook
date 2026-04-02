@@ -24,7 +24,8 @@ with market_details as (
     token_outcome,
     neg_risk,
     unique_key,
-    token_outcome_name
+    token_outcome_name,
+    market_start_time
   from {{ ref('polymarket_polygon_market_details') }}
 ),
 
@@ -35,6 +36,7 @@ changed_tokens as (
   from market_details md
   left join {{ this }} t
     on md.token_id = t.asset_id
+    and t.block_time >= try_cast(md.market_start_time as timestamp)
   where t.asset_id is null
     or coalesce(cast(md.event_market_name as varchar), '') != coalesce(cast(t.event_market_name as varchar), '')
     or coalesce(cast(md.question as varchar), '') != coalesce(cast(t.question as varchar), '')
