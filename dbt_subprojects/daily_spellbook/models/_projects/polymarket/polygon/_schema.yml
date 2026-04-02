@@ -427,6 +427,8 @@ models:
         description: "Outcome of the market"
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
+      - name: _updated_at
+        description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
 
   - name: polymarket_polygon_market_prices_daily
     meta:
