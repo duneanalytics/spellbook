@@ -44,13 +44,13 @@ paired_event_indexes as (
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['tx_version', 'event_index']) }} as unique_key,
-  tx_version,
-  tx_hash,
-  block_date,
-  block_time,
-  block_month,
-  event_index,
+  {{ dbt_utils.generate_surrogate_key(['e.tx_version', 'e.event_index']) }} as unique_key,
+  e.tx_version,
+  e.tx_hash,
+  e.block_date,
+  e.block_time,
+  e.block_month,
+  e.event_index,
   case
     when e.transfer_direction = 'credit' then cast(null as varbinary)
     else e.owner_address
