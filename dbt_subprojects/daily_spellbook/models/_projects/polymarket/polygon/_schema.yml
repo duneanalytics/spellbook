@@ -488,6 +488,8 @@ models:
           - not_null
       - name: price
         description: "The price of the outcome token at the end of the hour"
+      - name: _updated_at
+        description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
 
   - name: polymarket_polygon_market_price_recompute_tokens
     meta:

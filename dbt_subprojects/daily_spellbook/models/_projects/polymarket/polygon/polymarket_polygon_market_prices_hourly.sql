@@ -251,6 +251,7 @@ select
   pc.hour,
   pc.condition_id,
   pc.token_id,
-  pc.price
+  pc.price,
+  now() as _updated_at
 from price_correction pc
 where pc.price is not null
