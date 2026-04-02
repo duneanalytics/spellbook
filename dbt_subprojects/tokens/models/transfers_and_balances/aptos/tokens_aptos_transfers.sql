@@ -32,9 +32,9 @@ tx_metadata as (
       '0x' || lpad(ltrim(t.sender, '0x'), 64, '0')
     ) as tx_from
   from {{ source('aptos', 'user_transactions') }} t
-  where t.block_timestamp >= timestamp '{{ aptos_transfer_start_date }}'
+  where t.block_time >= timestamp '{{ aptos_transfer_start_date }}'
     {% if is_incremental() %}
-    and {{ incremental_predicate('t.block_timestamp') }}
+    and {{ incremental_predicate('t.block_time') }}
     {% endif %}
 ),
 
