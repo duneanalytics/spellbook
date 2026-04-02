@@ -180,6 +180,5 @@ select
   resolved_on_timestamp,
   now() as _updated_at
 from positions
-where day >= now() - interval '7' day -- TODO: revert before merge
 
 {% endif -%}
