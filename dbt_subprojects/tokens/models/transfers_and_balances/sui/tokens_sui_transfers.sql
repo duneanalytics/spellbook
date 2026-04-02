@@ -13,7 +13,7 @@
   )
 }}
 
-{% set sui_transfer_start_date = '2023-04-12' %}
+{% set sui_transfer_start_date = '2026-01-01' %} -- just ci test
 
 with
 
