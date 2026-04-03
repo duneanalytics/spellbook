@@ -6,21 +6,27 @@ with erc20_mint_burn_raw as (
     select
         t.evt_tx_hash as tx_hash
         , t.contract_address
-        , case
-            when t."from" = {{ default_address }} then 'mint'
-            else 'burn'
-        end as direction
-        , case
-            when t."from" = {{ default_address }} then t.to
-            else t."from"
-        end as wallet
+        , 'mint' as direction
+        , t.to as wallet
         , t.value as shares
         , t.evt_index
     from {{ erc20_transfers }} as t
-    where (
-        (t."from" = {{ default_address }} and t.to is distinct from {{ default_address }})
-        or (t.to = {{ default_address }} and t."from" is distinct from {{ default_address }})
-    )
+    where t."from" = {{ default_address }}
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('t.evt_block_time') }}
+    {% endif -%}
+
+    union all
+
+    select
+        t.evt_tx_hash as tx_hash
+        , t.contract_address
+        , 'burn' as direction
+        , t."from" as wallet
+        , t.value as shares
+        , t.evt_index
+    from {{ erc20_transfers }} as t
+    where t.to = {{ default_address }}
     {% if is_incremental() -%}
     and {{ incremental_predicate('t.evt_block_time') }}
     {% endif -%}
