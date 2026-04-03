@@ -19,7 +19,8 @@ flags:
 
 vars:
   freshness: 'hourly'
-  force-incremental: True
+  # force-incremental: True
+  # NOTE: do not set to False here — it would override CLI --vars '{force-incremental: True}'
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '3') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
