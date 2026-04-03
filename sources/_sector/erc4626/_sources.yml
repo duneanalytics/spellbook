@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: erc4626_ethereum
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
