@@ -18,9 +18,13 @@ WITH sandwich_bounds AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
+    {% if var('dev_dates', false) -%}
+    WHERE front.block_time > current_date - interval '3' day
+    {%- else -%}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('front.block_time') }}
     {% endif %}
+    {%- endif %}
     )
 
 SELECT DISTINCT dt.blockchain
@@ -47,7 +51,7 @@ SELECT DISTINCT dt.blockchain
 , dt.amount_usd
 , dt.evt_index
 , txs.index AS tx_index
-FROM {{ ref('dex_trades') }} dt
+FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} dt
 INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
     AND sb.project_contract_address=dt.project_contract_address
     AND sb.token_bought_address=dt.token_bought_address
@@ -59,7 +63,7 @@ INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     {% if is_incremental() %}
     AND {{ incremental_predicate('txs.block_time') }}
     {% endif %}
-WHERE dt.blockchain='{{blockchain}}'
+WHERE 1=1
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}

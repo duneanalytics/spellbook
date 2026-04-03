@@ -22,7 +22,7 @@ vars:
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '3') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
   ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
-  dev_dates: false
+  dev_dates: true  # TEMPORARY: 3-day scan for CI testing. REVERT before merge.
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
