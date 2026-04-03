@@ -2,51 +2,7 @@
 {% set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' %}
 {% set default_address = '0x0000000000000000000000000000000000000000' %}
 
-with erc20_mint_burn_raw as (
-    select
-        t.evt_tx_hash as tx_hash
-        , t.contract_address
-        , 'mint' as direction
-        , t.to as wallet
-        , t.value as shares
-        , t.evt_index
-    from {{ erc20_transfers }} as t
-    where t."from" = {{ default_address }}
-    {% if is_incremental() -%}
-    and {{ incremental_predicate('t.evt_block_time') }}
-    {% endif -%}
-
-    union all
-
-    select
-        t.evt_tx_hash as tx_hash
-        , t.contract_address
-        , 'burn' as direction
-        , t."from" as wallet
-        , t.value as shares
-        , t.evt_index
-    from {{ erc20_transfers }} as t
-    where t.to = {{ default_address }}
-    {% if is_incremental() -%}
-    and {{ incremental_predicate('t.evt_block_time') }}
-    {% endif -%}
-)
-
-, erc20_mint_burn as (
-    select
-        tx_hash
-        , contract_address
-        , direction
-        , wallet
-        , shares
-        , row_number() over (
-            partition by tx_hash, contract_address, direction, wallet, shares
-            order by evt_index
-        ) as transfer_ordinal
-    from erc20_mint_burn_raw
-)
-
-, erc4626_synthetic_raw as (
+with erc4626_synthetic_raw as (
     select
         t.evt_block_date as block_date
         , t.evt_block_time as block_time
@@ -90,6 +46,11 @@ with erc20_mint_burn_raw as (
     {% endif -%}
 )
 
+, erc4626_tx_keys as (
+    select distinct tx_hash, contract_address
+    from erc4626_synthetic_raw
+)
+
 , erc4626_synthetic as (
     select
         block_date
@@ -111,6 +72,56 @@ with erc20_mint_burn_raw as (
             order by evt_index
         ) as transfer_ordinal
     from erc4626_synthetic_raw
+)
+
+, erc20_mint_burn_raw as (
+    select
+        t.evt_tx_hash as tx_hash
+        , t.contract_address
+        , 'mint' as direction
+        , t.to as wallet
+        , t.value as shares
+        , t.evt_index
+    from {{ erc20_transfers }} as t
+    inner join erc4626_tx_keys as k
+        on k.tx_hash = t.evt_tx_hash
+        and k.contract_address = t.contract_address
+    where t."from" = {{ default_address }}
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('t.evt_block_time') }}
+    {% endif -%}
+
+    union all
+
+    select
+        t.evt_tx_hash as tx_hash
+        , t.contract_address
+        , 'burn' as direction
+        , t."from" as wallet
+        , t.value as shares
+        , t.evt_index
+    from {{ erc20_transfers }} as t
+    inner join erc4626_tx_keys as k
+        on k.tx_hash = t.evt_tx_hash
+        and k.contract_address = t.contract_address
+    where t.to = {{ default_address }}
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('t.evt_block_time') }}
+    {% endif -%}
+)
+
+, erc20_mint_burn as (
+    select
+        tx_hash
+        , contract_address
+        , direction
+        , wallet
+        , shares
+        , row_number() over (
+            partition by tx_hash, contract_address, direction, wallet, shares
+            order by evt_index
+        ) as transfer_ordinal
+    from erc20_mint_burn_raw
 )
 
 , unmatched_erc4626_transfers as (
