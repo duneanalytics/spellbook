@@ -46,11 +46,6 @@ with erc4626_synthetic_raw as (
     {% endif -%}
 )
 
-, erc4626_tx_keys as (
-    select distinct tx_hash, contract_address
-    from erc4626_synthetic_raw
-)
-
 , erc4626_synthetic as (
     select
         block_date
@@ -78,33 +73,21 @@ with erc4626_synthetic_raw as (
     select
         t.evt_tx_hash as tx_hash
         , t.contract_address
-        , 'mint' as direction
-        , t.to as wallet
+        , case
+            when t."from" = {{ default_address }} then 'mint'
+            else 'burn'
+        end as direction
+        , case
+            when t."from" = {{ default_address }} then t.to
+            else t."from"
+        end as wallet
         , t.value as shares
         , t.evt_index
     from {{ erc20_transfers }} as t
-    inner join erc4626_tx_keys as k
-        on k.tx_hash = t.evt_tx_hash
-        and k.contract_address = t.contract_address
-    where t."from" = {{ default_address }}
-    {% if is_incremental() -%}
-    and {{ incremental_predicate('t.evt_block_time') }}
-    {% endif -%}
-
-    union all
-
-    select
-        t.evt_tx_hash as tx_hash
-        , t.contract_address
-        , 'burn' as direction
-        , t."from" as wallet
-        , t.value as shares
-        , t.evt_index
-    from {{ erc20_transfers }} as t
-    inner join erc4626_tx_keys as k
-        on k.tx_hash = t.evt_tx_hash
-        and k.contract_address = t.contract_address
-    where t.to = {{ default_address }}
+    where (
+        t."from" = {{ default_address }}
+        or t.to = {{ default_address }}
+    )
     {% if is_incremental() -%}
     and {{ incremental_predicate('t.evt_block_time') }}
     {% endif -%}
