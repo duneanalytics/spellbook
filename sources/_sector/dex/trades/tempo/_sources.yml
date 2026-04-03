@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: tempoexchange_tempo
+    tables:
+      - name: stablecoindex_call_swapexactamountin
+      - name: stablecoindex_call_swapexactamountout
+      - name: stablecoindex_evt_paircreated
+  - name: uniswap_v2_tempo
+    tables:
+      - name: uniswapv2factory_evt_paircreated
+      - name: pair_evt_swap
+  - name: uniswap_v3_tempo
+    tables:
+      - name: uniswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap
+  - name: uniswap_v4_tempo
+    tables:
+      - name: PoolManager_call_Swap
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize

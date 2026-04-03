@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'dex_nova'
+    schema = 'dex_tempo'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -11,11 +11,13 @@
 }}
 
 {% set base_models = [
-    ref('sushiswap_nova_base_trades')
-    , ref('rcpswap_nova_base_trades')
+    ref('tempo_exchange_tempo_base_trades')
+    , ref('uniswap_v2_tempo_base_trades')
+    , ref('uniswap_v3_tempo_base_trades')
+    , ref('uniswap_v4_tempo_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
-    blockchain = 'nova',
+    blockchain = 'tempo',
     base_models = base_models
 ) }}
