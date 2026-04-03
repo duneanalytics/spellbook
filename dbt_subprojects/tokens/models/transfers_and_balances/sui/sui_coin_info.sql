@@ -7,6 +7,7 @@
     incremental_strategy = 'merge',
     unique_key = ['coin_type'],
     merge_skip_unchanged = true,
+    tags = ['prod_exclude'],
   )
 }}
 
