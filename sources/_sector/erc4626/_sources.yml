@@ -33,10 +33,6 @@ sources:
     tables:
       - name: evt_deposit
       - name: evt_withdraw
-  - name: erc4626_blast
-    tables:
-      - name: evt_deposit
-      - name: evt_withdraw
   - name: erc4626_bnb
     tables:
       - name: evt_deposit
