@@ -16,3 +16,17 @@
 	transactions=source('corn', 'transactions'),
 	erc20_transfers=source('erc20_corn', 'evt_Transfer'),
 ) }}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='corn',
+			transactions=source('corn', 'transactions'),
+			erc20_transfers=source('erc20_corn', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_corn', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_corn', 'evt_withdraw'),
+		) }}
+	)

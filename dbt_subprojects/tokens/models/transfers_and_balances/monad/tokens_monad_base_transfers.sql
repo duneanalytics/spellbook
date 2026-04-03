@@ -30,3 +30,17 @@ from
 			wrapped_token_withdrawal=source('wmon_monad', 'wmon_evt_withdrawal'),
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='monad',
+			transactions=source('monad', 'transactions'),
+			erc20_transfers=source('erc20_monad', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_monad', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_monad', 'evt_withdraw'),
+		) }}
+	)

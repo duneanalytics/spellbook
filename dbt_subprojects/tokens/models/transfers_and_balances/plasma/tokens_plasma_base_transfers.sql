@@ -30,3 +30,17 @@ from
 			wrapped_token_withdrawal=source('wxpl_plasma', 'wxpl_evt_withdrawal'),
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='plasma',
+			transactions=source('plasma', 'transactions'),
+			erc20_transfers=source('erc20_plasma', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_plasma', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_plasma', 'evt_withdraw'),
+		) }}
+	)

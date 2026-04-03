@@ -16,3 +16,17 @@
 	transactions=source('mezo', 'transactions'),
 	erc20_transfers=source('erc20_mezo', 'evt_Transfer'),
 ) }}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='mezo',
+			transactions=source('mezo', 'transactions'),
+			erc20_transfers=source('erc20_mezo', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_mezo', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_mezo', 'evt_withdraw'),
+		) }}
+	)
