@@ -2,6 +2,9 @@
 {% set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' %}
 {% set default_address = '0x0000000000000000000000000000000000000000' %}
 
+-- Only include ERC4626 events from contracts that are known ERC20 tokens.
+-- This filters out proxy vaults (which delegate share minting to a separate
+-- token contract) and avoids double-counting their already-tracked ERC20 transfers.
 with erc4626_synthetic_raw as (
     select
         t.evt_block_date as block_date
@@ -19,6 +22,9 @@ with erc4626_synthetic_raw as (
         , t.owner as wallet
         , t.shares as shares
     from {{ erc4626_deposit }} as t
+    inner join {{ source('tokens', 'erc20') }} as tok
+        on tok.contract_address = t.contract_address
+        and tok.blockchain = '{{ blockchain }}'
     {% if is_incremental() -%}
     where {{ incremental_predicate('t.evt_block_time') }}
     {% endif -%}
@@ -41,6 +47,9 @@ with erc4626_synthetic_raw as (
         , t.owner as wallet
         , t.shares as shares
     from {{ erc4626_withdraw }} as t
+    inner join {{ source('tokens', 'erc20') }} as tok
+        on tok.contract_address = t.contract_address
+        and tok.blockchain = '{{ blockchain }}'
     {% if is_incremental() -%}
     where {{ incremental_predicate('t.evt_block_time') }}
     {% endif -%}
