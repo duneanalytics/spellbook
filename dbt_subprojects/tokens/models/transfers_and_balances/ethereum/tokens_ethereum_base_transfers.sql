@@ -34,6 +34,21 @@ from
 union all
 
 select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='ethereum',
+			transactions=source('ethereum', 'transactions'),
+			erc20_transfers=source('erc20_ethereum', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_ethereum', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_ethereum', 'evt_withdraw'),
+		) }}
+	)
+
+union all
+
+select
 	{{ dbt_utils.generate_surrogate_key(['w.block_number', "'withdrawal'", 'w.withdrawal_index']) }} as unique_key
 	, 'ethereum' as blockchain
 	, cast(date_trunc('month', w.block_time) as date) as block_month
