@@ -63,6 +63,8 @@
     , ref('gammaswap_arbitrum_base_trades')
     , ref('native_arbitrum_base_trades')
     , ref('eulerswap_arbitrum_base_trades')
+    , ref('oneinch_lop_arbitrum_base_trades')
+    , ref('zeroex_arbitrum_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

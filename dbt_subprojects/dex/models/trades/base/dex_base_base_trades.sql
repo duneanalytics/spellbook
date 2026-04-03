@@ -70,6 +70,7 @@
     , ref('native_base_base_trades')
     , ref('carbon_defi_base_base_trades')
     , ref('elfomofi_base_base_trades')
+    , ref('oneinch_lop_base_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
