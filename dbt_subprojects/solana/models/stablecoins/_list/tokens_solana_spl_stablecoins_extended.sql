@@ -28,5 +28,6 @@ from (values
     ('AhhdRu5YZdjVkKR3wbnUDaymVQL2ucjMQ63sZ3LFHsch', 'CHF'),  -- VCHF
     ('A94X2fRy3wydNShU4dRaDyap2UuoeWJGWyATtyp61WZf', 'TRY'),  -- TRYB
     ('A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM', 'USD'),  -- USDC (Wormhole from Ethereum)
-    ('Ejqkht2dyN1BaaEtK92zBKY6S8HbVH8APB5sDK9Rmokt', 'USD')   -- rUSD
+    ('Ejqkht2dyN1BaaEtK92zBKY6S8HbVH8APB5sDK9Rmokt', 'USD'),  -- rUSD
+    ('CASHx9KJUStyftLFWGvEVf59SGeG9sh5FfcnZMVPCASH', 'USD')   -- CASH (Bridge Open Issuance)
 ) as temp_table (token_mint_address, currency)
