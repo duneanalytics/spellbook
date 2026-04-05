@@ -10,7 +10,7 @@
   )
 }}
 
-{% set sui_transfer_start_date = '2023-04-12' %}
+{% set sui_transfer_start_date = '2026-01-01' %} -- just ci test
 
 -- ranking policy:
 -- choose the most recent metadata snapshot first (checkpoint/version),
