@@ -93,15 +93,15 @@ models:
         name: _updated_at
         description: "Row update timestamp."
 
-  - name: tokens_sui_supply_signals
+  - name: tokens_sui_supply_events
     meta:
       blockchain: sui
       sector: tokens
-      short_description: "Per-tx Sui supply signals with mint/burn type."
+      short_description: "Event-native Sui mint/burn transfer rows from treasury events."
       contributors: tomfutago
     config:
       tags: ['tokens', 'transfers', 'sui']
-    description: "Per-transaction, per-coin supply signals on Sui from generic treasury events, package-aware treasury events, and CCTP message patterns, with one normalized supply_event_type output."
+    description: "Per-event supply transfer rows on Sui derived from treasury::Mint/treasury::Burn event types with amount parsed from event_json."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -110,18 +110,28 @@ models:
     columns:
       - &block_date
         name: block_date
-        description: "The date of the signal event."
+        description: "Date bucket for the event-native supply transfer."
         data_tests:
           - not_null
       - &unique_key
         name: unique_key
-        description: "Surrogate key for tx_digest + coin_type signal row."
+        description: "Surrogate key for tx_digest + coin_type + supply_event_type + event_index."
         data_tests:
           - not_null
       - *tx_digest
+      - name: event_index
+        description: "Event index within the transaction digest."
+      - name: tx_from
+        description: "Transaction sender address for the supply event."
+      - name: "from"
+        description: "Source side address for the supply event."
+      - name: to
+        description: "Recipient address for mint events; null for burn events."
       - *coin_type
+      - name: amount_raw
+        description: "Raw mint/burn amount parsed from event_json."
       - name: supply_event_type
-        description: "Normalized supply event label per tx_digest + coin_type ('mint'/'burn'); null when signal directions are ambiguous."
+        description: "Supply event type derived from event_type (mint or burn)."
       - *updated_at
 
   - name: tokens_sui_object_event_deltas
@@ -307,7 +317,7 @@ models:
       contributors: 0xboxer, tomfutago, 0xRob
     config:
       tags: ['tokens', 'transfers', 'sui']
-    description: "Sui Coin<T> base transfers for all fungible coin types, restricted to cross-address movements and enriched with supply-event signals only."
+    description: "Sui Coin<T> base transfers for all fungible coin types, combining non-supply owner-net legs with event-native mint/burn rows after removing legacy supply-tagged object rows."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -387,19 +397,19 @@ models:
       - *has_ownership_change
       - &transfer_type
         name: transfer_type
-        description: "Object-lifecycle and owner-net leg label (for example object_created, transfer_with_balance_change, ownership_balance_spend/topup)."
+        description: "Transfer label for both object lineage rows and event-native supply rows (for example object_created, transfer_with_balance_change, mint, burn)."
       - &is_supply_event
         name: is_supply_event
-        description: "True only when supply-event signals and transaction net delta direction agree."
+        description: "True for event-native mint/burn rows sourced from treasury events; false for non-supply object lineage rows."
       - &supply_event_type
         name: supply_event_type
-        description: "Conservative mint/burn classification derived from treasury/CCTP-like event patterns."
+        description: "Mint/burn label for event-native supply rows; null for non-supply object lineage rows."
       - &transfer_direction
         name: transfer_direction
         description: "Direction of owner-net leg movement. Residual owner-net legs map directly to debit/credit; other rows use balance_delta sign."
       - &tx_net_delta
         name: tx_net_delta
-        description: "Net signed delta per tx_digest + coin_type across filtered rows."
+        description: "Net signed delta per tx_digest + coin_type across object-event filtered rows; null for event-native supply rows."
       - *updated_at
 
   - name: tokens_sui_transfers
