@@ -16,3 +16,17 @@
 	transactions=source('zora', 'transactions'),
 	erc20_transfers=source('erc20_zora', 'evt_Transfer'),
 ) }}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='zora',
+			transactions=source('zora', 'transactions'),
+			erc20_transfers=source('erc20_zora', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_zora', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_zora', 'evt_withdraw'),
+		) }}
+	)

@@ -16,3 +16,17 @@
 	transactions=source('tac', 'transactions'),
 	erc20_transfers=source('erc20_tac', 'evt_Transfer'),
 ) }}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='tac',
+			transactions=source('tac', 'transactions'),
+			erc20_transfers=source('erc20_tac', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_tac', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_tac', 'evt_withdraw'),
+		) }}
+	)

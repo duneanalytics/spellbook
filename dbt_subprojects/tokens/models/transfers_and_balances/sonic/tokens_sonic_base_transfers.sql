@@ -16,3 +16,17 @@
 	transactions=source('sonic', 'transactions'),
 	erc20_transfers=source('erc20_sonic', 'evt_Transfer'),
 ) }}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='sonic',
+			transactions=source('sonic', 'transactions'),
+			erc20_transfers=source('erc20_sonic', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_sonic', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_sonic', 'evt_withdraw'),
+		) }}
+	)
