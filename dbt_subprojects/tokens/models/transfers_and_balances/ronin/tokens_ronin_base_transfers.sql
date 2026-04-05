@@ -37,3 +37,17 @@ from
 			wrapped_token_withdrawal=wron_withdrawal,
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='ronin',
+			transactions=source('ronin', 'transactions'),
+			erc20_transfers=source('erc20_ronin', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_ronin', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_ronin', 'evt_withdraw'),
+		) }}
+	)

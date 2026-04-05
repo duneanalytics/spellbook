@@ -30,3 +30,17 @@ from
 			wrapped_token_withdrawal=source('wklay_kaia', 'wklay_evt_withdrawal'),
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='kaia',
+			transactions=source('kaia', 'transactions'),
+			erc20_transfers=source('erc20_kaia', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_kaia', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_kaia', 'evt_withdraw'),
+		) }}
+	)

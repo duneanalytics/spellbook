@@ -17,3 +17,17 @@
 	erc20_transfers=source('erc20_zksync', 'evt_Transfer'),
 	include_traces=false,
 ) }}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='zksync',
+			transactions=source('zksync', 'transactions'),
+			erc20_transfers=source('erc20_zksync', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_zksync', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_zksync', 'evt_withdraw'),
+		) }}
+	)

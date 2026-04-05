@@ -9,6 +9,7 @@
     unique_key = ['block_date', 'object_id', 'version'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
+    tags = ['prod_exclude'],
   )
 }}
 
