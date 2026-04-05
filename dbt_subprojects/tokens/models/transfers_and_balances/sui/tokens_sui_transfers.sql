@@ -10,7 +10,6 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
     post_hook = '{{ hide_spells() }}',
-    tags = ['prod_exclude'],
   )
 }}
 
