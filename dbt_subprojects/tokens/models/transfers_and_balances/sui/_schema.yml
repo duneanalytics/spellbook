@@ -272,17 +272,17 @@ models:
           match_columns:
             - block_date
             - tx_digest
-            - object_id
-            - version
-          check_columns:
             - coin_type
             - owner_net_type
+            - amount_raw
+            - object_status
+          check_columns:
+            - object_id
+            - version
             - transfer_from
             - transfer_to
-            - amount_raw
             - prev_owner
             - prev_balance
-            - object_status
             - has_ownership_change
     columns:
       - *block_date
