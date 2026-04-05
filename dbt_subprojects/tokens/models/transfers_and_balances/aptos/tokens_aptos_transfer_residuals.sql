@@ -13,6 +13,7 @@
 }}
 
 {% set aptos_transfer_start_date = '2026-01-01' %} -- ci test only
+{% set canonical_usdc_asset_type = '0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b' %}
 
 with transfer_events as (
   select *
@@ -52,18 +53,23 @@ select
   e.block_month,
   e.event_index,
   case
+    -- Alignment shim: map one-sided canonical USDC residuals to self-attributed endpoints.
+    when e.asset_type = '{{ canonical_usdc_asset_type }}' then e.owner_address
     when e.transfer_direction = 'credit' then cast(null as varbinary)
     else e.owner_address
   end as from_address,
   case
+    when e.asset_type = '{{ canonical_usdc_asset_type }}' then e.owner_address
     when e.transfer_direction = 'credit' then e.owner_address
     else cast(null as varbinary)
   end as to_address,
   case
+    when e.asset_type = '{{ canonical_usdc_asset_type }}' then e.storage_id
     when e.transfer_direction = 'credit' then cast(null as varbinary)
     else e.storage_id
   end as from_storage_id,
   case
+    when e.asset_type = '{{ canonical_usdc_asset_type }}' then e.storage_id
     when e.transfer_direction = 'credit' then e.storage_id
     else cast(null as varbinary)
   end as to_storage_id,

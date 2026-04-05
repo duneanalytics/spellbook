@@ -14,6 +14,8 @@
 }}
 
 {% set aptos_transfer_start_date = '2026-01-01' %} -- ci test only
+{% set canonical_usdc_asset_type = '0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b' %}
+{% set canonical_usdt_asset_type = '0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b' %}
 
 with base_transfers as (
   select *
@@ -95,6 +97,10 @@ final as (
   left join prices p
     on date_trunc('hour', b.block_time) = p.timestamp
     and b.contract_address = p.contract_address
+  where (
+    coalesce(upper(m.asset_symbol), '') not in ('USDC', 'USDT')
+    or b.asset_type in ('{{ canonical_usdc_asset_type }}', '{{ canonical_usdt_asset_type }}')
+  )
 )
 
 select
