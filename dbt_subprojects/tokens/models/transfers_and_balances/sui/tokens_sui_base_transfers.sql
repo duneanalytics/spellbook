@@ -204,28 +204,57 @@ object_transfers as (
     and o.coin_type = r.coin_type
 ),
 
-object_transfers_non_supply as (
+supply_match_counts as (
   select
-    o.*
-  from object_transfers o
-  where not exists (
-    select 1
-    from supply_events s
-    where o.tx_digest = s.tx_digest
-      and o.coin_type_normalized = s.coin_type_normalized
-      and o.amount_raw = s.amount_raw
-      and (
-        (s.supply_event_type = 'mint' and o.transfer_direction = 'credit')
-        or (s.supply_event_type = 'burn' and o.transfer_direction = 'debit')
-      )
-      and o.transfer_type in (
+    s.tx_digest,
+    s.coin_type_normalized,
+    s.amount_raw,
+    case
+      when s.supply_event_type = 'mint' then 'credit'
+      when s.supply_event_type = 'burn' then 'debit'
+      else cast(null as varchar)
+    end as transfer_direction,
+    count(*) as matched_supply_rows
+  from supply_events s
+  where s.supply_event_type in ('mint', 'burn')
+  group by 1, 2, 3, 4
+),
+
+object_transfers_ranked as (
+  select
+    o.*,
+    coalesce(m.matched_supply_rows, 0) as matched_supply_rows,
+    case
+      when o.transfer_type in (
         'object_created',
         'object_deleted',
         'ownership_balance_topup',
         'ownership_balance_spend'
       )
+      then row_number() over (
+        partition by o.tx_digest, o.coin_type_normalized, o.amount_raw, o.transfer_direction
+        order by o.unique_key
+      )
+      else cast(null as bigint)
+    end as candidate_rank
+  from object_transfers o
+  left join supply_match_counts m
+    on o.tx_digest = m.tx_digest
+    and o.coin_type_normalized = m.coin_type_normalized
+    and o.amount_raw = m.amount_raw
+    and o.transfer_direction = m.transfer_direction
+),
+
+object_transfers_non_supply as (
+  select r.*
+  from object_transfers_ranked r
+  where r.candidate_rank > r.matched_supply_rows
+    or r.transfer_type not in (
+      'object_created',
+      'object_deleted',
+      'ownership_balance_topup',
+      'ownership_balance_spend'
     )
-  )
 ),
 
 all_transfers as (
@@ -279,11 +308,11 @@ all_transfers as (
     s."from",
     s.to,
     s."from" as from_resolved,
-    cast('observed' as varchar) as from_resolution_type,
+    'observed' as from_resolution_type,
     s.to as to_resolved,
     case
-      when s.to is null then cast('unresolved_null' as varchar)
-      else cast('observed' as varchar)
+      when s.to is null then 'unresolved_null'
+      else 'observed'
     end as to_resolution_type,
     case
       when s."from" is null or s.to is null then true
@@ -314,47 +343,47 @@ all_transfers as (
     true as is_supply_event,
     s.supply_event_type,
     case
-      when s.supply_event_type = 'mint' then cast('credit' as varchar)
-      when s.supply_event_type = 'burn' then cast('debit' as varchar)
-      else cast('neutral' as varchar)
+      when s.supply_event_type = 'mint' then 'credit'
+      when s.supply_event_type = 'burn' then 'debit'
+      else 'neutral'
     end as transfer_direction,
     cast(null as decimal(38, 0)) as tx_net_delta
   from supply_events s
 )
 
 select
-  a.unique_key,
-  a.blockchain,
-  a.block_month,
-  a.block_date,
-  a.block_time,
-  a.checkpoint,
-  a.tx_digest,
-  a.token_standard,
-  a.tx_from,
-  a."from",
-  a.to,
-  a.from_resolved,
-  a.from_resolution_type,
-  a.to_resolved,
-  a.to_resolution_type,
-  a.is_counterparty_assumed,
-  a.contract_address,
-  a.coin_type,
-  a.amount_raw,
-  a.balance_delta,
-  a.object_id,
-  a.version,
-  a.object_status,
-  a.owner_type,
-  a.coin_balance,
-  a.prev_balance,
-  a.prev_owner,
-  a.has_ownership_change,
-  a.transfer_type,
-  a.is_supply_event,
-  a.supply_event_type,
-  a.transfer_direction,
-  a.tx_net_delta,
+  unique_key,
+  blockchain,
+  block_month,
+  block_date,
+  block_time,
+  checkpoint,
+  tx_digest,
+  token_standard,
+  tx_from,
+  "from",
+  to,
+  from_resolved,
+  from_resolution_type,
+  to_resolved,
+  to_resolution_type,
+  is_counterparty_assumed,
+  contract_address,
+  coin_type,
+  amount_raw,
+  balance_delta,
+  object_id,
+  version,
+  object_status,
+  owner_type,
+  coin_balance,
+  prev_balance,
+  prev_owner,
+  has_ownership_change,
+  transfer_type,
+  is_supply_event,
+  supply_event_type,
+  transfer_direction,
+  tx_net_delta,
   current_timestamp as _updated_at
-from all_transfers a
+from all_transfers
