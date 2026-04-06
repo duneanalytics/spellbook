@@ -38,8 +38,13 @@ coin_object_history as (
     {% endif %}
 ),
 
--- load deleted coin objects that have prior history
-deleted_objects as (
+coin_window_ids as (
+  select distinct h.object_id
+  from coin_object_history h
+),
+
+-- load deleted objects in the active window
+deleted_objects_raw as (
   select
     o.object_id,
     o.version,
@@ -59,11 +64,6 @@ deleted_objects as (
     {% if is_incremental() %}
     and {{ incremental_predicate('o.date') }}
     {% endif %}
-    and exists (
-      select 1
-      from {{ ref('tokens_sui_coin_object_history') }} h
-      where h.object_id = o.object_id
-    )
 ),
 
 -- load latest prior object state per object as anchor context
@@ -83,13 +83,9 @@ history_anchors as (
     max_by(h.coin_balance, h.version) as coin_balance
   from {{ ref('tokens_sui_coin_object_history') }} h
   inner join (
-    select w.object_id
-    from (
-      select object_id from coin_object_history 
-      union all
-      select object_id from deleted_objects
-    ) w
-    group by 1
+    select object_id from coin_window_ids
+    union all
+    select object_id from deleted_objects_raw
   ) f on h.object_id = f.object_id
   where 1 = 1
     {% if is_incremental() %}
@@ -98,6 +94,18 @@ history_anchors as (
     and h.block_date < date '{{ sui_transfer_start_date }}'
     {% endif %}
   group by 1
+),
+
+-- prune deleted rows that cannot survive downstream lag-based filtering
+deleted_objects as (
+  select d.*
+  from deleted_objects_raw d
+  left join history_anchors a
+    on d.object_id = a.object_id
+  left join coin_window_ids c
+    on d.object_id = c.object_id
+  where a.object_id is not null
+    or c.object_id is not null
 ),
 
 -- combine history and anchors to compute previous owner and balance
@@ -157,3 +165,4 @@ select
   current_timestamp as _updated_at
 from object_state_deltas c
 where c.object_status != 'ANCHOR'
+  and (c.coin_type is not null or c.prev_balance is not null)
