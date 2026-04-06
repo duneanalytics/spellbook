@@ -15,8 +15,8 @@
 	traces=source('zksync', 'traces'),
 	transactions=source('zksync', 'transactions'),
 	erc20_transfers=source('erc20_zksync', 'evt_Transfer'),
-	include_traces=false,
 ) }}
+
 union all
 
 select
