@@ -34,7 +34,7 @@ with base as (
     from {{ ref('polymarket_polygon_market_trades') }}
     where block_month >= date '2025-01-01'
       and block_time  >= timestamp '2025-01-01'
-      and block_time  <  timestamp '2025-04-01'
+      and block_time  <  timestamp '2026-01-01'
 ),
 
 market_meta as (
@@ -76,7 +76,7 @@ market_bounds as (
         token_outcome,
         token_id,
         min(hour)                                                               as first_hour,
-        least(max(hour), timestamp '2025-03-31 23:00:00')                       as last_hour
+        least(max(hour), timestamp '2025-12-31 23:00:00')                       as last_hour
     from sparse_ohlcv
     group by condition_id, token_outcome, token_id
 ),
@@ -91,16 +91,6 @@ hour_spine as (
     cross join {{ source('utils', 'hours') }} h
     where h.timestamp >= mb.first_hour
       and h.timestamp <= mb.last_hour
-),
-
-sparse_with_next as (
-    select
-        s.*,
-        lead(s.hour) over (
-            partition by s.condition_id, s.token_outcome
-            order by s.hour
-        )                                                                       as next_hour
-    from sparse_ohlcv s
 ),
 
 filled as (
@@ -121,11 +111,10 @@ filled as (
         case when hs.hour = s.hour then s.trade_count else 0 end               as trade_count,
         hs.hour != s.hour                                                       as is_forward_filled
     from hour_spine hs
-    inner join sparse_with_next s
-        on  hs.condition_id  = s.condition_id
-        and hs.token_outcome = s.token_outcome
-        and hs.hour         >= s.hour
-        and (s.next_hour is null or hs.hour < s.next_hour)
+    asof left join sparse_ohlcv s
+        on  s.condition_id  = hs.condition_id
+        and s.token_outcome = hs.token_outcome
+        and s.hour         <= hs.hour
 ),
 
 with_resolution as (
