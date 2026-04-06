@@ -33,7 +33,7 @@ SELECT
     , dex.tx_to
     , dex.evt_index
 FROM
-    {{ ref('dex_trades') }} as dex
+    {{ ref('dex_ethereum_trades') }} as dex
 INNER JOIN
     {{ source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated') }} as f
     ON f.pool = dex.project_contract_address
