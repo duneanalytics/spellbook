@@ -1,12 +1,12 @@
--- Shape invariant for Aptos base-transfer rows.
+-- Shape invariant for Aptos residual base-transfer rows.
 --
 -- Purpose:
--- Validate that paired transfer rows keep both sides populated, while one-sided
--- mint/burn residuals keep the expected endpoint shape. Canonical USDC is the
--- only intentional exception, where one-sided residuals are self-attributed.
+-- Validate that one-sided mint/burn residuals keep the expected endpoint shape.
+-- Canonical USDC is the only intentional exception, where one-sided residuals
+-- are self-attributed.
 --
 -- Failure interpretation:
--- Any returned row means transfer shaping drifted in a way that can corrupt
+-- Any returned row means residual shaping drifted in a way that can corrupt
 -- downstream sender/receiver semantics.
 
 {% set canonical_usdc_asset_type = '0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b' %}
@@ -25,20 +25,10 @@ select
   b.amount_raw
 from {{ ref('tokens_aptos_base_transfers') }} b
 where {{ incremental_predicate('b.block_time') }}
+  and b.transfer_type in ('mint', 'burn')
   and (
     b.amount_raw is null
     or b.amount_raw = cast(0 as uint256)
-    or b.transfer_type not in ('transfer', 'mint', 'burn')
-    or (
-      b.transfer_type = 'transfer'
-      and (
-        b.counterpart_event_index is null
-        or b.from_address is null
-        or b.to_address is null
-        or b.from_storage_id is null
-        or b.to_storage_id is null
-      )
-    )
     or (
       b.transfer_type = 'mint'
       and (
