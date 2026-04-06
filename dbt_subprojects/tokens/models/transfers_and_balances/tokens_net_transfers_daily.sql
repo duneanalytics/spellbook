@@ -19,6 +19,7 @@
     , 'fantom'
     , 'flow'
     , 'gnosis'
+    , 'hedera'
     , 'hemi'
     , 'linea'
     , 'mantle'

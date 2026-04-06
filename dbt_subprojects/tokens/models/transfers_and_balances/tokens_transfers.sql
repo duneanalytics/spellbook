@@ -17,6 +17,7 @@
     ,'fantom'
     ,'flare'
     ,'gnosis'
+    ,'hedera'
     ,'hemi'
     ,'henesys'
     ,'hyperevm'
