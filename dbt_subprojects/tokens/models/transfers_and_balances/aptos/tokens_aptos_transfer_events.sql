@@ -14,7 +14,24 @@
 
 {% set aptos_transfer_start_date = '2026-01-01' %} -- ci test only
 
-with source_events as (
+-- centralize supported event filtering and normalized labels in one place
+with event_type_map as (
+  select
+    event_type,
+    activity_type,
+    transfer_direction
+  from (
+    values
+      ('0x1::coin::WithdrawEvent', 'withdraw', 'debit'),
+      ('0x1::fungible_asset::WithdrawEvent', 'withdraw', 'debit'),
+      ('0x1::fungible_asset::Withdraw', 'withdraw', 'debit'),
+      ('0x1::coin::DepositEvent', 'deposit', 'credit'),
+      ('0x1::fungible_asset::DepositEvent', 'deposit', 'credit'),
+      ('0x1::fungible_asset::Deposit', 'deposit', 'credit')
+  ) as t (event_type, activity_type, transfer_direction)
+),
+
+source_events as (
   select
     a.tx_version,
     a.tx_hash,
@@ -23,12 +40,16 @@ with source_events as (
     a.block_month,
     a.event_index,
     a.event_type,
+    m.activity_type,
+    m.transfer_direction,
     a.owner_address,
     a.storage_id,
     a.asset_type,
     a.token_standard,
     cast(a.amount as uint256) as amount_raw
   from {{ source('aptos_fungible_asset', 'activities') }} a
+  inner join event_type_map m
+    on a.event_type = m.event_type
   where a.amount > 0
     and a.block_date >= date '{{ aptos_transfer_start_date }}'
     {% if is_incremental() %}
@@ -45,14 +66,8 @@ select
   block_month,
   event_index,
   event_type,
-  case
-    when event_type in ('0x1::coin::WithdrawEvent', '0x1::fungible_asset::WithdrawEvent', '0x1::fungible_asset::Withdraw') then 'withdraw'
-    when event_type in ('0x1::coin::DepositEvent', '0x1::fungible_asset::DepositEvent', '0x1::fungible_asset::Deposit') then 'deposit'
-  end as activity_type,
-  case
-    when event_type in ('0x1::coin::WithdrawEvent', '0x1::fungible_asset::WithdrawEvent', '0x1::fungible_asset::Withdraw') then 'debit'
-    when event_type in ('0x1::coin::DepositEvent', '0x1::fungible_asset::DepositEvent', '0x1::fungible_asset::Deposit') then 'credit'
-  end as transfer_direction,
+  activity_type,
+  transfer_direction,
   owner_address,
   storage_id,
   asset_type,
