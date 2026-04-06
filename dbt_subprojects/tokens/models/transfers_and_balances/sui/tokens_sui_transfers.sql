@@ -10,7 +10,6 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
     post_hook = '{{ hide_spells() }}',
-    tags = ['prod_exclude'],
   )
 }}
 
@@ -83,8 +82,8 @@ transfers as (
     t.tx_digest,
     t.token_standard,
     t.tx_from,
-    t.from_resolved as "from",
-    t.to_resolved as to,
+    t."from" as "from",
+    t.to as to,
     t.contract_address,
     t.coin_type,
     coalesce(m.symbol, p.symbol) as symbol,
