@@ -14,7 +14,7 @@
 {{ solana_amm_base_trades(
     project = 'solfi'
     , project_main_id = 'SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF'
-    , project_start_date = '2025-08-07'
+    , project_start_date = '2026-04-01'
     , stg_raw_swaps_model = ref('solfi_v2_solana_stg_raw_swaps')
     , token_bought_offset = 2
     , token_sold_offset = 1

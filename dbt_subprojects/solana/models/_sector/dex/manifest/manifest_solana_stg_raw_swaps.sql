@@ -42,5 +42,5 @@ WHERE 1=1
     {% if is_incremental() -%}
     AND {{ incremental_predicate('block_date') }}
     {% else -%}
-    AND block_date >= DATE '2025-07-31'
+    AND block_date >= DATE '2026-04-01'
     {% endif -%}

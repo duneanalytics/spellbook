@@ -14,6 +14,6 @@
 {{ solana_amm_stg_raw_swaps(
     program_id = 'FW6zUqn4iKRaeopwwhwsquTY6ABWLLgjxtrC3VPnaWBf'
     , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 8) IN (0xf8c69e91e17587c8, 0x2b04ed0b1ac91e62)"
-    , project_start_date = '2025-11-20'
+    , project_start_date = '2026-04-01'
     , pool_id_expression = "CAST(NULL AS VARCHAR)"
 ) }}

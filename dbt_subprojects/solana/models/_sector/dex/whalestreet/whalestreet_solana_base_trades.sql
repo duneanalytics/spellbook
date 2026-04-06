@@ -14,7 +14,7 @@
 {{ solana_amm_base_trades(
     project = 'whalestreet'
     , project_main_id = 'FW6zUqn4iKRaeopwwhwsquTY6ABWLLgjxtrC3VPnaWBf'
-    , project_start_date = '2025-11-20'
+    , project_start_date = '2026-04-01'
     , stg_raw_swaps_model = ref('whalestreet_solana_stg_raw_swaps')
     , token_bought_offset = 2
     , token_sold_offset = 1
