@@ -30,6 +30,7 @@
     ,'tokens_flare': {'blockchain': 'flare', 'model': ref('tokens_flare_v1_erc20')}
     ,'tokens_fuse': {'blockchain': 'fuse', 'model': ref('tokens_fuse_v1_erc20')}
     ,'tokens_gnosis': {'blockchain': 'gnosis', 'model': ref('tokens_gnosis_v1_erc20')}
+    ,'tokens_hedera': {'blockchain': 'hedera', 'model': ref('tokens_hedera_v1_erc20')}
     ,'tokens_goerli': {'blockchain': 'goerli', 'model': ref('tokens_goerli_v1_erc20')}
     ,'tokens_ink': {'blockchain': 'ink', 'model': ref('tokens_ink_v1_erc20')}
     ,'tokens_kaia': {'blockchain': 'kaia', 'model': ref('tokens_kaia_v1_erc20')}
