@@ -45,7 +45,7 @@ WITH fills AS (
         {% if is_incremental() -%}
         AND {{ incremental_predicate('call_block_date') }}
         {% else -%}
-        AND call_block_date >= DATE '2026-04-01'
+        AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif -%}
 )
 
@@ -66,7 +66,7 @@ SELECT
     , token_sold_mint_address
     , token_bought_vault
     , token_sold_vault
-    , CAST(NULL AS VARCHAR) as project_program_id
+    , CAST(NULL AS VARCHAR) AS project_program_id
     , '61DFfeTKM7trxYcPQCM78bJ794ddZprZpAwAnLiwTpYH' AS project_main_id
     , trader_id
     , tx_id
