@@ -2,8 +2,6 @@
         schema = 'jelly_swap',
         alias = 'trades',
         materialized = 'view'
-
-        , tags = ['prod_exclude']
         )
 }}
 
