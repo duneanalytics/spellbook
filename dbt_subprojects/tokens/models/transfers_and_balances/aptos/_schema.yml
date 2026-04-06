@@ -24,6 +24,12 @@ models:
       - &tx_version
         name: tx_version
         description: "Aptos transaction version."
+      - &tx_hash
+        name: tx_hash
+        description: "Aptos transaction hash."
+      - &block_date
+        name: block_date
+        description: "Transaction date."
       - &block_time
         name: block_time
         description: "Transaction timestamp."
@@ -50,86 +56,15 @@ models:
       - &asset_type
         name: asset_type
         description: "Aptos fully-qualified asset type."
+      - &token_standard
+        name: token_standard
+        description: "Token standard label from Aptos activity lineage."
       - &amount_raw
         name: amount_raw
         description: "Raw token amount."
       - &updated_at
         name: _updated_at
         description: "Timestamp when this row was last written."
-
-  - name: tokens_aptos_transfer_pairs
-    meta:
-      blockchain: aptos
-      sector: tokens
-      short_description: "Aptos matched debit/credit pairs."
-      contributors: tomfutago
-    config:
-      tags: ['tokens', 'transfers', 'aptos']
-    description: "Deterministic debit/credit pair matching for tx-level Aptos fungible asset transfers."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - unique_key
-    columns:
-      - *unique_key
-      - *tx_version
-      - *block_time
-      - *block_month
-      - &withdraw_event_index
-        name: withdraw_event_index
-        description: "Matched withdraw-side event index."
-      - &deposit_event_index
-        name: deposit_event_index
-        description: "Matched deposit-side event index."
-      - &from_address
-        name: from_address
-        description: "Transfer sender owner address."
-      - &to_address
-        name: to_address
-        description: "Transfer receiver owner address."
-      - &from_storage_id
-        name: from_storage_id
-        description: "Sender-side fungible store identifier."
-      - &to_storage_id
-        name: to_storage_id
-        description: "Receiver-side fungible store identifier."
-      - *asset_type
-      - &transfer_type
-        name: transfer_type
-        description: "Transfer classification label."
-      - *amount_raw
-      - *updated_at
-
-  - name: tokens_aptos_transfer_residuals
-    meta:
-      blockchain: aptos
-      sector: tokens
-      short_description: "Aptos unmatched mint/burn events."
-      contributors: tomfutago
-    config:
-      tags: ['tokens', 'transfers', 'aptos']
-    description: "Unmatched Aptos transfer events classified into mint or burn residual flows."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - unique_key
-    columns:
-      - *unique_key
-      - *tx_version
-      - *block_time
-      - *block_month
-      - *event_index
-      - *from_address
-      - *to_address
-      - *asset_type
-      - &contract_address
-        name: contract_address
-        description: "Package address parsed from asset_type."
-      - *amount_raw
-      - *transfer_type
-      - *updated_at
 
   - name: tokens_aptos_base_transfers
     meta:
@@ -139,7 +74,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['tokens', 'transfers', 'aptos']
-    description: "Unified Aptos transfer rows from matched pairs and residual classifications."
+    description: "Unified Aptos transfer rows built from in-model FIFO pairing and residual mint/burn classification."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -148,17 +83,35 @@ models:
     columns:
       - *unique_key
       - *tx_version
+      - *tx_hash
+      - *block_date
       - *block_time
       - *block_month
       - *event_index
+      - &from_address
+        name: from_address
+        description: "Transfer sender owner address."
+      - &to_address
+        name: to_address
+        description: "Transfer receiver owner address."
       - &counterpart_event_index
         name: counterpart_event_index
         description: "Matched counterpart event index for paired rows."
-      - *from_address
-      - *to_address
+      - &from_storage_id
+        name: from_storage_id
+        description: "Sender-side fungible store identifier."
+      - &to_storage_id
+        name: to_storage_id
+        description: "Receiver-side fungible store identifier."
       - *asset_type
+      - &contract_address
+        name: contract_address
+        description: "Package address parsed from asset_type."
+      - *token_standard
       - *amount_raw
-      - *transfer_type
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer classification label."
       - *updated_at
 
   - name: tokens_aptos_transfers
@@ -183,14 +136,10 @@ models:
       - *block_time
       - *block_month
       - *tx_version
-      - &tx_hash
-        name: tx_hash
-        description: "Aptos transaction hash."
+      - *tx_hash
       - *event_index
       - *counterpart_event_index
-      - &token_standard
-        name: token_standard
-        description: "Token standard label from Aptos activity lineage."
+      - *token_standard
       - &tx_from
         name: tx_from
         description: "Transaction sender."
