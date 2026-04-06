@@ -9,7 +9,6 @@
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
-    tags = ['prod_exclude'],
   )
 }}
 
@@ -175,21 +174,48 @@ owner_direct_net as (
   group by 1, 2, 3
 ),
 
--- capture tx+coin context fields for residual reconciliation
-tx_coin_context as (
+-- capture tx+coin context fields for residual reconciliation from object events
+tx_coin_context_base as (
   select
-    d.tx_digest,
-    d.coin_type,
-    max_by(d.block_month, d.timestamp_ms) as block_month,
-    max_by(d.block_date, d.timestamp_ms) as block_date,
-    max(d.timestamp_ms) as timestamp_ms,
-    max_by(d.checkpoint, d.timestamp_ms) as checkpoint,
-    max(d.tx_sender) as tx_sender
-  from direct_transfers d
+    f.tx_digest,
+    f.coin_type,
+    max_by(f.block_month, f.timestamp_ms) as block_month,
+    max_by(f.block_date, f.timestamp_ms) as block_date,
+    max(f.timestamp_ms) as timestamp_ms,
+    max_by(f.checkpoint, f.timestamp_ms) as checkpoint
+  from transfer_event_features f
+  where f.tx_digest is not null
   group by 1, 2
 ),
 
--- compute residual per-owner delta not explained by direct transfers
+-- carry tx sender where direct transfer context is available
+tx_coin_context_sender as (
+  select
+    d.tx_digest,
+    d.coin_type,
+    max(d.tx_sender) as tx_sender
+  from direct_transfers d
+  where d.tx_digest is not null
+  group by 1, 2
+),
+
+-- merge object-event tx context with available sender enrichment
+tx_coin_context as (
+  select
+    c.tx_digest,
+    c.coin_type,
+    c.block_month,
+    c.block_date,
+    c.timestamp_ms,
+    c.checkpoint,
+    s.tx_sender
+  from tx_coin_context_base c
+  left join tx_coin_context_sender s
+    on c.tx_digest = s.tx_digest
+    and c.coin_type = s.coin_type
+),
+
+-- keep only tx+coin pairs that have context in the active incremental window
 owner_residual_net as (
   select
     coalesce(t.tx_digest, d.tx_digest) as tx_digest,
