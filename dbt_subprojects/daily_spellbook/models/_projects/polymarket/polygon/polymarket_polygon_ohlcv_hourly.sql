@@ -93,33 +93,39 @@ hour_spine as (
       and h.timestamp <= mb.last_hour
 ),
 
+sparse_with_next as (
+    select
+        s.*,
+        lead(s.hour) over (
+            partition by s.condition_id, s.token_outcome
+            order by s.hour
+        )                                                                       as next_hour
+    from sparse_ohlcv s
+),
+
 filled as (
     select
         hs.hour,
         hs.condition_id,
         hs.token_outcome,
         hs.token_id,
-        last_value(s.market_name ignore nulls) over w                           as market_name,
-        last_value(s.event_market_name ignore nulls) over w                     as event_market_name,
-        last_value(s.open ignore nulls) over w                                  as open,
-        last_value(s.high ignore nulls) over w                                  as high,
-        last_value(s.low ignore nulls) over w                                   as low,
-        last_value(s.close ignore nulls) over w                                 as close,
-        case when s.hour is not null then s.vwap end                            as vwap,
-        coalesce(s.volume_contracts, 0)                                         as volume_contracts,
-        coalesce(s.volume_usd, 0)                                               as volume_usd,
-        coalesce(s.trade_count, 0)                                              as trade_count,
-        coalesce(s.is_forward_filled, true)                                     as is_forward_filled
+        s.market_name,
+        s.event_market_name,
+        s.open,
+        s.high,
+        s.low,
+        s.close,
+        case when hs.hour = s.hour then s.vwap end                             as vwap,
+        case when hs.hour = s.hour then s.volume_contracts else 0 end           as volume_contracts,
+        case when hs.hour = s.hour then s.volume_usd else 0 end                as volume_usd,
+        case when hs.hour = s.hour then s.trade_count else 0 end               as trade_count,
+        hs.hour != s.hour                                                       as is_forward_filled
     from hour_spine hs
-    left join sparse_ohlcv s
+    inner join sparse_with_next s
         on  hs.condition_id  = s.condition_id
         and hs.token_outcome = s.token_outcome
-        and hs.hour          = s.hour
-    window w as (
-        partition by hs.condition_id, hs.token_outcome
-        order by hs.hour
-        rows between unbounded preceding and current row
-    )
+        and hs.hour         >= s.hour
+        and (s.next_hour is null or hs.hour < s.next_hour)
 ),
 
 with_resolution as (
