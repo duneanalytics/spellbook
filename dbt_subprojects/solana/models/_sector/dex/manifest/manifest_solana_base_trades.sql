@@ -7,7 +7,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-    , unique_key = ['block_month', 'block_date', 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index']
+    , unique_key = ['block_month', 'block_date', 'surrogate_key']
     , pre_hook = '{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
@@ -21,6 +21,7 @@ WITH swaps AS (
         , s.inner_instruction_index
         , s.outer_instruction_index
         , s.outer_executing_account
+        , s.is_inner
         , s.tx_id
         , s.tx_signer
         , s.tx_index
@@ -28,6 +29,7 @@ WITH swaps AS (
         , s.vault_b
         , s.vault_c
         , s.disc
+        , s.surrogate_key
     FROM {{ ref('manifest_solana_stg_raw_swaps') }} s
     WHERE 1=1
         {% if is_incremental() -%}
@@ -48,7 +50,9 @@ WITH swaps AS (
         , s.outer_instruction_index
         , s.inner_instruction_index
         , s.outer_executing_account
+        , s.is_inner
         , s.tx_signer
+        , s.surrogate_key
         , MAX_BY(
             CASE
                 WHEN s.disc = 0x04 AND tf.from_token_account IN (s.vault_a, s.vault_b) THEN tf.amount
@@ -111,7 +115,8 @@ WITH swaps AS (
           ) AS token_sold_mint_address
     FROM swaps s
     INNER JOIN {{ source('tokens_solana', 'transfers') }} tf
-        ON tf.block_slot = s.block_slot
+        ON tf.block_date = s.block_date
+        AND tf.block_slot = s.block_slot
         AND tf.tx_index = s.tx_index
         AND tf.outer_instruction_index = s.outer_instruction_index
         AND tf.inner_instruction_index BETWEEN s.inner_instruction_index + 1 AND s.inner_instruction_index + 4
@@ -131,7 +136,9 @@ WITH swaps AS (
         , s.outer_instruction_index
         , s.inner_instruction_index
         , s.outer_executing_account
+        , s.is_inner
         , s.tx_signer
+        , s.surrogate_key
     HAVING COUNT(DISTINCT tf.token_mint_address) = 2
 )
 
@@ -144,7 +151,10 @@ SELECT
     , block_time
     , block_slot
     , block_date
-    , outer_executing_account AS trade_source
+    , CASE
+        WHEN is_inner = false THEN 'direct'
+        ELSE outer_executing_account
+      END AS trade_source
     , token_bought_amount_raw
     , token_sold_amount_raw
     , CAST(NULL AS DOUBLE) AS fee_tier
@@ -159,4 +169,5 @@ SELECT
     , outer_instruction_index
     , inner_instruction_index
     , tx_index
+    , surrogate_key
 FROM matched

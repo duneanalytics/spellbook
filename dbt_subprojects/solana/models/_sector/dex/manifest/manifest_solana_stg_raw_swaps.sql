@@ -7,7 +7,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-    , unique_key = ['block_month', 'block_date', 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index']
+    , unique_key = ['block_month', 'block_date', 'surrogate_key']
   )
 }}
 
@@ -27,6 +27,12 @@ SELECT
     , account_arguments[7] AS vault_b
     , account_arguments[8] AS vault_c
     , BYTEARRAY_SUBSTRING(data, 1, 1) AS disc
+    , {{ solana_instruction_key(
+          'block_slot'
+        , 'tx_index'
+        , 'outer_instruction_index'
+        , 'COALESCE(inner_instruction_index, 0)'
+      ) }} AS surrogate_key
 FROM {{ source('solana', 'instruction_calls') }}
 WHERE 1=1
     AND executing_account = 'MNFSTqtC93rEfYHB6hF82sKdZpUDFWkViLByLd1k1Ms'
