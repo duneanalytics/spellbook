@@ -1951,7 +1951,11 @@ FROM
     ('mstrx-microstrategy-tokenized-stock-xstock', 'ethereum', 'MSTRx', 0xae2f842ef90c0d5213259ab82639d5bbf649b08e, 18),
     ('nvdax-nvidia-tokenized-stock-xstock', 'ethereum', 'NVDAx', 0xc845b2894dbddd03858fd2d643b4ef725fe0849d, 18),
     ('spyx-sp500-tokenized-stock-xstock', 'ethereum', 'SPYx', 0x90a2a4c76b5d8c0bc892a69ea28aa775a8f2dd48, 18),
-    ('tslax-tesla-tokenized-stock-xstock', 'ethereum', 'TSLAx', 0x8ad3c73f833d3f9a523ab01476625f269aeb7cf0, 18)
+    ('tslax-tesla-tokenized-stock-xstock', 'ethereum', 'TSLAx', 0x8ad3c73f833d3f9a523ab01476625f269aeb7cf0, 18),
+    --RWA Tokens (Treasuries, Commodities, Credit)
+    ('xaut-tether-gold', 'ethereum', 'XAUT', 0x68749665ff8d2d112fa859aa293f07a622782f38, 18),
+    ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0xe86845788d6e3e5c2393ade1a051ae617d974c09, 18),
+    ('syrupusdc-syrupusdc', 'ethereum', 'syrupUSDC', 0x80ac24aa929eaf5013f6436cda2a7ba190f5cc0b, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
