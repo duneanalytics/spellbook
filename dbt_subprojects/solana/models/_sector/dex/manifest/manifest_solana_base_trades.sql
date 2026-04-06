@@ -35,7 +35,7 @@ WITH swaps AS (
         {% if is_incremental() -%}
         AND {{ incremental_predicate('s.block_date') }}
         {% else -%}
-        AND s.block_date >= DATE '2025-07-31'
+        AND s.block_date >= DATE '2026-04-01'
         {% endif -%}
 )
 
@@ -124,7 +124,7 @@ WITH swaps AS (
         {% if is_incremental() -%}
         AND {{ incremental_predicate('tf.block_date') }}
         {% else -%}
-        AND tf.block_date >= DATE '2025-07-31'
+        AND tf.block_date >= DATE '2026-04-01'
         {% endif -%}
     GROUP BY
           s.block_time
