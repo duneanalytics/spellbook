@@ -73,6 +73,10 @@ sources:
     tables:
       - name: evt_deposit
       - name: evt_withdraw
+  - name: erc4626_hedera
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
   - name: erc4626_hemi
     tables:
       - name: evt_deposit

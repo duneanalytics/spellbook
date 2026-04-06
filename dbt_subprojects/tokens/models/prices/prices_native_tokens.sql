@@ -38,6 +38,7 @@ with prices_native_tokens as (
         , ('fuel', 'eth-ethereum')
         , ('gnosis', 'dai-dai')
         , ('goerli', 'eth-ethereum')
+        , ('hedera', 'hbar-hedera-hashgraph')
         , ('hemi', 'eth-ethereum')
         , ('henesys', 'nxpc-nexpace')
         , ('hyperevm', 'hype-hyperliquid')
