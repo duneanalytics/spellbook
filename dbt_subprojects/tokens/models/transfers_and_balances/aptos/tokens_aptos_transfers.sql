@@ -16,6 +16,7 @@
 {% set aptos_transfer_start_date = '2026-01-01' %} -- ci test only
 {% set canonical_usdc_asset_type = '0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b' %}
 {% set canonical_usdt_asset_type = '0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b' %}
+{% set usd_amount_threshold = 1000000000 %}
 
 with base_transfers as (
   select *
@@ -52,15 +53,25 @@ prices as (
   select
     p.timestamp,
     p.contract_address,
+    p.symbol,
+    p.decimals,
     p.price
   from {{ source('prices_external', 'hour') }} p
   where p.blockchain = 'aptos'
+    and p.timestamp >= timestamp '{{ aptos_transfer_start_date }}'
     {% if is_incremental() %}
     and {{ incremental_predicate('p.timestamp') }}
     {% endif %}
 ),
 
-final as (
+trusted_tokens as (
+  select
+    t.contract_address
+  from {{ source('prices', 'trusted_tokens') }} t
+  where t.blockchain = 'aptos'
+),
+
+transfers as (
   select
     b.unique_key,
     'aptos' as blockchain,
@@ -80,13 +91,23 @@ final as (
     b.asset_type,
     b.from_storage_id,
     b.to_storage_id,
-    m.asset_symbol as symbol,
-    m.decimals,
+    coalesce(m.asset_symbol, p.symbol) as symbol,
+    coalesce(m.decimals, p.decimals) as decimals,
     tx.tx_index,
     b.amount_raw,
-    cast(b.amount_raw as double) / power(10, cast(m.decimals as double)) as amount,
+    case
+      when coalesce(m.decimals, p.decimals) is null then cast(null as double)
+      else cast(b.amount_raw as double) / power(10, cast(coalesce(m.decimals, p.decimals) as double))
+    end as amount,
     p.price as price_usd,
-    cast(b.amount_raw as double) / power(10, cast(m.decimals as double)) * p.price as amount_usd,
+    case
+      when coalesce(m.decimals, p.decimals) is null then cast(null as double)
+      else cast(b.amount_raw as double) / power(10, cast(coalesce(m.decimals, p.decimals) as double)) * p.price
+    end as amount_usd,
+    case
+      when tt.contract_address is not null then true
+      else false
+    end as is_trusted_token,
     b.transfer_type,
     b._updated_at
   from base_transfers b
@@ -94,6 +115,8 @@ final as (
     on b.asset_type = m.asset_type
   left join tx_metadata tx
     on b.tx_version = tx.tx_version
+  left join trusted_tokens tt
+    on b.contract_address = tt.contract_address
   left join prices p
     on date_trunc('hour', b.block_time) = p.timestamp
     and b.contract_address = p.contract_address
@@ -128,7 +151,11 @@ select
   amount_raw,
   amount,
   price_usd,
-  amount_usd,
+  case
+    when is_trusted_token = true then amount_usd
+    when is_trusted_token = false and amount_usd < {{ usd_amount_threshold }} then amount_usd
+    when is_trusted_token = false and amount_usd >= {{ usd_amount_threshold }} then cast(null as double)
+  end as amount_usd,
   transfer_type,
   _updated_at
-from final
+from transfers

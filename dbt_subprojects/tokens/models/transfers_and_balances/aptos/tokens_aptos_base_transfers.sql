@@ -175,6 +175,27 @@ paired_transfers as (
   where amount_raw > cast(0 as uint256)
 ),
 
+paired_event_amounts as (
+  select
+    tx_version,
+    event_index,
+    sum(amount_raw) as paired_amount_raw
+  from (
+    select
+      tx_version,
+      event_index,
+      amount_raw
+    from paired_transfers
+    union all
+    select
+      tx_version,
+      counterpart_event_index as event_index,
+      amount_raw
+    from paired_transfers
+  ) paired_event_amounts_raw
+  group by 1, 2
+),
+
 residual_transfers as (
   select
     {{ dbt_utils.generate_surrogate_key(['e.tx_version', 'e.event_index']) }} as unique_key,
@@ -208,20 +229,17 @@ residual_transfers as (
     end as to_storage_id,
     e.asset_type,
     e.token_standard,
-    e.amount_raw,
+    e.amount_raw - coalesce(p.paired_amount_raw, cast(0 as uint256)) as amount_raw,
     case
       when e.transfer_direction = 'credit' then 'mint'
       else 'burn'
     end as transfer_type,
     current_timestamp as _updated_at
   from transfer_events e
-  left join (
-    select tx_version, event_index from paired_transfers
-    union all
-    select tx_version, counterpart_event_index as event_index from paired_transfers
-  ) p on e.tx_version = p.tx_version
+  left join paired_event_amounts p
+    on e.tx_version = p.tx_version
     and e.event_index = p.event_index
-  where p.event_index is null
+  where e.amount_raw > coalesce(p.paired_amount_raw, cast(0 as uint256))
 )
 
 select
