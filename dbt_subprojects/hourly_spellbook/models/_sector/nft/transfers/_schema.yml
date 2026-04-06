@@ -12,15 +12,6 @@ models:
       tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
     description: >
         NFT transfers
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
-          config:
-            where: "block_time > now() - interval '7' day"
     columns:
       - &blockchain
         name: blockchain
@@ -90,12 +81,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
             - amount
     columns:
-      # only listing columns that have tests here for simplicity
       - *token_standard
       - *transfer_type
       - *unique_transfer_id
@@ -112,6 +103,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -134,6 +126,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -156,6 +149,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -178,6 +172,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -200,6 +195,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -222,6 +218,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -244,6 +241,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -266,6 +264,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -288,6 +287,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -310,6 +310,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -332,6 +333,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -354,6 +356,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -376,6 +379,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -398,6 +402,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -420,6 +425,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -442,6 +448,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -464,6 +471,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -486,6 +494,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -508,6 +517,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id
@@ -530,6 +540,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - tx_hash
             - evt_index
             - token_id

@@ -1,13 +1,7 @@
 {{ config(
-
         schema = 'nft',
-        alias ='transfers',
-        partition_by = ['blockchain','block_month'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_hash', 'evt_index', 'token_id', 'amount'],
+        alias = 'transfers',
+        materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "base", "celo", "zksync", "zora", "scroll", "linea", "blast", "mantle", "sei", "ronin", "worldchain", "kaia"]\',
                                     "sector",
                                     "nft",
@@ -15,6 +9,7 @@
 )
 }}
 
+-- ci-stamp: 1
 {% set nft_models = [
  ref('nft_ethereum_transfers')
 ,ref('nft_bnb_transfers')
@@ -39,32 +34,26 @@
 ,ref('nft_kaia_transfers')
 ] %}
 
-SELECT *
-FROM (
-    {% for nft_model in nft_models %}
-    SELECT
-          blockchain
-        , block_time
-        , block_month
-        , block_date
-        , block_number
-        , token_standard
-        , transfer_type
-        , evt_index
-        , contract_address
-        , token_id
-        , amount
-        , "from"
-        , to
-        , executed_by
-        , tx_hash
-        , unique_transfer_id
-    FROM {{ nft_model }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
-    {% endif %}
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
-)
+{% for nft_model in nft_models %}
+SELECT
+      blockchain
+    , block_time
+    , block_month
+    , block_date
+    , block_number
+    , token_standard
+    , transfer_type
+    , evt_index
+    , contract_address
+    , token_id
+    , amount
+    , "from"
+    , to
+    , executed_by
+    , tx_hash
+    , unique_transfer_id
+FROM {{ nft_model }}
+{% if not loop.last %}
+UNION ALL
+{% endif %}
+{% endfor %}
