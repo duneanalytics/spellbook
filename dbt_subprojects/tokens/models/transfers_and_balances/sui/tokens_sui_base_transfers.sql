@@ -188,6 +188,12 @@ object_transfers as (
       when o.balance_delta < 0 then 'balance_decrease'
       else 'other'
     end as transfer_type,
+    case
+      when o.owner_net_type in ('owner_residual_debit', 'owner_residual_credit')
+        or o.object_status in ('Created', 'Deleted')
+      then true
+      else false
+    end as is_supply_match_candidate,
     false as is_supply_event,
     cast(null as varchar) as supply_event_type,
     case
@@ -225,15 +231,15 @@ object_transfers_ranked as (
     o.*,
     coalesce(m.matched_supply_rows, 0) as matched_supply_rows,
     case
-      when o.transfer_type in (
-        'object_created',
-        'object_deleted',
-        'ownership_balance_topup',
-        'ownership_balance_spend'
-      )
-      then row_number() over (
+      when o.is_supply_match_candidate then sum(
+        case
+          when o.is_supply_match_candidate then 1
+          else 0
+        end
+      ) over (
         partition by o.tx_digest, o.coin_type_normalized, o.amount_raw, o.transfer_direction
         order by o.unique_key
+        rows between unbounded preceding and current row
       )
       else cast(null as bigint)
     end as candidate_rank
@@ -248,13 +254,8 @@ object_transfers_ranked as (
 object_transfers_non_supply as (
   select r.*
   from object_transfers_ranked r
-  where r.candidate_rank > r.matched_supply_rows
-    or r.transfer_type not in (
-      'object_created',
-      'object_deleted',
-      'ownership_balance_topup',
-      'ownership_balance_spend'
-    )
+  where (r.is_supply_match_candidate and r.candidate_rank > r.matched_supply_rows)
+    or not r.is_supply_match_candidate
 ),
 
 all_transfers as (
