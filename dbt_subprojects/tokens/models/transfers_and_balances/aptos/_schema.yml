@@ -15,6 +15,21 @@ models:
           combination_of_columns:
             - block_month
             - unique_key
+      - check_seed:
+          seed_file: ref('tokens_aptos_transfer_events_seed')
+          match_columns:
+            - block_date
+            - tx_version
+            - event_index
+          check_columns:
+            - event_type
+            - activity_type
+            - transfer_direction
+            - owner_address
+            - storage_id
+            - asset_type
+            - token_standard
+            - amount_raw
     columns:
       - &unique_key
         name: unique_key
@@ -41,6 +56,9 @@ models:
       - &event_index
         name: event_index
         description: "Primary event index used for the transfer row."
+      - &event_type
+        name: event_type
+        description: "Raw Aptos event type used to derive transfer activity labels."
       - &activity_type
         name: activity_type
         description: "Normalized activity label (deposit or withdraw)."
@@ -80,6 +98,38 @@ models:
           combination_of_columns:
             - block_month
             - unique_key
+      - check_seed:
+          seed_file: ref('tokens_aptos_base_transfers_pairing_seed')
+          match_columns:
+            - block_date
+            - tx_version
+            - event_index
+            - counterpart_event_index
+          check_columns:
+            - from_address
+            - to_address
+            - from_storage_id
+            - to_storage_id
+            - asset_type
+            - token_standard
+            - amount_raw
+            - transfer_type
+      - check_seed:
+          seed_file: ref('tokens_aptos_base_transfers_residual_seed')
+          match_columns:
+            - block_date
+            - tx_version
+            - event_index
+          check_columns:
+            - counterpart_event_index
+            - from_address
+            - to_address
+            - from_storage_id
+            - to_storage_id
+            - asset_type
+            - token_standard
+            - amount_raw
+            - transfer_type
     columns:
       - *unique_key
       - *tx_version
