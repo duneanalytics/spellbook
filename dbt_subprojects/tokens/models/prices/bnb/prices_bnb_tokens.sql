@@ -322,7 +322,6 @@ FROM
     ('iauon-ishares-gold-trust-tokenized-etf-ondo', 'bnb', 'IAUon', 0xcb2a0f46f67dc4c58a316f1c008edef5c2311795, 18),
     ('intcon-intel-tokenized-stock-ondo', 'bnb', 'INTCon', 0xa528caaa2f96090e379d43f90834c75df54d6e74, 18),
     ('llyon-eli-lilly-tokenized-stock-ondo', 'bnb', 'LLYon', 0x341d31b2be1fee9c00e395a62ba41837f4322eed, 18),
-    ('maon-mastercard-tokenized-stock-ondo', 'bnb', 'MAon', 0x25ffda07f585c39848db6573e533d7585679c52d, 18),
     ('mcdon-mcdonalds-tokenized-stock-ondo', 'bnb', 'MCDon', 0x995add4ba29a628a57930a8a185c62ca044ec090, 18),
     ('metaon-meta-platforms-tokenized-stock-ondo', 'bnb', 'METAon', 0xd7df5863a3e742f0c767768cdfcb63f09e0422f6, 18),
     ('msfton-microsoft-tokenized-stock-ondo', 'bnb', 'MSFTon', 0x6bfe75d1ad432050ea973c3a3dcd88f02e2444c3, 18),

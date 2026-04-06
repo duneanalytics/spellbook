@@ -833,7 +833,6 @@ FROM
         ('iauon-ishares-gold-trust-tokenized-etf-ondo','solana','IAUon','M77ZvkZ8zW5udRbuJCbuwSwavRa7bGAZYMTwru8ondo',9),
         ('intcon-intel-tokenized-stock-ondo','solana','INTCon','cJpUMp5R7rZ6fGeLHbHhrRuJzK9mkyKDjZqNpT3ondo',9),
         ('llyon-eli-lilly-tokenized-stock-ondo','solana','LLYon','eGGxZwNSfuNKRqQLKaz2hc4QkA2mau7skyxPdj7ondo',9),
-        ('maon-mastercard-tokenized-stock-ondo','solana','MAon','EsVHcyRxXFJCLMiuYLWhoDygrNe1BJGpYeZ17X7ondo',9),
         ('mcdon-mcdonalds-tokenized-stock-ondo','solana','MCDon','EUbJjmDt8JA222M91bVLZs211siZ2jzbFArH9N3ondo',9),
         ('metaon-meta-platforms-tokenized-stock-ondo','solana','METAon','fDxs5y12E7x7jBwCKBXGqt71uJmCWsAQ3Srkte6ondo',9),
         ('msfton-microsoft-tokenized-stock-ondo','solana','MSFTon','FRmH6iRkMr33DLG6zVLR7EM4LojBFAuq6NtFzG6ondo',9),

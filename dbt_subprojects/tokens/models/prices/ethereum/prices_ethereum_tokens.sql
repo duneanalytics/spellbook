@@ -1922,7 +1922,6 @@ FROM
     ('iauon-ishares-gold-trust-tokenized-etf-ondo', 'ethereum', 'IAUon', 0x4f0ca3df1c2e6b943cf82e649d576ffe7b2fabcf, 18),
     ('intcon-intel-tokenized-stock-ondo', 'ethereum', 'INTCon', 0xfda09936dbd717368de0835ba441d9e62069d36f, 18),
     ('llyon-eli-lilly-tokenized-stock-ondo', 'ethereum', 'LLYon', 0xf192957ae52db3eb088654403cc2eded014ae556, 18),
-    ('maon-mastercard-tokenized-stock-ondo', 'ethereum', 'MAon', 0xa29dc2102dfc2a0a4a5dcb84af984315567c9858, 18),
     ('mcdon-mcdonalds-tokenized-stock-ondo', 'ethereum', 'MCDon', 0x4c82c8cd9a218612dce60b156b73a36705645e3b, 18),
     ('metaon-meta-platforms-tokenized-stock-ondo', 'ethereum', 'METAon', 0x59644165402b611b350645555b50afb581c71eb2, 18),
     ('msfton-microsoft-tokenized-stock-ondo', 'ethereum', 'MSFTon', 0xb812837b81a3a6b81d7cd74cfb19a7f2784555e5, 18),
