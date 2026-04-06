@@ -83,7 +83,7 @@ FROM (
         , (98866, 'plume', 'Plume', 'Layer 2', 'Optimistic Rollup', 'PLUME', 0xEa237441c92CAe6FC17Caaf9a7acB3f953be4bd1, 'https://explorer.plume.org/', timestamp '2025-02-20 10:39', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
         , (747474, 'katana', 'Katana', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x0000000000000000000000000000000000000000, 'https://explorer.katanarpc.com/', timestamp '2025-06-23 09:45', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (5330, 'superseed', 'Superseed', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.superseed.xyz/', timestamp '2024-09-12 22:21', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
-        , (295, 'hedera', 'Hedera', 'Layer 1', NULL, 'HBAR', 0x0000000000000000000000000000000000000000, 'https://hashscan.io/', timestamp '2023-07-06 20:30', NULL, NULL, NULL, true, NULL)
+        , (295, 'hedera', 'Hedera', 'Layer 1', NULL, 'HBAR', 0x0000000000000000000000000000000000163b5a, 'https://hashscan.io/', timestamp '2023-07-06 20:30', NULL, NULL, NULL, true, NULL)
         , (43111, 'hemi', 'Hemi', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.hemi.xyz/', timestamp '2024-09-09 07:25', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (10000, 'tac', 'TAC', 'Layer 1', NULL, 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.tac.build/', timestamp '2025-06-23 09:45', NULL, NULL, NULL, true, NULL)
         , (747, 'flow', 'Flow', 'Layer 1', NULL, 'WFLOW', 0xd3bf53dac106a0290b0483ecbc89d40fcc961f3e, 'https://evm.flowscan.io/', timestamp '2025-08-26 14:59', NULL, NULL, NULL, true, NULL)
