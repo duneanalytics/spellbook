@@ -1955,7 +1955,17 @@ FROM
     --RWA Tokens (Treasuries, Commodities, Credit)
     ('xaut-tether-gold', 'ethereum', 'XAUT', 0x68749665ff8d2d112fa859aa293f07a622782f38, 18),
     ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0xe86845788d6e3e5c2393ade1a051ae617d974c09, 18),
-    ('syrupusdc-syrupusdc', 'ethereum', 'syrupUSDC', 0x80ac24aa929eaf5013f6436cda2a7ba190f5cc0b, 18)
+    ('syrupusdc-syrupusdc', 'ethereum', 'syrupUSDC', 0x80ac24aa929eaf5013f6436cda2a7ba190f5cc0b, 18),
+    --Tokenized ETFs (Ondo & xStock)
+    ('tlton-ishares-20-year-treasury-bond-tokenized-etf-ondo', 'ethereum', 'TLTon', 0x992651bfeb9a0dcc4457610e284ba66d86489d4d, 18),
+    ('pallon-abrdn-physical-palladium-shares-etf-ondo-tokenized-stocks', 'ethereum', 'PALLon', 0x0ce36d199bd6851788e03392568849394cbde722, 18),
+    ('qqqx-nasdaq-tokenized-etf-xstock', 'ethereum', 'QQQx', 0xa753a7395cae905cd615da0b82a53e0560f250af, 18),
+    ('gldx-gold-tokenized-etf-xstock', 'ethereum', 'GLDx', 0x2380f2673c640fb67e2d6b55b44c62f0e0e69da9, 18),
+    ('vtix-vanguard-tokenized-etf-xstock', 'ethereum', 'VTIx', 0xbd730e618bcd88c82ddee52e10275cf2f88a4777, 18),
+    ('tqqqx-tqqq-tokenized-etf-xstock', 'ethereum', 'TQQQx', 0xfdddb57878ef9d6f681ec4381dcb626b9e69ac86, 18),
+    --Tokenized Commodities (Matrixdock)
+    ('xaum-matrixdock-gold', 'ethereum', 'XAUM', 0x2103e845c5e135493bb6c2a4f0b8651956ea8682, 18),
+    ('xagm-matrixdock-silver', 'ethereum', 'XAGM', 0x123ffe0a3c62878dcbee2742227dc8990058d9e1, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

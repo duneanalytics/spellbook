@@ -848,6 +848,15 @@ FROM
         ('slvon-ishares-silver-trust-tokenized-etf-ondo','solana','SLVon','iy11ytbSGcUnrjE6Lfv78TFqxKyUESfku1FugS9ondo',9),
         ('spyon-spdr-sp-500-tokenized-etf-ondo','solana','SPYon','k18WJUULWheRkSpSquYGdNNmtuE2Vbw1hpuUi92ondo',9),
         ('unhon-unitedhealth-tokenized-stock-ondo','solana','UNHon','kPBGL8vAwKN3UGmr9cjkM2dU79SC3nzTC9yu7F8ondo',9),
-        ('xomon-exxon-mobil-tokenized-stock-ondo','solana','XOMon','qCYD74QnXzd9pzv6pGHQKJVwoibL6sNcPQDnpDiondo',9)
+        ('xomon-exxon-mobil-tokenized-stock-ondo','solana','XOMon','qCYD74QnXzd9pzv6pGHQKJVwoibL6sNcPQDnpDiondo',9),
+        --Tokenized ETFs (Ondo & xStock)
+        ('tlton-ishares-20-year-treasury-bond-tokenized-etf-ondo','solana','TLTon','KaSLSWByKy6b9FrCYXPEJoHmLpuFZtTCJk1F1Z9ondo',9),
+        ('pallon-abrdn-physical-palladium-shares-etf-ondo-tokenized-stocks','solana','PALLon','P7hTXnKk2d2DyqWnefp5BSroE1qjjKpKxg9SxQqondo',9),
+        ('qqqx-nasdaq-tokenized-etf-xstock','solana','QQQx','Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ',8),
+        ('gldx-gold-tokenized-etf-xstock','solana','GLDx','Xsv9hRk1z5ystj9MhnA7Lq4vjSsLwzL2nxrwmwtD3re',8),
+        ('vtix-vanguard-tokenized-etf-xstock','solana','VTIx','XsssYEQjzxBCFgvYFFNuhJFBeHNdLWYeUSP8F45cDr9',8),
+        ('tqqqx-tqqq-tokenized-etf-xstock','solana','TQQQx','XsjQP3iMAaQ3kQScQKthQpx9ALRbjKAjQtHg6TFomoc',8),
+        --Tokenized Commodities (Matrixdock)
+        ('xaum-matrixdock-gold','solana','XAUM','5aLhp9VnUEKcsdtkfsf2DUgpJfomx7GmYVny24dHUZoB',9)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

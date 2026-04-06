@@ -351,7 +351,16 @@ FROM
     ('mstrx-microstrategy-tokenized-stock-xstock', 'bnb', 'MSTRx', 0xae2f842ef90c0d5213259ab82639d5bbf649b08e, 18),
     ('nvdax-nvidia-tokenized-stock-xstock', 'bnb', 'NVDAx', 0xc845b2894dbddd03858fd2d643b4ef725fe0849d, 18),
     ('spyx-sp500-tokenized-stock-xstock', 'bnb', 'SPYx', 0x90a2a4c76b5d8c0bc892a69ea28aa775a8f2dd48, 18),
-    ('tslax-tesla-tokenized-stock-xstock', 'bnb', 'TSLAx', 0x8ad3c73f833d3f9a523ab01476625f269aeb7cf0, 18)
+    ('tslax-tesla-tokenized-stock-xstock', 'bnb', 'TSLAx', 0x8ad3c73f833d3f9a523ab01476625f269aeb7cf0, 18),
+    --Tokenized ETFs (Ondo & xStock)
+    ('tlton-ishares-20-year-treasury-bond-tokenized-etf-ondo', 'bnb', 'TLTon', 0xf69e40069ac227c11459e3f4e8a446b3401616b6, 18),
+    ('pallon-abrdn-physical-palladium-shares-etf-ondo-tokenized-stocks', 'bnb', 'PALLon', 0x3fcd741646a9790635b938cdb69af5df356cbaab, 18),
+    ('qqqx-nasdaq-tokenized-etf-xstock', 'bnb', 'QQQx', 0xa753a7395cae905cd615da0b82a53e0560f250af, 18),
+    ('gldx-gold-tokenized-etf-xstock', 'bnb', 'GLDx', 0x2380f2673c640fb67e2d6b55b44c62f0e0e69da9, 18),
+    ('vtix-vanguard-tokenized-etf-xstock', 'bnb', 'VTIx', 0xbd730e618bcd88c82ddee52e10275cf2f88a4777, 18),
+    ('tqqqx-tqqq-tokenized-etf-xstock', 'bnb', 'TQQQx', 0xfdddb57878ef9d6f681ec4381dcb626b9e69ac86, 18),
+    --Tokenized Commodities (Matrixdock)
+    ('xaum-matrixdock-gold', 'bnb', 'XAUM', 0x23ae4fd8e7844cdbc97775496ebd0e8248656028, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
