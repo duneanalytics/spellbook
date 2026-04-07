@@ -15,6 +15,7 @@
 {% set aptos_transfer_start_date = '2026-01-01' %} -- ci test only
 {% set canonical_usdc_asset_type = '0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b' %}
 
+-- base transfers events within the window
 with transfer_events as (
   select
     tx_version,
@@ -36,6 +37,7 @@ with transfer_events as (
     {% endif %}
 ),
 
+-- track the running net balance per tx and asset to identify pairing sessions
 event_balances as (
   select
     tx_version,
@@ -63,6 +65,7 @@ event_balances as (
   from transfer_events
 ),
 
+-- assign a session id whenever the running balance returns to a non-negative state
 session_events as (
   select
     tx_version,
@@ -90,6 +93,7 @@ session_events as (
   from event_balances
 ),
 
+-- compute direction-specific cumulative sums used by the fifo overlap logic
 session_sums as (
   select
     tx_version,
@@ -118,6 +122,7 @@ session_sums as (
   from session_events
 ),
 
+-- derive matched debit/credit transfers within each tx-level session
 paired_transfers as (
   select
     {{ dbt_utils.generate_surrogate_key(['tx_version', 'withdraw_event_index', 'deposit_event_index']) }} as unique_key,
@@ -175,6 +180,7 @@ paired_transfers as (
   where amount_raw > cast(0 as uint256)
 ),
 
+-- total the amount already consumed by paired rows for each source event
 paired_event_amounts as (
   select
     tx_version,
@@ -196,6 +202,7 @@ paired_event_amounts as (
   group by 1, 2
 ),
 
+-- emit the unpaired remainder of each event as mint/burn residual transfer rows
 residual_transfers as (
   select
     {{ dbt_utils.generate_surrogate_key(['e.tx_version', 'e.event_index']) }} as unique_key,
@@ -207,7 +214,10 @@ residual_transfers as (
     e.event_index,
     cast(null as bigint) as counterpart_event_index,
     case
-      -- Alignment shim: map one-sided canonical USDC residuals to self-attributed endpoints.
+      -- canonical aptos usdc is the only compatibility exception here: one-sided
+      -- residual usdc rows are kept self-attributed to match the established
+      -- stablecoin output shape and preserve downstream sender/receiver semantics:
+      -- dbt_subprojects/daily_spellbook/models/aptos/stablecoins/
       when e.asset_type = '{{ canonical_usdc_asset_type }}' then e.owner_address
       when e.transfer_direction = 'credit' then cast(null as varbinary)
       else e.owner_address
