@@ -177,6 +177,7 @@ object_transfers as (
     o.prev_balance,
     o.prev_owner,
     o.has_ownership_change,
+    o.owner_net_type,
     case
       when o.owner_net_type = 'owner_residual_debit' then 'ownership_balance_spend'
       when o.owner_net_type = 'owner_residual_credit' then 'ownership_balance_topup'
