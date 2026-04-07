@@ -14,7 +14,7 @@
 {{ solana_amm_base_trades(
     project = 'bisonfi'
     , project_main_id = 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi'
-    , project_start_date = '2026-04-01'
+    , project_start_date = '2025-11-05'
     , stg_raw_swaps_model = ref('bisonfi_solana_stg_raw_swaps')
     , token_bought_offset = 2
     , token_sold_offset = 1
