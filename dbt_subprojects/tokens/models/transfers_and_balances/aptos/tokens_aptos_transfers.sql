@@ -4,16 +4,16 @@
     alias = 'transfers',
     materialized = 'incremental',
     file_format = 'delta',
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'unique_key'],
+    unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     merge_skip_unchanged = true,
     post_hook = '{{ hide_spells() }}'
   )
 }}
 
-{% set aptos_transfer_start_date = '2026-01-01' %} -- ci test only
+{% set aptos_transfer_start_date = '2022-10-12' %}
 {% set canonical_usdc_asset_type = '0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b' %}
 {% set canonical_usdt_asset_type = '0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b' %}
 {% set usd_amount_threshold = 1000000000 %}

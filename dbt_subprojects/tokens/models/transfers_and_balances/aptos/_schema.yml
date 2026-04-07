@@ -13,7 +13,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - block_date
             - unique_key
       - check_seed:
           seed_file: ref('tokens_aptos_transfer_events_seed')
@@ -45,14 +45,14 @@ models:
       - &block_date
         name: block_date
         description: "Transaction date."
+        data_tests:
+          - not_null
       - &block_time
         name: block_time
         description: "Transaction timestamp."
       - &block_month
         name: block_month
         description: "Month bucket derived from block_time."
-        data_tests:
-          - not_null
       - &event_index
         name: event_index
         description: "Primary event index used for the transfer row."
@@ -96,7 +96,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - block_date
             - unique_key
       - check_seed:
           seed_file: ref('tokens_aptos_base_transfers_pairing_seed')
@@ -176,7 +176,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - block_date
             - unique_key
     columns:
       - *unique_key

@@ -4,15 +4,15 @@
     alias = 'transfer_events',
     materialized = 'incremental',
     file_format = 'delta',
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'unique_key'],
+    unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     merge_skip_unchanged = true
   )
 }}
 
-{% set aptos_transfer_start_date = '2026-01-01' %} -- ci test only
+{% set aptos_transfer_start_date = '2022-10-12' %}
 
 -- centralize supported event filtering and normalized labels in one place
 with event_type_map as (
