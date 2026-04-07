@@ -16,3 +16,31 @@
 	transactions=source('bob', 'transactions'),
 	erc20_transfers=source('erc20_bob', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='bob',
+			transactions=source('bob', 'transactions'),
+			wrapped_token_deposit=source('weth_bob', 'weth9_evt_deposit'),
+			wrapped_token_withdrawal=source('weth_bob', 'weth9_evt_withdrawal'),
+		) }}
+	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='bob',
+			transactions=source('bob', 'transactions'),
+			erc20_transfers=source('erc20_bob', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_bob', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_bob', 'evt_withdraw'),
+		) }}
+	)

@@ -26,22 +26,24 @@ We need to split the onboarding process into multiple PRs because of the way we 
 
 1.  **Add EVM Chain Info (`daily_spellbook`):**
     -   **What:** Add a row for the new blockchain to the [`evms.info`](./dbt_subprojects/daily_spellbook/models/evms/evms_info.sql) model in the [`dbt_subprojects/daily_spellbook/models/evms/`](./dbt_subprojects/daily_spellbook/models/evms/) directory.
+    -   **Important:** The `wrapped_native_token_address` column must be the **wrapped** token contract address (e.g., WETH, WHBAR), **not** the native/zero address. This is the ERC20-wrapped version of the native token used for on-chain trading.
     -   **Why:** This model centralizes EVM chain identifiers. The `chain_id` is particularly critical for linking automated token data sources later.
     -   *Example PR:* [Kaia Metadata PR](https://github.com/duneanalytics/spellbook/pull/6957/files) (Illustrates `evms.info` update)
 
 2.  **Configure Token Prices (`tokens` project):**
     -   **What:**
         -   Add the native token to [`prices_native_tokens.sql`](./dbt_subprojects/tokens/models/prices/prices_native_tokens.sql) if it's not already present via another chain.
-        -   Create a new `prices_<blockchain>_tokens.sql` model (e.g., [`prices_lens_tokens.sql`](./dbt_subprojects/tokens/models/prices/lens/prices_lens_tokens.sql)) in `dbt_subprojects/tokens/models/prices/<blockchain>/`. Manually list the native token and other key tokens (e.g., top 5 transferred, stables, WETH).
+        -   Create a new `prices_<blockchain>_tokens.sql` model (e.g., [`prices_lens_tokens.sql`](./dbt_subprojects/tokens/models/prices/lens/prices_lens_tokens.sql)) in `dbt_subprojects/tokens/models/prices/<blockchain>/`. Manually list key tokens (e.g., wrapped native token, top 5 transferred, stables, WETH). **Do NOT include the native token here** — it is already covered by `prices_native_tokens.sql` and duplicating it will create duplicate rows in the `prices.day/hour/minute` pipelines.
+        -   All `token_id` values must exist and be active on the [CoinPaprika API](https://api.coinpaprika.com/v1/coins). CI runs `scripts/check_tokens.py` which validates every token ID against this API — missing or inactive IDs will fail the build.
         -   Create a corresponding `_schema.yml` file in the same `dbt_subprojects/tokens/models/prices/<blockchain>/` directory.
         -   Add the new `prices_<blockchain>_tokens` model to the union in [`prices_tokens.sql`](./dbt_subprojects/tokens/models/prices/prices_tokens.sql).
         -   After this PR is merged we have to add the new chain to the `prices_trusted_tokens` pipeline on the sqlmesh project so our price feeds are updated.
     -   **Why:** Establishes price feeds for the native token and key ERC20s. We rely on CoinPaprika for feeds, so coverage might be limited initially.
     -   *Future State Note:* The dependency on CoinPaprika for *all* tokens is being reduced, but the `prices_trusted_tokens` pipeline will likely remain.
 
-3.  **Configure ERC20 Metadata (`tokens` project) (not always required):**
+3.  **Configure ERC20 Metadata (`tokens` project) (no longer required for new chains):**
 
-    *Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
+    *Note: The `tokens_<blockchain>_v1_erc20` model is no longer part of the `tokens.erc20` lineage. **Skip this step for new chains.** The automated `dune.definedfi.dataset_tokens` source now provides sufficient coverage, keyed on `chain_id` from `dune.blockchains`. This step only remains for legacy chains that were onboarded before that automated source existed.*
 
     -   **What:**
         -   Create a new `tokens_<blockchain>_v1_erc20` model (e.g., [`tokens_lens_v1_erc20.sql`](./dbt_subprojects/tokens/models/tokens/lens/tokens_lens_v1_erc20.sql)) in `dbt_subprojects/tokens/models/tokens/<blockchain>/`. Add the same tokens listed in the blockchain-specific prices model.

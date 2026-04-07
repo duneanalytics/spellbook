@@ -16,3 +16,31 @@
 	transactions=source('somnia', 'transactions'),
 	erc20_transfers=source('erc20_somnia', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='somnia',
+			transactions=source('somnia', 'transactions'),
+			wrapped_token_deposit=source('wsomi_somnia', 'wrappedsomi_evt_deposit'),
+			wrapped_token_withdrawal=source('wsomi_somnia', 'wrappedsomi_evt_withdrawal'),
+		) }}
+	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='somnia',
+			transactions=source('somnia', 'transactions'),
+			erc20_transfers=source('erc20_somnia', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_somnia', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_somnia', 'evt_withdraw'),
+		) }}
+	)

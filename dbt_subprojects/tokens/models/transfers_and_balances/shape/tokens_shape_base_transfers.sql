@@ -16,3 +16,31 @@
 	transactions=source('shape', 'transactions'),
 	erc20_transfers=source('erc20_shape', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='shape',
+			transactions=source('shape', 'transactions'),
+			wrapped_token_deposit=source('weth_shape', 'weth9_evt_deposit'),
+			wrapped_token_withdrawal=source('weth_shape', 'weth9_evt_withdrawal'),
+		) }}
+	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='shape',
+			transactions=source('shape', 'transactions'),
+			erc20_transfers=source('erc20_shape', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_shape', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_shape', 'evt_withdraw'),
+		) }}
+	)

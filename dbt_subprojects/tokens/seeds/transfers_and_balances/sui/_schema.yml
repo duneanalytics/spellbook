@@ -1,0 +1,57 @@
+version: 2
+
+seeds:
+  - name: tokens_sui_object_event_deltas_anchor_seed
+    config:
+      column_types:
+        block_date: date
+        object_id: varbinary
+        version: uint256
+        object_status: varchar
+        prev_owner: varbinary
+        prev_balance: uint256
+        has_ownership_change: boolean
+
+  - name: tokens_sui_direct_transfers_deleted_seed
+    config:
+      column_types:
+        block_date: date
+        object_id: varbinary
+        version: uint256
+        object_status: varchar
+        transfer_from: varbinary
+        transfer_to: varbinary
+        amount_raw: uint256
+        owner_net_type: varchar
+
+  - name: tokens_sui_owner_net_transfers_seed
+    config:
+      column_types:
+        block_date: date
+        tx_digest: varchar
+        coin_type: varchar
+        object_id: varbinary
+        version: uint256
+        owner_net_type: varchar
+        transfer_from: varbinary
+        transfer_to: varbinary
+        amount_raw: uint256
+        prev_owner: varbinary
+        prev_balance: uint256
+        object_status: varchar
+        has_ownership_change: boolean
+
+  - name: tokens_sui_base_transfers_seed
+    config:
+      column_types:
+        block_date: date
+        unique_key: varchar
+        transfer_type: varchar
+        object_status: varchar
+        has_ownership_change: boolean
+        transfer_direction: varchar
+        amount_raw: uint256
+        is_supply_event: boolean
+        supply_event_type: varchar
+        tx_net_delta: int256
+        coin_type: varchar

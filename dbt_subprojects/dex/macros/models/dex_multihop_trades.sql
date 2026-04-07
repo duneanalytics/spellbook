@@ -6,11 +6,14 @@ dex_trades as (
     select 
         * 
     from 
-    {{ ref('dex_trades') }}
-    where blockchain = '{{blockchain}}'
+    {{ ref('dex_' ~ blockchain ~ '_trades') }}
+    {% if var('dev_dates', false) -%}
+    where block_date > current_date - interval '3' day
+    {%- else -%}
     {% if is_incremental() %}
-    and {{ incremental_predicate('block_time') }}
+    where {{ incremental_predicate('block_time') }}
     {% endif %}
+    {%- endif %}
 ),
 
 multi_hops as (

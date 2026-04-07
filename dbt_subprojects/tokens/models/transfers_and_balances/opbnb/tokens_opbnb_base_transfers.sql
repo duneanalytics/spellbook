@@ -16,3 +16,31 @@
 	transactions=source('opbnb', 'transactions'),
 	erc20_transfers=source('erc20_opbnb', 'evt_Transfer'),
 ) }}
+
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='opbnb',
+			transactions=source('opbnb', 'transactions'),
+			wrapped_token_deposit=source('wbnb_opbnb', 'wbnb_evt_deposit'),
+			wrapped_token_withdrawal=source('wbnb_opbnb', 'wbnb_evt_withdrawal'),
+		) }}
+	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='opbnb',
+			transactions=source('opbnb', 'transactions'),
+			erc20_transfers=source('erc20_opbnb', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_opbnb', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_opbnb', 'evt_withdraw'),
+		) }}
+	)

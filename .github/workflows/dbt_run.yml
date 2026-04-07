@@ -46,25 +46,25 @@ jobs:
         run: "./scripts/check_schema.sh"
 
       - name: dbt seed
-        run: "dbt seed $PROFILE --select @state:modified --exclude tag:prod_exclude tag:remove --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt seed $PROFILE --select @state:modified.body @state:modified.macros --exclude tag:prod_exclude tag:remove --state . --project-dir ${PROJECT_DIR}"
 
       - name: list downstream models
         run: "./scripts/list_modified_downstream.sh"
 
       - name: dbt run initial model(s)
-        run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt -x run $PROFILE --select state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt test initial model(s)
-        run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt test $PROFILE --select state:new state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: Set environment variable for incremental model count
         run: |
-          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental --state . --resource-type model  --project-dir ${PROJECT_DIR} | wc -l)" >> $GITHUB_ENV
+          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified.body,config.materialized:incremental state:modified.macros,config.materialized:incremental --state . --resource-type model  --project-dir ${PROJECT_DIR} | wc -l)" >> $GITHUB_ENV
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt run $PROFILE --select state:modified.body,config.materialized:incremental state:modified.macros,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt test $PROFILE --select state:modified.body,config.materialized:incremental state:modified.macros,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"

@@ -13,7 +13,7 @@ dbt_output=$(dbt ls $PROFILE \
     --quiet \
     --no-print \
     --resource-type model \
-    --select state:modified+ \
+    --select state:modified.body+ state:modified.macros+ \
     --output json \
     --output-keys config \
     --state . \
