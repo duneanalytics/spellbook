@@ -13,7 +13,7 @@
 
 {{ solana_amm_stg_raw_swaps(
     program_id = 'TessVdML9pBGgG9yGks7o4HewRaXVAMuoVj4x83GLQH'
-    , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 1) = 0x10"
-    , project_start_date = '2025-06-12'
+    , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 1) IN (0x10, 0x11)"
+    , project_start_date = '2026-04-01'
     , pool_id_expression = "account_arguments[2]"
 ) }}

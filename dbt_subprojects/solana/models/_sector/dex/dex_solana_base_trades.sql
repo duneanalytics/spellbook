@@ -46,6 +46,7 @@
       , ref('manifest_solana_base_trades')
       , ref('byreal_solana_base_trades')
       , ref('scorch_solana_base_trades')
+      , ref('jupiterz_solana_base_trades')
       ]
 %}
 
@@ -92,6 +93,8 @@ WHERE
       1=1
       {% if is_incremental() -%}
       AND {{incremental_predicate('block_time')}}
+      {% else -%}
+      AND block_time >= NOW() - INTERVAL '3' DAY
       {% endif -%}
 {% if not loop.last -%}
 UNION ALL
