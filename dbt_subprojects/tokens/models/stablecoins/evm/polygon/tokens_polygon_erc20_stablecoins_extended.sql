@@ -18,7 +18,9 @@ from (values
 
      (0x4fb71290ac171e1d144f7221d882becac7196eb5, 'TRY'), -- TRYB
      (0xd687759f35bb747a29246a4b9495c8f52c49e00c, 'AUD'), -- AUDX
-     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF')  -- ZCHF
+     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF'), -- ZCHF
+     (0xd2a530170d71a9cfe1651fb468e2b98f7ed7456b, 'AUD'), -- AUDF
+     (0xfbbe4b730e1e77d02dc40fedf9438e2802eab3b5, 'NZD')  -- NZDS
 
      /* yield-bearing / rebasing tokens
      (0xaf0d9d65fc54de245cda37af3d18cbec860a4d4b, 'USD'), -- wUSDR
