@@ -45,7 +45,7 @@ WITH fills AS (
         {% if is_incremental() -%}
         AND {{ incremental_predicate('call_block_date') }}
         {% else -%}
-        AND call_block_date >= DATE '2026-04-01'
+        AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif -%}
 )
 
