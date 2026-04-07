@@ -1,0 +1,49 @@
+version: 2
+
+seeds:
+  - name: tokens_aptos_transfer_events_seed
+    config:
+      column_types:
+        block_date: date
+        tx_version: uint256
+        event_index: integer
+        event_type: varchar
+        activity_type: varchar
+        transfer_direction: varchar
+        owner_address: varbinary
+        storage_id: varbinary
+        asset_type: varchar
+        token_standard: varchar
+        amount_raw: uint256
+
+  - name: tokens_aptos_base_transfers_pairing_seed
+    config:
+      column_types:
+        block_date: date
+        tx_version: uint256
+        event_index: integer
+        counterpart_event_index: integer
+        from_address: varbinary
+        to_address: varbinary
+        from_storage_id: varbinary
+        to_storage_id: varbinary
+        asset_type: varchar
+        token_standard: varchar
+        amount_raw: uint256
+        transfer_type: varchar
+
+  - name: tokens_aptos_base_transfers_residual_seed
+    config:
+      column_types:
+        block_date: date
+        tx_version: uint256
+        event_index: integer
+        counterpart_event_index: integer
+        from_address: varbinary
+        to_address: varbinary
+        from_storage_id: varbinary
+        to_storage_id: varbinary
+        asset_type: varchar
+        token_standard: varchar
+        amount_raw: uint256
+        transfer_type: varchar
