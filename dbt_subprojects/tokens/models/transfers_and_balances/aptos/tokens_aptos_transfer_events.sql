@@ -47,7 +47,7 @@ source_events as (
     a.asset_type,
     a.token_standard,
     cast(a.amount as uint256) as amount_raw
-  from {{ source('aptos_fungible_asset', 'activities') }} a
+  from {{ ref('aptos_fungible_asset_activities') }} a
   inner join event_type_map m
     on a.event_type = m.event_type
   where a.amount > 0
