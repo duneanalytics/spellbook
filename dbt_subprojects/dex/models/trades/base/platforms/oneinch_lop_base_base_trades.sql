@@ -2,11 +2,7 @@
     config(
         schema = 'oneinch_lop_base',
         alias = 'base_trades',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['tx_hash', 'evt_index'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+        materialized = 'view'
     )
 }}
 
@@ -29,10 +25,3 @@ SELECT
     , evt_index
 FROM {{ ref('oneinch_lop_own_trades') }}
 WHERE blockchain = 'base'
-{% if var('dev_dates', false) -%}
-    AND block_date > current_date - interval '3' day
-{%- else -%}
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
-    {% endif %}
-{%- endif %}
