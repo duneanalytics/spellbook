@@ -1,7 +1,0 @@
-version: 2
-
-sources:
-  - name: aptos_fungible_asset
-    tables:
-      - name: activities
-      - name: metadata_current
