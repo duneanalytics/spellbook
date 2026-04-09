@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: ton
       contributors: pshuvalov, okhlopkov
+      short_description: "Daily TON token (jetton) prices in TON and USD, derived from DEX trades, DEX LP tokens, and StormTrade SLP tokens."
     config:
       tags: ['ton','prices',' dex']
-    description: >
-      TON tokens (jettons) daily prices derived from on-chain events. Includes prices for all jettons present on DEXs, DEX LPs and StormTrade SLPs.
+    description: "Daily TON token (jetton) prices in TON and USD, derived from DEX trades, DEX LP tokens, and StormTrade SLP tokens."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -38,10 +38,10 @@ models:
     meta:
       blockchain: ton
       contributors: pshuvalov
+      short_description: "TON blockchain account data: status, balance (nano TON), interfaces, deployment details, and initial funding info."
     config:
       tags: ['ton','balances', 'interfaces', 'deployments']
-    description: >
-      Contains information about all accounts on TON blockchain including latest balance, interfaces and first/deployment tx information.
+    description: "TON blockchain account data: status, balance (nano TON), interfaces, deployment details, and initial funding info."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -151,9 +151,10 @@ models:
       blockchain: ton
       sector: tokens
       contributors: [pshuvalov]
+      short_description: "Latest native TON and jetton balances per address, including mintless claim status."
     config:
       tags: ['balances', 'tokens']
-    description: "Latest balances for native TON and all jettons"
+    description: "Latest native TON and jetton balances per address, including mintless claim status."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

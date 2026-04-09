@@ -17,7 +17,8 @@ select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
      (0x4933a85b5b5466fbaf179f72d3de273c287ec2c2, 'EUR'), -- EURAU
-     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF')  -- ZCHF
+     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF'), -- ZCHF
+     (0x09d4214c03d01f49544c0448dbe3a27f768f2b34, 'USD')  -- rUSD
 
      /* yield-bearing / rebasing tokens
      (0xddc0385169797937066bbd8ef409b5b3c0dfeb52, 'USD'), -- wUSDR

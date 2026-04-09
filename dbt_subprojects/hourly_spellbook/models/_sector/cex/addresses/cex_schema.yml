@@ -33,7 +33,9 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, bitcoin, fantom, aptos, celo, zora, zksync, zkevm, linea, solana, scroll, tron, base, berachain, ink, katana, nova, opbnb, unichain, sui
       sector: cex
+      short_description: "Known centralized exchange wallet addresses across chains, labeled by exchange name."
       contributors: hildobby
+      docs_slug: /curated/cex-flows/addresses
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'bitcoin', 'fantom', 'aptos']
     description: "All CEX-tied addresses identified"

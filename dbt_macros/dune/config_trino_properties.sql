@@ -20,6 +20,7 @@
             'dune.data_explorer.abstraction.type': spell_type,
             'dune.data_explorer.abstraction.name': spell_name,
             'dune.data_explorer.contributors': validated_contributors,
+            'dune.data_explorer.freshness': var('freshness'),
             'dune.vacuum': '{"enabled":true}'
           } -%}
     {%- if model.config.materialized == "view" -%}

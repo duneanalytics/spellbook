@@ -1,16 +1,43 @@
 version: 2
 
 models:
+  - name: pumpswap_solana_stg_decoded_swaps
+    meta:
+      blockchain: solana
+      contributors: [ krishhh ]
+    config:
+      tags: [ 'solana','dex','pumpswap' ]
+    description: >
+      staging model for pumpswap swap data from decoded tables
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+
+  - name: pumpswap_solana_base_trades_backfill
+    meta:
+      blockchain: solana
+      contributors: [ krishhh ]
+    config:
+      tags: [ 'solana','dex','microbatch' ]
+    description: >
+      pumpswap dex trades on Solana - microbatch backfill
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_month', 'surrogate_key' ]
+
   - name: pumpswap_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [krishhh]
+      contributors: [ krishhh ]
     config:
-      tags: ['solana','dex', 'pumpswap']
-    description: "PumpSwap base trades on Solana"
+      tags: [ 'solana','dex','pumpswap' ]
+    description: >
+      PumpSwap base trades on Solana (view over backfill model)
     data_tests:
+      - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [block_month, surrogate_key]
+          combination_of_columns: [ 'block_month', 'surrogate_key' ]
     columns:
       - &blockchain
         name: blockchain
@@ -72,23 +99,21 @@ models:
       - &outer_instruction_index
         name: outer_instruction_index
         description: "Index of outer instruction"
-      - &swap_inner_index
-        name: swap_inner_index
-        description: "Index of inner instruction (NULL if outer)"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Index of inner instruction"
       - &tx_index
         name: tx_index
         description: "Index of the transaction in the block slot"
-      - name: trade_id
-        description: "Internal surrogate key for deduplication and reference"
       - name: surrogate_key
         description: "Internal surrogate key for determining uniqueness of trades"
 
   - name: pumpswap_solana_trades
     meta:
       blockchain: solana
-      contributors: [krishhh]
+      contributors: [ krishhh ]
     config:
-      tags: ['solana','dex', 'pumpswap']
+      tags: [ 'solana','dex','pumpswap' ]
     description: >
       Standardized Pumpswap trades on Solana. This view selects Pumpswap trades from the standardized dex_solana_trades table.
     columns:
@@ -124,25 +149,28 @@ models:
       - *trader_id
       - *tx_id
       - *outer_instruction_index
-      - *swap_inner_index
+      - *inner_instruction_index
       - *tx_index
 
   - name: pumpswap_solana_pools
     meta:
       blockchain: solana
-      contributors: [krishhh]
+      contributors: [ krishhh ]
     config:
       tags: ['solana','dex', 'pumpswap']
-    description: "Pumpswap pools on Solana"
+    description: "Pumpswap pools on Solana with a quote-mint validity flag"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ pool]
+          combination_of_columns: [ pool ]
+    columns:
+      - name: is_valid_pool
+        description: "True when quote mint is in the approved Pumpswap quote-mint allowlist"
 
   - name: pumpswap_version_1_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
+      contributors: [ krishgka ]
     config:
-      tags: ['solana','dex']
+      tags: [ 'solana','dex' ]
     description: >
-        pumpswap dex base trades on Solana with version_name
+      pumpswap dex base trades on Solana with version_name

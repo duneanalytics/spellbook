@@ -18,7 +18,8 @@ models:
     meta:
       blockchain: solana
       contributors: ["ilemi", "0xRob"]
-      docs_slug: /curated/trading/solana/dex-solana-trades
+      docs_slug: /curated/dex-trades/solana/solana-dex-trades
+      short_description: "Detailed data on trades executed via decentralized exchanges (DEXs) on Solana, containing one or many trades per transaction with Solana-specific fields like block_slot, fee_tier, and token vaults."
     config:
       tags: ['solana','dex']
     description: >
@@ -108,6 +109,8 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+      - name: _updated_at
+        description: "Timestamp when the row was last updated by dbt"
 
   - name: dex_solana_price_hour
     meta:

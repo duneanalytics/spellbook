@@ -1,10 +1,10 @@
 # Sector-level Spell Design
 
-Within Spellbook, there are two main spells which are considered the most popular and get the most usage – `dex.trades` and `nft.trades`. Both of these are considered sector-level spells. At the sector level, spells in this category typically span across many projects and blockchains. Due to these spells' heavy usage & importance to keep up-to-date, all sector-level spells follow a similar design pattern.
+Within Spellbook, sector-level spells span across many projects and blockchains. `dex.trades` is the most prominent example, aggregating decentralized exchange trading data across all supported chains and protocols. Due to sector-level spells' heavy usage & importance to keep up-to-date, they all follow a similar design pattern.
 
 **Note**: not all sectors are up-to-date in the new structure, but will be considered moving forward
 
-Since these sector-level spells will have their own dedicated `readme` within their directory with specifics, this will remain a high-level overview. Example dex readme [here](/dbt_subprojects/dex/README.md).
+Since these sector-level spells will have their own dedicated `readme` within their directory with specifics, this will remain a high-level overview. The dex readme lives [here](/dbt_subprojects/dex/README.md).
 
 ## Model level of granularity
 
@@ -38,8 +38,9 @@ The upstream spells within the sector-level DBT lineages, as noted in the level 
 - With the idea of test-driven development in mind, build seed files and apply seed tests to each platform-level base spell
   - Expectation is to hardcode the spell with example outputs as expected, where the model runs and compares results against this file
 - One blockchain-level spell which unions together all base-level spells on the chain
-  - Views are fine here, as intention is for simplifying next steps vs. querying on the app
+  - Materialize as a table to isolate each chain — if one chain has issues, it won't block the cross-chain model from running
   - Leverage jinja for loops to iterate through the unions
 - One base-level cross-chain spell, which simply unions the chain-level spells
-  - Materialize this level to help performance on the last stage
+  - A view is ideal here, since the heavy lifting is already done at the chain level
+  - This keeps the cross-chain model lightweight and avoids redundant materialization
 - One final sector-level spell, with the base-level cross-chain spell passed into a final macro which enhances the data with metadata

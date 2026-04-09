@@ -3,11 +3,14 @@
 -- Step 1: Check that the transaction contains at least 2 trades
 WITH multi_trade_txs AS (
     SELECT block_time, tx_hash
-    FROM {{ ref('dex_trades') }}
-    WHERE blockchain = '{{blockchain}}'
+    FROM {{ ref('dex_' ~ blockchain ~ '_trades') }}
+    {% if var('dev_dates', false) -%}
+    WHERE block_time > current_date - interval '3' day
+    {%- else -%}
     {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
+    WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
+    {%- endif %}
     GROUP BY 1, 2
     HAVING COUNT(*) > 1
     )
@@ -20,11 +23,10 @@ WITH multi_trade_txs AS (
     , dt.token_bought_address
     , dt.token_sold_amount_raw
     , dt.token_bought_amount_raw
-    FROM {{ ref('dex_trades') }} dt
+    FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} dt
     INNER JOIN multi_trade_txs pa USING (block_time, tx_hash)
-    WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
+    WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
     )
 
@@ -75,7 +77,7 @@ WITH multi_trade_txs AS (
     , dt.tx_from
     , dt.tx_to
     , txs.index AS tx_index
-    FROM {{ ref('dex_trades') }} dt
+    FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} dt
     INNER JOIN whitelisted_tokens wt ON dt.block_time=wt.block_time
         AND dt.tx_hash=wt.tx_hash
         AND CONTAINS(wt.token_addresses, dt.token_sold_address)
@@ -85,7 +87,7 @@ WITH multi_trade_txs AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
         {% endif %}
-    WHERE dt.blockchain = '{{blockchain}}'
+    WHERE 1=1
     {% if is_incremental() %}
     AND {{ incremental_predicate('dt.block_time') }}
     {% endif %}

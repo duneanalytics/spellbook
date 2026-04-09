@@ -7,6 +7,8 @@ models:
       sector: lending
       project: aave, compound
       contributors: tomfutago, hildobby
+      short_description: "Token supply (deposit) events across lending protocols (Aave, Compound, etc.), tracking assets deposited as collateral or for yield."
+      docs_slug: /curated/lending/supply
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
     description: "All lending transactions involving supply transactions"

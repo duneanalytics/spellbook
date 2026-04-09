@@ -140,7 +140,9 @@ models:
       blockchain: solana
       sector: stablecoin
       project: stablecoin
+      short_description: "Stablecoin balances on Solana, with daily balance snapshots per holder in USD."
       contributors: tomfutago
+      docs_slug: /curated/stablecoins/balances/stablecoins-solana-balances
     config:
       tags: ['stablecoin', 'balances']
     description: "Union of core and extended stablecoin balances with token metadata and USD prices"
@@ -165,3 +167,40 @@ models:
       - *balance
       - *balance_usd
       - *last_updated
+
+  - name: stablecoins_solana_non_circulating_inventory_accounts
+    meta:
+      blockchain: solana
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: >
+      Solana SPL stablecoin inventory token accounts used as a helper list for circulating balance exclusions,
+      with source classification and observed owners derived from stablecoin transfers.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_mint_address
+            - token_account
+    columns:
+      - *blockchain
+      - <<: *token_mint_address
+        data_tests:
+          - not_null
+      - name: token_account
+        description: "SPL token account tracked in the non-circulating inventory helper list"
+        data_tests:
+          - not_null
+      - name: source_class
+        description: "Classification of the inventory token account source (official Circle premint or legacy inventory)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['official_circle_premint', 'legacy_inventory']
+      - name: excluded
+        description: "Whether this token account is excluded from circulating balance computations"
+        data_tests:
+          - not_null
+      - name: observed_owners
+        description: "Observed owner addresses for the inventory token account (historical)"

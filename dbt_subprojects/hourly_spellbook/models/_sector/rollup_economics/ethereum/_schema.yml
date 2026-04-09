@@ -6,7 +6,9 @@ models:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
+      short_description: "Gas fees paid by L2 rollups to Ethereum L1 for posting transaction data or state updates, representing rollup operating costs."
       contributors: niftytable
+      docs_slug: /curated/rollup-economics/l1_fees
     config:
       tags: ['rollup', 'l2']
     description: Gas fees paid by rollups for posting transaction data or state updates on Ethereum
@@ -55,7 +57,9 @@ models:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
+      short_description: "Gas fees earned by L2 rollups from users transacting on L2, representing rollup revenue."
       contributors: niftytable
+      docs_slug: /curated/rollup-economics/l2_revenue
     config:
       tags: ['rollup', 'l2']
     description: "Gas fees earned by rollup on L2"

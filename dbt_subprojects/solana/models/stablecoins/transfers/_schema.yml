@@ -153,12 +153,6 @@ models:
       - *token_version
       - *token_mint_address
       - *token_symbol
-      - &token_backing
-        name: token_backing
-        description: "Stablecoin backing type"
-      - &token_name
-        name: token_name
-        description: "Stablecoin name"
       - &currency
         name: currency
         description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
@@ -199,8 +193,6 @@ models:
       - *token_version
       - *token_mint_address
       - *token_symbol
-      - *token_backing
-      - *token_name
       - *currency
       - *amount_raw
       - *amount
@@ -220,7 +212,9 @@ models:
       blockchain: solana
       sector: stablecoin
       project: stablecoin
+      short_description: "Stablecoin transfers on Solana, enriched with token metadata and FX rate pricing."
       contributors: tomfutago
+      docs_slug: /curated/stablecoins/transfers/stablecoins-solana-transfers
     config:
       tags: ['stablecoin', 'transfers']
     description: "Union view of core and extended stablecoin transfers with metadata and FX rate pricing"
@@ -237,8 +231,6 @@ models:
       - *token_version
       - *token_mint_address
       - *token_symbol
-      - *token_backing
-      - *token_name
       - *currency
       - *amount_raw
       - *amount
