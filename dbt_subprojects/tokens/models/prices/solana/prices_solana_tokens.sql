@@ -856,6 +856,6 @@ FROM
         ('vtix-vanguard-tokenized-etf-xstock','solana','VTIx','XsssYEQjzxBCFgvYFFNuhJFBeHNdLWYeUSP8F45cDr9',8),
         ('tqqqx-tqqq-tokenized-etf-xstock','solana','TQQQx','XsjQP3iMAaQ3kQScQKthQpx9ALRbjKAjQtHg6TFomoc',8),
         --Tokenized Commodities (Matrixdock)
-        ('xaum-matrixdock-gold','solana','XAUM','5aLhp9VnUEKcsdtkfsf2DUgpJfomx7GmYVny24dHUZoB',9)
+        ('xaum-matrixdock-gold','solana','XAUM','4Tfacw1Y2eeVTebcjV59tgCujBjFsonbNm7Q4QRkxEFr',8)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
