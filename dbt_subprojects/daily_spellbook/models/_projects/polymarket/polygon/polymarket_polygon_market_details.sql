@@ -111,7 +111,7 @@ SELECT
   fee_bips,
   case when pm.outcome is null then 'unresolved' else pm.outcome end as outcome,
   pm.block_time as resolved_on_timestamp,
-  last_updated_at as last_uploaded_at
+  try_cast(last_updated_at as timestamp) as last_uploaded_at
 FROM combine c
 left join {{ ref('polymarket_polygon_market_outcomes') }} pm
   on pm.question_id = try(from_hex(substring(c.question_id, 3)))
