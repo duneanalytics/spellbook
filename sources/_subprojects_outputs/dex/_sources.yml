@@ -79,6 +79,10 @@ sources:
       - name: balancer_v2_pools_polygon
       - name: balancer_v2_pools_zkevm
       - name: balancer_cowswap_amm_pools
+      - name: balancer_cowswap_amm_pools_arbitrum
+      - name: balancer_cowswap_amm_pools_base
+      - name: balancer_cowswap_amm_pools_ethereum
+      - name: balancer_cowswap_amm_pools_gnosis
       - name: balancer_v3_pools_ethereum
       - name: balancer_v3_pools_gnosis
       - name: balancer_v3_pools_arbitrum

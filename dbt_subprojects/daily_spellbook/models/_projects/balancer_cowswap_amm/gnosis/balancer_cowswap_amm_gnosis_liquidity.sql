@@ -1,4 +1,5 @@
 {% set blockchain = 'gnosis' %}
+{% set pool_labels_table = 'balancer_cowswap_amm_pools_' ~ blockchain %}
 
 {{
     config(
@@ -13,8 +14,7 @@ WITH pool_labels AS (
     SELECT
         address,
         name
-    FROM {{ source('labels', 'balancer_cowswap_amm_pools') }}
-    WHERE blockchain = '{{blockchain}}'
+    FROM {{ source('labels', pool_labels_table) }}
     ),
 
     prices AS (
