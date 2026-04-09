@@ -47,6 +47,8 @@
     , ref('hyperjump_bnb_base_trades')
     , ref('native_bnb_base_trades')
     , ref('eulerswap_bnb_base_trades')
+    , ref('oneinch_lop_bnb_base_trades')
+    , ref('zeroex_bnb_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
