@@ -1952,9 +1952,8 @@ FROM
     ('spyx-sp500-tokenized-stock-xstock', 'ethereum', 'SPYx', 0x90a2a4c76b5d8c0bc892a69ea28aa775a8f2dd48, 18),
     ('tslax-tesla-tokenized-stock-xstock', 'ethereum', 'TSLAx', 0x8ad3c73f833d3f9a523ab01476625f269aeb7cf0, 18),
     --RWA Tokens (Treasuries, Commodities, Credit)
-    ('xaut-tether-gold', 'ethereum', 'XAUT', 0x68749665ff8d2d112fa859aa293f07a622782f38, 18),
-    ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0xe86845788d6e3e5c2393ade1a051ae617d974c09, 18),
-    ('syrupusdc-syrupusdc', 'ethereum', 'syrupUSDC', 0x80ac24aa929eaf5013f6436cda2a7ba190f5cc0b, 18),
+    ('xaut-tether-gold', 'ethereum', 'XAUT', 0x68749665ff8d2d112fa859aa293f07a622782f38, 6),
+    ('syrupusdc-syrupusdc', 'ethereum', 'syrupUSDC', 0x80ac24aa929eaf5013f6436cda2a7ba190f5cc0b, 6),
     --Tokenized ETFs (Ondo & xStock)
     ('tlton-ishares-20-year-treasury-bond-tokenized-etf-ondo', 'ethereum', 'TLTon', 0x992651bfeb9a0dcc4457610e284ba66d86489d4d, 18),
     ('pallon-abrdn-physical-palladium-shares-etf-ondo-tokenized-stocks', 'ethereum', 'PALLon', 0x0ce36d199bd6851788e03392568849394cbde722, 18),
@@ -1964,7 +1963,7 @@ FROM
     ('tqqqx-tqqq-tokenized-etf-xstock', 'ethereum', 'TQQQx', 0xfdddb57878ef9d6f681ec4381dcb626b9e69ac86, 18),
     --Tokenized Commodities (Matrixdock)
     ('xaum-matrixdock-gold', 'ethereum', 'XAUM', 0x2103e845c5e135493bb6c2a4f0b8651956ea8682, 18),
-    ('xagm-matrixdock-silver', 'ethereum', 'XAGM', 0x123ffe0a3c62878dcbee2742227dc8990058d9e1, 18)
+    ('xagm-matrixdock-silver', 'ethereum', 'XAGM', 0x123ffe0a3c62878dcbee2742227dc8990058d9e1, 9)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
