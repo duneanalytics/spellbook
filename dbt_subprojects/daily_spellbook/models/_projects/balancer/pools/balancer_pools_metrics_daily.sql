@@ -20,9 +20,10 @@ trades AS(
         pool_id,
         project_contract_address,
         sum(amount_usd) AS swap_amount_usd
-    FROM {{ source('balancer', 'trades') }}
+    FROM {{ source('dex', 'trades') }}
+    WHERE project IN ('balancer', 'balancer_cowswap_amm')
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_date')}}
+    AND {{incremental_predicate('block_date')}}
     {% endif %}
     GROUP BY 1, 2, 3, 4, 5
 ),
