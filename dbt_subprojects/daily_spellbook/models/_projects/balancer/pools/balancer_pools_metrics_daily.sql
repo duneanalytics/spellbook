@@ -12,39 +12,49 @@
 
 
 WITH
-trades_raw AS(
-    SELECT 
-        block_date,
-        version,
-        blockchain,
-        project_contract_address,
-        amount_usd
-    FROM {{ source('dex', 'trades') }}
-    WHERE project = 'balancer'
-    {% if is_incremental() %}
-    AND {{incremental_predicate('block_date')}}
-    {% endif %}
-    UNION ALL
-    SELECT
-        block_date,
-        version,
-        blockchain,
-        project_contract_address,
-        amount_usd
-    FROM {{ source('balancer_cowswap_amm', 'trades') }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_date')}}
-    {% endif %}
-),
 trades AS(
+    -- Read pre-aggregated trade slices so the final daily join stays under Dune's stage cap.
     SELECT
         block_date,
         version,
         blockchain,
+        pool_id,
         project_contract_address,
-        sum(amount_usd) AS swap_amount_usd
-    FROM trades_raw
-    GROUP BY 1, 2, 3, 4
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v1') }}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v2') }}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_1') }}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_2') }}
 ),
 
 liquidity AS(
@@ -96,18 +106,17 @@ FROM liquidity l
 LEFT JOIN trades t ON l.block_date = t.block_date
 AND l.blockchain = t.blockchain
 AND l.version = t.version
-AND l.project_contract_address = t.project_contract_address
+AND (
+    l.pool_id = t.pool_id
+    OR (l.pool_id IS NULL AND l.project_contract_address = t.project_contract_address)
+)
 LEFT JOIN fees f ON l.block_date = f.day
 AND l.blockchain = f.blockchain
 AND l.version = f.version
--- Avoid OR join expansion: preserve v1 fallback via CASE-based key selection.
-AND CASE
-        WHEN l.pool_id IS NULL THEN l.project_contract_address
-        ELSE l.pool_id
-    END = CASE
-        WHEN l.pool_id IS NULL THEN f.pool_address
-        ELSE f.pool_id
-    END
+AND (
+    l.pool_id = f.pool_id
+    OR (l.pool_id IS NULL AND l.project_contract_address = f.pool_address)
+)
 LEFT JOIN {{ source('tokens', 'erc20') }} erc
     ON l.project_contract_address = erc.contract_address
     AND l.blockchain = erc.blockchain
