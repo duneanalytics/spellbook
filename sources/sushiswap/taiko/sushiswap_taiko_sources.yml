@@ -11,3 +11,7 @@ sources:
   - name: routeprocessor10_call_transferValueAndprocessRoute
   - name: routeprocessor10_call_processRouteWithTransferValueOutput
   - name: routeprocessor10_call_processRouteWithTransferValueInput
+  - name: routeprocessor12_call_processRoute
+  - name: routeprocessor12_call_transferValueAndprocessRoute
+  - name: routeprocessor12_call_processRouteWithTransferValueOutput
+  - name: routeprocessor12_call_processRouteWithTransferValueInput
