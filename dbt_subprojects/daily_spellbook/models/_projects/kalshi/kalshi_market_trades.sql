@@ -35,13 +35,15 @@ select
     t.count_fp,
     t.yes_price_dollars,
     t.no_price_dollars,
+    t.yes_price_dollars * t.count_fp                as amount_usd,
     md.event_ticker,
     md.series_ticker,
     md.market_type,
     md.title,
     md.subtitle,
     md.status,
-    md.result
+    md.result,
+    now()                                           as _updated_at
 from {{ source('kalshi', 'market_trades_raw') }} t
 inner join market_details md
     on t.ticker = md.ticker
