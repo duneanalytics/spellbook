@@ -18,7 +18,6 @@
     , ref('unichainswap_unichain_base_trades')
     , ref('velodrome_unichain_base_trades')
     , ref('eulerswap_unichain_base_trades')
-    , ref('oneinch_lop_unichain_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
