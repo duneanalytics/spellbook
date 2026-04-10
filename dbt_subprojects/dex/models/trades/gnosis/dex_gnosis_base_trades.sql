@@ -21,7 +21,6 @@
     , ref('swapr_gnosis_base_trades')
     , ref('uniswap_v3_gnosis_base_trades')
     , ref('swapr_v3_gnosis_base_trades')
-    , ref('oneinch_lop_gnosis_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
