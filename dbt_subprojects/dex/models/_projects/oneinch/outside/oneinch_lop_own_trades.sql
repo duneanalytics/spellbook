@@ -31,8 +31,8 @@ select
     , src_executed_amount as token_bought_amount_raw
     , dst_executed_amount as token_sold_amount_raw
     , amount_usd
-    , src_token_address as token_bought_address
-    , dst_token_address as token_sold_address
+    , coalesce(src_executed_address, src_token_address) as token_bought_address
+    , coalesce(dst_executed_address, dst_token_address) as token_sold_address
     , call_from as taker
     , user as maker
     , call_to as project_contract_address
