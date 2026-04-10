@@ -10,10 +10,12 @@ models:
     config:
       tags: ['kalshi', 'prediction_markets', 'markets']
     description: >
-      Kalshi market reference table. Joins market-level data (markets_raw) with event-level
-      metadata (market_details_raw). Filtered to markets with >= 100 contracts traded,
-      retaining 99.7% of total volume. Includes latest-state pricing snapshot, strike structure,
-      settlement info, and resolution rules.
+      Kalshi market reference table (incremental merge on ticker). Joins market-level data
+      (markets_raw) with event-level metadata (market_details_raw). Filtered to markets with
+      >= 100 contracts traded, retaining 99.7% of total volume. Includes latest-state pricing
+      snapshot, strike structure, settlement info, and resolution rules. Incremental source
+      filter uses market updated_time or events touched via market_details_raw.last_updated_ts;
+      watermark_ts is stored for lineage; merge does not use dest incremental_predicates (correctness).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -125,6 +127,12 @@ models:
         description: "Strike/resolution date from event metadata"
       - name: strike_period
         description: "Strike period description from event metadata"
+      - name: watermark_ts
+        description: >
+          greatest of markets_raw.updated_time and market_details_raw.last_updated_ts (falls back to
+          market updated_time when no event row). Not used for merge target pruning (avoids missed updates).
+        data_tests:
+          - not_null
 
   - name: kalshi_market_trades
     meta:
@@ -135,11 +143,14 @@ models:
     config:
       tags: ['kalshi', 'prediction_markets', 'trades']
     description: >
-      Kalshi trade-level table. Individual trade executions enriched with market metadata.
-      Only includes trades for markets with >= 100 contracts traded (inner join to market_details).
+      Kalshi trade-level table (incremental merge on block_month + trade_id). Trade facts from
+      market_trades_raw joined to kalshi_market_details. Incremental source: new trades in the
+      rolling window (created_time), or all trades for tickers whose market_details.watermark_ts
+      moved in the window (refreshes dimension columns on historical trades).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - trade_id
     columns:
       - name: trade_id
@@ -152,6 +163,10 @@ models:
           - not_null
       - name: created_time
         description: "When the trade occurred"
+        data_tests:
+          - not_null
+      - name: block_month
+        description: "First day of calendar month for created_time (partition key; included in merge unique key)"
         data_tests:
           - not_null
       - name: taker_side
