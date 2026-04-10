@@ -21,6 +21,9 @@ trades AS(
         project_contract_address,
         swap_amount_usd
     FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v1') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
 
     UNION ALL
 
@@ -32,6 +35,9 @@ trades AS(
         project_contract_address,
         swap_amount_usd
     FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v2') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
 
     UNION ALL
 
@@ -43,6 +49,9 @@ trades AS(
         project_contract_address,
         swap_amount_usd
     FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_1') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
 
     UNION ALL
 
@@ -54,6 +63,9 @@ trades AS(
         project_contract_address,
         swap_amount_usd
     FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_2') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
 
     UNION ALL
 
@@ -65,6 +77,9 @@ trades AS(
         project_contract_address,
         swap_amount_usd
     FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_3') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
 ),
 
 liquidity AS(
