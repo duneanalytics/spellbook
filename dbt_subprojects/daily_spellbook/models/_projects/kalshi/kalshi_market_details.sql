@@ -12,7 +12,7 @@
 
 -- Bronze → Gold: Kalshi market reference table
 -- Filters to markets with >= 100 contracts traded (99.7% of volume, drops 85% of dust/empty markets)
--- Enriches each market with parent event metadata from market_details_0003
+-- Enriches each market with parent event metadata from market_details_raw
 -- Drops 12 columns that are universally null, constant, or internal-only
 
 with markets as (
@@ -94,7 +94,7 @@ select
     -- rules
     m.rules_primary,
 
-    -- event-level metadata (from market_details_0003)
+    -- event-level metadata (from market_details_raw)
     ed.series_ticker,
     ed.event_title,
     ed.event_sub_title,

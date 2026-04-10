@@ -10,8 +10,8 @@ models:
     config:
       tags: ['kalshi', 'prediction_markets', 'markets']
     description: >
-      Kalshi market reference table. Joins market-level data (markets_0003) with event-level
-      metadata (market_details_0003). Filtered to markets with >= 100 contracts traded,
+      Kalshi market reference table. Joins market-level data (markets_raw) with event-level
+      metadata (market_details_raw). Filtered to markets with >= 100 contracts traded,
       retaining 99.7% of total volume. Includes latest-state pricing snapshot, strike structure,
       settlement info, and resolution rules.
     data_tests:
