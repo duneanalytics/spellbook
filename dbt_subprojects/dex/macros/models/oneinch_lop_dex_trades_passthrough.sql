@@ -35,6 +35,10 @@ FROM {{ ref('oneinch_lop_own_trades') }} AS o
 WHERE o.blockchain = '{{ blockchain }}'
 {% if var('dev_dates', false) -%}
 	AND o.block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+{%- else -%}
+	{% if is_incremental() %}
+	AND {{ incremental_predicate('o.block_time') }}
+	{% endif %}
 {%- endif %}
 
 {% endmacro %}
