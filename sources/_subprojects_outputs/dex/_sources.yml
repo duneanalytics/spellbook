@@ -65,9 +65,6 @@ sources:
   - name: balancer
     tables:
       - name: trades
-  - name: balancer_cowswap_amm
-    tables:
-      - name: trades
   - name: labels
     tables:
       - name: balancer_v1_pools_ethereum

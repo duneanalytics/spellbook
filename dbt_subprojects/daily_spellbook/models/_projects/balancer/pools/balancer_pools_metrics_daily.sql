@@ -13,7 +13,7 @@
 
 WITH
 trades AS(
-    -- Read pre-aggregated trade slices so the final daily join stays under Dune's stage cap.
+    -- Materialize the canonical Balancer trade aggregation once to avoid stage explosion here.
     SELECT
         block_date,
         version,
@@ -21,40 +21,7 @@ trades AS(
         pool_id,
         project_contract_address,
         swap_amount_usd
-    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v1') }}
-
-    UNION ALL
-
-    SELECT
-        block_date,
-        version,
-        blockchain,
-        pool_id,
-        project_contract_address,
-        swap_amount_usd
-    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v2') }}
-
-    UNION ALL
-
-    SELECT
-        block_date,
-        version,
-        blockchain,
-        pool_id,
-        project_contract_address,
-        swap_amount_usd
-    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_1') }}
-
-    UNION ALL
-
-    SELECT
-        block_date,
-        version,
-        blockchain,
-        pool_id,
-        project_contract_address,
-        swap_amount_usd
-    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_2') }}
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades') }}
 ),
 
 liquidity AS(
@@ -106,17 +73,23 @@ FROM liquidity l
 LEFT JOIN trades t ON l.block_date = t.block_date
 AND l.blockchain = t.blockchain
 AND l.version = t.version
-AND (
-    l.pool_id = t.pool_id
-    OR (l.pool_id IS NULL AND l.project_contract_address = t.project_contract_address)
-)
+AND CASE
+        WHEN l.pool_id IS NULL THEN l.project_contract_address
+        ELSE l.pool_id
+    END = CASE
+        WHEN l.pool_id IS NULL THEN t.project_contract_address
+        ELSE t.pool_id
+    END
 LEFT JOIN fees f ON l.block_date = f.day
 AND l.blockchain = f.blockchain
 AND l.version = f.version
-AND (
-    l.pool_id = f.pool_id
-    OR (l.pool_id IS NULL AND l.project_contract_address = f.pool_address)
-)
+AND CASE
+        WHEN l.pool_id IS NULL THEN l.project_contract_address
+        ELSE l.pool_id
+    END = CASE
+        WHEN l.pool_id IS NULL THEN f.pool_address
+        ELSE f.pool_id
+    END
 LEFT JOIN {{ source('tokens', 'erc20') }} erc
     ON l.project_contract_address = erc.contract_address
     AND l.blockchain = erc.blockchain
