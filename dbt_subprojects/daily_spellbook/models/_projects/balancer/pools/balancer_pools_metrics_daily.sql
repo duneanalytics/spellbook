@@ -54,6 +54,17 @@ trades AS(
         project_contract_address,
         swap_amount_usd
     FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_2') }}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_3') }}
 ),
 
 liquidity AS(

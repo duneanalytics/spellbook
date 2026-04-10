@@ -1,6 +1,6 @@
 {{ config(
     schema = 'balancer',
-    alias = 'pools_metrics_daily_stg_trades_v3_part_2',
+    alias = 'pools_metrics_daily_stg_trades_v3_part_3',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -21,7 +21,7 @@ SELECT
     sum(amount_usd) AS swap_amount_usd
 FROM {{ source('balancer', 'trades') }}
 WHERE version = '3'
-AND blockchain = 'gnosis'
+AND blockchain NOT IN ('ethereum', 'arbitrum', 'base', 'avalanche_c', 'gnosis')
 {% if is_incremental() %}
 AND {{ incremental_predicate('block_date') }}
 {% endif %}
