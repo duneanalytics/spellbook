@@ -19,6 +19,7 @@
     , ref('silverswap_sonic_base_trades')
     , ref('uniswap_v3_sonic_base_trades')
     , ref('tapio_sonic_base_trades')
+    , ref('oneinch_lop_sonic_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
