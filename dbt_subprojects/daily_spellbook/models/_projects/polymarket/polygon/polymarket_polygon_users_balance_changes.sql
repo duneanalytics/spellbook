@@ -16,61 +16,53 @@
 
 WITH compute_until AS (
   SELECT date_trunc('hour', MAX(block_time)) AS blocker
-  FROM {{ source('tokens_polygon', 'transfers') }}
+  FROM {{ ref('polymarket_polygon_users_capital_actions') }}
   )
 
-, polymarket_first_funded AS (
-  SELECT u.polymarket_wallet AS address
-  , ftr.block_number AS first_token_received_block
-  FROM {{ ref('polymarket_polygon_users') }} u
-  INNER JOIN {{ source('addresses_events_polygon', 'first_token_received')}} ftr ON u.polymarket_wallet = ftr.address
+, polymarket_wallets AS (
+  SELECT polymarket_wallet
+  FROM {{ ref('polymarket_polygon_users') }}
   )
 
 -- get the last computed hour in the spell
 {% if is_incremental() %}
 , last_spell_update AS (
   SELECT MAX(block_hour) AS max_hour
-  FROM {{this}}
+  FROM {{ this }}
   )
 {% endif %}
 
 , relevant_transfers_in AS (
-  SELECT date_trunc('hour', t.block_time) AS block_hour
-  , t.block_date
-  , t.block_month
-  , to_user.address AS polymarket_wallet
-  , SUM(t.amount) AS amount
-  FROM {{ source('tokens_polygon', 'transfers') }} t
-  INNER JOIN polymarket_first_funded to_user ON t."to" = to_user.address
-    AND t.block_number >= to_user.first_token_received_block
-  WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
-  AND t.block_number >= 5067840
-  AND t.block_time < (SELECT blocker FROM compute_until)
+  SELECT date_trunc('hour', ca.block_time) AS block_hour
+  , ca.block_date
+  , cast(date_trunc('month', ca.block_time) as date) AS block_month
+  , wallet.polymarket_wallet
+  , SUM(ca.amount) AS amount
+  FROM {{ ref('polymarket_polygon_users_capital_actions') }} ca
+  INNER JOIN polymarket_wallets wallet ON ca.to_address = wallet.polymarket_wallet
+  WHERE ca.block_time < (SELECT blocker FROM compute_until)
   {% if is_incremental() %}
-  AND {{ incremental_predicate('t.block_date') }}
-  AND t.block_time > (SELECT max_hour FROM last_spell_update)
+  AND {{ incremental_predicate('ca.block_date') }}
+  AND ca.block_time > (SELECT max_hour FROM last_spell_update)
   {% endif %}
   GROUP BY 1, 2, 3, 4
   )
 
 , relevant_transfers_out AS (
-  SELECT date_trunc('hour', t.block_time) AS block_hour
-  , t.block_date
-  , t.block_month
-  , from_user.address AS polymarket_wallet
-  , -SUM(t.amount) AS amount
-  FROM {{ source('tokens_polygon', 'transfers') }} t
-  INNER JOIN polymarket_first_funded from_user ON t."from" = from_user.address
-    AND t.block_number >= from_user.first_token_received_block
-  WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
-  AND t.block_number >= 5067840
-  AND t.block_time < (SELECT blocker FROM compute_until)
+  SELECT date_trunc('hour', ca.block_time) AS block_hour
+  , ca.block_date
+  , cast(date_trunc('month', ca.block_time) as date) AS block_month
+  , wallet.polymarket_wallet
+  , -SUM(ca.amount) AS amount
+  FROM {{ ref('polymarket_polygon_users_capital_actions') }} ca
+  INNER JOIN polymarket_wallets wallet ON ca.from_address = wallet.polymarket_wallet
+  WHERE ca.block_time < (SELECT blocker FROM compute_until)
   {% if is_incremental() %}
-  AND {{ incremental_predicate('t.block_date') }}
-  AND t.block_time > (SELECT max_hour FROM last_spell_update)
+  AND {{ incremental_predicate('ca.block_date') }}
+  AND ca.block_time > (SELECT max_hour FROM last_spell_update)
   {% endif %}
   GROUP BY 1, 2, 3, 4
-)
+  )
 
 , all_relevant_transfers AS (
     SELECT block_hour
@@ -125,7 +117,7 @@ SELECT block_hour
 , block_month
 , polymarket_wallet
 , holding_change
-, amount_held+backfilled_amount AS amount_held
+, amount_held + backfilled_amount AS amount_held
 FROM final_balances
 INNER JOIN backfilled_balances USING (polymarket_wallet)
 
