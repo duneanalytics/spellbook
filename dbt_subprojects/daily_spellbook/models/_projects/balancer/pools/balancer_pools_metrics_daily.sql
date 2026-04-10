@@ -17,7 +17,6 @@ trades AS(
         block_date,
         version,
         blockchain,
-        pool_id,
         project_contract_address,
         sum(amount_usd) AS swap_amount_usd
     FROM {{ source('dex', 'trades') }}
@@ -25,7 +24,7 @@ trades AS(
     {% if is_incremental() %}
     AND {{incremental_predicate('block_date')}}
     {% endif %}
-    GROUP BY 1, 2, 3, 4, 5
+    GROUP BY 1, 2, 3, 4
 ),
 
 liquidity AS(
@@ -77,14 +76,7 @@ FROM liquidity l
 LEFT JOIN trades t ON l.block_date = t.block_date
 AND l.blockchain = t.blockchain
 AND l.version = t.version
--- Avoid OR join expansion: preserve v1 fallback via CASE-based key selection.
-AND CASE
-        WHEN l.pool_id IS NULL THEN l.project_contract_address
-        ELSE l.pool_id
-    END = CASE
-        WHEN l.pool_id IS NULL THEN t.project_contract_address
-        ELSE t.pool_id
-    END
+AND l.project_contract_address = t.project_contract_address
 LEFT JOIN fees f ON l.block_date = f.day
 AND l.blockchain = f.blockchain
 AND l.version = f.version
