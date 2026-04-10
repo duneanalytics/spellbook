@@ -23,7 +23,6 @@
     , ref('curvefi_fantom_base_trades')
     , ref('solidly_v3_fantom_base_trades')
     , ref('yoshiexchange_fantom_base_trades')
-    , ref('oneinch_lop_fantom_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

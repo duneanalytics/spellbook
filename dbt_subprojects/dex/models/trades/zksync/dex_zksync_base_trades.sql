@@ -33,7 +33,6 @@
     , ref('velocore_v0_zksync_base_trades')
     , ref('velocore_v1_zksync_base_trades')
     , ref('velocore_v2_zksync_base_trades')
-    , ref('oneinch_lop_zksync_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

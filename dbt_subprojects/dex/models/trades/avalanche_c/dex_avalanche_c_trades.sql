@@ -21,6 +21,9 @@ WITH dexs AS (
         )
     }}
 )
+, oneinch_lop AS (
+	{{ oneinch_lop_dex_trades_passthrough(blockchain = 'avalanche_c') }}
+)
 
 SELECT
     blockchain
@@ -50,4 +53,10 @@ SELECT
     , current_timestamp AS _updated_at
 FROM
     dexs
+
+UNION ALL
+
+SELECT *
+FROM
+    oneinch_lop
 
