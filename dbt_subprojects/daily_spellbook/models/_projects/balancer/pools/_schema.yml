@@ -220,7 +220,7 @@ models:
 
   - name: balancer_pools_metrics_daily_stg_trades_v3_part_3
     description: >
-      Internal staged Balancer v3 trade aggregates for the remaining non-core chain group used by `balancer_pools_metrics_daily`.
+      Internal staged Balancer v3 trade aggregates for the `hyperevm` and `monad` chain group used by `balancer_pools_metrics_daily`.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

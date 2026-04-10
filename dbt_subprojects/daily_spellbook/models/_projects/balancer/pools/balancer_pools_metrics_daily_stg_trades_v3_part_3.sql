@@ -21,7 +21,7 @@ SELECT
     sum(amount_usd) AS swap_amount_usd
 FROM {{ source('balancer', 'trades') }}
 WHERE version = '3'
-AND blockchain NOT IN ('ethereum', 'arbitrum', 'base', 'avalanche_c', 'gnosis')
+AND blockchain IN ('hyperevm', 'monad')
 {% if is_incremental() %}
 AND {{ incremental_predicate('block_date') }}
 {% endif %}
