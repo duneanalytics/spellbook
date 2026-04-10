@@ -1,164 +1,167 @@
 {{ config(
-    schema = 'kalshi',
-    alias = 'ohlcv_hourly',
-    materialized = 'table',
-    file_format = 'delta',
-    tags = ['static'],
-    post_hook = '{{ expose_spells(blockchains = \'["kalshi"]\',
-                                  spell_type = "project",
-                                  spell_name = "kalshi",
-                                  contributors = \'["allelosi"]\') }}'
-  )
-}}
+	schema = 'kalshi',
+	alias = 'ohlcv_hourly',
+	materialized = 'table',
+	file_format = 'delta',
+	tags = ['static'],
+) }}
 
--- Hourly OHLCV candles for Kalshi prediction markets
--- Built on yes_price_dollars from kalshi_market_trades
--- Forward-fills no-trade hours, resolution-corrects close prices
+-- Hourly OHLCV candles for Kalshi prediction markets (Yes price only; No is implied as 1 - Yes)
+-- Time window matches polymarket_polygon_ohlcv_hourly: 2025-01-01 <= trade time < 2026-01-01, last_hour capped at 2025-12-31 23:00 UTC
 
 with base as (
-    select
-        date_trunc('hour', created_time)            as hour,
-        ticker,
-        title                                       as market_name,
-        event_ticker,
-        yes_price_dollars                           as price,
-        count_fp                                    as contracts,
-        yes_price_dollars * count_fp                as usd_notional,
-        yes_price_dollars * count_fp                as price_x_shares,
-        row_number() over (
-            partition by ticker, date_trunc('hour', created_time)
-            order by created_time asc, trade_id asc
-        )                                           as rn_first,
-        row_number() over (
-            partition by ticker, date_trunc('hour', created_time)
-            order by created_time desc, trade_id desc
-        )                                           as rn_last
-    from {{ ref('kalshi_market_trades') }}
-),
+	select
+		date_trunc('hour', t.created_time) as hour,
+		t.ticker,
+		t.title as market_name,
+		t.event_ticker,
+		t.yes_price_dollars as price,
+		t.count_fp as contracts,
+		t.yes_price_dollars * t.count_fp as usd_notional,
+		t.yes_price_dollars * t.count_fp as price_x_shares,
+		row_number() over (
+			partition by t.ticker, date_trunc('hour', t.created_time)
+			order by t.created_time asc, t.trade_id asc
+		) as rn_first,
+		row_number() over (
+			partition by t.ticker, date_trunc('hour', t.created_time)
+			order by t.created_time desc, t.trade_id desc
+		) as rn_last
+	from {{ ref('kalshi_market_trades') }} as t
+	where
+		t.block_month >= date '2025-01-01'
+		and t.created_time >= timestamp '2025-01-01'
+		and t.created_time < timestamp '2026-01-01'
+)
 
-market_meta as (
-    select
-        ticker,
-        event_ticker,
-        title,
-        status,
-        result,
-        expiration_time,
-        product_metadata,
-        try(json_extract_scalar(product_metadata, '$.category')) as category
-    from {{ ref('kalshi_market_details') }}
-),
+, market_meta as (
+	select
+		md.ticker,
+		md.event_ticker,
+		md.title,
+		md.event_title,
+		md.status,
+		md.result,
+		md.expiration_time,
+		md.product_metadata,
+		try(json_extract_scalar(md.product_metadata, '$.category')) as category
+	from {{ ref('kalshi_market_details') }} as md
+)
 
-sparse_ohlcv as (
-    select
-        b.hour,
-        b.ticker,
-        max(b.market_name)                                                      as market_name,
-        max(b.event_ticker)                                                     as event_ticker,
-        round(max(case when b.rn_first = 1 then b.price end), 6)              as open,
-        round(max(b.price), 6)                                                  as high,
-        round(min(b.price), 6)                                                  as low,
-        round(max(case when b.rn_last  = 1 then b.price end), 6)              as close,
-        round(sum(b.price_x_shares) / nullif(sum(b.contracts), 0), 6)         as vwap,
-        round(sum(b.contracts), 6)                                              as volume_contracts,
-        round(sum(b.usd_notional), 6)                                           as volume_usd,
-        count(*)                                                                as trade_count,
-        false                                                                   as is_forward_filled
-    from base b
-    group by b.hour, b.ticker
-),
+, sparse_ohlcv as (
+	select
+		b.hour,
+		b.ticker,
+		max(b.market_name) as market_name,
+		max(b.event_ticker) as event_ticker,
+		round(max(case when b.rn_first = 1 then b.price end), 6) as open,
+		round(max(b.price), 6) as high,
+		round(min(b.price), 6) as low,
+		round(max(case when b.rn_last = 1 then b.price end), 6) as close,
+		round(sum(b.price_x_shares) / nullif(sum(b.contracts), 0), 6) as vwap,
+		round(sum(b.contracts), 6) as volume_contracts,
+		round(sum(b.usd_notional), 6) as volume_usd,
+		count(*) as trade_count,
+		false as is_forward_filled
+	from base as b
+	group by
+		b.hour,
+		b.ticker
+)
 
-market_bounds as (
-    select
-        ticker,
-        min(hour)                                                               as first_hour,
-        max(hour)                                                               as last_hour
-    from sparse_ohlcv
-    group by ticker
-),
+, market_bounds as (
+	select
+		s.ticker,
+		min(s.hour) as first_hour,
+		least(max(s.hour), timestamp '2025-12-31 23:00:00') as last_hour
+	from sparse_ohlcv as s
+	group by
+		s.ticker
+)
 
-hour_spine as (
-    select
-        mb.ticker,
-        h.timestamp                                                             as hour
-    from market_bounds mb
-    cross join {{ source('utils', 'hours') }} h
-    where h.timestamp >= mb.first_hour
-      and h.timestamp <= mb.last_hour
-),
+, hour_spine as (
+	select
+		mb.ticker,
+		h.timestamp as hour
+	from market_bounds as mb
+	cross join {{ source('utils', 'hours') }} as h
+	where
+		h.timestamp >= mb.first_hour
+		and h.timestamp <= mb.last_hour
+)
 
-filled as (
-    select
-        hs.hour,
-        hs.ticker,
-        s.market_name,
-        s.event_ticker,
-        s.open,
-        s.high,
-        s.low,
-        s.close,
-        case when hs.hour = s.hour then s.vwap end                             as vwap,
-        case when hs.hour = s.hour then s.volume_contracts else 0 end           as volume_contracts,
-        case when hs.hour = s.hour then s.volume_usd else 0 end                as volume_usd,
-        case when hs.hour = s.hour then s.trade_count else 0 end               as trade_count,
-        hs.hour != s.hour                                                       as is_forward_filled
-    from hour_spine hs
-    asof left join sparse_ohlcv s
-        on  s.ticker = hs.ticker
-        and s.hour  <= hs.hour
-),
+, filled as (
+	select
+		hs.hour,
+		hs.ticker,
+		s.market_name,
+		s.event_ticker,
+		s.open,
+		s.high,
+		s.low,
+		s.close,
+		case when hs.hour = s.hour then s.vwap end as vwap,
+		case when hs.hour = s.hour then s.volume_contracts else 0 end as volume_contracts,
+		case when hs.hour = s.hour then s.volume_usd else 0 end as volume_usd,
+		case when hs.hour = s.hour then s.trade_count else 0 end as trade_count,
+		hs.hour != s.hour as is_forward_filled
+	from hour_spine as hs
+	asof left join sparse_ohlcv as s
+		on s.ticker = hs.ticker
+		and s.hour <= hs.hour
+)
 
-with_resolution as (
-    select
-        f.hour,
-        f.ticker,
-        f.market_name,
-        f.event_ticker,
-        f.open,
-        f.high,
-        f.low,
-        case
-            when m.expiration_time is not null
-                 and f.hour > m.expiration_time
-                 and m.result in ('yes', 'no')
-            then
-                case
-                    when m.result = 'yes' then 1.0
-                    when m.result = 'no'  then 0.0
-                    else f.close
-                end
-            else f.close
-        end                                                                     as close,
-        f.vwap,
-        f.volume_contracts,
-        f.volume_usd,
-        f.trade_count,
-        m.category,
-        m.expiration_time                                                       as market_end_time,
-        m.result                                                                as market_outcome,
-        m.title                                                                 as event_name,
-        f.is_forward_filled
-    from filled f
-    left join market_meta m
-        on f.ticker = m.ticker
+, with_resolution as (
+	select
+		f.hour,
+		f.ticker,
+		f.market_name,
+		f.event_ticker,
+		f.open,
+		f.high,
+		f.low,
+		case
+			when m.expiration_time is not null
+				and f.hour > m.expiration_time
+				and m.result in ('yes', 'no')
+			then
+				case
+					when m.result = 'yes' then 1.0
+					when m.result = 'no' then 0.0
+					else f.close
+				end
+			else f.close
+		end as close,
+		f.vwap,
+		f.volume_contracts,
+		f.volume_usd,
+		f.trade_count,
+		m.category,
+		m.expiration_time as market_end_time,
+		m.result as market_outcome,
+		coalesce(m.event_title, m.title) as event_market_name,
+		f.is_forward_filled
+	from filled as f
+	left join market_meta as m
+		on f.ticker = m.ticker
 )
 
 select
-    r.hour,
-    r.ticker                                                                    as market_id,
-    r.market_name,
-    'Yes'                                                                       as outcome,
-    r.category,
-    r.open,
-    r.high,
-    r.low,
-    r.close,
-    r.vwap,
-    r.volume_contracts,
-    r.volume_usd,
-    r.trade_count,
-    r.market_end_time,
-    r.market_outcome,
-    r.event_name,
-    r.is_forward_filled
-from with_resolution r
+	r.hour,
+	r.ticker as market_id,
+	r.market_name,
+	'Yes' as outcome,
+	r.category,
+	r.open,
+	r.high,
+	r.low,
+	r.close,
+	r.vwap,
+	r.volume_contracts,
+	r.volume_usd,
+	r.trade_count,
+	r.market_end_time,
+	r.market_outcome,
+	r.event_market_name,
+	r.is_forward_filled
+from with_resolution as r
