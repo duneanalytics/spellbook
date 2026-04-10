@@ -616,6 +616,43 @@ models:
         tests:
           - not_null
 
+  - name: polymarket_polygon_market_state_recompute_tokens
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Incremental helper table tracking token-level market state changes that require historical position recomputation"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_id
+    columns:
+      - name: token_id
+        description: "Outcome token ID whose market state changed"
+        tests:
+          - not_null
+      - name: market_start_day
+        description: "Earliest day of market history that must be recomputed for this token"
+        tests:
+          - not_null
+      - name: active
+        description: "Current active status from market details"
+      - name: closed
+        description: "Current closed status from market details"
+      - name: accepting_orders
+        description: "Current accepting-orders status from market details"
+      - name: market_outcome
+        description: "Current resolved outcome state from market details"
+      - name: resolved_on_timestamp
+        description: "Timestamp when the market resolved, if available"
+      - name: change_detected_at
+        description: "Timestamp used to trigger downstream historical position recomputes when token-level market state changes"
+        tests:
+          - not_null
+
   - name: polymarket_polygon_users
     meta:
       blockchain: polygon
