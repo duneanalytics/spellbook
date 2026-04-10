@@ -11,19 +11,39 @@
 }}
 
 
-WITH 
-trades AS(
+WITH
+trades_raw AS(
     SELECT 
         block_date,
         version,
         blockchain,
         project_contract_address,
-        sum(amount_usd) AS swap_amount_usd
+        amount_usd
     FROM {{ source('dex', 'trades') }}
-    WHERE project IN ('balancer', 'balancer_cowswap_amm')
+    WHERE project = 'balancer'
     {% if is_incremental() %}
     AND {{incremental_predicate('block_date')}}
     {% endif %}
+    UNION ALL
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        project_contract_address,
+        amount_usd
+    FROM {{ source('balancer_cowswap_amm', 'trades') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
+),
+trades AS(
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        project_contract_address,
+        sum(amount_usd) AS swap_amount_usd
+    FROM trades_raw
     GROUP BY 1, 2, 3, 4
 ),
 
