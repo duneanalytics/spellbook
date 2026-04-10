@@ -31,7 +31,6 @@ SELECT
 	, o.tx_from
 	, o.tx_to
 	, o.evt_index
-	, current_timestamp AS _updated_at
 FROM {{ ref('oneinch_lop_own_trades') }} AS o
 WHERE o.blockchain = '{{ blockchain }}'
 

@@ -81,7 +81,7 @@ SELECT
     , tx_from
     , tx_to
     , evt_index
-    , _updated_at
+    , current_timestamp AS _updated_at
 FROM
     oneinch_lop
 
