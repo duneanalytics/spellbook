@@ -39,7 +39,6 @@
     , ref('blackhole_v3_avalanche_c_base_trades')
     , ref('pharaoh_v3_legacy_avalanche_c_base_trades')
 	, ref('pharaoh_v3_cl_avalanche_c_base_trades')
-    , ref('oneinch_lop_avalanche_c_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

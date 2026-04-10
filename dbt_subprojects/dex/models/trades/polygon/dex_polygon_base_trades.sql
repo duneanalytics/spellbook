@@ -35,7 +35,6 @@
     , ref('jetswap_polygon_base_trades')
     , ref('gravity_finance_polygon_base_trades')
     , ref('fluid_v1_polygon_base_trades')
-    , ref('oneinch_lop_polygon_base_trades')
     , ref('zeroex_polygon_base_trades')
 ] %}
 
