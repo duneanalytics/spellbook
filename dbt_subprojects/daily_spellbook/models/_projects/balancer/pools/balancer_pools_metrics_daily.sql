@@ -13,7 +13,6 @@
 
 WITH
 trades AS(
-    -- Materialize the canonical Balancer trade aggregation once to avoid stage explosion here.
     SELECT
         block_date,
         version,
@@ -21,7 +20,40 @@ trades AS(
         pool_id,
         project_contract_address,
         swap_amount_usd
-    FROM {{ ref('balancer_pools_metrics_daily_stg_trades') }}
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v1') }}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v2') }}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_1') }}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_2') }}
 ),
 
 liquidity AS(
