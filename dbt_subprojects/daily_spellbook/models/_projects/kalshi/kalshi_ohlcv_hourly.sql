@@ -29,8 +29,7 @@ with base as (
 		) as rn_last
 	from {{ ref('kalshi_market_trades') }} as t
 	where
-		t.block_month >= date '2025-01-01'
-		and t.created_time >= timestamp '2025-01-01'
+		t.created_time >= timestamp '2025-01-01'
 		and t.created_time < timestamp '2026-01-01'
 )
 
