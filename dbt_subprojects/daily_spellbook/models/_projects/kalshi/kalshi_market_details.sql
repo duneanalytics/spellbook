@@ -6,7 +6,7 @@
     post_hook = '{{ expose_spells(blockchains = \'["kalshi"]\',
                                   spell_type = "project",
                                   spell_name = "kalshi",
-                                  contributors = \'["dpettas"]\') }}'
+                                  contributors = \'["allelosi"]\') }}'
   )
 }}
 
@@ -17,7 +17,7 @@
 
 with markets as (
     select *
-    from {{ source('kalshi', 'markets_0003') }}
+    from {{ source('kalshi', 'markets_raw') }}
     where volume_fp >= 100
 )
 
@@ -33,7 +33,7 @@ with markets as (
         product_metadata,
         strike_date,
         strike_period
-    from {{ source('kalshi', 'market_details_0003') }}
+    from {{ source('kalshi', 'market_details_raw') }}
 )
 
 select

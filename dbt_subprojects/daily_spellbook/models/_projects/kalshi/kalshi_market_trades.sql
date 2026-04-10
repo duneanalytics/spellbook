@@ -6,7 +6,7 @@
     post_hook = '{{ expose_spells(blockchains = \'["kalshi"]\',
                                   spell_type = "project",
                                   spell_name = "kalshi",
-                                  contributors = \'["dpettas"]\') }}'
+                                  contributors = \'["allelosi"]\') }}'
   )
 }}
 
@@ -42,6 +42,6 @@ select
     md.subtitle,
     md.status,
     md.result
-from {{ source('kalshi', 'market_trades_0003') }} t
+from {{ source('kalshi', 'market_trades_raw') }} t
 inner join market_details md
     on t.ticker = md.ticker

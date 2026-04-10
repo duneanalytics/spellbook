@@ -11,9 +11,9 @@ sources:
         description: "Market-level metadata for Kalshi event contracts"
         meta:
           docs_slug: /curated/prediction-markets/kalshi/market_report
-      - name: market_trades_0003
+      - name: market_trades_raw
         description: "Individual trade executions from Kalshi API"
-      - name: markets_0003
+      - name: markets_raw
         description: "Market-level snapshot with pricing, volume, and metadata from Kalshi API"
-      - name: market_details_0003
+      - name: market_details_raw
         description: "Event-level metadata from Kalshi API"
