@@ -6,7 +6,7 @@ models:
       blockchain: kalshi
       sector: prediction_markets
       project: kalshi
-      contributors: dpettas
+      contributors: allelosi
     config:
       tags: ['kalshi', 'prediction_markets', 'markets']
     description: >
@@ -129,7 +129,7 @@ models:
       blockchain: kalshi
       sector: prediction_markets
       project: kalshi
-      contributors: dpettas
+      contributors: allelosi
     config:
       tags: ['kalshi', 'prediction_markets', 'trades']
     description: >
