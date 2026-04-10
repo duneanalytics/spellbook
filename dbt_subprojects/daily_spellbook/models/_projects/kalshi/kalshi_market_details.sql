@@ -102,6 +102,7 @@ select
     ed.mutually_exclusive,
     ed.available_on_brokers,
     ed.product_metadata,
+    try(json_extract_scalar(ed.product_metadata, '$.category')) as category,
     ed.strike_date,
     ed.strike_period
 
