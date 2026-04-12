@@ -44,8 +44,8 @@ with markets as (
 	select
 		event_ticker,
 		series_ticker,
-		title as event_title,
-		sub_title as event_sub_title,
+		event_title,
+		event_sub_title,
 		collateral_return_type,
 		mutually_exclusive,
 		available_on_brokers,
@@ -53,8 +53,23 @@ with markets as (
 		strike_date,
 		strike_period,
 		last_updated_ts
-	from {{ source('kalshi', 'market_details_raw') }}
-	qualify row_number() over (partition by event_ticker order by last_updated_ts desc) = 1
+	from (
+		select
+			event_ticker,
+			series_ticker,
+			title as event_title,
+			sub_title as event_sub_title,
+			collateral_return_type,
+			mutually_exclusive,
+			available_on_brokers,
+			product_metadata,
+			strike_date,
+			strike_period,
+			last_updated_ts,
+			row_number() over (partition by event_ticker order by last_updated_ts desc) as rn
+		from {{ source('kalshi', 'market_details_raw') }}
+	) deduped
+	where rn = 1
 )
 
 select
