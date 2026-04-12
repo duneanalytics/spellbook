@@ -54,6 +54,7 @@ with markets as (
 		strike_period,
 		last_updated_ts
 	from {{ source('kalshi', 'market_details_raw') }}
+	qualify row_number() over (partition by event_ticker order by last_updated_ts desc) = 1
 )
 
 select
