@@ -17,7 +17,7 @@ with base as (
 		t.event_ticker,
 		t.yes_price_dollars as price,
 		t.count_fp as contracts,
-		t.yes_price_dollars * t.count_fp as usd_notional,
+		t.amount_usd as usd_notional,
 		t.yes_price_dollars * t.count_fp as price_x_shares,
 		row_number() over (
 			partition by t.ticker, date_trunc('hour', t.created_time)
@@ -42,8 +42,7 @@ with base as (
 		md.status,
 		md.result,
 		md.expiration_time,
-		md.product_metadata,
-		try(json_extract_scalar(md.product_metadata, '$.category')) as category
+		md.category
 	from {{ ref('kalshi_market_details') }} as md
 )
 
@@ -116,19 +115,32 @@ with base as (
 		f.ticker,
 		f.market_name,
 		f.event_ticker,
-		f.open,
-		f.high,
-		f.low,
 		case
 			when m.expiration_time is not null
 				and f.hour > m.expiration_time
 				and m.result in ('yes', 'no')
-			then
-				case
-					when m.result = 'yes' then 1.0
-					when m.result = 'no' then 0.0
-					else f.close
-				end
+			then case when m.result = 'yes' then 1.0 else 0.0 end
+			else f.open
+		end as open,
+		case
+			when m.expiration_time is not null
+				and f.hour > m.expiration_time
+				and m.result in ('yes', 'no')
+			then case when m.result = 'yes' then 1.0 else 0.0 end
+			else f.high
+		end as high,
+		case
+			when m.expiration_time is not null
+				and f.hour > m.expiration_time
+				and m.result in ('yes', 'no')
+			then case when m.result = 'yes' then 1.0 else 0.0 end
+			else f.low
+		end as low,
+		case
+			when m.expiration_time is not null
+				and f.hour > m.expiration_time
+				and m.result in ('yes', 'no')
+			then case when m.result = 'yes' then 1.0 else 0.0 end
 			else f.close
 		end as close,
 		f.vwap,
