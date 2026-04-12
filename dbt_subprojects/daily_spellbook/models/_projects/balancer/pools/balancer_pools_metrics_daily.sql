@@ -131,23 +131,21 @@ FROM liquidity l
 LEFT JOIN trades t ON l.block_date = t.block_date
 AND l.blockchain = t.blockchain
 AND l.version = t.version
-AND CASE
-        WHEN l.pool_id IS NULL THEN l.project_contract_address
-        ELSE l.pool_id
-    END = CASE
-        WHEN l.pool_id IS NULL THEN t.project_contract_address
-        ELSE t.pool_id
-    END
+-- v2/v3 use pool_id as the canonical join key across liquidity/trades
+AND (
+    l.pool_id = t.pool_id
+    -- v1 trades do not always carry pool_id; fallback to address matching
+    OR (l.pool_id IS NULL AND l.project_contract_address = t.project_contract_address)
+)
 LEFT JOIN fees f ON l.block_date = f.day
 AND l.blockchain = f.blockchain
 AND l.version = f.version
-AND CASE
-        WHEN l.pool_id IS NULL THEN l.project_contract_address
-        ELSE l.pool_id
-    END = CASE
-        WHEN l.pool_id IS NULL THEN f.pool_address
-        ELSE f.pool_id
-    END
+-- v2/v3 use pool_id as the canonical join key across liquidity/fees
+AND (
+    l.pool_id = f.pool_id
+    -- v1 fees may only map by pool address
+    OR (l.pool_id IS NULL AND l.project_contract_address = f.pool_address)
+)
 LEFT JOIN {{ source('tokens', 'erc20') }} erc
     ON l.project_contract_address = erc.contract_address
     AND l.blockchain = erc.blockchain
