@@ -125,8 +125,6 @@ models:
         description: "Market category from product_metadata (e.g., Sports, Elections). NULL until ingestion adds the field — see competition as an alternative."
       - name: competition
         description: "Competition name from product_metadata (e.g., Pro Football, College Basketball (M), NHL, XRP)"
-      - name: competition_scope
-        description: "Competition scope from product_metadata (e.g., Game, Spread, Point Total, Hourly)"
       - name: strike_date
         description: "Strike/resolution date from event metadata"
       - name: strike_period

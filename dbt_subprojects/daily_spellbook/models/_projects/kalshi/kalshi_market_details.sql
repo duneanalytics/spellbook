@@ -125,7 +125,6 @@ select
 	ed.product_metadata,
 	try(json_extract_scalar(ed.product_metadata, '$.category')) as category,
 	try(json_extract_scalar(ed.product_metadata, '$.competition')) as competition,
-	try(json_extract_scalar(ed.product_metadata, '$.competition_scope')) as competition_scope,
 	ed.strike_date,
 	ed.strike_period,
 
