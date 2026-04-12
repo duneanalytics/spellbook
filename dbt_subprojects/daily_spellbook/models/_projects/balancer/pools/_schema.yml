@@ -82,6 +82,176 @@ models:
         name: fee_amount_usd
         description: "Daily fees collected on a pool, in USD"
 
+  - name: balancer_pools_metrics_daily_stg_trades_v1
+    description: >
+      Internal staged Balancer v1 trade aggregates used by `balancer_pools_metrics_daily`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - version
+            - trade_key
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+        data_tests:
+          - not_null
+      - name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Block date in UTC"
+        data_tests:
+          - not_null
+      - name: trade_key
+        description: "Internal join key for staged trade rows, using pool_id when present and pool address otherwise."
+        data_tests:
+          - not_null
+      - name: pool_id
+        description: "Pool identifier from the upstream trade source when available."
+      - name: project_contract_address
+        description: "Pool address"
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+
+  - name: balancer_pools_metrics_daily_stg_trades_v2
+    description: >
+      Internal staged Balancer v2 trade aggregates used by `balancer_pools_metrics_daily`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - version
+            - trade_key
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+        data_tests:
+          - not_null
+      - name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Block date in UTC"
+        data_tests:
+          - not_null
+      - name: trade_key
+        description: "Internal join key for staged trade rows, using pool_id when present and pool address otherwise."
+        data_tests:
+          - not_null
+      - name: pool_id
+        description: "Pool identifier from the upstream trade source when available."
+      - name: project_contract_address
+        description: "Pool address"
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+
+  - name: balancer_pools_metrics_daily_stg_trades_v3_part_1
+    description: >
+      Internal staged Balancer v3 trade aggregates for the first chain group used by `balancer_pools_metrics_daily`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - version
+            - trade_key
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+        data_tests:
+          - not_null
+      - name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Block date in UTC"
+        data_tests:
+          - not_null
+      - name: trade_key
+        description: "Internal join key for staged trade rows, using pool_id when present and pool address otherwise."
+        data_tests:
+          - not_null
+      - name: pool_id
+        description: "Pool identifier from the upstream trade source when available."
+      - name: project_contract_address
+        description: "Pool address"
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+
+  - name: balancer_pools_metrics_daily_stg_trades_v3_part_2
+    description: >
+      Internal staged Balancer v3 trade aggregates for the Gnosis chain group used by `balancer_pools_metrics_daily`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - version
+            - trade_key
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+        data_tests:
+          - not_null
+      - name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Block date in UTC"
+        data_tests:
+          - not_null
+      - name: trade_key
+        description: "Internal join key for staged trade rows, using pool_id when present and pool address otherwise."
+        data_tests:
+          - not_null
+      - name: pool_id
+        description: "Pool identifier from the upstream trade source when available."
+      - name: project_contract_address
+        description: "Pool address"
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+
+  - name: balancer_pools_metrics_daily_stg_trades_v3_part_3
+    description: >
+      Internal staged Balancer v3 trade aggregates for the `hyperevm` and `monad` chain group used by `balancer_pools_metrics_daily`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - version
+            - trade_key
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+        data_tests:
+          - not_null
+      - name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Block date in UTC"
+        data_tests:
+          - not_null
+      - name: trade_key
+        description: "Internal join key for staged trade rows, using pool_id when present and pool address otherwise."
+        data_tests:
+          - not_null
+      - name: pool_id
+        description: "Pool identifier from the upstream trade source when available."
+      - name: project_contract_address
+        description: "Pool address"
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+
   - name: balancer_gauge_mappings
     meta:
       blockchain: optimism

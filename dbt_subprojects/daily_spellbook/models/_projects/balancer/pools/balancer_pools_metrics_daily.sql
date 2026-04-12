@@ -11,20 +11,75 @@
 }}
 
 
-WITH 
+WITH
 trades AS(
-    SELECT 
+    SELECT
         block_date,
         version,
         blockchain,
         pool_id,
         project_contract_address,
-        sum(amount_usd) AS swap_amount_usd
-    FROM {{ source('balancer', 'trades') }}
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v1') }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_date')}}
     {% endif %}
-    GROUP BY 1, 2, 3, 4, 5
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v2') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_1') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_2') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
+
+    UNION ALL
+
+    SELECT
+        block_date,
+        version,
+        blockchain,
+        pool_id,
+        project_contract_address,
+        swap_amount_usd
+    FROM {{ ref('balancer_pools_metrics_daily_stg_trades_v3_part_3') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_date')}}
+    {% endif %}
 ),
 
 liquidity AS(
