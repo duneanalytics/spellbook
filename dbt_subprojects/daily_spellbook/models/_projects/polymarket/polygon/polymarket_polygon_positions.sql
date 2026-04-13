@@ -1,3 +1,5 @@
+-- depends_on: {{ ref('polymarket_polygon_market_state_recompute_tokens') }}
+
 {{
   config(
     schema = 'polymarket_polygon',
