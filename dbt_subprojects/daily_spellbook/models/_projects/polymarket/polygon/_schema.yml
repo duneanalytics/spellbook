@@ -397,17 +397,54 @@ models:
       - name: last_updated
         description: "Timestamp of the last balance update"
 
+  - name: polymarket_polygon_positions_enriched_base
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: stable daily balance facts enriched with daily prices for downstream position views"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_id
+    columns:
+      - name: day
+        description: "The date of the position snapshot"
+        data_tests:
+          - not_null
+      - name: address
+        description: "The address holding the position"
+        data_tests:
+          - not_null
+      - name: token_id
+        description: "Token ID of the position"
+        data_tests:
+          - not_null
+      - name: balance
+        description: "Balance of the position"
+      - name: price
+        description: "Daily price for the outcome token on that date"
+      - name: usd_value
+        description: "Position value based on balance multiplied by the daily token price"
+      - name: _updated_at
+        description: "Timestamp of when the enriched base row was last inserted or updated by the dbt pipeline"
+
   - name: polymarket_polygon_positions
     meta:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
-      short_description: "Daily snapshots of user positions on Polymarket, including market metadata and daily mark-to-market value."
+      short_description: "Daily snapshots of user positions on Polymarket, served from an enriched base model plus market metadata."
       contributors: tomfutago
       docs_slug: /curated/prediction-markets/polymarket/positions
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
-    description: "Polymarket: user positions in markets with market details"
+    description: "Polymarket: user positions in markets, joining the enriched daily fact base with current market details"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -619,43 +656,6 @@ models:
           - not_null
       - name: change_detected_at
         description: "Timestamp used to trigger downstream recompute when token resolution metadata state changes"
-        tests:
-          - not_null
-
-  - name: polymarket_polygon_market_state_recompute_tokens
-    meta:
-      blockchain: polygon
-      sector: prediction_markets
-      project: polymarket
-      contributors: tomfutago
-    config:
-      tags: ['polygon','prediction_markets','polymarket','positions']
-    description: "Incremental helper table tracking token-level market state changes that require historical position recomputation"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_id
-    columns:
-      - name: token_id
-        description: "Outcome token ID whose market state changed"
-        tests:
-          - not_null
-      - name: market_start_day
-        description: "Earliest day of market history that must be recomputed for this token"
-        tests:
-          - not_null
-      - name: active
-        description: "Current active status from market details"
-      - name: closed
-        description: "Current closed status from market details"
-      - name: accepting_orders
-        description: "Current accepting-orders status from market details"
-      - name: market_outcome
-        description: "Current resolved outcome state from market details"
-      - name: resolved_on_timestamp
-        description: "Timestamp when the market resolved, if available"
-      - name: change_detected_at
-        description: "Timestamp used to trigger downstream historical position recomputes when token-level market state changes"
         tests:
           - not_null
 
