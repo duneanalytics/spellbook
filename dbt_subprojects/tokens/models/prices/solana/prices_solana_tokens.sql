@@ -423,6 +423,7 @@ FROM
         ('haku-haku-ryujin','solana','HAKU','CXrdC7JiLKvpa6CshEskorEDqkbZJjb3LJV3KUVVEiMs',9),
         ('buffet-worried','solana','BUFFET','4teD1Evq7yBo5ud2LDbCVG7XgrM54ep2ndWFnBZe1DVP',1),
         ('cash-solnado-cash','solana','CASH','AAap4178s62oehYMyoPJSvkaXcCauTwb2cpkWTvtQSnk',9),
+        ('cash-bridge-open-issuance-solana','solana','CASH','CASHx9KJUStyftLFWGvEVf59SGeG9sh5FfcnZMVPCASH',6),
         ('crew-crew-inu','solana','CREW','E3zHh59yurhKr97U9yGYnUyAZNwUmciEB53j7t4s3Aph',9),
         ('chili-chili','solana','CHILI','GPyzPHuFFGvN4yWWixt6TYUtDG49gfMdFFi2iniTmCkh',2),
         ('wealth-generational-wealth','solana','WEALTH','2YuSzANgyU9rkFJn5aiAPJqN1kHgtZVQb4nWs1JLjLCw',5),
