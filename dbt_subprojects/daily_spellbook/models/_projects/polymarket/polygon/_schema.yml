@@ -533,7 +533,7 @@ models:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
-      contributors: 0xboxer
+      contributors: 0xboxer, tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','prices']
     description: "Daily market prices for Polymarket on Polygon"
@@ -545,12 +545,18 @@ models:
     columns:
       - name: day
         description: "The day for which the price is valid"
+        data_tests:
+          - not_null
       - name: condition_id
         description: "The unique identifier for the market condition"
       - name: token_id
         description: "The token ID associated with the outcome"
+        data_tests:
+          - not_null
       - name: price
         description: "The price of the outcome token at the end of the day"
+      - name: _updated_at
+        description: "Timestamp when the daily price row was last rebuilt from the hourly model"
 
   - name: polymarket_polygon_market_prices_hourly
     meta:

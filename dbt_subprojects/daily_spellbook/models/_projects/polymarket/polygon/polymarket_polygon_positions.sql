@@ -38,7 +38,7 @@ with market_details as (
   from {{ ref('polymarket_polygon_market_details') }}
 ),
 
-{% if is_incremental() -%}
+{% if is_incremental() %}
 changed_markets as (
   select
     token_id,
@@ -69,7 +69,7 @@ target_positions as (
     and p.day >= cm.market_start_day
   where not ({{ incremental_predicate('p.day') }})
 ),
-{% else -%}
+{% else %}
 target_positions as (
   select
     p.day,
@@ -77,29 +77,35 @@ target_positions as (
     p.token_id,
     p.balance
   from {{ ref('polymarket_polygon_positions_raw') }} as p
+  where p.day >= date '2020-09-03'
 ),
-{% endif -%}
+{% endif %}
 
-daily_prices as (
+priced_positions as (
   select
-    cast(mph.hour as date) as day,
-    mph.token_id,
-    max_by(mph.price, mph.hour) as price
-  from {{ ref('polymarket_polygon_market_prices_hourly') }} as mph
-  group by 1, 2
+    tp.day,
+    tp.address,
+    tp.token_id,
+    tp.balance,
+    coalesce(dp.price, 0) as price,
+    tp.balance * coalesce(dp.price, 0) as usd_value
+  from target_positions as tp
+  left join {{ ref('polymarket_polygon_market_prices_daily') }} as dp
+    on tp.day = dp.day
+    and tp.token_id = dp.token_id
 ),
 
 positions as (
   select
-    tp.day,
-    tp.address,
+    pp.day,
+    pp.address,
     md.unique_key,
-    tp.token_id,
+    pp.token_id,
     md.token_outcome,
     md.token_outcome_name,
-    tp.balance,
-    coalesce(dp.price, 0) as price,
-    tp.balance * coalesce(dp.price, 0) as usd_value,
+    pp.balance,
+    pp.price,
+    pp.usd_value,
     md.question_id,
     md.market_question,
     md.market_description,
@@ -113,11 +119,8 @@ positions as (
     md.market_end_time,
     md.market_outcome,
     md.resolved_on_timestamp
-  from target_positions as tp
-  inner join market_details as md on tp.token_id = md.token_id
-  left join daily_prices as dp
-    on tp.day = dp.day
-    and tp.token_id = dp.token_id
+  from priced_positions as pp
+  inner join market_details as md on pp.token_id = md.token_id
 )
 
 select
@@ -145,4 +148,3 @@ select
   resolved_on_timestamp,
   now() as _updated_at
 from positions
-
