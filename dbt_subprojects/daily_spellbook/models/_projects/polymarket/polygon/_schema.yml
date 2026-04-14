@@ -725,14 +725,12 @@ models:
         description: "Timestamp of first funding received by the Polymarket wallet"
       - name: first_funded_by
         description: "Address that first funded the Polymarket wallet"
+      - name: created_tx_hash
+        description: "Transaction hash that created the Polymarket wallet"
+      - name: first_funded_tx_hash
+        description: "Transaction hash of the first funding event for the Polymarket wallet"
       - name: has_been_funded
         description: "Boolean indicating if the wallet has ever received funds"
-      - name: minutes_to_first_funding
-        description: "Number of minutes between wallet creation and first funding (null if never funded)"
-      - name: evt_index
-        description: "Event index in the transaction"
-      - name: tx_hash
-        description: "Transaction hash of the wallet creation"
 
   - name: polymarket_polygon_open_positions
     meta:

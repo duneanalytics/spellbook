@@ -15,7 +15,6 @@
   )
 }}
 
--- ci-stamp: 2
 with metadata_recompute_tokens as (
   {% if is_incremental() %}
   select
