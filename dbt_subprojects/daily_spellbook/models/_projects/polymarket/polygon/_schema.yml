@@ -439,12 +439,12 @@ models:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
-      short_description: "Daily snapshots of user positions on Polymarket, served from an enriched base model plus market metadata."
+      short_description: "Daily snapshots of user positions on Polymarket, incrementally rebuilt from enriched balances plus targeted market metadata backfills."
       contributors: tomfutago
       docs_slug: /curated/prediction-markets/polymarket/positions
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
-    description: "Polymarket: user positions in markets, joining the enriched daily fact base with current market details"
+    description: "Polymarket: user positions in markets, incrementally combining enriched daily balance facts with market metadata while backfilling historical rows for changed tokens"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -504,6 +504,37 @@ models:
         description: "Timestamp when the market was resolved"
       - name: _updated_at
         description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
+
+  - name: polymarket_polygon_position_metadata_recompute_tokens
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Incremental helper table tracking tokens whose position-facing market metadata changed and require historical row backfills"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_id
+    columns:
+      - name: token_id
+        description: "Outcome token ID whose historical position rows need metadata recomputation"
+        data_tests:
+          - not_null
+      - name: recompute_from_day
+        description: "Earliest day that should be rebuilt for this token when metadata changes"
+        data_tests:
+          - not_null
+      - name: metadata_state
+        description: "Serialized fingerprint of the market detail fields that affect downstream positions rows"
+        data_tests:
+          - not_null
+      - name: change_detected_at
+        description: "Timestamp used to trigger downstream position backfills when metadata state changes"
+        data_tests:
+          - not_null
 
   - name: polymarket_polygon_ohlcv_hourly
     meta:

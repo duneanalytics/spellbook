@@ -2,7 +2,12 @@
   config(
     schema = 'polymarket_polygon',
     alias = 'positions',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    partition_by = ['day'],
+    unique_key = ['day', 'address', 'token_id'],
+    merge_skip_unchanged = true,
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
@@ -10,7 +15,23 @@
   )
 }}
 
-with positions_base as (
+-- ci-stamp: 2
+with metadata_recompute_tokens as (
+  {% if is_incremental() %}
+  select
+    rt.token_id,
+    rt.recompute_from_day
+  from {{ ref('polymarket_polygon_position_metadata_recompute_tokens') }} as rt
+  where {{ incremental_predicate('rt.change_detected_at') }}
+  {% else %}
+  select
+    cast(null as uint256) as token_id,
+    cast(null as date) as recompute_from_day
+  where 1 = 0
+  {% endif %}
+),
+
+positions_base as (
   select
     p.day,
     p.address,
@@ -20,6 +41,23 @@ with positions_base as (
     p.usd_value,
     p._updated_at
   from {{ ref('polymarket_polygon_positions_enriched_base') }} as p
+  {% if is_incremental() %}
+  where {{ incremental_predicate('p._updated_at') }}
+  union all
+  select
+    p.day,
+    p.address,
+    p.token_id,
+    p.balance,
+    p.price,
+    p.usd_value,
+    p._updated_at
+  from {{ ref('polymarket_polygon_positions_enriched_base') }} as p
+  inner join metadata_recompute_tokens as mrt
+    on p.token_id = mrt.token_id
+    and p.day >= mrt.recompute_from_day
+  where not ({{ incremental_predicate('p._updated_at') }})
+  {% endif %}
 ),
 
 market_details as (

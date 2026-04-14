@@ -7,12 +7,26 @@
     incremental_strategy = 'merge',
     partition_by = ['day'],
     unique_key = ['day', 'address', 'token_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     merge_skip_unchanged = true
   )
 }}
 
-with target_positions as (
+with repriced_day_tokens as (
+  {% if is_incremental() %}
+  select distinct
+    dp.day,
+    dp.token_id
+  from {{ ref('polymarket_polygon_market_prices_daily') }} as dp
+  where {{ incremental_predicate('dp._updated_at') }}
+  {% else %}
+  select
+    cast(null as date) as day,
+    cast(null as uint256) as token_id
+  where 1 = 0
+  {% endif %}
+),
+
+target_positions as (
   select
     p.day,
     p.address,
@@ -22,6 +36,18 @@ with target_positions as (
   from {{ ref('polymarket_polygon_positions_raw') }} as p
   {% if is_incremental() %}
   where {{ incremental_predicate('p.day') }}
+  union all
+  select
+    p.day,
+    p.address,
+    p.token_id,
+    p.balance,
+    p.last_updated
+  from {{ ref('polymarket_polygon_positions_raw') }} as p
+  inner join repriced_day_tokens as rdt
+    on p.day = rdt.day
+    and p.token_id = rdt.token_id
+  where not ({{ incremental_predicate('p.day') }})
   {% else %}
   where p.day >= date '2020-09-03'
   {% endif %}

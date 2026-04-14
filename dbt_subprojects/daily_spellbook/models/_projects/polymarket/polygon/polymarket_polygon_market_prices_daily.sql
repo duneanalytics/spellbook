@@ -7,12 +7,26 @@
     incremental_strategy = 'merge',
     partition_by = ['day'],
     unique_key = ['day', 'token_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     merge_skip_unchanged = true
   )
 }}
 
-with hourly_source as (
+with changed_day_tokens as (
+  {% if is_incremental() %}
+  select distinct
+    cast(h.hour as date) as day,
+    h.token_id
+  from {{ ref('polymarket_polygon_market_prices_hourly') }} as h
+  where {{ incremental_predicate('h._updated_at') }}
+  {% else %}
+  select
+    cast(null as date) as day,
+    cast(null as uint256) as token_id
+  where 1 = 0
+  {% endif %}
+),
+
+hourly_source as (
   select
     cast(h.hour as date) as day,
     h.condition_id,
@@ -21,7 +35,9 @@ with hourly_source as (
     h.price
   from {{ ref('polymarket_polygon_market_prices_hourly') }} as h
   {% if is_incremental() %}
-  where {{ incremental_predicate('h.hour') }}
+  inner join changed_day_tokens as cdt
+    on cast(h.hour as date) = cdt.day
+    and h.token_id = cdt.token_id
   {% endif %}
 ),
 
