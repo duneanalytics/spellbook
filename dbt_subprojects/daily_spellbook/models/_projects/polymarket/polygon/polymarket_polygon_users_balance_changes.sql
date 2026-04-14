@@ -21,7 +21,7 @@ WITH compute_until AS (
 
 , polymarket_wallets AS (
   SELECT polymarket_wallet
-  FROM {{ ref('polymarket_polygon_users') }}
+  FROM {{ ref('polymarket_polygon_users_address_lookup') }}
   )
 
 -- get the last computed hour in the spell

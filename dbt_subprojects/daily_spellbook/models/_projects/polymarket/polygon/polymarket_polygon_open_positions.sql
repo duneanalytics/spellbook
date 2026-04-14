@@ -52,16 +52,8 @@ token_id,
 op.token_outcome,
 op.token_outcome_name,
 op.balance,
-op.balance*(CASE WHEN op.market_end_time_parsed IS NULL
-  OR p.last_updated <= op.market_end_time_parsed
-  THEN p.latest_price
-  ELSE COALESCE(final_price, 0)
-  END) AS open_interest,
-CASE WHEN op.market_end_time_parsed IS NULL
-  OR p.last_updated <=op.market_end_time_parsed
-  THEN p.latest_price
-  ELSE COALESCE(final_price, 0)
-  END AS latest_price,
+op.balance * COALESCE(op.final_price, p.latest_price, 0) AS open_interest,
+COALESCE(op.final_price, p.latest_price) AS latest_price,
 op.question_id,
 op.market_question,
 op.market_description,

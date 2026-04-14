@@ -608,9 +608,14 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - day
             - token_id
     columns:
+      - name: block_month
+        description: "Month partition derived from the pricing day"
+        data_tests:
+          - not_null
       - name: day
         description: "The day for which the price is valid"
         data_tests:
@@ -690,7 +695,7 @@ models:
         tests:
           - not_null
 
-  - name: polymarket_polygon_users
+  - name: polymarket_polygon_users_address_lookup
     meta:
       blockchain: polygon
       sector: prediction_markets
