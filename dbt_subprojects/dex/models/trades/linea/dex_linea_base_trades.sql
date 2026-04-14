@@ -24,7 +24,6 @@
     , ref('leetswap_linea_base_trades')
     , ref('etherex_v2_linea_base_trades')
     , ref('etherex_v3_linea_base_trades')
-    , ref('oneinch_lop_linea_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

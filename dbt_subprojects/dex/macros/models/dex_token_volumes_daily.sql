@@ -60,7 +60,7 @@ sums AS (
   , block_month
   , block_date
   , token_address
-  , symbol
+  , max(symbol) AS symbol
   , SUM(bought_volume_raw) AS bought_volume_raw_sum
   , SUM(sold_volume_raw) AS sold_volume_raw_sum
   , SUM(bought_volume) AS bought_volume_sum
@@ -68,7 +68,7 @@ sums AS (
   , SUM(bought_volume_usd) AS bought_volume_usd_sum
   , SUM(sold_volume_usd) AS sold_volume_usd_sum
   FROM daily_flows
-  GROUP BY blockchain, block_month, block_date, token_address, symbol
+  GROUP BY blockchain, block_month, block_date, token_address
 )
 
 SELECT
