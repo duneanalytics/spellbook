@@ -32,6 +32,7 @@ WITH pools AS (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
+        , 2 AS source_priority
     FROM {{ source('pancakeswap_solana', 'amm_v3_call_swap') }}
     WHERE 1=1
         {% if is_incremental() %}
@@ -53,6 +54,7 @@ WITH pools AS (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
+        , 1 AS source_priority
     FROM {{ source('pancakeswap_solana', 'amm_v3_call_swap_v2') }}
     WHERE 1=1
         {% if is_incremental() %}
@@ -60,6 +62,41 @@ WITH pools AS (
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif %}
+)
+
+, swaps AS (
+    -- swap + swap_v2 can overlap during decoder migrations; keep one source row per merge key.
+    SELECT
+          account_pool_state
+        , call_is_inner
+        , call_outer_instruction_index
+        , call_inner_instruction_index
+        , call_tx_id
+        , call_block_time
+        , call_block_slot
+        , call_outer_executing_account
+        , call_tx_signer
+        , call_tx_index
+    FROM (
+        SELECT
+              sr.*
+            , row_number() OVER (
+                PARTITION BY
+                      CAST(date_trunc('month', sr.call_block_time) AS DATE)
+                    , CAST(date_trunc('day', sr.call_block_time) AS DATE)
+                    , {{ solana_instruction_key(
+                          'sr.call_block_slot'
+                        , 'sr.call_tx_index'
+                        , 'sr.call_outer_instruction_index'
+                        , 'COALESCE(sr.call_inner_instruction_index, 0)'
+                      ) }}
+                ORDER BY
+                      sr.source_priority ASC
+                    , sr.call_block_time DESC
+              ) AS duplicate_rank
+        FROM swaps_raw sr
+    ) ranked_swaps
+    WHERE duplicate_rank = 1
 )
 
 SELECT
@@ -81,7 +118,7 @@ SELECT
         , 'sp.call_outer_instruction_index'
         , 'COALESCE(sp.call_inner_instruction_index, 0)'
       ) }} AS surrogate_key
-FROM swaps_raw sp
+FROM swaps sp
 INNER JOIN pools p
     ON sp.account_pool_state = p.pool_id
     AND p.recent_init = 1
