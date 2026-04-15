@@ -28,9 +28,6 @@ with base as (
             order by block_time desc, evt_index desc nulls last, tx_hash desc nulls last
         )                                       as rn_last
     from {{ ref('polymarket_polygon_market_trades') }}
-    where block_month >= date '2025-01-01'
-      and block_time  >= timestamp '2025-01-01'
-      and block_time  <  timestamp '2026-01-01'
 ),
 
 market_meta as (
@@ -72,7 +69,7 @@ market_bounds as (
         token_outcome,
         token_id,
         min(hour)                                                               as first_hour,
-        least(max(hour), timestamp '2025-12-31 23:00:00')                       as last_hour
+        max(hour)                                                               as last_hour
     from sparse_ohlcv
     group by condition_id, token_outcome, token_id
 ),
