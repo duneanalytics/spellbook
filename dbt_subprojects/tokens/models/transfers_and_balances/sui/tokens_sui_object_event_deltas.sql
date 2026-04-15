@@ -12,15 +12,7 @@
   )
 }}
 
-{% set sui_transfer_start_date = '2026-01-01' %} -- just ci test
-{% set incremental_time = var('DBT_ENV_INCREMENTAL_TIME') | int %}
-{% set incremental_time_unit = var('DBT_ENV_INCREMENTAL_TIME_UNIT') %}
-{% set incremental_anchor_horizon_sql %}
-date_trunc('{{ incremental_time_unit }}', now() - interval '{{ incremental_time }}' {{ incremental_time_unit }})
-{% endset %}
-{% set incremental_anchor_month_start_sql %}
-date_trunc('month', {{ incremental_anchor_horizon_sql }})
-{% endset %}
+{% set sui_transfer_start_date = '2025-01-01' %} -- just ci test
 
 with
 
@@ -74,74 +66,6 @@ deleted_objects_raw as (
     {% endif %}
 ),
 
-anchor_object_ids as (
-  select object_id from coin_window_ids
-  union
-  select object_id from deleted_objects_raw
-),
-
-{% if is_incremental() %}
-recent_history_anchors as (
-  select
-    h.object_id,
-    max(h.version) as version,
-    cast(null as varchar) as tx_digest,
-    max_by(h.timestamp_ms, h.version) as timestamp_ms,
-    cast(max_by(h.block_date, h.version) as date) as block_date,
-    cast(date_trunc('month', max_by(h.block_date, h.version)) as date) as block_month,
-    max_by(h.checkpoint, h.version) as checkpoint,
-    max_by(h.owner_type, h.version) as owner_type,
-    max_by(h.receiver, h.version) as receiver,
-    max_by(h.coin_type, h.version) as coin_type,
-    cast('ANCHOR' as varchar) as object_status,
-    max_by(h.coin_balance, h.version) as coin_balance
-  from {{ ref('tokens_sui_coin_object_history') }} h
-  inner join anchor_object_ids f
-    on h.object_id = f.object_id
-  where h.block_date >= {{ incremental_anchor_month_start_sql }}
-    and h.block_date < {{ incremental_anchor_horizon_sql }}
-  group by 1
-),
-
-recent_anchor_object_ids as (
-  select object_id
-  from recent_history_anchors
-),
-
-historical_fallback_anchors as (
-  select
-    h.object_id,
-    max(h.version) as version,
-    cast(null as varchar) as tx_digest,
-    max_by(h.timestamp_ms, h.version) as timestamp_ms,
-    cast(max_by(h.block_date, h.version) as date) as block_date,
-    cast(date_trunc('month', max_by(h.block_date, h.version)) as date) as block_month,
-    max_by(h.checkpoint, h.version) as checkpoint,
-    max_by(h.owner_type, h.version) as owner_type,
-    max_by(h.receiver, h.version) as receiver,
-    max_by(h.coin_type, h.version) as coin_type,
-    cast('ANCHOR' as varchar) as object_status,
-    max_by(h.coin_balance, h.version) as coin_balance
-  from {{ ref('tokens_sui_coin_object_history') }} h
-  inner join anchor_object_ids f
-    on h.object_id = f.object_id
-  left join recent_anchor_object_ids r
-    on h.object_id = r.object_id
-  where r.object_id is null
-    and h.block_date < {{ incremental_anchor_month_start_sql }}
-  group by 1
-),
-
--- load latest prior object state per object as anchor context
-history_anchors as (
-  -- split anchor lookup at month start so recent anchors avoid a full-history scan
-  select * from recent_history_anchors
-  union all
-  select * from historical_fallback_anchors
-),
-{% endif %}
-
-{% if not is_incremental() %}
 -- load latest prior object state per object as anchor context
 history_anchors as (
   select
@@ -164,10 +88,13 @@ history_anchors as (
     select object_id from deleted_objects_raw
   ) f on h.object_id = f.object_id
   where 1 = 1
+    {% if is_incremental() %}
+    and not {{ incremental_predicate('h.block_date') }}
+    {% else %}
     and h.block_date < date '{{ sui_transfer_start_date }}'
+    {% endif %}
   group by 1
 ),
-{% endif %}
 
 -- prune deleted rows that cannot survive downstream lag-based filtering
 deleted_objects as (
