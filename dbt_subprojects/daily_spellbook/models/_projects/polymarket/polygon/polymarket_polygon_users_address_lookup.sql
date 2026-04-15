@@ -73,6 +73,26 @@ WITH first_capital_action AS (
     {% endif %}
 )
 
+, deduped_wallet_addresses AS (
+    SELECT
+        created_time,
+        block_number,
+        type_of_wallet,
+        owner,
+        proxy,
+        tx_hash
+    FROM (
+        SELECT
+            wa.*,
+            ROW_NUMBER() OVER (
+                PARTITION BY wa.proxy
+                ORDER BY wa.created_time ASC, wa.block_number ASC, wa.tx_hash ASC
+            ) AS rn
+        FROM wallet_addresses wa
+    ) ranked_wallets
+    WHERE rn = 1
+)
+
 SELECT
     w.created_time,
     w.block_number,
@@ -87,5 +107,5 @@ SELECT
         WHEN f.first_funded_time IS NOT NULL THEN true 
         ELSE false 
     END as has_been_funded
-FROM wallet_addresses w
+FROM deduped_wallet_addresses w
 LEFT JOIN first_capital_action f ON f.proxy = w.proxy

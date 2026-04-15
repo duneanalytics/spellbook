@@ -45,7 +45,7 @@ historical_day_prices as (
   {% endif %}
   where cast(h.hour as date) < current_date
     and hour(h.hour) = 23
-    and h.price > 0
+    and h.price is not null
 ),
 
 current_day_prices as (
@@ -64,7 +64,7 @@ current_day_prices as (
     and h.token_id = cdt.token_id
   {% endif %}
   where cast(h.hour as date) = current_date
-    and h.price > 0
+    and h.price is not null
   group by 1, 2, 4
 ),
 
