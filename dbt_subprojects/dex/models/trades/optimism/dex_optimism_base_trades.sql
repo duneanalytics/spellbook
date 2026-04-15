@@ -44,6 +44,7 @@
     , ref('timeswap_v2_optimism_base_trades')
     , ref('bridgers_optimism_base_trades')
     , ref('saddle_finance_optimism_base_trades')
+    , ref('zeroex_optimism_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

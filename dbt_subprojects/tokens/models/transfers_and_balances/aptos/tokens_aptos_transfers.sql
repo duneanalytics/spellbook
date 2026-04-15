@@ -46,7 +46,7 @@ asset_metadata as (
     m.asset_type,
     m.asset_symbol,
     m.decimals
-  from {{ source('aptos_fungible_asset', 'metadata_current') }} m
+  from {{ ref('aptos_fungible_asset_metadata_current') }} m
 ),
 
 prices as (
