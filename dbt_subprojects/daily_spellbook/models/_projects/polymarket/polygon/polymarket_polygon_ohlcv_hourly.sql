@@ -28,6 +28,7 @@ with base as (
             order by block_time desc, evt_index desc nulls last, tx_hash desc nulls last
         )                                       as rn_last
     from {{ ref('polymarket_polygon_market_trades') }}
+    where token_outcome is not null
 ),
 
 market_meta as (
@@ -67,11 +68,11 @@ market_bounds as (
     select
         condition_id,
         token_outcome,
-        token_id,
+        max(token_id)                                                           as token_id,
         min(hour)                                                               as first_hour,
         max(hour)                                                               as last_hour
     from sparse_ohlcv
-    group by condition_id, token_outcome, token_id
+    group by condition_id, token_outcome
 ),
 
 hour_spine as (
