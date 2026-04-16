@@ -7,7 +7,7 @@
     incremental_strategy = 'merge',
     merge_skip_unchanged = true,
     unique_key = ['block_date','unique_key'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ hide_spells() }}'
 )
 }}

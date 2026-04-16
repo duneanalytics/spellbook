@@ -7,7 +7,7 @@
     partition_by = ['block_date'],
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_key'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     merge_skip_unchanged = true,
     post_hook = '{{ hide_spells() }}',
   )
@@ -28,7 +28,7 @@ base_transfers as (
   from {{ ref('tokens_sui_base_transfers') }} t
   where t.block_date >= date '{{ sui_transfer_start_date }}'
     {% if is_incremental() %}
-    and {{ incremental_predicate('t.block_date') }}
+    and {{ incremental_predicate('t.block_time') }}
     {% endif %}
 ),
 

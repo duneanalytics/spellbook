@@ -7,7 +7,7 @@
     incremental_strategy = 'merge',
     merge_skip_unchanged = true,
     unique_key = ['block_date','unique_key'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ hide_spells() }}'
     )
 }}
@@ -22,7 +22,7 @@ WITH base_transfers as (
     WHERE
         1=1
         {% if is_incremental() -%}
-        AND {{ incremental_predicate('block_date') }}
+        AND {{ incremental_predicate('block_time') }}
         {% else -%}
         AND block_date >= date '{{ transfers_start_date }}'
         {% endif -%}

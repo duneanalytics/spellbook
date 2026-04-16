@@ -23,7 +23,7 @@ with base_transfers as (
 		{{ base_transfers }}
 	{% if is_incremental() -%}
 	where
-		{{ incremental_predicate('block_date') }}
+		{{ incremental_predicate('block_time') }}
 	{% elif transfers_start_date is not none and transfers_start_date | trim != '' -%}
 	where
 		block_date >= date '{{ transfers_start_date }}'
