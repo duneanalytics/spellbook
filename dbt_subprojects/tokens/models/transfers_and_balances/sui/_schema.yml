@@ -107,6 +107,20 @@ models:
           combination_of_columns:
             - block_month
             - object_id
+      - check_seed:
+          seed_file: ref('tokens_sui_coin_object_anchor_state_seed')
+          match_columns:
+            - block_month
+            - object_id
+          check_columns:
+            - version
+            - block_date
+            - timestamp_ms
+            - checkpoint
+            - owner_type
+            - receiver
+            - coin_type
+            - coin_balance
     columns:
       - name: block_month
         description: "Month bucket for the latest object state captured in this helper row."
