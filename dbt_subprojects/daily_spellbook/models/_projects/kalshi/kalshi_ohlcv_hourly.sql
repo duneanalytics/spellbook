@@ -7,7 +7,7 @@
 ) }}
 
 -- Hourly OHLCV candles for Kalshi prediction markets (Yes price only; No is implied as 1 - Yes)
--- Time window matches polymarket_polygon_ohlcv_hourly: 2025-01-01 <= trade time < 2026-01-01, last_hour capped at 2025-12-31 23:00 UTC
+-- Full history: all trades from the underlying market_trades table
 
 with base as (
 	select
@@ -28,9 +28,6 @@ with base as (
 			order by t.created_time desc, t.trade_id desc
 		) as rn_last
 	from {{ ref('kalshi_market_trades') }} as t
-	where
-		t.created_time >= timestamp '2025-01-01'
-		and t.created_time < timestamp '2026-01-01'
 )
 
 , market_meta as (
@@ -71,7 +68,7 @@ with base as (
 	select
 		s.ticker,
 		min(s.hour) as first_hour,
-		least(max(s.hour), timestamp '2025-12-31 23:00:00') as last_hour
+		least(max(s.hour), date_trunc('hour', now())) as last_hour
 	from sparse_ohlcv as s
 	group by
 		s.ticker

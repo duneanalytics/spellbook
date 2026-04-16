@@ -192,11 +192,10 @@ models:
       tags: ['kalshi', 'prediction_markets', 'ohlcv', 'static']
     description: >
       Hourly OHLCV (Open-High-Low-Close-Volume) candles per Kalshi market, with VWAP, volume
-      metrics, and market metadata. Trade time window matches polymarket_polygon_ohlcv_hourly:
-      2025-01-01 through end of 2025 (trades with created_time >= 2025-01-01 and < 2026-01-01;
-      hourly spine last_hour capped at 2025-12-31 23:00:00 UTC). Includes forward-filled rows for
-      no-trade hours (prices carried forward, volume/count zeroed). Resolution-corrected close
-      prices for settled markets. Yes-side series only (outcome = 'Yes'); No is implied as 1 - Yes.
+      metrics, and market metadata. Full history — covers all trades available in the underlying
+      market_trades table. Includes forward-filled rows for no-trade hours (prices carried
+      forward, volume/count zeroed). Resolution-corrected close prices for settled markets.
+      Yes-side series only (outcome = 'Yes'); No is implied as 1 - Yes.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

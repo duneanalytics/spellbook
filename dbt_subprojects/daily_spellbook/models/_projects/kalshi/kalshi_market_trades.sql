@@ -44,6 +44,6 @@ select
     md.status,
     md.result,
     now()                                           as _updated_at
-from {{ source('kalshi', 'market_trades_raw') }} t
+from {{ source('kalshi', 'market_trades_0004') }} t
 inner join market_details md
     on t.ticker = md.ticker

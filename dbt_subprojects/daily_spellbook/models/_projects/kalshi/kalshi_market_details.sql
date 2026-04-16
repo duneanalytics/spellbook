@@ -17,7 +17,7 @@
 
 with markets as (
     select *
-    from {{ source('kalshi', 'markets_raw') }}
+    from {{ source('kalshi', 'markets_0004') }}
     where volume_fp >= 100
 )
 
@@ -33,7 +33,7 @@ with markets as (
         product_metadata,
         strike_date,
         strike_period
-    from {{ source('kalshi', 'market_details_raw') }}
+    from {{ source('kalshi', 'market_details_0004') }}
 )
 
 select
@@ -102,7 +102,7 @@ select
     ed.mutually_exclusive,
     ed.available_on_brokers,
     ed.product_metadata,
-    try(json_extract_scalar(ed.product_metadata, '$.category')) as category,
+    ed.category,
     ed.strike_date,
     ed.strike_period
 
