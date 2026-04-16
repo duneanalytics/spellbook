@@ -1,3 +1,5 @@
+-- depends_on: {{ ref('tokens_sui_coin_object_anchor_state') }}
+
 {{
   config(
     schema = 'tokens_sui',
@@ -12,7 +14,7 @@
   )
 }}
 
-{% set sui_transfer_start_date = '2025-04-01' %} -- just ci test
+{% set sui_transfer_start_date = '2025-08-01' %} -- just ci test
 
 with
 
