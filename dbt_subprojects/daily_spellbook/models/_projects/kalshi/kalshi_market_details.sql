@@ -31,6 +31,7 @@ with markets as (
         mutually_exclusive,
         available_on_brokers,
         product_metadata,
+        category,
         strike_date,
         strike_period
     from {{ source('kalshi', 'market_details_0004') }}
