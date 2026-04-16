@@ -19,9 +19,7 @@ jobs:
 
       - name: Setup variables
         run: |
-          GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)
-          echo "GIT_SHA=$GIT_SHA" >> $GITHUB_ENV
-          echo "DBT_CI_SCHEMA=dune_spellbook_ci__tmp_$GIT_SHA" >> $GITHUB_ENV
+          echo "DBT_CI_SCHEMA=dune_spellbook_ci__tmp_pr${{ github.event.number }}_${{ github.run_id }}_${{ github.run_attempt }}" >> $GITHUB_ENV
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql --target ci" >> $GITHUB_ENV
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}

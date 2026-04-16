@@ -23,7 +23,7 @@
 {%- endmacro -%}
 
 {% macro create_table_properties(_properties, relation) %}
-  {%- if target.database != 'dune' -%}
+  {%- if not (target.name == 'ci' and target.database == 'dune') -%}
     {%- set modified_identifier = relation.identifier | replace("__dbt_tmp", "") -%}
     {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
     {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
