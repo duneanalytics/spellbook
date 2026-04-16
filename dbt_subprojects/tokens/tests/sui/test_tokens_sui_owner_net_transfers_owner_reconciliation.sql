@@ -22,12 +22,10 @@ with
 
 tx_coin_scope_raw as (
   select distinct
-    f.tx_digest,
-    f.coin_type
-  from {{ ref('tokens_sui_object_event_deltas') }} f
-  where {{ incremental_predicate('f.block_date') }}
-    and f.tx_digest is not null
-    and f.coin_type is not null
+    o.tx_digest,
+    o.coin_type
+  from {{ ref('tokens_sui_owner_net_transfers') }} o
+  where {{ incremental_predicate('o.block_date') }}
 ),
 
 window_object_scope as (
