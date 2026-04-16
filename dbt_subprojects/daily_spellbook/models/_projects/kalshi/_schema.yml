@@ -107,6 +107,8 @@ models:
         description: "Whether fractional contract trading is enabled"
       - name: rules_primary
         description: "Primary resolution rules text"
+      - name: mve_collection_ticker
+        description: "Multivariate event (MVE) collection ticker linking sub-events under one umbrella (e.g., KXMVECBCHAMPIONSHIP-R). NULL for non-MVE markets."
       - name: series_ticker
         description: "Series the event belongs to"
       - name: event_title
@@ -122,7 +124,7 @@ models:
       - name: product_metadata
         description: "JSON blob with additional product metadata"
       - name: category
-        description: "Market category from product_metadata (e.g., Sports, Elections). NULL until ingestion adds the field — see competition as an alternative."
+        description: "Market category from market_details_raw (e.g., Sports, Elections, Politics). NULL when no event details row matches."
       - name: competition
         description: "Competition name from product_metadata (e.g., Pro Football, College Basketball (M), NHL, XRP)"
       - name: strike_date

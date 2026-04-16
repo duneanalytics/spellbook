@@ -46,6 +46,7 @@ with markets as (
 		series_ticker,
 		event_title,
 		event_sub_title,
+		category,
 		collateral_return_type,
 		mutually_exclusive,
 		available_on_brokers,
@@ -59,6 +60,7 @@ with markets as (
 			series_ticker,
 			title as event_title,
 			sub_title as event_sub_title,
+			category,
 			collateral_return_type,
 			mutually_exclusive,
 			available_on_brokers,
@@ -130,6 +132,9 @@ select
 	-- rules
 	m.rules_primary,
 
+	-- MVE (multivariate event) metadata
+	m.mve_collection_ticker,
+
 	-- event-level metadata (from market_details_raw)
 	ed.series_ticker,
 	ed.event_title,
@@ -138,7 +143,7 @@ select
 	ed.mutually_exclusive,
 	ed.available_on_brokers,
 	ed.product_metadata,
-	try(json_extract_scalar(ed.product_metadata, '$.category')) as category,
+	ed.category,
 	try(json_extract_scalar(ed.product_metadata, '$.competition')) as competition,
 	ed.strike_date,
 	ed.strike_period,
