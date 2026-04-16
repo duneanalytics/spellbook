@@ -42,6 +42,7 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
    - append VALUES row: `(chain_id, '<chain>', 'Name', 'Layer 1/2', ...)`
    - use prep vars: `chain_id`, `name`, `first_block_time`, `token_address`
    - find: explorer, wrapped_native_token_address
+   - **IMPORTANT:** the `wrapped_native_token_address` column must be the **wrapped** token contract (e.g., WETH, WHBAR), NOT the native/zero address
 
 2. **add native token**
    - find id on: https://api.coinpaprika.com/v1/coins
@@ -51,8 +52,10 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
    - create `dbt_subprojects/tokens/models/prices/<chain>/prices_<chain>_tokens.sql`
    - check chain docs for token addresses & symbols
    - if not found: use dune mcp **executeQueryById** with `query_id: 6293737`, `query_parameters: [{"key":"chain","value":"<chain>","type":"text"}]` (substitute `<chain>`)
-   - identify key tokens (top 5 transferred, stables, WETH)
-   - find ids on coinpaprika, add to VALUES
+   - identify key tokens (wrapped native token, top 5 transferred, stables, WETH)
+   - **DO NOT include the native token** — it is already in `prices_native_tokens.sql`. Duplicating creates dupes in `prices.day/hour/minute` pipelines
+   - find ids on coinpaprika (`https://api.coinpaprika.com/v1/search?q=<token>&categories=currencies`), add to VALUES
+   - **ALL token_ids must exist and be active on CoinPaprika.** CI runs `scripts/check_tokens.py` which validates every ID — missing/inactive IDs fail the build
 
 4. **create schema file**
    - create `dbt_subprojects/tokens/models/prices/<chain>/_schema.yml`

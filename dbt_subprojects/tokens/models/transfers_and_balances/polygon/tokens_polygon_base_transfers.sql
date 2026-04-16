@@ -83,3 +83,17 @@ where tr.success
 	{% if is_incremental() %}
 	and {{ incremental_predicate('tr.block_time') }}
 	{% endif %}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='polygon',
+			transactions=source('polygon', 'transactions'),
+			erc20_transfers=source('erc20_polygon', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_polygon', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_polygon', 'evt_withdraw'),
+		) }}
+	)

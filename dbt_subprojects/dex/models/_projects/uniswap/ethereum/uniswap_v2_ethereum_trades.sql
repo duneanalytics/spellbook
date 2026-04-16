@@ -32,7 +32,7 @@ SELECT
     , dex.tx_to
     , dex.evt_index
 FROM
-    {{ ref('dex_trades') }} as dex
+    {{ ref('dex_ethereum_trades') }} as dex
 WHERE
     dex.project = 'uniswap'
     AND dex.version = '2'

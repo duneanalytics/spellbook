@@ -32,10 +32,14 @@ WITH balancer_v3 AS (
         )
     }}
 )
+, oneinch_lop AS (
+	{{ oneinch_lop_dex_trades_passthrough(blockchain = 'ethereum') }}
+)
 
 {% set cte_to_union = [
     'dexs'
     , 'balancer_v3'
+    , 'oneinch_lop'
     ]
 %}
 

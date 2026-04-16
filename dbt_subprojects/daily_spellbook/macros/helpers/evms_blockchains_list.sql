@@ -20,6 +20,7 @@
         "flare",
         "flow",
         "gnosis",
+        "hedera",
         "hemi",
         "henesys",
         "hyperevm",
