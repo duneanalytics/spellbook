@@ -12,7 +12,7 @@
 
 {# temp fix to get latest dbt-trino version 1.8.3 working in dbt cloud #}
 {% macro dune_properties(properties) %}
-  {%- if properties is not none -%}
+  {%- if properties is not none and properties | length > 0 -%}
       WITH (
           {%- for key, value in properties.items() -%}
             {{ key }} = {{ value }}
