@@ -12,7 +12,7 @@
 
 {# temp fix to get latest dbt-trino version 1.8.3 working in dbt cloud #}
 {% macro dune_properties(properties) %}
-  {%- if properties is not none -%}
+  {%- if properties is not none and properties | length > 0 -%}
       WITH (
           {%- for key, value in properties.items() -%}
             {{ key }} = {{ value }}
@@ -23,10 +23,12 @@
 {%- endmacro -%}
 
 {% macro create_table_properties(_properties, relation) %}
-  {%- set modified_identifier = relation.identifier | replace("__dbt_tmp", "") -%}
-  {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
-  {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
-  {%- do _properties.update({'location': "'" + location + "'"}) -%}
+  {%- if not (target.name == 'ci' and target.database == 'dune') -%}
+    {%- set modified_identifier = relation.identifier | replace("__dbt_tmp", "") -%}
+    {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
+    {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
+    {%- do _properties.update({'location': "'" + location + "'"}) -%}
+  {%- endif -%}
     {# temp fix to get latest dbt-trino version 1.8.3 working in dbt cloud #}
     {{ dune_properties(_properties) }} {# properties is a macro within the trino adapter #}
 {%- endmacro -%}
