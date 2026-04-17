@@ -139,6 +139,8 @@ models:
           (avoids missed updates on event-only changes).
         data_tests:
           - not_null
+      - name: _updated_at
+        description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
 
   - name: kalshi_market_trades
     meta:

@@ -1,4 +1,3 @@
--- ci-stamp: 3
 {{ config(
 	schema = 'kalshi',
 	alias = 'market_details',
@@ -6,10 +5,6 @@
 	file_format = 'delta',
 	incremental_strategy = 'merge',
 	unique_key = ['ticker'],
-	post_hook = '{{ expose_spells(blockchains = \'["kalshi"]\',
-							  spell_type = "project",
-							  spell_name = "kalshi",
-							  contributors = \'["allelosi"]\') }}',
 ) }}
 
 -- Bronze -> Gold: Kalshi market reference table.
@@ -113,8 +108,13 @@ with markets as (
 			, row_number() over (partition by ed.event_ticker order by ed.last_updated_ts desc) as rn
 		from
 			{{ source('kalshi', 'market_details_raw') }} as ed
-		where
-			ed.event_ticker in (select m.event_ticker from markets as m)
+		inner join (
+			select distinct
+				m.event_ticker
+			from
+				markets as m
+		) as k
+			on ed.event_ticker = k.event_ticker
 	) as d
 	where
 		d.rn = 1
@@ -175,6 +175,7 @@ select
 	, ed.strike_date
 	, ed.strike_period
 	, greatest(m.updated_time, coalesce(ed.last_updated_ts, m.updated_time)) as source_updated_at
+	, now() as _updated_at
 from
 	markets as m
 left join event_details as ed
