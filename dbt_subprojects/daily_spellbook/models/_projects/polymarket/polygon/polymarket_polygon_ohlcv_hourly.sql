@@ -45,7 +45,7 @@ market_meta as (
         token_outcome,
         tags                                                                    as category,
         market_end_time,
-        try_cast(substring(market_end_time from 1 for 19) as timestamp)         as market_end_time_ts,
+        try(from_iso8601_timestamp(market_end_time))                            as market_end_time_ts,
         outcome                                                                 as market_outcome
     from {{ ref('polymarket_polygon_market_details') }}
 ),
