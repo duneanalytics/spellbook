@@ -1,19 +1,20 @@
 {{ config(
 	schema = 'kalshi',
 	alias = 'ohlcv_hourly',
-	materialized = 'table',
+	materialized = 'incremental',
 	file_format = 'delta',
+	incremental_strategy = 'merge',
+	partition_by = ['block_month'],
+	unique_key = ['block_month', 'hour', 'market_id', 'outcome'],
+	incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.hour')],
+	merge_skip_unchanged = true,
 ) }}
-
--- Hourly OHLCV candles for Kalshi prediction markets (Yes price only; No is implied as 1 - Yes)
--- Full history: all trades from the underlying market_trades table
 
 with base as (
 	select
 		date_trunc('hour', t.created_time) as hour,
-		t.ticker,
+		t.ticker as market_id,
 		t.title as market_name,
-		t.event_ticker,
 		t.yes_price_dollars as price,
 		t.count_fp as contracts,
 		t.amount_usd as usd_notional,
@@ -27,27 +28,28 @@ with base as (
 			order by t.created_time desc, t.trade_id desc
 		) as rn_last
 	from {{ ref('kalshi_market_trades') }} as t
-)
+	{% if is_incremental() -%}
+	where {{ incremental_predicate('t.created_time') }}
+	{%- endif %}
+),
 
-, market_meta as (
+market_meta as (
 	select
-		md.ticker,
-		md.event_ticker,
+		md.ticker as market_id,
 		md.title,
 		md.event_title,
-		md.status,
 		md.result,
 		md.expiration_time,
 		md.category
 	from {{ ref('kalshi_market_details') }} as md
-)
+),
 
-, sparse_ohlcv as (
+new_sparse as (
 	select
 		b.hour,
-		b.ticker,
+		b.market_id,
+		cast('Yes' as varchar) as outcome,
 		max(b.market_name) as market_name,
-		max(b.event_ticker) as event_ticker,
 		round(max(case when b.rn_first = 1 then b.price end), 6) as open,
 		round(max(b.price), 6) as high,
 		round(min(b.price), 6) as low,
@@ -55,41 +57,74 @@ with base as (
 		round(sum(b.price_x_shares) / nullif(sum(b.contracts), 0), 6) as vwap,
 		round(sum(b.contracts), 6) as volume_contracts,
 		round(sum(b.usd_notional), 6) as volume_usd,
-		count(*) as trade_count,
-		false as is_forward_filled
+		count(*) as trade_count
 	from base as b
-	group by
-		b.hour,
-		b.ticker
-)
+	group by b.hour, b.market_id
+),
 
-, market_bounds as (
+{% if is_incremental() -%}
+-- pre-window sparse anchor from {{ this }} so market_bounds and asof forward-fill stay correct across the window boundary
+prior_sparse as (
 	select
-		s.ticker,
+		t.hour,
+		t.market_id,
+		t.outcome,
+		t.market_name,
+		t.open,
+		t.high,
+		t.low,
+		t.close,
+		t.vwap,
+		t.volume_contracts,
+		t.volume_usd,
+		t.trade_count
+	from {{ this }} as t
+	where t.is_forward_filled = false
+		and not {{ incremental_predicate('t.hour') }}
+),
+{% endif %}
+
+sparse_ohlcv as (
+	select
+		hour, market_id, outcome, market_name,
+		open, high, low, close, vwap, volume_contracts, volume_usd, trade_count
+	from new_sparse
+	{% if is_incremental() -%}
+	union all
+	select
+		hour, market_id, outcome, market_name,
+		open, high, low, close, vwap, volume_contracts, volume_usd, trade_count
+	from prior_sparse
+	{%- endif %}
+),
+
+market_bounds as (
+	select
+		s.market_id,
+		s.outcome,
 		min(s.hour) as first_hour,
 		least(max(s.hour), date_trunc('hour', now())) as last_hour
 	from sparse_ohlcv as s
-	group by
-		s.ticker
-)
+	group by s.market_id, s.outcome
+),
 
-, hour_spine as (
+hour_spine as (
 	select
-		mb.ticker,
+		mb.market_id,
+		mb.outcome,
 		h.timestamp as hour
 	from market_bounds as mb
 	cross join {{ source('utils', 'hours') }} as h
-	where
-		h.timestamp >= mb.first_hour
+	where h.timestamp >= mb.first_hour
 		and h.timestamp <= mb.last_hour
-)
+),
 
-, filled as (
+filled as (
 	select
 		hs.hour,
-		hs.ticker,
+		hs.market_id,
+		hs.outcome,
 		s.market_name,
-		s.event_ticker,
 		s.open,
 		s.high,
 		s.low,
@@ -101,16 +136,17 @@ with base as (
 		hs.hour != s.hour as is_forward_filled
 	from hour_spine as hs
 	asof left join sparse_ohlcv as s
-		on s.ticker = hs.ticker
+		on s.market_id = hs.market_id
+		and s.outcome = hs.outcome
 		and s.hour <= hs.hour
-)
+),
 
-, with_resolution as (
+with_resolution as (
 	select
 		f.hour,
-		f.ticker,
+		f.market_id,
+		f.outcome,
 		f.market_name,
-		f.event_ticker,
 		case
 			when m.expiration_time is not null
 				and f.hour > m.expiration_time
@@ -150,14 +186,15 @@ with base as (
 		f.is_forward_filled
 	from filled as f
 	left join market_meta as m
-		on f.ticker = m.ticker
+		on f.market_id = m.market_id
 )
 
 select
+	cast(date_trunc('month', r.hour) as date) as block_month,
 	r.hour,
-	r.ticker as market_id,
+	r.market_id,
 	r.market_name,
-	'Yes' as outcome,
+	r.outcome,
 	r.category,
 	r.open,
 	r.high,
@@ -170,5 +207,9 @@ select
 	r.market_end_time,
 	r.market_outcome,
 	r.event_market_name,
-	r.is_forward_filled
+	r.is_forward_filled,
+	now() as _updated_at
 from with_resolution as r
+{% if is_incremental() -%}
+where {{ incremental_predicate('r.hour') }}
+{%- endif %}
