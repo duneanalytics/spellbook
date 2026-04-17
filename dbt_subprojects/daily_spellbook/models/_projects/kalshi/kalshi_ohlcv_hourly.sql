@@ -3,7 +3,6 @@
 	alias = 'ohlcv_hourly',
 	materialized = 'table',
 	file_format = 'delta',
-	tags = ['static'],
 ) }}
 
 -- Hourly OHLCV candles for Kalshi prediction markets (Yes price only; No is implied as 1 - Yes)

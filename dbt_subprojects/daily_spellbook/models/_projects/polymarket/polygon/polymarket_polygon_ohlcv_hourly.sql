@@ -2,8 +2,7 @@
     schema = 'polymarket_polygon',
     alias = 'ohlcv_hourly',
     materialized = 'table',
-    file_format = 'delta',
-    tags = ['static']
+    file_format = 'delta'
   )
 }}
 

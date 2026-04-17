@@ -440,7 +440,7 @@ models:
       short_description: "Hourly OHLCV candles for Polymarket outcome tokens with forward-filled prices and resolution correction."
       contributors: dpettas
     config:
-      tags: ['polygon','prediction_markets','polymarket','ohlcv','static']
+      tags: ['polygon','prediction_markets','polymarket','ohlcv']
     description: "Hourly OHLCV (Open-High-Low-Close-Volume) candles per Polymarket outcome token, with VWAP, volume metrics, and market metadata. Includes forward-filled rows for no-trade hours (prices carried forward, volume/count zeroed). Resolution-corrected close prices for resolved markets. Covers full Polymarket on Polygon trading history."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
