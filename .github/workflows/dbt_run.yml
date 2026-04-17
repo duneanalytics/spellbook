@@ -37,8 +37,7 @@ jobs:
         run: "./scripts/ensure_cluster.sh"
 
       - name: dbt compile to create manifest to compare to
-        working-directory: ${{env.PROJECT_DIR}}
-        run: "dbt --warn-error compile"
+        run: "dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
 
       - name: check schemas
         run: "./scripts/check_schema.sh"
