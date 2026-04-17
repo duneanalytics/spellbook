@@ -138,6 +138,8 @@ from (values
 ('ethereum', 0xd687759f35bb747a29246a4b9495c8f52c49e00c, '', 'AUDX', 18, ''),
 ('ethereum', 0xd76f5faf6888e24d9f04bf92a0c8b921fe4390e0, '', 'wBRL', 18, ''),
 ('ethereum', 0xf442ff10b8def89514560a66c0ad28777094636a, '', 'wA7A5', 18, ''),
+('ethereum', 0xda446fad08277b4d2591536f204e018f32b6831c, '', 'NZDS', 6, ''),
+('ethereum', 0xd2a530170d71a9cfe1651fb468e2b98f7ed7456b, '', 'AUDF', 6, ''),
 
 -- arbitrum
 ('arbitrum', 0x641441c631e2f909700d2f41fd87f0aa6a6b4edb, 'Crypto-backed stablecoin', 'USX', 18, ''),
@@ -225,7 +227,7 @@ from (values
 ('base', 0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca, 'Stable-backed stablecoin', 'USDbC', 6, ''),
 ('base', 0xfde4c96c8593536e31f229ea8f37b2ada2699bb2, 'Stable-backed stablecoin', 'USDT', 6, ''),
 ('base', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 'Crypto-backed stablecoin', 'axlUSDC', 6, ''),
-('base', 0xc930784d6e14e2fc2a1f49be1068dc40f24762d3, 'Fiat-backed stablecoin', 'cNGN', 18, ''),
+('base', 0x46C85152bFe9f96829aA94755D9f915F9B10EF5F, 'Fiat-backed stablecoin', 'cNGN', 6, ''),
 ('base', 0x1b5f7fa46ed0f487f049c42f374ca4827d65a264, 'Fiat-backed stablecoin', 'dEURO', 18, ''),
 ('base', 0xa61beb4a3d02decb01039e378237032b351125b4, 'Crypto-backed stablecoin', 'agEUR', 18, ''),
 ('base', 0x1fca74d9ef54a6ac80ffe7d3b14e76c4330fd5d8, 'Fiat-backed stablecoin', 'VCHF', 18, ''),
@@ -247,6 +249,8 @@ from (values
 ('base', 0xd76f5faf6888e24d9f04bf92a0c8b921fe4390e0, '', 'wBRL', 18, ''),
 ('base', 0xfb8718a69aed7726afb3f04d2bd4bfde1bdcb294, '', 'TRYB', 18, ''),
 ('base', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
+('base', 0xe9185ee218cae427af7b9764a011bb89fea761b4, '', 'BRZ', 18, ''),
+('base', 0xd2a530170d71a9cfe1651fb468e2b98f7ed7456b, '', 'AUDF', 6, ''),
 
 -- bnb
 ('bnb', 0x14016e85a25aeb13065688cafb43044c2ef86784, 'Fiat-backed stablecoin', 'TUSD', 18, ''),
@@ -447,6 +451,8 @@ from (values
 ('polygon', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, ''),
 ('polygon', 0x30de46509dbc3a491128f97be0aaf70dc7ff33cb, 'Fiat-backed stablecoin', 'xZAR', 18, ''),
 ('polygon', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, ''),
+('polygon', 0xd2a530170d71a9cfe1651fb468e2b98f7ed7456b, '', 'AUDF', 6, ''),
+('polygon', 0xfbbe4b730e1e77d02dc40fedf9438e2802eab3b5, '', 'NZDS', 6, ''),
 
 -- scroll
 ('scroll', 0xf55bec9cafdbe8730f096aa55dad6d22d44099df, 'Fiat-backed stablecoin', 'USDT', 6, ''),

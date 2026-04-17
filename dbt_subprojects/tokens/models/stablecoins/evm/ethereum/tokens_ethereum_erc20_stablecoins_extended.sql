@@ -25,7 +25,9 @@ from (values
      (0x8a1d45e102e886510e891d2ec656a708991e2d76, 'COP'), -- wCOP
      (0x61d450a098b6a7f69fc4b98ce68198fe59768651, 'CLP'), -- wCLP
      (0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'PEN'), -- wPEN
-     (0x0dc4f92879b7670e5f4e4e6e3c801d229129d90d, 'ARS') -- wARS
+     (0x0dc4f92879b7670e5f4e4e6e3c801d229129d90d, 'ARS'), -- wARS
+     (0xda446fad08277b4d2591536f204e018f32b6831c, 'NZD'), -- NZDS
+     (0xd2a530170d71a9cfe1651fb468e2b98f7ed7456b, 'AUD')  -- AUDF
 
      /* yield-bearing / rebasing tokens
      (0x96f6ef951840721adbf46ac996b59e0235cb985c, 'USD'), -- USDY
