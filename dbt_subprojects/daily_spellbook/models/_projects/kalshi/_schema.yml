@@ -186,7 +186,7 @@ models:
       - name: no_price_dollars
         description: "Price paid for the No side"
       - name: amount_usd
-        description: "USD notional value of the trade (yes_price_dollars * count_fp)"
+        description: "USD notional value of the trade (taker price * count_fp, where taker price depends on taker_side)"
       - name: event_ticker
         description: "Parent event identifier"
       - name: series_ticker

@@ -69,7 +69,7 @@ select
 	, t.count_fp
 	, t.yes_price_dollars
 	, t.no_price_dollars
-	, t.yes_price_dollars * t.count_fp as amount_usd
+	, case when t.taker_side = 'yes' then t.yes_price_dollars else t.no_price_dollars end * t.count_fp as amount_usd
 	, md.event_ticker
 	, md.series_ticker
 	, md.market_type
