@@ -141,40 +141,16 @@ filled as (
 		and s.hour <= hs.hour
 ),
 
-with_resolution as (
+with_settlement as (
 	select
 		f.hour,
 		f.market_id,
 		f.outcome,
 		f.market_name,
-		case
-			when m.expiration_time is not null
-				and f.hour > m.expiration_time
-				and m.result in ('yes', 'no')
-			then case when m.result = 'yes' then 1.0 else 0.0 end
-			else f.open
-		end as open,
-		case
-			when m.expiration_time is not null
-				and f.hour > m.expiration_time
-				and m.result in ('yes', 'no')
-			then case when m.result = 'yes' then 1.0 else 0.0 end
-			else f.high
-		end as high,
-		case
-			when m.expiration_time is not null
-				and f.hour > m.expiration_time
-				and m.result in ('yes', 'no')
-			then case when m.result = 'yes' then 1.0 else 0.0 end
-			else f.low
-		end as low,
-		case
-			when m.expiration_time is not null
-				and f.hour > m.expiration_time
-				and m.result in ('yes', 'no')
-			then case when m.result = 'yes' then 1.0 else 0.0 end
-			else f.close
-		end as close,
+		f.open,
+		f.high,
+		f.low,
+		f.close,
 		f.vwap,
 		f.volume_contracts,
 		f.volume_usd,
@@ -183,10 +159,38 @@ with_resolution as (
 		m.expiration_time as market_end_time,
 		m.result as market_outcome,
 		coalesce(m.event_title, m.title) as event_market_name,
-		f.is_forward_filled
+		f.is_forward_filled,
+		case
+			when m.expiration_time is not null
+				and f.hour > m.expiration_time
+				and m.result in ('yes', 'no')
+			then case when m.result = 'yes' then 1.0 else 0.0 end
+		end as settled_price
 	from filled as f
 	left join market_meta as m
 		on f.market_id = m.market_id
+)
+
+, with_resolution as (
+	select
+		hour,
+		market_id,
+		outcome,
+		market_name,
+		coalesce(settled_price, open) as open,
+		coalesce(settled_price, high) as high,
+		coalesce(settled_price, low) as low,
+		coalesce(settled_price, close) as close,
+		vwap,
+		volume_contracts,
+		volume_usd,
+		trade_count,
+		category,
+		market_end_time,
+		market_outcome,
+		event_market_name,
+		is_forward_filled
+	from with_settlement
 )
 
 select

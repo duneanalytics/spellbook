@@ -155,7 +155,7 @@ filled as (
         and s.hour         <= hs.hour
 ),
 
-with_resolution as (
+with_settlement as (
     select
         f.hour,
         f.market_id,
@@ -166,6 +166,15 @@ with_resolution as (
         f.open,
         f.high,
         f.low,
+        f.close,
+        f.vwap,
+        f.volume_contracts,
+        f.volume_usd,
+        f.trade_count,
+        m.category,
+        m.market_end_time,
+        m.market_outcome,
+        f.is_forward_filled,
         case
             when m.market_end_time_ts is not null
                  and f.hour > m.market_end_time_ts
@@ -176,21 +185,34 @@ with_resolution as (
                     when f.token_outcome = 'Yes' and m.market_outcome = 'no'  then 0.0
                     when f.token_outcome = 'No'  and m.market_outcome = 'yes' then 0.0
                     when f.token_outcome = 'No'  and m.market_outcome = 'no'  then 1.0
-                    else f.close
                 end
-            else f.close
-        end                                                                     as close,
-        f.vwap,
-        f.volume_contracts,
-        f.volume_usd,
-        f.trade_count,
-        m.category,
-        m.market_end_time,
-        m.market_outcome,
-        f.is_forward_filled
+        end                                                                     as settled_price
     from filled f
     left join market_meta m
         on f.token_id = m.token_id
+),
+
+with_resolution as (
+    select
+        hour,
+        market_id,
+        token_outcome,
+        token_id,
+        market_name,
+        event_market_name,
+        coalesce(settled_price, open)                                           as open,
+        coalesce(settled_price, high)                                           as high,
+        coalesce(settled_price, low)                                            as low,
+        coalesce(settled_price, close)                                          as close,
+        vwap,
+        volume_contracts,
+        volume_usd,
+        trade_count,
+        category,
+        market_end_time,
+        market_outcome,
+        is_forward_filled
+    from with_settlement
 )
 
 select

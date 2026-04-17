@@ -441,7 +441,7 @@ models:
       contributors: dpettas
     config:
       tags: ['polygon','prediction_markets','polymarket','ohlcv']
-    description: "Hourly OHLCV (Open-High-Low-Close-Volume) candles per Polymarket outcome token, with VWAP, volume metrics, and market metadata. Includes forward-filled rows for no-trade hours (prices carried forward, volume/count zeroed). Resolution-corrected close prices for resolved markets. Covers full Polymarket on Polygon trading history. Incremental merge on (block_month, hour, market_id, outcome) using an incremental_predicate filter on new trades plus a prior per-hour sparse anchor from this table so market_bounds and asof forward-fill stay correct across the window boundary."
+    description: "Hourly OHLCV (Open-High-Low-Close-Volume) candles per Polymarket outcome token, with VWAP, volume metrics, and market metadata. Includes forward-filled rows for no-trade hours (prices carried forward, volume/count zeroed). For resolved markets past market_end_time, all four OHLC fields are corrected to the terminal settlement value (1.0/0.0) so every candle preserves the invariant low <= {open, close} <= high. Covers full Polymarket on Polygon trading history. Incremental merge on (block_month, hour, market_id, outcome) using an incremental_predicate filter on new trades plus a prior per-hour sparse anchor from this table so market_bounds and asof forward-fill stay correct across the window boundary."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -471,11 +471,11 @@ models:
       - name: category
         description: "Market category tags from market details"
       - name: open
-        description: "First trade price in the hour (0-1 scale). Forward-filled from last trade for no-trade hours."
+        description: "First trade price in the hour (0-1 scale). Forward-filled from last trade for no-trade hours. Resolution-corrected to terminal value (1.0/0.0) for resolved markets post-end-time."
       - name: high
-        description: "Highest trade price in the hour. Forward-filled from last trade for no-trade hours."
+        description: "Highest trade price in the hour. Forward-filled from last trade for no-trade hours. Resolution-corrected to terminal value (1.0/0.0) for resolved markets post-end-time."
       - name: low
-        description: "Lowest trade price in the hour. Forward-filled from last trade for no-trade hours."
+        description: "Lowest trade price in the hour. Forward-filled from last trade for no-trade hours. Resolution-corrected to terminal value (1.0/0.0) for resolved markets post-end-time."
       - name: close
         description: "Last trade price in the hour (0-1 scale). Forward-filled for no-trade hours. Resolution-corrected to terminal value (1.0/0.0) for resolved markets post-end-time."
       - name: vwap
