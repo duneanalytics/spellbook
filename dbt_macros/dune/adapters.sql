@@ -10,6 +10,29 @@
   );
 {% endmacro %}
 
+{# Override dbt-trino's create_view_as to mark CI views as public via extra_properties. #}
+{% macro trino__create_view_as(relation, sql) -%}
+  {%- set view_security = config.get('view_security', 'definer') -%}
+  {%- if view_security not in ['definer', 'invoker'] -%}
+      {%- set log_message = 'Invalid value for view_security (%s) specified. Setting default value (%s).' % (view_security, 'definer') -%}
+      {% do log(log_message) %}
+      {%- set on_table_exists = 'definer' -%}
+  {% endif %}
+  create or replace view
+    {{ relation }}
+  {%- set contract_config = config.get('contract') -%}
+  {%- if contract_config.enforced -%}
+    {{ get_assert_columns_equivalent(sql) }}
+  {%- endif %}
+  {%- if target.name == 'ci' %}
+  with (extra_properties = map_from_entries(ARRAY[ROW('dune.public', 'true')]))
+  {%- endif %}
+  security {{ view_security }}
+  as
+    {{ sql }}
+  ;
+{% endmacro %}
+
 {# temp fix to get latest dbt-trino version 1.8.3 working in dbt cloud #}
 {% macro dune_properties(properties) %}
   {%- if properties is not none and properties | length > 0 -%}
@@ -28,6 +51,9 @@
     {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
     {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
     {%- do _properties.update({'location': "'" + location + "'"}) -%}
+  {%- endif -%}
+  {%- if target.name == 'ci' -%}
+    {%- do _properties.update({'extra_properties': "map_from_entries(ARRAY[ROW('dune.public', 'true')])"}) -%}
   {%- endif -%}
     {# temp fix to get latest dbt-trino version 1.8.3 working in dbt cloud #}
     {{ dune_properties(_properties) }} {# properties is a macro within the trino adapter #}
