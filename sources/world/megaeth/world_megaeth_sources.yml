@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: world_megaeth
+    description: >
+      Decoded CompositeExchange event tables on MegaETH for the world project.
+    tables:
+      - name: compositeexchange_evt_orderbookregistered
+      - name: compositeexchange_evt_perporderbookregistered
