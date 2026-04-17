@@ -24,10 +24,10 @@
   {%- if contract_config.enforced -%}
     {{ get_assert_columns_equivalent(sql) }}
   {%- endif %}
+  security {{ view_security }}
   {%- if target.name == 'ci' %}
   with (extra_properties = map_from_entries(ARRAY[ROW('dune.public', 'true')]))
   {%- endif %}
-  security {{ view_security }}
   as
     {{ sql }}
   ;
