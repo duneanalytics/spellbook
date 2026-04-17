@@ -177,6 +177,7 @@ object_transfers as (
     o.prev_balance,
     o.prev_owner,
     o.has_ownership_change,
+    o.owner_net_type,
     case
       when o.owner_net_type = 'owner_residual_debit' then 'ownership_balance_spend'
       when o.owner_net_type = 'owner_residual_credit' then 'ownership_balance_topup'
@@ -238,7 +239,15 @@ object_transfers_ranked as (
         end
       ) over (
         partition by o.tx_digest, o.coin_type_normalized, o.amount_raw, o.transfer_direction
-        order by o.unique_key
+        -- when supply events replace legacy supply rows, drop direct Created/Deleted rows
+        -- before residual reconciliation rows so event-native mint/burn semantics are preserved
+        order by
+          case
+            when o.object_status in ('Created', 'Deleted') then 0
+            when o.owner_net_type in ('owner_residual_debit', 'owner_residual_credit') then 1
+            else 2
+          end,
+          o.unique_key
         rows between unbounded preceding and current row
       )
       else cast(null as bigint)
