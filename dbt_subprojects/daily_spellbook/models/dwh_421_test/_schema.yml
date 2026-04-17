@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: dwh_421_test_table
+    description: "Throwaway test table for DWH-421 (remove before merge)"
+    config:
+      tags: ['dwh_421_test']
+    columns:
+      - name: n
+        tests:
+          - not_null
+
+  - name: dwh_421_test_view
+    description: "Throwaway test view for DWH-421 (remove before merge)"
+    config:
+      tags: ['dwh_421_test']
+    columns:
+      - name: n
+
+  - name: dwh_421_test_incremental
+    description: "Throwaway test incremental for DWH-421 (remove before merge)"
+    config:
+      tags: ['dwh_421_test']
+    columns:
+      - name: n
