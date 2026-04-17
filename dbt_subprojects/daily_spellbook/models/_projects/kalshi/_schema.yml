@@ -1,0 +1,205 @@
+version: 2
+
+models:
+  - name: kalshi_market_details
+    meta:
+      blockchain: kalshi
+      sector: prediction_markets
+      project: kalshi
+      contributors: allelosi
+    config:
+      tags: ['kalshi', 'prediction_markets', 'markets']
+    description: >
+      Kalshi market reference table (incremental merge on ticker). Joins market-level data
+      (markets_raw) with event-level metadata (market_details_raw). Filtered to markets with
+      >= 100 contracts traded, retaining 99.7% of total volume. Includes latest-state pricing
+      snapshot, strike structure, settlement info, and resolution rules. Incremental source
+      filter uses market updated_time or events touched via market_details_raw.last_updated_ts;
+      source_updated_at is stored for lineage; merge does not use dest incremental_predicates (correctness).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ticker
+    columns:
+      - name: ticker
+        description: "Unique market identifier (e.g., KXBTCD-26APR04-T99499.99)"
+        data_tests:
+          - not_null
+      - name: event_ticker
+        description: "Parent event identifier grouping related markets"
+        data_tests:
+          - not_null
+      - name: market_type
+        description: "Market type (e.g., binary)"
+      - name: title
+        description: "Market question text"
+      - name: subtitle
+        description: "Market subtitle"
+      - name: yes_sub_title
+        description: "Label for the Yes outcome"
+      - name: no_sub_title
+        description: "Label for the No outcome"
+      - name: created_time
+        description: "When the market was created"
+      - name: updated_time
+        description: "When the market was last updated"
+      - name: open_time
+        description: "When trading opened"
+      - name: close_time
+        description: "When trading closes"
+      - name: expiration_time
+        description: "Market expiration time"
+      - name: latest_expiration_time
+        description: "Latest possible expiration time"
+      - name: expected_expiration_time
+        description: "Expected expiration time"
+      - name: settlement_ts
+        description: "When the market was settled (null if unsettled)"
+      - name: status
+        description: "Market lifecycle state (active, finalized, closed, etc.)"
+      - name: result
+        description: "Settlement outcome (yes, no, or empty if unresolved)"
+      - name: settlement_value_dollars
+        description: "Payout value per contract at settlement"
+      - name: expiration_value
+        description: "Expiration outcome value"
+      - name: can_close_early
+        description: "Whether the market can close before expiration"
+      - name: early_close_condition
+        description: "Condition that triggers early close"
+      - name: yes_bid_dollars
+        description: "Best bid price for Yes (latest snapshot)"
+      - name: yes_ask_dollars
+        description: "Best ask price for Yes (latest snapshot)"
+      - name: no_bid_dollars
+        description: "Best bid price for No (latest snapshot)"
+      - name: no_ask_dollars
+        description: "Best ask price for No (latest snapshot)"
+      - name: yes_bid_size_fp
+        description: "Depth at best Yes bid (contracts)"
+      - name: yes_ask_size_fp
+        description: "Depth at best Yes ask (contracts)"
+      - name: last_price_dollars
+        description: "Last traded price"
+      - name: previous_yes_bid_dollars
+        description: "Previous best Yes bid"
+      - name: previous_yes_ask_dollars
+        description: "Previous best Yes ask"
+      - name: previous_price_dollars
+        description: "Previous last traded price"
+      - name: volume_fp
+        description: "Total contracts traded (lifetime)"
+      - name: volume_24h_fp
+        description: "Contracts traded in last 24 hours"
+      - name: open_interest_fp
+        description: "Open interest in contracts"
+      - name: strike_type
+        description: "Type of strike (binary, structured, between, greater, custom, etc.)"
+      - name: floor_strike
+        description: "Lower bound for range/threshold markets"
+      - name: cap_strike
+        description: "Upper bound for range markets"
+      - name: custom_strike
+        description: "JSON blob with structured strike metadata (e.g., competitor ID, team ID)"
+      - name: tick_size
+        description: "Minimum price increment"
+      - name: fractional_trading_enabled
+        description: "Whether fractional contract trading is enabled"
+      - name: rules_primary
+        description: "Primary resolution rules text"
+      - name: mve_collection_ticker
+        description: "Multivariate event (MVE) collection ticker linking sub-events under one umbrella (e.g., KXMVECBCHAMPIONSHIP-R). NULL for non-MVE markets."
+      - name: series_ticker
+        description: "Series the event belongs to"
+      - name: event_title
+        description: "Parent event title"
+      - name: event_sub_title
+        description: "Parent event subtitle"
+      - name: collateral_return_type
+        description: "How collateral is returned"
+      - name: mutually_exclusive
+        description: "Whether event outcomes are mutually exclusive"
+      - name: available_on_brokers
+        description: "Whether available via broker integrations"
+      - name: product_metadata
+        description: "JSON blob with additional product metadata"
+      - name: category
+        description: "Market category from market_details_raw (e.g., Sports, Elections, Politics). NULL when no event details row matches."
+      - name: competition
+        description: "Competition name from product_metadata (e.g., Pro Football, College Basketball (M), NHL, XRP)"
+      - name: strike_date
+        description: "Strike/resolution date from event metadata"
+      - name: strike_period
+        description: "Strike period description from event metadata"
+      - name: source_updated_at
+        description: >
+          greatest of markets_raw.updated_time and market_details_raw.last_updated_ts (falls back to
+          market updated_time when no event row). Static to the row between source refreshes; used by
+          downstream spells to detect refreshed dimension columns. Not used for merge target pruning
+          (avoids missed updates on event-only changes).
+        data_tests:
+          - not_null
+      - name: _updated_at
+        description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
+
+  - name: kalshi_market_trades
+    meta:
+      blockchain: kalshi
+      sector: prediction_markets
+      project: kalshi
+      contributors: allelosi
+    config:
+      tags: ['kalshi', 'prediction_markets', 'trades']
+    description: >
+      Kalshi trade-level table (incremental merge on block_month + trade_id). Trade facts from
+      market_trades_raw joined to kalshi_market_details. Incremental source: new trades in the
+      rolling window (created_time), or all trades for tickers whose market_details.source_updated_at
+      moved in the window (refreshes dimension columns on historical trades).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - trade_id
+    columns:
+      - name: trade_id
+        description: "Unique trade identifier"
+        data_tests:
+          - not_null
+      - name: ticker
+        description: "Market ticker"
+        data_tests:
+          - not_null
+      - name: created_time
+        description: "When the trade occurred"
+        data_tests:
+          - not_null
+      - name: block_month
+        description: "First day of calendar month for created_time (partition key; included in merge unique key)"
+        data_tests:
+          - not_null
+      - name: taker_side
+        description: "Which side the taker was on (yes/no)"
+      - name: count_fp
+        description: "Number of contracts traded (fractional)"
+      - name: yes_price_dollars
+        description: "Price paid for the Yes side"
+      - name: no_price_dollars
+        description: "Price paid for the No side"
+      - name: amount_usd
+        description: "USD notional value of the trade (taker price * count_fp, where taker price depends on taker_side)"
+      - name: event_ticker
+        description: "Parent event identifier"
+      - name: series_ticker
+        description: "Series the event belongs to"
+      - name: market_type
+        description: "Market type (e.g., binary)"
+      - name: title
+        description: "Market question text"
+      - name: subtitle
+        description: "Market subtitle"
+      - name: status
+        description: "Market lifecycle state"
+      - name: result
+        description: "Settlement outcome"
+      - name: _updated_at
+        description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
