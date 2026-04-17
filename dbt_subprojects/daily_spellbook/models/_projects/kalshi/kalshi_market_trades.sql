@@ -17,7 +17,7 @@
 
 -- Bronze → Gold: Kalshi trade-level table
 -- Inner join to market_details (>= 100 contracts). Incremental: new trades by created_time,
--- or all trades for tickers whose market_details row changed (watermark_ts) so dimension columns stay current.
+-- or all trades for tickers whose market_details row changed (source_updated_at) so dimension columns stay current.
 
 with trades_filtered as (
 	select
@@ -31,7 +31,7 @@ with trades_filtered as (
 			or t.ticker in (
 				select md.ticker
 				from {{ ref('kalshi_market_details') }} as md
-				where {{ incremental_predicate('md.watermark_ts') }}
+				where {{ incremental_predicate('md.source_updated_at') }}
 			)
 		)
 	{% endif -%}
