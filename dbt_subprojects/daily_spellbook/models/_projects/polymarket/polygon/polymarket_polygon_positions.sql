@@ -41,7 +41,7 @@ positions_base as (
     p._updated_at
   from {{ ref('polymarket_polygon_positions_enriched_base') }} as p
   where 1=1
-    and p.day >= date '2025-01-01' -- ci test only
+    and p.day >= date '2025-07-01' -- ci test only
   {% if is_incremental() %}
     and {{ incremental_predicate('p._updated_at') }}
   union all
