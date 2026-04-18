@@ -8,6 +8,7 @@
         partition_by = ['block_month'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
+        merge_skip_unchanged = true,
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "dex_solana",
@@ -78,6 +79,7 @@ SELECT bt.blockchain
       , bt.outer_instruction_index
       , bt.inner_instruction_index
       , bt.tx_index
+      , current_timestamp AS _updated_at
 FROM
     base_trades bt
 CROSS JOIN

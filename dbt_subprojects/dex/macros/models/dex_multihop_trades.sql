@@ -112,18 +112,18 @@ agg_data as (
             cast(intermediate_trade_count AS DOUBLE) +
             cast(end_trade_count AS DOUBLE)
         ) /
-          (
+          nullif(
             cast(direct_trade_count AS DOUBLE) +
             cast(entry_trade_count AS DOUBLE) +
             cast(intermediate_trade_count AS DOUBLE) +
             cast(end_trade_count AS DOUBLE)
-        ) as multihop_trade_count_pct
+        , 0) as multihop_trade_count_pct
         , direct_trade_count
         , entry_trade_count
         , intermediate_trade_count
         , end_trade_count
         , direct_trade_vol + entry_trade_vol + intermediate_trade_vol + end_trade_vol as total_trade_vol
-        , (entry_trade_vol + intermediate_trade_vol + end_trade_vol)/(direct_trade_vol + entry_trade_vol + intermediate_trade_vol + end_trade_vol) as multihop_trades_vol_pct
+        , (entry_trade_vol + intermediate_trade_vol + end_trade_vol)/nullif(direct_trade_vol + entry_trade_vol + intermediate_trade_vol + end_trade_vol, 0) as multihop_trades_vol_pct
         , direct_trade_vol
         , entry_trade_vol
         , intermediate_trade_vol

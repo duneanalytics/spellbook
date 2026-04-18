@@ -25,9 +25,6 @@ jobs:
       with:
         ref: main
 
-    - name: Add git_sha to schema
-      run: "/runner/change_schema.sh wizard"
-
     - name: Setup variables
       run: |
         echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV

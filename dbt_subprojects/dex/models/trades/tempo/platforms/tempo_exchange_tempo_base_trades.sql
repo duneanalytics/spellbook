@@ -15,6 +15,8 @@ WITH swap_exact_in AS (
         call_block_time AS block_time
         , call_block_number AS block_number
         , call_block_date AS block_date
+        , call_trace_address AS trace_address
+        , 'swap_exact_in' AS trade_source
         , tokenIn AS token_sold_address
         , tokenOut AS token_bought_address
         , amountIn AS token_sold_amount_raw
@@ -22,7 +24,6 @@ WITH swap_exact_in AS (
         , contract_address AS project_contract_address
         , call_tx_hash AS tx_hash
         , call_tx_from AS taker
-        , ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_trace_address) AS row_num
     FROM {{ source('tempoexchange_tempo', 'stablecoindex_call_swapexactamountin') }}
     WHERE call_success = true
     {% if is_incremental() -%}
@@ -35,6 +36,8 @@ WITH swap_exact_in AS (
         call_block_time AS block_time
         , call_block_number AS block_number
         , call_block_date AS block_date
+        , call_trace_address AS trace_address
+        , 'swap_exact_out' AS trade_source
         , tokenIn AS token_sold_address
         , tokenOut AS token_bought_address
         , output_amountIn AS token_sold_amount_raw
@@ -42,7 +45,6 @@ WITH swap_exact_in AS (
         , contract_address AS project_contract_address
         , call_tx_hash AS tx_hash
         , call_tx_from AS taker
-        , ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_trace_address) AS row_num
     FROM {{ source('tempoexchange_tempo', 'stablecoindex_call_swapexactamountout') }}
     WHERE call_success = true
     {% if is_incremental() -%}
@@ -72,5 +74,14 @@ SELECT
     , CAST(NULL AS VARBINARY) AS maker
     , dexs.project_contract_address
     , dexs.tx_hash
-    , dexs.row_num AS evt_index
+    , ROW_NUMBER() OVER (
+        PARTITION BY dexs.tx_hash
+        ORDER BY
+            dexs.trace_address
+            , dexs.trade_source
+            , dexs.token_sold_address
+            , dexs.token_bought_address
+            , dexs.token_sold_amount_raw
+            , dexs.token_bought_amount_raw
+    ) AS evt_index
 FROM dexs
