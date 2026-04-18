@@ -11,7 +11,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
   
   PRs from contributors who aren't customers are accepted on a case by case basis, depending on whether datasets benefit the broader community (as an example, contributions to `dex.trades` are welcome)
 
-- Questions about how Spellbook works? Check the [docs](docs/) directory.
+- Questions about how Spellbook works? Check the [docs](docs/) directory. 
 - Spellbook uses [sub-projects](#sub-projects) to organize different datasets (dex, nft, solana, etc.).
 - Setup: Follow [dev environment setup](#setting-up-your-local-dev-environment) to get started with dbt locally.
 - Questions? Join #spellbook on [Discord](https://discord.com/channels/757637422384283659/999683200563564655).
