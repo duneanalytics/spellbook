@@ -15,99 +15,107 @@
   )
 }}
 
-with positions as (
+with metadata_recompute_tokens as (
+  {% if is_incremental() %}
+  select
+    rt.token_id,
+    rt.recompute_from_day
+  from {{ ref('polymarket_polygon_position_metadata_recompute_tokens') }} as rt
+  where {{ incremental_predicate('rt.change_detected_at') }}
+  {% else %}
+  select
+    cast(null as uint256) as token_id,
+    cast(null as date) as recompute_from_day
+  where 1 = 0
+  {% endif %}
+),
+
+positions_base as (
   select
     p.day,
     p.address,
-    mm.unique_key,
     p.token_id,
-    mm.token_outcome,
-    mm.token_outcome_name,
     p.balance,
-    mm.question_id,
-    mm.question AS market_question,
-    mm.market_description,
-    mm.event_market_name,
-    mm.event_market_description,
-    mm.active,
-    mm.closed,
-    mm.accepting_orders,
-    mm.polymarket_link,
-    mm.market_start_time,
-    mm.market_end_time,
-    mm.outcome as market_outcome,
-    mm.resolved_on_timestamp
-  from {{ ref('polymarket_polygon_positions_raw') }} as p
-  inner join {{ ref('polymarket_polygon_market_details') }} as mm on p.token_id = mm.token_id
-)
-
-{% if is_incremental() -%}
-
-, changed_markets AS (
-  select distinct
-    mm_check.token_id
-  from {{ ref('polymarket_polygon_market_details') }} as mm_check
-  inner join {{ this }} as existing
-    on mm_check.token_id = existing.token_id
-    and existing.day >= cast(try_cast(mm_check.market_start_time as timestamp) as date)
-  where existing.active is distinct from mm_check.active
-    or existing.closed is distinct from mm_check.closed
-    or existing.accepting_orders is distinct from mm_check.accepting_orders
-    or existing.market_outcome is distinct from mm_check.outcome
-    or existing.resolved_on_timestamp is distinct from mm_check.resolved_on_timestamp
+    p.price,
+    p.usd_value,
+    p._updated_at
+  from {{ ref('polymarket_polygon_positions_enriched_base') }} as p
+  where 1=1
+    and p.day >= date '2025-07-01' -- ci test only
+  {% if is_incremental() %}
+    and {{ incremental_predicate('p._updated_at') }}
+  union all
+  select
+    p.day,
+    p.address,
+    p.token_id,
+    p.balance,
+    p.price,
+    p.usd_value,
+    p._updated_at
+  from {{ ref('polymarket_polygon_positions_enriched_base') }} as p
+  inner join metadata_recompute_tokens as mrt
+    on p.token_id = mrt.token_id
+    and p.day >= mrt.recompute_from_day
+  where not ({{ incremental_predicate('p._updated_at') }})
+  {% endif %}
 ),
 
-recent_positions AS (
+market_details as (
   select
-    jp.day,
-    jp.address,
-    jp.unique_key,
-    jp.token_id,
-    jp.token_outcome,
-    jp.token_outcome_name,
-    jp.balance,
-    jp.question_id,
-    jp.market_question,
-    jp.market_description,
-    jp.event_market_name,
-    jp.event_market_description,
-    jp.active,
-    jp.closed,
-    jp.accepting_orders,
-    jp.polymarket_link,
-    jp.market_start_time,
-    jp.market_end_time,
-    jp.market_outcome,
-    jp.resolved_on_timestamp
-  from positions as jp
-  where {{ incremental_predicate('jp.day') }}
+    token_id,
+    unique_key,
+    token_outcome,
+    token_outcome_name,
+    question_id,
+    question as market_question,
+    market_description,
+    event_market_name,
+    event_market_description,
+    active,
+    closed,
+    accepting_orders,
+    polymarket_link,
+    market_start_time,
+    market_end_time,
+    outcome as market_outcome,
+    resolved_on_timestamp,
+    last_uploaded_at
+  from {{ ref('polymarket_polygon_market_details') }}
 ),
 
-historical_changed_positions as (
+positions as (
   select
-    jp.day,
-    jp.address,
-    jp.unique_key,
-    jp.token_id,
-    jp.token_outcome,
-    jp.token_outcome_name,
-    jp.balance,
-    jp.question_id,
-    jp.market_question,
-    jp.market_description,
-    jp.event_market_name,
-    jp.event_market_description,
-    jp.active,
-    jp.closed,
-    jp.accepting_orders,
-    jp.polymarket_link,
-    jp.market_start_time,
-    jp.market_end_time,
-    jp.market_outcome,
-    jp.resolved_on_timestamp
-  from positions as jp
-  inner join changed_markets as cm on jp.token_id = cm.token_id
-  where not ({{ incremental_predicate('jp.day') }})
+    pb.day,
+    pb.address,
+    md.unique_key,
+    pb.token_id,
+    md.token_outcome,
+    md.token_outcome_name,
+    pb.balance,
+    pb.price,
+    pb.usd_value,
+    md.question_id,
+    md.market_question,
+    md.market_description,
+    md.event_market_name,
+    md.event_market_description,
+    md.active,
+    md.closed,
+    md.accepting_orders,
+    md.polymarket_link,
+    md.market_start_time,
+    md.market_end_time,
+    md.market_outcome,
+    md.resolved_on_timestamp,
+    greatest(
+      coalesce(pb._updated_at, timestamp '1970-01-01 00:00:00'),
+      coalesce(md.last_uploaded_at, timestamp '1970-01-01 00:00:00'),
+      coalesce(md.resolved_on_timestamp, timestamp '1970-01-01 00:00:00')
+    ) as _updated_at
+  from positions_base as pb
+  inner join market_details as md
+    on pb.token_id = md.token_id
 )
 
 select
@@ -118,6 +126,8 @@ select
   token_outcome,
   token_outcome_name,
   balance,
+  price,
+  usd_value,
   question_id,
   market_question,
   market_description,
@@ -131,57 +141,5 @@ select
   market_end_time,
   market_outcome,
   resolved_on_timestamp,
-  now() as _updated_at
-from recent_positions
-union all
-select
-  day,
-  address,
-  unique_key,
-  token_id,
-  token_outcome,
-  token_outcome_name,
-  balance,
-  question_id,
-  market_question,
-  market_description,
-  event_market_name,
-  event_market_description,
-  active,
-  closed,
-  accepting_orders,
-  polymarket_link,
-  market_start_time,
-  market_end_time,
-  market_outcome,
-  resolved_on_timestamp,
-  now() as _updated_at
-from historical_changed_positions
-
-{% else -%}
-
-select
-  day,
-  address,
-  unique_key,
-  token_id,
-  token_outcome,
-  token_outcome_name,
-  balance,
-  question_id,
-  market_question,
-  market_description,
-  event_market_name,
-  event_market_description,
-  active,
-  closed,
-  accepting_orders,
-  polymarket_link,
-  market_start_time,
-  market_end_time,
-  market_outcome,
-  resolved_on_timestamp,
-  now() as _updated_at
+  _updated_at
 from positions
-
-{% endif -%}

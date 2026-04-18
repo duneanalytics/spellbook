@@ -21,11 +21,13 @@ with market_details as (
     event_market_name,
     question,
     polymarket_link,
+    polymarket_link_slug,
     token_outcome,
     neg_risk,
     unique_key,
     token_outcome_name,
-    market_start_time
+    market_start_time,
+    market_start_time_parsed
   from {{ ref('polymarket_polygon_market_details') }}
 ),
 
@@ -36,11 +38,12 @@ changed_tokens as (
   from market_details md
   left join {{ this }} t
     on md.token_id = t.asset_id
-    and t.block_time >= try_cast(md.market_start_time as timestamp)
+    and t.block_time >= coalesce(md.market_start_time_parsed, try_cast(md.market_start_time as timestamp))
   where t.asset_id is null
     or coalesce(cast(md.event_market_name as varchar), '') != coalesce(cast(t.event_market_name as varchar), '')
     or coalesce(cast(md.question as varchar), '') != coalesce(cast(t.question as varchar), '')
     or coalesce(cast(md.polymarket_link as varchar), '') != coalesce(cast(t.polymarket_link as varchar), '')
+    or coalesce(cast(md.polymarket_link_slug as varchar), '') != coalesce(cast(t.polymarket_link_slug as varchar), '')
     or coalesce(cast(md.token_outcome as varchar), '') != coalesce(cast(t.token_outcome as varchar), '')
     or coalesce(cast(md.neg_risk as varchar), '') != coalesce(cast(t.neg_risk as varchar), '')
     or coalesce(cast(md.unique_key as varchar), '') != coalesce(cast(t.unique_key as varchar), '')
@@ -63,7 +66,9 @@ source_trades as (
     shares,
     fee,
     maker,
-    taker
+    taker,
+    maker_asset_id,
+    taker_asset_id
   from (
     select
       t.*,
@@ -102,7 +107,9 @@ source_trades as (
     shares,
     fee,
     maker,
-    taker
+    taker,
+    maker_asset_id,
+    taker_asset_id
   from {{ ref('polymarket_polygon_market_trades_raw') }}
 )
 
@@ -120,6 +127,7 @@ select
   md.event_market_name,
   md.question,
   md.polymarket_link,
+  md.polymarket_link_slug,
   md.token_outcome,
   md.neg_risk,
   t.asset_id,
@@ -131,6 +139,8 @@ select
   t.taker,
   md.unique_key,
   md.token_outcome_name,
+  t.maker_asset_id,
+  t.taker_asset_id,
   now() as _updated_at
 from source_trades t
 left join market_details md

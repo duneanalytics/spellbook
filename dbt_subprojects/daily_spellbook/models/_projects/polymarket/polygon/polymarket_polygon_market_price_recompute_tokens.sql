@@ -20,7 +20,7 @@ with market_details as (
     md.resolved_on_timestamp
   from {{ ref('polymarket_polygon_market_details') }} md
   where md.token_id is not null
-    and md.outcome in ('yes', 'no')
+    and md.outcome in ('yes', 'no', '50/50')
 ),
 
 -- de-duplicate metadata state to one row per token for deterministic merge keys

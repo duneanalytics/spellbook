@@ -6,18 +6,26 @@ globs:
 
 # CI State Detection
 
-CI uses `state:modified.body` and `state:modified.macros` to select models for testing. Config-only changes (in the `config()` block or `_schema.yml`) do **not** trigger CI.
+CI uses `state:modified.body` and `state:modified.macros` to select models for testing. SQL body changes are picked up automatically. Config-only changes (in the `config()` block or `_schema.yml`) do **not** trigger CI.
 
 ## When to add a stamp comment
 
-If your change modifies config that affects the physical table, add or bump a stamp comment in the SQL body to force CI:
+Add or bump a stamp comment only when **all** of the following are true:
+
+- the change is config-only
+- the config change affects the physical table
+- you want CI to rerun the model
+
+If you already changed the SQL body, do **not** add a `ci-stamp`; that body change already makes CI pick up the model.
+
+For qualifying config-only changes, add or bump a stamp comment in the SQL body to force CI:
 
 ```sql
 -- ci-stamp: 1
 SELECT ...
 ```
 
-Config changes that need a stamp:
+Config changes that need a stamp when changed without any SQL body edits:
 - `materialized` (e.g. view → incremental)
 - `partition_by`
 - `incremental_strategy`
