@@ -2,16 +2,16 @@
 ![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 
 Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
-
+ 
 ## TL;DR
 
 - **Before contributing:** Spellbook accepts selective contributions. To avoid wasted effort, please [raise a GitHub issue](#submitting-a-contribution) with the title prefix `[CONTRIBUTION]` describing your proposed changes before writing code. The Dune team will review and confirm if we'll accept the contribution.
-  - **Exception:** Small bug fixes can be submitted directly as PRs without prior approval.
+  - **Exception:** Small bug fixes can be submitted directly as PRs without prior approval. 
   - **Priority:** PRs from Dune enterprise customers receive priority review. 
   
   PRs from contributors who aren't customers are accepted on a case by case basis, depending on whether datasets benefit the broader community (as an example, contributions to `dex.trades` are welcome)
 
-- Questions about how Spellbook works? Check the [docs](docs/) directory.
+- Questions about how Spellbook works? Check the [docs](docs/) directory. 
 - Spellbook uses [sub-projects](#sub-projects) to organize different datasets (dex, nft, solana, etc.).
 - Setup: Follow [dev environment setup](#setting-up-your-local-dev-environment) to get started with dbt locally.
 - Questions? Join #spellbook on [Discord](https://discord.com/channels/757637422384283659/999683200563564655).
@@ -174,3 +174,5 @@ sources:
 - [dbt docs](https://docs.getdbt.com/docs/introduction)
 - [dbt Discourse](https://discourse.getdbt.com/)
 - [dbt Slack](https://getdbt.com/community/join-the-community/)
+
+- [7/Seven Chain Node](https://github.com/umairkhan2582/seven-chain-node) - Validator node for 7/Seven Chain (Chain ID: 70007), an EVM-compatible blockchain (BSC/Parlia fork) powering [TheSeven.meme](https://theseven.meme) — perpetual futures exchange with 100+ pairs, up to 2001× leverage, zero fees.
