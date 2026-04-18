@@ -2,7 +2,7 @@
 ![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 
 Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
-
+ 
 ## TL;DR
 
 - **Before contributing:** Spellbook accepts selective contributions. To avoid wasted effort, please [raise a GitHub issue](#submitting-a-contribution) with the title prefix `[CONTRIBUTION]` describing your proposed changes before writing code. The Dune team will review and confirm if we'll accept the contribution.
