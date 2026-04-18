@@ -92,7 +92,7 @@ SELECT '{{blockchain}}' as blockchain
 , t.evt_tx_hash AS tx_hash
 , {{ dbt_utils.generate_surrogate_key(['t.evt_tx_hash', 't.evt_index', 't.id', 't.value']) }} as unique_transfer_id
 FROM (
-    SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index {% if denormalized == True %}, t.evt_tx_from {% endif %}
+    SELECT DISTINCT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index {% if denormalized == True %}, t.evt_tx_from {% endif %}
     , value, id
     FROM {{ erc1155_batch }} t
     CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
