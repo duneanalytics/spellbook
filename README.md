@@ -6,7 +6,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 ## TL;DR
 
 - **Before contributing:** Spellbook accepts selective contributions. To avoid wasted effort, please [raise a GitHub issue](#submitting-a-contribution) with the title prefix `[CONTRIBUTION]` describing your proposed changes before writing code. The Dune team will review and confirm if we'll accept the contribution.
-  - **Exception:** Small bug fixes can be submitted directly as PRs without prior approval.
+  - **Exception:** Small bug fixes can be submitted directly as PRs without prior approval. 
   - **Priority:** PRs from Dune enterprise customers receive priority review. 
   
   PRs from contributors who aren't customers are accepted on a case by case basis, depending on whether datasets benefit the broader community (as an example, contributions to `dex.trades` are welcome)
