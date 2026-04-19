@@ -27,11 +27,11 @@ FROM {{ erc721_transfers }} t
 {% if denormalized == False -%}
 INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     AND {{incremental_predicate('et.block_time')}}
     {% endif -%}
 {%- endif -%}
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 WHERE {{incremental_predicate('t.evt_block_time')}}
 {% endif -%}
 
@@ -61,11 +61,11 @@ FROM {{ erc1155_single }} t
 {% if denormalized == False -%}
 INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     AND {{incremental_predicate('et.block_time')}}
     {% endif -%}
 {%- endif -%}
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 WHERE {{incremental_predicate('t.evt_block_time')}}
 {% endif -%}
 
@@ -96,14 +96,14 @@ FROM (
     , value, id
     FROM {{ erc1155_batch }} t
     CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif -%}
     ) t
 {%- if denormalized == False %}
 INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
     AND et.hash = t.evt_tx_hash
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     AND {{incremental_predicate('et.block_time')}}
     {% endif -%}
 {%- endif %}

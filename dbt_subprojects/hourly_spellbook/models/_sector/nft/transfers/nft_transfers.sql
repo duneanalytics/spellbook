@@ -9,7 +9,7 @@
 )
 }}
 
--- ci-stamp: 2
+-- ci-stamp: 3
 {% set nft_models = [
  ref('nft_ethereum_transfers')
 ,ref('nft_bnb_transfers')
