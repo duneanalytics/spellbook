@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['prod_exclude'],
         schema = 'balancer',
         alias = 'view_pools_latest'
         , post_hook='{{ hide_spells() }}'
