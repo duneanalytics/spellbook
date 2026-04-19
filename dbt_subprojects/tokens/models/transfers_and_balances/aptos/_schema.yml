@@ -170,6 +170,7 @@ models:
       sector: tokens
       short_description: "Aptos transfers with metadata and amounts."
       contributors: tomfutago
+      docs_slug: /curated/token-transfers/aptos/aptos-token-transfers
     config:
       tags: ['tokens', 'transfers', 'aptos']
     description: "Aptos fungible asset transfers enriched with metadata and normalized amount fields."
