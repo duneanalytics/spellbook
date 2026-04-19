@@ -30,4 +30,17 @@ from
 			wrapped_token_withdrawal=source('bnb_bnb', 'WBNB_evt_Withdrawal'),
 		) }}
 	)
+union all
 
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='bnb',
+			transactions=source('bnb', 'transactions'),
+			erc20_transfers=source('erc20_bnb', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_bnb', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_bnb', 'evt_withdraw'),
+		) }}
+	)

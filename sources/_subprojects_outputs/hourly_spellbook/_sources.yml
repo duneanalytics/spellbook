@@ -26,14 +26,6 @@ sources:
       - name: market
       - name: market_hourly_agg
 
-  - name: balancer
-    tables:
-      - name: gauge_mappings
-      - name: flashloans
-      - name: pools_metrics_daily
-      - name: token_whitelist
-      - name: single_recipient_gauges
-
   - name: staking_ethereum
     tables:
       - name: entities

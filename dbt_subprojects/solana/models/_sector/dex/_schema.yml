@@ -109,6 +109,8 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+      - name: _updated_at
+        description: "Timestamp when the row was last updated by dbt"
 
   - name: dex_solana_price_hour
     meta:

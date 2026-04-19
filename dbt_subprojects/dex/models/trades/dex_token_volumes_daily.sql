@@ -43,6 +43,7 @@
     , 'superseed'
     , 'tac'
     , 'taiko'
+    , 'tempo'
     , 'unichain'
     , 'worldchain'
     , 'xlayer'

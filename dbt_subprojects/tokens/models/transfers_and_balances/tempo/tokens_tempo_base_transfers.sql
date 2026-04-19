@@ -83,3 +83,17 @@ select * from tip20_base
 union all
 
 select * from erc20_base
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='tempo',
+			transactions=source('tempo', 'transactions'),
+			erc20_transfers=source('erc20_tempo', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_tempo', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_tempo', 'evt_withdraw'),
+		) }}
+	)

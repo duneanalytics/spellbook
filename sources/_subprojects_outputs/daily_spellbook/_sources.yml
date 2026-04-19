@@ -70,6 +70,14 @@ sources:
     tables:
       - name: flashloans
 
+  - name: balancer
+    tables:
+      - name: gauge_mappings
+      - name: flashloans
+      - name: pools_metrics_daily
+      - name: token_whitelist
+      - name: single_recipient_gauges
+
   - name: aave_ethereum
     tables:
       - name: proposals

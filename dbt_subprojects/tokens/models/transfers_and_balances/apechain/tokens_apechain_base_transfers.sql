@@ -30,3 +30,17 @@ from
 			wrapped_token_withdrawal=source('apechain_tokens_apechain', 'wape_evt_withdrawal'),
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='apechain',
+			transactions=source('apechain', 'transactions'),
+			erc20_transfers=source('erc20_apechain', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_apechain', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_apechain', 'evt_withdraw'),
+		) }}
+	)

@@ -30,3 +30,17 @@ from
 			wrapped_token_withdrawal=source('wavax_avalanche_c', 'wavax_evt_withdrawal'),
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='avalanche_c',
+			transactions=source('avalanche_c', 'transactions'),
+			erc20_transfers=source('erc20_avalanche_c', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_avalanche_c', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_avalanche_c', 'evt_withdraw'),
+		) }}
+	)

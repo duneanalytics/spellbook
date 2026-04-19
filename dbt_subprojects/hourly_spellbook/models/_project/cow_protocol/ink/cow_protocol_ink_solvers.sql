@@ -35,8 +35,8 @@ known_solver_metadata (address, environment, name) as (
       VALUES
                 (0x5004BD66C0804C7794e826B6DeE9Cc83754224E8, 'barn', 'Baseline'),
                 (0x8b2202E91Afa5ad33DC04Caabd34191b6400E6a6, 'prod', 'Baseline'),
-                (0x7Fab5B9D65ae105Cf524BCF8F37cDeAaE1F37096, 'barn', '0x API'),
-                (0xC290cDE37b5d35FDC92BFd71310ce6327666F97f, 'prod', '0x API'),
+                (0x7Fab5B9D65ae105Cf524BCF8F37cDeAaE1F37096, 'barn', 'Gnosis_0x'),
+                (0xC290cDE37b5d35FDC92BFd71310ce6327666F97f, 'prod', 'Gnosis_0x'),
                 (0x29625eC643F13dA0b20Fff8BB757fCc3768a55fc, 'barn', 'Helixbox'),
                 (0x539A8cAFD0698dDD2E833121E3dff977dBE76bF6, 'prod', 'Helixbox'),
                 (0xB3b5041C8200d2dA875610189437213CE7f6f759, 'barn', 'Tsolver'),

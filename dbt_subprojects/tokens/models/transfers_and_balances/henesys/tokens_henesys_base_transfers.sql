@@ -16,3 +16,17 @@
 	transactions=source('henesys', 'transactions'),
 	erc20_transfers=source('erc20_henesys', 'evt_Transfer'),
 ) }}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='henesys',
+			transactions=source('henesys', 'transactions'),
+			erc20_transfers=source('erc20_henesys', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_henesys', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_henesys', 'evt_withdraw'),
+		) }}
+	)

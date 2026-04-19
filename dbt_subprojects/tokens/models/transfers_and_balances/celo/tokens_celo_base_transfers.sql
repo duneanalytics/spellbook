@@ -16,3 +16,17 @@
 	transactions=source('celo', 'transactions'),
 	erc20_transfers=source('erc20_celo', 'evt_Transfer'),
 ) }}
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='celo',
+			transactions=source('celo', 'transactions'),
+			erc20_transfers=source('erc20_celo', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_celo', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_celo', 'evt_withdraw'),
+		) }}
+	)

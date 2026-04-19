@@ -137,7 +137,7 @@ get_pools as (
         '{{version}}' as version,
         cast(date_trunc('month', ae.block_time) as date) as block_month,
         cast(date_trunc('day', ae.block_time) as date) as block_date,
-        date_trunc('minute', ae.block_time) as block_time, -- for prices
+        ae.block_time as block_time,
         ae.block_number,
         ae.id,
         ae.tx_hash,

@@ -1,0 +1,222 @@
+version: 2
+
+models:
+  - name: tokens_aptos_transfer_events
+    meta:
+      blockchain: aptos
+      sector: tokens
+      short_description: "Aptos deposit/withdraw transfer events."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'aptos']
+    description: "Normalized Aptos fungible asset Deposit/Withdraw events used as transfer primitives."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+      - check_seed:
+          seed_file: ref('tokens_aptos_transfer_events_seed')
+          match_columns:
+            - block_date
+            - tx_version
+            - event_index
+          check_columns:
+            - event_type
+            - activity_type
+            - transfer_direction
+            - owner_address
+            - storage_id
+            - asset_type
+            - token_standard
+            - amount_raw
+    columns:
+      - &unique_key
+        name: unique_key
+        description: "Surrogate key for one Aptos transfer row."
+        data_tests:
+          - not_null
+      - &tx_version
+        name: tx_version
+        description: "Aptos transaction version."
+      - &tx_hash
+        name: tx_hash
+        description: "Aptos transaction hash."
+      - &block_date
+        name: block_date
+        description: "Transaction date."
+        data_tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Transaction timestamp."
+      - &block_month
+        name: block_month
+        description: "Month bucket derived from block_time."
+      - &event_index
+        name: event_index
+        description: "Primary event index used for the transfer row."
+      - &event_type
+        name: event_type
+        description: "Raw Aptos event type used to derive transfer activity labels."
+      - &activity_type
+        name: activity_type
+        description: "Normalized activity label (deposit or withdraw)."
+      - &transfer_direction
+        name: transfer_direction
+        description: "Direction label derived from event type (credit or debit)."
+      - &owner_address
+        name: owner_address
+        description: "Owner address of the fungible store."
+      - &storage_id
+        name: storage_id
+        description: "Fungible store identifier."
+      - &asset_type
+        name: asset_type
+        description: "Aptos fully-qualified asset type."
+      - &token_standard
+        name: token_standard
+        description: "Token standard label from Aptos activity lineage."
+      - &amount_raw
+        name: amount_raw
+        description: "Raw token amount."
+      - &updated_at
+        name: _updated_at
+        description: "Timestamp when this row was last written."
+
+  - name: tokens_aptos_base_transfers
+    meta:
+      blockchain: aptos
+      sector: tokens
+      short_description: "Aptos unified base transfer rows."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'aptos']
+    description: "Unified Aptos transfer rows built from in-model FIFO pairing and residual mint/burn classification."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+      - check_seed:
+          seed_file: ref('tokens_aptos_base_transfers_pairing_seed')
+          match_columns:
+            - block_date
+            - tx_version
+            - event_index
+            - counterpart_event_index
+          check_columns:
+            - from_address
+            - to_address
+            - from_storage_id
+            - to_storage_id
+            - asset_type
+            - token_standard
+            - amount_raw
+            - transfer_type
+      - check_seed:
+          seed_file: ref('tokens_aptos_base_transfers_residual_seed')
+          match_columns:
+            - block_date
+            - tx_version
+            - event_index
+          check_columns:
+            - counterpart_event_index
+            - from_address
+            - to_address
+            - from_storage_id
+            - to_storage_id
+            - asset_type
+            - token_standard
+            - amount_raw
+            - transfer_type
+    columns:
+      - *unique_key
+      - *tx_version
+      - *tx_hash
+      - *block_date
+      - *block_time
+      - *block_month
+      - *event_index
+      - &from_address
+        name: from_address
+        description: "Transfer sender owner address."
+      - &to_address
+        name: to_address
+        description: "Transfer receiver owner address."
+      - &counterpart_event_index
+        name: counterpart_event_index
+        description: "Matched counterpart event index for paired rows."
+      - &from_storage_id
+        name: from_storage_id
+        description: "Sender-side fungible store identifier."
+      - &to_storage_id
+        name: to_storage_id
+        description: "Receiver-side fungible store identifier."
+      - *asset_type
+      - &contract_address
+        name: contract_address
+        description: "Package address parsed from asset_type."
+      - *token_standard
+      - *amount_raw
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer classification label."
+      - *updated_at
+
+  - name: tokens_aptos_transfers
+    meta:
+      blockchain: aptos
+      sector: tokens
+      short_description: "Aptos transfers with metadata and amounts."
+      contributors: tomfutago
+      docs_slug: /curated/token-transfers/aptos/aptos-token-transfers
+    config:
+      tags: ['tokens', 'transfers', 'aptos']
+    description: "Aptos fungible asset transfers enriched with metadata and normalized amount fields."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - *unique_key
+      - &blockchain
+        name: blockchain
+        description: "Blockchain identifier."
+      - *block_time
+      - *block_month
+      - *tx_version
+      - *tx_hash
+      - *event_index
+      - *counterpart_event_index
+      - *token_standard
+      - &tx_from
+        name: tx_from
+        description: "Transaction sender."
+      - &from
+        name: from
+        description: "Transfer sender owner address."
+      - &to
+        name: to
+        description: "Transfer receiver owner address."
+      - *contract_address
+      - *asset_type
+      - &symbol
+        name: symbol
+        description: "Token symbol from metadata_current."
+      - &decimals
+        name: decimals
+        description: "Display decimals from metadata_current."
+      - *amount_raw
+      - &amount
+        name: amount
+        description: "Amount normalized by decimals."
+      - &price_usd
+        name: price_usd
+        description: "Hourly USD price from prices_external.hour."
+      - &amount_usd
+        name: amount_usd
+        description: "USD value computed as amount * hourly price."
+      - *transfer_type
+      - *updated_at

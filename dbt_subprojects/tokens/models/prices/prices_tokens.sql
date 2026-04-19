@@ -29,6 +29,7 @@
     ,ref('prices_flare_tokens')
     ,ref('prices_flow_tokens')
     ,ref('prices_gnosis_tokens')
+    ,ref('prices_hedera_tokens')
     ,ref('prices_hemi_tokens')
     ,ref('prices_hyperevm_tokens')
     ,ref('prices_ink_tokens')

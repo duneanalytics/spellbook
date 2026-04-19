@@ -30,3 +30,17 @@ from
 			wrapped_token_withdrawal=source('weth_optimism', 'weth9_evt_withdrawal'),
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='optimism',
+			transactions=source('optimism', 'transactions'),
+			erc20_transfers=source('erc20_optimism', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_optimism', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_optimism', 'evt_withdraw'),
+		) }}
+	)

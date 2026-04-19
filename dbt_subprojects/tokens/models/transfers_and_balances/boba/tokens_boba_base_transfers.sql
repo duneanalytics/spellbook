@@ -30,3 +30,17 @@ from
 			wrapped_token_withdrawal=source('weth_boba', 'weth9_evt_withdrawal'),
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='boba',
+			transactions=source('boba', 'transactions'),
+			erc20_transfers=source('erc20_boba', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_boba', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_boba', 'evt_withdraw'),
+		) }}
+	)

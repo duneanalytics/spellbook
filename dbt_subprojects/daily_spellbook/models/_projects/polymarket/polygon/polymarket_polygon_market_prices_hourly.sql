@@ -8,6 +8,7 @@
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
     unique_key = ['block_month', 'hour', 'token_id'],
+    merge_skip_unchanged = true,
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
@@ -251,6 +252,7 @@ select
   pc.hour,
   pc.condition_id,
   pc.token_id,
-  pc.price
+  pc.price,
+  now() as _updated_at
 from price_correction pc
 where pc.price is not null

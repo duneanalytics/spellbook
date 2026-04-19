@@ -30,3 +30,17 @@ from
 			wrapped_token_withdrawal=source('wsei_sei', 'wsei_evt_withdrawal'),
 		) }}
 	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='sei',
+			transactions=source('sei', 'transactions'),
+			erc20_transfers=source('erc20_sei', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_sei', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_sei', 'evt_withdraw'),
+		) }}
+	)
