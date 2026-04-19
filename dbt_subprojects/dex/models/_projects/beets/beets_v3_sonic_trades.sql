@@ -49,12 +49,11 @@ WITH
             dexs_base.swap_fee,
             dexs_base.pool_symbol,
             dexs_base.pool_type
-        FROM {{ ref('dex_trades') }} dexs
+        FROM {{ ref('dex_sonic_trades') }} dexs
             INNER JOIN dexs_base
                 ON dexs.tx_hash = dexs_base.tx_hash
                 AND dexs.evt_index = dexs_base.evt_index
-        WHERE dexs.blockchain = 'sonic'
-            AND dexs.project = 'beets'
+        WHERE dexs.project = 'beets'
             AND dexs.version = '3'
     ),
     

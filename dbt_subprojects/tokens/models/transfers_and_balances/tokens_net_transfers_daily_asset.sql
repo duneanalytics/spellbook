@@ -42,6 +42,7 @@
     , 'superseed'
     , 'tac'
     , 'taiko'
+    , 'tempo'
     , 'tron'
     , 'unichain'
     , 'zkevm'

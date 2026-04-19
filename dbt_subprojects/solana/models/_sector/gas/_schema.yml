@@ -11,6 +11,7 @@ models:
       sector: gas
       short_description: "Transaction fees paid on the Solana blockchain, including base fees and priority fees per transaction."
       contributors: 0xboxer
+      docs_slug: /curated/gas-fees/solana_fees
     config:
       tags: ['solana', 'gas', 'fees']
     description: >

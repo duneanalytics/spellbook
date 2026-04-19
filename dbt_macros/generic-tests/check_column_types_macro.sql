@@ -114,7 +114,8 @@ select * from equality_checks where not contains(split(expected_type,'/'),actual
         'tx_hash': 'varbinary',
         'tx_from': 'varbinary',
         'tx_to': 'varbinary',
-        'evt_index': 'bigint'
+        'evt_index': 'bigint',
+        '_updated_at': 'timestamp(3) with time zone'
     } -%}
    {{ check_column_types_macro(model,column_types) }}
 {% endtest %}

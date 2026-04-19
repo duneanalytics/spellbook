@@ -71,6 +71,8 @@ sources:
   - name: tokens
     tables:
       - name: erc20
+        meta:
+          docs_slug: /curated/token-metadata/evm/erc20-metadata
         columns:
           - name: blockchain
             data_type: varchar
@@ -80,6 +82,10 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+
+      - name: supply_latest
+        meta:
+          docs_slug: /curated/token-metadata/evm/tokens-supply-latest
 
       - name: native
         columns:
@@ -1186,6 +1192,8 @@ sources:
   - name: stablecoins_evm
     tables:
       - name: transfers
+        meta:
+          docs_slug: /curated/stablecoins/transfers/stablecoins-evm-transfers
 
   - name: stablecoins_tron
     tables:

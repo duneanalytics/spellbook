@@ -214,6 +214,7 @@ models:
       project: stablecoin
       short_description: "Stablecoin transfers on Solana, enriched with token metadata and FX rate pricing."
       contributors: tomfutago
+      docs_slug: /curated/stablecoins/transfers/stablecoins-solana-transfers
     config:
       tags: ['stablecoin', 'transfers']
     description: "Union view of core and extended stablecoin transfers with metadata and FX rate pricing"

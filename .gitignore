@@ -153,3 +153,4 @@ dbt_subprojects/dex/spellbook-env/
 
 agents.md
 .cursor/rules/sql-style-guide.mdc
+.cursor/mcp.json

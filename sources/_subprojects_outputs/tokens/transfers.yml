@@ -420,6 +420,12 @@ sources:
       - name: erc20_stablecoins_core
       - name: erc20_stablecoins_extended
 
+  - name: tokens_tempo
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+
   - name: tokens_taiko
     tables:
       - name: transfers

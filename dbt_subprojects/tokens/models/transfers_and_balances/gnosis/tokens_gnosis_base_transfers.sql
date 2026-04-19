@@ -1,33 +1,46 @@
-{{config(
-    schema = 'tokens_gnosis',
-    alias = 'base_transfers',
-    partition_by = ['block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_date','unique_key'],
-)
-}}
+{{ config(
+	schema='tokens_gnosis',
+	alias='base_transfers',
+	partition_by=['block_month'],
+	materialized='incremental',
+	file_format='delta',
+	incremental_strategy='merge',
+	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+	unique_key=['block_date', 'unique_key'],
+	merge_skip_unchanged=true,
+) }}
 
-{{transfers_base(
-    blockchain='gnosis',
-    traces = source('gnosis','traces'),
-    transactions = source('gnosis','transactions'),
-    erc20_transfers = source('erc20_gnosis','evt_Transfer')
-)
-}}
+{{ transfers_base(
+	blockchain='gnosis',
+	traces=source('gnosis', 'traces'),
+	transactions=source('gnosis', 'transactions'),
+	erc20_transfers=source('erc20_gnosis', 'evt_Transfer'),
+) }}
 
-UNION ALL
+union all
 
-SELECT *
-FROM
-(
-    {{transfers_base_wrapped_token(
-        blockchain='gnosis',
-        transactions = source('gnosis','transactions'),
-        wrapped_token_deposit = source('wxdai_gnosis', 'WXDAI_evt_Deposit'),
-        wrapped_token_withdrawal = source('wxdai_gnosis', 'WXDAI_evt_Withdrawal'),
-    )
-    }}
-)
+select
+	*
+from
+	(
+		{{ transfers_base_wrapped_token(
+			blockchain='gnosis',
+			transactions=source('gnosis', 'transactions'),
+			wrapped_token_deposit=source('wxdai_gnosis', 'WXDAI_evt_Deposit'),
+			wrapped_token_withdrawal=source('wxdai_gnosis', 'WXDAI_evt_Withdrawal'),
+		) }}
+	)
+union all
+
+select
+	*
+from
+	(
+		{{ transfers_base_erc4626(
+			blockchain='gnosis',
+			transactions=source('gnosis', 'transactions'),
+			erc20_transfers=source('erc20_gnosis', 'evt_Transfer'),
+			erc4626_deposit=source('erc4626_gnosis', 'evt_deposit'),
+			erc4626_withdraw=source('erc4626_gnosis', 'evt_withdraw'),
+		) }}
+	)

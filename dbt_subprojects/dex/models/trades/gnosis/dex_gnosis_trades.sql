@@ -7,6 +7,7 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , merge_skip_unchanged = true
     )
 }} --CHECK: add posthook to expose spell?
 
@@ -31,10 +32,14 @@ WITH balancer_v3 AS (
         )
     }}
 )
+, oneinch_lop AS (
+	{{ oneinch_lop_dex_trades_passthrough(blockchain = 'gnosis') }}
+)
 
 {% set cte_to_union = [
     'dexs'
     , 'balancer_v3'
+    , 'oneinch_lop'
     ]
 %}
 
@@ -64,6 +69,7 @@ WITH balancer_v3 AS (
         , tx_from
         , tx_to
         , evt_index
+        , current_timestamp AS _updated_at
     FROM
         {{ cte }}
     {% if not loop.last %}

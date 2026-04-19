@@ -47,6 +47,28 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_date', 'unique_instruction_key']
 
+  - name: orca_whirlpool_v2_stg_swaps
+    meta:
+      blockchain: solana
+      contributors: [ tomfutago ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      staging model for orca whirlpool v2 swap data after fee and memo resolution
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+    columns:
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        data_tests:
+          - not_null
+
   - name: orca_whirlpool_v2_base_trades
     meta:
       blockchain: solana

@@ -1,0 +1,227 @@
+version: 2
+
+sources:
+  - name: erc4626_ethereum
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_abstract
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_apechain
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_arbitrum
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_avalanche_c
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_b3
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_base
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_berachain
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_bnb
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_bob
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_boba
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_celo
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_corn
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_degen
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_fantom
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_flare
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_flow
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_gnosis
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_hemi
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_henesys
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_hyperevm
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_ink
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_kaia
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_katana
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_linea
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_mantle
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_megaeth
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_mezo
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_monad
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_nova
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_opbnb
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_optimism
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_peaq
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_plasma
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_plume
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_polygon
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_rise
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_ronin
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_scroll
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_sei
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_shape
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_somnia
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_sonic
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_sophon
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_story
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_superseed
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_tac
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_taiko
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_tempo
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_unichain
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_viction
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_worldchain
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_xlayer
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_zkevm
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_zksync
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
+  - name: erc4626_zora
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw

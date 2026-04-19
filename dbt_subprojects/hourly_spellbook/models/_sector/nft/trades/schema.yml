@@ -148,7 +148,7 @@ models:
      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, blast, fantom, nova, abstract, apechain
      sector: nft
      contributors: soispoke, hildobby, ilemi, cat, 0xRob, 0xr3x
-     docs_slug: curated/trading/NFT/nft-trades
+     docs_slug: /curated/nft-trades/evm/nft-trades
      short_description: "NFT trades and swaps across various marketplaces (OpenSea, Blur, etc.) and blockchains, including price, buyer, seller, and collection details."
    config:
      tags: [ 'nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'optimism', 'arbitrum', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal' ]

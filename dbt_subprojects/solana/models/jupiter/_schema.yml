@@ -225,7 +225,7 @@ models:
     meta:
       blockchain: solana
       contributors: [ilemi]
-      docs_slug: /trading/solana/jupiter-aggregator-trades
+      docs_slug: /curated/dex-trades/solana/jupiter-aggregator-trades
     config:
       tags: ['solana','jupiter','swaps']
     description: >

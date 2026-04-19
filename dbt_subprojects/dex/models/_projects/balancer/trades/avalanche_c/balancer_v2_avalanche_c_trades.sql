@@ -48,12 +48,11 @@ WITH
             dexs_base.swap_fee,
             dexs_base.pool_symbol,
             dexs_base.pool_type
-        FROM {{ ref('dex_trades') }} dexs
+        FROM {{ ref('dex_avalanche_c_trades') }} dexs
             INNER JOIN dexs_base
                 ON dexs.tx_hash = dexs_base.tx_hash
                 AND dexs.evt_index = dexs_base.evt_index
-        WHERE dexs.blockchain = 'avalanche_c'
-            AND dexs.project = 'balancer'
+        WHERE dexs.project = 'balancer'
             AND dexs.version = '2'
     ),
     bpa AS (

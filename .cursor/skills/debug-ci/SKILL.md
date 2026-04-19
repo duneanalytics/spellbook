@@ -49,9 +49,11 @@ CI tables are available on Dune for ~24 hours after the run:
 
 ```sql
 select *
-from test_schema.git_dunesql_<GIT_HASH>_<table_alias>
+from test_schema.git_dunesql_<GIT_HASH>_<schema>_<alias>
 limit 100
 ```
+
+For Spellbook, the suffix matches dbt **`schema`** + **`_`** + **`alias`** (e.g. `tokens.transfers` → `tokens_transfers`). Use the exact name from **`dbt run initial model(s)`** logs.
 
 Use these to:
 - Verify data quality before expanding date ranges

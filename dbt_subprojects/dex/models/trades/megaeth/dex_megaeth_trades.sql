@@ -7,6 +7,7 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , merge_skip_unchanged = true
     )
 }}
 
@@ -46,5 +47,6 @@ SELECT
     , tx_from
     , tx_to
     , evt_index
+    , current_timestamp AS _updated_at
 FROM
     dexs

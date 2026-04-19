@@ -47,6 +47,7 @@
     ,'superseed'
     ,'tac'
     ,'taiko'
+    ,'tempo'
     ,'tron'
     ,'unichain'
     ,'viction'
@@ -93,6 +94,7 @@ FROM (
         , amount
         , price_usd
         , amount_usd
+        , _updated_at
     FROM {{ ref('tokens_'~chain~'_transfers') }}
     {% if not loop.last %}
     UNION ALL

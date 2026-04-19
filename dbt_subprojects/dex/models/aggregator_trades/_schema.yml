@@ -6,7 +6,7 @@ models:
       blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb, base, scroll, linea, polygon 
       sector: dex_aggregator
       contributors: bh2smith, Henrystats, jeff-dude, rantum
-      docs_slug: /curated/trading/DEX/dex-aggregator-trades
+      docs_slug: /curated/dex-trades/evm/dex-aggregator-trades
       short_description: "Trades routed through DEX aggregators (e.g. 1inch, CowSwap, Paraswap), recording swap execution details across various aggregators and blockchains."
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
