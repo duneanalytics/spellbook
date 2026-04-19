@@ -96,7 +96,9 @@ known_solver_metadata (address, environment, name) as (
                 (0x0B68006276c0D076309ED354924B7b7Af1ef3f85, 'prod', 'OpenOcean_Aggregator'),
                 (0x59019a97f9eea41385c476a954a30e3dacc25249, 'prod', 'Prycto'),
                 (0x8f5835e9d756c9bd934bce527157a4b0ef3c5cb7, 'prod', 'Rizzolver'),
-                (0xea270e6cad15c5bafa35b9019bec7087ff82d8e8, 'prod', 'Horadrim')
+                (0xea270e6cad15c5bafa35b9019bec7087ff82d8e8, 'prod', 'Horadrim'),
+                (0x48573687867c72957926c4eb1a6e95e7ce6cf2fb, 'prod', 'Bitget Wallet'),
+                (0x48573687867c72957926c4eb1a6e95e7ce6cf2fb, 'barn', 'Bitget Wallet')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

@@ -249,7 +249,9 @@ known_solver_metadata (address, environment, name) as (
                  (0x8f5835e9d756c9bd934bce527157a4b0ef3c5cb7, 'prod', 'Rizzolver'),
                  (0x3c13def5a0b3488cc0e3e09df01603bb8cc2fd9c, 'barn', 'NativeFi'),
                  (0x5aaba56b29bf785cd71d8d9d3f729f4f459f9e2b, 'prod', 'NativeFi'),
-                 (0xd3b6a67865c5873cf05b8fc5ce7a688918d6f237, 'barn', 'Kipseli')
+                 (0xd3b6a67865c5873cf05b8fc5ce7a688918d6f237, 'barn', 'Kipseli'),
+                 (0xd90acddac86eeeaba70f35a218929c795621607e, 'prod', 'Bitget Wallet'),
+                 (0xd90acddac86eeeaba70f35a218929c795621607e, 'barn', 'Bitget Wallet')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
