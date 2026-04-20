@@ -63,7 +63,10 @@ source_trades as (
     shares,
     fee,
     maker,
-    taker
+    taker,
+    contract_version,
+    builder,
+    metadata
   from (
     select
       t.*,
@@ -102,7 +105,10 @@ source_trades as (
     shares,
     fee,
     maker,
-    taker
+    taker,
+    contract_version,
+    builder,
+    metadata
   from {{ ref('polymarket_polygon_market_trades_raw') }}
 )
 
@@ -129,6 +135,9 @@ select
   t.fee,
   t.maker,
   t.taker,
+  t.contract_version,
+  t.builder,
+  t.metadata,
   md.unique_key,
   md.token_outcome_name,
   now() as _updated_at

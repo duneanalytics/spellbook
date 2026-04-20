@@ -25,11 +25,13 @@
 
 -- get all known polymarket contract and filter them out as these are not users
 with polymarket_addresses as (
-  select * from (values 
+  select * from (values
     (0x4D97DCd97eC945f40cF65F87097ACe5EA0476045), -- Conditional Tokens
     (0x3A3BD7bb9528E159577F7C2e685CC81A765002E2), -- Wrapped Collateral
-    (0x4bFb41d5B3570DeFd03C39a9A4D8dE6Bd8B8982E), -- CTFExchange
-    (0xC5d563A36AE78145C45a50134d48A1215220f80a), -- NegRiskCTFExchange
+    (0x4bFb41d5B3570DeFd03C39a9A4D8dE6Bd8B8982E), -- CTFExchange (V1)
+    (0xC5d563A36AE78145C45a50134d48A1215220f80a), -- NegRiskCTFExchange (V1)
+    (0xE111180000d2663C0091e4f400237545B87B996B), -- CTFExchange (V2, standard)
+    (0xe2222d279d744050d28e00520010520000310F59), -- CTFExchange (V2, NegRisk)
     (0xc288480574783BD7615170660d71753378159c47),  -- Polymarket Rewards
     (0x94a3db2f861b01c027871b08399e1ccecfc847f6),  -- liq mining merkle distributor
     (0xD36ec33c8bed5a9F7B6630855f1533455b98a418)   -- USDC.e - USDC uniswap pool
@@ -60,6 +62,7 @@ select
   "to" as to_address,
   case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
     when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
+    when contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then 'pUSD'
   end as symbol,
   amount_raw,
   amount,
@@ -70,6 +73,7 @@ from {{ source('tokens_polygon', 'transfers')}}
 where (
     contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
     or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
+    or contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pUSD (V2 collateral; 1:1 USDC-backed)
   )
   and "to" in (select proxy from polymarket_wallets) --deposits are to the wallet
   and "from" not in (select proxy from polymarket_wallets) --not looking for transfers
@@ -92,6 +96,7 @@ select
   "to" as to_address,
   case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
     when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
+    when contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then 'pUSD'
   end as symbol,
   amount_raw,
   amount,
@@ -102,6 +107,7 @@ from {{ source('tokens_polygon', 'transfers')}}
 where (
     contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
     or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
+    or contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pUSD (V2 collateral)
   )
   and "from" in (select proxy from polymarket_wallets) --withdrawals are from the wallet
   and "to" not in (select proxy from polymarket_wallets)  --not looking for transfers
@@ -124,6 +130,7 @@ select distinct
   "to" as to_address,
   case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
     when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
+    when contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then 'pUSD'
   end as symbol,
   amount_raw,
   amount,
@@ -132,7 +139,8 @@ select distinct
   tx_hash
 from {{ source('tokens_polygon', 'transfers')}}
 where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
-  or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
+  or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
+  or contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb) -- pUSD (V2 collateral)
   and "to" not in (select address from polymarket_addresses)
   and "from" not in (select address from polymarket_addresses)
   and "from" in (select proxy from polymarket_wallets)
@@ -152,6 +160,7 @@ select
   "to" as to_address,
   case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
     when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
+    when contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then 'pUSD'
   end as symbol,
   amount_raw,
   amount,
