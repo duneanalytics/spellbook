@@ -157,7 +157,7 @@ with_settlement as (
 		f.trade_count,
 		m.category,
 		m.expiration_time as market_end_time,
-		m.result as market_outcome,
+		case when m.result = '' then 'unresolved' else m.result end as market_outcome,
 		coalesce(m.event_title, m.title) as event_market_name,
 		f.is_forward_filled,
 		case
@@ -214,6 +214,12 @@ select
 	r.is_forward_filled,
 	now() as _updated_at
 from with_resolution as r
+where not (
+	r.is_forward_filled
+	and r.market_end_time is not null
+	and r.hour > r.market_end_time
+	and r.market_outcome in ('yes', 'no')
+)
 {% if is_incremental() -%}
-where {{ incremental_predicate('r.hour') }}
+  and {{ incremental_predicate('r.hour') }}
 {%- endif %}
