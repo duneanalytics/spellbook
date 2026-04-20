@@ -37,6 +37,7 @@
     ,ref('bmx_base_perpetual_trades')
     ,ref('nether_fi_base_perpetual_trades')
     ,ref('gains_network_apechain_perpetual_trades')
+    ,ref('katanaperps_katana_perpetual_trades')
 ] %}
 
 SELECT *
