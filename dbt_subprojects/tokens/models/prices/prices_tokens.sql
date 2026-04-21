@@ -58,6 +58,7 @@
     ,ref('prices_sonic_tokens')
     ,ref('prices_sophon_tokens')
     ,ref('prices_story_tokens')
+    ,ref('prices_stellar_tokens')
     ,ref('prices_sui_tokens')
     ,ref('prices_superseed_tokens')
     ,ref('prices_tac_tokens')
