@@ -20,6 +20,8 @@
 
 with
 
+-- source data contains dupes on all columns except updated_at and ingested_at
+-- until (if?) it gets resolved - applying group by to get the 1st updated_at
 base_transfers as (
   select
     t.unique_key,
@@ -43,12 +45,13 @@ base_transfers as (
     t.event_topic,
     t.event_type,
     t.is_soroban,
-    t.updated_at as _updated_at
+    min(t.updated_at) as _updated_at
   from {{ source('stellar', 'token_transfers') }} t
   where t.closed_at >= timestamp '{{ stellar_transfer_start_date }}'
     {% if is_incremental() %}
     and {{ incremental_predicate('t.closed_at') }}
     {% endif %}
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
 ),
 
 prices as (
