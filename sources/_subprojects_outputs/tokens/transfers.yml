@@ -357,6 +357,11 @@ sources:
       - name: trc20_stablecoins_core
       - name: trc20_stablecoins_extended
 
+  - name: tokens_xrpl
+    tables:
+      - name: transaction_metadata
+      - name: transfers
+
   - name: tokens_unichain
     tables:
       - name: transfers

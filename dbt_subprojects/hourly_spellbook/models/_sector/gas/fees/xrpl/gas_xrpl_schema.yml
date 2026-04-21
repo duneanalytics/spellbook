@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: gas_xrpl_fees
+    meta:
+      blockchain: xrpl
+      sector: gas
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['xrpl', 'gas', 'fees']
+    description: >
+      Gas fees paid per transaction on the XRP Ledger.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+    columns:
+      - name: block_month
+        description: Month for block event time in UTC.
+        tests:
+          - not_null
+      - name: tx_hash
+        description: Primary key of the transaction.
+        tests:
+          - not_null

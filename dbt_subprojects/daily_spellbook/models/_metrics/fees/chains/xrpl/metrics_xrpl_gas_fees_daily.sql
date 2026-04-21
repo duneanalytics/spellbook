@@ -1,33 +1,30 @@
 {{
-    config(
-        schema = 'metrics_xrpl',
-        alias = 'gas_fees_daily',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'block_date'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-    )
+  config(
+    schema = 'metrics_xrpl',
+    alias = 'gas_fees_daily',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['blockchain', 'block_date'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+  )
 }}
 
-WITH fees AS (
-    SELECT
-        blockchain
-        , block_date
-        , SUM(tx_fee_usd) AS gas_fees_usd
-    FROM
-        {{ ref('gas_xrpl_fees') }}
-    WHERE blockchain = 'xrpl'
+with fees as (
+  select
+    blockchain,
+    block_date,
+    sum(tx_fee_usd) as gas_fees_usd
+  from {{ source('gas_xrpl', 'fees') }}
+  where blockchain = 'xrpl'
     {% if is_incremental() %}
-    AND {{ incremental_predicate('block_date') }}
+    and {{ incremental_predicate('block_date') }}
     {% endif %}
-    GROUP BY
-        blockchain
-        , block_date
+  group by 1, 2
 )
 
-SELECT
-    blockchain
-    , block_date
-    , gas_fees_usd
-FROM fees
+select
+  blockchain,
+  block_date,
+  gas_fees_usd
+from fees
