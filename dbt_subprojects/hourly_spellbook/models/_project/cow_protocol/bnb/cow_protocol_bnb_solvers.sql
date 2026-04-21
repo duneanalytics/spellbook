@@ -61,7 +61,7 @@ known_solver_metadata (address, environment, name) as (
                 (0x6bf97afe2d2c790999cded2a8523009eb8a0823f, 'prod', 'Portus'),
                 (0x8f5835e9d756c9bd934bce527157a4b0ef3c5cb7, 'prod', 'Rizzolver'),
                 (0x93504141ebdc1e77b5d1a71ea14d837f7009d4b6, 'prod', 'Bitget Wallet'),
-                (0x2f01eaed3e91f7e3cdf07dbf4d579e93ce30006e, 'barn', Bitget Wallet')
+                (0x2f01eaed3e91f7e3cdf07dbf4d579e93ce30006e, 'barn', 'Bitget Wallet')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
