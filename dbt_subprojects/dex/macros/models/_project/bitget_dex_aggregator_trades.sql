@@ -28,31 +28,31 @@ SELECT
     'bitget_dex_aggregator' AS project,
     CASE
         WHEN paymaster_tx.version IS NOT NULL THEN paymaster_tx.version
-        WHEN tx_to = 0xE17162B840cb9A8f6D9920E5832D58f6461caCe8 THEN '1'
+        WHEN trade.tx_to = 0xE17162B840cb9A8f6D9920E5832D58f6461caCe8 THEN '1'
         ELSE '2'
     END AS version,
-    block_month,
-    block_date,
-    block_time,
-    block_number,
-    token_bought_symbol,
-    token_sold_symbol,
-    token_pair,
-    token_bought_amount,
-    token_sold_amount,
-    token_bought_amount_raw,
-    token_sold_amount_raw,
-    amount_usd,
-    token_bought_address,
-    token_sold_address,
-    taker,
-    maker,
-    project_contract_address,
+    trade.block_month,
+    trade.block_date,
+    trade.block_time,
+    trade.block_number,
+    trade.token_bought_symbol,
+    trade.token_sold_symbol,
+    trade.token_pair,
+    trade.token_bought_amount,
+    trade.token_sold_amount,
+    trade.token_bought_amount_raw,
+    trade.token_sold_amount_raw,
+    trade.amount_usd,
+    trade.token_bought_address,
+    trade.token_sold_address,
+    trade.taker,
+    trade.maker,
+    trade.project_contract_address,
     trade.tx_hash,
-    tx_from,
-    tx_to,
+    trade.tx_from,
+    trade.tx_to,
     CAST(ARRAY[-1] AS ARRAY<BIGINT>) AS trace_address,
-    evt_index
+    trade.evt_index
 FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} trade
 LEFT JOIN paymaster_tx
     ON trade.tx_hash = paymaster_tx.tx_hash
@@ -62,7 +62,7 @@ WHERE trade.block_date >= DATE('{{ project_start_date }}')
     AND {{ incremental_predicate('trade.block_time') }}
     {% endif %}
     AND (
-        tx_to IN (
+        trade.tx_to IN (
             0xE17162B840cb9A8f6D9920E5832D58f6461caCe8,
             0xBc1D9760bd6ca468CA9fB5Ff2CFbEAC35d86c973,
             0x6752b178E2Ed13BCeE6951cEF907B44C95c5D630,
