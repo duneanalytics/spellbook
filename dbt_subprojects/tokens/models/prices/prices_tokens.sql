@@ -9,7 +9,8 @@
 }}
 
 {% set fungible_prices_models = [
-    ref('prices_abstract_tokens')
+    ref('prices_aptos_tokens')
+    ,ref('prices_abstract_tokens')
     ,ref('prices_apechain_tokens')
     ,ref('prices_arbitrum_tokens')
     ,ref('prices_avalanche_c_tokens')
@@ -58,6 +59,7 @@
     ,ref('prices_sonic_tokens')
     ,ref('prices_sophon_tokens')
     ,ref('prices_story_tokens')
+    ,ref('prices_stellar_tokens')
     ,ref('prices_sui_tokens')
     ,ref('prices_superseed_tokens')
     ,ref('prices_tac_tokens')
