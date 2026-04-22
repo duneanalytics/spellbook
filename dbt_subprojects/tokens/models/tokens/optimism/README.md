@@ -15,6 +15,6 @@ Files:
 
 - `tokens_optimism_erc20_transfer_source.sql`: Pull of all contracts which emitted an erc20 transfer event.
 
-- `tokens_optimism_v1_erc20`: The final aggregate table - Shows all ERC20 token addresses with mapped symbols and decimals when known.
+- `tokens.erc20`: Canonical ERC20 metadata source for downstream models.
 
 - `tokens_optimism_erc20_stablecoins.sql`: Manually curated reference table for stablecoins.
