@@ -12,7 +12,7 @@
   )
 }}
 
-{% set xrpl_transfer_start_date = '2012-06-01' %}
+{% set xrpl_transfer_start_date = '2026-01-01' %} -- ci test, revert to '2012-06-01'
 
 select
   hash as tx_hash,
