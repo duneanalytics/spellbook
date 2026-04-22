@@ -16,19 +16,26 @@
 
 with base_transfers as (
   select
-    *
-  from {{ ref('tokens_xrpl_base_transfers') }}
-  where block_date >= date '{{ xrpl_transfer_start_date }}'
+    b.*,
+    case
+      when b.currency = 'XRP' then 0x0000000000000000000000000000000000000000
+      when coalesce(b.currency_hex, b.currency) is not null
+        and b.issuer is not null
+        then to_utf8(concat(coalesce(b.currency_hex, b.currency), '.', b.issuer))
+      else cast(null as varbinary)
+    end as price_contract_address
+  from {{ ref('tokens_xrpl_base_transfers') }} b
+  where b.block_date >= date '{{ xrpl_transfer_start_date }}'
     {% if is_incremental() %}
-    and {{ incremental_predicate('block_date') }}
+    and {{ incremental_predicate('b.block_date') }}
     {% endif %}
 ),
 
--- prices not available for xrpl yet
-/*
 prices as (
   select
     p.timestamp,
+    p.contract_address,
+    p.symbol,
     p.price
   from {{ source('prices_external', 'hour') }} p
   where p.blockchain = 'xrpl'
@@ -37,7 +44,6 @@ prices as (
     and {{ incremental_predicate('p.timestamp') }}
     {% endif %}
 ),
-*/
 
 currency_mapping as (
   select
@@ -65,26 +71,37 @@ final as (
     b.issuer,
     b.currency,
     b.currency_hex,
-    case
-      when b.currency = 'XRP' then 'XRP'
-      when b.currency_hex is not null and m.symbol is not null then m.symbol
-      when b.currency_hex is not null then substr(b.currency_hex, 1, 8)
-      else b.currency
-    end as symbol,
+    coalesce(
+      case
+        when b.currency = 'XRP' then 'XRP'
+        else cast(null as varchar)
+      end,
+      p.symbol,
+      m.symbol,
+      case
+        when b.currency_hex is not null
+          then nullif(replace(from_utf8(from_hex(b.currency_hex)), chr(0), ''), '')
+        else cast(null as varchar)
+      end,
+      b.currency
+    ) as symbol,
     case
       when b.currency = 'XRP' then 6
       else cast(null as integer)
     end as decimals,
     b.amount_raw,
     b.amount,
-    cast(null as double) as price_usd,
-    cast(null as double) as amount_usd,
+    p.price as price_usd,
+    b.amount * p.price as amount_usd,
     b.transfer_type,
     b.transaction_type,
     b.transaction_result,
     b.partial_payment_flag,
     b._updated_at
   from base_transfers b
+  left join prices p
+    on date_trunc('hour', b.block_time) = p.timestamp
+    and b.price_contract_address = p.contract_address
   left join currency_mapping m
     on b.currency_hex = m.currency_hex
 )

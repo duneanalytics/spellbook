@@ -26,7 +26,8 @@ with base_transactions as (
     t.tx_to,
     t.transaction_type,
     t.transaction_result,
-    try_cast(t.fee as double) as tx_fee_raw
+    try_cast(t.fee as double) as tx_fee_raw,
+    0x0000000000000000000000000000000000000000 as price_contract_address
   from {{ ref('tokens_xrpl_transaction_metadata') }} as t
   where t.block_date >= date '{{ xrpl_gas_start_date }}'
     and t.transaction_type in (
@@ -47,6 +48,8 @@ with base_transactions as (
 prices as (
   select
     p.timestamp,
+    p.contract_address,
+    p.symbol,
     p.price
   from {{ source('prices_external', 'hour') }} as p
   where p.blockchain = 'xrpl'
@@ -68,7 +71,13 @@ select
   b.tx_to,
   cast(null as double) as gas_price,
   cast(null as bigint) as gas_used,
-  'XRP' as currency_symbol,
+  coalesce(
+    case
+      when b.price_contract_address = 0x0000000000000000000000000000000000000000 then 'XRP'
+      else cast(null as varchar)
+    end,
+    p.symbol
+  ) as currency_symbol,
   coalesce(b.tx_fee_raw, 0) as tx_fee_raw,
   coalesce(b.tx_fee_raw, 0) / 1000000.0 as tx_fee,
   coalesce(b.tx_fee_raw, 0) / 1000000.0 * p.price as tx_fee_usd,
@@ -82,3 +91,4 @@ select
 from base_transactions as b
 left join prices as p
   on date_trunc('hour', b.block_time) = p.timestamp
+  and b.price_contract_address = p.contract_address

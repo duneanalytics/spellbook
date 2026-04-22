@@ -32,8 +32,18 @@ parsed_nodes as (
     json_extract_scalar(n.final_fields, '$.Account') as final_account,
     json_extract_scalar(n.final_fields, '$.LPTokenBalance.currency') as lp_token_currency,
     json_extract_scalar(n.final_fields, '$.Balance.currency') as balance_currency,
-    try_cast(json_extract_scalar(n.final_fields, '$.Balance.value') as double) as final_balance_value,
-    try_cast(json_extract_scalar(n.previous_fields, '$.Balance.value') as double) as previous_balance_value,
+    try_cast(
+      coalesce(
+        json_extract_scalar(n.final_fields, '$.Balance.value'),
+        json_extract_scalar(n.final_fields, '$.Balance')
+      ) as double
+    ) as final_balance_value,
+    try_cast(
+      coalesce(
+        json_extract_scalar(n.previous_fields, '$.Balance.value'),
+        json_extract_scalar(n.previous_fields, '$.Balance')
+      ) as double
+    ) as previous_balance_value,
     json_extract_scalar(n.final_fields, '$.LowLimit.issuer') as low_limit_issuer,
     json_extract_scalar(n.final_fields, '$.HighLimit.issuer') as high_limit_issuer
   from {{ ref('tokens_xrpl_affected_nodes') }} n
