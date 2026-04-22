@@ -9,6 +9,7 @@
     )
 }}
 
+-- ci-stamp: 1
 select
     token_id
     , '{{ blockchain }}' as blockchain
