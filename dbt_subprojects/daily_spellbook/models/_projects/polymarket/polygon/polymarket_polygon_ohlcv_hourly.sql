@@ -1,16 +1,20 @@
 {{ config(
     schema = 'polymarket_polygon',
     alias = 'ohlcv_hourly',
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
-    tags = ['static']
+    incremental_strategy = 'merge',
+    partition_by = ['block_month'],
+    unique_key = ['block_month', 'hour', 'market_id', 'outcome'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.hour')],
+    merge_skip_unchanged = true,
   )
 }}
 
 with base as (
     select
         date_trunc('hour', block_time)          as hour,
-        condition_id,
+        cast(condition_id as varchar)           as market_id,
         token_outcome,
         asset_id,
         question                                as market_name,
@@ -29,24 +33,27 @@ with base as (
         )                                       as rn_last
     from {{ ref('polymarket_polygon_market_trades') }}
     where token_outcome is not null
+    {% if is_incremental() -%}
+      and {{ incremental_predicate('block_time') }}
+    {%- endif %}
 ),
 
 market_meta as (
     select
         token_id,
-        condition_id,
+        cast(condition_id as varchar)                                           as market_id,
         token_outcome,
         tags                                                                    as category,
         market_end_time,
-        try_cast(substring(market_end_time from 1 for 19) as timestamp)         as market_end_time_ts,
+        try(from_iso8601_timestamp(market_end_time))                            as market_end_time_ts,
         outcome                                                                 as market_outcome
     from {{ ref('polymarket_polygon_market_details') }}
 ),
 
-sparse_ohlcv as (
+new_sparse as (
     select
         b.hour,
-        b.condition_id,
+        b.market_id,
         b.token_outcome,
         max(b.asset_id)                                                         as token_id,
         max(b.market_name)                                                      as market_name,
@@ -58,26 +65,63 @@ sparse_ohlcv as (
         round(sum(b.price_x_shares) / nullif(sum(b.contracts), 0), 6)          as vwap,
         round(sum(b.contracts), 6)                                              as volume_contracts,
         round(sum(b.usd_notional), 6)                                           as volume_usd,
-        count(*)                                                                as trade_count,
-        false                                                                   as is_forward_filled
+        count(*)                                                                as trade_count
     from base b
-    group by b.hour, b.condition_id, b.token_outcome
+    group by b.hour, b.market_id, b.token_outcome
+),
+
+{% if is_incremental() -%}
+-- pre-window sparse anchor from {{ this }} so market_bounds and asof forward-fill stay correct across the window boundary
+prior_sparse as (
+    select
+        t.hour,
+        t.market_id,
+        t.outcome                                                               as token_outcome,
+        cast(null as uint256)                                                   as token_id,
+        t.market_name,
+        t.event_market_name,
+        t.open,
+        t.high,
+        t.low,
+        t.close,
+        t.vwap,
+        t.volume_contracts,
+        t.volume_usd,
+        t.trade_count
+    from {{ this }} t
+    where t.is_forward_filled = false
+      and not {{ incremental_predicate('t.hour') }}
+),
+{% endif %}
+
+sparse_ohlcv as (
+    select
+        hour, market_id, token_outcome, token_id, market_name, event_market_name,
+        open, high, low, close, vwap, volume_contracts, volume_usd, trade_count
+    from new_sparse
+    {% if is_incremental() -%}
+    union all
+    select
+        hour, market_id, token_outcome, token_id, market_name, event_market_name,
+        open, high, low, close, vwap, volume_contracts, volume_usd, trade_count
+    from prior_sparse
+    {%- endif %}
 ),
 
 market_bounds as (
     select
-        condition_id,
+        market_id,
         token_outcome,
         max(token_id)                                                           as token_id,
         min(hour)                                                               as first_hour,
         max(hour)                                                               as last_hour
     from sparse_ohlcv
-    group by condition_id, token_outcome
+    group by market_id, token_outcome
 ),
 
 hour_spine as (
     select
-        mb.condition_id,
+        mb.market_id,
         mb.token_outcome,
         mb.token_id,
         h.timestamp                                                             as hour
@@ -90,7 +134,7 @@ hour_spine as (
 filled as (
     select
         hs.hour,
-        hs.condition_id,
+        hs.market_id,
         hs.token_outcome,
         hs.token_id,
         s.market_name,
@@ -102,19 +146,19 @@ filled as (
         case when hs.hour = s.hour then s.vwap end                             as vwap,
         case when hs.hour = s.hour then s.volume_contracts else 0 end           as volume_contracts,
         case when hs.hour = s.hour then s.volume_usd else 0 end                as volume_usd,
-        case when hs.hour = s.hour then s.trade_count else 0 end               as trade_count,
+        case when hs.hour = s.hour then s.trade_count else 0 end                as trade_count,
         hs.hour != s.hour                                                       as is_forward_filled
     from hour_spine hs
     asof left join sparse_ohlcv s
-        on  s.condition_id  = hs.condition_id
+        on  s.market_id     = hs.market_id
         and s.token_outcome = hs.token_outcome
         and s.hour         <= hs.hour
 ),
 
-with_resolution as (
+with_settlement as (
     select
         f.hour,
-        f.condition_id,
+        f.market_id,
         f.token_outcome,
         f.token_id,
         f.market_name,
@@ -122,6 +166,15 @@ with_resolution as (
         f.open,
         f.high,
         f.low,
+        f.close,
+        f.vwap,
+        f.volume_contracts,
+        f.volume_usd,
+        f.trade_count,
+        m.category,
+        m.market_end_time,
+        m.market_outcome,
+        f.is_forward_filled,
         case
             when m.market_end_time_ts is not null
                  and f.hour > m.market_end_time_ts
@@ -132,26 +185,40 @@ with_resolution as (
                     when f.token_outcome = 'Yes' and m.market_outcome = 'no'  then 0.0
                     when f.token_outcome = 'No'  and m.market_outcome = 'yes' then 0.0
                     when f.token_outcome = 'No'  and m.market_outcome = 'no'  then 1.0
-                    else f.close
                 end
-            else f.close
-        end                                                                     as close,
-        f.vwap,
-        f.volume_contracts,
-        f.volume_usd,
-        f.trade_count,
-        m.category,
-        m.market_end_time,
-        m.market_outcome,
-        f.is_forward_filled
+        end                                                                     as settled_price
     from filled f
     left join market_meta m
         on f.token_id = m.token_id
+),
+
+with_resolution as (
+    select
+        hour,
+        market_id,
+        token_outcome,
+        token_id,
+        market_name,
+        event_market_name,
+        coalesce(settled_price, open)                                           as open,
+        coalesce(settled_price, high)                                           as high,
+        coalesce(settled_price, low)                                            as low,
+        coalesce(settled_price, close)                                          as close,
+        vwap,
+        volume_contracts,
+        volume_usd,
+        trade_count,
+        category,
+        market_end_time,
+        market_outcome,
+        is_forward_filled
+    from with_settlement
 )
 
 select
+    cast(date_trunc('month', r.hour) as date)                                   as block_month,
     r.hour,
-    cast(r.condition_id as varchar)                                             as market_id,
+    r.market_id,
     r.market_name,
     r.token_outcome                                                             as outcome,
     r.category,
@@ -166,5 +233,9 @@ select
     r.market_end_time,
     r.market_outcome,
     r.event_market_name,
-    r.is_forward_filled
+    r.is_forward_filled,
+    now()                                                                       as _updated_at
 from with_resolution r
+{% if is_incremental() -%}
+where {{ incremental_predicate('r.hour') }}
+{%- endif %}
