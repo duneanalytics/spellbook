@@ -13,7 +13,6 @@
   )
 }}
 
--- ci-stamp: 1
 {% set stellar_transfer_start_date = '2026-01-01' %} -- ci test, revert to '2015-09-30'
 {% set xlm_decimals = 7 %}
 {% set xlm_contract_id = 'CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA' %}
@@ -37,7 +36,7 @@ base_transfers as (
     t.to,
     t.to_muxed,
     t.to_muxed_id,
-    t.contract_id as contract_address,
+    t.contract_id,
     t.asset,
     t.asset_type,
     t.asset_code,
@@ -93,7 +92,7 @@ select
   b.to,
   b.to_muxed,
   b.to_muxed_id,
-  b.contract_address,
+  b.contract_id,
   b.asset,
   b.asset_type,
   b.asset_code,
@@ -111,4 +110,4 @@ select
 from base_transfers b
 left join prices p
   on date_trunc('hour', b.block_time) = p.timestamp
-  and b.contract_address = p.contract_address
+  and b.contract_id = p.contract_address

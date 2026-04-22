@@ -22,12 +22,16 @@ models:
     columns:
       - name: unique_key
         description: "Surrogate key to identify unique row"
+        tests:
+          - not_null
       - name: blockchain
         description: "The blockchain of the transfers"
       - name: block_month
         description: "The month of the block"
       - name: block_date
         description: "The date of the block"
+        tests:
+          - not_null
       - name: block_time
         description: "The ledger close time"
       - name: ledger_sequence
@@ -48,7 +52,7 @@ models:
         description: "Muxed recipient address when present"
       - name: to_muxed_id
         description: "Muxed recipient id when present"
-      - name: contract_address
+      - name: contract_id
         description: "Stellar Asset Contract (SAC) or Soroban contract id for the asset transferred"
       - name: asset
         description: "Full asset identifier (native or CODE:ISSUER)"
