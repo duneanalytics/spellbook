@@ -15,7 +15,7 @@ SELECT
     , block_date
     , approx_distinct(tx_hash) AS tx_count
 FROM
-    {{ ref('tokens_xrpl_transfers') }}
+    {{ source('tokens_xrpl', 'transfers') }}
 WHERE
     amount_usd >= 1  -- $1 filter for significant transactions
     {% if is_incremental() %}

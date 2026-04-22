@@ -465,3 +465,29 @@ models:
       - *transaction_result
       - *partial_payment_flag
       - *updated_at
+
+  - name: tokens_xrpl_net_transfers_daily
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL daily net transfer volume."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'net_transfers', 'xrpl']
+    description: "Daily XRPL net transfer volume in USD, computed by netting sender and receiver address flows within each day."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+    columns:
+      - name: blockchain
+        description: "The blockchain of the transfer volume."
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "The date of the transfer volume bucket."
+        data_tests:
+          - not_null
+      - name: net_transfer_amount_usd
+        description: "The total positive net USD transfer volume for the day."

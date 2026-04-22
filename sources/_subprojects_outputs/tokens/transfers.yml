@@ -361,6 +361,7 @@ sources:
     tables:
       - name: transaction_metadata
       - name: transfers
+      - name: net_transfers_daily
 
   - name: tokens_unichain
     tables:
