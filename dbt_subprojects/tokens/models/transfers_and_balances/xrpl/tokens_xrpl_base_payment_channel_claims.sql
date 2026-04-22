@@ -48,36 +48,54 @@ paychannel_nodes as (
   where n.transaction_type = 'PaymentChannelClaim'
     and n.transaction_result = 'tesSUCCESS'
     and n.ledger_entry_type = 'PayChannel'
+),
+
+paychannel_claims as (
+  select
+    t.blockchain,
+    t.block_month,
+    t.block_date,
+    t.block_time,
+    t.block_number,
+    t.tx_hash,
+    t.tx_from,
+    t.tx_to,
+    t.tx_index,
+    n.channel_account as "from",
+    n.channel_destination as to,
+    n.balance_currency as currency,
+    try_cast(n.final_balance_value as double) - try_cast(n.previous_balance_value as double) as amount_raw,
+    t.transaction_type,
+    t.transaction_result
+  from payment_channel_transactions t
+  inner join paychannel_nodes n
+    on t.tx_hash = n.tx_hash
 )
 
 select
-  {{ dbt_utils.generate_surrogate_key(['t.tx_hash']) }} as unique_key,
-  t.blockchain,
-  t.block_month,
-  t.block_date,
-  t.block_time,
-  t.block_number,
-  t.tx_hash,
+  {{ dbt_utils.generate_surrogate_key(['p.tx_hash']) }} as unique_key,
+  p.blockchain,
+  p.block_month,
+  p.block_date,
+  p.block_time,
+  p.block_number,
+  p.tx_hash,
   'native' as token_standard,
-  t.tx_from,
-  t.tx_to,
-  t.tx_index,
-  n.channel_account as "from",
-  n.channel_destination as to,
+  p.tx_from,
+  p.tx_to,
+  p.tx_index,
+  p."from",
+  p.to,
   'xrp' as xrpl_asset_id,
   'rrrrrrrrrrrrrrrrrrrrrhoLvTp' as issuer,
-  coalesce(n.balance_currency, 'XRP') as currency,
+  coalesce(p.currency, 'XRP') as currency,
   cast(null as varchar) as currency_hex,
-  try_cast(n.final_balance_value as double) - try_cast(n.previous_balance_value as double) as amount_raw,
-  (
-    try_cast(n.final_balance_value as double) - try_cast(n.previous_balance_value as double)
-  ) / 1000000.0 as amount,
+  p.amount_raw,
+  p.amount_raw / 1000000.0 as amount,
   'payment_channel_claim' as transfer_type,
-  t.transaction_type,
-  t.transaction_result,
+  p.transaction_type,
+  p.transaction_result,
   false as partial_payment_flag,
   current_timestamp as _updated_at
-from payment_channel_transactions t
-inner join paychannel_nodes n
-  on t.tx_hash = n.tx_hash
-where amount_raw > 0
+from paychannel_claims p
+where p.amount_raw > 0
