@@ -13,7 +13,8 @@ models:
       Stellar token transfers sourced from stellar.token_transfers, covering classic
       payment/path_payment/claimable_balance/fee operations as well as Soroban contract
       transfer/mint/burn events. Amounts are scaled using Stellar's canonical 7 decimals
-      and USD valuation is joined for the native XLM asset from prices_external.hour.
+      and USD valuation is joined from prices_external.hour for native XLM and priced
+      classic Stellar assets when a matching hourly price is available.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -71,9 +72,9 @@ models:
       - name: amount
         description: "The scaled amount of the transfer"
       - name: price_usd
-        description: "The USD price used to calculate amount_usd (native XLM only)"
+        description: "The hourly USD price used to calculate amount_usd when a matching Stellar asset price is available"
       - name: amount_usd
-        description: "The USD amount of the transfer (native XLM only)"
+        description: "The USD amount of the transfer when a matching Stellar asset price is available"
       - name: event_topic
         description: "Soroban event topic (e.g. transfer, mint, burn, fee)"
       - name: event_type

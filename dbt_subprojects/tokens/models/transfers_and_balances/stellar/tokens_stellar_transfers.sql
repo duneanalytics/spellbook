@@ -41,6 +41,10 @@ base_transfers as (
     t.asset_type,
     t.asset_code,
     t.asset_issuer,
+    case
+      when t.asset_type = 'native' then '{{ xlm_contract_id }}'
+      when t.asset_type like 'credit_alphanum%' then replace(t.asset, ':', '-')
+    end as price_join_key,
     t.amount_raw,
     t.event_topic,
     t.event_type,
@@ -51,7 +55,7 @@ base_transfers as (
     {% if is_incremental() %}
     and {{ incremental_predicate('t.closed_at') }}
     {% endif %}
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
 ),
 
 prices as (
@@ -60,7 +64,7 @@ prices as (
     case
       when p.contract_address_varchar = '{{ xlm_native_price_address_varchar }}'
         then '{{ xlm_contract_id }}'
-      else p.contract_address_varchar
+      else from_utf8(from_hex(substr(p.contract_address_varchar, 3)))
     end as contract_address,
     p.symbol,
     p.decimals,
@@ -110,4 +114,4 @@ select
 from base_transfers b
 left join prices p
   on date_trunc('hour', b.block_time) = p.timestamp
-  and b.contract_id = p.contract_address
+  and b.price_join_key = p.contract_address
