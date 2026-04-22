@@ -13,9 +13,7 @@
 
 {% set xrpl_gas_start_date = '2012-06-01' %}
 
-with
-
-base_transactions as (
+with base_transactions as (
   select
     t.blockchain,
     t.block_month,
@@ -29,7 +27,7 @@ base_transactions as (
     t.transaction_type,
     t.transaction_result,
     try_cast(t.fee as double) as tx_fee_raw
-  from {{ source('tokens_xrpl', 'transaction_metadata') }} as t
+  from {{ ref('tokens_xrpl_transaction_metadata') }} as t
   where t.block_date >= date '{{ xrpl_gas_start_date }}'
     and t.transaction_type in (
       'Payment',

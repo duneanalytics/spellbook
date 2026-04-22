@@ -10,21 +10,9 @@
   )
 }}
 
-with fees as (
-  select
-    blockchain,
-    block_date,
-    sum(tx_fee_usd) as gas_fees_usd
-  from {{ source('gas_xrpl', 'fees') }}
-  where blockchain = 'xrpl'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('block_date') }}
-    {% endif %}
-  group by 1, 2
-)
-
+-- Temporary placeholder while XRPL gas outputs stay in the tokens rollout path.
 select
-  blockchain,
-  block_date,
-  gas_fees_usd
-from fees
+  cast('xrpl' as varchar) as blockchain,
+  cast(null as date) as block_date,
+  cast(null as double) as gas_fees_usd
+where false
