@@ -1,0 +1,108 @@
+name: Deploy Lock
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: lock or unlock
+        required: true
+        type: choice
+        options:
+          - lock
+          - unlock
+      scope:
+        description: Scope to lock (ignored on unlock)
+        required: false
+        type: choice
+        options:
+          - all
+          - dex
+          - daily
+          - hourly
+          - solana
+          - tokens
+          - shared
+        default: all
+      reason:
+        description: Why are you locking?
+        required: false
+        type: string
+        default: ''
+      ttl_hours:
+        description: Auto-release after N hours
+        required: false
+        type: number
+        default: 4
+
+permissions:
+  issues: write
+  pull-requests: read
+  statuses: write
+  contents: read
+
+concurrency:
+  group: deploy-lock
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      STATE_LABEL: deploy-lock-state
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find or create state issue
+        id: state
+        run: |
+          num=$(gh issue list --label "$STATE_LABEL" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$num" ]; then
+            url=$(gh issue create \
+              --title 'Deploy Lock: unlocked' \
+              --label "$STATE_LABEL" \
+              --body '{"locked":false}')
+            num="${url##*/}"
+          fi
+          echo "num=$num" >> "$GITHUB_OUTPUT"
+
+      - name: Write new state
+        run: |
+          if [ "${{ inputs.action }}" = 'lock' ]; then
+            ttl=${{ inputs.ttl_hours }}
+            now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            expires=$(python3 -c "import datetime; print((datetime.datetime.utcnow() + datetime.timedelta(hours=${ttl})).strftime('%Y-%m-%dT%H:%M:%SZ'))")
+            jq -n \
+              --arg scope "${{ inputs.scope }}" \
+              --arg reason "${{ inputs.reason }}" \
+              --arg owner "${{ github.actor }}" \
+              --arg now "$now" \
+              --arg expires "$expires" \
+              '{locked:true, scope:$scope, reason:$reason, owner:$owner, created_at:$now, expires_at:$expires}' > /tmp/state.json
+            title="Deploy Lock: LOCKED (scope=${{ inputs.scope }}, expires $expires)"
+          else
+            echo '{"locked":false}' > /tmp/state.json
+            title='Deploy Lock: unlocked'
+          fi
+          gh issue edit "${{ steps.state.outputs.num }}" --title "$title" --body-file /tmp/state.json
+
+      - name: Slack notify
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: env.SLACK_WEBHOOK_URL != ''
+        run: |
+          if [ "${{ inputs.action }}" = 'lock' ]; then
+            text=":lock: Deploy lock ACTIVE by ${{ github.actor }}. Scope: \`${{ inputs.scope }}\`. Expires in ${{ inputs.ttl_hours }}h. Reason: ${{ inputs.reason }}. PRs labeled \`hotfix\` still mergeable."
+          else
+            text=":unlock: Deploy lock RELEASED by ${{ github.actor }}."
+          fi
+          jq -n --arg t "$text" '{text:$t}' | curl -sS -X POST -H 'content-type: application/json' --data @- "$SLACK_WEBHOOK_URL"
+
+      - name: Refresh statuses on open PRs
+        run: |
+          STATE_JSON="$(cat /tmp/state.json)"
+          export STATE_JSON
+          for pr in $(gh pr list --state open --json number --jq '.[].number'); do
+            ./.github/scripts/deploy_lock_status.sh "$pr" || echo "status refresh failed for PR #$pr"
+          done

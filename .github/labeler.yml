@@ -17,3 +17,9 @@
 "dbt: tokens":
 - changed-files:
     - any-glob-to-any-file: 'dbt_subprojects/tokens/**'
+
+"dbt: shared":
+- changed-files:
+    - any-glob-to-any-file:
+        - 'sources/**'
+        - 'dbt_macros/**'
