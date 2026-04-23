@@ -31,11 +31,11 @@ parsed_nodes as (
     n.ledger_entry_type,
     json_extract_scalar(n.final_fields, '$.Account') as final_account,
     json_extract_scalar(n.final_fields, '$.LPTokenBalance.currency') as lp_token_currency,
-    json_extract_scalar(n.final_fields, '$.Balance.currency') as balance_currency,
+    json_extract_scalar(coalesce(n.final_fields, n.new_fields), '$.Balance.currency') as balance_currency,
     try_cast(
       coalesce(
-        json_extract_scalar(n.final_fields, '$.Balance.value'),
-        json_extract_scalar(n.final_fields, '$.Balance')
+        json_extract_scalar(coalesce(n.final_fields, n.new_fields), '$.Balance.value'),
+        json_extract_scalar(coalesce(n.final_fields, n.new_fields), '$.Balance')
       ) as double
     ) as final_balance_value,
     try_cast(
@@ -44,8 +44,8 @@ parsed_nodes as (
         json_extract_scalar(n.previous_fields, '$.Balance')
       ) as double
     ) as previous_balance_value,
-    json_extract_scalar(n.final_fields, '$.LowLimit.issuer') as low_limit_issuer,
-    json_extract_scalar(n.final_fields, '$.HighLimit.issuer') as high_limit_issuer
+    json_extract_scalar(coalesce(n.final_fields, n.new_fields), '$.LowLimit.issuer') as low_limit_issuer,
+    json_extract_scalar(coalesce(n.final_fields, n.new_fields), '$.HighLimit.issuer') as high_limit_issuer
   from {{ ref('tokens_xrpl_affected_nodes') }} n
   where n.transaction_type in ('AMMDeposit', 'AMMWithdraw')
     and n.transaction_result = 'tesSUCCESS'
@@ -91,9 +91,9 @@ pool_trustline_deltas as (
     end as token_issuer,
     case
       when n.low_limit_issuer = a.pool_account
-        then n.final_balance_value - n.previous_balance_value
+        then coalesce(n.final_balance_value, 0.0) - coalesce(n.previous_balance_value, 0.0)
       when n.high_limit_issuer = a.pool_account
-        then -1 * (n.final_balance_value - n.previous_balance_value)
+        then -1 * (coalesce(n.final_balance_value, 0.0) - coalesce(n.previous_balance_value, 0.0))
       else cast(null as double)
     end as pool_balance_delta
   from parsed_nodes n
@@ -104,7 +104,6 @@ pool_trustline_deltas as (
       n.low_limit_issuer = a.pool_account
       or n.high_limit_issuer = a.pool_account
     )
-    and n.previous_balance_value is not null
 ),
 
 all_pool_deltas as (
