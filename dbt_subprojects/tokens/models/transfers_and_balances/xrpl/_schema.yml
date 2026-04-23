@@ -420,12 +420,12 @@ models:
             - block_date
             - tx_hash
             - transfer_type
+            - xrpl_asset_id
           check_columns:
             - token_standard
             - tx_from
             - tx_to
             - tx_index
-            - xrpl_asset_id
             - issuer
             - currency
             - currency_hex
