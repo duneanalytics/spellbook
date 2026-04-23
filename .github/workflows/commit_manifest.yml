@@ -19,13 +19,13 @@ jobs:
       max-parallel: 1
 
     steps:
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v6
     - name: Set up uv
-      uses: astral-sh/setup-uv@v5
+      uses: astral-sh/setup-uv@v8
       with:
         enable-cache: true
     - name: Checkout main branch
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
       with:
         ref: main
 
