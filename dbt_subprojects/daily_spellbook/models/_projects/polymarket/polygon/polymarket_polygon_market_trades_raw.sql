@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
-    unique_key = ['block_month','block_time','asset_id','evt_index','tx_hash'],
+    unique_key = ['block_month','block_time','asset_id','evt_index','tx_hash','contract_address'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
