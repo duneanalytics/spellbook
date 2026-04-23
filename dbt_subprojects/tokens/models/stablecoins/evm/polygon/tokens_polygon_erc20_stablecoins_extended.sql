@@ -19,7 +19,8 @@ from (values
      (0x4fb71290ac171e1d144f7221d882becac7196eb5, 'TRY'), -- TRYB
      (0xd687759f35bb747a29246a4b9495c8f52c49e00c, 'AUD'), -- AUDX
      (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF'), -- ZCHF
-     (0x18ec0a6e18e5bc3784fdd3a3634b31245ab704f6, 'EUR')  -- EURe
+     (0x18ec0a6e18e5bc3784fdd3a3634b31245ab704f6, 'EUR'), -- EURe
+     (0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb, 'USD')  -- pUSD (Polymarket USD)
 
      /* yield-bearing / rebasing tokens
      (0xaf0d9d65fc54de245cda37af3d18cbec860a4d4b, 'USD'), -- wUSDR
