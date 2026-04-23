@@ -24,18 +24,18 @@ jobs:
       - name: Setup variables
         run: |
             echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
-      
+
+      - name: Sync Python dependencies
+        run: uv sync --locked
+
       - name: dbt dependencies
-        run: "dbt deps"
+        run: "uv run dbt deps"
 
       - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
-        run: "./scripts/ensure_cluster.sh"
-      
-      - name: Install Python dependencies
-        run: uv sync --locked
-      
+        run: "uv run bash ./scripts/ensure_cluster.sh"
+
       - name: Create Manifest
-        run: "dbt compile --profiles-dir $HOME/.dbt --profile dunesql"
+        run: "uv run dbt compile --profiles-dir $HOME/.dbt --profile dunesql"
 
       - name: Upload translation status CSV to Dune
         env:
