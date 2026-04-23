@@ -38,7 +38,6 @@ with base_transactions as (
       'AMMWithdraw',
       'EscrowFinish'
     )
-    and t.transaction_result = 'tesSUCCESS'
     and try_cast(t.fee as double) > 0
     {% if is_incremental() %}
     and {{ incremental_predicate('t.block_date') }}
