@@ -24,6 +24,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Sync Python dependencies
+        run: uv sync --locked
       - uses: jitterbit/get-changed-files@v1
         id: abc
         with:
@@ -34,12 +40,12 @@ jobs:
         run: |
           echo "FILES=$(echo ${{ steps.abc.outputs.added_modified }})" >> $GITHUB_ENV
       - name: dbt dependencies
-        run: "dbt deps"
+        run: "uv run dbt deps"
       - name: dbt compile
-        run: "dbt compile"
+        run: "uv run dbt compile"
       - name: check schemas
         run: |
-          test=$(dbt --quiet --no-print ls --select config.schema:no_schema --output path)
+          test=$(uv run dbt --quiet --no-print ls --select config.schema:no_schema --output path)
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
       - uses: pre-commit/action@v3.0.0
         # Apologies for the hideously long line. Tried to get the Action to respect a multiline if but no dice.
