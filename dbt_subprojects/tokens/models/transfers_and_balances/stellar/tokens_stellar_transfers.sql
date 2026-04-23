@@ -13,7 +13,7 @@
   )
 }}
 
-{% set stellar_transfer_start_date = '2026-01-01' %} -- ci test, revert to '2015-09-30'
+{% set stellar_transfer_start_date = '2015-09-30' %}
 {% set xlm_decimals = 7 %}
 {% set xlm_contract_id = 'CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA' %}
 {% set xlm_native_price_address_varchar = '0x0000000000000000000000000000000000000000' %}
