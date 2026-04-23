@@ -7,17 +7,15 @@ description: Run dbt CLI commands (compile, ls, test, run, etc.) in the spellboo
 
 ## Prerequisites
 
-dbt commands require an active pipenv shell. Before running any dbt command:
+dbt commands require project dependencies synced with uv. Before running any dbt command:
 
-1. **Check for an active pipenv shell** — look at the terminals folder for a terminal with `pipenv shell` running.
-2. **If no pipenv shell exists**, run these from the **repo root**:
+1. **Sync the project environment** from the **repo root**:
 
 ```bash
-pipenv install   # only needed on first setup or after Pipfile changes
-pipenv shell
+uv sync --locked
 ```
 
-3. **Navigate to the correct sub-project directory** before running dbt commands:
+2. **Navigate to the correct sub-project directory** before running dbt commands:
 
 ```bash
 cd dbt_subprojects/<project_name>/
@@ -42,35 +40,35 @@ The repo has six sub-projects under `dbt_subprojects/`:
 
 All dbt commands must be run from inside a sub-project directory (`dbt_subprojects/<project_name>/`).
 
-### Using `pipenv run` from the Shell tool
+### Using `uv run` from the Shell tool
 
-The Shell tool starts a fresh shell without the user's active `pipenv shell` session. Use `pipenv run` to execute dbt commands without needing to enter the shell first:
-
-```bash
-pipenv run dbt compile -s model_name --project-dir dbt_subprojects/<project_name>/
-```
-
-Or navigate first, then use `pipenv run`:
+The Shell tool starts a fresh shell. Use `uv run` to execute dbt commands in the project's locked environment:
 
 ```bash
-cd dbt_subprojects/<project_name>/ && pipenv run dbt compile -s model_name
+uv run dbt compile -s model_name --project-dir dbt_subprojects/<project_name>/
 ```
 
-**Important**: Always use `pipenv run` when executing via the Shell tool. Do NOT use bare `dbt` commands — they will fail with "dbt: command not found" since the pipenv shell is not active in the tool's session. Also request `required_permissions: ["all"]` since dbt needs to write log files.
+Or navigate first, then use `uv run`:
+
+```bash
+cd dbt_subprojects/<project_name>/ && uv run dbt compile -s model_name
+```
+
+**Important**: Always use `uv run` when executing via the Shell tool. Do NOT use bare `dbt` commands unless you've manually activated `.venv`.
 
 ### Common commands
 
 ```bash
-pipenv run dbt deps                        # install dbt package dependencies (run once per sub-project)
-pipenv run dbt compile                     # compile all models to target/
-pipenv run dbt compile -s model_name       # compile a single model
-pipenv run dbt ls -s model_name            # list/check model selection
-pipenv run dbt test -s model_name          # run tests for a model
+uv run dbt deps                        # install dbt package dependencies (run once per sub-project)
+uv run dbt compile                     # compile all models to target/
+uv run dbt compile -s model_name       # compile a single model
+uv run dbt ls -s model_name            # list/check model selection
+uv run dbt test -s model_name          # run tests for a model
 ```
 
 ### First time in a sub-project
 
-Run `dbt deps` once before `dbt compile` or other commands to pull dbt package dependencies. Subsequent runs in the same sub-project don't need `dbt deps` again unless `packages.yml` changed.
+Run `uv run dbt deps` once before `dbt compile` or other commands to pull dbt package dependencies. Subsequent runs in the same sub-project don't need `dbt deps` again unless `packages.yml` changed.
 
 ### Compiled output
 
@@ -84,18 +82,18 @@ dbt_subprojects/<project_name>/target/compiled/<project_name>/models/.../model_n
 
 ```bash
 # From repo root — compile a specific model in daily_spellbook
-cd dbt_subprojects/daily_spellbook/ && pipenv run dbt compile -s stablecoins_balances
+cd dbt_subprojects/daily_spellbook/ && uv run dbt compile -s stablecoins_balances
 ```
 
 Or using --project-dir without changing directory:
 
 ```bash
-pipenv run dbt compile -s stablecoins_balances --project-dir dbt_subprojects/daily_spellbook/
+uv run dbt compile -s stablecoins_balances --project-dir dbt_subprojects/daily_spellbook/
 ```
 
 ## Troubleshooting
 
-- **"dbt: command not found"** — Use `pipenv run dbt ...` instead of bare `dbt`. The Shell tool does not share the user's `pipenv shell` session.
+- **"dbt: command not found"** — Run `uv sync --locked` and use `uv run dbt ...`.
 - **Permission errors on log files** — Request `required_permissions: ["all"]` on the Shell tool call so dbt can write to its logs directory.
 - **Compilation errors about missing refs** — You may be in the wrong sub-project. Check where the model file lives.
 - **"Could not find profile"** — Make sure you're targeting a sub-project directory, not the repo root.

@@ -19,11 +19,18 @@ jobs:
       max-parallel: 1
 
     steps:
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v6
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v8
+      with:
+        enable-cache: true
     - name: Checkout main branch
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
       with:
         ref: main
+
+    - name: Sync Python dependencies
+      run: uv sync --locked
 
     - name: Setup variables
       run: |
@@ -35,13 +42,13 @@ jobs:
 
     - name: dbt dependencies
       working-directory: ${{env.PROJECT_DIR}}
-      run: "dbt deps"
+      run: "uv run dbt deps"
 
     - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
-      run: "./scripts/ensure_cluster.sh"
+      run: "uv run bash ./scripts/ensure_cluster.sh"
 
     - name: dbt compile to create prod manifest from main
-      run: "dbt compile --target-path . $PROFILE --project-dir ${PROJECT_DIR}"
+      run: "uv run dbt compile --target-path . $PROFILE --project-dir ${PROJECT_DIR}"
 
     - name: copy old manifest locally
       run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/previous_manifest.json"
