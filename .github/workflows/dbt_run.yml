@@ -15,15 +15,15 @@ jobs:
 
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Set up Python 3.9
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.9"
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8
         with:
           enable-cache: true
 
