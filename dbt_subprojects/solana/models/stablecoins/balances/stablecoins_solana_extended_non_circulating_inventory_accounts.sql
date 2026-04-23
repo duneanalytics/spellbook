@@ -4,7 +4,7 @@
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'non_circulating_inventory_accounts',
+    alias = 'extended_non_circulating_inventory_accounts',
     materialized = 'table',
     file_format = 'delta',
     tags = ['static'],
@@ -12,10 +12,10 @@
   )
 }}
 
--- non-circulating inventory token accounts for spl stablecoins on solana
+-- non-circulating inventory token accounts for spl stablecoins on solana extended lineage
 -- approach:
 -- 1) curate known non-circulating token accounts inline via values() (not dbt seed-backed)
--- 2) derive observed owners from core stablecoin transfer history via from/to token-account matches
+-- 2) derive observed owners from extended stablecoin transfer history via from/to token-account matches
 -- this keeps exclusions generic in runtime logic (no stale-age/threshold heuristics)
 -- source: https://github.com/solana-labs/token-list/blob/main/src/tokens/solana.tokenlist.json
 -- ref: https://www.circle.com/blog/gateway-new-pre-mint-address-for-usdc-on-solana
@@ -47,7 +47,7 @@ relevant_token_accounts as (
     a.token_account,
     a.source_class
   from token_accounts as a
-  inner join {{ ref('tokens_' ~ chain ~ '_spl_stablecoins_core') }} as s
+  inner join {{ ref('tokens_' ~ chain ~ '_spl_stablecoins_extended') }} as s
     on s.token_mint_address = a.token_mint_address
 ),
 
@@ -57,7 +57,7 @@ owner_candidates as (
     a.token_account,
     t.from_owner as address
   from relevant_token_accounts as a
-  inner join {{ ref('stablecoins_' ~ chain ~ '_core_transfers') }} as t
+  inner join {{ ref('stablecoins_' ~ chain ~ '_extended_transfers') }} as t
     on t.token_mint_address = a.token_mint_address
     and a.token_account = t.from_token_account
   where t.block_date >= date '{{ owners_observation_start_date }}'
@@ -69,7 +69,7 @@ owner_candidates as (
     a.token_account,
     t.to_owner as address
   from relevant_token_accounts as a
-  inner join {{ ref('stablecoins_' ~ chain ~ '_core_transfers') }} as t
+  inner join {{ ref('stablecoins_' ~ chain ~ '_extended_transfers') }} as t
     on t.token_mint_address = a.token_mint_address
     and a.token_account = t.to_token_account
   where t.block_date >= date '{{ owners_observation_start_date }}'
