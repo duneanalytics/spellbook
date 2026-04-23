@@ -47,6 +47,7 @@ escrow_nodes as (
   from {{ ref('tokens_xrpl_affected_nodes') }} n
   where n.transaction_type = 'EscrowFinish'
     and n.transaction_result = 'tesSUCCESS'
+    and n.node_action = 'DeletedNode'
     and n.ledger_entry_type = 'Escrow'
 ),
 
