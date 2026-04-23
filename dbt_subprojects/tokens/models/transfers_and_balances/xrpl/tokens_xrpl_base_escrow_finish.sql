@@ -37,7 +37,7 @@ escrow_nodes as (
       end
     ) as amount_currency,
     case
-      when json_extract_scalar(n.final_fields, '$.Amount.currency') = 'XRP' then ''
+      when json_extract_scalar(n.final_fields, '$.Amount.currency') = 'XRP' then cast(null as varchar)
       else json_extract_scalar(n.final_fields, '$.Amount.issuer')
     end as amount_issuer,
     coalesce(
