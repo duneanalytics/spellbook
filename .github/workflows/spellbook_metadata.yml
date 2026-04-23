@@ -11,6 +11,10 @@ jobs:
   
     steps:
       - uses: actions/setup-python@v3
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
       - name: Checkout main branch
         uses: actions/checkout@v2
         with:
@@ -28,9 +32,7 @@ jobs:
         run: "./scripts/ensure_cluster.sh"
       
       - name: Install Python dependencies
-        run: |
-          pip install requests
-          pip install pyyaml
+        run: uv sync --locked
       
       - name: Create Manifest
         run: "dbt compile --profiles-dir $HOME/.dbt --profile dunesql"
@@ -38,4 +40,4 @@ jobs:
       - name: Upload translation status CSV to Dune
         env:
           DUNE_API_KEY_PROD: ${{ secrets.DUNE_API_KEY_PROD }}
-        run: "python scripts/spells_metadata.py"
+        run: "uv run python scripts/spells_metadata.py"
