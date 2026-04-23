@@ -1,6 +1,7 @@
 {%- macro stablecoins_svm_transfers_enrich(
   base_transfers,
-  blockchain
+  blockchain,
+  token_list
 ) %}
 
 select
@@ -30,7 +31,7 @@ select
   t.action,
   t.unique_key
 from {{ base_transfers }} t
-inner join {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins') }} s
+inner join {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_' ~ token_list) }} s
   on s.token_mint_address = t.token_mint_address
 left join {{ source('prices', 'fx_exchange_rates') }} fx
   on fx.base_currency = s.currency
