@@ -6,7 +6,8 @@ on:
   pull_request:
     paths-ignore:
       - 'scripts/**'
-      - 'Pipfile'
+      - 'pyproject.toml'
+      - 'uv.lock'
       - '.gitignore'
       - '.github/**'
 
