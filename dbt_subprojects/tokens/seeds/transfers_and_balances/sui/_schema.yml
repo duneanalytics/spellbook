@@ -1,6 +1,20 @@
 version: 2
 
 seeds:
+  - name: tokens_sui_coin_object_anchor_state_seed
+    config:
+      column_types:
+        block_month: date
+        object_id: varbinary
+        version: uint256
+        block_date: date
+        timestamp_ms: bigint
+        checkpoint: bigint
+        owner_type: varchar
+        receiver: varbinary
+        coin_type: varchar
+        coin_balance: uint256
+
   - name: tokens_sui_object_event_deltas_anchor_seed
     config:
       column_types:
