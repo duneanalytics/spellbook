@@ -33,7 +33,7 @@ where {{ incremental_predicate('m.block_time') }}
       and json_extract_scalar(m.metadata, '$.delivered_amount.currency') is null
       and (
         m.delivered_currency is distinct from 'XRP'
-        or m.delivered_issuer is distinct from ''
+        or m.delivered_issuer is not null
         or m.delivered_value is distinct from json_extract_scalar(m.metadata, '$.delivered_amount')
       )
     )
@@ -42,7 +42,7 @@ where {{ incremental_predicate('m.block_time') }}
       and (
         m.delivered_currency is distinct from json_extract_scalar(m.metadata, '$.delivered_amount.currency')
         or m.delivered_issuer is distinct from case
-          when json_extract_scalar(m.metadata, '$.delivered_amount.currency') = 'XRP' then ''
+          when json_extract_scalar(m.metadata, '$.delivered_amount.currency') = 'XRP' then cast(null as varchar)
           else json_extract_scalar(m.metadata, '$.delivered_amount.issuer')
         end
         or m.delivered_value is distinct from coalesce(

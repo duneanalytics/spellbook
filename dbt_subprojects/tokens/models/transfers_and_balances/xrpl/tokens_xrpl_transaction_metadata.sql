@@ -72,11 +72,13 @@ select
     end
   ) as delivered_currency,
   case
-    when json_extract_scalar(metadata, '$.delivered_amount.currency') is null then case
-      when json_extract_scalar(metadata, '$.delivered_amount') is not null then ''
-      else cast(null as varchar)
-    end
-    when json_extract_scalar(metadata, '$.delivered_amount.currency') = 'XRP' then ''
+    when coalesce(
+      json_extract_scalar(metadata, '$.delivered_amount.currency'),
+      case
+        when json_extract_scalar(metadata, '$.delivered_amount') is not null then 'XRP'
+        else cast(null as varchar)
+      end
+    ) = 'XRP' then cast(null as varchar)
     else json_extract_scalar(metadata, '$.delivered_amount.issuer')
   end as delivered_issuer,
   coalesce(
