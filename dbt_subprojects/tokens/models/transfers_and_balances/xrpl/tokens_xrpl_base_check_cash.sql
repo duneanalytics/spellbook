@@ -46,7 +46,7 @@ check_nodes as (
       end
     ) as send_max_currency,
     case
-      when json_extract_scalar(n.final_fields, '$.SendMax.currency') = 'XRP' then ''
+      when json_extract_scalar(n.final_fields, '$.SendMax.currency') = 'XRP' then cast(null as varchar)
       else json_extract_scalar(n.final_fields, '$.SendMax.issuer')
     end as send_max_issuer
   from {{ ref('tokens_xrpl_affected_nodes') }} n
