@@ -17,5 +17,6 @@
 
 {{ stablecoins_svm_balances_enrich(
   base_balances = ref('stablecoins_' ~ chain ~ '_extended_balances'),
-  blockchain = chain
+  blockchain = chain,
+  token_list = 'extended'
 ) }}
