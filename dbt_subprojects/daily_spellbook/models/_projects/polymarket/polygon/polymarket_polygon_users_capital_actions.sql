@@ -66,7 +66,7 @@ select
   end as symbol,
   amount_raw,
   amount,
-  amount_usd,
+  case when contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then amount else amount_usd end as amount_usd, -- pUSD has no USD price feed yet; treat 1:1 with USDC
   evt_index,
   tx_hash
 from {{ source('tokens_polygon', 'transfers')}}
@@ -101,7 +101,7 @@ select
   end as symbol,
   amount_raw,
   amount,
-  amount_usd,
+  case when contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then amount else amount_usd end as amount_usd, -- pUSD has no USD price feed yet; treat 1:1 with USDC
   evt_index,
   tx_hash
 from {{ source('tokens_polygon', 'transfers')}}
@@ -136,7 +136,7 @@ select distinct
   end as symbol,
   amount_raw,
   amount,
-  amount_usd,
+  case when contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then amount else amount_usd end as amount_usd, -- pUSD has no USD price feed yet; treat 1:1 with USDC
   evt_index,
   tx_hash
 from {{ source('tokens_polygon', 'transfers')}}
@@ -167,7 +167,7 @@ select
   end as symbol,
   amount_raw,
   amount,
-  amount_usd,
+  case when contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then amount else amount_usd end as amount_usd, -- pUSD has no USD price feed yet; treat 1:1 with USDC
   evt_index,
   tx_hash
 from {{ source('tokens_polygon', 'transfers')}}
