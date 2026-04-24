@@ -9,11 +9,7 @@
 {% set uint256_max_double = '1.0e77' %}
 
 {% if use_non_circulating_inventory %}
-  {% if token_list == 'core' %}
-    {% set non_circulating_inventory_relation = ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_accounts') %}
-  {% else %}
-    {% set non_circulating_inventory_relation = ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_non_circulating_inventory_accounts') %}
-  {% endif %}
+  {% set non_circulating_inventory_relation = ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_non_circulating_inventory_accounts') %}
 {% endif %}
 
 with
