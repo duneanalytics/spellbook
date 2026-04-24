@@ -16,7 +16,7 @@
 -- Any returned row means anchor reconstruction failed for that object boundary,
 -- which can distort downstream deltas/transfer derivation.
 
-{% set sui_transfer_start_date = '2023-04-12' %}
+{% set sui_transfer_start_date = '2026-01-01' %} -- ci test, revert to '2023-04-12'
 
 with
 
