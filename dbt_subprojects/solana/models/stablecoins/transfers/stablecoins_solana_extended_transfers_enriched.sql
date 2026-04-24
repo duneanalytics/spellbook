@@ -18,5 +18,6 @@
 
 {{ stablecoins_svm_transfers_enrich(
   base_transfers = ref('stablecoins_' ~ chain ~ '_extended_transfers'),
-  blockchain = chain
+  blockchain = chain,
+  token_list = 'extended'
 ) }}
