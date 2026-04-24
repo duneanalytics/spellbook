@@ -27,11 +27,14 @@ from (values
      (0x8a1d45e102e886510e891d2ec656a708991e2d76, 'COP'), -- wCOP
      (0x61d450a098b6a7f69fc4b98ce68198fe59768651, 'CLP'), -- wCLP
      (0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'PEN'), -- wPEN
-     (0x09d4214c03d01f49544c0448dbe3a27f768f2b34, 'USD')  -- rUSD
+     (0x09d4214c03d01f49544c0448dbe3a27f768f2b34, 'USD'), -- rUSD
+     (0x16f93ebc5320c89efc8701577efe49d14a276a06, 'CAD'), -- CADD
+     (0x46c85152bfe9f96829aa94755d9f915f9b10ef5f, 'NGN')  -- cNGN (new contract)
 
      /* yield-bearing / rebasing tokens
      (0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 'USD'), -- USD+
      (0xcc7ff230365bd730ee4b352cc2492cedac49383e, 'USD'), -- hyUSD
+     (0x5875eee11cf8398102fdad704c9e96607675467a, 'USD'), -- sUSDS (savings USDS)
      */
 
      /* rebasing / interest accruing tokens
