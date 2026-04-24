@@ -217,32 +217,63 @@ swaps_filtered AS (
         {% endif %}
 ),
 
-{# Buffer swaps move underlying through Wrap/Unwrap; Vault_evt_Swap amounts are shares. Match closest Wrap before / Unwrap after swap by evt_index. #}
+{# Buffer swaps move underlying through Wrap/Unwrap; match nearest Wrap/Unwrap by evt_index with one-to-one mutual-nearest assignment. #}
+wrap_candidates AS (
+    SELECT
+        s.evt_tx_hash,
+        s.evt_index AS swap_evt_index,
+        w.evt_index AS wrap_evt_index,
+        w.depositedUnderlying,
+        ROW_NUMBER() OVER (
+            PARTITION BY s.evt_tx_hash, s.evt_index
+            ORDER BY ABS(CAST(w.evt_index AS bigint) - CAST(s.evt_index AS bigint)), w.evt_index ASC
+        ) AS rn_swap,
+        ROW_NUMBER() OVER (
+            PARTITION BY w.evt_tx_hash, w.evt_index
+            ORDER BY ABS(CAST(w.evt_index AS bigint) - CAST(s.evt_index AS bigint)), s.evt_index ASC
+        ) AS rn_event
+    FROM swaps_filtered s
+    INNER JOIN {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Wrap) }} w
+        ON w.evt_tx_hash = s.evt_tx_hash
+        AND w.mintedShares = s.amountIn
+        AND w.wrappedToken = s.tokenIn
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('w.evt_block_time') }}
+        {% endif %}
+),
+
 wrap_for_swap AS (
     SELECT
         evt_tx_hash,
         swap_evt_index,
         depositedUnderlying
-    FROM (
-        SELECT
-            s.evt_tx_hash,
-            s.evt_index AS swap_evt_index,
-            w.depositedUnderlying,
-            ROW_NUMBER() OVER (
-                PARTITION BY s.evt_tx_hash, s.evt_index
-                ORDER BY w.evt_index DESC
-            ) AS rn
-        FROM swaps_filtered s
-        INNER JOIN {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Wrap) }} w
-            ON w.evt_tx_hash = s.evt_tx_hash
-            AND w.mintedShares = s.amountIn
-            AND w.wrappedToken = s.tokenIn
-            AND w.evt_index < s.evt_index
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('w.evt_block_time') }}
-            {% endif %}
-    ) t
-    WHERE t.rn = 1
+    FROM wrap_candidates
+    WHERE rn_swap = 1
+        AND rn_event = 1
+),
+
+unwrap_candidates AS (
+    SELECT
+        s.evt_tx_hash,
+        s.evt_index AS swap_evt_index,
+        u.evt_index AS unwrap_evt_index,
+        u.withdrawnUnderlying,
+        ROW_NUMBER() OVER (
+            PARTITION BY s.evt_tx_hash, s.evt_index
+            ORDER BY ABS(CAST(u.evt_index AS bigint) - CAST(s.evt_index AS bigint)), u.evt_index ASC
+        ) AS rn_swap,
+        ROW_NUMBER() OVER (
+            PARTITION BY u.evt_tx_hash, u.evt_index
+            ORDER BY ABS(CAST(u.evt_index AS bigint) - CAST(s.evt_index AS bigint)), s.evt_index ASC
+        ) AS rn_event
+    FROM swaps_filtered s
+    INNER JOIN {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Unwrap) }} u
+        ON u.evt_tx_hash = s.evt_tx_hash
+        AND u.burnedShares = s.amountOut
+        AND u.wrappedToken = s.tokenOut
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('u.evt_block_time') }}
+        {% endif %}
 ),
 
 unwrap_for_swap AS (
@@ -250,26 +281,9 @@ unwrap_for_swap AS (
         evt_tx_hash,
         swap_evt_index,
         withdrawnUnderlying
-    FROM (
-        SELECT
-            s.evt_tx_hash,
-            s.evt_index AS swap_evt_index,
-            u.withdrawnUnderlying,
-            ROW_NUMBER() OVER (
-                PARTITION BY s.evt_tx_hash, s.evt_index
-                ORDER BY u.evt_index ASC
-            ) AS rn
-        FROM swaps_filtered s
-        INNER JOIN {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Unwrap) }} u
-            ON u.evt_tx_hash = s.evt_tx_hash
-            AND u.burnedShares = s.amountOut
-            AND u.wrappedToken = s.tokenOut
-            AND u.evt_index > s.evt_index
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('u.evt_block_time') }}
-            {% endif %}
-    ) t
-    WHERE t.rn = 1
+    FROM unwrap_candidates
+    WHERE rn_swap = 1
+        AND rn_event = 1
 ),
 
 dexs AS (
