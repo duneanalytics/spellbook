@@ -104,7 +104,9 @@ select
   t.takerAmountFilled as taker_amount_raw,
   t.contract_address,
   t.evt_index,
-  t.evt_tx_hash as tx_hash
+  t.evt_tx_hash as tx_hash,
+  t.makerAssetId AS maker_asset_id,
+  t.takerAssetID AS taker_asset_id
 from {{ source('polymarket_polygon', 'CTFExchange_evt_OrderFilled') }} t
   inner join {{ ref('polymarket_polygon_base_ctf_tokens') }} ctf on coalesce(nullif(t.makerAssetId, 0), nullif(t.takerAssetID, 0)) = ctf.token0
 {% if is_incremental() %}
@@ -135,7 +137,9 @@ select
   t.takerAmountFilled as taker_amount_raw,
   t.contract_address,
   t.evt_index,
-  t.evt_tx_hash as tx_hash
+  t.evt_tx_hash as tx_hash,
+  t.makerAssetId AS maker_asset_id,
+  t.takerAssetID AS taker_asset_id
 from {{ source('polymarket_polygon', 'NegRiskCtfExchange_evt_OrderFilled') }} t
   inner join {{ ref('polymarket_polygon_base_ctf_tokens') }} ctf on coalesce(nullif(t.makerAssetId, 0), nullif(t.takerAssetID, 0)) = ctf.token0
 {% if is_incremental() %}

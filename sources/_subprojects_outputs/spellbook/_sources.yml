@@ -38,6 +38,7 @@ sources:
   - name: addresses_events_polygon
     tables:
       - name: first_funded_by
+      - name: first_token_received
   - name: addresses_events_scroll
     tables:
       - name: first_funded_by

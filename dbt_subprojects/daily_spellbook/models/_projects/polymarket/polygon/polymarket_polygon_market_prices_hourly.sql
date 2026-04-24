@@ -214,13 +214,12 @@ forward_fill as (
     and (lp.next_update_hour is null or th.hour < lp.next_update_hour)
 ),
 
--- parse market end timestamps and resolution metadata used for post-resolution price correction
+-- use parsed market end timestamps and final prices from market details
 market_details_enriched as (
   select
     md.token_id,
-    try_cast(substring(md.market_end_time from 1 for 19) as timestamp) as market_end_time_ts,
-    md.token_outcome,
-    md.outcome
+    md.market_end_time_parsed as market_end_time_ts,
+    md.final_price
   from {{ ref('polymarket_polygon_market_details') }} md
 ),
 
@@ -233,14 +232,7 @@ price_correction as (
     ff.token_id,
     case
       when ff.hour <= md.market_end_time_ts then ff.price
-      when ff.hour > md.market_end_time_ts then
-        case
-          when md.token_outcome = 'Yes' and md.outcome = 'yes' then 1
-          when md.token_outcome = 'Yes' and md.outcome = 'no' then 0
-          when md.token_outcome = 'No' and md.outcome = 'yes' then 0
-          when md.token_outcome = 'No' and md.outcome = 'no' then 1
-          else ff.price
-        end
+      when ff.hour > md.market_end_time_ts then coalesce(md.final_price, ff.price)
       else ff.price
     end as price
   from forward_fill ff

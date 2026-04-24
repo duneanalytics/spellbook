@@ -173,6 +173,8 @@ models:
         description: "Concrete outcome being bet on (e.g., Trump wins 2024 election?)"
       - name: polymarket_link
         description: "Link to the Polymarket site (may be broken for archived markets)"
+      - name: polymarket_link_slug
+        description: "Slug for the Polymarket link"
       - name: token_outcome
         description: "YES or NO token outcome"
       - name: neg_risk
@@ -197,6 +199,10 @@ models:
         description: "Unique key of the event or market"
       - name: token_outcome_name
         description: "Combination of token outcome and question"
+      - name: maker_asset_id
+        description: "Maker asset ID"
+      - name: taker_asset_id
+        description: "Taker asset ID"
       - name: _updated_at
         description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
 
@@ -275,7 +281,7 @@ models:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
-      short_description: "Metadata for Polymarket prediction markets, including event/market names, questions, outcome tokens, resolution status, and oracle details."
+      short_description: "Metadata for Polymarket prediction markets, including event and market names, questions, outcome tokens, resolution status, and oracle details."
       contributors: tomfutago, 0xboxer
       docs_slug: /curated/prediction-markets/polymarket/market_details
     config:
@@ -290,18 +296,24 @@ models:
         description: "Unique identifier for the market"
       - name: condition_id
         description: "Condition ID for the market"
-      - name: neg_risk_market_id
-        description: "Negative risk market ID"
-      - name: neg_risk_market_name_
-        description: "Negative risk market name"
+      - name: event_market_id
+        description: "Identifier for the parent event market in negative risk markets"
+      - name: event_market_name
+        description: "Overarching event name for the market, or single market when no event exists"
+      - name: event_market_description
+        description: "Description of the parent event market when available"
       - name: question_id
         description: "Question ID for the market"
       - name: question
         description: "Market question"
+      - name: market_description
+        description: "Description of the market"
       - name: token_id
         description: "Token ID"
       - name: token_outcome
         description: "Token outcome"
+      - name: token_outcome_name
+        description: "Combination of token outcome and question"
       - name: active
         description: "Whether the market is active"
       - name: archived
@@ -314,22 +326,42 @@ models:
         description: "Whether the order book is enabled"
       - name: neg_risk
         description: "Whether it's a negative risk market"
-      - name: market_slug
-        description: "Market slug for URL"
-      - name: neg_risk_market_name
-        description: "Negative risk market name from on-chain data"
       - name: polymarket_link
         description: "Link to the Polymarket event page"
+      - name: polymarket_link_slug
+        description: "Slug used for the Polymarket event URL"
       - name: market_start_time
-        description: "Start time of the market"
+        description: "Start time of the market from the API"
+      - name: market_start_time_parsed
+        description: "Start time of the market parsed as a timestamp"
       - name: market_end_time
-        description: "End time of the market"
-      - name: market_outcome
-        description: "Outcome of the market"
+        description: "End time of the market from the API"
+      - name: market_end_time_parsed
+        description: "End time of the market parsed as a timestamp"
+      - name: game_start_time
+        description: "Scheduled start time for the underlying event when available"
+      - name: seconds_delay
+        description: "Settlement delay configured for the market in seconds"
+      - name: fpmm
+        description: "Associated FPMM contract address when available"
+      - name: icon
+        description: "Icon URL for the market"
+      - name: image
+        description: "Image URL for the market"
+      - name: tags
+        description: "Market category tags from the Polymarket API"
+      - name: oracle
+        description: "Oracle address used to resolve the market"
+      - name: fee_bips
+        description: "Polymarket fee setting in basis points"
+      - name: outcome
+        description: "Resolved outcome for the market, or unresolved when not yet settled"
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
       - name: last_uploaded_at
         description: "Timestamp of the last API upload for this market record"
+      - name: final_price
+        description: "Terminal token price after resolution, including 0.5 for 50/50 outcomes"
 
   - name: polymarket_polygon_positions_raw
     meta:
@@ -365,17 +397,54 @@ models:
       - name: last_updated
         description: "Timestamp of the last balance update"
 
+  - name: polymarket_polygon_positions_enriched_base
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: stable daily balance facts enriched with daily prices for downstream position views"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_id
+    columns:
+      - name: day
+        description: "The date of the position snapshot"
+        data_tests:
+          - not_null
+      - name: address
+        description: "The address holding the position"
+        data_tests:
+          - not_null
+      - name: token_id
+        description: "Token ID of the position"
+        data_tests:
+          - not_null
+      - name: balance
+        description: "Balance of the position"
+      - name: price
+        description: "Daily price for the outcome token on that date"
+      - name: usd_value
+        description: "Position value based on balance multiplied by the daily token price"
+      - name: _updated_at
+        description: "Timestamp of when the enriched base row was last inserted or updated by the dbt pipeline"
+
   - name: polymarket_polygon_positions
     meta:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
-      short_description: "Daily snapshots of user positions on Polymarket, tracking outcome token balances per market with resolution status."
+      short_description: "Daily snapshots of user positions on Polymarket, incrementally rebuilt from enriched balances plus targeted market metadata backfills."
       contributors: tomfutago
       docs_slug: /curated/prediction-markets/polymarket/positions
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
-    description: "Polymarket: user positions in markets with market details"
+    description: "Polymarket: user positions in markets, incrementally combining enriched daily balance facts with market metadata while backfilling historical rows for changed tokens"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -403,6 +472,10 @@ models:
         description: "Name of the outcome represented by the token"
       - name: balance
         description: "Balance of the position"
+      - name: price
+        description: "Daily price for the outcome token on that date"
+      - name: usd_value
+        description: "Position value based on balance multiplied by the daily token price"
       - name: question_id
         description: "Question ID for the market"
       - name: market_question
@@ -431,6 +504,37 @@ models:
         description: "Timestamp when the market was resolved"
       - name: _updated_at
         description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
+
+  - name: polymarket_polygon_position_metadata_recompute_tokens
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Incremental helper table tracking tokens whose position-facing market metadata changed and require historical row backfills"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_id
+    columns:
+      - name: token_id
+        description: "Outcome token ID whose historical position rows need metadata recomputation"
+        data_tests:
+          - not_null
+      - name: recompute_from_day
+        description: "Earliest day that should be rebuilt for this token when metadata changes"
+        data_tests:
+          - not_null
+      - name: metadata_state
+        description: "Serialized fingerprint of the market detail fields that affect downstream positions rows"
+        data_tests:
+          - not_null
+      - name: change_detected_at
+        description: "Timestamp used to trigger downstream position backfills when metadata state changes"
+        data_tests:
+          - not_null
 
   - name: polymarket_polygon_ohlcv_hourly
     meta:
@@ -504,24 +608,35 @@ models:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
-      contributors: 0xboxer
+      contributors: 0xboxer, tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','prices']
     description: "Daily market prices for Polymarket on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - day
             - token_id
     columns:
+      - name: block_month
+        description: "Month partition derived from the pricing day"
+        data_tests:
+          - not_null
       - name: day
         description: "The day for which the price is valid"
+        data_tests:
+          - not_null
       - name: condition_id
         description: "The unique identifier for the market condition"
       - name: token_id
         description: "The token ID associated with the outcome"
+        data_tests:
+          - not_null
       - name: price
         description: "The price of the outcome token at the end of the day"
+      - name: _updated_at
+        description: "Timestamp when the daily price row was last rebuilt from the hourly model"
 
   - name: polymarket_polygon_market_prices_hourly
     meta:
@@ -587,7 +702,7 @@ models:
         tests:
           - not_null
 
-  - name: polymarket_polygon_users
+  - name: polymarket_polygon_users_address_lookup
     meta:
       blockchain: polygon
       sector: prediction_markets
@@ -617,13 +732,122 @@ models:
         description: "Timestamp of first funding received by the Polymarket wallet"
       - name: first_funded_by
         description: "Address that first funded the Polymarket wallet"
+      - name: created_tx_hash
+        description: "Transaction hash that created the Polymarket wallet"
+      - name: first_funded_tx_hash
+        description: "Transaction hash of the first funding event for the Polymarket wallet"
       - name: has_been_funded
         description: "Boolean indicating if the wallet has ever received funds"
-      - name: minutes_to_first_funding
-        description: "Number of minutes between wallet creation and first funding (null if never funded)"
-      - name: evt_index
-        description: "Event index in the transaction"
-      - name: tx_hash
-        description: "Transaction hash of the wallet creation"
 
+  - name: polymarket_polygon_open_positions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: open positions in markets"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - token_id
+    columns:
+      - name: address
+        description: "The address holding the position"
+      - name: unique_key
+        description: "Unique identifier for the market"
+      - name: token_id
+        description: "Token ID of the position"
+      - name: token_outcome
+        description: "Outcome represented by the token"
+      - name: token_outcome_name
+        description: "Name of the outcome represented by the token"
+      - name: balance
+        description: "Balance of the position"
+      - name: question_id
+        description: "Question ID for the market"
+      - name: market_question
+        description: "Question of the market"
+      - name: market_description
+        description: "Description of the market"
+      - name: event_market_name
+        description: "Name of the event market"
+      - name: event_market_description
+        description: "Description of the event market"
+      - name: active
+        description: "Whether the market is active"
+      - name: closed
+        description: "Whether the market is closed"
+      - name: accepting_orders
+        description: "Whether the market is accepting orders"
+      - name: latest_price
+        description: "The price of the outcome token at the end of the day"
+      - name: open_interest
+        description: "The open interest of the position"
+      - name: market_outcome
+        description: "The outcome of the market"
+      - name: resolved_on_timestamp
+        description: "Timestamp when the market was resolved"
+      - name: polymarket_link
+        description: "Link to the Polymarket event page"
+      - name: polymarket_link_slug
+        description: "Slug for the Polymarket link"
+      - name: market_start_time
+        description: "Start time of the market"
+      - name: market_start_time_parsed
+        description: "Start time of the market parsed as a timestamp"
+      - name: market_end_time
+        description: "End time of the market"
+      - name: market_end_time_parsed
+        description: "End time of the market parsed as a timestamp"
+  - name: polymarket_polygon_protocol_tvl
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','tvl']
+    description: "Polymarket: protocol TVL"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+    columns:
+      - name: hour
+        description: "The hour for which the TVL is valid"
+      - name: tvl
+        description: "The TVL of the protocol"
+      - name: net_flow
+        description: "The net flow of the protocol"
 
+  - name: polymarket_polygon_users_balance_changes
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','users']
+    description: "Polymarket: user balance changes"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - block_hour
+            - polymarket_wallet
+    columns:
+      - name: block_hour
+        description: "The hour of the balance change"
+      - name: block_date
+        description: "The date of the balance change"
+      - name: block_month
+        description: "The month of the balance change"
+      - name: polymarket_wallet
+        description: "The Polymarket wallet address"
+      - name: holding_change
+        description: "The net change in holdings for the wallet in this hour"
+      - name: amount_held
+        description: "The cumulative amount held by the wallet at this point in time"
