@@ -1,19 +1,15 @@
 {%- macro stablecoins_svm_balances(
   blockchain,
   token_list,
-  start_date,
-  use_non_circulating_inventory = true
+  start_date
 ) %}
 
 -- use uint256_max_double for safe double comparison
 {% set uint256_max_double = '1.0e77' %}
 
-{% if use_non_circulating_inventory %}
-  {% set non_circulating_inventory_relation = ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_non_circulating_inventory_accounts') %}
-{% endif %}
+{% set non_circulating_inventory_relation = ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_non_circulating_inventory_accounts') %}
 
 with
-{% if use_non_circulating_inventory %}
 non_circulating_inventory_accounts as (
   select
     blockchain,
@@ -22,7 +18,6 @@ non_circulating_inventory_accounts as (
   from {{ non_circulating_inventory_relation }}
   where excluded
 ),
-{% endif %}
 
 transfers_in as (
   select
@@ -33,16 +28,12 @@ transfers_in as (
     t.amount_raw as inflow,
     uint256 '0' as outflow
   from {{ ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_transfers') }} as t
-  {% if use_non_circulating_inventory %}
   left join non_circulating_inventory_accounts as nci
     on nci.blockchain = '{{ blockchain }}'
     and nci.token_mint_address = t.token_mint_address
     and nci.token_account = t.to_token_account
-  {% endif %}
   where t.to_owner is not null
-    {% if use_non_circulating_inventory %}
     and nci.token_account is null
-    {% endif %}
     and t.block_date >= date '{{start_date}}'
   {% if is_incremental() %}
     and {{ incremental_predicate('t.block_date') }}
@@ -58,16 +49,12 @@ transfers_out as (
     uint256 '0' as inflow,
     t.amount_raw as outflow
   from {{ ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_transfers') }} as t
-  {% if use_non_circulating_inventory %}
   left join non_circulating_inventory_accounts as nci
     on nci.blockchain = '{{ blockchain }}'
     and nci.token_mint_address = t.token_mint_address
     and nci.token_account = t.from_token_account
-  {% endif %}
   where t.from_owner is not null
-    {% if use_non_circulating_inventory %}
     and nci.token_account is null
-    {% endif %}
     and t.block_date >= date '{{start_date}}'
   {% if is_incremental() %}
     and {{ incremental_predicate('t.block_date') }}

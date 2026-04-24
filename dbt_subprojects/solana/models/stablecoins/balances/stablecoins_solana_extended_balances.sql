@@ -19,6 +19,5 @@
 {{ stablecoins_svm_balances(
   blockchain = chain,
   token_list = 'extended',
-  start_date = '2020-10-02',
-  use_non_circulating_inventory = true
+  start_date = '2020-10-02'
 ) }}
