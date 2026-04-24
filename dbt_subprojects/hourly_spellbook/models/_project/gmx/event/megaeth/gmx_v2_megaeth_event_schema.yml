@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: gmx_v2_order_created
+  - name: gmx_v2_megaeth_order_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'order_created']
+      tags: ['megaeth', 'gmx', 'event', 'order_created']
     description: |
-      Extracts and decodes the `OrderCreated` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `OrderCreated` event log data from the megaeth blockchain. 
       This model processes log entries related to created orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
@@ -18,17 +18,16 @@ models:
           combination_of_columns:
             - tx_hash
             - index
-
     columns:
       - &blockchain  
         name: blockchain
-        description: The blockchain network where the event occurred
+        description: The blockchain network where the event occurred (megaeth)
       - &block_time
         name: block_time
         description: The timestamp of the block when the event was recorded
       - &block_date
         name: block_date
-        description: The date extracted from the block timestamp, representing the day the block was created            
+        description: The date extracted from the block timestamp, representing the day the block was created      
       - &block_number
         name: block_number
         description: The block number where the event is included
@@ -40,13 +39,13 @@ models:
         description: The position of the event within the transaction
       - &contract_address
         name: contract_address
-        description: The contract address associated with the event
+        description: The contract address associated with the event 
       - &tx_from
         name: tx_from
         description: The originating address of the transaction, usually representing the sender
       - &tx_to
         name: tx_to
-        description: The destination address of the transaction, representing the receiver                   
+        description: The destination address of the transaction, representing the receiver                 
       - name: event_name
         description: The type of event recorded, always 'OrderCreated' for this model.
       - &msg_sender
@@ -73,9 +72,9 @@ models:
       - name: initial_collateral_token
         description: The token used as initial collateral in the order.
         data_tests:
-          - not_null 
+          - not_null   
       - name: cancellation_receiver
-        description: The address that will receive remaining collateral if the order is cancelled.       
+        description: The address that will receive remaining collateral if the order is cancelled.     
       - name: swap_path
         description: JSON array of markets through which the swap was routed.
         data_tests:
@@ -123,7 +122,7 @@ models:
         description: The original minimum acceptable price for order execution before adjustments.
       - &acceptable_price
         name: acceptable_price
-        description: The adjusted acceptable price based on the index token decimals, ensuring correct scaling of the value.     
+        description: The adjusted acceptable price based on the index token decimals, ensuring correct scaling of the value.
       - name: execution_fee
         description: The fee paid for executing the order in native tokens
         data_tests:
@@ -131,15 +130,15 @@ models:
       - name: callback_gas_limit
         description: The gas limit set for callback functions.
         data_tests:
-          - not_null   
-      - &min_output_amount_raw     
+          - not_null        
+      - &min_output_amount_raw
         name: min_output_amount_raw
         description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
         data_tests:
           - not_null        
       - name: updated_at_block
-        description: The block number at which the order was last updated.
-      - &updated_at_time       
+        description: The block number at which the order was last updated. 
+      - &updated_at_time     
         name: updated_at_time
         description: The timestamp when the order was last updated.
       - name: valid_from_time
@@ -164,19 +163,23 @@ models:
       - name: data_list
         description: An array of encoded bytes used to pass additional metadata for advanced order logic.
 
-  - name: gmx_v2_order_executed
+  - name: gmx_v2_megaeth_order_executed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'order_executed']
+      tags: ['megaeth', 'gmx', 'event', 'order_executed']
     description: |      
-      Extracts and decodes the `OrderExecuted` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `OrderExecuted` event log data from the megaeth blockchain. 
       This model processes log entries related to executed orders, extracting key variables such as 
       account addresses, event keys, and integer values.
-    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -207,19 +210,23 @@ models:
           - not_null
 
 
-  - name: gmx_v2_order_cancelled
+  - name: gmx_v2_megaeth_order_cancelled
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'order_cancelled']
+      tags: ['megaeth', 'gmx', 'event', 'order_cancelled']
     description: |
-      Extracts and decodes the `OrderCancelled` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `OrderCancelled` event log data from the megaeth blockchain. 
       This model processes log entries related to cancelled orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -229,7 +236,7 @@ models:
       - *index
       - *contract_address
       - *tx_from
-      - *tx_to
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'OrderCancelled' for this model
         data_tests:
@@ -248,16 +255,16 @@ models:
           - not_null
 
 
-  - name: gmx_v2_market_created
+  - name: gmx_v2_megaeth_market_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'market_created']
+      tags: ['megaeth', 'gmx', 'event', 'market_created']
     description: |
-      This model extracts and parses `MarketCreated` events from the Arbitrum, Avalanche, and MegaETH blockchains.
+      This model extracts and parses `MarketCreated` events from the megaeth blockchain.
       It includes transaction details, addresses, and other relevant metrics related to 
       the creation of markets within the GMX protocol.
 
@@ -270,7 +277,7 @@ models:
       - *index
       - *contract_address
       - *tx_from
-      - *tx_to
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'MarketCreated' for this model
         data_tests:
@@ -321,19 +328,23 @@ models:
           - not_null         
 
 
-  - name: gmx_v2_position_increase
+  - name: gmx_v2_megaeth_position_increase
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth','gmx','event','position_increase']
+      tags: ['megaeth','gmx','event','position_increase']
     description: |
-      This model extracts and parses `PositionIncrease` events from the Arbitrum, Avalanche, and MegaETH blockchains.
+      This model extracts and parses `PositionIncrease` events from the megaeth blockchain.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
-    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -341,9 +352,9 @@ models:
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address
+      - *contract_address   
       - *tx_from
-      - *tx_to   
+      - *tx_to       
       - name: event_name
         description: The type of event recorded, always 'PositionIncrease' for this model
         data_tests:
@@ -454,19 +465,23 @@ models:
         description: A unique key identifying the position
 
 
-  - name: gmx_v2_position_decrease
+  - name: gmx_v2_megaeth_position_decrease
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth','gmx','event','position_decrease']
+      tags: ['megaeth','gmx','event','position_decrease']
     description: |
-      This model extracts and parses `PositionDecrease` events from the Arbitrum, Avalanche, and MegaETH blockchains.
+      This model extracts and parses `PositionDecrease` events from the megaeth blockchain.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -476,7 +491,7 @@ models:
       - *index
       - *contract_address
       - *tx_from
-      - *tx_to
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'PositionDecrease' for this model
         data_tests:
@@ -535,19 +550,23 @@ models:
       - *position_key
 
 
-  - name: gmx_v2_position_fees_collected
+  - name: gmx_v2_megaeth_position_fees_collected
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'position_fees_collected']
+      tags: ['megaeth', 'gmx', 'event', 'position_fees_collected']
     description: |
-      This model extracts and parses `PositionFeesCollected` events from the Arbitrum, Avalanche, and MegaETH blockchains.
+      This model extracts and parses `PositionFeesCollected` events from the megaeth blockchain.
       It includes details about the transaction, addresses involved, and various metrics related to 
       fees collected from positions, including fee amounts and related market data.
-    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -557,7 +576,7 @@ models:
       - *index
       - *contract_address
       - *tx_from
-      - *tx_to
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'PositionFeesCollected' for this model
         data_tests:
@@ -752,19 +771,23 @@ models:
           - not_null   
 
 
-  - name: gmx_v2_position_fees_info
+  - name: gmx_v2_megaeth_position_fees_info
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'position_fees_info']
+      tags: ['megaeth', 'gmx', 'event', 'position_fees_info']
     description: |
-      This model extracts and parses `PositionFeesInfo` events from the Arbitrum, Avalanche, and MegaETH blockchains.
+      This model extracts and parses `PositionFeesInfo` events from the megaeth blockchain.
       It includes details about the transaction, addresses involved, and various metrics related to 
       position fees, including fee amounts and related market data.
-    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -772,14 +795,14 @@ models:
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address
+      - *contract_address 
       - *tx_from
-      - *tx_to 
+      - *tx_to       
       - name: event_name
         description: The type of event recorded, always 'PositionFeesInfo' for this model
         data_tests:
           - not_null
-      - *msg_sender        
+      - *msg_sender         
       - name: market
         description: The market associated with the position fees info event
         data_tests:
@@ -831,24 +854,23 @@ models:
       - *referral_code
 
 
-  - name: gmx_v2_order_frozen
+  - name: gmx_v2_megaeth_order_frozen
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'order_frozen']
+      tags: ['megaeth', 'gmx', 'event', 'order_frozen']
     description: |
-      Extracts and decodes the `OrderFrozen` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `OrderFrozen` event log data from the megaeth blockchain. 
       This model processes log entries related to frozen orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for the order being frozen.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - key
-
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -880,19 +902,23 @@ models:
           - not_null
 
 
-  - name: gmx_v2_order_updated
+  - name: gmx_v2_megaeth_order_updated
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'order_updated']
+      tags: ['megaeth', 'gmx', 'event', 'order_updated']
     description: |
-      Extracts and decodes the `OrderUpdated` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `OrderUpdated` event log data from the megaeth blockchain. 
       This model processes log entries related to updated orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -913,7 +939,7 @@ models:
         data_tests:
           - not_null
       - name: market
-        description: The market in which the order was updated.
+        description: The market in which the order was updated
       - name: account
         description: The address associated with the order.
       - *size_delta_usd
@@ -929,19 +955,23 @@ models:
         description: Boolean indicating whether the order will be automatically canceled under certain conditions.
 
 
-  - name: gmx_v2_open_interest_in_tokens_updated
+  - name: gmx_v2_megaeth_open_interest_in_tokens_updated
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'open_interest_in_tokens_updated']
+      tags: ['megaeth', 'gmx', 'event', 'open_interest_in_tokens_updated']
     description: |
       Combines and processes decoded event data to produce a normalized dataset of updated orders 
-      on the GMX platform for the Arbitrum, Avalanche, and MegaETH blockchains. 
+      on the GMX platform for the megaeth blockchain. 
       This model integrates data from the `open_interest_in_tokens_updated` table, enriching it with market-specific details.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -983,19 +1013,23 @@ models:
         description: Index value related to the transaction
 
 
-  - name: gmx_v2_open_interest_updated
+  - name: gmx_v2_megaeth_open_interest_updated
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'open_interest_updated']
+      tags: ['megaeth', 'gmx', 'event', 'open_interest_updated']
     description: |
       Extracts and processes decoded event data for open interest updates on the GMX platform, 
-      specifically on the Arbitrum, Avalanche, and MegaETH blockchains. This model normalizes data, including key metrics like 
+      specifically on the megaeth blockchain. This model normalizes data, including key metrics like 
       delta and next_value, ensuring consistent scaling based on token decimals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1005,7 +1039,7 @@ models:
       - *index
       - *contract_address
       - name: event_name
-        description: The type of event recorded, always 'OpentInterestUpdated' for this model
+        description: The type of event recorded, always 'OpenInterestUpdated' for this model
         data_tests:
           - not_null 
       - *msg_sender
@@ -1042,20 +1076,24 @@ models:
       - name: tx_index
         description: The index value related to the transaction.
 
-
-  - name: gmx_v2_oracle_price_update
+  
+  - name: gmx_v2_megaeth_oracle_price_update
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'oracle_price_update']
+      tags: ['megaeth', 'gmx', 'event', 'oracle_price_update']
     description: |
-      Processes decoded event data for Oracle Price Updates on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Processes decoded event data for Oracle Price Updates on the GMX platform in the megaeth blockchain. 
       The model normalizes price data (min_price and max_price) using token-specific decimals and extracts 
       additional details such as the provider and token involved in the update.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1094,19 +1132,23 @@ models:
         description: The index value related to the transaction, used for unique identification.
 
 
-  - name: gmx_v2_pool_amount_updated
+  - name: gmx_v2_megaeth_pool_amount_updated
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'pool_amount_updated']
+      tags: ['megaeth', 'gmx', 'event', 'pool_amount_updated']
     description: |
-      Processes decoded event data for Pool Amount Updates on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for Pool Amount Updates on the GMX platform in the megaeth blockchain.
       This model normalizes token values (next_value and delta) based on token-specific decimals and extracts
       additional details such as the market and token involved in the pool update.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1148,19 +1190,23 @@ models:
         description: The index value related to the transaction, used for unique identification.
 
 
-  - name: gmx_v2_set_uint
+  - name: gmx_v2_megaeth_set_uint
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'set_uint']
+      tags: ['megaeth', 'gmx', 'event', 'set_uint']
     description: |
-      Processes decoded event data for `SetUint` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `SetUint` events on the GMX platform in the megaeth blockchain.
       This model normalizes the value field and extracts additional details such as the base key and associated data,
       ensuring compatibility with downstream analyses.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1196,19 +1242,23 @@ models:
         description: The index value related to the transaction, used for unique identification.
 
 
-  - name: gmx_v2_execution_fee_refund
+  - name: gmx_v2_megaeth_execution_fee_refund
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'execution_fee_refund']
+      tags: ['megaeth', 'gmx', 'event', 'execution_fee_refund']
     description: |
-      Processes decoded event data for `ExecutionFeeRefund` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `ExecutionFeeRefund` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the refund amount, receiver, and transaction details to 
       enable analysis of refunded execution fees.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1232,19 +1282,23 @@ models:
         description: The amount of the refunded execution fee, denominated in the native token of the blockchain (e.g., ETH).
 
 
-  - name: gmx_v2_keeper_execution_fee
+  - name: gmx_v2_megaeth_keeper_execution_fee
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'keeper_execution_fee']
+      tags: ['megaeth', 'gmx', 'event', 'keeper_execution_fee']
     description: |
-      Processes decoded event data for `KeeperExecutionFee` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `KeeperExecutionFee` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the keeper's address, execution fee amount, and transaction details, enabling
       analysis of fees associated with keeper-based executions.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1268,19 +1322,23 @@ models:
         description: The amount of the execution fee, denominated in the native token of the blockchain (e.g., ETH, AVAX).
 
 
-  - name: gmx_v2_deposit_cancelled
+  - name: gmx_v2_megaeth_deposit_cancelled
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'deposit_cancelled']
+      tags: ['megaeth', 'gmx', 'event', 'deposit_cancelled']
     description: |
-      Processes decoded event data for `DepositCancelled` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `DepositCancelled` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction details, enabling
       analysis of deposit cancellations on the platform.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1306,19 +1364,23 @@ models:
         description: The decoded textual reason for the deposit cancellation.
 
 
-  - name: gmx_v2_deposit_created
+  - name: gmx_v2_megaeth_deposit_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'deposit_created']
+      tags: ['megaeth', 'gmx', 'event', 'deposit_created']
     description: |
-      Processes decoded event data for `DepositCreated` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `DepositCreated` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, deposit details, and transaction specifics, enabling
       analysis of deposits created on the platform.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1370,19 +1432,23 @@ models:
         description: A unique identifier for the deposit.
 
 
-  - name: gmx_v2_deposit_executed
+  - name: gmx_v2_megaeth_deposit_executed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'deposit_executed']
+      tags: ['megaeth', 'gmx', 'event', 'deposit_executed']
     description: |
-      Processes decoded event data for `DepositExecuted` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `DepositExecuted` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, execution details, and transaction specifics, enabling
       analysis of deposits executed on the platform.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1412,19 +1478,23 @@ models:
         description: A unique identifier for the executed deposit.
 
 
-  - name: gmx_v2_glv_created
+  - name: gmx_v2_megaeth_glv_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_created']
+      tags: ['megaeth', 'gmx', 'event', 'glv_created']
     description: |
-      Processes decoded event data for `GLVCreated` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVCreated` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the GLV token, associated tokens, and transaction specifics, enabling
       analysis of GLV creation events on the platform.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1456,19 +1526,23 @@ models:
         description: The decimal precision of the market token involved in the GLV creation.
 
 
-  - name: gmx_v2_glv_deposit_cancelled
+  - name: gmx_v2_megaeth_glv_deposit_cancelled
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_deposit_cancelled']
+      tags: ['megaeth', 'gmx', 'event', 'glv_deposit_cancelled']
     description: |
-      Processes decoded event data for `GLVDepositCancelled` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVDepositCancelled` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled GLV deposits.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1494,19 +1568,23 @@ models:
         description: The decoded textual reason for the deposit cancellation.
 
 
-  - name: gmx_v2_glv_deposit_created
+  - name: gmx_v2_megaeth_glv_deposit_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_deposit_created']
+      tags: ['megaeth', 'gmx', 'event', 'glv_deposit_created']
     description: |
-      Processes decoded event data for `GLVDepositCreated` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVDepositCreated` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, deposit details, and transaction specifics, enabling
       analysis of created GLV deposits.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1564,19 +1642,23 @@ models:
         description: A unique identifier for the deposit.
 
 
-  - name: gmx_v2_glv_deposit_executed
+  - name: gmx_v2_megaeth_glv_deposit_executed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_deposit_executed']
+      tags: ['megaeth', 'gmx', 'event', 'glv_deposit_executed']
     description: |
-      Processes decoded event data for `GLVDepositExecuted` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVDepositExecuted` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, received GLV tokens, and transaction specifics, enabling
       analysis of executed GLV deposits.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1602,19 +1684,23 @@ models:
         description: A unique identifier for the executed deposit.
 
 
-  - name: gmx_v2_glv_shift_cancelled
+  - name: gmx_v2_megaeth_glv_shift_cancelled
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_shift_cancelled']
+      tags: ['megaeth', 'gmx', 'event', 'glv_shift_cancelled']
     description: |
-      Processes decoded event data for `GLVShiftCancelled` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVShiftCancelled` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the cancellation reason and transaction specifics, enabling
       analysis of cancelled GLV shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1638,19 +1724,23 @@ models:
         description: The decoded textual reason for the shift cancellation.
 
 
-  - name: gmx_v2_glv_shift_created
+  - name: gmx_v2_megaeth_glv_shift_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_shift_created']
+      tags: ['megaeth', 'gmx', 'event', 'glv_shift_created']
     description: |
-      Processes decoded event data for `GLVShiftCreated` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVShiftCreated` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the source and destination markets, GLV details, and transaction specifics, enabling
       analysis of created GLV shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1682,19 +1772,23 @@ models:
         description: A unique identifier for the created shift.
 
 
-  - name: gmx_v2_glv_shift_executed
+  - name: gmx_v2_megaeth_glv_shift_executed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_shift_executed']
+      tags: ['megaeth', 'gmx', 'event', 'glv_shift_executed']
     description: |
-      Processes decoded event data for `GLVShiftExecuted` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVShiftExecuted` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the received market tokens and transaction specifics, enabling
       analysis of executed GLV shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1716,19 +1810,23 @@ models:
         description: A unique identifier for the executed shift.
 
 
-  - name: gmx_v2_glv_withdrawal_cancelled
+  - name: gmx_v2_megaeth_glv_withdrawal_cancelled
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_withdrawal_cancelled']
+      tags: ['megaeth', 'gmx', 'event', 'glv_withdrawal_cancelled']
     description: |
-      Processes decoded event data for `GLVWithdrawalCancelled` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVWithdrawalCancelled` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled GLV withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1756,19 +1854,23 @@ models:
         description: The decoded textual reason for the withdrawal cancellation.
 
 
-  - name: gmx_v2_glv_withdrawal_created
+  - name: gmx_v2_megaeth_glv_withdrawal_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_withdrawal_created']
+      tags: ['megaeth', 'gmx', 'event', 'glv_withdrawal_created']
     description: |
-      Processes decoded event data for `GLVWithdrawalCreated` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVWithdrawalCreated` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, withdrawal details, and transaction specifics, enabling
       analysis of created GLV withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1820,19 +1922,23 @@ models:
         description: A unique identifier for the created withdrawal.
 
 
-  - name: gmx_v2_glv_withdrawal_executed
+  - name: gmx_v2_megaeth_glv_withdrawal_executed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_withdrawal_executed']
+      tags: ['megaeth', 'gmx', 'event', 'glv_withdrawal_executed']
     description: |
-      Processes decoded event data for `GLVWithdrawalExecuted` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `GLVWithdrawalExecuted` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address and transaction specifics, enabling
       analysis of executed GLV withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1856,19 +1962,23 @@ models:
         description: A unique identifier for the executed withdrawal.
 
 
-  - name: gmx_v2_shift_created
+  - name: gmx_v2_megaeth_shift_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'shift_created']
+      tags: ['megaeth', 'gmx', 'event', 'shift_created']
     description: |
-      Processes decoded event data for `ShiftCreated` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `ShiftCreated` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, market details, and transaction specifics, enabling
       analysis of created shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1908,19 +2018,23 @@ models:
         description: A unique identifier for the created shift.
 
 
-  - name: gmx_v2_shift_executed
+  - name: gmx_v2_megaeth_shift_executed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'shift_executed']
+      tags: ['megaeth', 'gmx', 'event', 'shift_executed']
     description: |
-      Processes decoded event data for `ShiftExecuted` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `ShiftExecuted` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, received market tokens, and transaction specifics, enabling
       analysis of executed shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1944,19 +2058,23 @@ models:
         description: A unique identifier for the executed shift.
 
 
-  - name: gmx_v2_withdrawal_cancelled
+  - name: gmx_v2_megaeth_withdrawal_cancelled
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'withdrawal_cancelled']
+      tags: ['megaeth', 'gmx', 'event', 'withdrawal_cancelled']
     description: |
-      Processes decoded event data for `WithdrawalCancelled` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `WithdrawalCancelled` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1982,19 +2100,23 @@ models:
         description: The decoded textual reason for the withdrawal cancellation.
 
 
-  - name: gmx_v2_withdrawal_created
+  - name: gmx_v2_megaeth_withdrawal_created
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'withdrawal_created']
+      tags: ['megaeth', 'gmx', 'event', 'withdrawal_created']
     description: |
-      Processes decoded event data for `WithdrawalCreated` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `WithdrawalCreated` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, withdrawal details, and transaction specifics, enabling
       analysis of created withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2042,19 +2164,23 @@ models:
         description: A unique identifier for the created withdrawal.
 
 
-  - name: gmx_v2_withdrawal_executed
+  - name: gmx_v2_megaeth_withdrawal_executed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'withdrawal_executed']
+      tags: ['megaeth', 'gmx', 'event', 'withdrawal_executed']
     description: |
-      Processes decoded event data for `WithdrawalExecuted` events on the GMX platform in the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `WithdrawalExecuted` events on the GMX platform in the megaeth blockchain.
       This model extracts key details such as the account address, pricing type, and transaction specifics, enabling
       analysis of executed withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2078,18 +2204,22 @@ models:
         description: A unique identifier for the executed withdrawal.
 
 
-  - name: gmx_v2_claimable_funding_amount_per_size_updated
+  - name: gmx_v2_megaeth_claimable_funding_amount_per_size_updated
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'claimable_funding']
+      tags: ['megaeth', 'gmx', 'event', 'claimable_funding']
     description: |
-      Processes decoded event data for `ClaimableFundingAmountPerSizeUpdated` events on the GMX platform across the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `ClaimableFundingAmountPerSizeUpdated` events on the GMX platform across the megaeth blockchain.
       This model extracts key details such as funding updates, collateral information, and market direction to support funding analysis.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2116,18 +2246,22 @@ models:
       - name: is_long
         description: A boolean indicating if the position is a long position (`true` for long, `false` for short).
 
-  - name: gmx_v2_funding_fee_amount_per_size_updated
+  - name: gmx_v2_megaeth_funding_fee_amount_per_size_updated
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'funding_fee']
+      tags: ['megaeth', 'gmx', 'event', 'funding_fee']
     description: |
-      Processes decoded event data for `FundingFeeAmountPerSizeUpdated` events on the GMX platform across the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `FundingFeeAmountPerSizeUpdated` events on the GMX platform across the megaeth blockchain.
       This model extracts key details such as funding fees, collateral details, and market direction to enable funding fee analysis.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2154,18 +2288,22 @@ models:
       - name: is_long
         description: A boolean indicating if the position is a long position (`True` for long, `False` for short).
 
-  - name: gmx_v2_swap_fees_collected
+  - name: gmx_v2_megaeth_swap_fees_collected
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'swap_fee']
+      tags: ['megaeth', 'gmx', 'event', 'swap_fee']
     description: |
-      Processes decoded event data for `SwapFeesCollected` events on the GMX platform across the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `SwapFeesCollected` events on the GMX platform across the megaeth blockchain.
       This model extracts key details such as fee amounts, trade keys, and fee types for analyzing swap fee collection behavior.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2206,18 +2344,22 @@ models:
       - name: action_type
         description: The action performed in the swap event (e.g., deposit, withdrawal, or swap).
 
-  - name: gmx_v2_position_impact_pool_distributed
+  - name: gmx_v2_megaeth_position_impact_pool_distributed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'position_impact']
+      tags: ['megaeth', 'gmx', 'event', 'position_impact']
     description: |
-      Processes decoded event data for `PositionImpactPoolDistributed` events on the GMX platform across the Arbitrum, Avalanche, and MegaETH blockchains.
+      Processes decoded event data for `PositionImpactPoolDistributed` events on the GMX platform across the megaeth blockchain.
       This model extracts key details such as distribution amounts and pool impact metrics to analyze the effect of position impact distribution.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2240,17 +2382,22 @@ models:
       - name: next_position_impact_pool_amount
         description: The updated position impact pool amount after the event.
 
-  - name: gmx_v2_claimable_collateral_updated
+  - name: gmx_v2_megaeth_claimable_collateral_updated
     description: |
-      Combines and standardizes the `ClaimableCollateralUpdated` event logs from the Arbitrum, Avalanche, and MegaETH chains. 
+      Combines and standardizes the `ClaimableCollateralUpdated` event logs from the megaeth chain. 
       This model extracts and unifies event-level data about updates to claimable collateral balances for GMX users.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'claimable_collateral_updated']
+      tags: ['megaeth', 'gmx', 'event', 'claimable_collateral_updated']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2279,17 +2426,22 @@ models:
       - name: next_pool_value
         description: The updated value of the pool's total claimable collateral for this token and market
 
-  - name: gmx_v2_claimable_funding_updated
+  - name: gmx_v2_megaeth_claimable_funding_updated
     description: |
-      Combines and standardizes the `ClaimableFundingUpdated` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `ClaimableFundingUpdated` event logs from the megaeth chain.
       This model extracts and unifies event-level data related to updates in claimable funding amounts for GMX users.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'claimable_funding_updated']
+      tags: ['megaeth', 'gmx', 'event', 'claimable_funding_updated']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2316,18 +2468,23 @@ models:
       - name: next_pool_value
         description: The updated value of the pool's total claimable funding for this token and market
 
-  - name: gmx_v2_clear_pending_action
+  - name: gmx_v2_megaeth_clear_pending_action
     description: |
-      Combines and standardizes the `ClearPendingAction` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `ClearPendingAction` event logs from the megaeth chain.
       This model extracts event-level data related to the clearing of pending actions within the GMX protocol,
       including action identifiers and labels triggered by specific transactions.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'clear_pending_action']
+      tags: ['megaeth', 'gmx', 'event', 'clear_pending_action']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2346,18 +2503,23 @@ models:
       - name: action_label
         description: A human-readable label or description for the cleared action
 
-  - name: gmx_v2_collateral_claimed
+  - name: gmx_v2_megaeth_collateral_claimed
     description: |
-      Combines and standardizes the `CollateralClaimed` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `CollateralClaimed` event logs from the megaeth chain.
       This model captures event-level data for user claims of collateral from the GMX protocol,
       including the claimed token, amount, market, and receiving account.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'collateral_claimed']
+      tags: ['megaeth', 'gmx', 'event', 'collateral_claimed']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2386,18 +2548,23 @@ models:
       - name: next_pool_value
         description: The updated total pool value for the claimed token and market after this claim
 
-  - name: gmx_v2_funding_fees_claimed
+  - name: gmx_v2_megaeth_funding_fees_claimed
     description: |
-      Combines and standardizes the `FundingFeesClaimed` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `FundingFeesClaimed` event logs from the megaeth chain.
       This model captures event-level data for funding fee claims within the GMX protocol,
       including the market, token, amount, and receiver information.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'funding_fees_claimed']
+      tags: ['megaeth', 'gmx', 'event', 'funding_fees_claimed']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2424,18 +2591,23 @@ models:
       - name: next_pool_value
         description: The updated total pool value for the claimed token and market after this claim
 
-  - name: gmx_v2_grant_role
+  - name: gmx_v2_megaeth_grant_role
     description: |
-      Combines and standardizes the `GrantRole` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `GrantRole` event logs from the megaeth chain.
       This model captures permission changes within the GMX protocol, specifically role grants to accounts 
       for protocol control and access management.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'grant_role']
+      tags: ['megaeth', 'gmx', 'event', 'grant_role']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2454,18 +2626,23 @@ models:
       - name: role_key
         description: The identifier (usually bytes32) of the role that was granted
 
-  - name: gmx_v2_revoke_role
+  - name: gmx_v2_megaeth_revoke_role
     description: |
-      Combines and standardizes the `RevokeRole` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `RevokeRole` event logs from the megaeth chain.
       This model captures permission changes within the GMX protocol, specifically role revocations from accounts
       that previously had protocol-level access or control permissions.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'revoke_role']
+      tags: ['megaeth', 'gmx', 'event', 'revoke_role']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2484,18 +2661,23 @@ models:
       - name: role_key
         description: The identifier (usually bytes32) of the role that was revoked
 
-  - name: gmx_v2_set_atomic_oracle_provider
+  - name: gmx_v2_megaeth_set_atomic_oracle_provider
     description: |
-      Combines and standardizes the `SetAtomicOracleProvider` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SetAtomicOracleProvider` event logs from the megaeth chain.
       This model captures updates to the atomic oracle provider configuration within the GMX protocol,
       including provider addresses and corresponding boolean values indicating enablement.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'set_atomic_oracle_provider']
+      tags: ['megaeth', 'gmx', 'event', 'set_atomic_oracle_provider']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2514,18 +2696,23 @@ models:
       - name: value
         description: A boolean indicating whether the oracle provider was enabled (`true`) or disabled (`false`)
 
-  - name: gmx_v2_set_data_stream
+  - name: gmx_v2_megaeth_set_data_stream
     description: |
-      Combines and standardizes the `SetDataStream` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SetDataStream` event logs from the megaeth chain.
       This model captures updates to the data stream configuration within the GMX protocol,
       including token-specific stream multipliers and feed identifiers used for price oracles and analytics.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'set_data_stream']
+      tags: ['megaeth', 'gmx', 'event', 'set_data_stream']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2548,18 +2735,23 @@ models:
       - name: data_stream_spread_reduction_factor
         description: The proposed factor used to reduce spread in the data stream for the specified token
 
-  - name: gmx_v2_set_oracle_provider_enabled
+  - name: gmx_v2_megaeth_set_oracle_provider_enabled
     description: |
-      Combines and standardizes the `SetOracleProviderEnabled` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SetOracleProviderEnabled` event logs from the megaeth chain.
       This model tracks changes to the enablement status of oracle providers within the GMX protocol,
       including the oracle address and whether it was enabled or disabled.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'set_oracle_provider_enabled']
+      tags: ['megaeth', 'gmx', 'event', 'set_oracle_provider_enabled']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2578,18 +2770,23 @@ models:
       - name: value
         description: A boolean indicating whether the oracle provider was enabled (`true`) or disabled (`false`)
 
-  - name: gmx_v2_set_oracle_provider_for_token
+  - name: gmx_v2_megaeth_set_oracle_provider_for_token
     description: |
-      Combines and standardizes the `SetOracleProviderForToken` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SetOracleProviderForToken` event logs from the megaeth chain.
       This model tracks assignments of oracle providers to specific tokens within the GMX protocol,
       specifying which provider is responsible for price feeds or data streams for each token.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'set_oracle_provider_for_token']
+      tags: ['megaeth', 'gmx', 'event', 'set_oracle_provider_for_token']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2608,18 +2805,23 @@ models:
       - name: provider
         description: The oracle provider address assigned to the token
 
-  - name: gmx_v2_set_price_feed
+  - name: gmx_v2_megaeth_set_price_feed
     description: |
-      Combines and standardizes the `SetPriceFeed` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SetPriceFeed` event logs from the megaeth chain.
       This model captures updates to token price feed configurations within the GMX protocol,
       including new price feed addresses, multipliers, heartbeat durations, and stable price flags.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'set_price_feed']
+      tags: ['megaeth', 'gmx', 'event', 'set_price_feed']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2644,18 +2846,23 @@ models:
       - name: stable_price
         description: Boolean indicating whether the token is treated as having a stable price
 
-  - name: gmx_v2_signal_grant_role
+  - name: gmx_v2_megaeth_signal_grant_role
     description: |
-      Combines and standardizes the `SignalGrantRole` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SignalGrantRole` event logs from the megaeth chain.
       This model tracks role grant signals initiated within the GMX protocol, representing proposed permission changes
       that may require time delays or multi-step approvals before becoming effective.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'signal_grant_role']
+      tags: ['megaeth', 'gmx', 'event', 'signal_grant_role']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2674,18 +2881,23 @@ models:
       - name: role_key
         description: The identifier (typically bytes32) of the role to be granted
 
-  - name: gmx_v2_signal_pending_action
+  - name: gmx_v2_megaeth_signal_pending_action
     description: |
-      Combines and standardizes the `SignalPendingAction` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SignalPendingAction` event logs from the megaeth chain.
       This model captures proposals for pending actions within the GMX protocol, typically representing
       governance- or timelock-controlled changes that require confirmation or delay before execution.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'signal_pending_action']
+      tags: ['megaeth', 'gmx', 'event', 'signal_pending_action']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2704,18 +2916,23 @@ models:
       - name: action_label
         description: A human-readable label or explanation for the pending action
 
-  - name: gmx_v2_signal_revoke_role
+  - name: gmx_v2_megaeth_signal_revoke_role
     description: |
-      Combines and standardizes the `SignalRevokeRole` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SignalRevokeRole` event logs from the megaeth chain.
       This model captures role revocation signals within the GMX protocol, representing proposals to remove 
       access or permissions from specific accounts, typically subject to a governance or timelock delay.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'signal_revoke_role']
+      tags: ['megaeth', 'gmx', 'event', 'signal_revoke_role']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2734,18 +2951,23 @@ models:
       - name: role_key
         description: The identifier (typically bytes32) of the role to be revoked
 
-  - name: gmx_v2_signal_set_atomic_oracle_provider
+  - name: gmx_v2_megaeth_signal_set_atomic_oracle_provider
     description: |
-      Combines and standardizes the `SignalSetAtomicOracleProvider` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SignalSetAtomicOracleProvider` event logs from the megaeth chain.
       This model captures proposed updates to atomic oracle providers within the GMX protocol, 
       signaling enablement or disablement actions that typically require governance approval or a time delay.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'signal_set_atomic_oracle_provider']
+      tags: ['megaeth', 'gmx', 'event', 'signal_set_atomic_oracle_provider']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2764,18 +2986,23 @@ models:
       - name: value
         description: A boolean indicating whether the provider is proposed to be enabled (`true`) or disabled (`false`)
 
-  - name: gmx_v2_signal_set_data_stream
+  - name: gmx_v2_megaeth_signal_set_data_stream
     description: |
-      Combines and standardizes the `SignalSetDataStream` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SignalSetDataStream` event logs from the megaeth chain.
       This model captures proposed updates to token-specific data stream configurations in the GMX protocol,
       including stream multipliers and feed identifiers. These changes typically require governance approval.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'signal_set_data_stream']
+      tags: ['megaeth', 'gmx', 'event', 'signal_set_data_stream']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2798,18 +3025,23 @@ models:
       - name: data_stream_spread_reduction_factor
         description: The proposed factor used to reduce spread in the data stream for the specified token
 
-  - name: gmx_v2_signal_set_oracle_provider_enabled
+  - name: gmx_v2_megaeth_signal_set_oracle_provider_enabled
     description: |
-      Combines and standardizes the `SignalSetOracleProviderEnabled` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SignalSetOracleProviderEnabled` event logs from the megaeth chain.
       This model captures proposed changes to the enablement status of oracle providers in the GMX protocol,
       signaling future activation or deactivation actions pending governance or timelock approval.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'signal_set_oracle_provider_enabled']
+      tags: ['megaeth', 'gmx', 'event', 'signal_set_oracle_provider_enabled']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2828,18 +3060,23 @@ models:
       - name: value
         description: A boolean indicating whether the provider is proposed to be enabled (`true`) or disabled (`false`)
 
-  - name: gmx_v2_signal_set_oracle_provider_for_token
+  - name: gmx_v2_megaeth_signal_set_oracle_provider_for_token
     description: |
-      Combines and standardizes the `SignalSetOracleProviderForToken` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SignalSetOracleProviderForToken` event logs from the megaeth chain.
       This model captures proposals to assign or update oracle providers for specific tokens in the GMX protocol.
       These changes typically require governance or timelock approval before being finalized.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'signal_set_oracle_provider_for_token']
+      tags: ['megaeth', 'gmx', 'event', 'signal_set_oracle_provider_for_token']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2858,18 +3095,23 @@ models:
       - name: provider
         description: The oracle provider address proposed for the token
 
-  - name: gmx_v2_signal_set_price_feed
+  - name: gmx_v2_megaeth_signal_set_price_feed
     description: |
-      Combines and standardizes the `SignalSetPriceFeed` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SignalSetPriceFeed` event logs from the megaeth chain.
       This model captures proposed updates to token price feed configurations in the GMX protocol, 
       including feed address, multiplier, heartbeat duration, and stable price status.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'signal_set_price_feed']
+      tags: ['megaeth', 'gmx', 'event', 'signal_set_price_feed']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2894,18 +3136,23 @@ models:
       - name: stable_price
         description: Boolean indicating whether the token is considered to have a stable price
 
-  - name: gmx_v2_swap_info
+  - name: gmx_v2_megaeth_swap_info
     description: |
-      Combines and standardizes the `SwapInfo` event logs from the Arbitrum, Avalanche, and MegaETH chains.
+      Combines and standardizes the `SwapInfo` event logs from the megaeth chain.
       This model captures detailed information about token swaps executed via the GMX protocol, 
       including pricing, token flow, slippage, and order reference data.
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'swap_info']
+      tags: ['megaeth', 'gmx', 'event', 'swap_info']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2946,19 +3193,23 @@ models:
       - name: order_key
         description: A unique identifier linking this swap to a specific order
 
-
-  - name: gmx_v2_increment_subaccount_action_count
+  - name: gmx_v2_megaeth_increment_subaccount_action_count
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'increment_subaccount_action_count']
+      tags: ['megaeth', 'gmx', 'event', 'increment_subaccount_action_count']
     description: |
-      Aggregates counts of subaccount actions on the Arbitrum, Avalanche, and MegaETH chains.
+      Aggregates counts of subaccount actions on the megaeth chain.
       This model pulls from each chain-specific source and unifies them into a single 
       table tracking how many times each subaccount performed each action.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2981,19 +3232,23 @@ models:
       - name: action_type
         description: The type of subaccount action performed.
 
-  - name: gmx_v2_position_impact_pool_amount_updated
+  - name: gmx_v2_megaeth_position_impact_pool_amount_updated
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'position_impact_pool_amount_updated']
+      tags: ['megaeth', 'gmx', 'event', 'position_impact_pool_amount_updated']
     description: |
-      Captures pool balance changes related to position impact adjustments on the GMX protocol for Arbitrum and Avalanche.
+      Captures pool balance changes related to position impact adjustments on the GMX protocol for megaeth.
       This model aggregates the normalized `next_value` of the impact pool, tracking changes over time and by token market.
       Each row corresponds to a `PositionImpactPoolAmountUpdated` event on-chain.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -3016,18 +3271,23 @@ models:
       - name: delta
         description: Change in the impact pool value as a result of the transaction, normalized.
 
-  - name: gmx_v2_sync_config
+  - name: gmx_v2_megaeth_sync_config
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'sync_config']
+      tags: ['megaeth', 'gmx', 'event', 'sync_config']
     description: |
-      Consolidates SyncConfig events from Arbitrum, Avalanche, and MegaETH chains into a single table.
+      Consolidates SyncConfig events from megaeth chain into a single table.
       Each row captures a configuration update, including the update identifier, previous
       and next values, and whether the update was applied.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -3050,18 +3310,23 @@ models:
       - name: update_applied
         description: Boolean flag indicating whether the update took effect
 
-  - name: gmx_v2_multichain_bridge_action_failed
+  - name: gmx_v2_megaeth_multichain_bridge_action_failed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'bridge', 'event', 'failed']
+      tags: ['megaeth', 'gmx', 'bridge', 'event', 'failed']
     description: |
-      Extracts and decodes the `BridgeActionFailed` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `BridgeActionFailed` event log data from the megaeth blockchain. 
       This model captures instances where a multichain bridge action did not succeed, providing details on the failure,
       including the reason for the failure.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3086,18 +3351,23 @@ models:
       - name: reason
         description: A string providing the reason for the action's failure.
 
-  - name: gmx_v2_multichain_bridge_action
+  - name: gmx_v2_megaeth_multichain_bridge_action
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'bridge', 'event']
+      tags: ['megaeth', 'gmx', 'bridge', 'event']
     description: |
-      Extracts and decodes the `BridgeAction` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `BridgeAction` event log data from the megaeth blockchain. 
       This model records successful multichain bridge actions initiated by users, detailing the provider,
       account, and type of action.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3120,17 +3390,22 @@ models:
       - name: action_type
         description: A numerical identifier for the type of action being performed.
 
-  - name: gmx_v2_multichain_bridge_in
+  - name: gmx_v2_megaeth_multichain_bridge_in
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'bridge', 'event', 'bridge_in']
+      tags: ['megaeth', 'gmx', 'bridge', 'event', 'bridge_in']
     description: |
-      Extracts and decodes the `BridgeIn` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `BridgeIn` event log data from the megaeth blockchain. 
       This model tracks tokens that have been successfully bridged into the GMX V2 ecosystem from another chain.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3155,17 +3430,22 @@ models:
       - name: src_chain_id
         description: The identifier of the source blockchain from which the tokens were bridged.
 
-  - name: gmx_v2_multichain_bridge_out
+  - name: gmx_v2_megaeth_multichain_bridge_out
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'bridge', 'event', 'bridge_out']
+      tags: ['megaeth', 'gmx', 'bridge', 'event', 'bridge_out']
     description: |
-      Extracts and decodes the `BridgeOut` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `BridgeOut` event log data from the megaeth blockchain. 
       This model tracks tokens that have been bridged out of the GMX V2 ecosystem to another chain.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3190,17 +3470,22 @@ models:
       - name: src_chain_id
         description: The identifier of the destination blockchain to which the tokens were bridged.
 
-  - name: gmx_v2_multichain_transfer_in
+  - name: gmx_v2_megaeth_multichain_transfer_in
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'transfer', 'event', 'transfer_in']
+      tags: ['megaeth', 'gmx', 'transfer', 'event', 'transfer_in']
     description: |
-      Extracts and decodes the `TransferIn` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `TransferIn` event log data from the megaeth blockchain. 
       This model records multichain token transfers received by users within the GMX V2 ecosystem.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3223,17 +3508,22 @@ models:
       - name: src_chain_id
         description: The identifier of the source blockchain from which the tokens were transferred.
 
-  - name: gmx_v2_multichain_transfer_out
+  - name: gmx_v2_megaeth_multichain_transfer_out
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'transfer', 'event', 'transfer_out']
+      tags: ['megaeth', 'gmx', 'transfer', 'event', 'transfer_out']
     description: |
-      Extracts and decodes the `TransferOut` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `TransferOut` event log data from the megaeth blockchain. 
       This model records multichain token transfers sent by users from the GMX V2 ecosystem to another chain.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3258,17 +3548,22 @@ models:
       - name: src_chain_id
         description: The identifier of the destination blockchain to which the tokens were transferred.
 
-  - name: gmx_v2_claim_funds_claimed
+  - name: gmx_v2_megaeth_claim_funds_claimed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: [ai_data_master, gmx-io]
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'claim_funds', 'event', 'claimed']
+      tags: ['megaeth', 'gmx', 'claim_funds', 'event', 'claimed']
     description: |
-      Extracts and decodes the `ClaimFundsClaimed` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `ClaimFundsClaimed` event log data from the megaeth blockchain. 
       This model records events where users have successfully claimed their funds from a distribution.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3293,17 +3588,22 @@ models:
       - name: amount
         description: The amount of the token being claimed, in its smallest unit.
 
-  - name: gmx_v2_claim_funds_deposited
+  - name: gmx_v2_megaeth_claim_funds_deposited
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: [ai_data_master, gmx-io]
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'claim_funds', 'event', 'deposited']
+      tags: ['megaeth', 'gmx', 'claim_funds', 'event', 'deposited']
     description: |
-      Extracts and decodes the `ClaimFundsDeposited` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `ClaimFundsDeposited` event log data from the megaeth blockchain. 
       This model records funds being deposited for a specific distribution.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3327,18 +3627,23 @@ models:
         description: The amount of the token being deposited, in its smallest unit.
       - name: next_amount
         description: The next total amount of tokens available for the distribution after the deposit.
-        
-  - name: gmx_v2_claim_funds_transferred
+
+  - name: gmx_v2_megaeth_claim_funds_transferred
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: [ai_data_master, gmx-io]
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'claim_funds', 'event']
+      tags: ['megaeth', 'gmx', 'claim_funds', 'event']
     description: |
-      Extracts and decodes the `ClaimFundsTransferred` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `ClaimFundsTransferred` event log data from the megaeth blockchain. 
       This model records instances where users claim funds that were previously transferred.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3365,17 +3670,22 @@ models:
       - name: next_amount
         description: The next amount of tokens to be distributed.
 
-  - name: gmx_v2_claim_funds_withdrawn
+  - name: gmx_v2_megaeth_claim_funds_withdrawn
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: [ai_data_master, gmx-io]
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'claim_funds', 'event', 'withdrawn']
+      tags: ['megaeth', 'gmx', 'claim_funds', 'event', 'withdrawn']
     description: |
-      Extracts and decodes the `ClaimFundsWithdrawn` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `ClaimFundsWithdrawn` event log data from the megaeth blockchain. 
       This model records events where undistributed funds are withdrawn from a distribution.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3400,17 +3710,22 @@ models:
       - name: amount
         description: The amount of the token being withdrawn, in its smallest unit.
 
-  - name: gmx_v2_claim_terms_removed
+  - name: gmx_v2_megaeth_claim_terms_removed
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: [ai_data_master, gmx-io]
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'claim_terms', 'event', 'removed']
+      tags: ['megaeth', 'gmx', 'claim_terms', 'event', 'removed']
     description: |
-      Extracts and decodes the `ClaimTermsRemoved` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `ClaimTermsRemoved` event log data from the megaeth blockchain. 
       This model records when the terms for a specific distribution are removed.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -3427,17 +3742,22 @@ models:
       - name: distribution_id
         description: The identifier for the distribution whose terms were removed.
 
-  - name: gmx_v2_claim_terms_set
+  - name: gmx_v2_megaeth_claim_terms_set
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: [ai_data_master, gmx-io]
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'claim_terms', 'event', 'set']
+      tags: ['megaeth', 'gmx', 'claim_terms', 'event', 'set']
     description: |
-      Extracts and decodes the `ClaimTermsSet` event log data from the Arbitrum, Avalanche, and MegaETH blockchains. 
+      Extracts and decodes the `ClaimTermsSet` event log data from the megaeth blockchain. 
       This model records when the terms for a distribution are set or updated.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
