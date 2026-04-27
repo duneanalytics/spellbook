@@ -142,6 +142,7 @@ models:
             - asset_id
             - evt_index
             - tx_hash
+            - contract_address
     columns:
       - name: block_month
         description: "UTC month of the event block time used for partitioning"
@@ -164,7 +165,7 @@ models:
       - name: action
         description: "Type of trade (clob or AMM trade)"
       - name: contract_address
-        description: "Contract address (ctfexchange or negrisk module)"
+        description: "Exchange contract that emitted the trade. V1: CTFExchange or NegRiskCTFExchange. V2: 0xe111…996b (standard) or 0xe222…0f59 (NegRisk) — both decode into polymarket_v2_polygon.ctfexchange_evt_orderfilled."
       - name: condition_id
         description: "Unique identifier for the YES/NO pair"
       - name: event_market_name
@@ -184,11 +185,11 @@ models:
       - name: price
         description: "Price for the token being bought"
       - name: amount
-        description: "Amount in USD"
+        description: "Amount in USD (V2: pUSD treated 1:1 as USD)"
       - name: shares
         description: "Amount of shares transferred"
       - name: fee
-        description: "Fees to Polymarket (currently not enabled)"
+        description: "Per-trade fee in USD. V1: sourced from CTFExchange/NegRiskCtfExchange OrderFilled.fee (usually 0 — fees were not charged in practice on V1). V2: sourced from the V2 OrderFilled.fee field, calculated per-market as fee = C × r × p × (1 − p)."
       - name: maker
         description: "Trader whose order is being filled"
       - name: taker
@@ -197,6 +198,16 @@ models:
         description: "Unique key of the event or market"
       - name: token_outcome_name
         description: "Combination of token outcome and question"
+      - name: contract_version
+        description: "Exchange contract version that executed the trade: 'v1' (original CTFExchange/NegRiskCTFExchange) or 'v2' (launched Apr 2026, unified CTFExchange V2, pUSD collateral)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['v1', 'v2']
+      - name: builder
+        description: "V2 only: builder attribution field (bytes32) embedded in signed orders, replacing V1's HMAC header authentication. NULL for V1 rows."
+      - name: metadata
+        description: "V2 only: arbitrary metadata field (bytes32) in signed orders. NULL for V1 rows."
       - name: _updated_at
         description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
 
@@ -487,7 +498,7 @@ models:
       - name: trade_count
         description: "Number of trades in the hour. Zero for forward-filled hours."
       - name: market_end_time
-        description: "Market end time from market details (raw varchar, ISO 8601)"
+        description: "Market end time from market details (timestamp, parsed from ISO 8601)"
       - name: market_outcome
         description: "Resolved outcome of the market (yes/no/null if unresolved)"
       - name: event_market_name
