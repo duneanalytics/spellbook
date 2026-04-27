@@ -79,6 +79,9 @@ where (
   and "from" not in (select proxy from polymarket_wallets) --not looking for transfers
   and "to" not in (select address from polymarket_addresses)
   and "from" not in (select address from polymarket_addresses)
+  {% if target.name == 'ci' %}
+  and block_time >= now() - interval '7' day -- CI builds the model from scratch; bound the scan to fit Trino hash limits
+  {% endif %}
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -113,6 +116,9 @@ where (
   and "to" not in (select proxy from polymarket_wallets)  --not looking for transfers
   and "to" not in (select address from polymarket_addresses)
   and "from" not in (select address from polymarket_addresses)
+  {% if target.name == 'ci' %}
+  and block_time >= now() - interval '7' day -- CI builds the model from scratch; bound the scan to fit Trino hash limits
+  {% endif %}
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -145,6 +151,9 @@ where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   and "from" not in (select address from polymarket_addresses)
   and "from" in (select proxy from polymarket_wallets)
   and "to" in (select proxy from polymarket_wallets)
+  {% if target.name == 'ci' %}
+  and block_time >= now() - interval '7' day -- CI builds the model from scratch; bound the scan to fit Trino hash limits
+  {% endif %}
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -172,6 +181,9 @@ where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
   and (("to" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "from" in (select proxy from polymarket_wallets))
   or ("from" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "to" in (select proxy from polymarket_wallets)))
+  {% if target.name == 'ci' %}
+  and block_time >= now() - interval '7' day -- CI builds the model from scratch; bound the scan to fit Trino hash limits
+  {% endif %}
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
