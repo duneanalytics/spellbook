@@ -68,12 +68,6 @@ deleted_objects_raw as (
     {% endif %}
 ),
 
-anchor_object_ids as (
-  select object_id from coin_window_ids
-  union
-  select object_id from deleted_objects_raw
-),
-
 -- first window version per object; clips helper rows to strictly prior states
 -- so helper entries within the current window are never reused as anchors
 -- (also yields zero anchors on full refresh, matching prior behavior).
