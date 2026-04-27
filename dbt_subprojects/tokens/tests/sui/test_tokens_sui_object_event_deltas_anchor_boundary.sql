@@ -16,8 +16,7 @@
 -- Any returned row means anchor reconstruction failed for that object boundary,
 -- which can distort downstream deltas/transfer derivation.
 
-{% set sui_transfer_full_start_date = '2023-04-12' %}
-{% set sui_transfer_start_date = '2026-01-01' %} -- ci test, revert to sui_transfer_full_start_date
+{% set sui_transfer_start_date = '2023-04-12' %}
 
 with
 
@@ -34,7 +33,7 @@ objects_with_pre_window_history as (
   from window_objects w
   inner join {{ ref('tokens_sui_coin_object_history') }} h
     on h.object_id = w.object_id
-  where h.block_date >= date '{{ sui_transfer_full_start_date }}'
+  where h.block_date >= date '{{ sui_transfer_start_date }}'
     and not {{ incremental_predicate('h.block_date') }}
 ),
 
