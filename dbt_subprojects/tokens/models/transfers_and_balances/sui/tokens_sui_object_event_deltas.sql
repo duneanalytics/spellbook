@@ -14,7 +14,8 @@
   )
 }}
 
-{% set sui_transfer_start_date = '2026-01-01' %} -- ci test, revert to '2023-04-12'
+{% set sui_transfer_full_start_date = '2023-04-12' %}
+{% set sui_transfer_start_date = '2026-01-01' %} -- ci test, revert to sui_transfer_full_start_date
 
 with
 
@@ -89,8 +90,7 @@ window_first_version as (
   group by 1
 ),
 
--- load latest prior object state per object as anchor context
-history_anchors as (
+latest_state_anchors as (
   select
     l.object_id,
     l.version,
@@ -108,6 +108,56 @@ history_anchors as (
   inner join window_first_version w
     on l.object_id = w.object_id
   where l.version < w.min_window_version
+),
+
+-- temporary bounded-CI backfill: seed objects whose required prior state is
+-- before the reduced CI start date. Remove when reverting the CI date bound.
+pre_ci_window_anchors as (
+  select
+    h.object_id,
+    max(h.version) as version,
+    cast(null as varchar) as tx_digest,
+    max_by(h.timestamp_ms, h.version) as timestamp_ms,
+    cast(max_by(h.block_date, h.version) as date) as block_date,
+    cast(max_by(h.block_month, h.version) as date) as block_month,
+    max_by(h.checkpoint, h.version) as checkpoint,
+    max_by(h.owner_type, h.version) as owner_type,
+    max_by(h.receiver, h.version) as receiver,
+    max_by(h.coin_type, h.version) as coin_type,
+    cast('ANCHOR' as varchar) as object_status,
+    max_by(h.coin_balance, h.version) as coin_balance
+  from {{ ref('tokens_sui_coin_object_history') }} h
+  inner join window_first_version w
+    on h.object_id = w.object_id
+  where h.block_date >= date '{{ sui_transfer_full_start_date }}'
+    and h.block_date < date '{{ sui_transfer_start_date }}'
+    and h.version < w.min_window_version
+  group by 1
+),
+
+history_anchor_candidates as (
+  select * from latest_state_anchors
+  union all
+  select * from pre_ci_window_anchors
+),
+
+-- load latest prior object state per object as anchor context
+history_anchors as (
+  select
+    h.object_id,
+    max(h.version) as version,
+    cast(null as varchar) as tx_digest,
+    max_by(h.timestamp_ms, h.version) as timestamp_ms,
+    cast(max_by(h.block_date, h.version) as date) as block_date,
+    cast(max_by(h.block_month, h.version) as date) as block_month,
+    max_by(h.checkpoint, h.version) as checkpoint,
+    max_by(h.owner_type, h.version) as owner_type,
+    max_by(h.receiver, h.version) as receiver,
+    max_by(h.coin_type, h.version) as coin_type,
+    cast('ANCHOR' as varchar) as object_status,
+    max_by(h.coin_balance, h.version) as coin_balance
+  from history_anchor_candidates h
+  group by 1
 ),
 
 -- prune deleted rows that cannot survive downstream lag-based filtering
