@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: gas_aptos_fees
+    meta:
+      blockchain: aptos
+      sector: gas
+      contributors: tomfutago
+    config:
+      tags: ['aptos', 'gas', 'fees']
+    description: >
+        Gas Fees on Aptos
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: block_month
+        description: "Month for block event time in UTC"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Date for block event time in UTC"
+      - name: block_time
+        description: "Timestamp for block event time in UTC"
+      - name: block_number
+        description: "Aptos block height"
+      - name: tx_hash
+        description: "Primary key of the transaction"
+        data_tests:
+          - not_null
+      - name: tx_index
+        description: "Index position of the transaction within its block"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: tx_to
+        description: "Recipient address of the transaction, null for Aptos user transactions"
+      - name: gas_price
+        description: "Gas unit price paid by the transaction sender, denominated in octas per gas unit"
+      - name: gas_used
+        description: "Amount of Aptos gas units consumed by the transaction"
+      - name: currency_symbol
+        description: "Symbol of the native gas token"
+      - name: tx_fee_raw
+        description: "Total gas fee charged for the transaction, denominated in octas"
+      - name: tx_fee
+        description: "Total gas fee charged for the transaction, denominated in APT"
+      - name: tx_fee_usd
+        description: "Total gas fee charged for the transaction, denominated in USD"
+      - name: tx_fee_breakdown_raw
+        description: "Map of gas fee components denominated in octas"
+      - name: tx_fee_breakdown
+        description: "Map of gas fee components denominated in APT"
+      - name: tx_fee_breakdown_usd
+        description: "Map of gas fee components denominated in USD"
+      - name: tx_fee_currency
+        description: "Contract address identifier for the native gas token"
+      - name: block_proposer
+        description: "Address of the validator that proposed the block"
+      - name: gas_limit
+        description: "Maximum gas units the transaction sender was willing to spend"
+      - name: gas_limit_usage
+        description: "Ratio of gas units consumed to maximum gas units allowed"

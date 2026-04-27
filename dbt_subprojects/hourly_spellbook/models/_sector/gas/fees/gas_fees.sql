@@ -4,6 +4,7 @@
     post_hook='{{ expose_spells(\'[
                                     "abstract"
                                     , "apechain"
+                                    , "aptos"
                                     , "arbitrum"
                                     , "avalanche_c"
                                     , "b3"
@@ -71,6 +72,7 @@
 {% set chains = [
     "abstract"
     , "apechain"
+    , "aptos"
     , "arbitrum"
     , "avalanche_c"
     , "b3"
