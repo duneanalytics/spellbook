@@ -6,7 +6,6 @@
 	incremental_strategy='merge',
 	unique_key=['block_time', 'evt_index', 'tx_hash'],
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-	pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
 	post_hook='{{ hide_spells() }}',
 ) }}
 
@@ -19,7 +18,6 @@
 -- this will just use uniswap to swap your usdc for usdc.e, so we need to exclude 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 as this is the uniswap pool
 -- by ignoring the uniswap pool, but looking for USDC transfers, we can get a better read on funding sources
 
--- ci-stamp: wallet-gated-transfers-1
 
 
 
@@ -65,7 +63,7 @@ with polymarket_addresses as (
 			{{ ref('polymarket_polygon_users_safe_proxies') }}
 	) as wallets
 )
-, wallet_transfer_candidates as (
+, token_transfers as (
 	select
 		t.block_time
 		, t.block_date
@@ -80,48 +78,12 @@ with polymarket_addresses as (
 		, t.tx_hash
 	from
 		{{ source('tokens_polygon', 'transfers') }} as t
-	inner join polymarket_wallets as w
-		on t."to" = w.proxy
 	where
 		t.contract_address in (
 			0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- usdc.e
 			, 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 -- usdc
 			, 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pusd (v2 collateral; 1:1 usdc-backed)
 		)
-		{% if target.name == 'ci' -%}
-		and t.block_time >= now() - interval '7' day -- ci builds the model from scratch; bound the scan to fit trino hash limits
-		{% endif -%}
-		{% if is_incremental() -%}
-		and {{ incremental_predicate('t.block_time') }}
-		{% endif -%}
-
-	union all
-
-	select
-		t.block_time
-		, t.block_date
-		, t.block_number
-		, t."from" as from_address
-		, t."to" as to_address
-		, t.contract_address
-		, t.amount_raw
-		, t.amount
-		, t.amount_usd
-		, t.evt_index
-		, t.tx_hash
-	from
-		{{ source('tokens_polygon', 'transfers') }} as t
-	inner join polymarket_wallets as w
-		on t."from" = w.proxy
-	left join polymarket_wallets as to_wallet
-		on t."to" = to_wallet.proxy
-	where
-		t.contract_address in (
-			0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- usdc.e
-			, 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 -- usdc
-			, 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pusd (v2 collateral; 1:1 usdc-backed)
-		)
-		and to_wallet.proxy is null
 		{% if target.name == 'ci' -%}
 		and t.block_time >= now() - interval '7' day -- ci builds the model from scratch; bound the scan to fit trino hash limits
 		{% endif -%}
@@ -181,7 +143,7 @@ with polymarket_addresses as (
 		, t.evt_index
 		, t.tx_hash
 	from
-		wallet_transfer_candidates as t
+		token_transfers as t
 	left join polymarket_wallets as to_wallet
 		on t.to_address = to_wallet.proxy
 	left join polymarket_wallets as from_wallet
