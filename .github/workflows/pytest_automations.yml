@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     - name: Set up uv
-      uses: astral-sh/setup-uv@v8
+      uses: astral-sh/setup-uv@v8.1.0
       with:
         enable-cache: true
     - name: Set up Python 3.9
