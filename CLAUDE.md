@@ -29,39 +29,38 @@ Shared resources live at the repo root:
 
 ### Setup
 ```bash
-pipenv install          # Create virtual environment (Python 3.9+)
-pipenv shell            # Activate environment
+uv sync --locked        # Create/update .venv with locked dependencies
 ```
 
 ### Build & Compile (must be run from a sub-project directory)
 ```bash
 cd dbt_subprojects/<subproject>/
-dbt clean               # Clean old artifacts
-dbt deps                # Pull dbt dependencies
-dbt compile             # Compile Jinja/SQL to plain SQL in target/
+uv run dbt clean        # Clean old artifacts
+uv run dbt deps         # Pull dbt dependencies
+uv run dbt compile      # Compile Jinja/SQL to plain SQL in target/
 ```
 
 ### Testing
 ```bash
 # Run dbt tests for a model
-dbt test --select @model_name
+uv run dbt test --select @model_name
 
 # Compile and run a dbt model against Dune API
-python scripts/dune_query.py "@model_name" --limit 100
+uv run python scripts/dune_query.py "@model_name" --limit 100
 
 # Run raw SQL against Dune
-python scripts/dune_query.py "SELECT * FROM dex.trades LIMIT 10"
+uv run python scripts/dune_query.py "SELECT * FROM dex.trades LIMIT 10"
 
 # Run SQL from file
-python scripts/dune_query.py --sql-file query.sql
+uv run python scripts/dune_query.py --sql-file query.sql
 ```
 
 The `dune_query.py` script requires a `DUNE_API_KEY` in `.env`. It auto-detects the correct sub-project directory for `@model_name` syntax.
 
 ### Pre-push Hooks (optional)
 ```bash
-pre-commit install --hook-type pre-push
-pre-commit run --hook-stage manual    # Manual run
+uv run pre-commit install --hook-type pre-push
+uv run pre-commit run --hook-stage manual    # Manual run
 ```
 
 ### CI
