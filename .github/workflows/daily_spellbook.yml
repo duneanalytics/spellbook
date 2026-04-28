@@ -13,14 +13,13 @@ concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  actions: read
-  contents: read
-  issues: write
-
 jobs:
   dbt-run:
     uses: ./.github/workflows/dbt_run.yml
+    permissions:
+      actions: read
+      contents: read
+      issues: write
     with:
       project: 'daily_spellbook'
 
