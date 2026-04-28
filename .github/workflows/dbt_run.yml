@@ -8,6 +8,9 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: read
+
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
@@ -16,6 +19,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v6
@@ -64,6 +69,11 @@ jobs:
       - name: dbt run initial model(s)
         run: "uv run dbt -x run $PROFILE --select state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
+      - name: Store initial dbt run results
+        run: |
+          mkdir -p "$RUNNER_TEMP/dbt-built-relations"
+          cp "$PROJECT_DIR/target/run_results.json" "$RUNNER_TEMP/dbt-built-relations/initial_run_results.json"
+
       - name: dbt test initial model(s)
         run: "uv run dbt test $PROFILE --select state:new state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
@@ -78,3 +88,57 @@ jobs:
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
         run: "uv run dbt test $PROFILE --select state:modified.body,config.materialized:incremental state:modified.macros,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+
+      - name: Build queryable Dune CI tables comment
+        if: github.event_name == 'pull_request'
+        env:
+          DBT_BUILT_RELATIONS_DIR: ${{ runner.temp }}/dbt-built-relations
+          DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-built-relations/comment_body.md
+          PROJECT_DIR: ${{ env.PROJECT_DIR }}
+          PROJECT_NAME: ${{ inputs.project }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: uv run python scripts/comment_dbt_ci_tables.py
+
+      - name: Upload queryable Dune CI tables comment
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-ci-tables-comment-${{ inputs.project }}
+          path: ${{ runner.temp }}/dbt-built-relations/comment_body.md
+          if-no-files-found: ignore
+
+  comment-dbt-ci-tables:
+    needs: dbt-test
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+
+    steps:
+      - name: Download queryable Dune CI tables comment
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: dbt-ci-tables-comment-${{ inputs.project }}
+          path: ${{ runner.temp }}/dbt-ci-tables-comment
+
+      - name: Upsert queryable Dune CI tables comment
+        continue-on-error: true
+        env:
+          DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-ci-tables-comment/comment_body.md
+          GH_TOKEN: ${{ github.token }}
+          MARKER: <!-- spellbook-dbt-run-built-tables:${{ inputs.project }} -->
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          [ -f "$DBT_CI_TABLES_COMMENT_PATH" ] || exit 0
+          comment_body="$(< "$DBT_CI_TABLES_COMMENT_PATH")"
+          comment_id="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate --jq ".[] | select(.body | contains(env.MARKER)) | .id" | head -n 1)"
+          if [ -n "$comment_id" ]; then
+            current_body="$(mktemp)"
+            gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" --jq .body > "$current_body"
+            cmp -s "$current_body" "$DBT_CI_TABLES_COMMENT_PATH" || gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" --raw-field body="$comment_body"
+          else
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --raw-field body="$comment_body"
+          fi
