@@ -29,6 +29,18 @@ sources:
       - name: SafeProxyFactory_evt_ProxyCreation
       - name: fedinterestrate_evt_FPMMFundingAdded 
 
+  - name: polymarket_v2_polygon
+    description: "Polymarket CLOB V2 — new Exchange contracts (launched Apr 2026). Uses pUSD (ERC-20 backed 1:1 by USDC) as collateral. Unified CTFExchange handles both standard and NegRisk markets; split by contract_address."
+    tables:
+      - name: CTFExchange_evt_OrderFilled
+        description: "V2 OrderFilled event. Single table for both standard (0xe111…996b) and NegRisk (0xe222…0f59) contracts; differentiate via contract_address. Replaces V1 CTFExchange_evt_OrderFilled + NegRiskCtfExchange_evt_OrderFilled."
+      - name: collateraltoken_evt_Transfer
+        description: "pUSD ERC-20 transfers. Replaces USDC.e for V2 capital flows."
+      - name: collateraltoken_evt_Wrapped
+        description: "USDC → pUSD wrap event."
+      - name: collateraltoken_evt_Unwrapped
+        description: "pUSD → USDC unwrap event."
+
   - name: dune
     tables:
       - name: polymarket_markets

@@ -5,3 +5,4 @@ block_date,unique_key,transfer_type,object_status,has_ownership_change,transfer_
 2026-03-26,a3fc08b9e3c1092f0dd4dc3abc788f63,object_deleted,Deleted,false,debit,17390580,false,,-635613150426,0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP
 2026-03-26,16a8af5842a0054e63aeea32cc1314d4,object_created,Created,false,credit,195889586,false,,0,0xf10468d660387db9ed3aeec4b527c35d76dd967aeab6cd39d2d64bfaea79b20b::lb::LB
 2026-03-26,5bd97c395a6eb6b76430fda4c92372cc,burn,,false,debit,10000000000,true,burn,,0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::usdc
+2026-02-12,039402c51c0e300659e70e499613469a,ownership_balance_topup,Residual,false,credit,999900000000,false,,999900000000,0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC

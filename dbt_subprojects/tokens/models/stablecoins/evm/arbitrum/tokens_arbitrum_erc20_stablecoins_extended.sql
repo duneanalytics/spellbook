@@ -27,6 +27,7 @@ from (values
      (0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 'USD'), -- USDM
      (0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'USD'), -- sUSDM (list: wUSDM)
      (0xd3443ee1e91af28e5fb858fbd0d72a63ba8046e0, 'USD'), -- gUSDC
+     (0xddb46999f8891663a8f2828d25298f70416d7610, 'USD'), -- sUSDS (savings USDS)
      */
 
      /* rebasing / interest accruing tokens
