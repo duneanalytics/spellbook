@@ -172,12 +172,13 @@ models:
   - name: tokens_multichain_transfers
     meta:
       sector: tokens
-      contributors: kryptaki
+      contributors: kryptaki, tomfutago
     config:
-      tags: ['tokens','transfers', 'multichain']
+      tags: ['tokens', 'transfers', 'multichain']
     description: >
-      Unified view of fungible token transfers across EVM-compatible chains and Solana with a chain-agnostic schema.
-      For EVM-only transfers, use tokens_evm.transfers, and for Solana-only transfers, use tokens_solana.transfers.
+      Unified view of fungible token transfers across EVM-compatible chains, Solana, Aptos, and Sui with a
+      chain-agnostic schema. For EVM-only transfers, use tokens_evm.transfers, and for chain-specific
+      transfer details, use the chain-level transfers models.
     columns:
       - <<: *unique_key
       - <<: *blockchain_transfer
@@ -185,21 +186,35 @@ models:
       - <<: *block_date_transfer
       - <<: *block_month_transfer
       - name: block_number
-        description: "The block number or slot number"
+        description: "Chain-native block or ledger number for the transfer, such as EVM block number, Solana slot, Sui checkpoint, Stellar ledger sequence, or XRPL ledger index."
       - name: tx_id
-        description: "The transaction identifier (hash or id), stored as string"
+        description: "Chain-native transaction identifier, such as EVM transaction hash, Solana transaction id/signature, Sui transaction digest, Aptos transaction hash, Stellar transaction hash, or XRPL transaction hash."
+      - name: tx_sequence
+        description: "Nullable chain-native transaction sequence number, such as Aptos transaction version or Stellar transaction id."
+      - name: tx_index
+        description: "Nullable transaction index within the block or ledger unit."
+      - name: event_index
+        description: "Nullable primary event, instruction, or operation index for the transfer."
+      - name: sub_event_index
+        description: "Nullable secondary event, instruction, or matched-counterpart index for the transfer."
       - name: from_address
-        description: "The sender of the transfer, stored as string"
+        description: "The sender owner/account of the transfer, stored as string."
       - name: to_address
-        description: "The receiver of the transfer, stored as string"
+        description: "The receiver owner/account of the transfer, stored as string."
       - name: tx_signer
-        description: "The address that signed the transaction, stored as string"
+        description: "The transaction signer or sender when available, stored as string."
       - name: token_address
-        description: "The token address of the transfer, stored as string"
+        description: "Address-like token identifier, such as EVM contract address, Solana mint, Sui package address, Aptos package address, Stellar contract id, or XRPL issuer."
+      - name: token_id
+        description: "Canonical full chain-native token identifier. This matches token_address on chains where the address is the full token id, and uses richer identifiers such as Sui coin type, Aptos asset type, Stellar asset/contract id, or XRPL asset id where needed."
       - name: token_symbol
         description: "The token symbol transferred"
       - <<: *token_standard_transfer
       - <<: *amount_raw_transfer
       - <<: *amount_transfer
+      - <<: *price_usd_transfer
       - <<: *amount_usd_transfer
-    
+      - name: transfer_type
+        description: "Nullable chain-native transfer classification or action."
+      - name: _updated_at
+        description: "Timestamp when this row was last written, when provided by the source model."
