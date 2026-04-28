@@ -138,7 +138,7 @@ jobs:
           if [ -n "$comment_id" ]; then
             current_body="$(mktemp)"
             gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" --jq .body > "$current_body"
-            cmp -s "$current_body" "$DBT_CI_TABLES_COMMENT_PATH" || gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" --raw-field body="$comment_body"
+            cmp -s "$current_body" "$DBT_CI_TABLES_COMMENT_PATH" || gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" --raw-field body="$comment_body" || echo "Skipping PR comment update; token cannot write comments."
           else
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --raw-field body="$comment_body"
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --raw-field body="$comment_body" || echo "Skipping PR comment creation; token cannot write comments."
           fi
