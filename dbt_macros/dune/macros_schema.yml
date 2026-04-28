@@ -2,7 +2,7 @@ version: 2
 
 macros:
   - name: generate_schema_name
-    description: "This overrides the dbt-core function for setting schemas. For PR tests, the schema is set to test_schema"
+    description: "This overrides the dbt-core function for setting schemas. For PR tests, the schema is set to the PR-scoped CI schema"
     arguments:
       - name: custom_schema_name
         type: column name or expression
@@ -12,7 +12,7 @@ macros:
         description: "Node"
 
   - name: generate_alias_name
-    description: "This overrides the dbt-core function for setting aliases. For PR test, the alias is set to the user schema and file name. "
+    description: "This overrides the dbt-core function for setting aliases. For PR tests, the alias is set to the model name. "
     arguments:
       - name: custom_alias_name
         type: column name or expression
