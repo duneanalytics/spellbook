@@ -1,0 +1,23 @@
+[project]
+name = "spellbook"
+version = "0.0.0"
+requires-python = "==3.11.*"
+dependencies = [
+    "dbt-common>=1.34.2,<1.35",
+    "dbt-core>=1.10.0,<1.11",
+    "dbt-trino>=1.10.1,<1.11",
+    "deepdiff>=8.6.2",
+    "filelock>=3.20.3",
+    "jinja2>=3.1.6",
+    "numpy==2.0.2",
+    "pre-commit==4.0.1",
+    "protobuf>=5.29.6",
+    "pytest>=9.0.3",
+    "requests>=2.33.0",
+    "sqlparse>=0.5.4",
+    "urllib3>=2.6.3",
+    "virtualenv>=20.36.1",
+]
+
+[tool.uv]
+package = false
