@@ -1,4 +1,4 @@
--- depends_on: {{ ref('tokens_sui_coin_object_anchor_state') }}
+-- depends_on: {{ ref('tokens_sui_coin_object_latest_state') }}
 
 {{
   config(
@@ -68,79 +68,39 @@ deleted_objects_raw as (
     {% endif %}
 ),
 
-anchor_object_ids as (
-  select object_id from coin_window_ids
-  union
-  select object_id from deleted_objects_raw
-),
-
-{% if is_incremental() %}
-window_bounds as (
+-- first window version per object; clips helper rows to strictly prior states
+-- so helper entries within the current window are never reused as anchors
+-- (also yields zero anchors on full refresh, matching prior behavior).
+window_first_version as (
   select
-    min(s.block_date) as window_start_date,
-    cast(date_trunc('month', min(s.block_date)) as date) as window_month_start
+    u.object_id,
+    min(u.version) as min_window_version
   from (
-    select block_date from coin_object_history
+    select object_id, version from coin_object_history
     union all
-    select block_date from deleted_objects_raw
-  ) s
-),
-
-helper_anchor_months as (
-  select
-    a.object_id,
-    max(a.block_month) as block_month
-  from {{ ref('tokens_sui_coin_object_anchor_state') }} a
-  inner join anchor_object_ids f
-    on a.object_id = f.object_id
-  cross join window_bounds b
-  where b.window_month_start is not null
-    and a.block_month < b.window_month_start
+    select object_id, version from deleted_objects_raw
+  ) u
   group by 1
 ),
 
-helper_anchors as (
+latest_state_anchors as (
   select
-    a.object_id,
-    a.version,
+    l.object_id,
+    l.version,
     cast(null as varchar) as tx_digest,
-    a.timestamp_ms,
-    a.block_date,
-    a.block_month,
-    a.checkpoint,
-    a.owner_type,
-    a.receiver,
-    a.coin_type,
+    l.timestamp_ms,
+    l.block_date,
+    l.block_month,
+    l.checkpoint,
+    l.owner_type,
+    l.receiver,
+    l.coin_type,
     cast('ANCHOR' as varchar) as object_status,
-    a.coin_balance
-  from {{ ref('tokens_sui_coin_object_anchor_state') }} a
-  inner join helper_anchor_months m
-    on a.object_id = m.object_id
-   and a.block_month = m.block_month
-),
-
-recent_history_anchors as (
-  select
-    h.object_id,
-    max(h.version) as version,
-    cast(null as varchar) as tx_digest,
-    max_by(h.timestamp_ms, h.version) as timestamp_ms,
-    cast(max_by(h.block_date, h.version) as date) as block_date,
-    cast(date_trunc('month', max_by(h.block_date, h.version)) as date) as block_month,
-    max_by(h.checkpoint, h.version) as checkpoint,
-    max_by(h.owner_type, h.version) as owner_type,
-    max_by(h.receiver, h.version) as receiver,
-    max_by(h.coin_type, h.version) as coin_type,
-    cast('ANCHOR' as varchar) as object_status,
-    max_by(h.coin_balance, h.version) as coin_balance
-  from {{ ref('tokens_sui_coin_object_history') }} h
-  inner join anchor_object_ids f
-    on h.object_id = f.object_id
-  cross join window_bounds b
-  where b.window_start_date is not null
-    and h.block_date >= b.window_month_start
-    and h.block_date < b.window_start_date
-  group by 1
+    l.coin_balance
+  from {{ ref('tokens_sui_coin_object_latest_state') }} l
+  inner join window_first_version w
+    on l.object_id = w.object_id
+  where l.version < w.min_window_version
 ),
 
 -- load latest prior object state per object as anchor context
@@ -151,43 +111,16 @@ history_anchors as (
     cast(null as varchar) as tx_digest,
     max_by(h.timestamp_ms, h.version) as timestamp_ms,
     cast(max_by(h.block_date, h.version) as date) as block_date,
-    cast(date_trunc('month', max_by(h.block_date, h.version)) as date) as block_month,
+    cast(max_by(h.block_month, h.version) as date) as block_month,
     max_by(h.checkpoint, h.version) as checkpoint,
     max_by(h.owner_type, h.version) as owner_type,
     max_by(h.receiver, h.version) as receiver,
     max_by(h.coin_type, h.version) as coin_type,
     cast('ANCHOR' as varchar) as object_status,
     max_by(h.coin_balance, h.version) as coin_balance
-  from (
-    select * from helper_anchors
-    union all
-    select * from recent_history_anchors
-  ) h
+  from latest_state_anchors h
   group by 1
 ),
-{% else %}
--- load latest prior object state per object as anchor context
-history_anchors as (
-  select
-    h.object_id,
-    max(h.version) as version,
-    cast(null as varchar) as tx_digest,
-    max_by(h.timestamp_ms, h.version) as timestamp_ms,
-    cast(max_by(h.block_date, h.version) as date) as block_date,
-    cast(date_trunc('month', max_by(h.block_date, h.version)) as date) as block_month,
-    max_by(h.checkpoint, h.version) as checkpoint,
-    max_by(h.owner_type, h.version) as owner_type,
-    max_by(h.receiver, h.version) as receiver,
-    max_by(h.coin_type, h.version) as coin_type,
-    cast('ANCHOR' as varchar) as object_status,
-    max_by(h.coin_balance, h.version) as coin_balance
-  from {{ ref('tokens_sui_coin_object_history') }} h
-  inner join anchor_object_ids f
-    on h.object_id = f.object_id
-  where h.block_date < date '{{ sui_transfer_start_date }}'
-  group by 1
-),
-{% endif %}
 
 -- prune deleted rows that cannot survive downstream lag-based filtering
 deleted_objects as (

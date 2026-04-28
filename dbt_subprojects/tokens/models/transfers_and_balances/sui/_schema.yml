@@ -66,7 +66,8 @@ models:
       - &timestamp_ms
         name: timestamp_ms
         description: "Transaction timestamp in milliseconds since unix epoch."
-      - name: block_date
+      - &block_date
+        name: block_date
         description: "The date of the object state."
         data_tests:
           - not_null
@@ -93,47 +94,24 @@ models:
         name: _updated_at
         description: "Row update timestamp."
 
-  - name: tokens_sui_coin_object_anchor_state
+  - name: tokens_sui_coin_object_latest_state
     meta:
       blockchain: sui
       sector: tokens
-      short_description: "Latest Coin<T> object state per object_id + month for anchor lookups."
+      short_description: "Latest Coin<T> object state per object_id for anchor lookups."
       contributors: tomfutago
     config:
       tags: ['tokens', 'transfers', 'sui']
-    description: "Compact monthly latest-state helper over Sui Coin<T> object history, used to seed incremental anchor lookups in tokens_sui_object_event_deltas without rescanning full historical object history each run."
+    description: "Compact latest-state helper keyed by object_id, holding the most recent observed Coin<T> state with block_date strictly before the consumer incremental window (lagged by DBT_ENV_INCREMENTAL_TIME). Used by tokens_sui_object_event_deltas as a point-lookup anchor that is always strictly prior to any window row, avoiding repeated full scans of the object history."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
             - object_id
-      - check_seed:
-          seed_file: ref('tokens_sui_coin_object_anchor_state_seed')
-          match_columns:
-            - block_month
-            - object_id
-          check_columns:
-            - version
-            - block_date
-            - timestamp_ms
-            - checkpoint
-            - owner_type
-            - receiver
-            - coin_type
-            - coin_balance
     columns:
-      - name: block_month
-        description: "Month bucket for the latest object state captured in this helper row."
-        data_tests:
-          - not_null
-      - name: object_id
-        description: "Sui coin object identifier."
-        data_tests:
-          - not_null
-      - name: version
-        description: "Latest object version observed for this object_id within the month."
-      - name: block_date
-        description: "Date of the latest object state captured for the month."
+      - *object_id
+      - *version
+      - *block_date
+      - *block_month
       - *timestamp_ms
       - *checkpoint
       - *owner_type
@@ -157,11 +135,7 @@ models:
             - block_date
             - unique_key
     columns:
-      - &block_date
-        name: block_date
-        description: "Date bucket for the event-native supply transfer."
-        data_tests:
-          - not_null
+      - *block_date
       - &unique_key
         name: unique_key
         description: "Surrogate key for tx_digest + coin_type + supply_event_type + event_index."
