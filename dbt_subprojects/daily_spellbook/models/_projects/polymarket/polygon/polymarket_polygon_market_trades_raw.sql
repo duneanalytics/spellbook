@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
-    unique_key = ['block_month','block_time','asset_id','evt_index','tx_hash'],
+    unique_key = ['block_month','block_time','asset_id','evt_index','tx_hash','contract_address'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
@@ -104,7 +104,10 @@ select
   t.takerAmountFilled as taker_amount_raw,
   t.contract_address,
   t.evt_index,
-  t.evt_tx_hash as tx_hash
+  t.evt_tx_hash as tx_hash,
+  'v1' as contract_version,
+  cast(null as varbinary) as builder,
+  cast(null as varbinary) as metadata
 from {{ source('polymarket_polygon', 'CTFExchange_evt_OrderFilled') }} t
   inner join {{ ref('polymarket_polygon_base_ctf_tokens') }} ctf on coalesce(nullif(t.makerAssetId, 0), nullif(t.takerAssetID, 0)) = ctf.token0
 {% if is_incremental() %}
@@ -135,9 +138,51 @@ select
   t.takerAmountFilled as taker_amount_raw,
   t.contract_address,
   t.evt_index,
-  t.evt_tx_hash as tx_hash
+  t.evt_tx_hash as tx_hash,
+  'v1' as contract_version,
+  cast(null as varbinary) as builder,
+  cast(null as varbinary) as metadata
 from {{ source('polymarket_polygon', 'NegRiskCtfExchange_evt_OrderFilled') }} t
   inner join {{ ref('polymarket_polygon_base_ctf_tokens') }} ctf on coalesce(nullif(t.makerAssetId, 0), nullif(t.takerAssetID, 0)) = ctf.token0
+{% if is_incremental() %}
+where {{ incremental_predicate('t.evt_block_time') }}
+{% endif %}
+
+
+union all
+
+-- V2 CLOB (launched Apr 2026). Single source covers both standard (0xe111…996b) and NegRisk (0xe222…0f59) contracts; split via contract_address.
+-- V2 schema: tokenId (the outcome token, always the non-collateral side) + side (0=BUY of token, 1=SELL).
+-- side=0 (maker BUY): maker paid pUSD (makerAmountFilled), received tokens (takerAmountFilled).
+-- side=1 (maker SELL): maker gave tokens (makerAmountFilled), received pUSD (takerAmountFilled).
+-- pUSD is 1:1 USDC-backed, 6 decimals — same scaling as V1 USDC.e.
+select
+  cast(date_trunc('month', t.evt_block_time) as date) as block_month,
+  t.evt_block_time as block_time,
+  t.evt_block_number as block_number,
+  'CLOB trade' as action,
+  ctf.condition_id,
+  t.tokenId as asset_id,
+  if(t.side = 0, t.makerAmountFilled, t.takerAmountFilled) / 1e6 as amount,
+  if(t.side = 0, t.takerAmountFilled, t.makerAmountFilled) / 1e6 as shares,
+  if(
+    t.side = 0,
+    (t.makerAmountFilled / 1e6) / (t.takerAmountFilled / 1e6),
+    (t.takerAmountFilled / 1e6) / (t.makerAmountFilled / 1e6)
+  ) as price,
+  t.fee / 1e6 as fee,
+  t.maker,
+  t.taker,
+  t.makerAmountFilled as maker_amount_raw,
+  t.takerAmountFilled as taker_amount_raw,
+  t.contract_address,
+  t.evt_index,
+  t.evt_tx_hash as tx_hash,
+  'v2' as contract_version,
+  t.builder,
+  t.metadata
+from {{ source('polymarket_v2_polygon', 'CTFExchange_evt_OrderFilled') }} t
+  inner join {{ ref('polymarket_polygon_base_ctf_tokens') }} ctf on t.tokenId = ctf.token0
 {% if is_incremental() %}
 where {{ incremental_predicate('t.evt_block_time') }}
 {% endif %}
