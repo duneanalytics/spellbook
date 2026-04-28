@@ -12,8 +12,9 @@ models:
     description: "fluid pools"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - dex
+          arguments:
+            combination_of_columns:
+              - dex
     columns:
       - &blockchain
         name: blockchain
@@ -64,9 +65,10 @@ models:
       All dex events in logoperate
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: fluid_arbitrum_dex_events
     meta:
@@ -80,9 +82,10 @@ models:
       All dex events in logoperate logged in dex contract (not general fluidliquidityproxy)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: fluid_arbitrum_dex_initializations
     meta:
@@ -96,8 +99,9 @@ models:
       Dex initialization event to query pool metadata from creation event
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - dex
+          arguments:
+            combination_of_columns:
+              - dex
 
   - name: fluid_arbitrum_dex_fee_updates
     meta:
@@ -111,6 +115,7 @@ models:
       Dex fee updates event 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - dex
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - dex
+              - tx_hash

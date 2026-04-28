@@ -14,9 +14,10 @@ models:
         Crosschain ERC20 tokens
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
     columns:
       - name: contract_address
         description: "ERC20 Token's contract address"

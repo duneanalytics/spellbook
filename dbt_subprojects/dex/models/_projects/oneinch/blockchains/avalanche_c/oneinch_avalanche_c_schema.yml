@@ -12,10 +12,11 @@ models:
         1inch aggregation router calls
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - call_trace_address
     columns:
       - name: blockchain
         data_tests:
@@ -77,10 +78,11 @@ models:
         1inch limit order protocol calls
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - call_trace_address
     columns:
       - name: blockchain
         data_tests:
@@ -142,10 +144,11 @@ models:
         1inch cross-chain calls
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - call_trace_address
     columns:
       - name: blockchain
         data_tests:
@@ -212,12 +215,13 @@ models:
         transfers within transactions with 1inch calls
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
-            - transfer_trace_address
-            - transfer_contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - call_trace_address
+              - transfer_trace_address
+              - transfer_contract_address
     columns:
       - name: blockchain
         data_tests:

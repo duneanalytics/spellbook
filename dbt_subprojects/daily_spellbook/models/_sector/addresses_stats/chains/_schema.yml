@@ -11,8 +11,9 @@ models:
     description: "Per-address stats for Ethereum (first funded, contract flag). Use _updated_at for incremental reads."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - &address
         name: address
@@ -49,8 +50,9 @@ models:
     description: "Per-address stats for Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -71,8 +73,9 @@ models:
     description: "Per-address stats for Avalanche"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -93,8 +96,9 @@ models:
     description: "Per-address stats for Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -115,8 +119,9 @@ models:
     description: "Per-address stats for BNB"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -137,8 +142,9 @@ models:
     description: "Per-address stats for Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -159,8 +165,9 @@ models:
     description: "Per-address stats for Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -181,8 +188,9 @@ models:
     description: "Per-address stats for Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -203,8 +211,9 @@ models:
     description: "Per-address stats for zkSync"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -225,8 +234,9 @@ models:
     description: "Per-address stats for Monad"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -247,8 +257,9 @@ models:
     description: "Per-address stats for HyperEVM"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -269,8 +280,9 @@ models:
     description: "Per-address stats for Sei"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain

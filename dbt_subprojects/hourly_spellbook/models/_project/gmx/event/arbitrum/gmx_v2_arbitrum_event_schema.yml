@@ -15,9 +15,10 @@ models:
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - &blockchain  
         name: blockchain
@@ -95,7 +96,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation','StopIncrease']
+              arguments:
+                values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation','StopIncrease']
       - name: decrease_position_swap_type
         description: |
           The type of swap for decreasing position, with possible values:
@@ -177,9 +179,10 @@ models:
       account addresses, event keys, and integer values.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -224,9 +227,10 @@ models:
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -342,9 +346,10 @@ models:
       such as market data, collateral amounts, price impacts, and more.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -479,9 +484,10 @@ models:
       such as market data, collateral amounts, price impacts, and more.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -564,9 +570,10 @@ models:
       fees collected from positions, including fee amounts and related market data.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -785,9 +792,10 @@ models:
       position fees, including fee amounts and related market data.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -868,9 +876,10 @@ models:
       account addresses, event keys, and strings representing the reason for the order being frozen.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -916,9 +925,10 @@ models:
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -969,9 +979,10 @@ models:
       This model integrates data from the `open_interest_in_tokens_updated` table, enriching it with market-specific details.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1027,9 +1038,10 @@ models:
       delta and next_value, ensuring consistent scaling based on token decimals.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1091,9 +1103,10 @@ models:
       additional details such as the provider and token involved in the update.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1146,9 +1159,10 @@ models:
       additional details such as the market and token involved in the pool update.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1204,9 +1218,10 @@ models:
       ensuring compatibility with downstream analyses.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1256,9 +1271,10 @@ models:
       enable analysis of refunded execution fees.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1296,9 +1312,10 @@ models:
       analysis of fees associated with keeper-based executions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1336,9 +1353,10 @@ models:
       analysis of deposit cancellations on the platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1378,9 +1396,10 @@ models:
       analysis of deposits created on the platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1446,9 +1465,10 @@ models:
       analysis of deposits executed on the platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1492,9 +1512,10 @@ models:
       analysis of GLV creation events on the platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1540,9 +1561,10 @@ models:
       analysis of cancelled GLV deposits.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1582,9 +1604,10 @@ models:
       analysis of created GLV deposits.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1656,9 +1679,10 @@ models:
       analysis of executed GLV deposits.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1698,9 +1722,10 @@ models:
       analysis of cancelled GLV shifts.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1738,9 +1763,10 @@ models:
       analysis of created GLV shifts.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1786,9 +1812,10 @@ models:
       analysis of executed GLV shifts.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1824,9 +1851,10 @@ models:
       analysis of cancelled GLV withdrawals.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1868,9 +1896,10 @@ models:
       analysis of created GLV withdrawals.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1936,9 +1965,10 @@ models:
       analysis of executed GLV withdrawals.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -1976,9 +2006,10 @@ models:
       analysis of created shifts.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2032,9 +2063,10 @@ models:
       analysis of executed shifts.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2072,9 +2104,10 @@ models:
       analysis of cancelled withdrawals.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2114,9 +2147,10 @@ models:
       analysis of created withdrawals.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2178,9 +2212,10 @@ models:
       analysis of executed withdrawals.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2217,9 +2252,10 @@ models:
       This model extracts key details such as funding updates, collateral information, and market direction to support funding analysis.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2259,9 +2295,10 @@ models:
       This model extracts key details such as funding fees, collateral details, and market direction to enable funding fee analysis.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2301,9 +2338,10 @@ models:
       This model extracts key details such as fee amounts, trade keys, and fee types for analyzing swap fee collection behavior.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2357,9 +2395,10 @@ models:
       This model extracts key details such as distribution amounts and pool impact metrics to analyze the effect of position impact distribution.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2395,9 +2434,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'claimable_collateral_updated']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2439,9 +2479,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'claimable_funding_updated']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2482,9 +2523,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'clear_pending_action']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2517,9 +2559,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'collateral_claimed']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2562,9 +2605,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'funding_fees_claimed']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2605,9 +2649,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'grant_role']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2640,9 +2685,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'revoke_role']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2675,9 +2721,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'set_atomic_oracle_provider']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2710,9 +2757,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'set_data_stream']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2749,9 +2797,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'set_oracle_provider_enabled']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2784,9 +2833,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'set_oracle_provider_for_token']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2819,9 +2869,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'set_price_feed']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2860,9 +2911,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'signal_grant_role']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2895,9 +2947,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'signal_pending_action']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2930,9 +2983,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'signal_revoke_role']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -2965,9 +3019,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_atomic_oracle_provider']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3000,9 +3055,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_data_stream']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3039,9 +3095,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_oracle_provider_enabled']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3074,9 +3131,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_oracle_provider_for_token']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3109,9 +3167,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_price_feed']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3150,9 +3209,10 @@ models:
       tags: ['arbitrum', 'gmx', 'event', 'swap_info']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3207,9 +3267,10 @@ models:
       table tracking how many times each subaccount performed each action.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3246,9 +3307,10 @@ models:
       Each row corresponds to a `PositionImpactPoolAmountUpdated` event on-chain.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3285,9 +3347,10 @@ models:
       and next values, and whether the update was applied.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_time
@@ -3324,9 +3387,10 @@ models:
       including the reason for the failure.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3365,9 +3429,10 @@ models:
       account, and type of action.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3403,9 +3468,10 @@ models:
       This model tracks tokens that have been successfully bridged into the GMX V2 ecosystem from another chain.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3443,9 +3509,10 @@ models:
       This model tracks tokens that have been bridged out of the GMX V2 ecosystem to another chain.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3483,9 +3550,10 @@ models:
       This model records multichain token transfers received by users within the GMX V2 ecosystem.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3521,9 +3589,10 @@ models:
       This model records multichain token transfers sent by users from the GMX V2 ecosystem to another chain.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3561,9 +3630,10 @@ models:
       This model records events where users have successfully claimed their funds from a distribution.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3601,9 +3671,10 @@ models:
       This model records funds being deposited for a specific distribution.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3641,9 +3712,10 @@ models:
       This model records instances where users claim funds that were previously transferred.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3683,9 +3755,10 @@ models:
       This model records events where undistributed funds are withdrawn from a distribution.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3723,9 +3796,10 @@ models:
       This model records when the terms for a specific distribution are removed.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time
@@ -3755,9 +3829,10 @@ models:
       This model records when the terms for a distribution are set or updated.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index    
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index    
     columns:
       - *blockchain
       - *block_time

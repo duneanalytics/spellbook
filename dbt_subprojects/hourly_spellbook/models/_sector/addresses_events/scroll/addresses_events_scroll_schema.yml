@@ -12,16 +12,17 @@ models:
     description: "Table showing who first funded each scroll address in ETH"
     data_tests:
       - check_seed:
-          seed_file: ref('first_funded_by_seed')
-          filter:
-            blockchain: scroll
-          match_columns:
-            - blockchain
-            - address
-          check_columns:
-            - first_funded_by
-            - block_number
-            - tx_hash
+          arguments:
+            seed_file: ref('first_funded_by_seed')
+            filter:
+              blockchain: scroll
+            match_columns:
+              - blockchain
+              - address
+            check_columns:
+              - first_funded_by
+              - block_number
+              - tx_hash
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -61,15 +62,16 @@ models:
     description: "Table showing first activity of each scroll Mainnet address"
     data_tests:
       - check_seed:
-          seed_file: ref('first_activity_seed')
-          filter:
-            blockchain: scroll
-          match_columns:
-            - address
-          check_columns:
-            - first_activity_to
-            - first_block_number
-            - first_tx_hash
+          arguments:
+            seed_file: ref('first_activity_seed')
+            filter:
+              blockchain: scroll
+            match_columns:
+              - address
+            check_columns:
+              - first_activity_to
+              - first_block_number
+              - first_tx_hash
     columns:
       - name: blockchain
         description: "Blockchain"

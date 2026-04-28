@@ -20,7 +20,8 @@ models:
       - name: blockchain
         data_tests:
           - accepted_values:
-              values: ['solana']
+              arguments:
+                values: ['solana']
       - name: block_month
         data_tests:
           - not_null

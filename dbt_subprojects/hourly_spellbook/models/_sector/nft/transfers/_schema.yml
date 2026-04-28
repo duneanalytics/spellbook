@@ -14,13 +14,14 @@ models:
         NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
           config:
             where: "block_time > now() - interval '7' day"
     columns:
@@ -36,7 +37,8 @@ models:
         name: token_standard
         data_tests:
           - accepted_values:
-              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
+              arguments:
+                values: ['erc721', 'erc1155', 'bep721', 'bep1155']
               config:
                 where: "block_time > now() - interval '7' day"
         description: "Token standard"
@@ -44,7 +46,8 @@ models:
         name: transfer_type
         data_tests:
           - accepted_values:
-              values: ['single', 'batch']
+              arguments:
+                values: ['single', 'batch']
               config:
                 where: "block_time > now() - interval '7' day"
         description: "single or batch transfer of tokens"
@@ -91,12 +94,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       - *token_standard
       - *transfer_type
@@ -113,12 +117,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -136,12 +141,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -159,12 +165,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -182,12 +189,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -205,12 +213,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -228,12 +237,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -251,12 +261,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -274,12 +285,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -297,12 +309,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -320,12 +333,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -343,12 +357,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -366,12 +381,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -389,12 +405,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -412,12 +429,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -435,12 +453,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -458,12 +477,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -481,12 +501,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -504,12 +525,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -527,12 +549,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard
@@ -550,12 +573,13 @@ models:
       NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
+              - token_id
+              - amount
     columns:
       # only listing columns that have tests here for simplicity
       - *token_standard

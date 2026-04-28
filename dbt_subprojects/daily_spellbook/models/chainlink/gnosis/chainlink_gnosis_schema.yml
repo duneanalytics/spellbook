@@ -59,11 +59,12 @@ models:
       Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - hour
-            - proxy_address
-            - aggregator_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - hour
+              - proxy_address
+              - aggregator_address
     columns:
       - *blockchain
       - &hour
@@ -90,9 +91,10 @@ models:
       Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - proxy_address
-            - aggregator_address
+          arguments:
+            combination_of_columns:
+              - proxy_address
+              - aggregator_address
     columns:
       - *blockchain
       - *feed_name
@@ -113,11 +115,12 @@ models:
       Chainlink OCR Gas Transmission Logs
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_hash
-            - tx_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_hash
+              - tx_index
     columns:
       - *blockchain
       - &block_hash
@@ -164,11 +167,12 @@ models:
       Chainlink OCR Fulfilled Transactions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - tx_index
-            - node_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -198,11 +202,12 @@ models:
       Chainlink OCR Reverted Transactions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - tx_index
-            - node_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -224,10 +229,11 @@ models:
       Chainlink OCR Gas Daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - node_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
     columns:
       - *blockchain
       - &date_start
@@ -268,10 +274,11 @@ models:
       Chainlink OCR Request Daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - node_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
     columns:
       - *blockchain
       - *date_start
@@ -345,10 +352,11 @@ models:
       Chainlink OCR Reward Event Transfers Daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - admin_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - date_start
+              - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -368,10 +376,11 @@ models:
       Chainlink OCR Reward Daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - admin_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - date_start
+              - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -392,10 +401,11 @@ models:
       Chainlink FM Gas Daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - node_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
     columns:
       - *blockchain
       - *date_start
@@ -420,11 +430,12 @@ models:
       Chainlink FM Gas Transmission Logs
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_hash
@@ -451,11 +462,12 @@ models:
       Chainlink FM Fulfilled Transactions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - tx_index
-            - node_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -477,10 +489,11 @@ models:
       Chainlink FM Request Daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - node_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - date_start
+              - node_address
     columns:
       - *blockchain
       - *date_start
@@ -502,11 +515,12 @@ models:
       Chainlink FM Reverted Transactions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - tx_index
-            - node_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - tx_index
+              - node_address
     columns:
       - *blockchain
       - *block_time
@@ -528,10 +542,11 @@ models:
       Chainlink FM Reward Daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - admin_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - date_start
+              - admin_address
     columns:
       - *blockchain
       - *date_start
@@ -568,10 +583,11 @@ models:
       Chainlink FM Reward Event Transfers Daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - admin_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - date_start
+              - admin_address
     columns:
       - *blockchain
       - *date_start

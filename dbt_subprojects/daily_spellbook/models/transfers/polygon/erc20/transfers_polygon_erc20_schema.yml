@@ -12,11 +12,12 @@ models:
     description: "ERC20 Token Transfers on polygon. This table is updated every 30 minutes."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transfer_type
-            - wallet_address
-            - evt_tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transfer_type
+              - wallet_address
+              - evt_tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -56,10 +57,11 @@ models:
       tags: ['transfers', 'polygon', 'erc20', 'agg_hour', 'Henrystats']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_hour
-            - wallet_address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_hour
+              - wallet_address
+              - token_address
     columns:
       - *blockchain
       - &block_hour
@@ -86,10 +88,11 @@ models:
       tags: ['transfers', 'polygon', 'erc20', 'agg_day', 'Henrystats']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_day
-            - wallet_address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_day
+              - wallet_address
+              - token_address
     columns:
       - *blockchain
       - &block_day

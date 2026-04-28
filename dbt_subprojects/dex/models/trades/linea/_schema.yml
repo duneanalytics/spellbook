@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_linea_base_trades
 
@@ -28,11 +30,13 @@ models:
     description: "Sushiswap v2 Linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_linea_base_trades_seed')
+          arguments:
+            seed_file: ref('sushiswap_linea_base_trades_seed')
 
   - name: lynex_linea_base_trades
     meta:
@@ -45,11 +49,13 @@ models:
     description: "Lynex Linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('lynex_linea_base_trades_seed')
+          arguments:
+            seed_file: ref('lynex_linea_base_trades_seed')
 
   - name: nile_linea_base_trades
     meta:
@@ -62,11 +68,13 @@ models:
     description: "Nile Linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('nile_linea_base_trades_seed')
+          arguments:
+            seed_file: ref('nile_linea_base_trades_seed')
 
   - name: echodex_linea_base_trades
     meta:
@@ -79,11 +87,13 @@ models:
     description: "EchoDex Linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('echodex_linea_base_trades_seed')
+          arguments:
+            seed_file: ref('echodex_linea_base_trades_seed')
 
   - name: secta_linea_base_trades
     meta:
@@ -96,11 +106,13 @@ models:
     description: "Secta Linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('secta_linea_base_trades_seed')
+          arguments:
+            seed_file: ref('secta_linea_base_trades_seed')
 
   - name: pancakeswap_v2_linea_base_trades
     meta:
@@ -113,13 +125,15 @@ models:
     description: "Pancakeswap linea v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_linea_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('pancakeswap_linea_base_trades_seed')
+            filter:
+              version: 2
 
 
   - name: pancakeswap_v3_linea_base_trades
@@ -133,13 +147,15 @@ models:
     description: "Pancakeswap V3 linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_linea_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('pancakeswap_linea_base_trades_seed')
+            filter:
+              version: 3
 
   - name: horizondex_linea_base_trades
     meta:
@@ -152,13 +168,15 @@ models:
     description: "horizondex dex swaps on linea chain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('horizondex_linea_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('horizondex_linea_base_trades_seed')
+            filter:
+              version: 1
 
   - name: uniswap_v3_linea_base_trades
     meta:
@@ -171,13 +189,15 @@ models:
     description: "uniswap linea v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_linea_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_linea_base_trades_seed')
+            filter:
+              version: 3
 
   - name: lynex_fusion_linea_base_trades
     meta:
@@ -190,13 +210,15 @@ models:
     description: "lynex linea fusion base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('lynex_linea_base_trades_seed')
-          filter:
-            version: fusion
+          arguments:
+            seed_file: ref('lynex_linea_base_trades_seed')
+            filter:
+              version: fusion
 
   - name: swaap_v2_linea_base_trades
     meta:
@@ -209,13 +231,15 @@ models:
     description: "swaap v2 linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_linea_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('swaap_linea_base_trades_seed')
+            filter:
+              version: 2
 
   - name: leetswap_linea_base_trades
     meta:
@@ -228,11 +252,13 @@ models:
     description: "Leetswap Linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('leetswap_linea_base_trades_seed')
+          arguments:
+            seed_file: ref('leetswap_linea_base_trades_seed')
 
   - name: etherex_v2_linea_base_trades
     meta:
@@ -245,13 +271,15 @@ models:
     description: "EtherEx linea v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('etherex_linea_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('etherex_linea_base_trades_seed')
+            filter:
+              version: 2
 
   - name: etherex_v3_linea_base_trades
     meta:
@@ -264,18 +292,21 @@ models:
     description: "EtherEx V3 linea base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('etherex_linea_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('etherex_linea_base_trades_seed')
+            filter:
+              version: 3
 
   - name: dex_linea_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

@@ -4,12 +4,13 @@ models:
   - name: labels_dex
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - address
-          - name
-          - category
-          - model_name
-          - blockchain
+        arguments:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
     meta:
       blockchain: ethereum
       sector: labels
@@ -33,7 +34,8 @@ models:
         description: "Label category"
         data_tests:
           - accepted_values:
-              values: ['dex']
+              arguments:
+                values: ['dex']
       - &contributor
         name: contributor
         description: "Wizard(s) contributing to labels"

@@ -12,9 +12,10 @@ models:
     description: "All lending flashloans transactions on bnb"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -84,11 +85,13 @@ models:
     description: "Radiant flashloans transactions on bnb"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('radiant_bnb_base_flashloans_seed')
+          arguments:
+            seed_file: ref('radiant_bnb_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -115,11 +118,13 @@ models:
     description: "Aave v3 flashloans transactions on bnb"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_bnb_base_flashloans_seed')
+          arguments:
+            seed_file: ref('aave_bnb_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -146,11 +151,13 @@ models:
     description: "Granary flashloans transactions on bnb"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('granary_bnb_base_flashloans_seed')
+          arguments:
+            seed_file: ref('granary_bnb_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -177,9 +184,10 @@ models:
     description: "Morpho flashloans transactions on BNB"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
