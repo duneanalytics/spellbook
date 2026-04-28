@@ -12,7 +12,7 @@
   )
 }}
 
-{% set xrpl_transfer_start_date = '2026-01-01' %} -- ci test, revert to '2013-01-01'
+{% set xrpl_transfer_start_date = '2013-01-01' %}
 
 with base_transfers as (
   select

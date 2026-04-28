@@ -11,7 +11,7 @@
   )
 }}
 
-{% set xrpl_gas_start_date = '2012-06-01' %}
+{% set xrpl_gas_start_date = '2013-01-01' %}
 
 with base_transactions as (
   select
