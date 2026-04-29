@@ -7,6 +7,7 @@ models:
       sector: tokens
       short_description: "Stellar token transfers"
       contributors: tomfutago
+      docs_slug: /curated/token-transfers/stellar/stellar-token-transfers
     config:
       tags: ['tokens', 'transfers', 'stellar']
     description: >
