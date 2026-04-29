@@ -6,6 +6,7 @@
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
         incremental_predicates = ['DBT_INTERNAL_DEST.block_date >= date_trunc(\'day\', now() - interval \'7\' day)'],
+        merge_skip_unchanged = true,
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum", "base", "linea", "scroll", "polygon"]\',
                                 "sector",
                                 "dex_aggregator",
@@ -63,10 +64,11 @@ WITH enriched_aggregator_base_trades AS (
         , tx_to
         , trace_address
         , evt_index
+        , current_timestamp AS _updated_at
     FROM
         {{ model }}
     {% if is_incremental() %}
-    WHERE 
+    WHERE
         {{ incremental_predicate('block_time') }}
     {% endif %}
     {% if not loop.last %}
@@ -106,6 +108,7 @@ WITH enriched_aggregator_base_trades AS (
         , tx_to
         , trace_address
         , evt_index
+        , _updated_at
     FROM
         {{ cte }}
     {% if not loop.last %}

@@ -56,6 +56,7 @@ WITH base_trades as (
         , base_trades.tx_to
         , base_trades.trace_address
         , base_trades.evt_index
+        , base_trades._updated_at
     FROM
         base_trades
     LEFT JOIN
@@ -102,6 +103,7 @@ SELECT
     , tx_to
     , trace_address
     , evt_index
+    , _updated_at
 FROM
     enrichments_with_prices
 
