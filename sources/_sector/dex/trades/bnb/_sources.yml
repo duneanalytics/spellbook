@@ -142,3 +142,6 @@ sources:
   - name: bunni_v2_bnb
     tables:
       - name: bunnihook_evt_swap
+  - name: tesseraswap_bnb
+    tables:
+      - name: tesseraswap_evt_tesseratrade
