@@ -140,4 +140,3 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
-      - *updated_at

@@ -7,7 +7,6 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , merge_skip_unchanged = true
     )
 }}
 
@@ -43,7 +42,6 @@ with base_union as (
             , tx_to
             , trace_address
             , evt_index
-            , current_timestamp AS _updated_at
         FROM
             {{ model }}
         WHERE

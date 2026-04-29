@@ -64,7 +64,6 @@ WITH enriched_aggregator_base_trades AS (
         , tx_to
         , trace_address
         , evt_index
-        , current_timestamp AS _updated_at
     FROM
         {{ model }}
     {% if is_incremental() %}
@@ -108,7 +107,7 @@ WITH enriched_aggregator_base_trades AS (
         , tx_to
         , trace_address
         , evt_index
-        , _updated_at
+        , current_timestamp AS _updated_at
     FROM
         {{ cte }}
     {% if not loop.last %}
