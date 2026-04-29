@@ -4,9 +4,9 @@ This directory contains integration tests where applicable for scripts that are 
 
 ## Installation
 
-If the pip environment has not been installed run from the root of the repo `spellbook`
+If dependencies have not been installed, run this from the root of the repo (`spellbook`)
 ```bash
-pipenv install
+uv sync --locked
 ```
 
 ## Usage
@@ -18,13 +18,12 @@ From the test directory:
 For the price token checker `check_tokens.py`, generate input files with `generate_test_files_check_tokens.py`
 This will create diff files in test_diffs_tokens directory from the most recent PRs that included edits to `models/prices/prices_tokens.sql`
 ```python
-python  generate_test_files_check_tokens.py
+uv run python generate_test_files_check_tokens.py
 ```
 
 Once the test files have been generated, run an integration test with `test_check_tokens.py`. This will iterate
 through each test file and confirm that only Assertion Errors occur or no errors. Assertion Errors are returned
 when the  API does not match what the values are proposed by the API. 
 ```python
-python  test_check_tokens.py
+uv run python test_check_tokens.py
 ```
-

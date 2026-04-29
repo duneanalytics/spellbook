@@ -10,17 +10,9 @@
     )
 }}
 
-SELECT
-    blockchain
-    , block_date
-    , approx_distinct(tx_hash) AS tx_count
-FROM
-    {{ ref('tokens_xrpl_transfers') }}
-WHERE
-    amount_usd >= 1  -- $1 filter for significant transactions
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('block_date') }}
-    {% endif %}
-GROUP BY
-    blockchain
-    , block_date
+-- Temporary placeholder while XRPL transfer outputs stay in the tokens rollout path.
+select
+    cast('xrpl' as varchar) as blockchain
+    , cast(null as date) as block_date
+    , cast(null as bigint) as tx_count
+where false

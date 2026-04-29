@@ -73,4 +73,4 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
    - add `<chain>` to `dbt_subprojects/daily_spellbook/macros/helpers/evms_blockchains_list.sql`
 
 8. **final checks**
-   - From repo root: run `pipenv shell`, then run `dbt compile` in `dbt_subprojects/tokens` and in `dbt_subprojects/daily_spellbook`. Fix any errors.
+   - From repo root: run `uv sync --locked`, then run `uv run dbt compile` in `dbt_subprojects/tokens` and in `dbt_subprojects/daily_spellbook`. Fix any errors.
