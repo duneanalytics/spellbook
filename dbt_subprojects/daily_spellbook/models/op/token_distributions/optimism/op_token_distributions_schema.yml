@@ -12,12 +12,13 @@ models:
         A table containing best guess mappings of OP grants token distributions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - block_date
-              - evt_block_time
-              - evt_block_number
-              - evt_tx_hash
-              - evt_index
+          arguments:
+            combination_of_columns:
+                - block_date
+                - evt_block_time
+                - evt_block_number
+                - evt_tx_hash
+                - evt_index
     columns:
       - &block_date
         name: block_date
@@ -86,8 +87,9 @@ models:
         A table containing mappings from governance proposal names to Dune project names.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - proposal_name
+          arguments:
+            combination_of_columns:
+                - proposal_name
     columns:
       - &proposal_name
         name: proposal_name
@@ -109,10 +111,11 @@ models:
         A table containing mappings for project wallets that we want to track distributions for
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - address
-              - proposal_name
-              - address_descriptor
+          arguments:
+            combination_of_columns:
+                - address
+                - proposal_name
+                - address_descriptor
     columns:
       - &address
         name: address
@@ -138,9 +141,10 @@ models:
         A table containing unifying labels for tagged wallets that we want to track distributions for
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - label
-            - address
+          arguments:
+            combination_of_columns:
+              - label
+              - address
     columns:
       - *address
       - *label
@@ -159,9 +163,10 @@ models:
         A table containing labels for other addresses that we don't want to track distributions for, but we know what they are.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - label
-              - address
+          arguments:
+            combination_of_columns:
+                - label
+                - address
     columns:
       - *label
       - *address

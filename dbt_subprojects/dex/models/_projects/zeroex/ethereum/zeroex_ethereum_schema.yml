@@ -12,20 +12,22 @@ models:
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
       - check_seed:
-          seed_file: ref('zeroex_ethereum_api_fills_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
-            - maker_token
-            - taker_token
+          arguments:
+            seed_file: ref('zeroex_ethereum_api_fills_sample')
+            match_columns:
+              - tx_hash
+              - evt_index
+            check_columns:
+              - maker
+              - taker
+              - maker_token
+              - taker_token
     columns:
       - &tx_hash
         name: tx_hash
@@ -117,10 +119,11 @@ models:
         0x API erc20 swaps raw fills (deduped) on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *block_date
@@ -162,21 +165,23 @@ models:
         0x API erc20 swaps raw fills (including multihops) and also native swaps through 0x exchange contracts (without using 0x API) on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - tx_hash
-            - evt_index
-            - volume_usd
+          arguments:
+            combination_of_columns:
+              - block_time
+              - tx_hash
+              - evt_index
+              - volume_usd
       - check_seed:
-          seed_file: ref('zeroex_ethereum_native_fills_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
-            - maker_token
-            - taker_token
+          arguments:
+            seed_file: ref('zeroex_ethereum_native_fills_sample')
+            match_columns:
+              - tx_hash
+              - evt_index
+            check_columns:
+              - maker
+              - taker
+              - maker_token
+              - taker_token
     columns:
       - *tx_hash
       - *contract_address
@@ -217,11 +222,12 @@ models:
         0x API erc20 trades through 0x v2 contracts. No fills, only deduped transactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *block_date

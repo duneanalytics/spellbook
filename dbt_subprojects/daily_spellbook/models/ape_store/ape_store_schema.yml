@@ -12,13 +12,14 @@ models:
       Trades for tokens that get deployed through ApeStore across all chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - blockchain
-            - tx_hash
-            - tx_index
-            - token_bought_address
-            - token_sold_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - blockchain
+              - tx_hash
+              - tx_index
+              - token_bought_address
+              - token_sold_address
     columns:
       - &block_time
         name: block_time

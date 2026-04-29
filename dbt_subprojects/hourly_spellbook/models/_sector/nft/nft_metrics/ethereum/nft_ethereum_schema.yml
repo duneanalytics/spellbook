@@ -13,9 +13,10 @@ models:
         Top 50 nft traders based on profit from nft.trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet
-            - nft_contract_address
+          arguments:
+            combination_of_columns:
+              - wallet
+              - nft_contract_address
     columns:
       - name: wallet
         description: "Trader wallet address"
@@ -43,9 +44,10 @@ models:
         This spell aggregates nft collections trading stats (volume, floor price) and pulls the data from nft.trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - nft_contract_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - nft_contract_address
     columns:
       - name: block_month
         description: "Block month"

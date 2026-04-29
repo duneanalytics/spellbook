@@ -14,12 +14,13 @@ models:
     description: "ENS labels"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - model_name
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - address
+              - name
+              - category
+              - model_name
+              - blockchain
     columns:
       - name: blockchain
         description: "Blockchain"

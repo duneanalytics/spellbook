@@ -11,12 +11,13 @@ models:
         Table aggregating bridge transfers through Optimism's Standard Bridge.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - block_date
-              - blockchain
-              - tx_hash
-              - evt_index
-              - transfer_id
+          arguments:
+            combination_of_columns:
+                - block_date
+                - blockchain
+                - tx_hash
+                - evt_index
+                - transfer_id
     columns:
       - &chain_data_source
         name: chain_data_source

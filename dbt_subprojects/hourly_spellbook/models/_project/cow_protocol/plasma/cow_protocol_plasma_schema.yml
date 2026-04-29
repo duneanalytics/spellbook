@@ -4,8 +4,9 @@ models:
   - name: cow_protocol_plasma_solvers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     meta:
       blockchain: plasma
       project: cow_protocol
@@ -25,7 +26,8 @@ models:
       CoW Protocol enriched batches table on Plasma
     data_tests:
       - unique:
-          column_name: tx_hash
+          arguments:
+            column_name: tx_hash
 
   - name: cow_protocol_plasma_eth_flow_orders
     meta:

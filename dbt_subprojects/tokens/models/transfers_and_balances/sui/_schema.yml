@@ -12,8 +12,9 @@ models:
     description: "Sui coin metadata keyed by coin_type, combining legacy 0x2::coin::CoinMetadata<T> with coin_registry metadata object types and manual fallback rows for backward compatibility."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - coin_type
+          arguments:
+            combination_of_columns:
+              - coin_type
     columns:
       - &coin_type
         name: coin_type
@@ -45,10 +46,11 @@ models:
     description: "Incremental history of Sui Coin<T> object states (Created/Mutated), one row per object_id + version."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - object_id
-            - version
+          arguments:
+            combination_of_columns:
+              - block_date
+              - object_id
+              - version
     columns:
       - &object_id
         name: object_id
@@ -104,23 +106,25 @@ models:
     description: "Compact monthly latest-state helper over Sui Coin<T> object history, used to seed incremental anchor lookups in tokens_sui_object_event_deltas without rescanning full historical object history each run."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - object_id
+          arguments:
+            combination_of_columns:
+              - block_month
+              - object_id
       - check_seed:
-          seed_file: ref('tokens_sui_coin_object_anchor_state_seed')
-          match_columns:
-            - block_month
-            - object_id
-          check_columns:
-            - version
-            - block_date
-            - timestamp_ms
-            - checkpoint
-            - owner_type
-            - receiver
-            - coin_type
-            - coin_balance
+          arguments:
+            seed_file: ref('tokens_sui_coin_object_anchor_state_seed')
+            match_columns:
+              - block_month
+              - object_id
+            check_columns:
+              - version
+              - block_date
+              - timestamp_ms
+              - checkpoint
+              - owner_type
+              - receiver
+              - coin_type
+              - coin_balance
     columns:
       - name: block_month
         description: "Month bucket for the latest object state captured in this helper row."
@@ -153,9 +157,10 @@ models:
     description: "Per-event supply transfer rows on Sui derived from treasury::Mint/treasury::Burn event types with amount parsed from event_json."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
       - &block_date
         name: block_date
@@ -194,21 +199,23 @@ models:
     description: "Per object_id + version Coin<T> lifecycle features used by downstream direct-transfer and owner-net reconciliation models."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - object_id
-            - version
+          arguments:
+            combination_of_columns:
+              - block_date
+              - object_id
+              - version
       - check_seed:
-          seed_file: ref('tokens_sui_object_event_deltas_anchor_seed')
-          match_columns:
-            - block_date
-            - object_id
-            - version
-          check_columns:
-            - object_status
-            - prev_owner
-            - prev_balance
-            - has_ownership_change
+          arguments:
+            seed_file: ref('tokens_sui_object_event_deltas_anchor_seed')
+            match_columns:
+              - block_date
+              - object_id
+              - version
+            check_columns:
+              - object_status
+              - prev_owner
+              - prev_balance
+              - has_ownership_change
     columns:
       - *block_date
       - *object_id
@@ -248,21 +255,23 @@ models:
     description: "Direct cross-address transfer legs derived from object event deltas, including deferred tx sender resolution for Created/unanchored cases."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
       - check_seed:
-          seed_file: ref('tokens_sui_direct_transfers_deleted_seed')
-          match_columns:
-            - block_date
-            - object_id
-            - version
-          check_columns:
-            - object_status
-            - transfer_from
-            - transfer_to
-            - amount_raw
-            - owner_net_type
+          arguments:
+            seed_file: ref('tokens_sui_direct_transfers_deleted_seed')
+            match_columns:
+              - block_date
+              - object_id
+              - version
+            check_columns:
+              - object_status
+              - transfer_from
+              - transfer_to
+              - amount_raw
+              - owner_net_type
     columns:
       - *block_date
       - *unique_key
@@ -313,26 +322,28 @@ models:
     description: "Owner-net transfer legs formed by combining direct cross-address legs with residual owner deltas so tx+coin owner nets reconcile."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
       - check_seed:
-          seed_file: ref('tokens_sui_owner_net_transfers_seed')
-          match_columns:
-            - block_date
-            - tx_digest
-            - coin_type
-            - owner_net_type
-            - amount_raw
-            - object_status
-          check_columns:
-            - object_id
-            - version
-            - transfer_from
-            - transfer_to
-            - prev_owner
-            - prev_balance
-            - has_ownership_change
+          arguments:
+            seed_file: ref('tokens_sui_owner_net_transfers_seed')
+            match_columns:
+              - block_date
+              - tx_digest
+              - coin_type
+              - owner_net_type
+              - amount_raw
+              - object_status
+            check_columns:
+              - object_id
+              - version
+              - transfer_from
+              - transfer_to
+              - prev_owner
+              - prev_balance
+              - has_ownership_change
     columns:
       - *block_date
       - *unique_key
@@ -369,24 +380,26 @@ models:
     description: "Sui Coin<T> base transfers for all fungible coin types, combining non-supply owner-net legs with event-native mint/burn rows after removing legacy supply-tagged object rows."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
       - check_seed:
-          seed_file: ref('tokens_sui_base_transfers_seed')
-          match_columns:
-            - block_date
-            - unique_key
-          check_columns:
-            - transfer_type
-            - object_status
-            - has_ownership_change
-            - transfer_direction
-            - amount_raw
-            - is_supply_event
-            - supply_event_type
-            - tx_net_delta
-            - coin_type
+          arguments:
+            seed_file: ref('tokens_sui_base_transfers_seed')
+            match_columns:
+              - block_date
+              - unique_key
+            check_columns:
+              - transfer_type
+              - object_status
+              - has_ownership_change
+              - transfer_direction
+              - amount_raw
+              - is_supply_event
+              - supply_event_type
+              - tx_net_delta
+              - coin_type
     columns:
       - *block_date
       - *unique_key
@@ -473,9 +486,10 @@ models:
     description: "Sui cross-address Coin<T> transfers enriched with coin metadata (symbol/decimals), USD valuation, and supply-event flags."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
       - *block_date
       - *unique_key

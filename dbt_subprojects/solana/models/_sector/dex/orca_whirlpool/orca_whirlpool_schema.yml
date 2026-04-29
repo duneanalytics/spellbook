@@ -11,7 +11,8 @@ models:
       staging model for orca whirlpool swap data from decoded tables
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+          arguments:
+            combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
           
   - name: orca_whirlpool_base_trades_backfill
     meta:
@@ -24,7 +25,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_month', 'surrogate_key' ]
+          arguments:
+            combination_of_columns: [ 'block_month', 'surrogate_key' ]
 
   - name: orca_whirlpool_base_trades
     meta:
@@ -45,7 +47,8 @@ models:
       pre-materialized token transfers for orca whirlpool v2 swaps on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_date', 'unique_instruction_key']
+          arguments:
+            combination_of_columns: ['block_date', 'unique_instruction_key']
 
   - name: orca_whirlpool_v2_stg_swaps
     meta:
@@ -57,7 +60,8 @@ models:
       staging model for orca whirlpool v2 swap data after fee and memo resolution
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+          arguments:
+            combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
     columns:
       - name: block_month
         data_tests:
@@ -80,7 +84,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_month', 'surrogate_key' ]
+          arguments:
+            combination_of_columns: [ 'block_month', 'surrogate_key' ]
 
   - name: orca_whirlpool_trades
     meta:
@@ -168,10 +173,11 @@ models:
         All token price in Orca pool
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - minute
     columns:
       - name: blockchain
         description: "Blockchain which the DEX is deployed"
@@ -216,10 +222,11 @@ models:
         All token price in Orca pool
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - hour
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - hour
     columns:
       - name: blockchain
         description: "Blockchain which the DEX is deployed"

@@ -11,10 +11,11 @@ models:
     description: "Cross-chain gas usage metrics aggregated by address (optimized version)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - blockchain
-            - currency_symbol
+          arguments:
+            combination_of_columns:
+              - address
+              - blockchain
+              - currency_symbol
     columns:
       - name: address
         description: "The wallet address"

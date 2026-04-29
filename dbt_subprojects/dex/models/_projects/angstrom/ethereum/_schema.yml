@@ -12,9 +12,10 @@ models:
       All angstrom trades on ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: angstrom_ethereum_pools
     meta:
@@ -27,6 +28,7 @@ models:
       All angstrom pools on ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_id
-            - block_number
+          arguments:
+            combination_of_columns:
+              - pool_id
+              - block_number

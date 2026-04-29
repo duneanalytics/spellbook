@@ -12,11 +12,12 @@ models:
       DEX MEV Arbitrage Trades across all Chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - &blockchain
         name: blockchain
@@ -104,11 +105,12 @@ models:
       DEX MEV Arbitrage Trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -147,11 +149,12 @@ models:
       DEX MEV Arbitrage Trades on Arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -190,11 +193,12 @@ models:
       DEX MEV Arbitrage Trades on Avalanche
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -233,11 +237,12 @@ models:
       DEX MEV Arbitrage Trades on BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -276,11 +281,12 @@ models:
       DEX MEV Arbitrage Trades on Fantom
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -319,11 +325,12 @@ models:
       DEX MEV Arbitrage Trades on Gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -362,11 +369,12 @@ models:
       DEX MEV Arbitrage Trades on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -405,11 +413,12 @@ models:
       DEX MEV Arbitrage Trades on Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -448,11 +457,12 @@ models:
       DEX MEV Arbitrage Trades on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -491,11 +501,12 @@ models:
       DEX MEV Arbitrage Trades on Celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -534,11 +545,12 @@ models:
       DEX MEV Arbitrage Trades on zkSync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -577,11 +589,12 @@ models:
       DEX MEV Arbitrage Trades on zkSScrollync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -621,11 +634,12 @@ models:
       DEX MEV Arbitrage Trades on Zora Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns: 
       - *blockchain
       - *project
@@ -664,11 +678,12 @@ models:
       DEX MEV Arbitrage Trades on Sei
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns:
       - *blockchain
       - *project

@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_ethereum_base_trades
   - name: uniswap_v1_ethereum_base_trades
@@ -27,13 +29,15 @@ models:
     description: "uniswap ethereum v1 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('uniswap_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: uniswap_v2_ethereum_base_trades
     meta:
@@ -46,13 +50,15 @@ models:
     description: "uniswap ethereum v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_ethereum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('uniswap_ethereum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: uniswap_v3_ethereum_base_trades
     meta:
@@ -65,13 +71,15 @@ models:
     description: "uniswap ethereum v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_ethereum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_ethereum_base_trades_seed')
+            filter:
+              version: 3
 
   - name: uniswap_v4_ethereum_base_trades
     meta:
@@ -84,13 +92,15 @@ models:
     description: "uniswap ethereum v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_ethereum_base_trades_seed')
-          filter:
-            version: 4
+          arguments:
+            seed_file: ref('uniswap_ethereum_base_trades_seed')
+            filter:
+              version: 4
 
   - name: defiswap_ethereum_base_trades
     meta:
@@ -103,11 +113,13 @@ models:
     description: "Defiswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('defiswap_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('defiswap_ethereum_base_trades_seed')
 
   - name: airswap_ethereum_base_trades
     meta:
@@ -120,11 +132,13 @@ models:
     description: "Defiswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('airswap_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('airswap_ethereum_base_trades_seed')
 
   - name: sushiswap_v1_ethereum_base_trades
     meta:
@@ -137,13 +151,15 @@ models:
     description: "sushiswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('sushiswap_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: sushiswap_v2_ethereum_base_trades
     meta:
@@ -156,13 +172,15 @@ models:
     description: "sushiswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_ethereum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('sushiswap_ethereum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: carbon_defi_ethereum_base_trades
     meta:
@@ -175,11 +193,13 @@ models:
     description: "Carbon_defi ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('carbon_defi_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('carbon_defi_ethereum_base_trades_seed')
 
   - name: apeswap_ethereum_base_trades
     meta:
@@ -192,11 +212,13 @@ models:
     description: apeswap base trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('apeswap_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('apeswap_ethereum_base_trades_seed')
 
   - name: pancakeswap_v2_ethereum_base_trades
     meta:
@@ -209,16 +231,18 @@ models:
     description: "Pancakeswap Ethereum v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_ethereum_base_trades_seed')
-          filter:
-            version:
-              - 2
-              - mmpool
-              - pcsx
+          arguments:
+            seed_file: ref('pancakeswap_ethereum_base_trades_seed')
+            filter:
+              version:
+                - 2
+                - mmpool
+                - pcsx
 
   - name: shibaswap_v1_ethereum_base_trades
     meta:
@@ -231,13 +255,15 @@ models:
     description: "sushiswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('shibaswap_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('shibaswap_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: pancakeswap_v3_ethereum_base_trades
     meta:
@@ -250,13 +276,15 @@ models:
     description: "Pancakeswap Ethereum v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_ethereum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('pancakeswap_ethereum_base_trades_seed')
+            filter:
+              version: 3
 
   - name: balancer_v1_ethereum_base_trades
     meta:
@@ -269,13 +297,15 @@ models:
     description: "Balancer v1 ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('balancer_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: balancer_v2_ethereum_base_trades
     meta:
@@ -288,13 +318,15 @@ models:
     description: "Balancer v2 ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_ethereum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('balancer_ethereum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: balancer_v3_ethereum_base_trades
     meta:
@@ -307,13 +339,15 @@ models:
     description: "Balancer v3 ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_ethereum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('balancer_ethereum_base_trades_seed')
+            filter:
+              version: 3
 
   - name: fraxswap_ethereum_base_trades
     meta:
@@ -326,13 +360,15 @@ models:
     description: "Fraxswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fraxswap_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('fraxswap_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: bancor_ethereum_base_trades
     meta:
@@ -345,11 +381,13 @@ models:
     description: "Bancor ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('bancor_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('bancor_ethereum_base_trades_seed')
 
   - name: verse_dex_ethereum_base_trades
     meta:
@@ -362,11 +400,13 @@ models:
     description: "Verse ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('verse_dex_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('verse_dex_ethereum_base_trades_seed')
 
   - name: swapr_ethereum_base_trades
     meta:
@@ -379,11 +419,13 @@ models:
     description: "Verse ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swapr_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('swapr_ethereum_base_trades_seed')
 
   - name: mauve_ethereum_base_trades
     meta:
@@ -396,11 +438,13 @@ models:
     description: "Mauve ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('mauve_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('mauve_ethereum_base_trades_seed')
 
   - name: dfx_ethereum_base_trades
     meta:
@@ -413,11 +457,13 @@ models:
     description: "DFX ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dfx_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('dfx_ethereum_base_trades_seed')
 
   - name: dodo_ethereum_base_trades
     meta:
@@ -430,17 +476,19 @@ models:
     description: "Dodo ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dodo_ethereum_base_trades_seed')
-          filter:
-            version:
-              - 1
-              - 2_dvm
-              - 2_dpp
-              - 2_dsp
+          arguments:
+            seed_file: ref('dodo_ethereum_base_trades_seed')
+            filter:
+              version:
+                - 1
+                - 2_dvm
+                - 2_dpp
+                - 2_dsp
 
   - name: integral_ethereum_base_trades
     meta:
@@ -453,11 +501,13 @@ models:
     description: "Integral ethereum v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('integral_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('integral_ethereum_base_trades_seed')
 
   - name: maverick_ethereum_base_trades
     meta:
@@ -470,13 +520,15 @@ models:
     description: "Maverick ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('maverick_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: maverick_v2_ethereum_base_trades
     meta:
@@ -489,13 +541,15 @@ models:
     description: "Maverick ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_ethereum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('maverick_ethereum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: clipper_ethereum_base_trades
     meta:
@@ -508,17 +562,19 @@ models:
     description: "clipper ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('clipper_ethereum_base_trades_seed')
-          filter:
-            version:
-              - 1
-              - 2
-              - 3
-              - 4
+          arguments:
+            seed_file: ref('clipper_ethereum_base_trades_seed')
+            filter:
+              version:
+                - 1
+                - 2
+                - 3
+                - 4
 
   - name: mstable_ethereum_base_trades
     meta:
@@ -531,15 +587,17 @@ models:
     description: "mstable ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('mstable_ethereum_base_trades_seed')
-          filter:
-            version:
-              - masset
-              - feederpool
+          arguments:
+            seed_file: ref('mstable_ethereum_base_trades_seed')
+            filter:
+              version:
+                - masset
+                - feederpool
 
   - name: kyberswap_ethereum_base_trades
     meta:
@@ -552,16 +610,18 @@ models:
     description: "kyberswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('kyberswap_ethereum_base_trades_seed')
-          filter:
-            version:
-              - classic
-              - elastic
-              - elastic_2
+          arguments:
+            seed_file: ref('kyberswap_ethereum_base_trades_seed')
+            filter:
+              version:
+                - classic
+                - elastic
+                - elastic_2
 
   - name: xchange_ethereum_base_trades
     meta:
@@ -574,13 +634,15 @@ models:
     description: "xchange ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('xchange_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('xchange_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: xchange_v2_ethereum_base_trades
     meta:
@@ -593,13 +655,15 @@ models:
     description: "xchange v2 ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('xchange_ethereum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('xchange_ethereum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: curve_ethereum_base_trades
     meta:
@@ -612,19 +676,21 @@ models:
     description: "Curve ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('curvefi_ethereum_base_trades_seed')
-          filter:
-            version:
-              - Factory V1 Meta
-              - Factory V1 Plain
-              - Factory V1 Stableswap Plain
-              - Factory V2
-              - Factory V2 updated
-              - Regular
+          arguments:
+            seed_file: ref('curvefi_ethereum_base_trades_seed')
+            filter:
+              version:
+                - Factory V1 Meta
+                - Factory V1 Plain
+                - Factory V1 Stableswap Plain
+                - Factory V2
+                - Factory V2 updated
+                - Regular
 
   - name: solidly_v3_ethereum_base_trades
     meta:
@@ -637,11 +703,13 @@ models:
     description: "solidly v3 ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('solidly_v3_ethereum_base_trades_seed')
+          arguments:
+            seed_file: ref('solidly_v3_ethereum_base_trades_seed')
 
   - name: swaap_v2_ethereum_base_trades
     meta:
@@ -654,13 +722,15 @@ models:
     description: "swaap v2 ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_ethereum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('swaap_ethereum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: valantis_hot_ethereum_base_trades
     meta:
@@ -673,9 +743,10 @@ models:
     description: "hot-amm ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: fluid_v1_ethereum_base_trades
     meta:
@@ -688,13 +759,15 @@ models:
     description: "fluid dex ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fluid_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('fluid_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: native_ethereum_base_trades
     meta:
@@ -707,13 +780,15 @@ models:
     description: "native ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('native_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('native_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: angstrom_ethereum_base_trades
     meta:
@@ -726,13 +801,15 @@ models:
     description: "angstrom ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('angstrom_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('angstrom_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: eulerswap_ethereum_base_trades
     meta:
@@ -745,13 +822,15 @@ models:
     description: "eulerswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('eulerswap_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('eulerswap_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: ekubo_v1_ethereum_base_trades
     meta:
@@ -764,13 +843,15 @@ models:
     description: "ekubo ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('ekubo_v1_ethereum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('ekubo_v1_ethereum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: supernova_v2_ethereum_base_trades
     meta:
@@ -783,13 +864,15 @@ models:
     description: "Supernova ethereum v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('supernova_ethereum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('supernova_ethereum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: supernova_v3_ethereum_base_trades
     meta:
@@ -802,19 +885,22 @@ models:
     description: "Supernova ethereum v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('supernova_ethereum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('supernova_ethereum_base_trades_seed')
+            filter:
+              version: 3
 
 
   - name: dex_ethereum_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

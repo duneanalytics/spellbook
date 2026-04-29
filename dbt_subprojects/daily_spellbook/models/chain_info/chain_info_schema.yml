@@ -12,9 +12,10 @@ models:
         Table mapping chain IDs to names
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - chain_id
-              - network_id
+          arguments:
+            combination_of_columns:
+                - chain_id
+                - network_id
     columns:
       - &chain_name
         name: chain_name
@@ -49,8 +50,9 @@ models:
         Table mapping chain IDs to names. Compatible/joinable with `prices` project.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - chain_id
+          arguments:
+            combination_of_columns:
+                - chain_id
     columns:
       - &dune_name
         name: dune_name

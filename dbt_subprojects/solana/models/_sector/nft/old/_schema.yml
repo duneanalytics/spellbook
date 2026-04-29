@@ -13,8 +13,9 @@ models:
     data_tests:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_trade_id
+          arguments:
+            combination_of_columns:
+              - unique_trade_id
 
   - name: opensea_solana_events
     meta:

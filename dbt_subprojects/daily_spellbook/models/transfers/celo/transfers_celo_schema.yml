@@ -12,9 +12,10 @@ models:
     description: "Events of native CELO transfers on Celo."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - trace_address
     columns:
       - &from
         name: from
@@ -69,11 +70,12 @@ models:
     description: "ERC20 Token Transfers on Celo. This table is updated every 30 minutes."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - transfer_type
-            - evt_index
-            - wallet_address
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - transfer_type
+              - evt_index
+              - wallet_address
     columns:
       - &blockchain
         name: blockchain
@@ -109,10 +111,11 @@ models:
       tags: ['transfers', 'celo', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
-            - block_hour
+          arguments:
+            combination_of_columns:
+              - wallet_address
+              - token_address
+              - block_hour
     columns:
       - *blockchain
       - *block_month
@@ -140,10 +143,11 @@ models:
       tags: ['transfers', 'celo', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
-            - block_hour
+          arguments:
+            combination_of_columns:
+              - wallet_address
+              - token_address
+              - block_hour
     columns:
       - *blockchain
       - *block_month
@@ -172,10 +176,11 @@ models:
       tags: ['transfers', 'celo', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
-            - block_day
+          arguments:
+            combination_of_columns:
+              - wallet_address
+              - token_address
+              - block_day
     columns:
       - *blockchain
       - *block_month
@@ -199,10 +204,11 @@ models:
       tags: ['transfers', 'celo', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
-            - block_day
+          arguments:
+            combination_of_columns:
+              - wallet_address
+              - token_address
+              - block_day
     columns:
       - *blockchain
       - *block_month

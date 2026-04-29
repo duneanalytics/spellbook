@@ -152,9 +152,10 @@ models:
       in tokens.transfers. Used for monitoring data freshness and shared via Databricks.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_month
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_month
     columns:
       - name: blockchain
         description: "The blockchain of the transfers partition"

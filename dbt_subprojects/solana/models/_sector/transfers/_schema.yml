@@ -12,9 +12,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
     columns:
       - name: blockchain
         description: "The blockchain network"
@@ -33,10 +34,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
     columns:
       - name: blockchain
         description: "The blockchain network"

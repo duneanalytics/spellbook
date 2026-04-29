@@ -51,7 +51,8 @@ models:
         description: "0 = Against, 1 = For, 2 = Abstain votes"
         data_tests:
         - accepted_values:
-            values: ['for', 'against', 'abstain']
+            arguments:
+              values: ['for', 'against', 'abstain']
       - &reason
         name: reason
         description: "Optional onchain comments to explain votes"
@@ -67,12 +68,13 @@ models:
       DAO proposals on all chains across all contracts and versions
     data_tests:
       - check_seed:
-          seed_file: ref('uniswap_v3_proposals_seed')
-          match_columns:
-            - blockchain
-            - proposal_id
-          check_columns:
-            - status
+          arguments:
+            seed_file: ref('uniswap_v3_proposals_seed')
+            match_columns:
+              - blockchain
+              - proposal_id
+            check_columns:
+              - status
     columns:
       - name: blockchain
       - name: project
@@ -106,7 +108,8 @@ models:
         description: "Proposal status: Queued, Active, Executed, Canceled or Defeated"
         data_tests:
           - accepted_values:
-              values: ['Queued', 'Active', 'Executed', 'Canceled','Defeated']
+              arguments:
+                values: ['Queued', 'Active', 'Executed', 'Canceled','Defeated']
       - &description
         name: description
         description: "Description of the proposal"
@@ -122,10 +125,11 @@ models:
       All Uniswap v3 flashloans on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - name: blockchain
       - name: project

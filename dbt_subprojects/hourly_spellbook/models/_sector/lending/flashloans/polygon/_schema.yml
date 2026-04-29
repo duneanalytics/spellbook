@@ -12,9 +12,10 @@ models:
     description: "All lending flashloans transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -84,13 +85,15 @@ models:
     description: "Aave v2 flashloans transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_polygon_base_flashloans_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('aave_polygon_base_flashloans_seed')
+            filter:
+              version: 2
     columns:
       - *blockchain
       - *project
@@ -117,13 +120,15 @@ models:
     description: "Aave v3 flashloans transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_polygon_base_flashloans_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_polygon_base_flashloans_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -150,9 +155,10 @@ models:
     description: "Balancer flashloans transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -179,9 +185,10 @@ models:
     description: "Morpho flashloans transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
