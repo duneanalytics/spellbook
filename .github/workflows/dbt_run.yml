@@ -103,26 +103,67 @@ jobs:
         if: github.event_name == 'pull_request'
         env:
           DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-built-relations/comment_body.md
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
           MARKER: <!-- spellbook-dbt-run-built-tables:${{ inputs.project }} -->
           PR_NUMBER: ${{ github.event.number }}
         run: |
           [ -f "$DBT_CI_TABLES_COMMENT_PATH" ] || exit 0
-          dbt_run_url="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs" --paginate --jq '.jobs[] | select(.name == "dbt-test" or (.name | endswith(" / dbt-test"))) | .html_url' | awk 'NR == 1 { print; exit }')"
-          dbt_run_url="${dbt_run_url:-${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}}"
-          python - "$DBT_CI_TABLES_COMMENT_PATH" "$dbt_run_url" <<'PY'
-          import sys
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
           from pathlib import Path
 
-          comment_path = Path(sys.argv[1])
-          comment_path.write_text(comment_path.read_text().replace("__DBT_RUN_URL__", sys.argv[2]))
+          token = os.environ["GITHUB_TOKEN"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          pr_number = os.environ["PR_NUMBER"]
+          marker = os.environ["MARKER"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          fallback_run_url = f"{os.environ['GITHUB_SERVER_URL']}/{repo}/actions/runs/{run_id}"
+
+          def github_request(method, path, data=None):
+              body = json.dumps(data).encode() if data is not None else None
+              request = urllib.request.Request(
+                  f"https://api.github.com/repos/{repo}/{path}",
+                  data=body,
+                  method=method,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {token}",
+                      "Content-Type": "application/json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                  },
+              )
+              with urllib.request.urlopen(request) as response:
+                  return json.loads(response.read() or b"{}")
+
+          jobs = github_request("GET", f"actions/runs/{run_id}/jobs?per_page=100").get("jobs", [])
+          dbt_run_url = next(
+              (
+                  job["html_url"]
+                  for job in jobs
+                  if job.get("name") == "dbt-test" or job.get("name", "").endswith(" / dbt-test")
+              ),
+              fallback_run_url,
+          )
+
+          comment_path = Path(os.environ["DBT_CI_TABLES_COMMENT_PATH"])
+          comment_body = comment_path.read_text().replace("__DBT_RUN_URL__", dbt_run_url)
+          comment_path.write_text(comment_body)
+
+          comments = github_request("GET", f"issues/{pr_number}/comments?per_page=100")
+          existing_comment = next(
+              (comment for comment in comments if comment.get("body", "").startswith(marker)),
+              None,
+          )
+
+          if existing_comment:
+              if existing_comment.get("body") != comment_body:
+                  github_request(
+                      "PATCH",
+                      f"issues/comments/{existing_comment['id']}",
+                      {"body": comment_body},
+                  )
+          else:
+              github_request("POST", f"issues/{pr_number}/comments", {"body": comment_body})
           PY
-          comment_body="$(< "$DBT_CI_TABLES_COMMENT_PATH")"
-          comment_id="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate --jq ".[] | select(.body | startswith(env.MARKER)) | .id" | awk 'NR == 1 { print; exit }')"
-          if [ -n "$comment_id" ]; then
-            current_body="$(mktemp)"
-            gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" --jq .body > "$current_body"
-            cmp -s "$current_body" "$DBT_CI_TABLES_COMMENT_PATH" || gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" --raw-field body="$comment_body"
-          else
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --raw-field body="$comment_body"
-          fi
