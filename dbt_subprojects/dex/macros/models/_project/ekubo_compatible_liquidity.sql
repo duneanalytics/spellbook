@@ -20,8 +20,8 @@ swap_events as (
         el.block_number,
         el.tx_from,
         substr(el."data", 21, 32) AS id,
-        cast(varbinary_to_decimal(substr(el."data", 53, 16)) as decimal(38,0)) as amount0,
-        cast(varbinary_to_decimal(substr(el."data", 69, 16)) as decimal(38,0)) as amount1,
+        varbinary_to_int256(substr(el."data", 53, 16)) as amount0,
+        varbinary_to_int256(substr(el."data", 69, 16)) as amount1,
         el.tx_hash,
         el.index as evt_index,
         'swap' as event_type
@@ -61,8 +61,8 @@ liquidity_events as (
         evt_block_number as block_number,
         evt_tx_from as tx_from,
         poolId as id,
-        varbinary_to_decimal(substr(balanceUpdate, 1, 16)) as amount0,
-        varbinary_to_decimal(substr(balanceUpdate, 1+16, 16)) as amount1,
+        varbinary_to_int256(substr(balanceUpdate, 1, 16)) as amount0,
+        varbinary_to_int256(substr(balanceUpdate, 1+16, 16)) as amount1,
         evt_tx_hash as tx_hash,
         evt_index,
         'modify_liquidity' as event_type 
