@@ -1,18 +1,19 @@
 {{
-    config(
-        schema = 'tokens_xrpl',
-        alias = 'currency_mapping',
-        materialized = 'table',
-        file_format = 'delta'
-    )
+  config(
+    schema = 'tokens_xrpl',
+    alias = 'currency_mapping',
+    tags = ['static'],
+    materialized = 'table',
+    file_format = 'delta',
+  )
 }}
 
-SELECT 
-    currency_hex,
-    symbol,
-    description
-FROM (
-    VALUES 
+select
+  currency_hex,
+  symbol,
+  description
+from (
+  values
     ('586F676500000000000000000000000000000000', 'Xoge', 'Xoge Token'),
     ('5363686D65636B6C000000000000000000000000', 'Schmeckles', 'Schmeckles Token'),
     ('524C555344000000000000000000000000000000', 'RLUSD', 'RLUSD Token'),
@@ -66,5 +67,4 @@ FROM (
     ('4749564552000000000000000000000000000000', 'GIVER', 'GIVER Token'),
     ('5852504D41464941000000000000000000000000', 'XRPMFIA', 'XRPMFIA Token'),
     ('5348494200000000000000000000000000000000', 'SHIB', 'SHIB Token')
-    
-) AS t(currency_hex, symbol, description) 
+) as t (currency_hex, symbol, description)

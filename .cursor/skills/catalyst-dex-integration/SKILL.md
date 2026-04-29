@@ -75,7 +75,7 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
    - if not already present, append `<project>` to `dbt_subprojects/dex/models/dex_info.sql`
 
 7. **final checks**
-   - From repo root: run `pipenv shell`, then `cd dbt_subprojects/dex` and `dbt compile` (or `dbt compile --select <project>_<chain>_base_trades`). Fix any errors.
+   - From repo root: run `uv sync --locked`, then `cd dbt_subprojects/dex` and `uv run dbt compile` (or `uv run dbt compile --select <project>_<chain>_base_trades`). Fix any errors.
    - **populate seed csv:** replace `<COMPILED_BASE_TRADES_SQL>` in the query below with the exact compiled sql for the model `<project>_<chain>_base_trades` (from `dbt compile` output). use it as a subquery, not a table name. run the full query via the ad-hoc sql sequence above and paste the 2-3 rows into the seed csv.
    ```sql
    with base_trades as (
