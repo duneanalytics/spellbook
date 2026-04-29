@@ -1251,10 +1251,10 @@ models:
       blockchain: base
       sector: dex
       project: tessera_v
-      contributors: Sector920
+      contributors: karimhass
     config:
-      tags: ["base", "dex", "trades", "tessera_v", "propamm", "pmm"]
-    description: "Tessera-V (TesseraSwap) PropAMM base trades on Base, sourced from the decoded Tesseratrade event."
+      tags: ["base", "dex", "trades", "tessera_v"]
+    description: "tessera_v base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

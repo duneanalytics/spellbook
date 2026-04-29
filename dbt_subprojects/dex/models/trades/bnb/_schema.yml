@@ -662,10 +662,10 @@ models:
       blockchain: bnb
       sector: dex
       project: tessera_v
-      contributors: Sector920
+      contributors: karimhass
     config:
-      tags: ["bnb", "dex", "trades", "tessera_v", "propamm", "pmm"]
-    description: "Tessera-V (TesseraSwap) PropAMM base trades on BNB Chain, sourced from the decoded Tesseratrade event."
+      tags: ["bnb", "dex", "trades", "tessera_v"]
+    description: "tessera_v bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
