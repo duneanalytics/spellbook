@@ -64,4 +64,4 @@ uv run pre-commit run --hook-stage manual    # Manual run
 ```
 
 ### CI
-PRs trigger GitHub Actions that run `dbt slim ci` — only modified models are tested. Each sub-project has its own workflow file (e.g., `dex.yml`, `tokens.yml`), all calling the shared reusable workflow in `dbt_run.yml`. Test results appear in tables named `test_schema.git_dunesql_<commit_hash>_<table_name>` (available ~24 hours).
+PRs trigger GitHub Actions that run `dbt slim ci` — only modified models are tested. Each sub-project has its own workflow file (e.g., `dex.yml`, `tokens.yml`), all calling the shared reusable workflow in `dbt_run.yml`. Test results appear in tables named `dune_spellbook_ci__tmp_pr<pr_number>.<model_name>` (available ~24 hours).

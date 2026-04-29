@@ -34,7 +34,7 @@ Click into the failed workflow run in the "Actions" tab to expand each step's lo
 ### Test Failures
 - **`unique_combination_of_columns` failing**: The model is producing duplicate rows for the unique key. Check your join logic, filters, and whether NULLs are present in key columns.
 - **`not_null` failing**: A unique key column contains NULLs. Add `coalesce()` or filter out NULL rows.
-- **Seed test mismatch**: Model output doesn't match seed expected values. Either update the seed CSV or fix the model logic. Query the CI test table on Dune to compare: `test_schema.git_dunesql_<hash>_<table>`.
+- **Seed test mismatch**: Model output doesn't match seed expected values. Either update the seed CSV or fix the model logic. Query the CI test table on Dune to compare: `dune_spellbook_ci__tmp_pr<pr_number>.<model_name>`.
 
 ### Manifest / Extra Models Running
 - **More models running than expected**: The manifest file on main may be out of date. Check if the `commit manifest` workflow in Actions completed successfully. If it's still running or failed, wait for it to finish, then re-trigger CI.
@@ -49,11 +49,11 @@ CI tables are available on Dune for ~24 hours after the run:
 
 ```sql
 select *
-from test_schema.git_dunesql_<GIT_HASH>_<schema>_<alias>
+from dune_spellbook_ci__tmp_pr<PR_NUMBER>.<model_name>
 limit 100
 ```
 
-For Spellbook, the suffix matches dbt **`schema`** + **`_`** + **`alias`** (e.g. `tokens.transfers` → `tokens_transfers`). Use the exact name from **`dbt run initial model(s)`** logs.
+For Spellbook, the schema is scoped to the PR and the table name matches the dbt model name. Use the exact relation from **`dbt run initial model(s)`** logs.
 
 Use these to:
 - Verify data quality before expanding date ranges
