@@ -94,7 +94,10 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-        
+      - &updated_at
+        name: _updated_at
+        description: "Timestamp when this row was last written or updated by the pipeline"
+
   - name: dex_aggregator_base_trades
     meta:
       blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
