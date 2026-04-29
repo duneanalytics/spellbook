@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: tokens_stellar_transfers
+    meta:
+      blockchain: stellar
+      sector: tokens
+      short_description: "Stellar token transfers"
+      contributors: tomfutago
+      docs_slug: /curated/token-transfers/stellar/stellar-token-transfers
+    config:
+      tags: ['tokens', 'transfers', 'stellar']
+    description: >
+      Stellar token transfers sourced from stellar.token_transfers, covering classic
+      payment/path_payment/claimable_balance/fee operations as well as Soroban contract
+      transfer/mint/burn events. Amounts are scaled using Stellar's canonical 7 decimals
+      and USD valuation is joined from prices_external.hour for native XLM and priced
+      classic Stellar assets when a matching hourly price is available.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain of the transfers"
+      - name: block_month
+        description: "The month of the block"
+      - name: block_date
+        description: "The date of the block"
+        tests:
+          - not_null
+      - name: block_time
+        description: "The ledger close time"
+      - name: ledger_sequence
+        description: "The ledger sequence number"
+      - name: transaction_hash
+        description: "The transaction hash"
+      - name: transaction_id
+        description: "The transaction identifier (TOID)"
+      - name: operation_id
+        description: "The operation identifier (TOID) for classic operations; null for Soroban events"
+      - name: token_standard
+        description: "Token standard label: native, classic, or soroban"
+      - name: from
+        description: "The sender of the transfer"
+      - name: to
+        description: "The receiver of the transfer"
+      - name: to_muxed
+        description: "Muxed recipient address when present"
+      - name: to_muxed_id
+        description: "Muxed recipient id when present"
+      - name: contract_id
+        description: "Stellar Asset Contract (SAC) or Soroban contract id for the asset transferred"
+      - name: asset
+        description: "Full asset identifier (native or CODE:ISSUER)"
+      - name: asset_type
+        description: "Asset type: native, credit_alphanum4, credit_alphanum12, or soroban"
+      - name: asset_code
+        description: "Classic asset code; null for native and some Soroban assets"
+      - name: asset_issuer
+        description: "Classic asset issuer address; null for native"
+      - name: symbol
+        description: "The token symbol transferred"
+      - name: decimals
+        description: "The number of decimals used to scale amount_raw"
+      - name: amount_raw
+        description: "The raw amount of the transfer in stroops"
+      - name: amount
+        description: "The scaled amount of the transfer"
+      - name: price_usd
+        description: "The hourly USD price used to calculate amount_usd when a matching Stellar asset price is available"
+      - name: amount_usd
+        description: "The USD amount of the transfer when a matching Stellar asset price is available"
+      - name: event_topic
+        description: "Soroban event topic (e.g. transfer, mint, burn, fee)"
+      - name: event_type
+        description: "Classic operation type that produced the event"
+      - name: is_soroban
+        description: "Whether the event originated from a Soroban contract"
+      - name: _updated_at
+        description: "Timestamp when this row was last written"
