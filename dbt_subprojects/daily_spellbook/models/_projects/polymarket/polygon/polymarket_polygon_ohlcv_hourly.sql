@@ -33,6 +33,7 @@ with base as (
         )                                       as rn_last
     from {{ ref('polymarket_polygon_market_trades') }}
     where token_outcome is not null
+      and price between 0 and 1  -- drop upstream bad-price trades (MINT/MERGE artefacts)
     {% if is_incremental() -%}
       and {{ incremental_predicate('block_time') }}
     {%- endif %}
@@ -172,13 +173,13 @@ with_settlement as (
         f.volume_usd,
         f.trade_count,
         m.category,
-        m.market_end_time,
+        m.market_end_time_ts                                                    as market_end_time,
         m.market_outcome,
         f.is_forward_filled,
         case
             when m.market_end_time_ts is not null
                  and f.hour > m.market_end_time_ts
-                 and m.market_outcome is not null
+                 and m.market_outcome in ('yes', 'no')
             then
                 case
                     when f.token_outcome = 'Yes' and m.market_outcome = 'yes' then 1.0
@@ -236,6 +237,12 @@ select
     r.is_forward_filled,
     now()                                                                       as _updated_at
 from with_resolution r
+where not (
+    r.is_forward_filled
+    and r.market_end_time is not null
+    and r.hour > r.market_end_time
+    and r.market_outcome in ('yes', 'no')
+)
 {% if is_incremental() -%}
-where {{ incremental_predicate('r.hour') }}
+  and {{ incremental_predicate('r.hour') }}
 {%- endif %}
