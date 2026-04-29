@@ -99,35 +99,10 @@ jobs:
           RUN_URL: __DBT_RUN_URL__
         run: uv run python scripts/comment_dbt_ci_tables.py
 
-      - name: Upload queryable Dune CI tables comment
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: dbt-ci-tables-comment-${{ inputs.project }}
-          path: ${{ runner.temp }}/dbt-built-relations/comment_body.md
-          if-no-files-found: ignore
-
-  comment-dbt-ci-tables:
-    needs: dbt-test
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      issues: write
-      pull-requests: write
-
-    steps:
-      - name: Download queryable Dune CI tables comment
-        uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: dbt-ci-tables-comment-${{ inputs.project }}
-          path: ${{ runner.temp }}/dbt-ci-tables-comment
-
       - name: Upsert queryable Dune CI tables comment
+        if: github.event_name == 'pull_request'
         env:
-          DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-ci-tables-comment/comment_body.md
+          DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-built-relations/comment_body.md
           GH_TOKEN: ${{ github.token }}
           MARKER: <!-- spellbook-dbt-run-built-tables:${{ inputs.project }} -->
           PR_NUMBER: ${{ github.event.number }}
