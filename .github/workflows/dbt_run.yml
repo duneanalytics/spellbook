@@ -115,26 +115,24 @@ jobs:
       actions: read
       contents: read
       issues: write
+      pull-requests: write
 
     steps:
       - name: Download queryable Dune CI tables comment
         uses: actions/download-artifact@v4
-        continue-on-error: true
         with:
           name: dbt-ci-tables-comment-${{ inputs.project }}
           path: ${{ runner.temp }}/dbt-ci-tables-comment
 
       - name: Upsert queryable Dune CI tables comment
-        continue-on-error: true
         env:
           DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-ci-tables-comment/comment_body.md
           GH_TOKEN: ${{ github.token }}
           MARKER: <!-- spellbook-dbt-run-built-tables:${{ inputs.project }} -->
           PR_NUMBER: ${{ github.event.number }}
         run: |
-          [ -f "$DBT_CI_TABLES_COMMENT_PATH" ] || exit 0
           comment_body="$(< "$DBT_CI_TABLES_COMMENT_PATH")"
-          comment_id="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate --jq ".[] | select(.body | contains(env.MARKER)) | .id" | head -n 1)"
+          comment_id="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate --jq ".[] | select(.body | startswith(env.MARKER)) | .id" | awk 'NR == 1 { print; exit }')"
           if [ -n "$comment_id" ]; then
             current_body="$(mktemp)"
             gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${comment_id}" --jq .body > "$current_body"
