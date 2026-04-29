@@ -13,9 +13,6 @@ models:
     description: >
       The dex_aggregator.trades table captures data on actions taken on aggregators - recording all events across various aggregators and blockchains.
     data_tests:
-      # Downgraded to warn (CUR2-2163): paraswap_delta_v1 batch orders share evt_index=0
-      # and trace_address=[-1], producing 24 pre-existing duplicates. Bump back to error
-      # once the upstream velora delta v1 model gives batch orders distinct keys.
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -25,8 +22,6 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-          config:
-            severity: warn
     columns:
       - &blockchain
         name: blockchain
