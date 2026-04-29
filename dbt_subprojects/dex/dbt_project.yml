@@ -22,7 +22,11 @@ vars:
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '3') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
   ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
-  dev_dates: false
+  # TEMP for PR #9612: enabled to bypass transient OOM in dex_bnb_base_trades full-refresh
+  # (TopNRankingOperator > 332GB during ROW_NUMBER dedup over BNB historical UNION).
+  # Maintainer MUST run `--full-refresh` post-merge to backfill all dex chain models OR revert
+  # this flag to false before merging. Leaving it true silently caps production scans at 3 days.
+  dev_dates: true
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
