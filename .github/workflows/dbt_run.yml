@@ -96,7 +96,7 @@ jobs:
           DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-built-relations/comment_body.md
           PROJECT_DIR: ${{ env.PROJECT_DIR }}
           PROJECT_NAME: ${{ inputs.project }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_URL: __DBT_RUN_URL__
         run: uv run python scripts/comment_dbt_ci_tables.py
 
       - name: Upload queryable Dune CI tables comment
@@ -120,6 +120,7 @@ jobs:
     steps:
       - name: Download queryable Dune CI tables comment
         uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           name: dbt-ci-tables-comment-${{ inputs.project }}
           path: ${{ runner.temp }}/dbt-ci-tables-comment
@@ -131,6 +132,16 @@ jobs:
           MARKER: <!-- spellbook-dbt-run-built-tables:${{ inputs.project }} -->
           PR_NUMBER: ${{ github.event.number }}
         run: |
+          [ -f "$DBT_CI_TABLES_COMMENT_PATH" ] || exit 0
+          dbt_run_url="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs" --paginate --jq '.jobs[] | select(.name == "dbt-test" or (.name | endswith(" / dbt-test"))) | .html_url' | awk 'NR == 1 { print; exit }')"
+          dbt_run_url="${dbt_run_url:-${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}}"
+          python - "$DBT_CI_TABLES_COMMENT_PATH" "$dbt_run_url" <<'PY'
+          import sys
+          from pathlib import Path
+
+          comment_path = Path(sys.argv[1])
+          comment_path.write_text(comment_path.read_text().replace("__DBT_RUN_URL__", sys.argv[2]))
+          PY
           comment_body="$(< "$DBT_CI_TABLES_COMMENT_PATH")"
           comment_id="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate --jq ".[] | select(.body | startswith(env.MARKER)) | .id" | awk 'NR == 1 { print; exit }')"
           if [ -n "$comment_id" ]; then

@@ -45,12 +45,11 @@ def get_built_tables(manifest_path, run_results_path):
 
 
 def build_comment(built_tables, project_name, run_url):
+    if not built_tables:
+        return None
+
     visible_tables = built_tables[:5]
-    table_lines = (
-        "\n".join(f"- `{table_name}`" for table_name in visible_tables)
-        if visible_tables
-        else "No dbt model tables were reported as built by this workflow run."
-    )
+    table_lines = "\n".join(f"- `{table_name}`" for table_name in visible_tables)
     truncation_note = (
         f"\n\nShowing 5 of {len(built_tables)} tables. See the [dbt run logs]({run_url}) for the rest."
         if len(built_tables) > 5
@@ -67,8 +66,6 @@ def build_comment(built_tables, project_name, run_url):
     return "\n".join(
         [
             marker,
-            f"### Queryable Dune CI Tables for `{project_name}`",
-            "",
             "The dbt run succeeded and built these tables in the `dune` catalog:",
             "",
             f"{table_lines}{truncation_note}{query_note}{run_note}",
@@ -82,7 +79,8 @@ def main():
     run_results_path = Path(os.environ["DBT_BUILT_RELATIONS_DIR"]) / "initial_run_results.json"
     built_tables = get_built_tables(manifest_path, run_results_path)
     body = build_comment(built_tables, project_name, os.environ["RUN_URL"])
-    Path(os.environ["DBT_CI_TABLES_COMMENT_PATH"]).write_text(f"{body}\n")
+    if body:
+        Path(os.environ["DBT_CI_TABLES_COMMENT_PATH"]).write_text(f"{body}\n")
 
 
 if __name__ == "__main__":
