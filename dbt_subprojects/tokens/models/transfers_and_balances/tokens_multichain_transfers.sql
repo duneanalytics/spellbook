@@ -119,3 +119,61 @@ select
   transfer_type,
   _updated_at
 from {{ ref('tokens_sui_transfers') }}
+
+union all
+
+select
+  unique_key,
+  blockchain,
+  block_time,
+  block_date,
+  block_month,
+  cast(ledger_sequence as bigint) as block_number,
+  cast(transaction_hash as varchar) as tx_id,
+  cast(transaction_id as bigint) as tx_sequence,
+  cast(null as bigint) as tx_index,
+  cast(operation_id as bigint) as event_index,
+  cast(null as bigint) as sub_event_index,
+  cast("from" as varchar) as from_address,
+  cast("to" as varchar) as to_address,
+  cast(null as varchar) as tx_signer,
+  cast(contract_id as varchar) as token_address,
+  cast(coalesce(contract_id, asset) as varchar) as token_id,
+  symbol as token_symbol,
+  token_standard,
+  amount_raw,
+  amount,
+  price_usd,
+  amount_usd,
+  coalesce(event_topic, event_type) as transfer_type,
+  _updated_at
+from {{ ref('tokens_stellar_transfers') }}
+
+union all
+
+select
+  unique_key,
+  blockchain,
+  block_time,
+  block_date,
+  block_month,
+  block_number,
+  cast(tx_hash as varchar) as tx_id,
+  cast(null as bigint) as tx_sequence,
+  cast(tx_index as bigint) as tx_index,
+  cast(null as bigint) as event_index,
+  cast(null as bigint) as sub_event_index,
+  cast("from" as varchar) as from_address,
+  cast("to" as varchar) as to_address,
+  cast(tx_from as varchar) as tx_signer,
+  cast(issuer as varchar) as token_address,
+  xrpl_asset_id as token_id,
+  symbol as token_symbol,
+  token_standard,
+  amount_raw,
+  amount,
+  price_usd,
+  amount_usd,
+  transfer_type,
+  _updated_at
+from {{ ref('tokens_xrpl_transfers') }}

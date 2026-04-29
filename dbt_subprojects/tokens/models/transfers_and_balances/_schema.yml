@@ -176,7 +176,7 @@ models:
     config:
       tags: ['tokens', 'transfers', 'multichain']
     description: >
-      Unified view of fungible token transfers across EVM-compatible chains, Solana, Aptos, and Sui with a
+      Unified view of fungible token transfers across EVM-compatible chains, Solana, Aptos, Sui, Stellar, and XRPL with a
       chain-agnostic schema. For EVM-only transfers, use tokens_evm.transfers, and for chain-specific
       transfer details, use the chain-level transfers models.
     columns:
