@@ -123,7 +123,7 @@ from {{ ref('tokens_sui_transfers') }}
 union all
 
 select
-  unique_key,
+  to_hex(unique_key) as unique_key,
   blockchain,
   block_time,
   block_date,
