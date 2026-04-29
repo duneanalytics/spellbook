@@ -83,6 +83,7 @@ with prices_native_tokens as (
         , ('viction', 'tomo-tomochain')
         , ('worldchain', 'eth-ethereum')
         , ('xlayer', 'okb-okb')
+        , ('xrpl', 'xrp-xrp')
         , ('zkevm', 'eth-ethereum')
         , ('zksync', 'eth-ethereum')
         , ('zora', 'eth-ethereum')

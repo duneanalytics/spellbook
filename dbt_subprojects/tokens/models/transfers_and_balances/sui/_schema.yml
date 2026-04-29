@@ -467,6 +467,7 @@ models:
       sector: tokens
       short_description: "Sui Coin<T> transfers with metadata and USD values."
       contributors: tomfutago
+      docs_slug: /curated/token-transfers/sui/sui-token-transfers
     config:
       tags: ['tokens', 'transfers', 'sui']
     description: "Sui cross-address Coin<T> transfers enriched with coin metadata (symbol/decimals), USD valuation, and supply-event flags."

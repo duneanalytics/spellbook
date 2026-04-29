@@ -1,0 +1,13 @@
+[project]
+name = "spellbook"
+version = "0.0.0"
+requires-python = "==3.9.*"
+dependencies = [
+    "dbt-trino==1.9.0",
+    "numpy==2.0.2",
+    "pre-commit==4.0.1",
+    "pytest==8.3.4",
+]
+
+[tool.uv]
+package = false

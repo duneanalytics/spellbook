@@ -32,19 +32,17 @@ pushing code to minimize the waiting time. If any of these checks fail, the git 
 
 To install pre-push hooks, follow these steps:
 
-- If your pipenv is activated, exit it with `exit`.
-- Reinstall your pipenv with `pipenv install` from the root of spellbook.
-- Enter your pipenv with `pipenv shell`.
-- If you're paranoid like me, run `pip freeze` and check to see if pre-commit is installed.
-- Install the prepush hooks with `pre-commit install --hook-type pre-push`.
+- Sync dependencies with `uv sync --locked` from the root of spellbook.
+- If you're paranoid like me, run `uv run pip freeze` and check to see if pre-commit is installed.
+- Install the prepush hooks with `uv run pre-commit install --hook-type pre-push`.
 
 To use pre-push hooks:
 Manually
 
 - If you want to manually run the checks, stage your changed files on git e.g. `git add {file_name.sql}`.
-- Run `pre-commit run --hook-stage manual`.
+- Run `uv run pre-commit run --hook-stage manual`.
 - Resolve any errors and re-add your files to git.
-- Rerun `pre-commit run --hook-stage manual`.
+- Rerun `uv run pre-commit run --hook-stage manual`.
 
 On push
 

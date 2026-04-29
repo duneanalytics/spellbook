@@ -83,4 +83,4 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
    - `dbt_subprojects/tokens/macros/transfers_from_traces/transfers_from_traces_exposed_blockchains_macro.sql`
 
 9. **final checks**
-   - From repo root: run `pipenv shell`, then run `dbt compile` in `dbt_subprojects/tokens` and in `dbt_subprojects/hourly_spellbook`. Fix any errors.
+   - From repo root: run `uv sync --locked`, then run `uv run dbt compile` in `dbt_subprojects/tokens` and in `dbt_subprojects/hourly_spellbook`. Fix any errors.
