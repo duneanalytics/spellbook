@@ -12,9 +12,10 @@ models:
     description: "Normalized XRPL transaction metadata and typed transaction fields used by downstream XRPL transfer models."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
       - check_seed:
           seed_file: ref('tokens_xrpl_transaction_metadata_seed')
           match_columns:
@@ -79,9 +80,10 @@ models:
     description: "One row per XRPL metadata affected node, preserving node type and field payloads for transfer reconstruction."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
       - check_seed:
           seed_file: ref('tokens_xrpl_affected_nodes_seed')
           match_columns:
@@ -118,8 +120,9 @@ models:
     description: "Static helper table used to map known XRPL 160-bit currency codes to display symbols."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - currency_hex
+          arguments:
+            combination_of_columns:
+              - currency_hex
     columns:
       - name: currency_hex
         description: "XRPL 160-bit currency code in hexadecimal form."
@@ -411,9 +414,10 @@ models:
     description: "Unified XRPL base transfer rows built by unioning per-transaction-type XRPL transfer models."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
       - check_seed:
           seed_file: ref('tokens_xrpl_base_transfers_seed')
           match_columns:
@@ -473,9 +477,10 @@ models:
     description: "XRPL token transfers enriched with currency display metadata and XRP USD pricing."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
       - <<: *unique_key
         data_tests:
@@ -523,9 +528,10 @@ models:
     description: "Daily XRPL net transfer volume in USD, computed by netting sender and receiver address flows within each day."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
     columns:
       - name: blockchain
         description: "The blockchain of the transfer volume."
@@ -549,9 +555,10 @@ models:
     description: "Gas fees paid per transaction on the XRP Ledger."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
     columns:
       - name: block_month
         description: "Month for block event time in UTC."

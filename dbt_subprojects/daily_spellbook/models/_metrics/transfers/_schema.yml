@@ -113,9 +113,10 @@ models:
     description: *net_transfers_description
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_bitcoin_transfers_daily
     meta:
