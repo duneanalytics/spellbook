@@ -1246,6 +1246,25 @@ models:
             - blockchain
             - token_address
             - block_date
+  - name: tessera_v_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: tessera_v
+      contributors: Sector920
+    config:
+      tags: ["base", "dex", "trades", "tessera_v", "propamm", "pmm"]
+    description: "Tessera-V (TesseraSwap) PropAMM base trades on Base, sourced from the decoded Tesseratrade event."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('tessera_v_base_base_trades_seed')
+          filter:
+            version: 1
+
   - name: elfomofi_base_base_trades
     meta:
       blockchain: base
