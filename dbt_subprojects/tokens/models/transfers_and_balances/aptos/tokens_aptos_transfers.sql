@@ -17,16 +17,43 @@
 }}
 
 {% set aptos_transfer_start_date = '2022-10-12' %}
-{% set canonical_usdc_asset_type = '0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b' %}
-{% set canonical_usdt_asset_type = '0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b' %}
 {% set usd_amount_threshold = 1000000000 %}
+{% set legacy_native_aptos_asset_type = '0x1::aptos_coin::AptosCoin' %}
+{% set current_native_aptos_asset_type = '0x000000000000000000000000000000000000000000000000000000000000000a' %}
+{% set native_aptos_symbol = 'APT' %}
+{% set native_aptos_decimals = 8 %}
 
-with base_transfers as (
+with native_assets as (
   select *
-  from {{ ref('tokens_aptos_base_transfers') }}
-  where block_date >= date '{{ aptos_transfer_start_date }}'
+  from (
+    values
+      (
+        '{{ legacy_native_aptos_asset_type }}',
+        '{{ native_aptos_symbol }}',
+        {{ native_aptos_decimals }},
+        0x0000000000000000000000000000000000000000
+      ),
+      (
+        '{{ current_native_aptos_asset_type }}',
+        '{{ native_aptos_symbol }}',
+        {{ native_aptos_decimals }},
+        0x0000000000000000000000000000000000000000
+      )
+  ) as t (asset_type, symbol, decimals, price_contract_address)
+),
+
+base_transfers as (
+  select
+    b.*,
+    n.symbol as native_symbol,
+    n.decimals as native_decimals,
+    coalesce(n.price_contract_address, to_utf8(b.asset_type)) as price_contract_address
+  from {{ ref('tokens_aptos_base_transfers') }} b
+  left join native_assets n
+    on b.asset_type = n.asset_type
+  where b.block_date >= date '{{ aptos_transfer_start_date }}'
     {% if is_incremental() %}
-    and {{ incremental_predicate('block_time') }}
+    and {{ incremental_predicate('b.block_time') }}
     {% endif %}
 ),
 
@@ -94,18 +121,24 @@ transfers as (
     b.asset_type,
     b.from_storage_id,
     b.to_storage_id,
-    coalesce(m.asset_symbol, p.symbol) as symbol,
-    coalesce(m.decimals, p.decimals) as decimals,
+    coalesce(b.native_symbol, m.asset_symbol, p.symbol) as symbol,
+    coalesce(b.native_decimals, m.decimals, p.decimals) as decimals,
     tx.tx_index,
     b.amount_raw,
     case
-      when coalesce(m.decimals, p.decimals) is null then cast(null as double)
-      else cast(b.amount_raw as double) / power(10, cast(coalesce(m.decimals, p.decimals) as double))
+      when coalesce(b.native_decimals, m.decimals, p.decimals) is null then cast(null as double)
+      else cast(b.amount_raw as double) / power(
+        10,
+        cast(coalesce(b.native_decimals, m.decimals, p.decimals) as double)
+      )
     end as amount,
     p.price as price_usd,
     case
-      when coalesce(m.decimals, p.decimals) is null then cast(null as double)
-      else cast(b.amount_raw as double) / power(10, cast(coalesce(m.decimals, p.decimals) as double)) * p.price
+      when coalesce(b.native_decimals, m.decimals, p.decimals) is null then cast(null as double)
+      else cast(b.amount_raw as double) / power(
+        10,
+        cast(coalesce(b.native_decimals, m.decimals, p.decimals) as double)
+      ) * p.price
     end as amount_usd,
     case
       when tt.contract_address is not null then true
@@ -119,14 +152,10 @@ transfers as (
   left join tx_metadata tx
     on b.tx_version = tx.tx_version
   left join trusted_tokens tt
-    on b.contract_address = tt.contract_address
+    on b.price_contract_address = tt.contract_address
   left join prices p
     on date_trunc('hour', b.block_time) = p.timestamp
-    and b.contract_address = p.contract_address
-  where (
-    coalesce(upper(m.asset_symbol), '') not in ('USDC', 'USDT')
-    or b.asset_type in ('{{ canonical_usdc_asset_type }}', '{{ canonical_usdt_asset_type }}')
-  )
+    and b.price_contract_address = p.contract_address
 )
 
 select
