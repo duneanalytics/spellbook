@@ -11,9 +11,10 @@ models:
     description: "High level information about every address across all EVM chains"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address_prefix
-            - address
+          arguments:
+            combination_of_columns:
+              - address_prefix
+              - address
     columns:
       - &address
         name: address

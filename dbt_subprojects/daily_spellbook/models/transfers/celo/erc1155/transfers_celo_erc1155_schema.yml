@@ -12,13 +12,14 @@ models:
     description: "ERC1155 Token Transfers on Celo. This table is updated every 30 minutes."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - transfer_type
-            - wallet_address
-            - token_address
-            - token_id
-            - amount
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - transfer_type
+              - wallet_address
+              - token_address
+              - token_id
+              - amount
     columns:
       - &blockchain
         name: blockchain
@@ -65,11 +66,12 @@ models:
     description: "A helper table to construct erc1155 balances"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
-            - block_hour
-            - token_id
+          arguments:
+            combination_of_columns:
+              - wallet_address
+              - token_address
+              - block_hour
+              - token_id
     columns:
       - *blockchain
       - *block_month
@@ -92,11 +94,12 @@ models:
     description: "A helper table to construct erc1155 balances"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
-            - block_day
-            - token_id
+          arguments:
+            combination_of_columns:
+              - wallet_address
+              - token_address
+              - block_day
+              - token_id
     columns:
       - *blockchain
       - *block_month

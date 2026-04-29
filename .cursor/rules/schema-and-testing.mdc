@@ -20,9 +20,10 @@ models:
     description: "What this model produces and its purpose"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - col_a
-            - col_b
+          arguments:
+            combination_of_columns:
+              - col_a
+              - col_b
     columns:
       - name: col_a
         description: "Column description"
@@ -47,14 +48,16 @@ For sector-level spells (e.g., platforms feeding into `dex.trades`), seed tests 
 ```yaml
 data_tests:
   - dbt_utils.unique_combination_of_columns:
-      combination_of_columns:
-        - block_date
-        - tx_hash
-        - evt_index
+      arguments:
+        combination_of_columns:
+          - block_date
+          - tx_hash
+          - evt_index
   - check_dex_base_trades_seed:
-      seed_file: ref('aerodrome_base_base_trades_seed')
-      filter:
-        version: 2
+      arguments:
+        seed_file: ref('aerodrome_base_base_trades_seed')
+        filter:
+          version: 2
 ```
 
 - Seed match columns must exactly match the config `unique_key` columns

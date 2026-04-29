@@ -11,11 +11,12 @@ models:
     description: "Latest token prices in USD. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - symbol
-            - decimals
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - symbol
+              - decimals
     columns:
       - name: minute
         description: "UTC event block time truncated to the minute mark"
@@ -39,11 +40,12 @@ models:
     description: "Forward-filled USD token prices over the last 24 hours. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - minute
-            - blockchain
-            - contract_address
-            - symbol
+          arguments:
+            combination_of_columns:
+              - minute
+              - blockchain
+              - contract_address
+              - symbol
           config:
             severity: error
             error_if: ">5"        #there are 5 duplicates in the source prices table (29/11/2022)
@@ -75,11 +77,12 @@ models:
     description: "Daily aggregated token prices across blockchains. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - blockchain
-            - contract_address
-            - symbol
+          arguments:
+            combination_of_columns:
+              - day
+              - blockchain
+              - contract_address
+              - symbol
     columns:
       - name: day
         description: "UTC event block time truncated to the day mark"
@@ -132,7 +135,8 @@ models:
           - not_null
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - minute

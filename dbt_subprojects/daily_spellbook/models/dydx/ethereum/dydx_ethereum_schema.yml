@@ -12,9 +12,10 @@ models:
       DAO votes on all chains across all contracts and versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns:
-           - tx_hash
-           - voter_address
+         arguments:
+           combination_of_columns:
+             - tx_hash
+             - voter_address
     columns:
       - name: blockchain
       - name: project
@@ -52,7 +53,8 @@ models:
         description: "0 = Against, 1 = For, 2 = Abstain votes"
         data_tests:
         - accepted_values:
-            values: ['for', 'against', 'abstain']
+            arguments:
+              values: ['for', 'against', 'abstain']
       - &reason
         name: reason
         description: "Optional onchain comments to explain votes"
@@ -68,11 +70,12 @@ models:
       DAO proposals on all chains across all contracts and versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - project
-              - version
-              - tx_hash
+          arguments:
+            combination_of_columns:
+                - blockchain
+                - project
+                - version
+                - tx_hash
     columns:
       - name: blockchain
       - name: project
@@ -105,7 +108,8 @@ models:
         description: "Proposal status: Pending, Queued, Active, Executed, Canceled or Defeated"
         data_tests:
           - accepted_values:
-              values: ['Pending', 'Queued', 'Active', 'Executed', 'Canceled','Defeated']
+              arguments:
+                values: ['Pending', 'Queued', 'Active', 'Executed', 'Canceled','Defeated']
       - &description
         name: description
         description: "Description of the proposal"
@@ -121,10 +125,11 @@ models:
       All dYdX flashloans
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - name: blockchain
       - name: project

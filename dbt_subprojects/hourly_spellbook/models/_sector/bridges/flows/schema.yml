@@ -11,7 +11,8 @@ models:
     description: "Bridge deposits events"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
+          arguments:
+            combination_of_columns: ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -101,7 +102,8 @@ models:
     description: "Bridge withdrawals events"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
+          arguments:
+            combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -149,7 +151,8 @@ models:
     description: "Bridge flows"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id']
+          arguments:
+            combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -199,7 +202,8 @@ models:
     description: "Bridges metadata"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['bridge_name', 'bridge_version']
+          arguments:
+            combination_of_columns: ['bridge_name', 'bridge_version']
     columns:
       - *bridge_name
       - *bridge_version

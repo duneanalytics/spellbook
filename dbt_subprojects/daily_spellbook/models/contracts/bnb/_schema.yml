@@ -29,9 +29,10 @@ models:
     description: "Mapping of contracts to its creators and names on bnb."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
 
             
     columns:
@@ -142,9 +143,10 @@ models:
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
 
     columns:
       - *blockchain
@@ -172,9 +174,10 @@ models:
     description: "Base Level for mapping of contracts to its creators and names on bnb."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
 
             
     columns:
@@ -206,9 +209,10 @@ models:
     description: "Iterated creators for mapping of contracts to its creators and names on bnb."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
 
             
     columns:

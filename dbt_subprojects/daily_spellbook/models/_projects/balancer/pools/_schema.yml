@@ -11,10 +11,11 @@ models:
       Token weights in Balancer pools.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool_id
+              - token_address
     columns:
       - &blockchain
         name: blockchain
@@ -45,12 +46,13 @@ models:
       This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - project_contract_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - project_contract_address
     columns:
       - *blockchain
       - &project
@@ -132,9 +134,10 @@ models:
       This spell aggregates data from the trades, liquidity, and protocol fees spells, by pool, while also displaying information about the pool creation.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool_id
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool_id
     columns:
       - *blockchain
       - name: pool_id

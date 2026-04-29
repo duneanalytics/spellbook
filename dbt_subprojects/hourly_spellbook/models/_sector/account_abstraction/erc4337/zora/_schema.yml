@@ -60,16 +60,17 @@ models:
     description: "erc4337 user operation on zora"
     data_tests:
       - check_seed:
-          seed_file: ref('account_abstraction_erc4337_userops_seed')
-          filter:
-            blockchain: zora
-            version: v0.6
-          match_columns:
-            - userop_hash
-            - tx_hash
-          check_columns:
-            - paymaster
-            - bundler
+          arguments:
+            seed_file: ref('account_abstraction_erc4337_userops_seed')
+            filter:
+              blockchain: zora
+              version: v0.6
+            match_columns:
+              - userop_hash
+              - tx_hash
+            check_columns:
+              - paymaster
+              - bundler
     columns:
       - *blockchain
       - *version
@@ -137,20 +138,22 @@ models:
     description: "erc4337 account deployed on zora"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - userop_hash
+              - tx_hash
       - check_seed:
-          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
-          filter:
-            blockchain: zora
-            version: v0.6
-          match_columns:
-            - userop_hash
-            - tx_hash
-          check_columns:
-            - paymaster
-            - factory
+          arguments:
+            seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
+            filter:
+              blockchain: zora
+              version: v0.6
+            match_columns:
+              - userop_hash
+              - tx_hash
+            check_columns:
+              - paymaster
+              - factory
     columns:
       - *blockchain
       - *version

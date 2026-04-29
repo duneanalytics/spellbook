@@ -11,11 +11,12 @@ models:
     description: "All lending market transactions on Sonic"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_time
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -101,11 +102,12 @@ models:
     description: "Aave v3 market transactions on Sonic"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_time
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

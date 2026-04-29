@@ -12,10 +12,11 @@ models:
       Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_id
+              - token_address
     columns:
       - &day
         name: day

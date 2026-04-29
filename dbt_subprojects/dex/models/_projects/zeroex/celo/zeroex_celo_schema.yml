@@ -12,10 +12,11 @@ models:
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - &tx_hash
         name: tx_hash
@@ -95,10 +96,11 @@ models:
         0x API erc20 swaps raw fills (deduped) on celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *block_date
@@ -147,9 +149,10 @@ models:
       along with their activation timestamps and token IDs.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - settler_address
-            - token_id
+          arguments:
+            combination_of_columns:
+              - settler_address
+              - token_id
     columns:
       - name: tx_hash
         description: "Transaction hash where the settler address was registered"

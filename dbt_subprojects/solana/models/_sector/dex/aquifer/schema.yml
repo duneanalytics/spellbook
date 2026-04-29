@@ -11,7 +11,8 @@ models:
       staging model for aquifer swap data from instruction_calls
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+          arguments:
+            combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
 
   - name: aquifer_solana_base_trades
     meta:
@@ -24,7 +25,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+          arguments:
+            combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
 
   - name: aquifer_v2_solana_stg_raw_swaps
     meta:
@@ -36,7 +38,8 @@ models:
       staging model for aquifer v2 swap data from instruction_calls (discriminator 0x13)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+          arguments:
+            combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
 
   - name: aquifer_v2_solana_base_trades
     meta:
@@ -49,7 +52,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+          arguments:
+            combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
 
   - name: aquifer_v2_solana_trades
     meta:

@@ -12,9 +12,10 @@ models:
       Gas prices per minute, per chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - &blockchain
         name: blockchain

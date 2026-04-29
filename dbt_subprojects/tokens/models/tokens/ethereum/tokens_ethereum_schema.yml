@@ -79,7 +79,8 @@ models:
       - name: standard
         data_tests:
           - accepted_values:
-              values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
+              arguments:
+                values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
         description: >
             The token standard. This is the set of rules that the contract must respect
             to be compatible with the common standards. Accepted values are presently standards represented.
@@ -103,7 +104,8 @@ models:
         description: "The NFT standard erc721/erc1155/..."
         data_tests:
           - accepted_values:
-              values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
+              arguments:
+                values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
 
   - name: tokens_ethereum_rwa
     meta:
