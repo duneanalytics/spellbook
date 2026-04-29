@@ -217,6 +217,83 @@ models:
       - name: _updated_at
         description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
 
+  - name: polymarket_polygon_market_addresses
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket protocol and market addresses used to exclude internal transfers from user capital action classification"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - address
+    columns:
+      - name: address
+        description: "Polymarket protocol or market contract address"
+        data_tests:
+          - not_null
+
+  - name: polymarket_polygon_users_capital_action_transfer_candidates
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "USDC.e, USDC, and pUSD transfers involving Polymarket user wallets, with wallet-side flags precomputed for capital action classification"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - evt_index
+              - tx_hash
+    columns:
+      - name: block_month
+        description: "UTC month of the transfer block time used for partitioning"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "UTC block timestamp for the transfer"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "UTC block date for the transfer"
+      - name: block_number
+        description: "Polygon block number for the transfer"
+      - name: from_address
+        description: "Transfer sender address"
+      - name: to_address
+        description: "Transfer recipient address"
+      - name: contract_address
+        description: "Transferred token contract address"
+      - name: symbol
+        description: "Transferred token symbol: USDC.e, USDC, or pUSD"
+      - name: amount_raw
+        description: "Raw token transfer amount"
+      - name: amount
+        description: "Token transfer amount adjusted for decimals"
+      - name: amount_usd
+        description: "USD transfer amount; pUSD is treated 1:1 with USDC"
+      - name: evt_index
+        description: "Transfer event index within the transaction"
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Transfer transaction hash"
+        data_tests:
+          - not_null
+      - name: to_wallet
+        description: "True when the transfer recipient is a known Polymarket user wallet"
+      - name: from_wallet
+        description: "True when the transfer sender is a known Polymarket user wallet"
+
   - name: polymarket_polygon_users_capital_actions
     meta:
       blockchain: polygon
@@ -230,10 +307,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
+              - block_month
               - block_time
               - evt_index
               - tx_hash
     columns:
+      - name: block_month
+        description: "UTC month of the capital action block time used for partitioning"
+        data_tests:
+          - not_null
       - name: block_time
       - name: block_number
       - name: action
