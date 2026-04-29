@@ -17,19 +17,20 @@ models:
               - block_date
               - tx_hash
       - check_seed:
-          seed_file: ref('tokens_xrpl_transaction_metadata_seed')
-          match_columns:
-            - block_date
-            - tx_hash
-          check_columns:
-            - tx_from
-            - tx_to
-            - tx_index
-            - transaction_type
-            - transaction_result
-            - delivered_currency
-            - delivered_issuer
-            - delivered_value
+          arguments:
+            seed_file: ref('tokens_xrpl_transaction_metadata_seed')
+            match_columns:
+              - block_date
+              - tx_hash
+            check_columns:
+              - tx_from
+              - tx_to
+              - tx_index
+              - transaction_type
+              - transaction_result
+              - delivered_currency
+              - delivered_issuer
+              - delivered_value
     columns:
       - &unique_key
         name: unique_key
@@ -85,17 +86,18 @@ models:
               - block_date
               - unique_key
       - check_seed:
-          seed_file: ref('tokens_xrpl_affected_nodes_seed')
-          match_columns:
-            - block_date
-            - tx_hash
-            - node_index
-          check_columns:
-            - transaction_type
-            - transaction_result
-            - node_action
-            - ledger_entry_type
-            - ledger_entry_id
+          arguments:
+            seed_file: ref('tokens_xrpl_affected_nodes_seed')
+            match_columns:
+              - block_date
+              - tx_hash
+              - node_index
+            check_columns:
+              - transaction_type
+              - transaction_result
+              - node_action
+              - ledger_entry_type
+              - ledger_entry_id
     columns:
       - <<: *unique_key
         data_tests:
@@ -419,25 +421,26 @@ models:
               - block_date
               - unique_key
       - check_seed:
-          seed_file: ref('tokens_xrpl_base_transfers_seed')
-          match_columns:
-            - block_date
-            - tx_hash
-            - transfer_type
-            - xrpl_asset_id
-          check_columns:
-            - token_standard
-            - tx_from
-            - tx_to
-            - tx_index
-            - issuer
-            - currency
-            - currency_hex
-            - amount_raw
-            - amount
-            - transaction_type
-            - transaction_result
-            - partial_payment_flag
+          arguments:
+            seed_file: ref('tokens_xrpl_base_transfers_seed')
+            match_columns:
+              - block_date
+              - tx_hash
+              - transfer_type
+              - xrpl_asset_id
+            check_columns:
+              - token_standard
+              - tx_from
+              - tx_to
+              - tx_index
+              - issuer
+              - currency
+              - currency_hex
+              - amount_raw
+              - amount
+              - transaction_type
+              - transaction_result
+              - partial_payment_flag
     columns:
       - <<: *unique_key
         data_tests:
