@@ -1,6 +1,7 @@
 {%- macro stablecoins_svm_balances_enrich(
   base_balances,
-  blockchain
+  blockchain,
+  token_list
 ) %}
 
 select
@@ -17,7 +18,7 @@ select
   cast(b.balance_raw as double) / power(10, f.decimals) * fx.exchange_rate as balance_usd,
   b.last_updated
 from {{ base_balances }} b
-inner join {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins') }} s
+inner join {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_' ~ token_list) }} s
   on s.token_mint_address = b.token_mint_address
 left join {{ source('tokens_solana', 'fungible') }} f
   on b.token_mint_address = f.token_mint_address
