@@ -172,7 +172,9 @@ models:
   - name: tokens_multichain_transfers
     meta:
       sector: tokens
+      short_description: "Unified fungible token transfers across EVM and non-EVM chains with a chain-agnostic schema."
       contributors: kryptaki, tomfutago
+      docs_slug: /curated/token-transfers/multichain/multichain-token-transfers
     config:
       tags: ['tokens', 'transfers', 'multichain']
     description: >
@@ -186,13 +188,11 @@ models:
       - <<: *block_date_transfer
       - <<: *block_month_transfer
       - name: block_number
-        description: "Chain-native block or ledger number for the transfer, such as EVM block number, Solana slot, Sui checkpoint, Stellar ledger sequence, or XRPL ledger index."
+        description: "Chain-native block, slot, checkpoint, ledger, or transaction-version ordering number for the transfer, such as EVM block number, Solana slot, Aptos transaction version, Sui checkpoint, Stellar ledger sequence, or XRPL ledger index."
       - name: tx_id
         description: "Chain-native transaction identifier, such as EVM transaction hash, Solana transaction id/signature, Sui transaction digest, Aptos transaction hash, Stellar transaction hash, or XRPL transaction hash."
-      - name: tx_sequence
-        description: "Nullable chain-native transaction sequence number, such as Aptos transaction version or Stellar transaction id."
       - name: tx_index
-        description: "Nullable transaction index within the block or ledger unit."
+        description: "Nullable chain-native transaction index or transaction ordering identifier."
       - name: event_index
         description: "Nullable primary event, instruction, or operation index for the transfer."
       - name: sub_event_index
