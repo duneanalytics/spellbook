@@ -12,10 +12,11 @@ models:
     description: "Core stablecoin balances with cumulative inflow/outflow tracking"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_mint_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_mint_address
           config:
             where: "day >= current_date - interval '30' day"
     columns:
@@ -49,10 +50,11 @@ models:
     description: "Extended stablecoin balances for newly added stablecoins"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_mint_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_mint_address
     columns:
       - *blockchain
       - *day
@@ -72,10 +74,11 @@ models:
     description: "Core stablecoin balances enriched with token metadata and USD prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
           config:
             where: "day >= current_date - interval '30' day"
     columns:
@@ -117,10 +120,11 @@ models:
     description: "Extended stablecoin balances enriched with token metadata and USD prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
     columns:
       - *blockchain
       - *day
@@ -148,10 +152,11 @@ models:
     description: "Union of core and extended stablecoin balances with token metadata and USD prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
           config:
             where: "day >= current_date - interval '30' day"
     columns:
@@ -180,9 +185,10 @@ models:
       with source classification and observed owners derived from stablecoin transfers.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_mint_address
-            - token_account
+          arguments:
+            combination_of_columns:
+              - token_mint_address
+              - token_account
     columns:
       - *blockchain
       - <<: *token_mint_address
@@ -197,7 +203,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['official_circle_premint', 'legacy_inventory']
+              arguments:
+                values: ['official_circle_premint', 'legacy_inventory']
       - name: excluded
         description: "Whether this token account is excluded from circulating balance computations"
         data_tests:
@@ -217,9 +224,10 @@ models:
       with source classification and observed owners derived from extended stablecoin transfers.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_mint_address
-            - token_account
+          arguments:
+            combination_of_columns:
+              - token_mint_address
+              - token_account
     columns:
       - *blockchain
       - <<: *token_mint_address
@@ -234,7 +242,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['official_circle_premint', 'legacy_inventory']
+              arguments:
+                values: ['official_circle_premint', 'legacy_inventory']
       - name: excluded
         description: "Whether this token account is excluded from circulating balance computations"
         data_tests:

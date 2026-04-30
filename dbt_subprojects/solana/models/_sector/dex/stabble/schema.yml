@@ -22,7 +22,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'surrogate_key']
+          arguments:
+            combination_of_columns: ['block_month', 'surrogate_key']
 
   - name: stabble_solana_base_trades
     meta:
@@ -35,7 +36,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'surrogate_key']
+          arguments:
+            combination_of_columns: ['block_month', 'surrogate_key']
 
   - name: stabble_solana_trades
     meta:
@@ -96,8 +98,9 @@ models:
         description: "USD value of the trade at time of swap"
         data_tests:
           - dbt_utils.accepted_range:
-              max_value: 1000000000
-              severity: warn
+              arguments:
+                max_value: 1000000000
+                severity: warn
       - &fee_tier
         name: fee_tier
         description: "DEX fee tier (percentage)"

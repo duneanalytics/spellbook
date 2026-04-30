@@ -12,9 +12,10 @@ models:
       Gas prices per minute, on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - &blockchain
         name: blockchain
@@ -52,9 +53,10 @@ models:
       Gas prices per minute, on avalanche_c
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -76,9 +78,10 @@ models:
       Gas prices per minute, on base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -100,9 +103,10 @@ models:
       Gas prices per minute, on bnb
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -124,9 +128,10 @@ models:
       Gas prices per minute, on celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -148,9 +153,10 @@ models:
       Gas prices per minute, on ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -172,9 +178,10 @@ models:
       Gas prices per minute, on fantom
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -196,9 +203,10 @@ models:
       Gas prices per minute, on gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -220,9 +228,10 @@ models:
       Gas prices per minute, on linea
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -244,9 +253,10 @@ models:
       Gas prices per minute, on optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -268,9 +278,10 @@ models:
       Gas prices per minute, on polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -292,9 +303,10 @@ models:
       Gas prices per minute, on scroll
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -316,9 +328,10 @@ models:
       Gas prices per minute, on zkevm
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -340,9 +353,10 @@ models:
       Gas prices per minute, on zksync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -364,9 +378,10 @@ models:
       Gas prices per minute, on zora
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute
@@ -388,9 +403,10 @@ models:
       Gas prices per minute, on goerli
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - minute
     columns: 
       - *blockchain
       - *minute

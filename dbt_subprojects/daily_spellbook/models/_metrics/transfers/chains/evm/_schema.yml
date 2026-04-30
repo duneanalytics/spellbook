@@ -10,9 +10,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
             
   - name: metrics_arbitrum_transfers_daily_asset
     meta:
@@ -23,10 +24,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_avalanche_c_transfers_daily
     meta:
@@ -37,9 +39,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
   - name: metrics_avalanche_c_transfers_daily_asset
     meta:
       sector: metrics
@@ -49,10 +52,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_base_transfers_daily
     meta:
@@ -63,9 +67,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_base_transfers_daily_asset
     meta:
@@ -76,10 +81,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_blast_transfers_daily
     meta:
@@ -90,9 +96,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_blast_transfers_daily_asset
     meta:
@@ -103,10 +110,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_bnb_transfers_daily
     meta:
@@ -117,9 +125,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_bnb_transfers_daily_asset
     meta:
@@ -130,10 +139,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_celo_transfers_daily
     meta:
@@ -144,9 +154,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_celo_transfers_daily_asset
     meta:
@@ -157,10 +168,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_ethereum_transfers_daily
     meta:
@@ -171,9 +183,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_ethereum_transfers_daily_asset
     meta:
@@ -184,10 +197,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_fantom_transfers_daily
     meta:
@@ -198,9 +212,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_fantom_transfers_daily_asset
     meta:
@@ -211,10 +226,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_gnosis_transfers_daily
     meta:
@@ -225,9 +241,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_gnosis_transfers_daily_asset
     meta:
@@ -238,10 +255,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_linea_transfers_daily
     meta:
@@ -252,9 +270,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_linea_transfers_daily_asset
     meta:
@@ -265,10 +284,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_mantle_transfers_daily
     meta:
@@ -279,9 +299,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_mantle_transfers_daily_asset
     meta:
@@ -292,10 +313,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_optimism_transfers_daily
     meta:
@@ -306,9 +328,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_optimism_transfers_daily_asset
     meta:
@@ -319,10 +342,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_polygon_transfers_daily
     meta:
@@ -333,9 +357,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_polygon_transfers_daily_asset
     meta:
@@ -346,10 +371,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_scroll_transfers_daily
     meta:
@@ -360,9 +386,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_scroll_transfers_daily_asset
     meta:
@@ -373,10 +400,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_sei_transfers_daily
     meta:
@@ -387,9 +415,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_sei_transfers_daily_asset
     meta:
@@ -400,10 +429,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_tron_transfers_daily
     meta:
@@ -414,9 +444,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_tron_transfers_daily_asset
     meta:
@@ -427,10 +458,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_zkevm_transfers_daily
     meta:
@@ -441,9 +473,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_zkevm_transfers_daily_asset
     meta:
@@ -454,10 +487,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_zksync_transfers_daily
     meta:
@@ -468,9 +502,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_zksync_transfers_daily_asset
     meta:
@@ -481,10 +516,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_zora_transfers_daily
     meta:
@@ -495,9 +531,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_zora_transfers_daily_asset
     meta:
@@ -508,10 +545,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_ronin_transfers_daily
     meta:
@@ -522,9 +560,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_ronin_transfers_daily_asset
     meta:
@@ -535,10 +574,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
   - name: metrics_abstract_transfers_daily
     meta:
@@ -549,9 +589,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_apechain_transfers_daily
     meta:
@@ -562,9 +603,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_b3_transfers_daily
     meta:
@@ -575,9 +617,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_berachain_transfers_daily
     meta:
@@ -588,9 +631,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_bob_transfers_daily
     meta:
@@ -601,9 +645,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
   - name: metrics_boba_transfers_daily
     meta:
       sector: metrics
@@ -613,9 +658,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_corn_transfers_daily
     meta:
@@ -626,9 +672,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain  
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain  
+              - block_date
 
   - name: metrics_degen_transfers_daily
     meta:
@@ -639,9 +686,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
   
   - name: metrics_flare_transfers_daily
     meta:
@@ -652,9 +700,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
   
   - name: metrics_ink_transfers_daily
     meta:
@@ -665,9 +714,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date   
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date   
   
   - name: metrics_kaia_transfers_daily
     meta:
@@ -678,9 +728,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
   - name: metrics_lens_transfers_daily
     meta:
       sector: metrics
@@ -690,9 +741,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
   - name: metrics_nova_transfers_daily
     meta:
       sector: metrics
@@ -702,9 +754,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
   - name: metrics_opbnb_transfers_daily
     meta:
       sector: metrics
@@ -714,9 +767,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
   
   - name: metrics_shape_transfers_daily
     meta:
@@ -727,9 +781,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_sonic_transfers_daily
     meta:
@@ -740,9 +795,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_sophon_transfers_daily
     meta:
@@ -753,9 +809,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_unichain_transfers_daily
     meta:
@@ -766,9 +823,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_worldchain_transfers_daily
     meta:
@@ -779,6 +837,7 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date

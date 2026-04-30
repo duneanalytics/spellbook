@@ -12,16 +12,17 @@ models:
     description: "Table showing who first funded each Celo address in CELO"
     data_tests:
       - check_seed:
-          seed_file: ref('first_funded_by_seed')
-          filter:
-            blockchain: celo
-          match_columns:
-            - blockchain
-            - address
-          check_columns:
-            - first_funded_by
-            - block_number
-            - tx_hash
+          arguments:
+            seed_file: ref('first_funded_by_seed')
+            filter:
+              blockchain: celo
+            match_columns:
+              - blockchain
+              - address
+            check_columns:
+              - first_funded_by
+              - block_number
+              - tx_hash
     columns:
       - name: blockchain
         description: "Blockchain"

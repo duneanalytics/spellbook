@@ -13,9 +13,10 @@ models:
       Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - wallet_address
+          arguments:
+            combination_of_columns:
+              - day
+              - wallet_address
     columns:
       - name: day
       - name: wallet_address
@@ -39,9 +40,10 @@ models:
       Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - wallet_address
+          arguments:
+            combination_of_columns:
+              - block_number
+              - wallet_address
     columns:
       - name: block_number
       - name: block_time
@@ -72,10 +74,11 @@ models:
       Depends on GaugeController_evt_VoteForGauge and the vebal_slopes spell
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - round_id
-            - gauge
-            - provider
+          arguments:
+            combination_of_columns:
+              - round_id
+              - gauge
+              - provider
     columns:
       - name: round_id
         description: "ID of the voting round"

@@ -13,12 +13,13 @@ models:
         A table containing all quest completion NFT mints for Galxe.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - block_number
-              - tx_hash
-              - nft_contract_address
-              - tokenId
-              - evt_index
+          arguments:
+            combination_of_columns:
+                - block_number
+                - tx_hash
+                - nft_contract_address
+                - tokenId
+                - evt_index
     columns:
       - &block_date
         name: block_date

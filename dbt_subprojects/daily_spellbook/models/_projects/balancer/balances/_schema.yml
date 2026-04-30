@@ -11,11 +11,12 @@ models:
       Token Balance Changes on Balancer Pools.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - evt_tx_hash
+              - evt_index
+              - token_address
     columns:
       - &block_date
         name: block_date
@@ -73,10 +74,11 @@ models:
       Token Balance Changes on Balancer Pools, grouped by day.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
+              - token_address
     columns:
       - *block_date
       - *pool_id

@@ -12,10 +12,11 @@ models:
         NFT linked addresses. Addresses that buy and sell NFTs from each other. By definition (master address < alt address) alphabetically.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - master_address
-            - alternative_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - master_address
+              - alternative_address
     columns:
       - name: blockchain
       - name: master_address
@@ -36,8 +37,9 @@ models:
         NFT marketplaces info
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
+          arguments:
+            combination_of_columns:
+              - project
     columns:
       - name: project
         description: "Marketplace codename"

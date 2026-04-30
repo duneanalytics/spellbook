@@ -12,9 +12,10 @@ models:
         NFT aggregators
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - contract_address
+              - blockchain
     columns:
       - name: blockchain
       - name: contract_address

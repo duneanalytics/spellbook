@@ -12,11 +12,12 @@ models:
       combined leverage data to get up to get most recent on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - position_id
-            - leverage
-            - positions_contract
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - position_id
+              - leverage
+              - positions_contract
     columns:
       - &evt_block_time
         name: evt_block_time
@@ -51,14 +52,15 @@ models:
       "data on close posititions that includes margin on v1 & v2"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_tx_hash
-            - position_id
-            - evt_block_time
-            - payout
-            - evt_index
-            - version
-            - positions_contract
+          arguments:
+            combination_of_columns:
+              - evt_tx_hash
+              - position_id
+              - evt_block_time
+              - payout
+              - evt_index
+              - version
+              - positions_contract
     columns:
       - &evt_tx_hash
         name: evt_tx_hash
@@ -106,10 +108,11 @@ models:
       margin change data on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - position_id
-            - margin
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - position_id
+              - margin
     columns:
       - *evt_block_time
       - *position_id
@@ -131,11 +134,12 @@ models:
       liquidation data on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - position_id
-            - positions_contract
-            - version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - position_id
+              - positions_contract
+              - version
     columns:
       - *evt_block_time
       - *position_id

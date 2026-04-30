@@ -12,9 +12,10 @@ models:
       All Synapse flashloans across chains
    data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
    columns:
       - name: blockchain
       - name: project

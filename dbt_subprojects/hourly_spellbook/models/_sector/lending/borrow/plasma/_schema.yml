@@ -12,11 +12,12 @@ models:
     description: "Aave v1 borrow transactions on Plasma"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,15 +99,17 @@ models:
     description: "Aave v3 borrow transactions on Plasma"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('aave_plasma_base_borrow_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_plasma_base_borrow_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project

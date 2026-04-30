@@ -12,18 +12,19 @@ models:
       erc20 transactions of DAO wallets 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date 
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
-            - tx_hash 
-            - tx_index
-            - tx_type
-            - address_interacted_with
-            - value 
-            - asset_contract_address
+          arguments:
+            combination_of_columns:
+              - block_date 
+              - blockchain
+              - dao_creator_tool
+              - dao
+              - dao_wallet_address
+              - tx_hash 
+              - tx_index
+              - tx_type
+              - address_interacted_with
+              - value 
+              - asset_contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -33,7 +34,8 @@ models:
         description: "Name of creator tool used to create DAO"
         data_tests:
           - dao_transactions_creator_tool:
-              dao_transactions_seed: ref('dao_transactions_seed')
+              arguments:
+                dao_transactions_seed: ref('dao_transactions_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"
@@ -91,19 +93,20 @@ models:
       eth transactions of DAO wallets 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date 
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
-            - tx_hash 
-            - tx_index
-            - tx_type
-            - trace_address
-            - address_interacted_with
-            - value 
-            - asset_contract_address
+          arguments:
+            combination_of_columns:
+              - block_date 
+              - blockchain
+              - dao_creator_tool
+              - dao
+              - dao_wallet_address
+              - tx_hash 
+              - tx_index
+              - tx_type
+              - trace_address
+              - address_interacted_with
+              - value 
+              - asset_contract_address
     columns:
       - *blockchain
       - *dao_creator_tool

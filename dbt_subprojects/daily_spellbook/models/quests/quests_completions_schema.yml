@@ -12,14 +12,15 @@ models:
         A table containing quest completions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - platform
-              - quester_address
-              - quest_name
-              - token_address
-              - token_id
-              - block_number
+          arguments:
+            combination_of_columns:
+                - blockchain
+                - platform
+                - quester_address
+                - quest_name
+                - token_address
+                - token_id
+                - block_number
     columns:
       - &blockchain
         name: blockchain

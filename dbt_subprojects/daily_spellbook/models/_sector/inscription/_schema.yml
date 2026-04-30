@@ -12,9 +12,10 @@ models:
       Inscription mints across chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - &blockchain
         name: blockchain
@@ -73,9 +74,10 @@ models:
       Inscription deploys across chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -108,9 +110,10 @@ models:
       All inscriptions across chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time

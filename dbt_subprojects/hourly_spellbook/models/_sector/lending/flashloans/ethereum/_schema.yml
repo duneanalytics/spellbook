@@ -12,9 +12,10 @@ models:
     description: "All lending flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -84,13 +85,15 @@ models:
     description: "Aave v1 flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_ethereum_base_flashloans_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('aave_ethereum_base_flashloans_seed')
+            filter:
+              version: 1
     columns:
       - *blockchain
       - *project
@@ -117,13 +120,15 @@ models:
     description: "Aave v2 flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_ethereum_base_flashloans_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('aave_ethereum_base_flashloans_seed')
+            filter:
+              version: 2
     columns:
       - *blockchain
       - *project
@@ -150,13 +155,15 @@ models:
     description: "Aave v3 flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_ethereum_base_flashloans_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_ethereum_base_flashloans_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -183,13 +190,15 @@ models:
     description: "Aave v3 flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_lido_ethereum_base_flashloans_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_lido_ethereum_base_flashloans_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -216,13 +225,15 @@ models:
     description: "Aave v3 flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_etherfi_ethereum_base_flashloans_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_etherfi_ethereum_base_flashloans_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -249,11 +260,13 @@ models:
     description: "Radiant flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('radiant_ethereum_base_flashloans_seed')
+          arguments:
+            seed_file: ref('radiant_ethereum_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -280,11 +293,13 @@ models:
     description: "Uwulend flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('uwulend_ethereum_base_flashloans_seed')
+          arguments:
+            seed_file: ref('uwulend_ethereum_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -311,11 +326,13 @@ models:
     description: "Spark Protocol flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('spark_ethereum_base_flashloans_seed')
+          arguments:
+            seed_file: ref('spark_ethereum_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -342,11 +359,13 @@ models:
     description: "Granary flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('granary_ethereum_base_flashloans_seed')
+          arguments:
+            seed_file: ref('granary_ethereum_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -373,9 +392,10 @@ models:
     description: "Balancer flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -402,9 +422,10 @@ models:
     description: "Morpho flashloans transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

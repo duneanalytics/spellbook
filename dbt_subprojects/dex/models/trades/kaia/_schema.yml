@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_kaia_base_trades
 
@@ -28,13 +30,15 @@ models:
     description: "dragon_swap kaia v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dragon_swap_kaia_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('dragon_swap_kaia_base_trades_seed')
+            filter:
+              version: 2
 
 
   - name: dragon_swap_v3_kaia_base_trades
@@ -48,13 +52,15 @@ models:
     description: "dragon_swap V3 kaia base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dragon_swap_kaia_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('dragon_swap_kaia_base_trades_seed')
+            filter:
+              version: 3
 
 
   - name: klay_swap_v3_kaia_base_trades
@@ -68,13 +74,15 @@ models:
     description: "klay_swap V3 kaia base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('klay_swap_kaia_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('klay_swap_kaia_base_trades_seed')
+            filter:
+              version: 3
 
   - name: neopin_kaia_base_trades
     meta:
@@ -87,11 +95,13 @@ models:
     description: "neopin kaia base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('neopin_kaia_base_trades_seed')
+          arguments:
+            seed_file: ref('neopin_kaia_base_trades_seed')
 
   - name: kaia_swap_v3_kaia_base_trades
     meta:
@@ -104,9 +114,10 @@ models:
     description: "kaia_swap V3 kaia base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: defi_kingdoms_kaia_base_trades
     meta:
@@ -119,11 +130,13 @@ models:
     description: "defi_kingdoms kaia base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('defi_kingdoms_kaia_base_trades_seed')
+          arguments:
+            seed_file: ref('defi_kingdoms_kaia_base_trades_seed')
 
   - name: cldex_kaia_base_trades
     meta:
@@ -136,15 +149,18 @@ models:
     description: "Kaia concentrated liquidity base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('cldex_kaia_base_trades')
+          arguments:
+            seed_file: ref('cldex_kaia_base_trades')
   - name: dex_kaia_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

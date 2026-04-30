@@ -12,10 +12,11 @@ models:
     description: "Pool creation events on TONCO DEX on TON, including initial price, tick spacing, fee settings, and jetton minters."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
+              - pool_address
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -77,9 +78,10 @@ models:
     description: "Liquidity provision (mint) events on TONCO pools on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -121,9 +123,10 @@ models:
     description: "Liquidity removal (burn) events on TONCO pools on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -173,10 +176,11 @@ models:
     description: "Concentrated liquidity NFT position creation events on TONCO DEX on TON, with tick range and liquidity amount."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
-            - nftIndex
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
+              - nftIndex
     columns:
       - name: block_date
         description: "block_date of the transaction"
