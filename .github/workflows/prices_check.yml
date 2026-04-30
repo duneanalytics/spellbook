@@ -20,10 +20,18 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v6
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: true
+
       - name: Set up Python 3.13
         uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+
+      - name: Install dependencies
+        run: uv sync --locked
 
       - name: Fetch base commit
         run: git fetch origin ${{ github.event.pull_request.base.sha }}
@@ -38,4 +46,4 @@ jobs:
 
       - name: Run validations
         id: validations
-        run: python scripts/check_tokens.py --file_name scripts/new_lines.txt
+        run: uv run python scripts/check_tokens.py --file_name scripts/new_lines.txt
