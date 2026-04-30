@@ -7,6 +7,7 @@
 	partition_by=['block_month'],
 	unique_key=['block_month', 'block_time', 'evt_index', 'tx_hash'],
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+	pre_hook='{{ enforce_join_distribution("BROADCAST") }}',
 ) }}
 
 with polymarket_wallets as (
