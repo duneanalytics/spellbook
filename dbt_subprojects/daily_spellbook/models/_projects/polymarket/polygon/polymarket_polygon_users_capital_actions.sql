@@ -3,28 +3,16 @@
 	alias='users_capital_actions',
 	materialized='incremental',
 	file_format='delta',
-	incremental_strategy='microbatch',
-	event_time='block_date',
-	begin='2020-09-27',
-	batch_size=var('polymarket_polygon_capital_actions_batch_size', 'day'),
-	lookback=3,
+	incremental_strategy='merge',
 	partition_by=['block_month'],
 	unique_key=['block_month', 'block_time', 'evt_index', 'tx_hash'],
-	tags=['microbatch'],
+	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
 ) }}
 
 -- Polymarket user capital actions on Polygon: deposits, withdrawals, internal transfers,
--- and USDC <-> USDC.e conversions through the canonical Uniswap pool.
---
--- Token coverage:
---   - USDC.e (V1 collateral) and USDC (deposit-side) drive 'deposit'/'withdrawal'/'transfer'/'convert'
---   - pUSD (V2 collateral; 1:1 USDC-backed; no USD price feed) treated 1:1 with USDC for amount_usd
--- The canonical USDC <-> USDC.e Uniswap pool (0xd36e...a418) is excluded from deposit/withdrawal
--- classification and tagged as 'convert'.
---
--- This model is microbatched on block_date so each run plans only its own day window of
--- tokens_polygon.transfers against the ~7M-row Polymarket wallet set, avoiding the
--- multi-year partitioned-hash explosion seen on full-history single-shot builds.
+-- and USDC <-> USDC.e conversions through the canonical Uniswap pool (0xd36e...a418).
+-- Tokens: USDC.e and USDC drive deposit/withdrawal/transfer/convert; pUSD (V2 collateral,
+-- no USD price feed) is treated 1:1 with USDC for amount_usd.
 
 with transfers as (
 	select
@@ -56,6 +44,9 @@ with transfers as (
 			, 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 -- usdc
 			, 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pusd (v2 collateral; 1:1 usdc-backed)
 		)
+		{% if is_incremental() -%}
+		and {{ incremental_predicate('t.block_time') }}
+		{% endif -%}
 )
 , transfer_candidates as (
 	select
