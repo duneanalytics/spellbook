@@ -12,8 +12,9 @@ models:
         Union view of all stablecoin token addresses (core + extended).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - contract_address
     columns:
       - &blockchain
         name: blockchain

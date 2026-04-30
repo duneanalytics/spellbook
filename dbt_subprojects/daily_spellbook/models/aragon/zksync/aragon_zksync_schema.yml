@@ -12,9 +12,10 @@ models:
       wallet addresses of daos created on aragon app
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - dao
-            - dao_wallet_address
+          arguments:
+            combination_of_columns:
+              - dao
+              - dao_wallet_address
     columns:
       - &blockchain
         name: blockchain
@@ -23,7 +24,8 @@ models:
         description: "Name of creator tool used to create DAO"
         data_tests:
           - dao_addresses_creator_tool:
-              dao_addresses_seed: ref('dao_addresses_seed')
+              arguments:
+                dao_addresses_seed: ref('dao_addresses_seed')
       - &dao
         name: dao
         description: "address of the dao deployed"

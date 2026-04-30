@@ -11,12 +11,13 @@ models:
         Table aggregating messages through Optimism's cross-domain messenger
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - msg_type
-              - l2_block_date
-              - l2_tx_hash
-              - evt_index
-              - msg_index
+          arguments:
+            combination_of_columns:
+                - msg_type
+                - l2_block_date
+                - l2_tx_hash
+                - evt_index
+                - msg_index
     columns:
       - &msg_type
         name: msg_type

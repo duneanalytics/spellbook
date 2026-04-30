@@ -262,7 +262,8 @@ models:
         description: "0 = Against, 1 = For, 2 = Abstain votes"
         data_tests:
         - accepted_values:
-            values: ['for', 'against', 'abstain']
+            arguments:
+              values: ['for', 'against', 'abstain']
       - &reason
         name: reason
         description: "Optional onchain comments to explain votes"
@@ -308,7 +309,8 @@ models:
         description: "Proposal status: Pending, Queued, Active, Executed, Canceled or Defeated"
         data_tests:
           - accepted_values:
-              values: ['Pending', 'Queued', 'Active', 'Executed', 'Canceled','Defeated']
+              arguments:
+                values: ['Pending', 'Queued', 'Active', 'Executed', 'Canceled','Defeated']
       - &description
         name: description
         description: "Description of the proposal"

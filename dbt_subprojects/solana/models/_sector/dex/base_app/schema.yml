@@ -5,10 +5,11 @@ models:
     description: "Historical prices of tokens used for fee payments by base app Swapper on Solana"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - minute
-            - contract_address_varbinary
+          arguments:
+            combination_of_columns:
+              - block_month
+              - minute
+              - contract_address_varbinary
     columns:
       - name: minute
         description: "The minute timestamp for the price data"
@@ -42,43 +43,48 @@ models:
   - name: base_app_swapper_solana_stg_sol_payments
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - token_address
 
   - name: base_app_swapper_solana_stg_token_payments
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - token_address
 
   - name: base_app_swapper_solana_stg_token_payments_fees_paid
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - token_address
 
   - name: base_app_swapper_solana_stg_token_payments_fees_claimed
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - token_address
 
   - name: base_app_swapper_solana_fee_payments_raw
     description: "Raw fee payments collected by base app Swapper on Solana"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - token_address
     columns:
       - name: block_time
         description: "The timestamp when the fee was paid"
@@ -117,10 +123,11 @@ models:
     description: "Fee payments collected by base app Swapper on Solana enriched with USD values"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - token_address
     columns:
       - name: block_time
         description: "The timestamp when the fee was paid"
@@ -167,12 +174,13 @@ models:
     description: "Trades executed by base app Swapper on Solana, enriched with fee payment information"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_slot
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_slot
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
     columns:
       - name: blockchain
         description: "The blockchain (solana)"

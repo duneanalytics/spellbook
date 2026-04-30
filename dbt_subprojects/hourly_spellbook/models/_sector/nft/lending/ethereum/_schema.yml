@@ -129,25 +129,27 @@ models:
         Astaria lending (repay & borrow & liquidation) on ethereum
     data_tests:
         - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-              - block_date
-              - blockchain
-              - project
-              - version
-              - evt_type
-              - tx_hash
-              - evt_index
-              - lien_id
+            arguments:
+              combination_of_columns:
+                - block_date
+                - blockchain
+                - project
+                - version
+                - evt_type
+                - tx_hash
+                - evt_index
+                - lien_id
         - check_seed:
-            seed_file: ref('astaria_lending_seed')
-            match_columns:
-              - block_number
-              - tx_hash
-              - token_id
-            check_columns:
-              - amount_original
-              - evt_type
-              - borrower
+            arguments:
+              seed_file: ref('astaria_lending_seed')
+              match_columns:
+                - block_number
+                - tx_hash
+                - token_id
+              check_columns:
+                - amount_original
+                - evt_type
+                - borrower
     columns:
       - *blockchain
       - *project
@@ -217,21 +219,23 @@ models:
         bend_dao lending (repay & borrow) on ethereum
     data_tests:
         - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-              - block_date
-              - blockchain
-              - project
-              - version
-              - evt_type
-              - tx_hash
-              - evt_index
+            arguments:
+              combination_of_columns:
+                - block_date
+                - blockchain
+                - project
+                - version
+                - evt_type
+                - tx_hash
+                - evt_index
         - check_seed:
-            seed_file: ref('bend_dao_nft_lending')
-            match_columns:
-              - block_number
-              - tx_hash
-              - token_id
-            check_columns:
+            arguments:
+              seed_file: ref('bend_dao_nft_lending')
+              match_columns:
+                - block_number
+                - tx_hash
+                - token_id
+              check_columns:
 #              - amount_original
               - evt_type
               - borrower

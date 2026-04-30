@@ -13,10 +13,11 @@ models:
         Table of Hashflow cross chain trades on ethereum. Includes unique data for cross chain trades such as source and destination chains for further analysis of Hashflow's cross chain activity.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - source_chain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_date
+              - source_chain
+              - tx_hash
     columns:
       - &block_date
         name: block_date

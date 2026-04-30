@@ -11,9 +11,10 @@ models:
     description: "Safe addresses"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - address
     columns:
       - &blockchain
         name: blockchain
@@ -56,10 +57,11 @@ models:
     description: "Safe transactions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - trace_address
     columns:
       - *blockchain
       - *block_date

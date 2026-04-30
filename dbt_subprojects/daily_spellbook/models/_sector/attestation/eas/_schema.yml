@@ -11,11 +11,12 @@ models:
     description: "EAS schema registry"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - schema_uid
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - schema_uid
     columns:
       - &blockchain
         name: blockchain
@@ -78,12 +79,13 @@ models:
     description: "EAS schema registry details"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - schema_uid
-            - ordinality
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - schema_uid
+              - ordinality
     columns:
       - *blockchain
       - *project
@@ -115,12 +117,13 @@ models:
     description: "EAS attestations"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - schema_uid
-            - attestation_uid
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - schema_uid
+              - attestation_uid
     columns:
       - *blockchain
       - *project
@@ -178,13 +181,14 @@ models:
     description: "EAS attestation details"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - schema_uid
-            - attestation_uid
-            - ordinality
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - schema_uid
+              - attestation_uid
+              - ordinality
     columns:
       - *blockchain
       - *project

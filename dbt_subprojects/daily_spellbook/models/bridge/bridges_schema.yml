@@ -12,12 +12,13 @@ models:
       Cross-chain bridge transfers on all chains across all contracts and versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - block_date
-              - blockchain
-              - tx_hash
-              - evt_index
-              - transfer_id
+          arguments:
+            combination_of_columns:
+                - block_date
+                - blockchain
+                - tx_hash
+                - evt_index
+                - transfer_id
     columns:
       - &blockchain
         name: blockchain

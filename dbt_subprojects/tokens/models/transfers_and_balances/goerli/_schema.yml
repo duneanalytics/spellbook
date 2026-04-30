@@ -12,9 +12,10 @@ goerlils:
       Token transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
       - name: unique_key
         description: "Surrogate key to identify unique row"
@@ -62,9 +63,10 @@ goerlils:
       Token transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
       - name: unique_key
         description: "Surrogate key to identify unique row"

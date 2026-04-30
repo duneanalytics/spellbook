@@ -12,10 +12,11 @@ models:
       Balancer v2 pools liquidity by token in Arbitrum.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_id
+              - token_address
     columns:
       - &day
         name: day
@@ -74,10 +75,11 @@ models:
       Balancer v3 pools liquidity by token in arbitrum.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_id
+              - token_address
     columns:
       - *day
       - *pool_id

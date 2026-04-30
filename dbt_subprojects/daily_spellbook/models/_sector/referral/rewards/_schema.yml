@@ -13,10 +13,11 @@ models:
         Referral rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -52,8 +53,9 @@ models:
         description: "whether or not the a referral was made (and payed out)"
         data_tests:
           - accepted_values:
-              values: [ true, false ]
-              quote: false
+              arguments:
+                values: [ true, false ]
+                quote: false
       - name:  currency_contract
         description: "contract address of the currency"
       - name:  reward_amount_raw
@@ -64,7 +66,8 @@ models:
         description: "USD value of the referral reward at time of execution"
         data_tests:
           - dbt_utils.accepted_range:
-              max_value: 1000000 # $1m is an arbitrary number, intended to flag outlier amounts early
+              arguments:
+                max_value: 1000000 # $1m is an arbitrary number, intended to flag outlier amounts early
       - name:  project_contract_address
         description: "project contract address"
       - name: sub_tx_id

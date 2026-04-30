@@ -11,10 +11,11 @@ models:
     description: "Daily TON token (jetton) prices in TON and USD, derived from DEX trades, DEX LP tokens, and StormTrade SLP tokens."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - token_address
-              - timestamp
+          arguments:
+            combination_of_columns:
+                - blockchain
+                - token_address
+                - timestamp
     columns:
       - &blockchain
         name: blockchain
@@ -44,8 +45,9 @@ models:
     description: "TON blockchain account data: status, balance (nano TON), interfaces, deployment details, and initial funding info."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - address
+          arguments:
+            combination_of_columns:
+                - address
     columns:
       - &address
         name: address
@@ -97,9 +99,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
     columns:
       - name: blockchain
         description: "The blockchain network"
@@ -118,10 +121,11 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
     columns:
       - name: blockchain
         description: "The blockchain network"
@@ -143,8 +147,9 @@ models:
     description: "Latest metadata for TON jettons, keeping only the most recent version per token"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
 
   - name: ton_latest_balances
     meta:
@@ -157,9 +162,10 @@ models:
     description: "Latest native TON and jetton balances per address, including mintless claim status."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - asset
+          arguments:
+            combination_of_columns:
+              - address
+              - asset
     columns:
       - name: address
         description: "The address of the account"

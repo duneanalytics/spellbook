@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_optimism_base_trades
 
@@ -28,13 +30,15 @@ models:
     description: "uniswap optimism v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_optimism_base_trades_seed')
-          filter:
-            version: 4
+          arguments:
+            seed_file: ref('uniswap_optimism_base_trades_seed')
+            filter:
+              version: 4
 
   - name: uniswap_v3_optimism_base_trades
     meta:
@@ -47,13 +51,15 @@ models:
     description: "uniswap optimism v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_optimism_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_optimism_base_trades_seed')
+            filter:
+              version: 3
 
 
 
@@ -69,11 +75,13 @@ models:
         Woofi base trades on optimism across two contracts.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('woofi_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('woofi_optimism_base_trades_seed')
 
 
   - name: sushiswap_v1_optimism_base_trades
@@ -87,15 +95,17 @@ models:
     description: "sushiswap optimism v1 trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_optimism_base_trades_seed')
-          filter:
-            version:
-              - trident-cpp
-              - trident-sp
+          arguments:
+            seed_file: ref('sushiswap_optimism_base_trades_seed')
+            filter:
+              version:
+                - trident-cpp
+                - trident-sp
 
 
   - name: sushiswap_v2_optimism_base_trades
@@ -109,13 +119,15 @@ models:
     description: "sushiswap optimism v2 trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_optimism_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('sushiswap_optimism_base_trades_seed')
+            filter:
+              version: 2
 
 
   - name: mummy_finance_optimism_base_trades
@@ -130,11 +142,13 @@ models:
         mummy_finance base trades on optimism.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('mummy_finance_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('mummy_finance_optimism_base_trades_seed')
 
 
   - name: zipswap_optimism_base_trades
@@ -148,13 +162,15 @@ models:
     description: "Zipswap optimism trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('zipswap_optimism_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('zipswap_optimism_base_trades_seed')
+            filter:
+              version: 1
 
 
   - name: balancer_v2_optimism_base_trades
@@ -168,13 +184,15 @@ models:
     description: "Balancer v2 optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_optimism_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('balancer_optimism_base_trades_seed')
+            filter:
+              version: 2
 
 
   - name: hashflow_optimism_base_trades
@@ -189,11 +207,13 @@ models:
         hashflow base trades on optimism.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('hashflow_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('hashflow_optimism_base_trades_seed')
 
 
   - name: wardenswap_optimism_base_trades
@@ -207,11 +227,13 @@ models:
     description: "Wardenswap optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('wardenswap_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('wardenswap_optimism_base_trades_seed')
 
 
   - name: dodo_optimism_base_trades
@@ -225,16 +247,18 @@ models:
     description: "Dodo optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dodo_optimism_base_trades_seed')
-          filter:
-            version:
-              - 2_dvm
-              - 2_dpp
-              - 2_dsp
+          arguments:
+            seed_file: ref('dodo_optimism_base_trades_seed')
+            filter:
+              version:
+                - 2_dvm
+                - 2_dpp
+                - 2_dsp
 
 
   - name: clipper_optimism_base_trades
@@ -248,16 +272,18 @@ models:
     description: "clipper optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('clipper_optimism_base_trades_seed')
-          filter:
-            version:
-              - coves1
-              - 1
-              - 2
+          arguments:
+            seed_file: ref('clipper_optimism_base_trades_seed')
+            filter:
+              version:
+                - coves1
+                - 1
+                - 2
 
 
   - name: kyberswap_optimism_base_trades
@@ -271,16 +297,18 @@ models:
     description: "kyberswap optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('kyberswap_optimism_base_trades_seed')
-          filter:
-            version:
-              - classic
-              - elastic
-              - elastic_2
+          arguments:
+            seed_file: ref('kyberswap_optimism_base_trades_seed')
+            filter:
+              version:
+                - classic
+                - elastic
+                - elastic_2
 
 
   - name: velodrome_optimism_base_trades
@@ -294,15 +322,17 @@ models:
     description: "velodrome optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('velodrome_optimism_base_trades_seed')
-          filter:
-            version:
-              - 1
-              - 2
+          arguments:
+            seed_file: ref('velodrome_optimism_base_trades_seed')
+            filter:
+              version:
+                - 1
+                - 2
 
 
   - name: synthetix_optimism_base_trades
@@ -316,11 +346,13 @@ models:
     description: "synthetix optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('synthetix_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('synthetix_optimism_base_trades_seed')
 
 
   - name: openxswap_optimism_base_trades
@@ -334,11 +366,13 @@ models:
     description: "openxswap optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('openxswap_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('openxswap_optimism_base_trades_seed')
 
 
   - name: openocean_optimism_base_trades
@@ -352,11 +386,13 @@ models:
     description: "openocean optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('openocean_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('openocean_optimism_base_trades_seed')
 
 
   - name: opx_finance_optimism_base_trades
@@ -370,11 +406,13 @@ models:
     description: "OPX Finance optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('opx_finance_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('opx_finance_optimism_base_trades_seed')
   
 
   - name: chainhop_optimism_base_trades
@@ -389,11 +427,13 @@ models:
         chainhop base trades on optimism.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('chainhop_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('chainhop_optimism_base_trades_seed')
   
   - name: rubicon_optimism_base_trades
     meta:
@@ -406,11 +446,13 @@ models:
     description: "rubicon optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('rubicon_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('rubicon_optimism_base_trades_seed')
 
 
   - name: curve_optimism_base_trades
@@ -424,11 +466,13 @@ models:
     description: "Curve optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('curvefi_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('curvefi_optimism_base_trades_seed')
 
 
   - name: gridex_optimism_base_trades
@@ -442,11 +486,13 @@ models:
     description: "gridex  optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('gridex_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('gridex_optimism_base_trades_seed')
           
           
   - name: solidly_v3_optimism_base_trades
@@ -460,11 +506,13 @@ models:
     description: "solidly v3 optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('solidly_v3_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('solidly_v3_optimism_base_trades_seed')
 
   
   - name: dackieswap_v2_optimism_base_trades
@@ -478,13 +526,15 @@ models:
     description: "dackieswap v2  optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dackieswap_v2_optimism_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('dackieswap_v2_optimism_base_trades_seed')
+            filter:
+              version: 2
 
   - name: dackieswap_v3_optimism_base_trades
     meta:
@@ -497,13 +547,15 @@ models:
     description: "dackieswap v3  optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dackieswap_v3_optimism_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('dackieswap_v3_optimism_base_trades_seed')
+            filter:
+              version: 3
 
   - name: wombat_exchange_optimism_base_trades
     meta:
@@ -516,13 +568,15 @@ models:
     description: "wombat_exchange optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('wombat_exchange_optimism_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('wombat_exchange_optimism_base_trades_seed')
+            filter:
+              version: 2
 
   - name: uniswap_v2_optimism_base_trades
     meta:
@@ -535,13 +589,15 @@ models:
     description: "uniswap optimism v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_optimism_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('uniswap_optimism_base_trades_seed')
+            filter:
+              version: 2
 
   - name: elk_finance_optimism_base_trades
     meta:
@@ -554,13 +610,15 @@ models:
     description: "elk_finance optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('elk_finance_optimism_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('elk_finance_optimism_base_trades_seed')
+            filter:
+              version: 1
 
   - name: fraxswap_optimism_base_trades
     meta:
@@ -573,13 +631,15 @@ models:
     description: "Fraxswap optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fraxswap_optimism_base_trades_seed')
-          filter:
-            version: 1   
+          arguments:
+            seed_file: ref('fraxswap_optimism_base_trades_seed')
+            filter:
+              version: 1   
 
   - name: swaap_v2_optimism_base_trades
     meta:
@@ -592,13 +652,15 @@ models:
     description: "swaap v2 optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_optimism_base_trades_seed') 
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('swaap_optimism_base_trades_seed') 
+            filter:
+              version: 2
 
   - name: timeswap_v2_optimism_base_trades
     meta:
@@ -611,13 +673,15 @@ models:
     description: "timeswap v2 optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('timeswap_v2_optimism_base_trades_seed') 
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('timeswap_v2_optimism_base_trades_seed') 
+            filter:
+              version: 2
       
   - name: saddle_finance_optimism_base_trades
     meta:
@@ -630,11 +694,13 @@ models:
     description: "saddle finance optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('saddle_finance_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('saddle_finance_optimism_base_trades_seed')
    
   - name: bridgers_optimism_base_trades
     meta:
@@ -647,16 +713,19 @@ models:
     description: "bridgers optimism base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('bridgers_optimism_base_trades_seed')
+          arguments:
+            seed_file: ref('bridgers_optimism_base_trades_seed')
 
   - name: dex_optimism_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

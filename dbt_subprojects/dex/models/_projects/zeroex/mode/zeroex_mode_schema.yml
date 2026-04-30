@@ -12,11 +12,12 @@ models:
         0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -106,9 +107,10 @@ models:
       The table tracks when each address was authorized and when it was deauthorized (if applicable).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - settler_address
-            - token_id
+          arguments:
+            combination_of_columns:
+              - settler_address
+              - token_id
     columns:
       - name: tx_hash
         description: "Transaction hash"

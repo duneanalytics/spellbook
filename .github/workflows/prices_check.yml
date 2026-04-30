@@ -6,6 +6,7 @@ on:
   pull_request:
     paths:
       - 'dbt_subprojects/tokens/models/prices/*/*.sql'
+      - '.github/workflows/prices_check.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,6 +21,18 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v6
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: true
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: uv sync --locked
 
       - name: Fetch base commit
         run: git fetch origin ${{ github.event.pull_request.base.sha }}
@@ -30,8 +43,8 @@ jobs:
       - name: Get prices diff
         shell: bash
         run: |
-          git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} dbt_subprojects/tokens/models/prices/**/*.sql | grep '^\+ ' > scripts/new_lines.txt
+          git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} dbt_subprojects/tokens/models/prices/**/*.sql | { grep '^\+ ' || true; } > scripts/new_lines.txt
 
       - name: Run validations
         id: validations
-        run: python scripts/check_tokens.py --file_name scripts/new_lines.txt
+        run: uv run python scripts/check_tokens.py --file_name scripts/new_lines.txt

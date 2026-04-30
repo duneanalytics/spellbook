@@ -12,12 +12,13 @@ models:
     description: 'Beets liquidity pools created on Sonic.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - model_name
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - address
+              - name
+              - category
+              - model_name
+              - blockchain
     columns:
       - &blockchain
         name: blockchain
@@ -64,9 +65,10 @@ models:
     description: 'Beets gauge labels.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - address
     columns:
       - *blockchain
       - *address

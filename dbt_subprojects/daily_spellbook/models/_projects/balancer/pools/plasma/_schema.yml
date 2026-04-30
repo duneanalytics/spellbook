@@ -40,9 +40,10 @@ models:
       Token weights in Balancer v3 pools on plasma.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - pool_id
+              - token_address
     columns:
       - *blockchain
       - *version

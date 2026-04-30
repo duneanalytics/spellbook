@@ -13,13 +13,14 @@ models:
         Vela Exchange Perpetual Data On arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -44,7 +45,8 @@ models:
         description: "Contract address of the market"
         data_tests:
           - perpetual_trades_market_address:
-              perpetual_trades_seed: ref('perpetual_trades_seed')
+              arguments:
+                perpetual_trades_seed: ref('perpetual_trades_seed')
       - &volume_usd
         name: volume_usd
         description: "The size of the position taken for the swap in USD; already in absolute value and decimal normalized"

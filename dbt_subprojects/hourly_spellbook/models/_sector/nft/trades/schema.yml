@@ -11,7 +11,8 @@ models:
    description: "New nft trades model"
    data_tests:
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['project','project_version','block_number','tx_hash','sub_tx_trade_id']
+         arguments:
+           combination_of_columns: ['project','project_version','block_number','tx_hash','sub_tx_trade_id']
 
  - name: nft_events
    meta:
@@ -24,9 +25,10 @@ models:
      NFT events
    data_tests:
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns:
-           - unique_trade_id
-           - blockchain
+         arguments:
+           combination_of_columns:
+             - unique_trade_id
+             - blockchain
    columns:
      - &blockchain
        name: blockchain
@@ -51,7 +53,8 @@ models:
        description: "USD value of the trade at time of execution"
        data_tests:
          - dbt_utils.accepted_range:
-             max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+             arguments:
+               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
      - &token_standard
        name: token_standard
        description: "Token standard"
@@ -156,9 +159,10 @@ models:
      The nft.trades table on Dune captures Non-Fungible Token (NFT) trades and swaps across various marketplaces. 
    data_tests:
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns:
-           - unique_trade_id
-           - blockchain
+         arguments:
+           combination_of_columns:
+             - unique_trade_id
+             - blockchain
    columns:
      - *blockchain
      - *project
@@ -199,9 +203,10 @@ models:
      NFT fees
    data_tests:
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns:
-           - unique_trade_id
-           - blockchain
+         arguments:
+           combination_of_columns:
+             - unique_trade_id
+             - blockchain
    columns:
      - *blockchain
      - *project

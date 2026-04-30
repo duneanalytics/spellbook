@@ -59,7 +59,8 @@ models:
       - name: standard
         data_tests:
           - accepted_values:
-              values: [ 'erc721', 'erc1155']
+              arguments:
+                values: [ 'erc721', 'erc1155']
         description: >
           The token standard. This is the set of rules that the contract must respect
           to be compatible with the common standards. Accepted values are presently standards represented.

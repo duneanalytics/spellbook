@@ -13,18 +13,20 @@ models:
         Paraswap V4 contract aggregator trades on polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_aggregator_seed:
-         blockchain: polygon
-         project: paraswap
-         version: 4
+         arguments:
+           blockchain: polygon
+           project: paraswap
+           version: 4
     columns:
       - &blockchain
         name: blockchain
@@ -108,18 +110,20 @@ models:
         Paraswap V5 contract aggregator trades on polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_aggregator_seed:
-         blockchain: polygon
-         project: paraswap
-         version: 5
+         arguments:
+           blockchain: polygon
+           project: paraswap
+           version: 5
     columns:
       - *blockchain
       - *project
@@ -157,18 +161,20 @@ models:
         Paraswap V6 contract aggregator trades on polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - method
-            - trace_address                        
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - method
+              - trace_address                        
       - check_dex_aggregator_seed:
-         blockchain: polygon
-         project: paraswap
-         version: 6
+         arguments:
+           blockchain: polygon
+           project: paraswap
+           version: 6
     columns:
       - *blockchain
       - *project
@@ -236,10 +242,11 @@ models:
     description: "Paraswap V6 trades decoded"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:            
-            - call_tx_hash
-            - method
-            - call_trace_address                        
+          arguments:
+            combination_of_columns:            
+              - call_tx_hash
+              - method
+              - call_trace_address                        
     columns:
       - *blockchain
       - *project

@@ -10,13 +10,14 @@ models:
       tags: ["ethereum", "tessera", "vault"]
     data_tests:
       - check_seed:
-          seed_file: ref('tessera_ethereum_vault_deploy_test_data')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - owner
-            - origin
-            - vault
+          arguments:
+            seed_file: ref('tessera_ethereum_vault_deploy_test_data')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - owner
+              - origin
+              - vault
     description: >
       Tessera Vault created. A Vault can contain multiple NFTs.
     columns:
