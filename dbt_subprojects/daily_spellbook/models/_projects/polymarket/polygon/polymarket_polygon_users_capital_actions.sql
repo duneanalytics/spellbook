@@ -113,7 +113,14 @@ with transfers as (
 				{{ ref('polymarket_polygon_users_proxies') }} as w
 			where
 				t.to_address = w.proxy
-				or t.from_address = w.proxy
+		)
+		or exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_users_proxies') }} as w
+			where
+				t.from_address = w.proxy
 		)
 )
 , classified as (
