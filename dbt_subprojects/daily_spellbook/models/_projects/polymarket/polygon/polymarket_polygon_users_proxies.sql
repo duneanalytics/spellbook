@@ -5,17 +5,12 @@
 	file_format='delta',
 	incremental_strategy='merge',
 	unique_key=['proxy'],
-	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
 ) }}
 
--- Deduped Polymarket user proxy wallets across both factories (Safe + magic.link).
--- Materialized to a single Delta table so downstream models (e.g. users_capital_actions)
--- can scan and broadcast it once per query, instead of re-expanding the union+distinct
--- inside every `exists` subquery (Trino inlines CTEs by default, which causes the
--- aggregation to run once per reference site).
---
--- A given proxy address is created exactly once on-chain, but we group on proxy + take
--- the earliest block_time defensively in case of any cross-factory collision.
+-- Deduped Polymarket user proxy wallets across the Safe + magic.link factories. Materialized
+-- so downstream `exists` references broadcast a small table instead of re-running the
+-- union+distinct per reference site (Trino inlines CTEs).
+-- No dest-side incremental_predicate: single-key merge would risk inserting duplicates.
 
 select
 	proxy
