@@ -14,9 +14,10 @@ models:
       eulerswap Uni V4 arbitrum DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
     columns:
       - &blockchain
         name: blockchain
@@ -79,10 +80,11 @@ models:
       Eulerswap pools on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-            - eulerAccount
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
+              - eulerAccount
     columns:
       - *blockchain
       - *project
@@ -118,10 +120,12 @@ models:
     description: "Eulerswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('eulerswap_arbitrum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('eulerswap_arbitrum_base_trades_seed')
+            filter:
+              version: 1

@@ -12,6 +12,7 @@ models:
         Gas Fees on Tron
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash

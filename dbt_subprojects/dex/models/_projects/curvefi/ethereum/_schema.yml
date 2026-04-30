@@ -120,10 +120,11 @@ models:
       curvefi ethereum pool balances
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - token_address
-            - day
+          arguments:
+            combination_of_columns:
+              - address
+              - token_address
+              - day
 
   - name: curvefi_ethereum_tvl_daily
     meta:
@@ -137,8 +138,9 @@ models:
       curvefi ethereum daily tvl
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
-            - block_date
-            - blockchain 
-            - version
+          arguments:
+            combination_of_columns:
+              - id
+              - block_date
+              - blockchain 
+              - version

@@ -12,17 +12,18 @@ models:
     description: "Table showing who first funded each Solana address in SOL"
     data_tests:
       - check_seed:
-          seed_file: ref('first_funded_by_seed_solana')
-          filter:
-            blockchain: solana
-          match_columns:
-            - blockchain
-            - address
-          check_columns:
-            - first_funded_by
-            - block_slot
-            - tx_id
-            - tx_index
+          arguments:
+            seed_file: ref('first_funded_by_seed_solana')
+            filter:
+              blockchain: solana
+            match_columns:
+              - blockchain
+              - address
+            check_columns:
+              - first_funded_by
+              - block_slot
+              - tx_id
+              - tx_index
     columns:
       - name: blockchain
         description: "Blockchain"

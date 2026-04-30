@@ -50,11 +50,12 @@ models:
         All CryptoPunks transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time_week
-            - punk_id
-            - evt_tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_time_week
+              - punk_id
+              - evt_tx_hash
+              - evt_index
     columns:
       - name: from
         description: "CryptoPunk transferred from"
@@ -101,10 +102,11 @@ models:
         All CryptoPunks bid events
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time_week
-            - evt_tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_time_week
+              - evt_tx_hash
+              - evt_index
     columns:
       - name: event_type
         description: "Bid entered or withdrawn"
@@ -138,10 +140,11 @@ models:
         All CryptoPunks offer events
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time_week
-            - evt_tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_time_week
+              - evt_tx_hash
+              - evt_index
     columns:
       - name: event_type
         description: "Offer entered or withdrawn"

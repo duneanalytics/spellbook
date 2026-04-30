@@ -14,7 +14,8 @@ models:
       Curve pools liquidity
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - id
+              - blockchain
+              - block_date

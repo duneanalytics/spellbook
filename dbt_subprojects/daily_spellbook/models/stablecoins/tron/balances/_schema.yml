@@ -12,10 +12,11 @@ models:
     description: "Core balances of stablecoin token holders (frozen core list)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
           config:
             where: "day >= current_date - interval '30' day"
     columns:
@@ -64,10 +65,11 @@ models:
     description: "Extended balances of newly added stablecoin token holders"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
           config:
             where: "day >= current_date - interval '30' day"
     columns:
@@ -94,10 +96,11 @@ models:
     description: "Core balances enriched with usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
           config:
             where: "day >= current_date - interval '30' day"
     columns:
@@ -135,10 +138,11 @@ models:
     description: "Extended balances enriched with token metadata and usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
           config:
             where: "day >= current_date - interval '30' day"
     columns:

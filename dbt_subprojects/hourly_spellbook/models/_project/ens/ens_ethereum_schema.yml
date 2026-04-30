@@ -179,9 +179,10 @@ models:
     description: "View the latest ENS set name records"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
+          arguments:
+            combination_of_columns:
+              - address
+              - name
     columns:
       - name: last_block_time
         description: "Block time of the latest transaction hash ENS set name record"

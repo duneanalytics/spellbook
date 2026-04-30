@@ -12,11 +12,12 @@ models:
     description: "All lending supply transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,13 +99,15 @@ models:
     description: "Aave v3 supply transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_optimism_base_supply_seed')
+          arguments:
+            seed_file: ref('aave_optimism_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -134,13 +137,15 @@ models:
     description: "Sonne Finance supply transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('sonne_finance_optimism_base_supply_seed')
+          arguments:
+            seed_file: ref('sonne_finance_optimism_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -170,13 +175,15 @@ models:
     description: "Granary supply transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('granary_optimism_base_supply_seed')
+          arguments:
+            seed_file: ref('granary_optimism_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -206,11 +213,12 @@ models:
     description: "Morpho supply transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

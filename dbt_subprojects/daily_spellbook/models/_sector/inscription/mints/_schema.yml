@@ -12,9 +12,10 @@ models:
       Inscription mints on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - &blockchain
         name: blockchain
@@ -73,9 +74,10 @@ models:
       Inscription mints on Arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -105,9 +107,10 @@ models:
       Inscription mints on Avalanche
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -137,9 +140,10 @@ models:
       Inscription mints on BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -169,9 +173,10 @@ models:
       Inscription mints on Fantom
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -201,9 +206,10 @@ models:
       Inscription mints on Gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -233,9 +239,10 @@ models:
       Inscription mints on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -265,9 +272,10 @@ models:
       Inscription mints on Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -297,9 +305,10 @@ models:
       Inscription mints on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -329,9 +338,10 @@ models:
       Inscription mints on Celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -361,9 +371,10 @@ models:
       Inscription mints on zkSync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -393,9 +404,10 @@ models:
       Inscription mints on Zora Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -425,9 +437,10 @@ models:
       Inscription mints on Scroll
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -457,9 +470,10 @@ models:
       Inscription mints on Goerli Testnet
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -489,9 +503,10 @@ models:
       Inscription mints on Linea
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -521,9 +536,10 @@ models:
       Inscription mints on Polygon zkEVM
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time

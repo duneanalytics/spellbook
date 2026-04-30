@@ -127,9 +127,10 @@ models:
         sudoswap pool trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_address
     columns:
       - &day
         name: day
@@ -158,9 +159,10 @@ models:
         sudoswap pool balance changes on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_address
     columns:
       - *day
       - *pool_address
@@ -189,45 +191,3 @@ models:
       - *pool_fee
       - name: latest_update_time
         description: "time of the latest update"
-
-
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &block_time
-        name: block_time
-        description: "Block time of transaction"
-      - &block_number
-        name: block_number
-        description: "Block number of transaction"
-      - &project
-        name: project
-        description: "Project name"
-      - &airdrop_number
-        name: airdrop_number
-        description: "Airdrop identifier number"
-      - &recipient
-        name: recipient
-        description: "Airdrop recipient"
-      - &contract_address
-        name: contract_address
-        description: "Contract addressed used"
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash"
-      - name: amount_raw
-        description: "Raw amount of tokens"
-      - name: amount_original
-        description: "Original amount of tokens"
-      - name: amount_usd
-        description: "USD value of tokens"
-      - &token_address
-        name: token_address
-        description: "Token address"
-      - &token_symbol
-        name: token_symbol
-        description: "Token symbol"
-      - &evt_index
-        name: evt_index
-        description: "Event index"

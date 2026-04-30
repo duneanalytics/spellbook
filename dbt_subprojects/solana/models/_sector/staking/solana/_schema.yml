@@ -11,9 +11,10 @@ models:
     description: Solana Stake11111 program actions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
       - name: stake
         description: amount in stake moved
@@ -48,11 +49,12 @@ models:
     description: Solana stake account vote delegations over time
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - block_slot
-            - stake_account
-            - vote_account
+          arguments:
+            combination_of_columns:
+              - block_time
+              - block_slot
+              - stake_account
+              - vote_account
     columns:
       - name: stake_account
         description: the stake account address
@@ -71,11 +73,12 @@ models:
     description: Solana validator stake accounts delegated for each epoch (includes only accounts delegated BEFORE epoch started)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - epoch
-            - epoch_time
-            - stake_account
-            - vote_account
+          arguments:
+            combination_of_columns:
+              - epoch
+              - epoch_time
+              - stake_account
+              - vote_account
     columns:
       - name: stake_account
         description: the stake account address
@@ -96,11 +99,12 @@ models:
     description: Solana validator stake accounts delegated for each epoch (includes only accounts delegated BEFORE epoch started)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - epoch
-            - epoch_time
-            - stake_account
-            - vote_account
+          arguments:
+            combination_of_columns:
+              - epoch
+              - epoch_time
+              - stake_account
+              - vote_account
     columns:
       - name: stake_account
         description: the stake account address

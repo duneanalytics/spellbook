@@ -12,9 +12,10 @@ models:
       All inscriptions on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - &blockchain
         name: blockchain
@@ -55,9 +56,10 @@ models:
       All inscriptions on Arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -80,9 +82,10 @@ models:
       All inscriptions on Avalanche
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -105,9 +108,10 @@ models:
       All inscriptions on BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -130,9 +134,10 @@ models:
       All inscriptions on Fantom
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -155,9 +160,10 @@ models:
       All inscriptions on Gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -180,9 +186,10 @@ models:
       All inscriptions on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -205,9 +212,10 @@ models:
       All inscriptions on Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -230,9 +238,10 @@ models:
       All inscriptions on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -255,9 +264,10 @@ models:
       All inscriptions on Celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -280,9 +290,10 @@ models:
       All inscriptions on zkSync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -305,9 +316,10 @@ models:
       All inscriptions on Zora Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -330,9 +342,10 @@ models:
       All inscriptions on Scroll
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -355,9 +368,10 @@ models:
       All inscriptions on Goerli Testnet
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -380,9 +394,10 @@ models:
       All inscriptions on Linea
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -405,9 +420,10 @@ models:
       All inscriptions on Polygon zkEVM
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time

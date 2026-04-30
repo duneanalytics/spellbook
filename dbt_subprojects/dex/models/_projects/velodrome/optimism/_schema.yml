@@ -14,8 +14,9 @@ models:
       velodrome V1 optimism DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - &blockchain
         name: blockchain
@@ -59,8 +60,9 @@ models:
       velodrome V2 optimism DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -86,8 +88,9 @@ models:
       velodrome V2 CL optimism DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -113,9 +116,10 @@ models:
       velodrome optimism DEX pools across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
-            - version
+          arguments:
+            combination_of_columns:
+              - id
+              - version
     columns:
       - *blockchain
       - *project
@@ -141,10 +145,11 @@ models:
       "velodrome optimism v1 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -195,10 +200,11 @@ models:
       "velodrome optimism V2 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -229,10 +235,11 @@ models:
       "velodrome optimism 2 CL base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -263,10 +270,11 @@ models:
       "velodrome optimism base liquidity events across all versions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project

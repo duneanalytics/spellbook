@@ -12,18 +12,20 @@ models:
     description: Bebop-RFQ contract trades on arbitrum - formatted for dex.trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_aggregator_seed:
-          blockchain: arbitrum
-          project: bebop
-          version: 2
+          arguments:
+            blockchain: arbitrum
+            project: bebop
+            version: 2
     columns:
       - &blockchain
         name: blockchain
@@ -112,18 +114,20 @@ models:
     description: Bebop-JAM contract trades on arbitrum - formatted for dex.trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_aggregator_seed:
-          blockchain: arbitrum
-          project: bebop
-          version: jam
+          arguments:
+            blockchain: arbitrum
+            project: bebop
+            version: jam
     columns:
       - *blockchain
       - *project
@@ -162,18 +166,20 @@ models:
     description: Bebop-BLEND contract trades on arbitrum - formatted for dex.trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_aggregator_seed:
-          blockchain: arbitrum
-          project: bebop
-          version: blend
+          arguments:
+            blockchain: arbitrum
+            project: bebop
+            version: blend
     columns:
       - *blockchain
       - *project

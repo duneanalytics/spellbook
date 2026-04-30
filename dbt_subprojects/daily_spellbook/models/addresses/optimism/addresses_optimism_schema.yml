@@ -12,10 +12,11 @@ models:
     description: "Project address for receiving Optimism Governance and Partner Funding Grants."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - proposal_name
-            - funding_source
+          arguments:
+            combination_of_columns:
+              - address
+              - proposal_name
+              - funding_source
     columns:
       - name: category
         description: "What type of address is this (i.e. Optimism vs Project)."

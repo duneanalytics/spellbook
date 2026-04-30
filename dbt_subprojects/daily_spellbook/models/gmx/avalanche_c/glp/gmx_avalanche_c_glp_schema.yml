@@ -12,9 +12,10 @@ models:
         View components used in deriving GLP AUM data.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - minute
+          arguments:
+            combination_of_columns:
+              - block_date
+              - minute
     columns:
       - &minute
         name: minute
