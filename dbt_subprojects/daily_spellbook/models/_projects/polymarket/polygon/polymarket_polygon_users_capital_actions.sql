@@ -3,26 +3,76 @@
 	alias='users_capital_actions',
 	materialized='incremental',
 	file_format='delta',
-	incremental_strategy='merge',
+	incremental_strategy='microbatch',
+	event_time='block_date',
+	begin='2020-09-27',
+	batch_size=var('polymarket_polygon_capital_actions_batch_size', 'day'),
+	lookback=3,
 	partition_by=['block_month'],
 	unique_key=['block_month', 'block_time', 'evt_index', 'tx_hash'],
-	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-	post_hook='{{ hide_spells() }}',
+	tags=['microbatch'],
 ) }}
 
--- lots of edge cases here to ensure that we're just picking up on actual deposits and not internal transfers
--- this is a bit of a mess, but it works for now
+-- Polymarket user capital actions on Polygon: deposits, withdrawals, internal transfers,
+-- and USDC <-> USDC.e conversions through the canonical Uniswap pool.
+--
+-- Token coverage:
+--   - USDC.e (V1 collateral) and USDC (deposit-side) drive 'deposit'/'withdrawal'/'transfer'/'convert'
+--   - pUSD (V2 collateral; 1:1 USDC-backed; no USD price feed) treated 1:1 with USDC for amount_usd
+-- The canonical USDC <-> USDC.e Uniswap pool (0xd36e...a418) is excluded from deposit/withdrawal
+-- classification and tagged as 'convert'.
+--
+-- This model is microbatched on block_date so each run plans only its own day window of
+-- tokens_polygon.transfers against the ~7M-row Polymarket wallet set, avoiding the
+-- multi-year partitioned-hash explosion seen on full-history single-shot builds.
 
--- we look for usdc.e and usdc transfers
--- usdc.e is the wrapped version of usdc on polygon polymarket runs on this
--- if you deposit using usdc, the UI will prompt you to wrap your USDC into USDC.e by signing a message
--- this will just use uniswap to swap your usdc for usdc.e, so we need to exclude 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 as this is the uniswap pool
--- by ignoring the uniswap pool, but looking for USDC transfers, we can get a better read on funding sources
-
-
-
-
-with transfer_candidates as (
+with polymarket_wallets as (
+	select distinct
+		proxy
+	from (
+		select
+			proxy
+		from
+			{{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
+		union all
+		select
+			proxy
+		from
+			{{ ref('polymarket_polygon_users_safe_proxies') }}
+	) as wallets
+)
+, transfers as (
+	select
+		t.block_time
+		, date_trunc('month', t.block_time) as block_month
+		, t.block_date
+		, t.block_number
+		, t."from" as from_address
+		, t."to" as to_address
+		, t.contract_address
+		, case
+			when t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 then 'USDC.e'
+			when t.contract_address = 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 then 'USDC'
+			when t.contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then 'pUSD'
+		end as symbol
+		, t.amount_raw
+		, t.amount
+		, case
+			when t.contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then t.amount
+			else t.amount_usd
+		end as amount_usd
+		, t.evt_index
+		, t.tx_hash
+	from
+		{{ source('tokens_polygon', 'transfers') }} as t
+	where
+		t.contract_address in (
+			0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- usdc.e
+			, 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 -- usdc
+			, 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pusd (v2 collateral; 1:1 usdc-backed)
+		)
+)
+, transfer_candidates as (
 	select
 		t.block_time
 		, t.block_month
@@ -36,8 +86,22 @@ with transfer_candidates as (
 		, t.amount_usd
 		, t.evt_index
 		, t.tx_hash
-		, t.to_wallet
-		, t.from_wallet
+		, exists (
+			select
+				1
+			from
+				polymarket_wallets as to_wallet
+			where
+				t.to_address = to_wallet.proxy
+		) as to_wallet
+		, exists (
+			select
+				1
+			from
+				polymarket_wallets as from_wallet
+			where
+				t.from_address = from_wallet.proxy
+		) as from_wallet
 		, exists (
 			select
 				1
@@ -55,11 +119,17 @@ with transfer_candidates as (
 				t.from_address = from_polymarket_address.address
 		) as from_polymarket_address
 	from
-		{{ ref('polymarket_polygon_users_capital_action_transfer_candidates') }} as t
-	{% if is_incremental() -%}
+		transfers as t
 	where
-		{{ incremental_predicate('t.block_time') }}
-	{% endif -%}
+		exists (
+			select
+				1
+			from
+				polymarket_wallets as w
+			where
+				t.to_address = w.proxy
+				or t.from_address = w.proxy
+		)
 )
 , classified as (
 	select
@@ -105,47 +175,59 @@ with transfer_candidates as (
 )
 , deduped as (
 	select
-		*
+		c.block_time
+		, c.block_month
+		, c.block_date
+		, c.block_number
+		, c.action
+		, c.from_address
+		, c.to_address
+		, c.symbol
+		, c.amount_raw
+		, c.amount
+		, c.amount_usd
+		, c.evt_index
+		, c.tx_hash
 		, row_number() over (
 			partition by
-				block_time
-				, block_month
-				, block_date
-				, block_number
-				, action
-				, from_address
-				, to_address
-				, symbol
-				, amount_raw
-				, amount
-				, amount_usd
-				, evt_index
-				, tx_hash
+				c.block_time
+				, c.block_month
+				, c.block_date
+				, c.block_number
+				, c.action
+				, c.from_address
+				, c.to_address
+				, c.symbol
+				, c.amount_raw
+				, c.amount
+				, c.amount_usd
+				, c.evt_index
+				, c.tx_hash
 			order by
-				tx_hash
+				c.tx_hash
 		) as duplicate_rank
 	from
-		classified
+		classified as c
 	where
-		action is not null
+		c.action is not null
 )
 
 select
-	block_time
-	, block_month
-	, block_date
-	, block_number
-	, action
-	, from_address
-	, to_address
-	, symbol
-	, amount_raw
-	, amount
-	, amount_usd
-	, evt_index
-	, tx_hash
+	d.block_time
+	, d.block_month
+	, d.block_date
+	, d.block_number
+	, d.action
+	, d.from_address
+	, d.to_address
+	, d.symbol
+	, d.amount_raw
+	, d.amount
+	, d.amount_usd
+	, d.evt_index
+	, d.tx_hash
 from
-	deduped
+	deduped as d
 where
-	action != 'transfer'
-	or duplicate_rank = 1
+	d.action != 'transfer'
+	or d.duplicate_rank = 1
