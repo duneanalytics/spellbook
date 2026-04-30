@@ -2,15 +2,17 @@
 
 ## CI table naming (Spellbook / Dune CI)
 
-Tables are written under a PR-scoped schema with a name like:
+Tables are written under **`test_schema`** with a name like:
 
-`dune_spellbook_ci__tmp_pr<pr_number>.<model_name>`
+`git_dunesql_<commit_hash>_<schema>_<alias>`
 
-Spellbook CI sets `DBT_CI_SCHEMA` to `dune_spellbook_ci__tmp_pr<pr_number>` in `dbt_run.yml`. The table identifier is the dbt model name. Example: PR `9609` and model `gas_aptos_fees` → `dune_spellbook_ci__tmp_pr9609.gas_aptos_fees`. Copy the exact relation from **`dbt run initial model(s)`** when unsure.
+Spellbook CI sets `GIT_SHA` to the **first 7 characters** of `${{ github.sha }}` after `tr - _` (`dbt_run.yml`). For **`pull_request`** workflows, `github.sha` is the **PR merge commit** (test merge of head + base), **not** the latest commit on your branch—so the hash differs from `4ed0409…` (head) vs `8d61409…` (merge). Use `git fetch origin pull/<N>/merge` and `git rev-parse FETCH_HEAD | tr - _ | cut -c1-7`, or read the hash from **GitHub Actions**.
+
+The suffix after the hash is **`{custom_schema}_{alias}`** from the model’s dbt **`schema`** and **`alias`** config (same pieces that form prod `schema.table`). Example: `schema = 'tokens'` and `alias = 'transfers'` → **`tokens_transfers`** → `test_schema.git_dunesql_<GIT_HASH>_tokens_transfers`. It is **not** the `.sql` filename alone—derive from config or copy the exact identifier from **`dbt run initial model(s)`** (README: `test_schema.git_dunesql_{{commit_hash}}_{{table_name}}`).
 
 Tables are usually available for **~24 hours** after the CI run.
 
-After you fill in the PR number and model name, **run phase 1 on Dune**, substitute bounds, then run parity / grain / rollup via **Dune MCP** (`createDuneQuery` → `executeQueryById` → `getExecutionResults`); read each tool’s schema under `mcps/user-dune/tools/` before calling. Spellbook fallback: repo `python scripts/dune_query.py` when available. Details in [SKILL.md](SKILL.md).
+After you fill in hash, **run phase 1 on Dune**, substitute bounds, then run parity / grain / rollup via **Dune MCP** (`createDuneQuery` → `executeQueryById` → `getExecutionResults`); read each tool’s schema under `mcps/user-dune/tools/` before calling. Spellbook fallback: repo `python scripts/dune_query.py` when available. Details in [SKILL.md](SKILL.md).
 
 ## Dynamic workflow (do not hardcode example dates)
 
@@ -18,7 +20,7 @@ After you fill in the PR number and model name, **run phase 1 on Dune**, substit
 2. **Phase 2+ — substitute** literals into all downstream SQL: `date '<MIN_BLOCK_DATE>'` and `>= <MIN_BLOCK_NUMBER>` (omit `block_number` if not meaningful for the spell).
 3. **Never** reuse historical dates from docs as if they were current; they illustrate shape only.
 
-Replace `<PR_NUMBER>` with the GitHub PR number.
+Replace `<GIT_HASH>` using `git fetch origin pull/<N>/merge` and `git rev-parse FETCH_HEAD | tr - _ | cut -c1-7` for Spellbook **`pull_request`** CI.
 
 ## Phase 1: CI bounds (run first, every time)
 
@@ -27,7 +29,7 @@ select
 	min(block_date) as min_block_date
 	, min(block_number) as min_block_number
 from
-	dune_spellbook_ci__tmp_pr<PR_NUMBER>.tokens_transfers
+	test_schema.git_dunesql_<GIT_HASH>_tokens_transfers
 where
 	block_date != current_date
 ```
@@ -55,7 +57,7 @@ with ci as (
 		, count(1) as total_rows
 		, sum(amount_usd) as total_usd
 	from
-		dune_spellbook_ci__tmp_pr<PR_NUMBER>.tokens_transfers
+		test_schema.git_dunesql_<GIT_HASH>_tokens_transfers
 	where
 		block_date != current_date
 		and block_date >= date '<MIN_BLOCK_DATE>'
@@ -108,7 +110,7 @@ with shared_filters_ci as (
 		count(1) as ci_raw_rows
 		, sum(amount_usd) as ci_raw_usd
 	from
-		dune_spellbook_ci__tmp_pr<PR_NUMBER>.tokens_transfers
+		test_schema.git_dunesql_<GIT_HASH>_tokens_transfers
 	where
 		block_date != current_date
 		and block_date >= date '<MIN_BLOCK_DATE>'
@@ -131,7 +133,7 @@ with shared_filters_ci as (
 		, count(1) as total_rows
 		, sum(amount_usd) as total_usd
 	from
-		dune_spellbook_ci__tmp_pr<PR_NUMBER>.tokens_transfers
+		test_schema.git_dunesql_<GIT_HASH>_tokens_transfers
 	where
 		block_date != current_date
 		and block_date >= date '<MIN_BLOCK_DATE>'
@@ -207,7 +209,7 @@ cross join shared_filters_prod as sf_prod
 select count(1) from tokens.transfers
 where block_date != current_date and block_date >= date '<MIN_BLOCK_DATE>' and block_number >= <MIN_BLOCK_NUMBER>;
 
-select count(1) from dune_spellbook_ci__tmp_pr<PR_NUMBER>.tokens_transfers
+select count(1) from test_schema.git_dunesql_<GIT_HASH>_tokens_transfers
 where block_date != current_date and block_date >= date '<MIN_BLOCK_DATE>' and block_number >= <MIN_BLOCK_NUMBER>;
 ```
 

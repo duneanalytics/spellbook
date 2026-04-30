@@ -25,6 +25,7 @@
     ,ref('oneinch_ar_trades')
     ,ref('odos_trades')
     ,ref('sushiswap_agg_trades')
+    ,ref('bitget_dex_aggregator_trades')
 ] %}
 
 WITH enriched_aggregator_base_trades AS (

@@ -23,7 +23,7 @@ python scripts/dune_query.py "@model_name" --limit 100
 Hardcode a short date filter (e.g., last 3-7 days) on large source tables during initial development. This speeds up CI GitHub Action runs so you can verify end-to-end success quickly.
 
 ### 5. Submit PR and Use CI
-Each commit to your feature branch triggers CI, which builds and tests all modified models. CI tables can be queried on Dune for ~24 hours (format: `dune_spellbook_ci__tmp_pr<pr_number>.<model_name>`). Leverage these tables for QA testing — or even full test dashboards.
+Each commit to your feature branch triggers CI, which builds and tests all modified models. CI tables can be queried on Dune for ~24 hours (format: `test_schema.git_dunesql_<hash>_<table>`). Leverage these tables for QA testing — or even full test dashboards.
 
 ### 6. Revert Hardcoded Filters Before Merge
 **Always revert hardcoded date filters before merge and deployment.** The final model must use the standard `incremental_predicate()` macro — not hardcoded dates. Historical backfill is handled via `--full-refresh` post-merge, not by widening filters in model logic.
