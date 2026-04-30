@@ -22,7 +22,46 @@
 
 
 
-with classified as (
+with transfer_candidates as (
+	select
+		t.block_time
+		, t.block_month
+		, t.block_date
+		, t.block_number
+		, t.from_address
+		, t.to_address
+		, t.symbol
+		, t.amount_raw
+		, t.amount
+		, t.amount_usd
+		, t.evt_index
+		, t.tx_hash
+		, t.to_wallet
+		, t.from_wallet
+		, exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_market_addresses') }} as to_polymarket_address
+			where
+				t.to_address = to_polymarket_address.address
+		) as to_polymarket_address
+		, exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_market_addresses') }} as from_polymarket_address
+			where
+				t.from_address = from_polymarket_address.address
+		) as from_polymarket_address
+	from
+		{{ ref('polymarket_polygon_users_capital_action_transfer_candidates') }} as t
+	{% if is_incremental() -%}
+	where
+		{{ incremental_predicate('t.block_time') }}
+	{% endif -%}
+)
+, classified as (
 	select
 		t.block_time
 		, t.block_month
@@ -39,18 +78,18 @@ with classified as (
 				then 'convert'
 			when t.to_wallet
 				and not t.from_wallet
-				and to_polymarket_address.address is null
-				and from_polymarket_address.address is null
+				and not t.to_polymarket_address
+				and not t.from_polymarket_address
 				then 'deposit'
 			when t.from_wallet
 				and not t.to_wallet
-				and to_polymarket_address.address is null
-				and from_polymarket_address.address is null
+				and not t.to_polymarket_address
+				and not t.from_polymarket_address
 				then 'withdrawal'
 			when t.from_wallet
 				and t.to_wallet
-				and to_polymarket_address.address is null
-				and from_polymarket_address.address is null
+				and not t.to_polymarket_address
+				and not t.from_polymarket_address
 				then 'transfer'
 		end as action
 		, t.from_address
@@ -62,15 +101,7 @@ with classified as (
 		, t.evt_index
 		, t.tx_hash
 	from
-		{{ ref('polymarket_polygon_users_capital_action_transfer_candidates') }} as t
-	left join {{ ref('polymarket_polygon_market_addresses') }} as to_polymarket_address
-		on t.to_address = to_polymarket_address.address
-	left join {{ ref('polymarket_polygon_market_addresses') }} as from_polymarket_address
-		on t.from_address = from_polymarket_address.address
-	{% if is_incremental() -%}
-	where
-		{{ incremental_predicate('t.block_time') }}
-	{% endif -%}
+		transfer_candidates as t
 )
 , deduped as (
 	select

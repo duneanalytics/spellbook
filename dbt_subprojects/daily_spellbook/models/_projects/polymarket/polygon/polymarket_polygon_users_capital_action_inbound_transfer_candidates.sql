@@ -48,13 +48,19 @@ select
 	, t.tx_hash
 from
 	{{ source('tokens_polygon', 'transfers') }} as t
-inner join polymarket_wallets as to_wallet
-	on t."to" = to_wallet.proxy
 where
 	t.contract_address in (
 		0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- usdc.e
 		, 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 -- usdc
 		, 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pusd (v2 collateral; 1:1 usdc-backed)
+	)
+	and exists (
+		select
+			1
+		from
+			polymarket_wallets as to_wallet
+		where
+			t."to" = to_wallet.proxy
 	)
 	{% if is_incremental() -%}
 	and {{ incremental_predicate('t.block_time') }}
