@@ -244,8 +244,8 @@ models:
       project: polymarket
       contributors: tomfutago
     config:
-      tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Polymarket: user capital actions (deposits, withdrawals, internal transfers, and USDC <-> USDC.e conversions) classified per token transfer."
+      tags: ['polygon','prediction_markets','polymarket','markets','microbatch']
+    description: "Polymarket: user capital actions (deposits, withdrawals, internal transfers, and USDC <-> USDC.e conversions) classified per token transfer. Microbatched on block_date to avoid the planner-side hash sizing blowup on full-history single-shot builds."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:

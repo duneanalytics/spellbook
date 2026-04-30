@@ -3,10 +3,14 @@
 	alias='users_capital_actions',
 	materialized='incremental',
 	file_format='delta',
-	incremental_strategy='merge',
+	incremental_strategy='microbatch',
+	event_time='block_date',
+	begin='2020-09-27',
+	batch_size='day',
+	lookback=3,
 	partition_by=['block_month'],
 	unique_key=['block_month', 'block_time', 'evt_index', 'tx_hash'],
-	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+	tags=['microbatch'],
 ) }}
 
 -- Polymarket user capital actions on Polygon: deposits, withdrawals, internal transfers,
@@ -44,9 +48,6 @@ with transfers as (
 			, 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 -- usdc
 			, 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pusd (v2 collateral; 1:1 usdc-backed)
 		)
-		{% if is_incremental() -%}
-		and {{ incremental_predicate('t.block_time') }}
-		{% endif -%}
 )
 , transfer_candidates as (
 	select
