@@ -1982,8 +1982,6 @@ seeds:
         block_time: timestamp
         tx_hash: varbinary
         evt_index: bigint
-        token_address: varbinary
-        recipient: varbinary
         transaction_type: varchar
         token_address: varbinary
         borrower: varbinary

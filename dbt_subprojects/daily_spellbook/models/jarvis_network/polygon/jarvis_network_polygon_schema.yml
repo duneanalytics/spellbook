@@ -13,10 +13,11 @@ models:
         Jarvis Network Synthereum transactions on Polygon across all contracts and versions. This table will load all synthereum activities downstream.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - evt_tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain

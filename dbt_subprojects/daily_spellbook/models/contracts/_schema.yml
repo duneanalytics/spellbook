@@ -29,11 +29,12 @@ models:
     description: "Mapping of contracts to its creators and names on EVM chains. {{ doc('contract_mapping') }}"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - contract_address
-              - created_tx_hash
-              - created_tx_index
+          arguments:
+            combination_of_columns:
+                - blockchain
+                - contract_address
+                - created_tx_hash
+                - created_tx_index
     columns:
       - &blockchain
         name: blockchain
@@ -236,8 +237,9 @@ models:
         A table containing mappings for disperse contract wallets that we want to map distributions with
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
+          arguments:
+            combination_of_columns:
+                - contract_address
     columns:
       - *contract_address
       - *contract_name
@@ -253,9 +255,10 @@ models:
         A table containing mappings for predeploy system contracts
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - blockchain
+          arguments:
+            combination_of_columns:
+                - contract_address
+                - blockchain
     columns:
       - *blockchain
       - *contract_project

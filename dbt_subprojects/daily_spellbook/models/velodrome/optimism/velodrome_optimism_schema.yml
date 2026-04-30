@@ -12,10 +12,11 @@ models:
       Bribe to Pool mappings for velodrome on all chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - pool_contract
-              - incentives_contract
-              - allowed_rewards
+          arguments:
+            combination_of_columns:
+                - pool_contract
+                - incentives_contract
+                - allowed_rewards
     columns:
       - &blockchain
         name: blockchain

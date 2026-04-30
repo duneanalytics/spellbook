@@ -14,9 +14,10 @@ models:
       eulerswap Uni V4 bnb DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
     columns:
       - &blockchain
         name: blockchain
@@ -79,10 +80,11 @@ models:
       Eulerswap pools on bnb
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-            - eulerAccount
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
+              - eulerAccount
     columns:
       - *blockchain
       - *project
@@ -118,6 +120,7 @@ models:
     description: "Eulerswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index

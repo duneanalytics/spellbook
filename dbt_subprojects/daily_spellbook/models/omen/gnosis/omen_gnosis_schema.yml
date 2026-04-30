@@ -13,11 +13,12 @@ models:
       A table containing all trades of Omen on Gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_day
-            - tx_hash
-            - evt_index
-            - outcomeslot
+          arguments:
+            combination_of_columns:
+              - block_day
+              - tx_hash
+              - evt_index
+              - outcomeslot
     columns:
       - &block_time
         name: block_time
@@ -77,10 +78,11 @@ models:
       A table containing all Omen liquidity management on Gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_time
+              - tx_hash
+              - evt_index
     columns:
       - *block_time
       - *block_day

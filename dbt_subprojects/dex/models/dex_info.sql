@@ -250,4 +250,5 @@ FROM (VALUES
     , ('supernova', 'Supernova', 'Direct', 'SupernovaDEX')
     , ('sunswap', 'SunSwap', 'Direct', 'SunSwap')
     , ('tempo_exchange', 'Tempo Exchange', 'Direct', 'tempo')
+    , ('bitget_dex_aggregator', 'Bitget Wallet Aggregator', 'Aggregator', 'BitgetWalletAggregator')
 ) AS temp_table (project, name, marketplace_type, x_username)

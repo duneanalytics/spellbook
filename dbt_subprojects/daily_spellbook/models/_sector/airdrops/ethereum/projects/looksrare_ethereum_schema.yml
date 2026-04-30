@@ -12,10 +12,11 @@ models:
     description: "List of claim transactions for the $LOOKS airdrop"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - recipient
+              - evt_index
     columns:
      - &blockchain
        name: blockchain

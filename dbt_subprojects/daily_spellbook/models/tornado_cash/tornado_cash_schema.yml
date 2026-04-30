@@ -13,11 +13,12 @@ models:
     description: "Tornado Cash Deposits"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
+              - blockchain
     columns:
       - &block_time
         name: block_time
@@ -32,13 +33,15 @@ models:
         name: blockchain
         data_tests:
           - accepted_values:
-              values: ['ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'polygon']
+              arguments:
+                values: ['ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'polygon']
         description: "Blockchain"
       - &tornado_version
         name: tornado_version
         data_tests:
           - accepted_values:
-              values: ['classic', 'nova']
+              arguments:
+                values: ['classic', 'nova']
         description: "Version of Tornado Cash used for this transaction"
       - &depositor
         name: depositor
@@ -62,11 +65,12 @@ models:
     description: "Tornado Cash Withdrawals"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
+              - blockchain
     columns:
       - *block_time
       - *currency_contract

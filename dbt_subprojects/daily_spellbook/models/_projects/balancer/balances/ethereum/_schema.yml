@@ -12,10 +12,11 @@ models:
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool
-            - token
+          arguments:
+            combination_of_columns:
+              - day
+              - pool
+              - token
     columns:
       - &day
         name: day
@@ -43,11 +44,12 @@ models:
       Token Balance Changes on Balancer Pools.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - evt_tx_hash
+              - evt_index
+              - token_address
     columns:
       - &block_date
         name: block_date
@@ -106,10 +108,11 @@ models:
       Token Balance Changes on Balancer Pools, grouped by day.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
+              - token_address
     columns:
       - *block_date
       - *pool_id
@@ -141,11 +144,12 @@ models:
       Token Balance Changes on Balancer Pools.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - evt_tx_hash
+              - evt_index
+              - token_address
     columns:
       - *block_date
       - *evt_block_time
@@ -174,10 +178,11 @@ models:
       Token Balance Changes on Balancer Pools, grouped by day.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
+              - token_address
     columns:
       - *block_date
       - *pool_id

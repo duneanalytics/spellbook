@@ -12,11 +12,12 @@ models:
     description: "All lending supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,15 +99,17 @@ models:
     description: "Aave v1 supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_ethereum_base_supply_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('aave_ethereum_base_supply_seed')
+            filter:
+              version: 1
     columns:
       - *blockchain
       - *project
@@ -136,15 +139,17 @@ models:
     description: "Aave v2 supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_ethereum_base_supply_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('aave_ethereum_base_supply_seed')
+            filter:
+              version: 2
     columns:
       - *blockchain
       - *project
@@ -174,15 +179,17 @@ models:
     description: "Aave v3 supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_ethereum_base_supply_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_ethereum_base_supply_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -212,15 +219,17 @@ models:
     description: "Aave v3 supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_lido_ethereum_base_supply_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_lido_ethereum_base_supply_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -250,15 +259,17 @@ models:
     description: "Aave v3 supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_etherfi_ethereum_base_supply_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_etherfi_ethereum_base_supply_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -288,15 +299,17 @@ models:
     description: "Aave horizonv3 supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_horizon_ethereum_base_supply_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_horizon_ethereum_base_supply_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -326,15 +339,17 @@ models:
     description: "Compound v2 supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('compound_ethereum_base_supply_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('compound_ethereum_base_supply_seed')
+            filter:
+              version: 2
     columns:
       - *blockchain
       - *project
@@ -364,15 +379,17 @@ models:
     description: "Compound v3 supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('compound_ethereum_base_supply_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('compound_ethereum_base_supply_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -402,13 +419,15 @@ models:
     description: "Radiant supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('radiant_ethereum_base_supply_seed')
+          arguments:
+            seed_file: ref('radiant_ethereum_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -438,13 +457,15 @@ models:
     description: "Uwulend supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('uwulend_ethereum_base_supply_seed')
+          arguments:
+            seed_file: ref('uwulend_ethereum_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -474,13 +495,15 @@ models:
     description: "Spark Protocol supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('spark_ethereum_base_supply_seed')
+          arguments:
+            seed_file: ref('spark_ethereum_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -510,13 +533,15 @@ models:
     description: "Flux Finance supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('fluxfinance_ethereum_base_supply_seed')
+          arguments:
+            seed_file: ref('fluxfinance_ethereum_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -546,13 +571,15 @@ models:
     description: "Strike supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('strike_ethereum_base_supply_seed')
+          arguments:
+            seed_file: ref('strike_ethereum_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -582,13 +609,15 @@ models:
     description: "Granary supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('granary_ethereum_base_supply_seed')
+          arguments:
+            seed_file: ref('granary_ethereum_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -618,11 +647,12 @@ models:
     description: "Morpho supply transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

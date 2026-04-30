@@ -72,8 +72,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'day'
+              arguments:
+                interval: 1
+                datepart: 'day'
 
   - name: utils_hours_table
     description: >
@@ -83,8 +84,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'hour'
+              arguments:
+                interval: 1
+                datepart: 'hour'
 
   - name: utils_minutes_table
     description: >
@@ -94,8 +96,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'minute'
+              arguments:
+                interval: 1
+                datepart: 'minute'
 
   - name: utils_weeks_table
     description: >
@@ -105,8 +108,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'week'
+              arguments:
+                interval: 1
+                datepart: 'week'
 
   - name: utils_months_table
     description: >
@@ -116,8 +120,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'month'
+              arguments:
+                interval: 1
+                datepart: 'month'
 
   - name: utils_years_table
     description: >
@@ -127,8 +132,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'year'
+              arguments:
+                interval: 1
+                datepart: 'year'
 
   - name: utils_quarters_table
     description: >
@@ -138,5 +144,6 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'quarter'
+              arguments:
+                interval: 1
+                datepart: 'quarter'

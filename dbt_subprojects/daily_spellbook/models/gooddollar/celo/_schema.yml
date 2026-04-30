@@ -11,9 +11,10 @@ models:
     description: "GoodDollar daily UBI claims"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_time
+              - tx_hash
     columns:
       - &block_time
         name: block_time
@@ -85,8 +86,9 @@ models:
     description: "GoodDollar daily UBI claims aggregates"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
+          arguments:
+            combination_of_columns:
+              - block_date
     columns:
       - *block_date
       - name: unique_claimers
@@ -119,8 +121,9 @@ models:
     description: "GoodDollar claimer aggregates"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - claimer
+          arguments:
+            combination_of_columns:
+              - claimer
     columns:
       - *claimer
       - *claim_count
@@ -142,8 +145,9 @@ models:
     description: "GoodDollar claimer streak stats"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - claimer
+          arguments:
+            combination_of_columns:
+              - claimer
     columns:
       - *claimer
       - name: longest_daily_streak
@@ -177,10 +181,11 @@ models:
     description: "GoodDollar reserve movement"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - evt_index
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_time
+              - evt_index
+              - tx_hash
     columns:
       - *block_time
       - *block_date
@@ -233,8 +238,9 @@ models:
     description: "GoodDollar reserve movement"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
+          arguments:
+            combination_of_columns:
+              - block_date
     columns:
       - *block_date
       - &cusd_in

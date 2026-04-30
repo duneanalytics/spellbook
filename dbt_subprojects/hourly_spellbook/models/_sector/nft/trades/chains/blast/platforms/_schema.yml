@@ -13,7 +13,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+         arguments:
+           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
 
  - name: blur_blast_base_trades
    meta:
@@ -27,7 +28,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+         arguments:
+           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
 
  - name: opensea_v4_blast_base_trades
    meta:
@@ -41,4 +43,5 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+         arguments:
+           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']

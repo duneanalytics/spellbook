@@ -14,8 +14,9 @@ models:
       aerodrome V1 base DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - &blockchain
         name: blockchain
@@ -59,8 +60,9 @@ models:
       aerodrome slipstream base DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -86,9 +88,10 @@ models:
       aerodrome base DEX pools across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
-            - version
+          arguments:
+            combination_of_columns:
+              - id
+              - version
     columns:
       - *blockchain
       - *project
@@ -114,10 +117,11 @@ models:
       "aerodrome base v1 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -168,10 +172,11 @@ models:
       "aerodrome base Slipstream base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -202,10 +207,11 @@ models:
       "aerodrome base base liquidity events across all versions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project

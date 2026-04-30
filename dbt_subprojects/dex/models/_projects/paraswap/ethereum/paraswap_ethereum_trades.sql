@@ -1,7 +1,10 @@
+-- CUR2-2163: touched so slim CI rebuilds this view in the same run as the
+-- map_internal_to_dex macro change; otherwise --defer resolves dex_aggregator_trades'
+-- ref to prod and the test reads stale upstream data.
 {{ config(
         schema='paraswap_ethereum',
         alias = 'trades',
-        
+
         )
 }}
 

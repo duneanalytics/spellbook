@@ -97,7 +97,7 @@ Join #spellbook on [Discord](https://discord.com/invite/ErrzwBz) for help.
 **Prerequisites:**
 - Fork and clone the repo ([GitHub guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects))
 - Python 3.9+ ([installation guide](https://docs.python-guide.org/starting/installation/))
-- [pip](https://pip.pypa.io/en/stable/installation/) and [pipenv](https://pypi.org/project/pipenv/)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - Windows users: Set `git config --global core.autocrlf true` for unix line endings
 
 **Initial Installation:**
@@ -109,18 +109,18 @@ cd user/directory/github/spellbook
 # Change this to wherever spellbook is stored locally on your machine.
 ```
 
-Run the install command to create a pipenv:
+Install project dependencies with uv:
 
 ```console
-pipenv install
+uv sync --locked
 ```
 
-If the install fails due to Python version mismatch, check your version with `python --version`, then update the Python version in the Pipfile to match (must be at least 3.9). Run `pipenv install` again.
+If install fails due to Python version mismatch, install Python 3.9 with `uv python install 3.9` and run `uv sync --locked` again.
 
-Activate the virtual environment:
+Run commands through uv (no manual environment activation required):
 
 ```console
-pipenv shell
+uv run dbt --version
 ```
 
 Navigate to the appropriate sub-project:
@@ -132,14 +132,20 @@ cd dbt_subprojects/<subproject_name>/
 Each subproject has its own dbt project file with varying configs. Run the following commands:
 
 ```console
-dbt clean # cleans up the project
-dbt deps # pull the dependencies
-dbt compile
+uv run dbt clean # cleans up the project
+uv run dbt deps # pull the dependencies
+uv run dbt compile
+```
+
+From the repo root, you can target a subproject directly:
+
+```console
+uv run dbt compile --project-dir dbt_subprojects/<subproject_name>/
 ```
 
 `dbt compile` converts JINJA/SQL templates into plain SQL in the `target/` folder, which you can test on dune.com.
 
-Each subproject includes a `profiles.yml` file that tells dbt how to run commands. You **must** be in the subproject root directory to run `dbt compile` correctly.
+Each subproject includes a `profiles.yml` file that tells dbt how to run commands. Run dbt either from the subproject directory or with `--project-dir`.
 
 ## How to use dbt to create spells
 

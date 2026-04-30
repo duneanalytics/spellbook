@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
-    unique_key = ['block_month', 'block_time', 'asset_id', 'evt_index', 'tx_hash'],
+    unique_key = ['block_month', 'block_time', 'asset_id', 'evt_index', 'tx_hash', 'contract_address'],
     merge_skip_unchanged = true,
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
@@ -63,12 +63,15 @@ source_trades as (
     shares,
     fee,
     maker,
-    taker
+    taker,
+    contract_version,
+    builder,
+    metadata
   from (
     select
       t.*,
       row_number() over (
-        partition by t.block_month, t.block_time, t.asset_id, t.evt_index, t.tx_hash
+        partition by t.block_month, t.block_time, t.asset_id, t.evt_index, t.tx_hash, t.contract_address
         order by t.block_time desc
       ) as rn
     from (
@@ -102,7 +105,10 @@ source_trades as (
     shares,
     fee,
     maker,
-    taker
+    taker,
+    contract_version,
+    builder,
+    metadata
   from {{ ref('polymarket_polygon_market_trades_raw') }}
 )
 
@@ -129,6 +135,9 @@ select
   t.fee,
   t.maker,
   t.taker,
+  t.contract_version,
+  t.builder,
+  t.metadata,
   md.unique_key,
   md.token_outcome_name,
   now() as _updated_at

@@ -10,9 +10,10 @@ models:
     description: "fundamental blockchain transaction metrics"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_hour
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_hour
 
   - name: evms_transaction_address_metrics
     meta:
@@ -24,8 +25,9 @@ models:
     description: "fundamental blockchain transaction address metrics"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_hour
-            - from_address
-            - to_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_hour
+              - from_address
+              - to_address

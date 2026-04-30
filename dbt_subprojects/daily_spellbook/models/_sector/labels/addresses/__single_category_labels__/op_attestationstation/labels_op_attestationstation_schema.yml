@@ -12,12 +12,13 @@ models:
     description: Attestation attesters on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - model_name
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - address
+              - name
+              - category
+              - model_name
+              - blockchain
     columns:
       - &blockchain
         name: blockchain
@@ -61,12 +62,13 @@ models:
     description: Attestation creators on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - model_name
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - address
+              - name
+              - category
+              - model_name
+              - blockchain
     columns:
       - *blockchain
       - *address
