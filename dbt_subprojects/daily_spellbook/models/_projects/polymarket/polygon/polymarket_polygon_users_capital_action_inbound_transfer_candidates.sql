@@ -46,14 +46,10 @@ select
 	end as amount_usd -- pusd has no usd price feed yet; treat 1:1 with usdc
 	, t.evt_index
 	, t.tx_hash
-	, true as to_wallet
-	, from_wallet.proxy is not null as from_wallet
 from
 	{{ source('tokens_polygon', 'transfers') }} as t
 inner join polymarket_wallets as to_wallet
 	on t."to" = to_wallet.proxy
-left join polymarket_wallets as from_wallet
-	on t."from" = from_wallet.proxy
 where
 	t.contract_address in (
 		0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- usdc.e

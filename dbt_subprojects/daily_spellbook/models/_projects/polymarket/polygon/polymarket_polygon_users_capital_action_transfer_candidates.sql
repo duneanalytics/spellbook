@@ -4,12 +4,62 @@
 	materialized='view',
 ) }}
 
+with polymarket_wallets as (
+	select distinct
+		proxy
+	from (
+		select
+			proxy
+		from
+			{{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
+		union all
+		select
+			proxy
+		from
+			{{ ref('polymarket_polygon_users_safe_proxies') }}
+	) as wallets
+)
+
 select
-	*
+	t.block_time
+	, t.block_month
+	, t.block_date
+	, t.block_number
+	, t.from_address
+	, t.to_address
+	, t.contract_address
+	, t.symbol
+	, t.amount_raw
+	, t.amount
+	, t.amount_usd
+	, t.evt_index
+	, t.tx_hash
+	, true as to_wallet
+	, from_wallet.proxy is not null as from_wallet
 from
-	{{ ref('polymarket_polygon_users_capital_action_inbound_transfer_candidates') }}
+	{{ ref('polymarket_polygon_users_capital_action_inbound_transfer_candidates') }} as t
+left join polymarket_wallets as from_wallet
+	on t.from_address = from_wallet.proxy
 union all
 select
-	*
+	t.block_time
+	, t.block_month
+	, t.block_date
+	, t.block_number
+	, t.from_address
+	, t.to_address
+	, t.contract_address
+	, t.symbol
+	, t.amount_raw
+	, t.amount
+	, t.amount_usd
+	, t.evt_index
+	, t.tx_hash
+	, false as to_wallet
+	, true as from_wallet
 from
-	{{ ref('polymarket_polygon_users_capital_action_outbound_transfer_candidates') }}
+	{{ ref('polymarket_polygon_users_capital_action_outbound_transfer_candidates') }} as t
+left join polymarket_wallets as to_wallet
+	on t.to_address = to_wallet.proxy
+where
+	to_wallet.proxy is null

@@ -245,7 +245,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "USDC.e, USDC, and pUSD transfers into Polymarket user wallets, with sender wallet flags precomputed for capital action classification"
+    description: "USDC.e, USDC, and pUSD transfers into Polymarket user wallets"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -289,11 +289,6 @@ models:
         description: "Transfer transaction hash"
         data_tests:
           - not_null
-      - name: to_wallet
-        description: "True when the transfer recipient is a known Polymarket user wallet"
-      - name: from_wallet
-        description: "True when the transfer sender is a known Polymarket user wallet"
-
   - name: polymarket_polygon_users_capital_action_outbound_transfer_candidates
     meta:
       blockchain: polygon
@@ -302,7 +297,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "USDC.e, USDC, and pUSD transfers out of Polymarket user wallets, excluding transfers already captured as inbound candidates"
+    description: "USDC.e, USDC, and pUSD transfers out of Polymarket user wallets"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -346,11 +341,6 @@ models:
         description: "Transfer transaction hash"
         data_tests:
           - not_null
-      - name: to_wallet
-        description: "True when the transfer recipient is a known Polymarket user wallet"
-      - name: from_wallet
-        description: "True when the transfer sender is a known Polymarket user wallet"
-
   - name: polymarket_polygon_users_capital_action_transfer_candidates
     meta:
       blockchain: polygon

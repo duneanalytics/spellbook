@@ -46,21 +46,16 @@ select
 	end as amount_usd -- pusd has no usd price feed yet; treat 1:1 with usdc
 	, t.evt_index
 	, t.tx_hash
-	, false as to_wallet
-	, true as from_wallet
 from
 	{{ source('tokens_polygon', 'transfers') }} as t
 inner join polymarket_wallets as from_wallet
 	on t."from" = from_wallet.proxy
-left join polymarket_wallets as to_wallet
-	on t."to" = to_wallet.proxy
 where
 	t.contract_address in (
 		0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- usdc.e
 		, 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 -- usdc
 		, 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pusd (v2 collateral; 1:1 usdc-backed)
 	)
-	and to_wallet.proxy is null
 	{% if is_incremental() -%}
 	and {{ incremental_predicate('t.block_time') }}
 	{% endif -%}
