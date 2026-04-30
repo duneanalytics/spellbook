@@ -237,6 +237,165 @@ models:
         data_tests:
           - not_null
 
+  - name: polymarket_polygon_users_capital_action_inbound_usdce_transfer_candidates
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "USDC.e transfers into Polymarket user wallets"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - evt_index
+              - tx_hash
+    columns:
+      - name: block_month
+        description: "UTC month of the transfer block time used for partitioning"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "UTC block timestamp for the transfer"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "UTC block date for the transfer"
+      - name: block_number
+        description: "Polygon block number for the transfer"
+      - name: from_address
+        description: "Transfer sender address"
+      - name: to_address
+        description: "Transfer recipient address"
+      - name: contract_address
+        description: "Transferred token contract address"
+      - name: symbol
+        description: "Transferred token symbol"
+      - name: amount_raw
+        description: "Raw token transfer amount"
+      - name: amount
+        description: "Token transfer amount adjusted for decimals"
+      - name: amount_usd
+        description: "USD transfer amount"
+      - name: evt_index
+        description: "Transfer event index within the transaction"
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Transfer transaction hash"
+        data_tests:
+          - not_null
+
+  - name: polymarket_polygon_users_capital_action_inbound_usdc_transfer_candidates
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "USDC transfers into Polymarket user wallets"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - evt_index
+              - tx_hash
+    columns:
+      - name: block_month
+        description: "UTC month of the transfer block time used for partitioning"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "UTC block timestamp for the transfer"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "UTC block date for the transfer"
+      - name: block_number
+        description: "Polygon block number for the transfer"
+      - name: from_address
+        description: "Transfer sender address"
+      - name: to_address
+        description: "Transfer recipient address"
+      - name: contract_address
+        description: "Transferred token contract address"
+      - name: symbol
+        description: "Transferred token symbol"
+      - name: amount_raw
+        description: "Raw token transfer amount"
+      - name: amount
+        description: "Token transfer amount adjusted for decimals"
+      - name: amount_usd
+        description: "USD transfer amount"
+      - name: evt_index
+        description: "Transfer event index within the transaction"
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Transfer transaction hash"
+        data_tests:
+          - not_null
+
+  - name: polymarket_polygon_users_capital_action_inbound_pusd_transfer_candidates
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "pUSD transfers into Polymarket user wallets"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - evt_index
+              - tx_hash
+    columns:
+      - name: block_month
+        description: "UTC month of the transfer block time used for partitioning"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "UTC block timestamp for the transfer"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "UTC block date for the transfer"
+      - name: block_number
+        description: "Polygon block number for the transfer"
+      - name: from_address
+        description: "Transfer sender address"
+      - name: to_address
+        description: "Transfer recipient address"
+      - name: contract_address
+        description: "Transferred token contract address"
+      - name: symbol
+        description: "Transferred token symbol"
+      - name: amount_raw
+        description: "Raw token transfer amount"
+      - name: amount
+        description: "Token transfer amount adjusted for decimals"
+      - name: amount_usd
+        description: "USD transfer amount; pUSD is treated 1:1 with USDC"
+      - name: evt_index
+        description: "Transfer event index within the transaction"
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Transfer transaction hash"
+        data_tests:
+          - not_null
+
   - name: polymarket_polygon_users_capital_action_inbound_transfer_candidates
     meta:
       blockchain: polygon
