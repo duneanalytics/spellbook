@@ -313,6 +313,30 @@ models:
       - *evt_index
       - *tx_hash
 
+  - name: polymarket_polygon_users_proxies
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Deduped Polymarket user proxy wallets across both factories (Safe + magic.link). Materialized to avoid re-running the union+distinct inside every downstream `exists` subquery (Trino inlines CTEs)."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - proxy
+    columns:
+      - name: proxy
+        description: "Polymarket user wallet address (Safe or magic.link proxy)"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Earliest observed creation timestamp for the proxy across factories"
+        data_tests:
+          - not_null
+
   - name: polymarket_polygon_users_magic_wallet_proxies
     meta:
       blockchain: polygon

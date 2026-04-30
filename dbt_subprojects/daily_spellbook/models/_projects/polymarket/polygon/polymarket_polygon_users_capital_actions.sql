@@ -26,22 +26,7 @@
 -- tokens_polygon.transfers against the ~7M-row Polymarket wallet set, avoiding the
 -- multi-year partitioned-hash explosion seen on full-history single-shot builds.
 
-with polymarket_wallets as (
-	select distinct
-		proxy
-	from (
-		select
-			proxy
-		from
-			{{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
-		union all
-		select
-			proxy
-		from
-			{{ ref('polymarket_polygon_users_safe_proxies') }}
-	) as wallets
-)
-, transfers as (
+with transfers as (
 	select
 		t.block_time
 		, date_trunc('month', t.block_time) as block_month
@@ -90,7 +75,7 @@ with polymarket_wallets as (
 			select
 				1
 			from
-				polymarket_wallets as to_wallet
+				{{ ref('polymarket_polygon_users_proxies') }} as to_wallet
 			where
 				t.to_address = to_wallet.proxy
 		) as to_wallet
@@ -98,7 +83,7 @@ with polymarket_wallets as (
 			select
 				1
 			from
-				polymarket_wallets as from_wallet
+				{{ ref('polymarket_polygon_users_proxies') }} as from_wallet
 			where
 				t.from_address = from_wallet.proxy
 		) as from_wallet
@@ -125,7 +110,7 @@ with polymarket_wallets as (
 			select
 				1
 			from
-				polymarket_wallets as w
+				{{ ref('polymarket_polygon_users_proxies') }} as w
 			where
 				t.to_address = w.proxy
 				or t.from_address = w.proxy
