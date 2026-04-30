@@ -6,6 +6,7 @@ on:
   pull_request:
     paths:
       - 'dbt_subprojects/tokens/models/prices/*/*.sql'
+      - '.github/workflows/prices_check.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
