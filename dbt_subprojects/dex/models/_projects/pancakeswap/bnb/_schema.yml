@@ -14,8 +14,9 @@ models:
       pancakeswap infinity cl bnb DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - &blockchain
         name: blockchain
@@ -59,8 +60,9 @@ models:
       pancakeswap infinity LB bnb DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -86,8 +88,9 @@ models:
       pancakeswap V3 bnb DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -113,8 +116,9 @@ models:
       pancakeswap V2 bnb DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -140,8 +144,9 @@ models:
       pancakeswap stableswap bnb DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -167,9 +172,10 @@ models:
       pancakeswap bnb DEX pools across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
-            - version
+          arguments:
+            combination_of_columns:
+              - id
+              - version
     columns:
       - *blockchain
       - *project
@@ -195,10 +201,11 @@ models:
       "pancakeswap bnb V3 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -249,10 +256,11 @@ models:
       "pancakeswap bnb V2 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -283,10 +291,11 @@ models:
       "pancakeswap bnb stableswap base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -317,10 +326,11 @@ models:
       "pancakeswap bnb infinity cl base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -351,10 +361,11 @@ models:
       "pancakeswap bnb base liquidity events across all versions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -385,10 +396,11 @@ models:
       Retrieves the most recent price (sqrtPriceX96) for each pool ID, reflecting the current price after the latest swap or liquidity modification.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - id
-            - block_index_sum
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - id
+              - block_index_sum
     columns:
       - *blockchain
       - *project

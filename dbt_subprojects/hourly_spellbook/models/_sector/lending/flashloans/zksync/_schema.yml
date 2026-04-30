@@ -12,9 +12,10 @@ models:
     description: "All lending flashloans transactions on zkSync"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -84,11 +85,13 @@ models:
     description: "Zerolend flashloans transactions on zkSync"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('zerolend_zksync_base_flashloans_seed')
+          arguments:
+            seed_file: ref('zerolend_zksync_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -115,11 +118,13 @@ models:
     description: "Aave v3 flashloans transactions on zkSync"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_zksync_base_flashloans_seed')
+          arguments:
+            seed_file: ref('aave_zksync_base_flashloans_seed')
     columns:
       - *blockchain
       - *project

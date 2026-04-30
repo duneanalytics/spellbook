@@ -13,22 +13,25 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+         arguments:
+           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
      - equal_rowcount_with_sources:
-         evt_sources:
-           - source('aurem_polygon','Exchange_evt_OrderFilled')
+         arguments:
+           evt_sources:
+             - source('aurem_polygon','Exchange_evt_OrderFilled')
      - check_seed:
-         seed_file: ref('aurem_polygon_base_trades_seed')
-         match_columns:
-           - block_number
-           - tx_hash
-           - sub_tx_trade_id
-         check_columns:
-           - buyer
-           - seller
-           - nft_contract_address
-           - nft_token_id
-           - price_raw
+         arguments:
+           seed_file: ref('aurem_polygon_base_trades_seed')
+           match_columns:
+             - block_number
+             - tx_hash
+             - sub_tx_trade_id
+           check_columns:
+             - buyer
+             - seller
+             - nft_contract_address
+             - nft_token_id
+             - price_raw
 
  - name: dew_polygon_base_trades
    meta:
@@ -42,22 +45,25 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+         arguments:
+           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
      - equal_rowcount_with_sources:
-         evt_sources:
-           - source('dew_polygon','dew_market_evt_Fulfilled')
+         arguments:
+           evt_sources:
+             - source('dew_polygon','dew_market_evt_Fulfilled')
      - check_seed:
-         seed_file: ref('dew_polygon_base_trades_seed')
-         match_columns:
-           - block_number
-           - tx_hash
-           - sub_tx_trade_id
-         check_columns:
-           - buyer
-           - seller
-           - nft_contract_address
-           - nft_token_id
-           - price_raw
+         arguments:
+           seed_file: ref('dew_polygon_base_trades_seed')
+           match_columns:
+             - block_number
+             - tx_hash
+             - sub_tx_trade_id
+           check_columns:
+             - buyer
+             - seller
+             - nft_contract_address
+             - nft_token_id
+             - price_raw
 
  - name: decentraland_polygon_base_trades
    meta:
@@ -71,7 +77,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+         arguments:
+           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
 
  - name: aavegotchi_polygon_base_trades
    meta:
@@ -85,7 +92,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
  - name: element_polygon_base_trades
    meta:
@@ -99,7 +107,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
  - name: fractal_polygon_base_trades
    meta:
@@ -113,7 +122,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
  - name: rarible_polygon_base_trades
    meta:
@@ -127,7 +137,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
  - name: tofu_polygon_base_trades
    meta:
@@ -141,7 +152,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
  - name: magiceden_polygon_base_trades
    meta:
@@ -155,7 +167,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
  - name: magiceden_v2_polygon_base_trades
    meta:
@@ -169,7 +182,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
  - name: opensea_v3_polygon_base_trades
    meta:
@@ -183,26 +197,28 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns:
-           - block_number
-           - tx_hash
-           - sub_tx_trade_id
+         arguments:
+           combination_of_columns:
+             - block_number
+             - tx_hash
+             - sub_tx_trade_id
      - check_seed:
-         seed_file: ref('opensea_seaport_trades_samples')
-         filter:
-           blockchain: polygon
-           project: opensea
-           project_version: v3
-         check_columns:
-           - buyer
-           - seller
-           - price_raw
-           - platform_fee_amount_raw
-           - royalty_fee_amount_raw
-         match_columns:
-           - block_number
-           - tx_hash
-           - sub_tx_trade_id
+         arguments:
+           seed_file: ref('opensea_seaport_trades_samples')
+           filter:
+             blockchain: polygon
+             project: opensea
+             project_version: v3
+           check_columns:
+             - buyer
+             - seller
+             - price_raw
+             - platform_fee_amount_raw
+             - royalty_fee_amount_raw
+           match_columns:
+             - block_number
+             - tx_hash
+             - sub_tx_trade_id
 
  - name: opensea_v4_polygon_base_trades
    meta:
@@ -216,26 +232,28 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns:
-           - block_number
-           - tx_hash
-           - sub_tx_trade_id
+         arguments:
+           combination_of_columns:
+             - block_number
+             - tx_hash
+             - sub_tx_trade_id
      - check_seed:
-         seed_file: ref('opensea_seaport_trades_samples')
-         filter:
-           blockchain: polygon
-           project: opensea
-           project_version: v4
-         check_columns:
-           - buyer
-           - seller
-           - price_raw
-           - platform_fee_amount_raw
-           - royalty_fee_amount_raw
-         match_columns:
-           - block_number
-           - tx_hash
-           - sub_tx_trade_id
+         arguments:
+           seed_file: ref('opensea_seaport_trades_samples')
+           filter:
+             blockchain: polygon
+             project: opensea
+             project_version: v4
+           check_columns:
+             - buyer
+             - seller
+             - price_raw
+             - platform_fee_amount_raw
+             - royalty_fee_amount_raw
+           match_columns:
+             - block_number
+             - tx_hash
+             - sub_tx_trade_id
 
  - name: opensea_v2_polygon_base_trades
    meta:
@@ -249,18 +267,20 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - check_seed:
-         seed_file: ref('opensea_polygon_zeroex_trades_samples')
-         match_columns:
-           - tx_hash
-           - sub_tx_trade_id
-         check_columns:
-           - buyer
-           - seller
-           - nft_contract_address
-           - nft_token_id
-           - price_raw
+         arguments:
+           seed_file: ref('opensea_polygon_zeroex_trades_samples')
+           match_columns:
+             - tx_hash
+             - sub_tx_trade_id
+           check_columns:
+             - buyer
+             - seller
+             - nft_contract_address
+             - nft_token_id
+             - price_raw
 
  - name: mooar_polygon_base_trades
    meta:
@@ -274,7 +294,8 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
  - name: oneplanet_polygon_base_trades
    meta:
@@ -288,4 +309,5 @@ models:
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+         arguments:
+           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

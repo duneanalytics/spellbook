@@ -12,10 +12,12 @@ models:
     description: "Circle's CCTP v1 bridge deposits events on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_arbitrum','tokenmessenger_evt_depositforburn')
+          arguments:
+            evt_sources:
+              - source('circle_arbitrum','tokenmessenger_evt_depositforburn')
   - name: bridges_arbitrum_cctp_v1_withdrawals
     meta:
       blockchain: arbitrum
@@ -27,10 +29,12 @@ models:
     description: "Circle's CCTP v1 bridge withdrawals events on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_arbitrum','tokenmessenger_evt_mintandwithdraw')
+          arguments:
+            evt_sources:
+              - source('circle_arbitrum','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_arbitrum_across_v1_deposits
     meta:
       blockchain: arbitrum
@@ -88,7 +92,8 @@ models:
     description: "Hyperliquid's native v1 bridge deposits events on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
   - name: bridges_arbitrum_hyperliquid_v1_withdrawals
     meta:
       blockchain: arbitrum
@@ -100,7 +105,8 @@ models:
     description: "Hyperliquid's native v1 bridge withdrawals events on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
   - name: bridges_arbitrum_hyperliquid_v2_deposits
     meta:
       blockchain: arbitrum
@@ -112,7 +118,8 @@ models:
     description: "Hyperliquid's native v2 bridge deposits events on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
   - name: bridges_arbitrum_hyperliquid_v2_withdrawals
     meta:
       blockchain: arbitrum
@@ -124,7 +131,8 @@ models:
     description: "Hyperliquid's native v2 bridge withdrawals events on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
   - name: bridges_arbitrum_connext_v1_deposits
     meta:
       blockchain: arbitrum

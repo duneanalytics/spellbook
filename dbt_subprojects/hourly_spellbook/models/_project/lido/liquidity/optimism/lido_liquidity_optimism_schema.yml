@@ -12,10 +12,11 @@ models:
         Lido wstETH liquidity pools on Kyberswap Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - &pool_name
         name: pool_name
@@ -74,10 +75,11 @@ models:
         Lido wstETH liquidity pools on Uniswap v3 Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -106,10 +108,11 @@ models:
         Lido wstETH liquidity pools on Balancer Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -138,10 +141,11 @@ models:
         Lido wstETH liquidity pools on Curve Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -170,10 +174,11 @@ models:
         Lido wstETH liquidity pools on Velodrome Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -202,10 +207,11 @@ models:
         Lido wstETH liquidity pools on Velodrome V2 Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -234,10 +240,11 @@ models:
         Lido wstETH liquidity pools on Solidly V3 on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool

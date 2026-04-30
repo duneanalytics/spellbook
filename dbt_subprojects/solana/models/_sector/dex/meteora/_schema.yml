@@ -12,7 +12,8 @@ models:
         staging model for meteora v1 swap data from decoded tables (swap + vault deposit join)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+          arguments:
+            combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
 
   - name: meteora_v1_solana_base_trades_backfill
     meta:
@@ -25,7 +26,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_month', 'surrogate_key' ]
+          arguments:
+            combination_of_columns: [ 'block_month', 'surrogate_key' ]
 
   - name: meteora_v1_solana_base_trades
     meta:
@@ -38,7 +40,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          arguments:
+            combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
   - name: meteora_v2_solana_base_trades
     meta:
       blockchain: solana
@@ -50,7 +53,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          arguments:
+            combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
           
   - name: meteora_v4_solana_base_trades
     meta:
@@ -63,7 +67,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          arguments:
+            combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
           
   - name: meteora_v3_solana_base_trades
     meta:
@@ -76,7 +81,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          arguments:
+            combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
 
   - name: meteora_version_amm_base_trades
     meta:

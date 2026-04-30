@@ -13,9 +13,10 @@ models:
         Pooltogether V4 contract prize structures on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - network
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - network
     columns:
       - &tx_hash
         name: tx_hash

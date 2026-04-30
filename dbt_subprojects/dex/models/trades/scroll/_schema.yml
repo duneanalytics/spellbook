@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_scroll_base_trades
 
@@ -28,11 +30,13 @@ models:
     description: "Uniswap v3 scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('uniswap_scroll_base_trades_seed')
 
   - name: sushiswap_v2_scroll_base_trades
     meta:
@@ -45,11 +49,13 @@ models:
     description: "Sushiswap v2 scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('sushiswap_scroll_base_trades_seed')
 
   - name: zebra_scroll_base_trades
     meta:
@@ -62,11 +68,13 @@ models:
     description: "Zebra scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('zebra_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('zebra_scroll_base_trades_seed')
 
   - name: scrollswap_scroll_base_trades
     meta:
@@ -79,11 +87,13 @@ models:
     description: "Zebra scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('scrollswap_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('scrollswap_scroll_base_trades_seed')
 
   - name: syncswap_v1_scroll_base_trades
     meta:
@@ -96,11 +106,13 @@ models:
     description: "SyncSwap V1 scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('syncswap_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('syncswap_scroll_base_trades_seed')
 
   - name: nuri_scroll_base_trades
     meta:
@@ -113,11 +125,13 @@ models:
     description: "Nuri scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('nuri_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('nuri_scroll_base_trades_seed')
 
   - name: izumi_finance_scroll_base_trades
     meta:
@@ -130,11 +144,13 @@ models:
     description: "izumi_finance scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('izumi_finance_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('izumi_finance_scroll_base_trades_seed')
 
   - name: icecreamswap_v2_scroll_base_trades
     meta:
@@ -147,11 +163,13 @@ models:
     description: "icecreamswap v2 scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('icecreamswap_v2_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('icecreamswap_v2_scroll_base_trades_seed')
 
   - name: maverick_v2_scroll_base_trades
     meta:
@@ -164,13 +182,15 @@ models:
     description: "Maverick scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_scroll_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('maverick_scroll_base_trades_seed')
+            filter:
+              version: 2
   
   - name: swaap_v2_scroll_base_trades
     meta:
@@ -183,13 +203,15 @@ models:
     description: "swaap v2 scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_scroll_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('swaap_scroll_base_trades_seed')
+            filter:
+              version: 2
 
   - name: leetswap_scroll_base_trades
     meta:
@@ -202,11 +224,13 @@ models:
     description: "leetswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('leetswap_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('leetswap_scroll_base_trades_seed')
 
   - name: spacefi_scroll_base_trades
     meta:
@@ -219,11 +243,13 @@ models:
     description: "leetswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('spacefi_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('spacefi_scroll_base_trades_seed')
 
   - name: punkswap_scroll_base_trades
     meta:
@@ -236,16 +262,19 @@ models:
     description: "punkswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('punkswap_scroll_base_trades_seed')
+          arguments:
+            seed_file: ref('punkswap_scroll_base_trades_seed')
 
   - name: dex_scroll_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

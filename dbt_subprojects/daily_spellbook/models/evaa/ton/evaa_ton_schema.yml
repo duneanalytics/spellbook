@@ -12,9 +12,10 @@ models:
     description: "Withdrawal events on the EVAA lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -61,9 +62,10 @@ models:
     description: "Supply (deposit) events on the EVAA lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -108,9 +110,10 @@ models:
     description: "Liquidation events on the EVAA lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -171,8 +174,9 @@ models:
     description: "EVAA lending protocol asset mapping on TON: asset_id, asset_name, jetton_master address, and decimals."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - asset_id
+          arguments:
+            combination_of_columns:
+              - asset_id
     columns:
       - name: asset_id
         description: "asset id (uint256)"

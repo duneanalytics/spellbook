@@ -13,17 +13,19 @@ models:
         unidex dex trades on optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index 
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index 
       - check_dex_aggregator_seed:
-          blockchain: optimism
-          project: unidex
-          version: 1
+          arguments:
+            blockchain: optimism
+            project: unidex
+            version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -110,17 +112,19 @@ models:
         unidex dex base trades on optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - check_dex_aggregator_seed:
-          blockchain: optimism
-          project: unidex
-          version: 1
+          arguments:
+            blockchain: optimism
+            project: unidex
+            version: 1
     columns:
       - *blockchain
       - *project

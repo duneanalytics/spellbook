@@ -12,11 +12,12 @@ models:
       DEX MEV Sandwich Trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - outer_instruction_index
+              - inner_instruction_index
     columns: 
       - &blockchain
         name: blockchain
@@ -105,11 +106,12 @@ models:
       DEX MEV Sandwiched Trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - outer_instruction_index
+              - inner_instruction_index
     columns: 
       - *blockchain
       - *project

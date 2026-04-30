@@ -83,12 +83,13 @@ models:
       DEX Multi Hop trades on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -122,12 +123,13 @@ models:
       DEX Multi Hop trades on avalanche_c
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -161,12 +163,13 @@ models:
       DEX Multi Hop trades on base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -200,12 +203,13 @@ models:
       DEX Multi Hop trades on blast
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -239,12 +243,13 @@ models:
       DEX Multi Hop trades on bnb
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -278,12 +283,13 @@ models:
       DEX Multi Hop trades on celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -317,12 +323,13 @@ models:
       DEX Multi Hop trades on ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -356,12 +363,13 @@ models:
       DEX Multi Hop trades on gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -395,12 +403,13 @@ models:
       DEX Multi Hop trades on ink
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -434,12 +443,13 @@ models:
       DEX Multi Hop trades on linea
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -473,12 +483,13 @@ models:
       DEX Multi Hop trades on mantle
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -512,12 +523,13 @@ models:
       DEX Multi Hop trades on monad
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -551,12 +563,13 @@ models:
       DEX Multi Hop trades on optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -590,12 +603,13 @@ models:
       DEX Multi Hop trades on plasma
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -629,12 +643,13 @@ models:
       DEX Multi Hop trades on polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -668,12 +683,13 @@ models:
       DEX Multi Hop trades on scroll
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -707,12 +723,13 @@ models:
       DEX Multi Hop trades on sonic
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -746,12 +763,13 @@ models:
       DEX Multi Hop trades on unichain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -785,12 +803,13 @@ models:
       DEX Multi Hop trades on worldchain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -824,12 +843,13 @@ models:
       DEX Multi Hop trades on zksync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project
@@ -863,12 +883,13 @@ models:
       DEX Multi Hop trades on zora
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
     columns: 
       - *blockchain
       - *project

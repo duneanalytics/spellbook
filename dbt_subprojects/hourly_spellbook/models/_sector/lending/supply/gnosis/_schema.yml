@@ -12,11 +12,12 @@ models:
     description: "All lending supply transactions on Gnosis"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,13 +99,15 @@ models:
     description: "Agave supply transactions on Gnosis"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('agave_gnosis_base_supply_seed')
+          arguments:
+            seed_file: ref('agave_gnosis_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -134,13 +137,15 @@ models:
     description: "Aave v3 supply transactions on Gnosis"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_gnosis_base_supply_seed')
+          arguments:
+            seed_file: ref('aave_gnosis_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -170,15 +175,17 @@ models:
     description: "RealT RMM v1 supply transactions on Gnosis"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('realt_rmm_gnosis_base_supply_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('realt_rmm_gnosis_base_supply_seed')
+            filter:
+              version: 1
     columns:
       - *blockchain
       - *project
@@ -208,15 +215,17 @@ models:
     description: "RealT RMM v2 supply transactions on Gnosis"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('realt_rmm_gnosis_base_supply_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('realt_rmm_gnosis_base_supply_seed')
+            filter:
+              version: 2
     columns:
       - *blockchain
       - *project
@@ -246,11 +255,12 @@ models:
     description: "Spark Protocol supply transactions on Gnosis Chain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

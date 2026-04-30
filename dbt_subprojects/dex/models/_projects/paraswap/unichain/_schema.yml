@@ -13,19 +13,21 @@ models:
         Paraswap V6 contract aggregator trades on unichain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - method
-            - trace_address            
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - method
+              - trace_address            
 
       - check_dex_aggregator_seed:
-         blockchain: unichain
-         project: paraswap
-         version: 6
+         arguments:
+           blockchain: unichain
+           project: paraswap
+           version: 6
     columns:
       - &blockchain
         name: blockchain
@@ -139,10 +141,11 @@ models:
     description: "Paraswap V6 trades decoded"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:            
-            - call_tx_hash
-            - method
-            - call_trace_address                        
+          arguments:
+            combination_of_columns:            
+              - call_tx_hash
+              - method
+              - call_trace_address                        
     columns:
       - *blockchain
       - *project

@@ -11,9 +11,10 @@ models:
     description: "All CEX-tied addresses identified on Tron"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - address
     columns:
       - name: blockchain
         description: "Blockchain"

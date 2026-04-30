@@ -13,17 +13,19 @@ models:
       Synthetix perpetuals trades/swaps on base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - check_perpetuals_seed:
-          blockchain: base
-          project: Synthetix
-          version: 3
+          arguments:
+            blockchain: base
+            project: Synthetix
+            version: 3
     columns:
       - &blockchain
         name: blockchain

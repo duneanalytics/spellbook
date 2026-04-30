@@ -12,14 +12,15 @@ models:
         Seaport emitted event traces across chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_hash
-            - evt_index
-            - order_hash
-            - trace_side
-            - trace_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_hash
+              - evt_index
+              - order_hash
+              - trace_side
+              - trace_index
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -32,7 +33,8 @@ models:
       - name: trace_side
         data_tests:
           - accepted_values:
-              values: ['consideration', 'offer']
+              arguments:
+                values: ['consideration', 'offer']
         description: "Side of the trace"
       - name: order_hash
         description: "Unique trade identifier hash"
@@ -41,7 +43,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20', 'erc721', 'erc1155', 'bep20', 'bep721', 'bep1155']
+              arguments:
+                values: ['native', 'erc20', 'erc721', 'erc1155', 'bep20', 'bep721', 'bep1155']
         description: "Token standard"
       - name: trace_index
         description: "Index of the trace"
@@ -75,10 +78,11 @@ models:
         Seaport tagging to identify the different protocols using Seaport across chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tagging_method
-            - identifier
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tagging_method
+              - identifier
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -86,7 +90,8 @@ models:
         description: "Identification method"
         data_tests:
           - accepted_values:
-              values: ['zone', 'fee_recipient', 'tx_data_salt']
+              arguments:
+                values: ['zone', 'fee_recipient', 'tx_data_salt']
       - name: identifier
         description: "Identifier hash"
       - name: protocol

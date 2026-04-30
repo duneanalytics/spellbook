@@ -12,12 +12,13 @@ models:
     description: &trades_description This table generates all trades from all dex protocols.
     data_tests: &unique_trade_test
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_month
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_month
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -68,7 +69,8 @@ models:
         description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
         data_tests:
           - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+              arguments:
+                max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
@@ -145,9 +147,10 @@ models:
       tags: ['dex', 'mapping']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - factory
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - factory
     columns:
       - name: src
         description: "Source of the mapping data"
@@ -194,8 +197,9 @@ models:
       contributors: *contributors
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_month
-            - address
-            - '"from"'
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_month
+              - address
+              - '"from"'

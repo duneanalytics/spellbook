@@ -11,8 +11,9 @@ models:
     description: "Price tokens on fantom chain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - contract_address
       - test_prices_tokens_against_erc20
     columns:
       - name: token_id
@@ -21,7 +22,8 @@ models:
         description: "Native blockchain of the token, if any"
         data_tests:
           - accepted_values:
-              values: [ "fantom" ]
+              arguments:
+                values: [ "fantom" ]
       - name: contract_address
         description: "Contract address of the token, if any"
       - name: symbol

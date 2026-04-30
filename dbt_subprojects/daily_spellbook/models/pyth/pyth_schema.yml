@@ -11,10 +11,11 @@ models:
     description: "Pyth Entropy request"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - assigned_sequence_number
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - assigned_sequence_number
     columns:
       - &blockchain
         name: blockchain

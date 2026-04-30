@@ -14,9 +14,10 @@ models:
     description: Gas fees paid by rollups for posting transaction data or state updates on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - name
-            - day
+          arguments:
+            combination_of_columns:
+              - name
+              - day
     columns:
       - &name
         name: name
@@ -65,9 +66,10 @@ models:
     description: "Gas fees earned by rollup on L2"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - name
-            - day
+          arguments:
+            combination_of_columns:
+              - name
+              - day
     columns:
       - *day
       - *name
