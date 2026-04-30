@@ -84,7 +84,7 @@ The Dune team will review and respond with whether we'll accept the contribution
 
 Once you submit a PR, our CI pipeline tests it against Dune's engine. Query your test data using:
 
-`dune_spellbook_ci__tmp_pr{{pr_number}}.{{model_name}}`
+`test_schema.git_dunesql_{{commit_hash}}_{{table_name}}`
 
 Find exact table names in the `dbt slim ci` action logs under `dbt run initial model(s)`. 
 
