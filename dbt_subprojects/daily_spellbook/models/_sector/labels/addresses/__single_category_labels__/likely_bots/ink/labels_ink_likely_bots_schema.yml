@@ -15,7 +15,8 @@ models:
         tests:
           - not_null
           - unique:
-              where: "blockchain = 'ink'"
+              arguments:
+                where: "blockchain = 'ink'"
       - name: name
         description: "The name of the bot type"
         tests:
@@ -63,7 +64,8 @@ models:
         tests:
           - not_null
           - unique:
-              where: "blockchain = 'ink'"
+              arguments:
+                where: "blockchain = 'ink'"
       - name: name
         description: "The name of the bot type"
         tests:

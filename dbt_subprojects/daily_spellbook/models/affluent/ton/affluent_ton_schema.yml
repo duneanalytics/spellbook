@@ -12,9 +12,10 @@ models:
     description: "Supply (deposit) events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -49,9 +50,10 @@ models:
     description: "Withdrawal events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -87,9 +89,10 @@ models:
     description: "Borrow events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -125,9 +128,10 @@ models:
     description: "Repayment events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -166,9 +170,10 @@ models:
     description: "Liquidation events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"

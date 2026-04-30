@@ -13,10 +13,11 @@ models:
       This unified model combines both Swapr V2 and Swapr V3 pools.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-            - creation_block_number
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
+              - creation_block_number
     columns:
       - name: blockchain
         description: "Blockchain on which the DEX is deployed"

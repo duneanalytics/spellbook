@@ -13,9 +13,10 @@ models:
       Since Honeyswap is a Uniswap V2 fork, a fixed fee of 3000 is assumed (0.3 with factor).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
     columns:
       - &blockchain
         name: blockchain

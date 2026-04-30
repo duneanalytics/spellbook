@@ -12,10 +12,12 @@ models:
     description: "Circle's CCTP v1 bridge deposits events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_unichain','tokenmessenger_evt_depositforburn')
+          arguments:
+            evt_sources:
+              - source('circle_unichain','tokenmessenger_evt_depositforburn')
   - name: bridges_unichain_cctp_v1_withdrawals
     meta:
       blockchain: unichain
@@ -27,10 +29,12 @@ models:
     description: "Circle's CCTP v1 bridge withdrawals events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_unichain','tokenmessenger_evt_mintandwithdraw')
+          arguments:
+            evt_sources:
+              - source('circle_unichain','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_unichain_across_v2_deposits
     meta:
       blockchain: unichain
@@ -78,7 +82,8 @@ models:
     description: "Tether's USDT0 v1 bridge deposits events on Unichain"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
   - name: bridges_unichain_tether_v1_withdrawals
     meta:
       blockchain: unichain
@@ -90,7 +95,8 @@ models:
     description: "Tether's USDT0 v1 bridge withdrawals events on Unichain"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
   - name: bridges_unichain_symbiosis_v1_deposits
     meta:
       blockchain: arbitrum

@@ -12,8 +12,9 @@ models:
     description: "Table showing who first funded each HyperEVM address with native token"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -53,8 +54,9 @@ models:
     description: "Table showing first activity of each HyperEVM address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -86,8 +88,9 @@ models:
     description: "Table showing which token was first received for each HyperEVM address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - name: blockchain
         description: "Blockchain"

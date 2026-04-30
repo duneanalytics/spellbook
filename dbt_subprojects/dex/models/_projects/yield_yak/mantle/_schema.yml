@@ -13,18 +13,20 @@ models:
         yield yak aggregator trades on mantle
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_aggregator_seed:
-          blockchain: mantle
-          project: yield_yak
-          version: 1
+          arguments:
+            blockchain: mantle
+            project: yield_yak
+            version: 1
     columns:
       - name: blockchain
         description: "Blockchain which the DEX is deployed"

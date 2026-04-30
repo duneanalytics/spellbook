@@ -62,7 +62,8 @@ models:
         description: "Direction of the bridge transfer (inbound or outbound)"
         tests:
           - accepted_values:
-              values: ['inbound', 'outbound']
+              arguments:
+                values: ['inbound', 'outbound']
       - name: receipt_succeeded
         description: "Whether the receipt execution was successful"
       - name: method_name

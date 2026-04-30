@@ -12,9 +12,10 @@ models:
     description: "Trade notification events from Storm Trade on TON, capturing vault fund flows, fees, referrals, and executor rewards."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -71,9 +72,10 @@ models:
     description: "Executed perpetual trading orders on Storm Trade on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -174,9 +176,10 @@ models:
     description: "Completed perpetual trading orders on Storm Trade on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -251,9 +254,10 @@ models:
     description: "Position update events on Storm Trade on TON, tracking changes to open perpetual positions."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"

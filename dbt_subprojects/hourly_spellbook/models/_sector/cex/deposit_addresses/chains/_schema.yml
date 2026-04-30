@@ -11,8 +11,9 @@ models:
     description: "All identified CEX deposit addresses on arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - &address
         name: address
@@ -61,8 +62,9 @@ models:
     description: "All identified CEX deposit addresses on avalanche_c"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -87,8 +89,9 @@ models:
     description: "All identified CEX deposit addresses on base"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -113,8 +116,9 @@ models:
     description: "All identified CEX deposit addresses on bnb"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -139,8 +143,9 @@ models:
     description: "All identified CEX deposit addresses on celo"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -165,8 +170,9 @@ models:
     description: "All identified CEX deposit addresses on ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -191,8 +197,9 @@ models:
     description: "All identified CEX deposit addresses on gnosis"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -217,8 +224,9 @@ models:
     description: "All identified CEX deposit addresses on optimism"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -243,8 +251,9 @@ models:
     description: "All identified CEX deposit addresses on polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -269,8 +278,9 @@ models:
     description: "All identified CEX deposit addresses on scroll"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -295,8 +305,9 @@ models:
     description: "All identified CEX deposit addresses on zora"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -321,8 +332,9 @@ models:
     description: "All identified CEX deposit addresses on berachain"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -347,8 +359,9 @@ models:
     description: "All identified CEX deposit addresses on ink"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -373,8 +386,9 @@ models:
     description: "All identified CEX deposit addresses on katana"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -399,8 +413,9 @@ models:
     description: "All identified CEX deposit addresses on nova"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -425,8 +440,9 @@ models:
     description: "All identified CEX deposit addresses on opbnb"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain
@@ -451,8 +467,9 @@ models:
     description: "All identified CEX deposit addresses on unichain"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *address
       - *blockchain

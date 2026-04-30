@@ -13,9 +13,10 @@ models:
     description: "fee updates on token2022 tokens"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - account_mint
-            - fee_time
+          arguments:
+            combination_of_columns:
+              - account_mint
+              - fee_time
     columns:
       - name: account_mint
         description: "fungible token mint address on Solana"

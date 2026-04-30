@@ -12,18 +12,20 @@ models:
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
       - check_seed:
-          seed_file: ref('zeroex_arbitrum_api_fills_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
+          arguments:
+            seed_file: ref('zeroex_arbitrum_api_fills_sample')
+            match_columns:
+              - tx_hash
+              - evt_index
+            check_columns:
+              - maker
+              - taker
     columns:
       - &tx_hash
         name: tx_hash
@@ -103,18 +105,20 @@ models:
         0x API erc20 swaps raw fills (deduped) on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
       - check_seed:
-          seed_file: ref('zeroex_arbitrum_api_fills_deduped_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
+          arguments:
+            seed_file: ref('zeroex_arbitrum_api_fills_deduped_sample')
+            match_columns:
+              - tx_hash
+              - evt_index
+            check_columns:
+              - maker
+              - taker
     columns:
       - *blockchain
       - *block_date
@@ -161,20 +165,22 @@ models:
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_time
+              - tx_hash
+              - evt_index
       - check_seed:
-          seed_file: ref('zeroex_arbitrum_native_fills_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
-            - maker_token
-            - taker_token
+          arguments:
+            seed_file: ref('zeroex_arbitrum_native_fills_sample')
+            match_columns:
+              - tx_hash
+              - evt_index
+            check_columns:
+              - maker
+              - taker
+              - maker_token
+              - taker_token
     columns:
       - *tx_hash
       - *contract_address
@@ -217,11 +223,12 @@ models:
         0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *block_date
@@ -262,9 +269,10 @@ models:
       along with their activation timestamps and token IDs.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - settler_address
-            - token_id
+          arguments:
+            combination_of_columns:
+              - settler_address
+              - token_id
     columns:
       - name: tx_hash
         description: "Transaction hash where the settler address was registered"

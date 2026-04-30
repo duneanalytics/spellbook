@@ -264,7 +264,8 @@ models:
         description: "Detection source: 'factory', 'base', or 'dynamic'"
         data_tests:
           - accepted_values:
-              values: ["factory", "base", "dynamic"]
+              arguments:
+                values: ["factory", "base", "dynamic"]
       - name: created_at
         description: "Timestamp for contract creation"
 
@@ -544,9 +545,10 @@ models:
       A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - method_id
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - method_id
     columns:
       - *blockchain
       - &method_id
@@ -567,9 +569,10 @@ models:
       A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - method_id
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - method_id
     columns:
       - *blockchain
       - *method_id
@@ -589,9 +592,10 @@ models:
       A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - method_id
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - method_id
     columns:
       - *blockchain
       - *method_id

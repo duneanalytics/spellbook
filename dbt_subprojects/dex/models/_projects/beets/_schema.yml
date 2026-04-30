@@ -12,10 +12,11 @@ models:
       Beets swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - &blockchain
         name: blockchain
@@ -70,10 +71,11 @@ models:
       Beets v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -96,10 +98,11 @@ models:
       Beets v3 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -111,8 +114,6 @@ models:
       - *block_number
       - *swap_fee_percentage      
 
-
-models:
   - name: beets_trades
     meta:
       blockchain: sonic
@@ -124,13 +125,14 @@ models:
       DEX trades on beets on sonic
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - &project

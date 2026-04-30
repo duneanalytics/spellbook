@@ -14,9 +14,10 @@ models:
     description: "Aave aToken list and mappings to underlying tokens"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - atoken_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - atoken_address
     columns:
     - &blockchain
       name: blockchain

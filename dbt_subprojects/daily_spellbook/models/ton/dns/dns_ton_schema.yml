@@ -12,10 +12,11 @@ models:
       TON Domains delegation updates info
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - tx_hash
-            - domain
+          arguments:
+            combination_of_columns:
+              - block_time
+              - tx_hash
+              - domain
     columns:
       - name: block_date
         description: "block date"
@@ -44,9 +45,10 @@ models:
     description: "Latest .ton domain info: NFT owner, minter, ownership type (mint/sale/transfer), and wallet delegation."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - domain
-            - dns_nft_item_address
+          arguments:
+            combination_of_columns:
+              - domain
+              - dns_nft_item_address
     columns:
       - name: domain
         description: ".ton domain"
@@ -73,11 +75,13 @@ models:
     description: "Mapping between TON addresses and their best-matching .ton domain name."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - domain
+          arguments:
+            combination_of_columns:
+              - domain
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - name: domain
         description: ".ton domain"

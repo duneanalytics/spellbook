@@ -12,11 +12,12 @@ models:
         A table containing all known pools of curve on optimism (i.e. metapool, basicpool). Additional types should be monitored to ensure they're accurately shown.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - version
-              - tokenid
-              - token
-              - pool
+          arguments:
+            combination_of_columns:
+                - version
+                - tokenid
+                - token
+                - pool
     columns:
       - &version
         name: version

@@ -38,11 +38,11 @@ Within each PR, either in the ‘Checks’ tab at the top or in the final review
 ### The Key Things to Navigate To and Use:
 
 - Under `dbt seed` – find any seeds which ran and built on Dune, if applicable to given PR.
-- Under `dbt run initial model(s)` – find all spells from the PR, with unique CI table names, that are built on Dune.
+- Under `dbt run initial model(s)` – find all spells from the PR, with PR-scoped CI table names, that are built on Dune.
   - **Note**: these can be queried on Dune & are highly encouraged, in order to ensure highest data quality!
   - Each set of CI tables persist for ~24 hours on Dune, before being automatically cleaned up.
   - If you notice the CI table can’t be queried, simply re-run the CI tests to rebuild.
-  - CI test tables will maintain a universal format: `test_schema.git_dunesql_<GIT_HASH>_` – prefix assigned to all table aliases. Example: `test_schema.git_dunesql_bb29a782_cipher_arbitrum_base_trades`.
+  - CI test tables will maintain a universal format: `dune_spellbook_ci__tmp_pr<PR_NUMBER>.<MODEL_NAME>`. Example: `dune_spellbook_ci__tmp_pr9609.gas_aptos_fees`.
 - Under `dbt test initial model(s)` – find all the tests which ran on the models within PR.
 
 ## Advanced CI Tests Usage
