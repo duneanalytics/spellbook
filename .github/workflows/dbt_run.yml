@@ -62,7 +62,7 @@ jobs:
         run: "uv run bash ./scripts/list_modified_downstream.sh"
 
       - name: dbt run initial model(s)
-        run: "uv run dbt -x run $PROFILE --select state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "uv run dbt -x run --vars '{polymarket_polygon_capital_actions_batch_size: month}' $PROFILE --select state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt test initial model(s)
         run: "uv run dbt test $PROFILE --select state:new state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"

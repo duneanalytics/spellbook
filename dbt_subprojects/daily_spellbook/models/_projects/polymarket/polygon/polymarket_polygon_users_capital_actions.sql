@@ -6,7 +6,7 @@
 	incremental_strategy='microbatch',
 	event_time='block_date',
 	begin='2020-09-27',
-	batch_size='day',
+	batch_size=var('polymarket_polygon_capital_actions_batch_size', 'day'),
 	lookback=3,
 	partition_by=['block_month'],
 	unique_key=['block_month', 'block_time', 'evt_index', 'tx_hash'],
