@@ -12,10 +12,11 @@ models:
       aerodrome DEX pools across all chains and versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-            - version
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
+              - version
     columns:
       - &blockchain
         name: blockchain
@@ -54,13 +55,14 @@ models:
       tags: [ 'dex', 'liquidity_events']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -128,13 +130,14 @@ models:
       tags: [ 'dex' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -162,12 +165,13 @@ models:
       tags: [ 'dex' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - id
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - id
+              - block_date
     columns:
       - *blockchain
       - *project
@@ -193,12 +197,13 @@ models:
       tags: [ 'dex' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - id
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - id
+              - block_date
     columns:
       - *blockchain
       - *project

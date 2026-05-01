@@ -13,20 +13,22 @@ models:
     description: "balances of swell asset holders"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - wallet_address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - wallet_address
+              - token_address
       - check_seed:
-          seed_file: ref('swell_balances_ethereum_core_assets_seed')
-          match_columns: 
-            - blockchain
-            - day
-            - wallet_address
-            - token_address
-          check_columns:
-            - balance
-            - last_updated
+          arguments:
+            seed_file: ref('swell_balances_ethereum_core_assets_seed')
+            match_columns: 
+              - blockchain
+              - day
+              - wallet_address
+              - token_address
+            check_columns:
+              - balance
+              - last_updated
     columns:
     - &blockchain
       name: blockchain

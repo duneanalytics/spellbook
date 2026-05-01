@@ -12,10 +12,11 @@ models:
         yield yak deposits on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -59,10 +60,11 @@ models:
         yield yak withdraws on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -88,10 +90,11 @@ models:
         yield yak reinvests on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -131,9 +134,10 @@ models:
         yield yak vault/farm/pool balances on arbitrum as a temporal table
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
-            - from_time
+          arguments:
+            combination_of_columns:
+              - contract_address
+              - from_time
     columns:
       - *blockchain
       - *contract_address
@@ -158,10 +162,11 @@ models:
         yield yak user-level YRT balances on arbitrum as a temporal table
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - user_address
-            - contract_address
-            - from_time
+          arguments:
+            combination_of_columns:
+              - user_address
+              - contract_address
+              - from_time
     columns:
       - *blockchain
       - name: user_address
@@ -186,10 +191,11 @@ models:
         yield yak aggregator yak swaps on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - *blockchain
       - &yak_router_address
@@ -246,10 +252,11 @@ models:
         yield yak aggregator yak adapter swaps on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - adapter_evt_index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_index
+              - adapter_evt_index
     columns:
       - *blockchain
       - *yak_router_address
@@ -300,8 +307,9 @@ models:
         yield yak strategies on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - contract_address
     columns:
       - *blockchain
       - *contract_address

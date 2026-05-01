@@ -12,8 +12,9 @@ models:
     description: "Balancer V1 liquidity pools created on Ethereum. "
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - &blockchain
         name: blockchain
@@ -78,12 +79,13 @@ models:
     description: 'Balancer V2 liquidity pools created on Ethereum. '
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - model_name
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - address
+              - name
+              - category
+              - model_name
+              - blockchain
     columns:
       - *blockchain
       - *address
@@ -107,8 +109,9 @@ models:
     description: 'Balancer V2 liquidity pools created on Polygon.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -132,8 +135,9 @@ models:
     description: 'Balancer V2 liquidity pools created on Gnosis.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -157,8 +161,9 @@ models:
     description: 'Balancer V2 liquidity pools created on Avalanche Chain.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -182,8 +187,9 @@ models:
     description: 'Balancer V2 liquidity pools created on Base Chain.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -207,8 +213,9 @@ models:
     description: 'Balancer V2 liquidity pools created on Arbitrum.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -232,8 +239,9 @@ models:
     description: 'Balancer V2 liquidity pools created on Optimism.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -257,8 +265,9 @@ models:
     description: 'Balancer V2 liquidity pools created on Polygon zkevm.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -317,8 +326,9 @@ models:
     description: 'Balancer V3 liquidity pools created on Ethereum.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -342,8 +352,9 @@ models:
     description: 'Balancer V3 liquidity pools created on Gnosis.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -367,8 +378,9 @@ models:
     description: 'Balancer V3 liquidity pools created on Arbitrum.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -392,8 +404,9 @@ models:
     description: 'Balancer V3 liquidity pools created on Base.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -417,8 +430,9 @@ models:
     description: 'Balancer V3 liquidity pools created on Plasma.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -442,8 +456,9 @@ models:
     description: 'Balancer V3 liquidity pools created on Hyperevm.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address
@@ -467,8 +482,9 @@ models:
     description: 'Balancer V3 liquidity pools created on Monad.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address

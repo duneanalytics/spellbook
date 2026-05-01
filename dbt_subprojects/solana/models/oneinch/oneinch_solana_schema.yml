@@ -4,10 +4,11 @@ models:
   - name: oneinch_solana_fusion_created_orders
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - block_month
-          - tx_id
-          - order_hash
+        arguments:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - order_hash
     meta:
       blockchain: solana
       contributors: [grkhr]
@@ -108,11 +109,12 @@ models:
   - name: oneinch_solana_transfers
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - tx_id
-          - order_hash
-          - call_trace_address
-          - transfer_trace_address
+        arguments:
+          combination_of_columns:
+            - tx_id
+            - order_hash
+            - call_trace_address
+            - transfer_trace_address
     meta:
       blockchain: solana
       contributors: [grkhr]
@@ -145,9 +147,10 @@ models:
   - name: oneinch_solana_swaps
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - block_month
-          - unique_key
+        arguments:
+          combination_of_columns:
+            - block_month
+            - unique_key
     meta:
       blockchain: solana
       contributors: [grkhr]
@@ -243,9 +246,10 @@ models:
   - name: oneinch_solana_transactions
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - id
-          - block_month
+        arguments:
+          combination_of_columns:
+            - id
+            - block_month
     meta:
       blockchain: solana
       contributors: [grkhr]

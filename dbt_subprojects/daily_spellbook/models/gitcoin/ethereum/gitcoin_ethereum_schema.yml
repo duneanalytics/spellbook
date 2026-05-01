@@ -48,7 +48,8 @@ models:
         description: "0 = Against, 1 = For, 2 = Abstain votes"
         data_tests:
         - accepted_values:
-            values: ['for', 'against', 'abstain']
+            arguments:
+              values: ['for', 'against', 'abstain']
       - &reason
         name: reason
         description: "Optional onchain comments to explain votes"
@@ -94,7 +95,8 @@ models:
         description: "Proposal status: Queued, Active, Executed, Canceled or Defeated"
         data_tests:
           - accepted_values:
-              values: ['Queued', 'Active', 'Executed', 'Canceled','Defeated']
+              arguments:
+                values: ['Queued', 'Active', 'Executed', 'Canceled','Defeated']
       - &description
         name: description
         description: "Description of the proposal"
@@ -110,13 +112,15 @@ models:
         All Gitcoin donations on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('gitcoin_ethereum', 'BulkCheckout_evt_DonationSent')
+          arguments:
+            evt_sources:
+              - source('gitcoin_ethereum', 'BulkCheckout_evt_DonationSent')
     columns:
       - name: blockchain
       - name: project

@@ -105,15 +105,17 @@ models:
       Trojan trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('trojan_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('trojan_solana_trades_seed')
+            blockchain: solana
 
   - name: banana_gun_solana_bot_trades
     meta:
@@ -127,15 +129,17 @@ models:
       Banana Gun trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('banana_gun_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('banana_gun_solana_trades_seed')
+            blockchain: solana
 
   - name: sol_trading_bot_solana_bot_trades
     meta:
@@ -149,15 +153,17 @@ models:
       Sol Trading Bot trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('sol_trading_bot_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('sol_trading_bot_solana_trades_seed')
+            blockchain: solana
 
   - name: pepe_boost_solana_bot_trades
     meta:
@@ -171,15 +177,17 @@ models:
       Pepe Boost trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('pepe_boost_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('pepe_boost_solana_trades_seed')
+            blockchain: solana
 
   - name: maestro_solana_bot_trades
     meta:
@@ -193,15 +201,17 @@ models:
       Maestro trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('maestro_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('maestro_solana_trades_seed')
+            blockchain: solana
 
   - name: shuriken_solana_bot_trades
     meta:
@@ -215,15 +225,17 @@ models:
       Shuriken trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('shuriken_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('shuriken_solana_trades_seed')
+            blockchain: solana
 
   - name: magnum_solana_bot_trades
     meta:
@@ -237,15 +249,17 @@ models:
       Magnum trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('magnum_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('magnum_solana_trades_seed')
+            blockchain: solana
 
   - name: readyswap_solana_bot_trades
     meta:
@@ -259,15 +273,17 @@ models:
       Readyswap trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('readyswap_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('readyswap_solana_trades_seed')
+            blockchain: solana
 
   - name: sol_gun_solana_bot_trades
     meta:
@@ -281,15 +297,17 @@ models:
       SolGun trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('sol_gun_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('sol_gun_solana_trades_seed')
+            blockchain: solana
 
   - name: looter_solana_bot_trades
     meta:
@@ -303,15 +321,17 @@ models:
       Looter trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('looter_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('looter_solana_trades_seed')
+            blockchain: solana
 
   - name: consortium_key_solana_bot_trades
     meta:
@@ -325,15 +345,17 @@ models:
       Consortium Key trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('consortium_key_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('consortium_key_solana_trades_seed')
+            blockchain: solana
 
   - name: wifbot_solana_bot_trades
     meta:
@@ -347,15 +369,17 @@ models:
       Wifbot trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('wifbot_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('wifbot_solana_trades_seed')
+            blockchain: solana
 
   - name: soul_sniper_solana_bot_trades
     meta:
@@ -369,15 +393,17 @@ models:
       Soul Sniper trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('soul_sniper_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('soul_sniper_solana_trades_seed')
+            blockchain: solana
 
   - name: consortium_key_solana_bot_users
     meta:
@@ -394,8 +420,9 @@ models:
           data_tests: unique
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - user
+          arguments:
+            combination_of_columns:
+              - user
 
   - name: soul_sniper_solana_bot_users
     meta:
@@ -423,15 +450,17 @@ models:
       Tirador trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('tirador_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('tirador_solana_trades_seed')
+            blockchain: solana
 
   - name: unibot_solana_bot_trades
     meta:
@@ -445,15 +474,17 @@ models:
       Unibot trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('unibot_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('unibot_solana_trades_seed')
+            blockchain: solana
 
   - name: mev_x_solana_bot_trades
     meta:
@@ -467,15 +498,17 @@ models:
       MevX trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('mev_x_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('mev_x_solana_trades_seed')
+            blockchain: solana
 
   - name: alpha_dex_solana_bot_trades
     meta:
@@ -489,15 +522,17 @@ models:
       Alpha Dex trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('alpha_dex_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('alpha_dex_solana_trades_seed')
+            blockchain: solana
 
   - name: alpha_dex_solana_bot_users
     meta:
@@ -525,15 +560,17 @@ models:
       Jupbot trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('jupbot_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('jupbot_solana_trades_seed')
+            blockchain: solana
 
   - name: pinkpunk_solana_bot_trades
     meta:
@@ -547,15 +584,17 @@ models:
       Pinkpunk trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('pinkpunk_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('pinkpunk_solana_trades_seed')
+            blockchain: solana
 
   - name: falcon_solana_bot_trades
     meta:
@@ -569,15 +608,17 @@ models:
       Falcon trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('falcon_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('falcon_solana_trades_seed')
+            blockchain: solana
 
   - name: bloom_solana_bot_trades
     meta:
@@ -591,15 +632,17 @@ models:
       Bloom trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('bloom_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('bloom_solana_trades_seed')
+            blockchain: solana
 
   - name: autosnipe_solana_bot_trades
     meta:
@@ -613,15 +656,17 @@ models:
       Autosnipe trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('autosnipe_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('autosnipe_solana_trades_seed')
+            blockchain: solana
 
   - name: bitfoot_solana_bot_trades
     meta:
@@ -635,15 +680,17 @@ models:
       Bitfoot trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('bitfoot_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('bitfoot_solana_trades_seed')
+            blockchain: solana
 
   - name: tradewiz_solana_bot_trades
     meta:
@@ -657,15 +704,17 @@ models:
       Tradewiz trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('tradewiz_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('tradewiz_solana_trades_seed')
+            blockchain: solana
 
   - name: cswap_solana_bot_trades
     meta:
@@ -679,15 +728,17 @@ models:
       ChainSwap trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('cswap_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('cswap_solana_trades_seed')
+            blockchain: solana
 
   - name: prophetbots_solana_bot_trades
     meta:
@@ -701,15 +752,17 @@ models:
       ProphetBots trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('prophetbots_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('prophetbots_solana_trades_seed')
+            blockchain: solana
 
   - name: nova_solana_bot_trades
     meta:
@@ -723,15 +776,17 @@ models:
       Nova trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('nova_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('nova_solana_trades_seed')
+            blockchain: solana
 
   - name: sanji_solana_bot_trades
     meta:
@@ -745,15 +800,17 @@ models:
       Sanji trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('sanji_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('sanji_solana_trades_seed')
+            blockchain: solana
 
   - name: padre_solana_bot_trades
     meta:
@@ -767,15 +824,17 @@ models:
       Padre trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('padre_solana_trades_seed')
-          blockchain: solana
+          arguments:
+            seed_file: ref('padre_solana_trades_seed')
+            blockchain: solana
 
   - name: padre_solana_bot_users
     meta:
@@ -792,5 +851,6 @@ models:
           data_tests: unique
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - user
+          arguments:
+            combination_of_columns:
+              - user

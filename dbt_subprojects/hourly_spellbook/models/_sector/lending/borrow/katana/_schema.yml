@@ -11,11 +11,12 @@ models:
     description: "All lending borrow transactions on Katana"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -97,11 +98,12 @@ models:
     description: "Morpho borrow transactions on Katana"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

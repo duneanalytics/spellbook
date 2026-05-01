@@ -11,11 +11,12 @@ models:
     description: trades on gyroscope E-CLP pools on polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-           - block_time
-           - blockchain
-           - tx_hash
-           - evt_index         
+          arguments:
+            combination_of_columns:
+             - block_time
+             - blockchain
+             - tx_hash
+             - evt_index         
     columns:
       - &blockchain 
         name: blockchain        

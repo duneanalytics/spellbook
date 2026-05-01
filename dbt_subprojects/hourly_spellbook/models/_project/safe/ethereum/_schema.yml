@@ -39,10 +39,11 @@ models:
     description: "Eth transfers for safes"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - tx_hash
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - address
+              - tx_hash
+              - trace_address
     columns:
       - *blockchain
       - &symbol
@@ -139,8 +140,9 @@ models:
   - name: safe_ethereum_signer_thresholds
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     meta:
       blockchain: ethereum
       project: safe

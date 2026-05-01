@@ -12,10 +12,11 @@ models:
         Lido wstETH liquidity pools on Kyberswap Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - &pool_name
         name: pool_name
@@ -74,10 +75,11 @@ models:
         Lido wstETH liquidity pools on Uniswap v3 Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -106,10 +108,11 @@ models:
         Lido main stETH liquidity pool on Curve Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -138,10 +141,11 @@ models:
         Lido concentrated stETH liquidity pool on Curve Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -170,10 +174,11 @@ models:
         Lido stETH NG liquidity pool on Curve Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -202,10 +207,11 @@ models:
         Lido stETH-frxETH liquidity pool on Curve Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -234,10 +240,11 @@ models:
         Lido wstETH-rETH liquidity pool on Curve Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool
@@ -267,10 +274,11 @@ models:
         Lido wstETH liquidity pools on Maverick Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - *pool_name
       - *pool

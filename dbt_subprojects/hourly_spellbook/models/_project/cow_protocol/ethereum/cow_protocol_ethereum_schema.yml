@@ -4,8 +4,9 @@ models:
   - name: cow_protocol_ethereum_solvers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     meta:
       blockchain: ethereum
       project: cow_protocol
@@ -85,7 +86,8 @@ models:
       is called price improvement and is measured as percentage or in absolute dollars.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - order_uid
-            - block_number
+          arguments:
+            combination_of_columns:
+              - order_uid
+              - block_number
 

@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_gnosis_base_trades
 
@@ -28,13 +30,15 @@ models:
     description: "Sushiswap gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_gnosis_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('sushiswap_gnosis_base_trades_seed')
+            filter:
+              version: 1
 
   - name: sushiswap_v2_gnosis_base_trades
     meta:
@@ -47,13 +51,15 @@ models:
     description: "Sushiswap gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_gnosis_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('sushiswap_gnosis_base_trades_seed')
+            filter:
+              version: 2
 
   - name: balancer_v2_gnosis_base_trades
     meta:
@@ -66,13 +72,15 @@ models:
     description: "Balancer v2 gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_gnosis_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('balancer_gnosis_base_trades_seed')
+            filter:
+              version: 2
 
   - name: balancer_v3_gnosis_base_trades
     meta:
@@ -85,13 +93,15 @@ models:
     description: "Balancer v3 gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_gnosis_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('balancer_gnosis_base_trades_seed')
+            filter:
+              version: 3
 
   - name: honeyswap_v2_gnosis_base_trades
     meta:
@@ -104,13 +114,15 @@ models:
     description: "Honeyswap gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('honeyswap_gnosis_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('honeyswap_gnosis_base_trades_seed')
+            filter:
+              version: 2
 
   - name: elk_finance_gnosis_base_trades
     meta:
@@ -123,11 +135,13 @@ models:
     description: "elk finance gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('elk_finance_gnosis_base_trades_seed')
+          arguments:
+            seed_file: ref('elk_finance_gnosis_base_trades_seed')
   
   - name: levinswap_gnosis_base_trades
     meta:
@@ -140,11 +154,13 @@ models:
     description: "levinswap gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('levinswap_gnosis_base_trades_seed')
+          arguments:
+            seed_file: ref('levinswap_gnosis_base_trades_seed')
 
   - name: swapr_gnosis_base_trades
     meta:
@@ -157,9 +173,10 @@ models:
     description: "Swapr Gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
   - name: uniswap_v3_gnosis_base_trades
     meta:
       blockchain: gnosis
@@ -171,9 +188,10 @@ models:
     description: "Uniswap v3 Gnosis base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: swapr_v3_gnosis_base_trades
     meta:
@@ -186,17 +204,21 @@ models:
     description: "Swapr V3 trades on Gnosis."
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - tx_hash
-          - evt_index
+        arguments:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
     - not_null:
-        column_name: fee
+        arguments:
+          column_name: fee
     - check_dex_base_trades_seed:
-          seed_file: ref('swapr_gnosis_base_trades_seed')
+          arguments:
+            seed_file: ref('swapr_gnosis_base_trades_seed')
   - name: dex_gnosis_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date
