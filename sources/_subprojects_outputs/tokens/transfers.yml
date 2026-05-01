@@ -365,10 +365,6 @@ sources:
       - name: transfers
       - name: net_transfers_daily
 
-  - name: gas_xrpl
-    tables:
-      - name: fees
-
   - name: tokens_unichain
     tables:
       - name: transfers

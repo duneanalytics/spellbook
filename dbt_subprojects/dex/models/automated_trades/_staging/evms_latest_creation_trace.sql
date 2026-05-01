@@ -1,6 +1,7 @@
 {{ config(
     schema = 'evms'
     , alias = 'latest_creation_trace'
+    , tags = ['prod_exclude']
     , partition_by = ['blockchain', 'block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
