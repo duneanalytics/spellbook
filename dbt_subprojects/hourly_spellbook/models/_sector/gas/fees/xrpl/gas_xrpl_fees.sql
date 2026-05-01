@@ -26,9 +26,9 @@ with base_transactions as (
     t.tx_to,
     t.transaction_type,
     t.transaction_result,
-    try_cast(t.fee as double) as tx_fee_raw,
+    try_cast(t.fee as uint256) as tx_fee_raw,
     0x0000000000000000000000000000000000000000 as price_contract_address
-  from {{ ref('tokens_xrpl_transaction_metadata') }} as t
+  from {{ source('tokens_xrpl', 'transaction_metadata') }} as t
   where t.block_date >= date '{{ xrpl_gas_start_date }}'
     and t.transaction_type in (
       'Payment',
@@ -38,7 +38,7 @@ with base_transactions as (
       'AMMWithdraw',
       'EscrowFinish'
     )
-    and try_cast(t.fee as double) > 0
+    and try_cast(t.fee as uint256) > uint256 '0'
     {% if is_incremental() %}
     and {{ incremental_predicate('t.block_date') }}
     {% endif %}
@@ -68,8 +68,8 @@ select
   b.tx_index,
   b.tx_from,
   b.tx_to,
-  cast(null as double) as gas_price,
-  cast(null as bigint) as gas_used,
+  cast(null as uint256) as gas_price,
+  cast(null as uint256) as gas_used,
   coalesce(
     case
       when b.price_contract_address = 0x0000000000000000000000000000000000000000 then 'XRP'
@@ -77,15 +77,15 @@ select
     end,
     p.symbol
   ) as currency_symbol,
-  coalesce(b.tx_fee_raw, 0) as tx_fee_raw,
-  coalesce(b.tx_fee_raw, 0) / 1000000.0 as tx_fee,
-  coalesce(b.tx_fee_raw, 0) / 1000000.0 * p.price as tx_fee_usd,
-  map(array['base_fee'], array[coalesce(b.tx_fee_raw, 0)]) as tx_fee_breakdown_raw,
-  map(array['base_fee'], array[coalesce(b.tx_fee_raw, 0) / 1000000.0]) as tx_fee_breakdown,
-  map(array['base_fee'], array[coalesce(b.tx_fee_raw, 0) / 1000000.0 * p.price]) as tx_fee_breakdown_usd,
-  'rrrrrrrrrrrrrrrrrrrrrhoLvTp' as tx_fee_currency,
-  cast(null as varchar) as block_proposer,
-  cast(null as bigint) as gas_limit,
+  coalesce(b.tx_fee_raw, uint256 '0') as tx_fee_raw,
+  cast(coalesce(b.tx_fee_raw, uint256 '0') as double) / 1000000.0 as tx_fee,
+  cast(coalesce(b.tx_fee_raw, uint256 '0') as double) / 1000000.0 * p.price as tx_fee_usd,
+  map(array['base_fee'], array[coalesce(b.tx_fee_raw, uint256 '0')]) as tx_fee_breakdown_raw,
+  map(array['base_fee'], array[cast(coalesce(b.tx_fee_raw, uint256 '0') as double) / 1000000.0]) as tx_fee_breakdown,
+  map(array['base_fee'], array[cast(coalesce(b.tx_fee_raw, uint256 '0') as double) / 1000000.0 * p.price]) as tx_fee_breakdown_usd,
+  b.price_contract_address as tx_fee_currency,
+  cast(null as varbinary) as block_proposer,
+  cast(null as uint256) as gas_limit,
   cast(null as double) as gas_limit_usage
 from base_transactions as b
 left join prices as p
