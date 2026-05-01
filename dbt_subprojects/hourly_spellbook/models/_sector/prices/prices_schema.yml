@@ -5,17 +5,18 @@ models:
     meta:
       sector: prices
       contributors: hildobby, 0xRob
-      docs_slug: /curated/asset-tracking/prices/prices_latest
+      docs_slug: /curated/prices/prices_latest
     config:
       tags: ['prices', 'usd', 'latest']
-    description: "Latest price data for tokens in USD"
+    description: "Latest token prices in USD. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - symbol
-            - decimals
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - symbol
+              - decimals
     columns:
       - name: minute
         description: "UTC event block time truncated to the minute mark"
@@ -24,7 +25,7 @@ models:
       - name: contract_address
         description: "Contract address of the token"
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol (not unique across tokens)"
       - name: decimals
         description: "Token decimals"
       - name: price
@@ -36,14 +37,15 @@ models:
       contributors: 0xRob
     config:
       tags: [ 'prices', 'usd', 'forward_fill' ]
-    description: "View on prices that does a forward fill on the last 24h till the current timestamp"
+    description: "Forward-filled USD token prices over the last 24 hours. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - minute
-            - blockchain
-            - contract_address
-            - symbol
+          arguments:
+            combination_of_columns:
+              - minute
+              - blockchain
+              - contract_address
+              - symbol
           config:
             severity: error
             error_if: ">5"        #there are 5 duplicates in the source prices table (29/11/2022)
@@ -57,7 +59,7 @@ models:
       - name: contract_address
         description: "Contract address of the token"
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol (not unique across tokens)"
       - name: decimals
         description: "Token decimals"
       - name: price
@@ -69,17 +71,18 @@ models:
     meta:
       sector: prices
       contributors: aalan3
-      docs_slug: /curated/asset-tracking/prices/prices_daily
+      docs_slug: /curated/prices/prices_day
     config:
       tags: ['prices', 'usd', 'daily']
-    description: "Daily aggregated prices table across blockchains"
+    description: "Daily aggregated token prices across blockchains. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - blockchain
-            - contract_address
-            - symbol
+          arguments:
+            combination_of_columns:
+              - day
+              - blockchain
+              - contract_address
+              - symbol
     columns:
       - name: day
         description: "UTC event block time truncated to the day mark"
@@ -88,7 +91,7 @@ models:
       - name: contract_address
         description: "Contract address of the token"
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol (not unique across tokens)"
       - name: decimals
         description: "Token decimals"
       - name: price
@@ -132,7 +135,8 @@ models:
           - not_null
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - minute
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - minute

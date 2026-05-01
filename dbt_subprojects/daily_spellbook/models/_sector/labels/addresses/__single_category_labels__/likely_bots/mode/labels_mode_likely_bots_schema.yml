@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: labels_mode_likely_bot_addresses
+    config:
+      tags: ['labels', 'mode','bots','prod_exclude']
     description: "Addresses that are likely bots based on transaction frequency and sender concentration"
     columns:
       - name: blockchain
@@ -13,7 +15,8 @@ models:
         tests:
           - not_null
           - unique:
-              where: "blockchain = 'mode'"
+              arguments:
+                where: "blockchain = 'mode'"
       - name: name
         description: "The label name"
         tests:
@@ -48,6 +51,8 @@ models:
           - not_null
 
   - name: labels_mode_likely_bot_contracts
+    config:
+      tags: ['labels', 'mode','bots','prod_exclude']
     description: "Contracts that are likely bots based on transaction frequency and sender concentration"
     columns:
       - name: blockchain
@@ -59,7 +64,8 @@ models:
         tests:
           - not_null
           - unique:
-              where: "blockchain = 'mode'"
+              arguments:
+                where: "blockchain = 'mode'"
       - name: name
         description: "The label name"
         tests:

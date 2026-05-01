@@ -12,11 +12,12 @@ models:
     description: "All lending supply transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,13 +99,15 @@ models:
     description: "Aave v3 supply transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_arbitrum_base_supply_seed')
+          arguments:
+            seed_file: ref('aave_arbitrum_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -134,15 +137,17 @@ models:
     description: "Compound v3 supply transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('compound_arbitrum_base_supply_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('compound_arbitrum_base_supply_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -172,13 +177,15 @@ models:
     description: "Radiant supply transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('radiant_arbitrum_base_supply_seed')
+          arguments:
+            seed_file: ref('radiant_arbitrum_base_supply_seed')
     columns:
       - *blockchain
       - *project
@@ -208,15 +215,17 @@ models:
     description: "Lodestar v0 supply transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('lodestar_arbitrum_base_supply_seed')
-          filter:
-            version: 0
+          arguments:
+            seed_file: ref('lodestar_arbitrum_base_supply_seed')
+            filter:
+              version: 0
     columns:
       - *blockchain
       - *project
@@ -246,15 +255,17 @@ models:
     description: "Lodestar v1 supply transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('lodestar_arbitrum_base_supply_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('lodestar_arbitrum_base_supply_seed')
+            filter:
+              version: 1
     columns:
       - *blockchain
       - *project
@@ -284,13 +295,50 @@ models:
     description: "Granary supply transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('granary_arbitrum_base_supply_seed')
+          arguments:
+            seed_file: ref('granary_arbitrum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
+  - name: morpho_arbitrum_base_supply
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      project: morpho
+      contributors: tomfutago
+    config:
+      tags: ["lending", "supply", "morpho", "arbitrum"]
+    description: "Morpho supply transactions on Arbitrum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

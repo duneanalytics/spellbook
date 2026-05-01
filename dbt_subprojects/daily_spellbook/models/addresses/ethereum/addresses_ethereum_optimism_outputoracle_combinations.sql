@@ -1,11 +1,10 @@
 {{ config(
         schema = 'addresses_ethereum',
         alias = 'optimism_outputoracle_combinations',
-        tags=['static'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["msilb7"]\') }}') }}
+        tags=['static']
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
  
 with from_addresses_output AS (
     SELECT 

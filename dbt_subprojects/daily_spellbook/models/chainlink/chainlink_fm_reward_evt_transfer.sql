@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='fm_reward_evt_transfer',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_jon"]\') }}'
+    alias='fm_reward_evt_transfer'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

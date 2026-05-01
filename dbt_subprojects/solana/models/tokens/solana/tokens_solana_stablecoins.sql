@@ -2,10 +2,7 @@
       schema = 'tokens_solana'
       , alias = 'stablecoins'
       , tags=['static']
-      , post_hook='{{ expose_spells(\'["solana"]\',
-                                  "sector",
-                                  "tokens_solana",
-                                  \'["synthquest"]\') }}'
+      , post_hook='{{ hide_spells() }}'
   )
 }}
 

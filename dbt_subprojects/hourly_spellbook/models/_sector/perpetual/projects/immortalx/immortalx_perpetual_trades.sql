@@ -1,11 +1,8 @@
 {{
     config(
         schema = 'immortalx',
-        alias = 'perpetual_trades',
-        post_hook = '{{ expose_spells(\'["celo"]\',
-                                        "project",
-                                        "immortalx",
-                                        \'["tomfutago"]\') }}'
+        alias = 'perpetual_trades'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -7,6 +7,7 @@ WITH native_token_prices as (
         txns.block_time
         ,txns.block_number
         ,txns.hash AS tx_hash
+        ,txns."index" AS tx_index
         ,txns."from" AS tx_from
         ,txns.to AS tx_to
         ,cast(gas_price as uint256) as gas_price
@@ -44,10 +45,12 @@ WITH native_token_prices as (
         AND {{ incremental_predicate('blocks.time') }}
         {% endif %}
     {% if test_short_ci %}
-    WHERE {{ incremental_predicate('txns.block_time') }}
+    WHERE
+        {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
-    WHERE {{ incremental_predicate('txns.block_time') }}
+    WHERE
+        {{ incremental_predicate('txns.block_time') }}
     {% endif %}
     )
 
@@ -58,6 +61,7 @@ SELECT
     ,b.block_time
     ,b.block_number
     ,b.tx_hash
+    ,b.tx_index
     ,b.tx_from
     ,b.tx_to
     ,b.gas_price

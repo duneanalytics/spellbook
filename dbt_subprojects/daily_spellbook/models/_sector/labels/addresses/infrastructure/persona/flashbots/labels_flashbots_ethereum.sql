@@ -1,9 +1,8 @@
 {{config(
-    alias = 'flashbots_ethereum',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'flashbots_ethereum'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT DISTINCT 'ethereum' AS blockchain
 , account_address AS address

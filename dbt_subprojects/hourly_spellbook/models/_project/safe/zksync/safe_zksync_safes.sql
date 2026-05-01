@@ -7,11 +7,8 @@
         unique_key = ['block_date', 'address'],
         on_schema_change='fail',
         file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["zksync"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida", "kryptaki"]\') }}'
+        incremental_strategy='merge'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

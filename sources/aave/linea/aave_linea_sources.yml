@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: aave_v3_linea
+    description: "Decoded contracts for Aave v3 on Linea"
+    tables:
+      - name: poolconfigurator_evt_reserveinitialized
+

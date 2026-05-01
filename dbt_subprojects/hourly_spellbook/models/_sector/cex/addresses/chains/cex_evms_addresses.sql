@@ -3,11 +3,10 @@
         schema = 'cex_evms',
         alias = 'addresses',
         materialized = 'table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "avalanche_c", "bnb", "fantom", "optimism", "polygon", "zksync", "zora", "celo", "base"]\',
-                                    "sector",
-                                    "cex",
-                                    \'["hildobby", "soispoke", "web3_data", "msilb7", "Henrystats", "sankinyue", "synthquest"]\') }}')}}
+        file_format = 'delta'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
@@ -5236,4 +5235,85 @@ FROM (VALUES
     , (0x4905288e14f8f8ad21fa1662943475ccd2072651, 'Ripio', 'Ripio 4', 'hildobby', date '2025-08-19')
     -- Brasil Bitcoin
     , (0x04c079bb31deed8391015eed8d6b625a40957058, 'Brasil Bitcoin', 'Brasil Bitcoin 1', 'hildobby', date '2025-08-19')
+    -- Kaia CEX addresses
+    -- Coinone
+    , (0x2968c66f14308673c12812febfa58cfe87c4e5a8, 'Coinone', 'coinone1 kaia', 'anton', date '2026-01-02')
+    , (0xfa416ef420b553f6ad622cda922e9d195a8025df, 'Coinone', 'coinone2 kaia', 'anton', date '2026-01-02')
+    , (0xdc4154170ad4747eb31ed4f6984da8576dd833c6, 'Coinone', 'coinone3 kaia', 'anton', date '2026-01-02')
+    -- OKX
+    , (0x8adb020e1a1de402ee2e91805e771b70e79c4bcb, 'OKX', 'okex1 kaia', 'anton', date '2026-01-02')
+    -- GDAC
+    , (0x980e9dfeaa8ea715e97827bb770fac8b97090ef1, 'GDAC', 'gdac1 kaia', 'anton', date '2026-01-02')
+    -- Upbit Indonesia
+    , (0x547d56e938958e3259c73677edb51ab80e399d89, 'Upbit Indonesia', 'upbit_indonesia1 kaia', 'anton', date '2026-01-02')
+    , (0xef2e4c0a33bcf9ed7704aace6e76765dd30632a7, 'Upbit Indonesia', 'upbit_indonesia2 kaia', 'anton', date '2026-01-02')
+    , (0xe02842ed75854b2f83eebe625a0c7d8c40a2b5ef, 'Upbit Indonesia', 'upbit_indonesia3 kaia', 'anton', date '2026-01-02')
+    -- Bilaxy
+    , (0x26ca0d88decdcc2a23a1ed10579488f0d4113ae9, 'Bilaxy', 'bilaxy kaia', 'anton', date '2026-01-02')
+    -- MEXC
+    , (0x9dd35021d77c1de5ed50b9d788a2f68903a96b96, 'MEXC', 'mexc kaia', 'anton', date '2026-01-02')
+    -- Probit
+    , (0xe102019b1ecb134b3043c12d25c8280c96d252d2, 'Probit', 'probit1 kaia', 'anton', date '2026-01-02')
+    , (0x58f072144721f19884415a16fa744f82756e459c, 'Probit', 'probit2 kaia', 'anton', date '2026-01-02')
+    -- Bittrex
+    , (0x187c1a8f10a08bd24604efdeb7706bcdce98b8f3, 'Bittrex', 'bittrex1 kaia', 'anton', date '2026-01-02')
+    -- Bithumb
+    , (0x4496f06d8bb0b234057f35c4568aa0c2b0e949f3, 'Bithumb', 'bithumb1 kaia', 'anton', date '2026-01-02')
+    , (0x0b400517344fa7f529fd1c9ef11544868a12c578, 'Bithumb', 'bithumb2 kaia', 'anton', date '2026-01-02')
+    , (0x2828b981cfc96ab33505b32e9b4260b84344f3e1, 'Bithumb', 'bithumb3 kaia', 'anton', date '2026-01-02')
+    , (0xbaffc1d4b89fdeadb3dfd0c7f84c3fc0ed5d9ac8, 'Bithumb', 'bithumb4 kaia', 'anton', date '2026-01-02')
+    , (0x5e882a3f5de7991a3463f84b5d229395e64cb3b7, 'Bithumb', 'bithumb5 kaia', 'anton', date '2026-01-02')
+    , (0x5768f22232a16e4059cd446398572a881bb1913c, 'Bithumb', 'bithumb_feepayer kaia', 'anton', date '2026-01-02')
+    , (0x7d7e63dc7929f70c3ded02d1835a891a96f5a972, 'Bithumb', 'bithumb_deposit kaia', 'anton', date '2026-01-02')
+    , (0xafc8d3f9883763e8a4014369c25378da41a07a15, 'Bithumb', 'bithumb_kip7_1 kaia', 'anton', date '2026-01-02')
+    , (0x0b14f6faf42553239be6e6e5a7286eb5dff638e7, 'Bithumb', 'bithumb_kip7_2 kaia', 'anton', date '2026-01-02')
+    , (0x10a1610d1231f1b82e8173c7b141aa1d70dc1f1c, 'Bithumb', 'bithumb_kip7_3 kaia', 'anton', date '2026-01-02')
+    , (0x964a58c28a2f053f84fd0ee02a9accf6706e26f7, 'Bithumb', 'bithumb_kip7_4 kaia', 'anton', date '2026-01-02')
+    , (0x3ca2c2e883d4ef03eee21124edad2dda8e7bb6ce, 'Bithumb', 'bithumb_kip7_5 kaia', 'anton', date '2026-01-02')
+    , (0xc8f2200d72fb47f4062cb36bc183e948b5db351b, 'Bithumb', 'bithumb_kip7_6 kaia', 'anton', date '2026-01-02')
+    , (0x3aa857aa2d2309ac361fe41d14e1216422721330, 'Bithumb', 'bithumb_kip7_7 kaia', 'anton', date '2026-01-02')
+    , (0x9585e70b98d462668ad1f77816d347ccbb25e596, 'Bithumb', 'bithumb_kip7_8 kaia', 'anton', date '2026-01-02')
+    , (0xc0b6464bc5de0af84a021be3b26f495d5ac9498b, 'Bithumb', 'bithumb_kip7_9 kaia', 'anton', date '2026-01-02')
+    , (0xa75db2fce85c17c0dc5af5e3f05600bf311171b5, 'Bithumb', 'bithumb_kip7_10 kaia', 'anton', date '2026-01-02')
+    , (0x1a18581ba445163bb2fb6eb9c20908d12951735f, 'Bithumb', 'bithumb_kip7_11 kaia', 'anton', date '2026-01-02')
+    , (0xeb146f17cecbbc0d30831e3578064a4f64a34071, 'Bithumb', 'bithumb_kip7_12 kaia', 'anton', date '2026-01-02')
+    , (0x3f8498414e49adf65def34bb9f5eb49c48cf1ad5, 'Bithumb', 'bithumb_kip7_13 kaia', 'anton', date '2026-01-02')
+    , (0x8e0802f4b1f7c3041ba553db4c3b8bce80746e28, 'Bithumb', 'bithumb_kip7_14 kaia', 'anton', date '2026-01-02')
+    , (0xba1c57345625a20e0c50212aae54db841df4b15a, 'Bithumb', 'bithumb_kip7_15 kaia', 'anton', date '2026-01-02')
+    , (0x5e3308d6d5eb0832aaf0edbad3f39b100ca0ff02, 'Bithumb', 'bithumb_kip7_16 kaia', 'anton', date '2026-01-02')
+    , (0xf55d6ee6ebfaeea82798adbdc7f137342952ea58, 'Bithumb', 'bithumb_kip7_17 kaia', 'anton', date '2026-01-02')
+    , (0x26ba1507db769351f3284776ade52740493bf49a, 'Bithumb', 'bithumb8 kaia', 'anton', date '2026-01-02')
+    , (0x7f5923e9c58d759a446705bcfe2493b10788f4c7, 'Bithumb', 'bithumb9 kaia', 'anton', date '2026-01-02')
+    , (0x1ddf1fa3c9baa4336cb40db849ac90ba69995f89, 'Bithumb', 'bithumb10 kaia', 'anton', date '2026-01-02')
+    , (0x31a6e550a7ed81da8320fcc5e2554994f8849994, 'Bithumb', 'bithumb11 kaia', 'anton', date '2026-01-02')
+    -- Binance
+    , (0x86d2660297c82aC656715e00c979FB5CA65EEcc5, 'Binance', 'binance1 kaia', 'anton', date '2026-01-02')
+    -- Korbit
+    , (0xd9fc5fa552f2d17eb541c07a68095125b15afe7f, 'Korbit', 'korbit1 kaia', 'anton', date '2026-01-02')
+    , (0x75a0aec326fd51fb066f0c9a73a71095208a8aac, 'Korbit', 'korbit2 kaia', 'anton', date '2026-01-02')
+    -- Crypto.com
+    , (0x6635ecbeb24e540bd531527f22e71434ff7d1122, 'Crypto.com', 'crypto_com2 kaia', 'anton', date '2026-01-02')
+    -- Hoo
+    , (0xa90f09df3eb290d293e243a22bc974aaeb4c4856, 'Hoo', 'hoo kaia', 'anton', date '2026-01-02')
+    -- Upbit
+    , (0x76037d22e1d7d7822d9137359c3de9fde99a81d2, 'Upbit', 'upbit_wemix kaia', 'anton', date '2026-01-02')
+    , (0x82aee37152c4d516bc5f472b4ad958c369c045be, 'Upbit', 'upbit kaia', 'anton', date '2026-01-02')
+    , (0x74c4fa0a5d205b1e645c819f6dd5d436688ad3d5, 'Upbit', 'upbit1 kaia', 'anton', date '2026-01-02')
+    , (0x1f700f00bce72be33ba4e070759d2cdbd027e148, 'Upbit', 'upbit2 kaia', 'anton', date '2026-01-02')
+    , (0xa3b8117dc4580bf12821d92ede501d0974dc5bbd, 'Upbit', 'upbit3 kaia', 'anton', date '2026-01-02')
+    , (0xe48c862ec4625459effdcff5d71143adf10036af, 'Upbit', 'upbit4 kaia', 'anton', date '2026-01-02')
+    , (0xd2c1a1300671b0c4a32574c2107e5e577e95a0d6, 'Upbit', 'upbit5 kaia', 'anton', date '2026-01-02')
+    -- KuCoin
+    , (0xc1cd6702480632349d6e9da4c3d4a13e1a65b972, 'KuCoin', 'kucoin1 kaia', 'anton', date '2026-01-02')
+    , (0x6b4aa08f6601befe9bf880adf12f3e9185345562, 'KuCoin', 'kucoin2 kaia', 'anton', date '2026-01-02')
+    -- HTX (fka Huobi)
+    , (0x8d35f65fd5282f43f0336ae75224b1cbd7f3d623, 'HTX', 'huobi kaia', 'anton', date '2026-01-02')
+    -- ChangeNOW
+    , (0xca99835ae68e32e89c83e77a6f0922b0b67ed1c8, 'ChangeNOW', 'changenow1 kaia', 'anton', date '2026-01-02')
+    , (0x9ef8a758af51ef51c8cb26d55114dc7dd7ab1ba3, 'ChangeNOW', 'changenow2 kaia', 'anton', date '2026-01-02')
+    -- Indodax
+    , (0x1485b0d0d84eff7d670919741908635d66cbfa4a, 'Indodax', 'indodax1 kaia', 'anton', date '2026-01-02')
+    , (0x2b16301254094079005acfaca54b295d91fd14d3, 'Indodax', 'indodax2 kaia', 'anton', date '2026-01-02')
+    -- Flipster
+    , (0x61e57f94fd0239ec568db7c4dd778f168c737682, 'Flipster', 'flipster1 kaia', 'anton', date '2026-01-02')
     ) AS x (address, cex_name, distinct_name, added_by, added_date)

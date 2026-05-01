@@ -1,6 +1,5 @@
 {{-  
     config(
-        tags = ['prod_exclude'],
         schema = 'oneinch',
         alias = 'project_orders',
         materialized = 'incremental',
@@ -51,8 +50,7 @@ meta as (
 )
 
 , orders as (
-    select
-        *
+    select *
         , array[
             if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset)
             , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset)
@@ -61,8 +59,6 @@ meta as (
         , row_number() over(partition by blockchain, block_number, tx_hash order by call_trace_address, order_hash) as counter
     from (
         {% for blockchain in oneinch_project_swaps_exposed_blockchains_list() %}
-            {{ "-- depends on: {{ ref('oneinch_' + blockchain + '_project_swaps') }}" }}
-            
             select
                 {{ orders_base_columns | join(', ') }}
                 , tag
@@ -80,7 +76,25 @@ meta as (
         union all
 
         select
-            {{ orders_base_columns | join(', ') }}
+            blockchain
+            , block_number
+            , block_time
+            , tx_hash
+            , tx_from
+            , tx_to
+            , call_method as method
+            , call_selector
+            , call_trace_address
+            , call_from
+            , call_to
+            , call_gas_used
+            , maker
+            , maker_asset
+            , making_amount
+            , taker_asset
+            , taking_amount
+            , order_hash
+            , flags
             , contract_name as tag
             , '1inch' as project
             , null as order_start

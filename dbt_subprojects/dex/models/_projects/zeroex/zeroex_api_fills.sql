@@ -1,10 +1,7 @@
 {{ config(
      schema = 'zeroex'
         , alias = 'api_fills'
-        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum","bakabhai993"]\') }}'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

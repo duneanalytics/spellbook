@@ -1,11 +1,8 @@
  {{
   config(
         schema = 'sanctum_router',
-        alias = 'trades',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "sanctum_router",
-                                    \'["senyor-kodi"]\') }}'
+        alias = 'trades'
+        , post_hook='{{ hide_spells() }}'
       )
 }}
 

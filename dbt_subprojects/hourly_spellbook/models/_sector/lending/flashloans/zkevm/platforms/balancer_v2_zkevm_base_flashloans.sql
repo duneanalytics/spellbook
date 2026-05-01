@@ -15,6 +15,7 @@ SELECT 'zkevm' AS blockchain
 , 'v2' AS version
 , recipient
 , amount
+, amount AS amount_raw
 , feeAmount AS fee
 , token AS token_address
 , contract_address AS project_contract_address

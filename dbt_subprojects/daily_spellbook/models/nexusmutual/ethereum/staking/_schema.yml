@@ -11,9 +11,10 @@ models:
     description: "Staking pools list"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_id
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - pool_id
+              - pool_address
     columns:
       - &block_time
         name: block_time
@@ -38,9 +39,10 @@ models:
     description: "Staking pools base data (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_id
-            - product_id
+          arguments:
+            combination_of_columns:
+              - pool_id
+              - product_id
     columns:
       - &block_time_created
         name: block_time_created
@@ -127,9 +129,10 @@ models:
     description: "Staking pools base data (materialised)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_id
-            - product_id
+          arguments:
+            combination_of_columns:
+              - pool_id
+              - product_id
     columns:
       - *block_time_created
       - *block_time_updated
@@ -164,11 +167,12 @@ models:
     description: "Staking pools event history"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - flow_type
-            - block_time
-            - evt_index
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - flow_type
+              - block_time
+              - evt_index
+              - tx_hash
     columns:
       - &flow_type
         name: flow_type
@@ -224,11 +228,12 @@ models:
     description: "Staking pools deposit ordered (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - flow_type
-            - block_time
-            - evt_index
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - flow_type
+              - block_time
+              - evt_index
+              - tx_hash
     columns:
       - *block_time
       - *flow_type
@@ -260,14 +265,15 @@ models:
     description: "Staking pools deposit extensions (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_address
-            - token_id
-            - init_tranche_id
-            - current_tranche_id
-            - chain_level
-            - stake_start_date
-            - stake_end_date
+          arguments:
+            combination_of_columns:
+              - pool_address
+              - token_id
+              - init_tranche_id
+              - current_tranche_id
+              - chain_level
+              - stake_start_date
+              - stake_end_date
     columns:
       - *block_time
       - *block_date
@@ -298,9 +304,10 @@ models:
     description: "Staking active stake daily (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_id
-            - block_date
+          arguments:
+            combination_of_columns:
+              - pool_id
+              - block_date
     columns:
       - *block_date
       - *pool_id
@@ -320,10 +327,11 @@ models:
     description: "Staking deposit updates daily (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_id
-            - token_id
-            - block_date
+          arguments:
+            combination_of_columns:
+              - pool_id
+              - token_id
+              - block_date
     columns:
       - *block_date
       - *pool_id
@@ -344,9 +352,10 @@ models:
     description: "Staking rewards minted at cover buy event - to be streamed over cover period"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool_id
-            - cover_id
+          arguments:
+            combination_of_columns:
+              - pool_id
+              - cover_id
     columns:
       - *block_time
       - *block_date
@@ -371,9 +380,10 @@ models:
     description: "Staked NXM per pool (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
     columns:
       - *block_date
       - *pool_id
@@ -392,9 +402,10 @@ models:
     description: "Staked NXM per pool - final view"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
     columns:
       - *block_date
       - *pool_id
@@ -412,10 +423,11 @@ models:
     description: "Staked NXM per token (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_id
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
+              - token_id
     columns:
       - *block_date
       - *pool_id
@@ -436,10 +448,11 @@ models:
     description: "Staked NXM per token - final view"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_id
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
+              - token_id
     columns:
       - *block_date
       - *pool_id
@@ -459,11 +472,12 @@ models:
     description: "Staked NXM per token & tranche (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_id
-            - tranche_id
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
+              - token_id
+              - tranche_id
     columns:
       - *block_date
       - *pool_id
@@ -483,11 +497,12 @@ models:
     description: "Staked NXM per token & tranche - final view"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_id
-            - tranche_id
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
+              - token_id
+              - tranche_id
     columns:
       - *block_date
       - *pool_id

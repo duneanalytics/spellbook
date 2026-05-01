@@ -1,10 +1,9 @@
 {{config(
 
-        alias = 'cex_optimism',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["msilb7", "hildobby"]\') }}')}}
+        alias = 'cex_optimism'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain
 , address

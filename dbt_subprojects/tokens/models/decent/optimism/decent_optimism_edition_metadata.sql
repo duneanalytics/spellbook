@@ -6,10 +6,7 @@
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
         ,unique_key = ['nft_contract_address']
-        ,post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "decent",
-                                    \'["msilb7"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

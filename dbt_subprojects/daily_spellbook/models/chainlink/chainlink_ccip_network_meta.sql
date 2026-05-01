@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='ccip_network_meta',
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "avalanche_c", "bnb", "base", "polygon", "optimism"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_jon"]\') }}'
+    alias='ccip_network_meta'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

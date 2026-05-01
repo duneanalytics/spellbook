@@ -7,11 +7,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "paraswap_v4",
-                                \'["springzh"]\') }}'
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
@@ -74,7 +71,7 @@ price_missed_next AS (
 )
 
 SELECT 'polygon' AS blockchain,
-    'paraswap' AS project,
+    'velora' AS project,
     '4' AS version,
     cast(date_trunc('day', d.block_time) as date) as block_date,
     cast(date_trunc('month', d.block_time) as date) as block_month,

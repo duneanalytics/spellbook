@@ -1,10 +1,7 @@
 {{ config(
         schema = 'safe',
-        alias = 'native_transfers_all',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","gnosis","goerli","linea","mantle","optimism","polygon","scroll","sonic","unichain","worldchain","zkevm","zksync"]\',
-                                "project",
-                                "safe",
-                                \'["kryptaki", "danielpartida"]\') }}'
+        alias = 'native_transfers_all'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

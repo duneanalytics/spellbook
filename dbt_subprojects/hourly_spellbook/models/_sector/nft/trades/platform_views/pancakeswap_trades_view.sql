@@ -1,0 +1,13 @@
+
+{{ config(
+        schema = 'pancakeswap_nft',
+        alias = 'trades',
+        
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
+}}
+
+SELECT *
+FROM {{ ref('nft_trades') }}
+WHERE project = 'pancakeswap'

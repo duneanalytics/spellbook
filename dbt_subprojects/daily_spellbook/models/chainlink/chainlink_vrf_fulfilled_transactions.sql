@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='vrf_fulfilled_transactions',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_jon"]\') }}'
+    alias='vrf_fulfilled_transactions'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

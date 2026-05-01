@@ -1,10 +1,9 @@
 {{config(
 
-        alias = 'cex_bnb',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["soispoke", "hildobby"]\') }}')}}
+        alias = 'cex_bnb'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain
 , address

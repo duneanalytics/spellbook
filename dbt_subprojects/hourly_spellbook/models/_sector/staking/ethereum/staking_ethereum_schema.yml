@@ -7,17 +7,20 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
+      short_description: "Identified Ethereum staking entities (Lido, Coinbase, etc.), mapping validators and depositors to known organizations."
       contributors: hildobby, sankinyue
+      docs_slug: /curated/staking/entities
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
-            - tx_from
-            - pubkey
-            - withdrawal_credentials
+          arguments:
+            combination_of_columns:
+              - depositor_address
+              - tx_from
+              - pubkey
+              - withdrawal_credentials
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -51,7 +54,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
       - name: sub_entity
         description: "Identified sub entity name"
       - name: sub_entity_unique_name
@@ -60,21 +64,25 @@ models:
         description: "Category of sub entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_deposits
     meta:
       blockchain: ethereum
       sector: staking
+      short_description: "Ethereum Beacon Chain staking deposit events, including validator pubkey, amount, and depositor address."
       contributors: hildobby
+      docs_slug: /curated/staking/deposits
     config:
       tags: ['ethereum', 'staking', 'deposits']
     description: Ethereum staking deposits
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - name: block_time
         description: "Block time of deposit transaction"
@@ -119,7 +127,9 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
+      short_description: "Combined Ethereum staking deposits and withdrawals, providing a unified view of ETH flowing into and out of the Beacon Chain."
       contributors: hildobby, 0xBoxer
+      docs_slug: /curated/staking/flows
     config:
       tags: ['ethereum', 'staking', 'deposits', 'withdrawals']
     description: Ethereum staking deposits & withdrawals
@@ -182,8 +192,9 @@ models:
         Ethereum staking entities info
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - entity
+          arguments:
+            combination_of_columns:
+              - entity
     columns:
       - name: entity
         description: "Entity name"

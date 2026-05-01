@@ -5,8 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    partition_by = ['month'],
-    unique_key = ['month', 'day', 'address', 'token_address', 'token_id', 'blockchain'],
+    partition_by = ['day'],
+    unique_key = ['day', 'address', 'token_address', 'token_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
@@ -14,7 +14,8 @@
 with token_list as (
     select
         0x4D97DCd97eC945f40cF65F87097ACe5EA0476045 as token_address
-), 
+),
+
 balances as (
     {{
       balances_incremental_subset_daily(
@@ -26,11 +27,12 @@ balances as (
 )
 
 select
-    'polygon' as blockchain
-    , cast(date_trunc('month', day) as date) as month
+    blockchain
     , day
     , address
     , token_address
     , token_id
-    , balance / 1e6 AS balance
+    , balance_raw
+    , balance_raw / 1e6 as balance
+    , last_updated
 from balances

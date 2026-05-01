@@ -2,11 +2,8 @@
     config(
         schema = 'balancer_v2_polygon',
         alias = 'trades',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(\'["polygon"]\',
-                                spell_type = "project",
-                                spell_name = "balancer",
-                                contributors = \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago", "viniabussafi"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 
@@ -51,12 +48,11 @@ WITH
             dexs_base.swap_fee,
             dexs_base.pool_symbol,
             dexs_base.pool_type
-        FROM {{ ref('dex_trades') }} dexs
+        FROM {{ ref('dex_polygon_trades') }} dexs
             INNER JOIN dexs_base
                 ON dexs.tx_hash = dexs_base.tx_hash
                 AND dexs.evt_index = dexs_base.evt_index
-        WHERE dexs.blockchain = 'polygon'
-            AND dexs.project = 'balancer'
+        WHERE dexs.project = 'balancer'
             AND dexs.version = '2'
     ),
     bpa AS (

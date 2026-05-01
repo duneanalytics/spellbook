@@ -1,12 +1,23 @@
 version: 2
 
 models:
-  - name: dex_sei_base_trades
+  - name: dex_sei_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_sei_base_trades
 
   - name: jelly_swap_sei_base_trades
     meta:
@@ -19,13 +30,15 @@ models:
     description: "JellySwap Sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('jelly_swap_sei_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('jelly_swap_sei_base_trades_seed')
+            filter:
+              version: 2
             
   - name: oku_sei_base_trades
     meta:
@@ -38,11 +51,13 @@ models:
     description: "Oku sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('oku_sei_base_trades_seed')
+          arguments:
+            seed_file: ref('oku_sei_base_trades_seed')
 
   - name: dragon_swap_sei_base_trades
     meta:
@@ -55,11 +70,13 @@ models:
     description: "DragonSwap sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dragon_swap_sei_base_trades_seed')
+          arguments:
+            seed_file: ref('dragon_swap_sei_base_trades_seed')
 
   - name: dragon_swap_v3_sei_base_trades
     meta:
@@ -72,9 +89,10 @@ models:
     description: "DragonSwap v3 sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: xei_finance_sei_base_trades
     meta:
@@ -87,11 +105,13 @@ models:
     description: "XeiFinance sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('xei_finance_sei_base_trades_seed')
+          arguments:
+            seed_file: ref('xei_finance_sei_base_trades_seed')
 
   - name: carbon_defi_sei_base_trades
     meta:
@@ -104,11 +124,13 @@ models:
     description: "Carbon DeFi sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('carbon_defi_sei_base_trades_seed')
+          arguments:
+            seed_file: ref('carbon_defi_sei_base_trades_seed')
   
   - name: yaka_sei_base_trades
     meta:
@@ -121,11 +143,13 @@ models:
     description: "Yaka Finance base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('yaka_sei_base_trades_seed')
+          arguments:
+            seed_file: ref('yaka_sei_base_trades_seed')
 
   - name: sailor_finance_sei_base_trades
     meta:
@@ -138,11 +162,13 @@ models:
     description: "SailorFinance sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sailor_finance_sei_base_trades_seed')
+          arguments:
+            seed_file: ref('sailor_finance_sei_base_trades_seed')
 
   - name: yeiswap_sei_base_trades
     meta:
@@ -155,8 +181,19 @@ models:
     description: "YeiSwap sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('yeiswap_sei_base_trades_seed')
+          arguments:
+            seed_file: ref('yeiswap_sei_base_trades_seed')
+
+  - name: dex_sei_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

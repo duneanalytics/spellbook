@@ -2,12 +2,8 @@
     config(
         schema = 'trades',
         alias = 'chain_swap',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(
-                        blockchains = \'["ethereum", "base", "avalanche_c", "optimism","polygon", "bnb", "arbitrum"]\',
-                        spell_type = "project",
-                        spell_name = "chain_swap",
-                        contributors = \'["whale_hunter","clizzard"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

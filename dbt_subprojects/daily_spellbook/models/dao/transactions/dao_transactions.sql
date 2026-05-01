@@ -1,11 +1,9 @@
 {{ config(
     schema = 'dao',
     alias = 'transactions',
-    materialized = 'view',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum","zksync"]\',
-                                "sector",
-                                "dao",
-                                \'["Henrystats"]\') }}')
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 

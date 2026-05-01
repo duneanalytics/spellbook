@@ -1,14 +1,9 @@
 {{ config(
     schema = 'bridges',
     tags = ['static'],
-    alias = 'info',
-        post_hook = '{{ expose_spells(\'[
-                                        "ethereum"
-                                        , "base"
-                                        ]\',
-                                        "sector",
-                                        "bridges",
-                                        \'["hildobby"]\') }}')
+    alias = 'info'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT bridge_name

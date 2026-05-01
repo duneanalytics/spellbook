@@ -2,11 +2,8 @@
   config(
     schema = 'moola_celo',
     alias = 'supply',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(\'["celo"]\',
-                                    "project",
-                                    "moola",
-                                    \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 
@@ -30,3 +27,4 @@ select
 from {{ source('lending','supply') }}
 where blockchain = 'celo'
   and project = 'moola'
+  and 1=1 -- trigger refresh

@@ -4,7 +4,7 @@ models:
 
   - name: sushiswap_agg_trades
     meta:
-      blockchain: arbitrum, avalanche_c, apechain, base, blast, bnb, celo, ethereum, fantom, gnosis, hemi, katana, linea, mantle, nova, optimism, polygon, scroll, sonic, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, apechain, base, berachain, blast, bnb, celo, ethereum, fantom, gnosis, hemi, hyperevm, katana, linea, mantle, nova, optimism, polygon, scroll, sonic, zkevm, zksync
       sector: dex
       project: sushiswap
       contributors: olastenberg
@@ -74,9 +74,10 @@ models:
       Since Sushiswap is a Uniswap V2 fork, a fixed fee of 3000 is assumed (0.3 with factor).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
     columns:
       - &blockchain
         name: blockchain

@@ -1,6 +1,31 @@
 version: 2
 
 models:
+  - name: lido_accounting_ethereum_steth_referral_payment
+    meta:
+      blockchain: ethereum
+      sector: liquid_staking
+      project: lido
+      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
+    config:
+      tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
+    description: "stETH referral payments to referral partners"
+    columns:
+      - name: period
+        description: "Block timestamp of the referral payment"
+        tests:
+          - not_null
+      - name: evt_tx_hash
+        description: "Transaction hash"
+        tests:
+          - not_null
+      - name: token
+        description: "Token contract address"
+        tests:
+          - not_null
+      - name: amount_token
+        description: "Amount of token transferred"
+
   - name: lido_accounting_ethereum_dai_referral_payment
     meta:
       blockchain: ethereum
@@ -31,8 +56,9 @@ models:
     description: "ETH deposits to Lido"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - tx_hash
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
@@ -41,7 +67,7 @@ models:
       - name: token
         description: "Token name"
       - name: tx_hash  
-        descripion: "Transaction hash"
+        description: "Transaction hash"
         
                     
   - name: lido_accounting_ethereum_fundraising
@@ -55,9 +81,10 @@ models:
     description: "Fundraised Lido funds"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token
-            - evt_tx_hash
+          arguments:
+            combination_of_columns:
+              - token
+              - evt_tx_hash
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
@@ -80,7 +107,7 @@ models:
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
+      - name: evt_tx_hash
         description: "Transaction hash"
       - name: token
         description: "Token name"
@@ -102,8 +129,8 @@ models:
       - name: token
         description: "Token name"
       - name: amount_token
-        description: "TToken amount"
-      - name: evt_tx_hash,
+        description: "token amount"
+      - name: evt_tx_hash
         description: "Transaction hash"
 
   - name: lido_accounting_ethereum_liquidity_incentives
@@ -115,11 +142,22 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Amount of tokens spent on incentives"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - evt_tx_hash
+              - evt_index
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
+      - name: evt_tx_hash
         description: "Transaction hash"
+      - name: evt_index
+        description: "Event index within the transaction"
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: amount_token
         description: "Token amount"
       - name: token
@@ -134,11 +172,22 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Incentives spend on lox"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - evt_tx_hash
+              - evt_index
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
+      - name: evt_tx_hash
         description: "Transaction hash"
+      - name: evt_index
+        description: "Event index within the transaction"
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: amount_token
         description: "Token amount"
       - name: token
@@ -153,15 +202,26 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Operating expenses"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - period
+              - evt_tx_hash
+              - token
+              - amount_token
     columns:
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: period
         description: "Timestamp of the accounting entry"
+      - name: evt_tx_hash
+        description: "Transaction hash"
       - name: token
         description: "Token name"
       - name: amount_token
         description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
 
   - name: lido_accounting_ethereum_other_expenses
     meta:
@@ -172,15 +232,26 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Other expenses"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - period
+              - evt_tx_hash
+              - token
+              - amount_token
     columns:
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: period
         description: "Timestamp of the accounting entry"
+      - name: evt_tx_hash
+        description: "Transaction hash"
       - name: token
         description: "Token name"
       - name: amount_token
         description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
 
   - name: lido_accounting_ethereum_other_income
     meta:
@@ -191,15 +262,26 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Other income"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - period
+              - evt_tx_hash
+              - token
+              - amount_token
     columns:
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: period
         description: "Timestamp of the accounting entry"
+      - name: evt_tx_hash
+        description: "Transaction hash"
       - name: token
         description: "Token name"
       - name: amount_token
         description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
 
   - name: lido_accounting_ethereum_revenue
     meta:
@@ -213,7 +295,7 @@ models:
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
+      - name: evt_tx_hash
         description: "Transaction hash"
       - name: token
         description: "Token name"
@@ -261,7 +343,7 @@ models:
         description: "Token name"
       - name: amount_token
         description: "Token amount"
-      - name: evt_tx_hash,
+      - name: evt_tx_hash
         description: "Transaction hash"
 
   - name: lido_accounting_ethereum_buffer_inflow
@@ -280,9 +362,9 @@ models:
         description: "Token name"
       - name: amount
         description: "Token amount"
-      - name: evt_tx_hash,
+      - name: evt_tx_hash
         description: "Transaction hash"
-      - name: day,
+      - name: day
         description: "Timestamp of the accounting entry truncated to the day mark"                
 
   - name: lido_accounting_ethereum_buffer_outflow
@@ -301,9 +383,9 @@ models:
         description: "Token name"
       - name: amount
         description: "Token amount"
-      - name: evt_tx_hash,
+      - name: evt_tx_hash
         description: "Transaction hash"
-      - name: day,
+      - name: day
         description: "Timestamp of the accounting entry truncated to the day mark"              
 
   - name: lido_accounting_ethereum_withdrawals
@@ -320,7 +402,7 @@ models:
         description: "Timestamp of the accounting entry"
       - name: amount
         description: "Token amount"
-      - name: hash,
+      - name: hash
         description: "Block hash"
-      - name: day,
+      - name: day
         description: "Timestamp of the accounting entry truncated to the day mark"              

@@ -2,10 +2,7 @@
      schema = 'op_chains'
         , alias = 'chain_list'
         , unique_key = ['blockchain', 'chain_id']
-        , post_hook='{{ expose_spells(\'["optimism","base","zora"]\',
-                                  "project",
-                                  "op_chains",
-                                  \'["msilb7"]\') }}'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 

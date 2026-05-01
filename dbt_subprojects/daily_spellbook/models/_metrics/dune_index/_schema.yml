@@ -10,9 +10,10 @@ models:
     description: "Combine transactions, transfers and fees index values to get a daily dune index value"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: metrics_dune_index_stats
     meta:

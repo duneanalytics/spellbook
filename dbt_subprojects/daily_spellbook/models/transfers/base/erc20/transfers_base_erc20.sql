@@ -5,11 +5,10 @@
     file_format ='delta',
     incremental_strategy='merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
-    unique_key='unique_transfer_id',
-        post_hook='{{ expose_spells(\'["base"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz"]\') }}') }}
+    unique_key='unique_transfer_id'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 with
     sent_transfers as (

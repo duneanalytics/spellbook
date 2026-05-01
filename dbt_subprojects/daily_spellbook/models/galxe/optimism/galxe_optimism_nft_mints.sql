@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number', 'tx_hash', 'nft_contract_address', 'tokenId', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "galxe",
-                                \'["msilb7"]\') }}'
+    unique_key = ['block_number', 'tx_hash', 'nft_contract_address', 'tokenId', 'evt_index']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 --SELECT MIN(block_time) FROM optimism.transactions where to = 0x2e42f214467f647Fe687Fd9a2bf3BAdDFA737465

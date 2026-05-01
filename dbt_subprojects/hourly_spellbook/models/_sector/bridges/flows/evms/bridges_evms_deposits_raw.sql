@@ -42,6 +42,7 @@
     , 'sophon'
     , 'story'
     , 'taiko'
+    , 'tron'
     , 'unichain'
     , 'worldchain'
     , 'zkevm'

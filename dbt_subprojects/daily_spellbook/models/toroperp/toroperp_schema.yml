@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: toroperp_deposits
+    meta:
+      blockchain: sei
+      sector: dex
+      project: toroperp
+      contributors: toroperp
+    config:
+      tags: ['toroperp', 'orderly', 'deposits', 'cross-chain']
+    description: >
+      Aggregated deposit transactions for toroperp broker on Orderly Network
+      across all supported chains. Currently supports SEI.
+    columns:
+      - name: blockchain
+        description: "Blockchain where the deposit occurred"
+      - name: project
+        description: "Project name (toroperp)"
+      - name: version
+        description: "Version of the integration"
+      - name: block_time
+        description: "UTC timestamp of the block containing the deposit"
+      - name: block_date
+        description: "UTC date of the block containing the deposit"
+      - name: block_number
+        description: "Block number of the deposit transaction"
+      - name: tx_hash
+        description: "Transaction hash of the deposit"
+      - name: evt_index
+        description: "Log index of the deposit event within the transaction"
+      - name: vault_contract
+        description: "Address of the Orderly Vault contract"
+      - name: account_id
+        description: "Unique account identifier"
+      - name: user_address
+        description: "Address of the user making the deposit"
+      - name: deposit_nonce
+        description: "Sequential nonce for the deposit"
+      - name: token_hash
+        description: "Hash identifier of the deposited token"
+      - name: token_amount_raw
+        description: "Raw amount of tokens deposited"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: tx_to
+        description: "Address that received the transaction"
+      - name: broker_hash
+        description: "Broker hash identifying toroperp"

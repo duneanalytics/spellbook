@@ -3,11 +3,8 @@
     schema = 'gitcoin_ethereum',
     alias = 'proposals',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "gitcoin",
-                                \'["soispoke"]\') }}'
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

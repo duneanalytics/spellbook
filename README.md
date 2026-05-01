@@ -17,8 +17,24 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 - Questions? Join #spellbook on [Discord](https://discord.com/channels/757637422384283659/999683200563564655).
 - Your spellbook contributions are your own IP. See [Contributor License Agreement](CLA.md) for details.
 
+## 🚀 Enterprise Customers: Use Your Own dbt Project
+
+**If you're a Dune enterprise customer, you don't need to contribute to Spellbook.** Instead, you can run your own data transformation projects directly on DuneSQL using the **dbt Connector**.
+
+**What it is:** Run dbt projects on top of DuneSQL—read from any Dune dataset and write results into managed tables within your org namespace. All writes are metered and private by default, stored securely by Dune.
+
+**Why it matters:**
+- **No PR bottlenecks** – Ship on your own schedule without waiting for Spellbook reviews
+- **Keep it private** – Your logic and data stay within your org, giving you full autonomy
+- **Full dbt compatibility** – Use your existing dbt workflows and tooling
+
+📖 **[Read the dbt Connector documentation](https://docs.dune.com/api-reference/connectors/dbt/overview#dbt-connector-overview)** to get started.
+
+👉 **[Contact us](https://dune.com/enterprise)** for a demo and to get set up with your own dbt project.
+
 ## Table of Contents
 
+- [Enterprise Customers: Use Your Own dbt Project](#-enterprise-customers-use-your-own-dbt-project)
 - [Introduction](#introduction)
 - [Sub-projects](#sub-projects)
 - [How to contribute](#how-to-contribute)
@@ -81,7 +97,7 @@ Join #spellbook on [Discord](https://discord.com/invite/ErrzwBz) for help.
 **Prerequisites:**
 - Fork and clone the repo ([GitHub guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects))
 - Python 3.9+ ([installation guide](https://docs.python-guide.org/starting/installation/))
-- [pip](https://pip.pypa.io/en/stable/installation/) and [pipenv](https://pypi.org/project/pipenv/)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - Windows users: Set `git config --global core.autocrlf true` for unix line endings
 
 **Initial Installation:**
@@ -93,18 +109,18 @@ cd user/directory/github/spellbook
 # Change this to wherever spellbook is stored locally on your machine.
 ```
 
-Run the install command to create a pipenv:
+Install project dependencies with uv:
 
 ```console
-pipenv install
+uv sync --locked
 ```
 
-If the install fails due to Python version mismatch, check your version with `python --version`, then update the Python version in the Pipfile to match (must be at least 3.9). Run `pipenv install` again.
+If install fails due to Python version mismatch, install Python 3.9 with `uv python install 3.9` and run `uv sync --locked` again.
 
-Activate the virtual environment:
+Run commands through uv (no manual environment activation required):
 
 ```console
-pipenv shell
+uv run dbt --version
 ```
 
 Navigate to the appropriate sub-project:
@@ -116,14 +132,20 @@ cd dbt_subprojects/<subproject_name>/
 Each subproject has its own dbt project file with varying configs. Run the following commands:
 
 ```console
-dbt clean # cleans up the project
-dbt deps # pull the dependencies
-dbt compile
+uv run dbt clean # cleans up the project
+uv run dbt deps # pull the dependencies
+uv run dbt compile
+```
+
+From the repo root, you can target a subproject directly:
+
+```console
+uv run dbt compile --project-dir dbt_subprojects/<subproject_name>/
 ```
 
 `dbt compile` converts JINJA/SQL templates into plain SQL in the `target/` folder, which you can test on dune.com.
 
-Each subproject includes a `profiles.yml` file that tells dbt how to run commands. You **must** be in the subproject root directory to run `dbt compile` correctly.
+Each subproject includes a `profiles.yml` file that tells dbt how to run commands. Run dbt either from the subproject directory or with `--project-dir`.
 
 ## How to use dbt to create spells
 

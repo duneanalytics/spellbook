@@ -1,10 +1,7 @@
 {{ config(
         schema = 'airdrop_arbitrum',
-        alias = 'claims',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                      "sector",
-                                      "airdrop",
-                                    \'["hildobby"]\') }}'
+        alias = 'claims'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

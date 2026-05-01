@@ -3,6 +3,8 @@
     , trades_table = null
     , version = null 
     , project = null 
+    , dex_project = 'uniswap'
+    , dex_version = '4'
     )
 %}
 
@@ -15,6 +17,7 @@ base_trades as (
         , block_number
         , evt_index 
         , trade_type
+        , cast(date_trunc('day', block_time) as date) as block_date
         , token_sold_lp_fees_paid_raw -- fee columns 
         , token_bought_lp_fees_paid_raw
         , token_sold_protocol_fees_paid_raw
@@ -37,13 +40,15 @@ base_trades as (
         , token_bought_protocol_fees_paid_raw
         , trade_type
     from 
-    {{ ref('dex_trades') }} dexs 
-    inner join 
-    base_trades bt 
+    {{ ref('dex_' ~ blockchain ~ '_trades') }} dexs
+    inner join
+    base_trades bt
         on dexs.block_number = bt.block_number
-        and dexs.tx_hash = bt.tx_hash 
-        and dexs.evt_index = bt.evt_index 
-    where dexs.blockchain = '{{blockchain}}'
+        and dexs.tx_hash = bt.tx_hash
+        and dexs.evt_index = bt.evt_index
+        and dexs.block_date = bt.block_date
+    where dexs.project = '{{dex_project}}'
+    and dexs.version = '{{dex_version}}'
     {%- if is_incremental() %}
     and {{ incremental_predicate('dexs.block_time') }}
     {%- endif %}

@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='ccip_gas_daily',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_jon"]\') }}'
+    alias='ccip_gas_daily'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

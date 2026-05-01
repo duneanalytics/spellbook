@@ -1,10 +1,7 @@
 {{ config(
     
-    alias = 'mint',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "ironbank",
-                                \'["michael-ironbank"]\') }}'
+    alias = 'mint'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 SELECT

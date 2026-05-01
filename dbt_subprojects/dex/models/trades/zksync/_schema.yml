@@ -1,12 +1,23 @@
 version: 2
 
 models:
-  - name: dex_zksync_base_trades
+  - name: dex_zksync_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_zksync_base_trades
 
   - name: maverick_zksync_base_trades
     meta:
@@ -19,13 +30,15 @@ models:
     description: "Maverick zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_zksync_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('maverick_zksync_base_trades_seed')
+            filter:
+              version: 1
 
   - name: maverick_v2_zksync_base_trades
     meta:
@@ -38,13 +51,15 @@ models:
     description: "Maverick zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_zksync_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('maverick_zksync_base_trades_seed')
+            filter:
+              version: 2
 
   - name: pancakeswap_v2_zksync_base_trades
     meta:
@@ -57,13 +72,15 @@ models:
     description: "Pancakeswap zkSync v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_zksync_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('pancakeswap_zksync_base_trades_seed')
+            filter:
+              version: 2
 
   - name: uniswap_v3_zksync_base_trades
     meta:
@@ -76,13 +93,15 @@ models:
     description: "uniswap zksync v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_zksync_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_zksync_base_trades_seed')
+            filter:
+              version: 3
 
   - name: syncswap_v1_zksync_base_trades
     meta:
@@ -95,13 +114,15 @@ models:
     description: "SyncSwap V1 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('syncswap_zksync_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('syncswap_zksync_base_trades_seed')
+            filter:
+              version: 1
 
   - name: syncswap_v2_zksync_base_trades
     meta:
@@ -114,13 +135,15 @@ models:
     description: "SyncSwap V2 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('syncswap_zksync_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('syncswap_zksync_base_trades_seed')
+            filter:
+              version: 2
 
   - name: mute_zksync_base_trades
     meta:
@@ -133,11 +156,13 @@ models:
     description: "Mute zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('mute_zksync_base_trades_seed')
+          arguments:
+            seed_file: ref('mute_zksync_base_trades_seed')
 
   - name: pancakeswap_v3_zksync_base_trades
     meta:
@@ -150,13 +175,15 @@ models:
     description: "Pancakeswap V3 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_zksync_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('pancakeswap_zksync_base_trades_seed')
+            filter:
+              version: 3
 
   - name: spacefi_v1_zksync_base_trades
     meta:
@@ -169,11 +196,13 @@ models:
     description: "SpaceFi V1 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('spacefi_zksync_base_trades_seed')
+          arguments:
+            seed_file: ref('spacefi_zksync_base_trades_seed')
 
   - name: derpdex_v1_zksync_base_trades
     meta:
@@ -186,11 +215,13 @@ models:
     description: "DerpDEX V1 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('derpdex_zksync_base_trades_seed')
+          arguments:
+            seed_file: ref('derpdex_zksync_base_trades_seed')
 
   - name: wagmi_v1_zksync_base_trades
     meta:
@@ -203,11 +234,13 @@ models:
     description: "Wagmi V1 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('wagmi_zksync_base_trades_seed')
+          arguments:
+            seed_file: ref('wagmi_zksync_base_trades_seed')
 
   - name: zkswap_finance_zksync_base_trades
     meta:
@@ -220,13 +253,15 @@ models:
     description: "zkSwap Finance zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('zkswap_finance_zksync_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('zkswap_finance_zksync_base_trades_seed')
+            filter:
+              version: 1
 
   - name: zkswap_finance_v3_zksync_base_trades
     meta:
@@ -239,13 +274,15 @@ models:
     description: "zkSwap Finance V3 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('zkswap_finance_zksync_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('zkswap_finance_zksync_base_trades_seed')
+            filter:
+              version: 3
 
   - name: gemswap_zksync_base_trades
     meta:
@@ -258,11 +295,13 @@ models:
     description: "Gemswap zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('gemswap_zksync_base_trades_seed')
+          arguments:
+            seed_file: ref('gemswap_zksync_base_trades_seed')
 
   - name: vesync_v1_zksync_base_trades
     meta:
@@ -275,11 +314,13 @@ models:
     description: "veSync V1 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('vesync_zksync_base_trades_seed')
+          arguments:
+            seed_file: ref('vesync_zksync_base_trades_seed')
 
   - name: dracula_finance_zksync_base_trades
     meta:
@@ -292,11 +333,13 @@ models:
     description: "Dracula Finance zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dracula_finance_zksync_base_trades_seed')
+          arguments:
+            seed_file: ref('dracula_finance_zksync_base_trades_seed')
 
   - name: ezkalibur_v2_zksync_base_trades
     meta:
@@ -309,13 +352,15 @@ models:
     description: "eZKalibur V1 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('ezkalibur_zksync_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('ezkalibur_zksync_base_trades_seed')
+            filter:
+              version: 2
 
   - name: izumi_finance_v1_zksync_base_trades
     meta:
@@ -328,13 +373,15 @@ models:
     description: "izumi_finance v1 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('izumi_finance_zksync_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('izumi_finance_zksync_base_trades_seed')
+            filter:
+              version: 1
 
   - name: izumi_finance_v2_zksync_base_trades
     meta:
@@ -347,13 +394,15 @@ models:
     description: "izumi_finance v2 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('izumi_finance_zksync_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('izumi_finance_zksync_base_trades_seed')
+            filter:
+              version: 2
 
   - name: velocore_v0_zksync_base_trades
     meta:
@@ -366,13 +415,15 @@ models:
     description: "Velocore v0 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('velocore_zksync_base_trades_seed')
-          filter:
-            version: 0
+          arguments:
+            seed_file: ref('velocore_zksync_base_trades_seed')
+            filter:
+              version: 0
 
   - name: velocore_v1_zksync_base_trades
     meta:
@@ -385,13 +436,15 @@ models:
     description: "Velocore v1 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('velocore_zksync_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('velocore_zksync_base_trades_seed')
+            filter:
+              version: 1
 
   - name: velocore_v2_zksync_base_trades
     meta:
@@ -404,10 +457,21 @@ models:
     description: "Velocore v2 zksync base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('velocore_zksync_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('velocore_zksync_base_trades_seed')
+            filter:
+              version: 2
+
+  - name: dex_zksync_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

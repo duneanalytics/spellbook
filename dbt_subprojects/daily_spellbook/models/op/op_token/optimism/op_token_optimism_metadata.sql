@@ -2,10 +2,7 @@
      schema = 'op_token_optimism'
         , alias = 'metadata'
         , unique_key = ['contract_address']
-        , post_hook='{{ expose_spells(\'["optimism"]\',
-                                  "project",
-                                  "op_token",
-                                  \'["msilb7"]\') }}'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 

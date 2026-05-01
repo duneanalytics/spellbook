@@ -2,13 +2,8 @@
     config(
         schema = 'bungee',
         alias = 'bridges',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(\'[
-            "ethereum", "zkevm", "scroll", "blast", "linea", "mantle", "optimism",
-            "gnosis", "arbitrum", "zksync", "base", "bnb", "polygon",
-            "avalanche_c", "fantom"
-        ]\',
-        "project", "bungee", \'["lequangphu"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

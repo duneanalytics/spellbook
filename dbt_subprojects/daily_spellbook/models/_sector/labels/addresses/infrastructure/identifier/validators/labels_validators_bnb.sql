@@ -1,9 +1,8 @@
 {{config(
-    alias = 'validators_bnb',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["soispoke"]\') }}')}}
+    alias = 'validators_bnb'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain, address as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES

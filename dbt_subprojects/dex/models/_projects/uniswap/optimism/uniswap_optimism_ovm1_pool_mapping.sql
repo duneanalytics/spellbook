@@ -4,11 +4,8 @@
         schema='uniswap_v3_optimism',
         alias= 'ovm1_pool_mapping',
         materialized='table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "uniswap_v3",
-                                    \'["msilb7", "chuxin"]\') }}'
+        file_format = 'delta'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 with ovm1_legacy_pools_raw as (

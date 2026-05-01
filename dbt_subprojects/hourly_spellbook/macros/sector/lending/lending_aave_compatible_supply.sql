@@ -47,6 +47,7 @@ base_supply as (
     cast(null as varbinary) as withdrawn_to,
     cast(null as varbinary) as liquidator,
     cast(_amount as double) as amount,
+    _amount as amount_raw,
     contract_address,
     evt_tx_hash,
     evt_index,
@@ -65,6 +66,7 @@ base_supply as (
     _user as withdrawn_to,
     cast(null as varbinary) as liquidator,
     -1 * cast(_amount as double) as amount,
+    _amount as amount_raw,
     contract_address,
     evt_tx_hash,
     evt_index,
@@ -83,6 +85,7 @@ base_supply as (
     _liquidator as withdrawn_to,
     _liquidator as liquidator,
     -1 * cast(_liquidatedCollateralAmount as double) as amount,
+    _liquidatedCollateralAmount as amount_raw,
     contract_address,
     evt_tx_hash,
     evt_index,
@@ -102,6 +105,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   cast(date_trunc('month', evt_block_time) as date) as block_month,
   evt_block_time as block_time,
   evt_block_number as block_number,
@@ -169,6 +173,7 @@ base_supply as (
     cast(null as varbinary) as withdrawn_to,
     cast(null as varbinary) as liquidator,
     cast(amount as double) as amount,
+    amount as amount_raw,
     contract_address,
     evt_tx_hash,
     evt_index,
@@ -188,6 +193,7 @@ base_supply as (
     w.to as withdrawn_to,
     cast(null as varbinary) as liquidator,
     -1 * cast(w.amount as double) as amount,
+    w.amount as amount_raw,
     w.contract_address,
     w.evt_tx_hash,
     w.evt_index,
@@ -211,6 +217,7 @@ base_supply as (
     liquidator as withdrawn_to,
     liquidator as liquidator,
     -1 * cast(liquidatedCollateralAmount as double) as amount,
+    liquidatedCollateralAmount as amount_raw,
     contract_address,
     evt_tx_hash,
     evt_index,
@@ -230,6 +237,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   cast(date_trunc('month', evt_block_time) as date) as block_month,
   evt_block_time as block_time,
   evt_block_number as block_number,
@@ -250,7 +258,9 @@ from base_supply
     project_decoded_as = 'aave_v3',
     decoded_contract_name = 'Pool',
     wrapped_token_gateway_available = true,
-    decoded_wrapped_token_gateway_name = 'WrappedTokenGatewayV3'
+    decoded_wrapped_token_gateway_name = 'WrappedTokenGatewayV3',
+    wethgateway_available = false,
+    decoded_wethgateway_name = 'WETHGateway'
   )
 %}
 
@@ -276,6 +286,16 @@ src_LendingPool_evt_Withdraw as (
 src_WrappedTokenGatewayV3_call_withdrawETH as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_wrapped_token_gateway_name ~ '_call_withdrawETH') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('call_block_time') }}
+  {% endif %}
+),
+{% endif %}
+
+{% if wethgateway_available %}
+src_WETHGateway_call_withdrawETH as (
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_wethgateway_name ~ '_call_withdrawETH') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -308,6 +328,7 @@ base_supply as (
     cast(null as varbinary) as withdrawn_to,
     cast(null as varbinary) as liquidator,
     cast(amount as double) as amount,
+    amount as amount_raw,
     contract_address,
     evt_tx_hash,
     evt_index,
@@ -319,14 +340,19 @@ base_supply as (
     'withdraw' as transaction_type,
     w.reserve as token_address,
     w.user as depositor,
-    {% if wrapped_token_gateway_available %}
+    {% if wrapped_token_gateway_available and wethgateway_available %}
+      cast(coalesce(wrap.to, wgate.to) as varbinary)
+    {% elif wrapped_token_gateway_available %}
       cast(wrap.to as varbinary)
+    {% elif wethgateway_available %}
+      cast(wgate.to as varbinary)
     {% else %}
       cast(null as varbinary)
     {% endif %} as on_behalf_of,
     w.to as withdrawn_to,
     cast(null as varbinary) as liquidator,
     -1 * cast(w.amount as double) as amount,
+    w.amount as amount_raw,
     w.contract_address,
     w.evt_tx_hash,
     w.evt_index,
@@ -341,6 +367,14 @@ base_supply as (
       and w.amount = wrap.amount
       and wrap.call_success
   {% endif %}
+  {% if wethgateway_available %}
+    left join src_WETHGateway_call_withdrawETH wgate
+      on w.evt_block_number = wgate.call_block_number
+      and w.evt_tx_hash = wgate.call_tx_hash
+      and w.to = wgate.contract_address
+      and w.amount = wgate.amount
+      and wgate.call_success
+  {% endif %}
   union all
   select
     'repay_with_atokens' as transaction_type,
@@ -350,6 +384,7 @@ base_supply as (
     repayer as withdrawn_to,
     cast(null as varbinary) as liquidator,
     -1 * cast(amount as double) as amount,
+    amount as amount_raw,
     contract_address,
     evt_tx_hash,
     evt_index,
@@ -365,6 +400,7 @@ base_supply as (
     liquidator as withdrawn_to,
     liquidator as liquidator,
     -1 * cast(liquidatedCollateralAmount as double) as amount,
+    liquidatedCollateralAmount as amount_raw,
     contract_address,
     evt_tx_hash,
     evt_index,
@@ -384,6 +420,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   cast(date_trunc('month', evt_block_time) as date) as block_month,
   evt_block_time as block_time,
   evt_block_number as block_number,

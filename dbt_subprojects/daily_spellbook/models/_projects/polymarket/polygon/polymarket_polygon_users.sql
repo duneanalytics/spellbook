@@ -6,11 +6,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['polymarket_wallet'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.created_time')],
-    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
-                                  spell_type = "project",
-                                  spell_name = "polymarket",
-                                  contributors = \'["0xBoxer"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.created_time')]
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

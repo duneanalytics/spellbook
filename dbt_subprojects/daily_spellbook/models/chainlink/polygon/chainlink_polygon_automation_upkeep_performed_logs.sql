@@ -2,11 +2,8 @@
   config(
     
     alias='automation_upkeep_performed_logs',
-    materialized='view',
-    post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_jon"]\') }}'
+    materialized='view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

@@ -207,5 +207,5 @@ sources:
         meta:
           docs_slug: /solana/block_leaders
         description: Leaders for each block on the Solana blockchain
-        
-      
+      - name: daily_balances
+        description: Daily balances for each address from solana.account_activity

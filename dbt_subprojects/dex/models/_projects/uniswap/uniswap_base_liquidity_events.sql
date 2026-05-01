@@ -16,6 +16,7 @@
    ,ref('uniswap_ink_base_liquidity_events')
    ,ref('uniswap_linea_base_liquidity_events')
    ,ref('uniswap_mantle_base_liquidity_events')
+   ,ref('uniswap_monad_base_liquidity_events')
    ,ref('uniswap_optimism_base_liquidity_events')
    ,ref('uniswap_plasma_base_liquidity_events')
    ,ref('uniswap_polygon_base_liquidity_events')

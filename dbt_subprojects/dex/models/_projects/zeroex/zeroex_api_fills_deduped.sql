@@ -1,10 +1,7 @@
 {{ config(
      schema = 'zeroex'
         , alias = 'api_fills_deduped'
-        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon","scroll", "linea","blast","mantle", "mode", "worldchain", "unichain", "berachain", "ink"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum","bakabhai993"]\') }}'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -38,6 +35,7 @@
   ,ref('zeroex_v2_worldchain_trades')
   ,ref('zeroex_v2_berachain_trades')
   ,ref('zeroex_v2_ink_trades')
+  ,ref('zeroex_v2_monad_trades')
 ] %}
 
 

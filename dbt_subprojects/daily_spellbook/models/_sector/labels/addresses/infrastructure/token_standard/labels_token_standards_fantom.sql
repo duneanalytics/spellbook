@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_fantom',
-        post_hook='{{ expose_spells(\'["fantom"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_fantom'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'fantom' AS blockchain
 , erc20.contract_address AS address

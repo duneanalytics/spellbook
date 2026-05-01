@@ -7,10 +7,7 @@
     , unique_key = ['unique_key', 'block_date']
     , partition_by = ['block_date', 'action']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , post_hook='{{ expose_spells(\'["solana"]\',
-                                "sector",
-                                "staking",
-                                \'["ilemi", "0xRob"]\') }}')
+    , post_hook='{{ hide_spells() }}')
 }}
 
 with

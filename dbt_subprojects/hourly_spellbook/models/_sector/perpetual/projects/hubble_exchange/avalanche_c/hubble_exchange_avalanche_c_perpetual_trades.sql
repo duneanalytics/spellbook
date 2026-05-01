@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "project",
-                                "hubble_exchange",
-                                \'["Henrystats"]\') }}'
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

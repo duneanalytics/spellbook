@@ -1,10 +1,7 @@
 {{ config(
         schema = 'zeroex',
-        alias = 'native_trades',
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","bnb"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum","bakabhai993"]\') }}'
+        alias = 'native_trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

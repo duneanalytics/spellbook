@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_ethereum',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_ethereum'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'ethereum' AS blockchain
 , erc20.contract_address AS address

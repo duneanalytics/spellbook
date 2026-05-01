@@ -1,8 +1,8 @@
 {{ config(
         schema='evms',
         alias = 'logs_decoded',
-        materialized = 'view',
-        post_hook='{{ expose_spells(evms_structured_blockchains_list() | tojson, "sector", "evms", \'[]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

@@ -3,23 +3,26 @@ version: 2
 models:
   - name: lending_supply
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic, unichain
       sector: lending
       project: aave, compound
       contributors: tomfutago, hildobby
+      short_description: "Token supply (deposit) events across lending protocols (Aave, Compound, etc.), tracking assets deposited as collateral or for yield."
+      docs_slug: /curated/lending/supply
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
     description: "All lending transactions involving supply transactions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -64,8 +67,11 @@ models:
       - &amount
         name: amount
         description: "Token amount present in the transaction"
-      - &usd_amount
-        name: usd_amount
+      - &amount_raw
+        name: amount_raw
+        description: "Raw token amount (uint256, always positive)"
+      - &amount_usd
+        name: amount_usd
         description: "Token amount in USD"
       - &block_month
         name: block_month
@@ -95,3 +101,41 @@ models:
         description: "Event index"
         data_tests:
           - not_null
+
+  - name: lending_tron_supply
+    meta:
+      blockchain: tron
+      sector: lending
+      project: justlend
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'justlend', 'tron']
+    description: "All lending transactions involving supply transactions on Tron"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index

@@ -1,10 +1,7 @@
 {{config(
 
-    alias = 'l2_fee_vaults',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "sector",
-                                "labels",
-                                \'["msilb7"]\') }}'
+    alias = 'l2_fee_vaults'
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT 'optimism'        AS blockchain

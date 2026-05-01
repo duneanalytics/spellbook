@@ -1,12 +1,23 @@
 version: 2
 
 models:
-  - name: dex_arbitrum_base_trades
+  - name: dex_arbitrum_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_arbitrum_base_trades
 
   - name: uniswap_v4_arbitrum_base_trades
     meta:
@@ -19,13 +30,15 @@ models:
     description: "uniswap arbitrum v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_arbitrum_base_trades_seed')
-          filter:
-            version: 4
+          arguments:
+            seed_file: ref('uniswap_arbitrum_base_trades_seed')
+            filter:
+              version: 4
 
   - name: uniswap_v3_arbitrum_base_trades
     meta:
@@ -38,13 +51,15 @@ models:
     description: "uniswap arbitrum v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_arbitrum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_arbitrum_base_trades_seed')
+            filter:
+              version: 3
 
   - name: uniswap_v2_arbitrum_base_trades
     meta:
@@ -57,13 +72,15 @@ models:
     description: "uniswap arbitrum v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('uniswap_arbitrum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: sushiswap_v1_arbitrum_base_trades
     meta:
@@ -76,13 +93,15 @@ models:
     description: "Sushiswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_arbitrum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('sushiswap_arbitrum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: sushiswap_v2_arbitrum_base_trades
     meta:
@@ -95,13 +114,15 @@ models:
     description: "Sushiswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('sushiswap_arbitrum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: airswap_arbitrum_base_trades
     meta:
@@ -114,11 +135,13 @@ models:
     description: "Airswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('airswap_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('airswap_arbitrum_base_trades_seed')
 
   - name: camelot_v2_arbitrum_base_trades
     meta:
@@ -131,13 +154,15 @@ models:
     description: "Camelot Arbitrum v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('camelot_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('camelot_arbitrum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: camelot_v3_arbitrum_base_trades
     meta:
@@ -150,13 +175,15 @@ models:
     description: "Camelot Arbitrum v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('camelot_arbitrum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('camelot_arbitrum_base_trades_seed')
+            filter:
+              version: 3
 
   - name: arbswap_arbitrum_base_trades
     meta:
@@ -169,11 +196,13 @@ models:
     description: "Arbswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('arbswap_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('arbswap_arbitrum_base_trades_seed')
 
   - name: trader_joe_v2_arbitrum_base_trades
     meta:
@@ -186,13 +215,15 @@ models:
     description: "Trader Joe arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('trader_joe_arbitrum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: trader_joe_v2_1_arbitrum_base_trades
     meta:
@@ -205,13 +236,15 @@ models:
     description: "Trader Joe arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_arbitrum_base_trades_seed')
-          filter:
-            version: 2.1
+          arguments:
+            seed_file: ref('trader_joe_arbitrum_base_trades_seed')
+            filter:
+              version: 2.1
 
   - name: trader_joe_v2_2_arbitrum_base_trades
     meta:
@@ -224,13 +257,15 @@ models:
     description: "Trader Joe arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_arbitrum_base_trades_seed')
-          filter:
-            version: 2.2
+          arguments:
+            seed_file: ref('trader_joe_arbitrum_base_trades_seed')
+            filter:
+              version: 2.2
 
   - name: pancakeswap_v2_arbitrum_base_trades
     meta:
@@ -243,16 +278,18 @@ models:
     description: "Pancakeswap Arbitrum v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_arbitrum_base_trades_seed')
-          filter:
-            version:
-              - 2
-              - stableswap
-              - pcsx
+          arguments:
+            seed_file: ref('pancakeswap_arbitrum_base_trades_seed')
+            filter:
+              version:
+                - 2
+                - stableswap
+                - pcsx
 
   - name: balancer_v2_arbitrum_base_trades
     meta:
@@ -265,13 +302,15 @@ models:
     description: "Balancer v2 arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('balancer_arbitrum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: pancakeswap_v3_arbitrum_base_trades
     meta:
@@ -284,13 +323,15 @@ models:
     description: "Pancakeswap Arbitrum v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_arbitrum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('pancakeswap_arbitrum_base_trades_seed')
+            filter:
+              version: 3
 
   - name: dodo_arbitrum_base_trades
     meta:
@@ -303,17 +344,19 @@ models:
     description: "Dodo Arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dodo_arbitrum_base_trades_seed')
-          filter:
-            version:
-              - 1
-              - 2_dvm
-              - 2_dpp
-              - 2_dsp
+          arguments:
+            seed_file: ref('dodo_arbitrum_base_trades_seed')
+            filter:
+              version:
+                - 1
+                - 2_dvm
+                - 2_dpp
+                - 2_dsp
 
   - name: gmx_arbitrum_base_trades
     meta:
@@ -326,11 +369,13 @@ models:
     description: "GMX Arbitrum v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('gmx_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('gmx_arbitrum_base_trades_seed')
 
   - name: integral_arbitrum_base_trades
     meta:
@@ -343,11 +388,13 @@ models:
     description: "Integral Arbitrum v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('integral_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('integral_arbitrum_base_trades_seed')
 
   - name: clipper_arbitrum_base_trades
     meta:
@@ -360,17 +407,19 @@ models:
     description: "clipper Arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('clipper_arbitrum_base_trades_seed')
-          filter:
-            version:
-              - coves1
-              - coves2
-              - 1
-              - 2
+          arguments:
+            seed_file: ref('clipper_arbitrum_base_trades_seed')
+            filter:
+              version:
+                - coves1
+                - coves2
+                - 1
+                - 2
 
   - name: kyberswap_arbitrum_base_trades
     meta:
@@ -383,16 +432,18 @@ models:
     description: "kyberswap Arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('kyberswap_arbitrum_base_trades_seed')
-          filter:
-            version:
-              - classic
-              - elastic
-              - elastic_2
+          arguments:
+            seed_file: ref('kyberswap_arbitrum_base_trades_seed')
+            filter:
+              version:
+                - classic
+                - elastic
+                - elastic_2
 
   - name: xchange_arbitrum_base_trades
     meta:
@@ -405,11 +456,13 @@ models:
     description: "xchange Arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('xchange_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('xchange_arbitrum_base_trades_seed')
 
   - name: ramses_arbitrum_base_trades
     meta:
@@ -422,15 +475,17 @@ models:
     description: "Ramses Arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('ramses_arbitrum_base_trades_seed')
-          filter:
-            version:
-              - 1
-              - 2
+          arguments:
+            seed_file: ref('ramses_arbitrum_base_trades_seed')
+            filter:
+              version:
+                - 1
+                - 2
 
   - name: fraxswap_arbitrum_base_trades
     meta:
@@ -443,11 +498,13 @@ models:
     description: "Fraxswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fraxswap_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('fraxswap_arbitrum_base_trades_seed')
 
   - name: chronos_arbitrum_base_trades
     meta:
@@ -460,11 +517,13 @@ models:
     description: "Chronos arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('chronos_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('chronos_arbitrum_base_trades_seed')
 
   - name: zyberswap_arbitrum_base_trades
     meta:
@@ -477,11 +536,13 @@ models:
     description: "Zyberswap arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('zyberswap_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('zyberswap_arbitrum_base_trades_seed')
 
   - name: solidlizard_arbitrum_base_trades
     meta:
@@ -494,11 +555,13 @@ models:
     description: "Solidlizard arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('solidlizard_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('solidlizard_arbitrum_base_trades_seed')
 
   - name: rubicon_arbitrum_base_trades
     meta:
@@ -511,11 +574,13 @@ models:
     description: "rubicon Arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('rubicon_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('rubicon_arbitrum_base_trades_seed')
 
   - name: woofi_arbitrum_base_trades
     meta:
@@ -528,11 +593,13 @@ models:
     description: "woofi Arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('woofi_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('woofi_arbitrum_base_trades_seed')
 
   - name: smardex_arbitrum_base_trades
     meta:
@@ -545,11 +612,13 @@ models:
     description: "smardex Arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('smardex_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('smardex_arbitrum_base_trades_seed')
 
   - name: oasisswap_arbitrum_base_trades
     meta:
@@ -562,11 +631,13 @@ models:
     description: "oasisswap Arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('oasisswap_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('oasisswap_arbitrum_base_trades_seed')
 
   - name: swaap_v2_arbitrum_base_trades
     meta:
@@ -579,13 +650,15 @@ models:
     description: "swaap v2 arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('swaap_arbitrum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: apeswap_arbitrum_base_trades
     meta:
@@ -598,11 +671,13 @@ models:
     description: "apeswap Arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('apeswap_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('apeswap_arbitrum_base_trades_seed')
 
   - name: zigzag_arbitrum_base_trades
     meta:
@@ -616,11 +691,13 @@ models:
       Zigzag V1 contract trades on Arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('zigzag_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('zigzag_arbitrum_base_trades_seed')
 
   - name: gridex_arbitrum_base_trades
     meta:
@@ -633,11 +710,13 @@ models:
     description: "gridex Arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('gridex_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('gridex_arbitrum_base_trades_seed')
 
   - name: sterling_finance_arbitrum_base_trades
     meta:
@@ -650,11 +729,13 @@ models:
     description: "sterling_finance Arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sterling_finance_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('sterling_finance_arbitrum_base_trades_seed')
 
   - name: sharkyswap_arbitrum_base_trades
     meta:
@@ -667,11 +748,13 @@ models:
     description: "sharkyswap Arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sharkyswap_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('sharkyswap_arbitrum_base_trades_seed')
 
   - name: auragi_arbitrum_base_trades
     meta:
@@ -684,11 +767,13 @@ models:
     description: "auragi Arbitrum  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('auragi_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('auragi_arbitrum_base_trades_seed')
 
   - name: wombat_exchange_arbitrum_base_trades
     meta:
@@ -701,11 +786,13 @@ models:
     description: "wombatexchange arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('wombat_exchange_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('wombat_exchange_arbitrum_base_trades_seed')
 
   - name: solidly_v3_arbitrum_base_trades
     meta:
@@ -718,11 +805,13 @@ models:
     description: "solidly v3 arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('solidly_v3_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('solidly_v3_arbitrum_base_trades_seed')
 
   - name: dackieswap_v3_arbitrum_base_trades
     meta:
@@ -735,13 +824,15 @@ models:
     description: "dackieswap v3 arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dackieswap_v3_arbitrum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('dackieswap_v3_arbitrum_base_trades_seed')
+            filter:
+              version: 3
 
   - name: dackieswap_v2_arbitrum_base_trades
     meta:
@@ -754,13 +845,15 @@ models:
     description: "dackieswap v2 arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dackieswap_v2_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('dackieswap_v2_arbitrum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: maverick_v2_arbitrum_base_trades
     meta:
@@ -773,13 +866,15 @@ models:
     description: "Maverick arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('maverick_arbitrum_base_trades_seed')
+            filter:
+              version: 2
 
   - name: valantis_hot_arbitrum_base_trades
     meta:
@@ -792,9 +887,10 @@ models:
     description: "hot-amm arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: spartadex_arbitrum_base_trades
     meta:
@@ -807,11 +903,13 @@ models:
     description: "spartadex arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('spartadex_arbitrum_base_trades_seed')
+          arguments:
+            seed_file: ref('spartadex_arbitrum_base_trades_seed')
 
   - name: balancer_v3_arbitrum_base_trades
     meta:
@@ -824,13 +922,15 @@ models:
     description: "Balancer v3 arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_arbitrum_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('balancer_arbitrum_base_trades_seed')
+            filter:
+              version: 3
 
   - name: akronswap_arbitrum_base_trades
     meta:
@@ -843,13 +943,15 @@ models:
     description: "akronswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('akronswap_arbitrum_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('akronswap_arbitrum_base_trades_seed')
+            filter:
+              version: 2
             
   - name: mindgames_arbitrum_base_trades
     meta:
@@ -862,13 +964,15 @@ models:
     description: "mindgames arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('mindgames_arbitrum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('mindgames_arbitrum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: fluid_v1_arbitrum_base_trades
     meta:
@@ -881,13 +985,15 @@ models:
     description: "fluid dex arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fluid_arbitrum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('fluid_arbitrum_base_trades_seed')
+            filter:
+              version: 1
   
   - name: gammaswap_arbitrum_base_trades
     meta:
@@ -900,13 +1006,15 @@ models:
     description: "gammaswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('gammaswap_arbitrum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('gammaswap_arbitrum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: elk_finance_arbitrum_base_trades
     meta:
@@ -919,13 +1027,15 @@ models:
     description: "elk_finance arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('elk_finance_arbitrum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('elk_finance_arbitrum_base_trades_seed')
+            filter:
+              version: 1
             
   - name: native_arbitrum_base_trades
     meta:
@@ -938,13 +1048,15 @@ models:
     description: "native arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('native_arbitrum_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('native_arbitrum_base_trades_seed')
+            filter:
+              version: 1
 
   - name: eulerswap_arbitrum_base_trades
     meta:
@@ -957,6 +1069,15 @@ models:
     description: "eulerswap arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+  - name: dex_arbitrum_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

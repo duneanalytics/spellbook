@@ -5,11 +5,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['pool_address'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "sudoswap",
-                                    \'["niftytable","0xRob"]\') }}'
+        unique_key = ['pool_address']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

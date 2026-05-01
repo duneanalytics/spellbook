@@ -11,7 +11,8 @@
     ref('aave_v3_arbitrum_base_flashloans'),
     ref('radiant_arbitrum_base_flashloans'),
     ref('granary_arbitrum_base_flashloans'),
-    ref('balancer_v2_arbitrum_base_flashloans')
+    ref('balancer_v2_arbitrum_base_flashloans'),
+    ref('morpho_arbitrum_base_flashloans')
   ]
 %}
 
@@ -22,6 +23,7 @@ select
   version,
   recipient,
   amount,
+  amount_raw,
   fee,
   token_address,
   project_contract_address,

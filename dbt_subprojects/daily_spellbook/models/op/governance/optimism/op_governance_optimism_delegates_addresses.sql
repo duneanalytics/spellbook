@@ -3,10 +3,7 @@
         , tags = ['static']
         , alias = 'delegates_addresses'
         , unique_key='address'
-        , post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "op_governance",
-                                    \'["kaiblade"]\') }}')}}
+        , post_hook='{{ hide_spells() }}')}}
 
 WITH address_names AS (
 SELECT address, name, ens

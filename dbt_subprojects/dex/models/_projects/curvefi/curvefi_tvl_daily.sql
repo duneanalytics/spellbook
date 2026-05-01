@@ -1,10 +1,7 @@
 {{ config(
         schema = 'curvefi',
-        alias = 'tvl_daily',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                      spell_type = "project", 
-                                      spell_name = "curvefi", 
-                                      contributors = \'["Henrystats"]\') }}'
+        alias = 'tvl_daily'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

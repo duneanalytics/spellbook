@@ -97,6 +97,7 @@ base_borrow as (
     cast(null as varbinary) as repayer,
     cast(null as varbinary) as liquidator,
     cast(borrowAmount as double) as amount,
+    borrowAmount as amount_raw,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -111,6 +112,7 @@ base_borrow as (
     payer as repayer,
     cast(null as varbinary) as liquidator,
     -1 * cast(repayAmount as double) as amount,
+    repayAmount as amount_raw,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -125,6 +127,7 @@ base_borrow as (
     liquidator as repayer,
     liquidator,
     -1 * cast(repayAmount as double) as amount,
+    repayAmount as amount_raw,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -144,6 +147,7 @@ select
   base_borrow.repayer,
   base_borrow.liquidator,
   base_borrow.amount,
+  base_borrow.amount_raw,
   cast(date_trunc('month', base_borrow.evt_block_time) as date) as block_month,
   base_borrow.evt_block_time as block_time,
   base_borrow.evt_block_number as block_number,
@@ -264,13 +268,15 @@ base_borrow as (
     cast(null as varbinary) as repayer,
     cast(null as varbinary) as liquidator,
     cast(amount_borrowed as double) as amount,
+    cast(amount_borrowed as uint256) as amount_raw,
     evt_tx_hash,
     evt_index,
     evt_block_time,
     evt_block_number
   from base_withdraw_actions
   where amount_borrowed is not null
-    and amount_borrowed> 0
+    and amount_borrowed > 0
+    and action in ('borrow', 'borrow + withdraw')
   union all
   select
     'repay' as transaction_type,
@@ -280,13 +286,15 @@ base_borrow as (
     supply_dst as repayer,
     cast(null as varbinary) as liquidator,
     -1 * cast(amount_repaid as double) as amount,
+    cast(amount_repaid as uint256) as amount_raw,
     evt_tx_hash,
     evt_index,
     evt_block_time,
     evt_block_number
   from base_supply_actions
   where amount_repaid is not null
-    and amount_repaid> 0
+    and amount_repaid > 0
+    and action in ('repay', 'repay + supply')
   union all
   select
     'borrow_liquidation' as transaction_type,
@@ -296,6 +304,7 @@ base_borrow as (
     absorber as repayer,
     absorber as liquidator,
     -1 * cast(basePaidOut as double) as amount,
+    basePaidOut as amount_raw,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -315,6 +324,7 @@ select
   base_borrow.repayer,
   base_borrow.liquidator,
   base_borrow.amount,
+  base_borrow.amount_raw,
   cast(date_trunc('month', base_borrow.evt_block_time) as date) as block_month,
   base_borrow.evt_block_time as block_time,
   base_borrow.evt_block_number as block_number,

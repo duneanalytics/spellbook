@@ -1,10 +1,7 @@
 {{ config(
     schema = 'pika',
-    alias = 'perpetual_trades',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "pika",
-                                    \'["msilb7", "drethereum", "rplust"]\') }}'
+    alias = 'perpetual_trades'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

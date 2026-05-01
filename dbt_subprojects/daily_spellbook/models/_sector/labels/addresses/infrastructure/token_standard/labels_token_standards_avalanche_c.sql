@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_avalanche_c',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_avalanche_c'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'avalanche_c' AS blockchain
 , erc20.contract_address AS address

@@ -1,11 +1,8 @@
 {{ config(
         
         alias = 'owners_over_time',
-        unique_key='day',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cryptopunks",
-                                    \'["cat"]\') }}'
+        unique_key='day'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

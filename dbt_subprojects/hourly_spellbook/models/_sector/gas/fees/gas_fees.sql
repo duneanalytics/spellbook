@@ -19,7 +19,6 @@
                                     , "ethereum"
                                     , "fantom"
                                     , "flare"
-                                    , "flow"
                                     , "gnosis"
                                     , "hemi"
                                     , "henesys"
@@ -30,6 +29,7 @@
                                     , "lens"
                                     , "linea"
                                     , "mantle"
+                                    , "megaeth"
                                     , "mezo"
                                     , "monad"
                                     , "nova"
@@ -40,6 +40,7 @@
                                     , "plume"
                                     , "polygon"
                                     , "ronin"
+                                    , "rise"
                                     , "scroll"
                                     , "sei"
                                     , "shape"
@@ -50,9 +51,11 @@
                                     , "superseed"
                                     , "tac"
                                     , "taiko"
+                                    , "tempo"
                                     , "tron"
                                     , "unichain"
                                     , "worldchain"
+                                    , "xlayer"
                                     , "zkevm"
                                     , "zksync"
                                     , "zora"
@@ -83,7 +86,6 @@
     , "ethereum"
     , "fantom"
     , "flare"
-    , "flow"
     , "gnosis"
     , "hemi"
     , "henesys"
@@ -94,6 +96,7 @@
     , "linea"
     , "lens"
     , "mantle"
+    , "megaeth"
     , "mezo"
     , "monad"
     , "nova"
@@ -104,6 +107,7 @@
     , "plume"
     , "polygon"
     , "ronin"
+    , "rise"
     , "scroll"
     , "sei"
     , "shape"
@@ -114,9 +118,11 @@
     , "superseed"
     , "tac"
     , "taiko"
+    , "tempo"
     , "tron"
     , "unichain"
     , "worldchain"
+    , "xlayer"
     , "zkevm"
     , "zksync"
     , "zora"
@@ -135,6 +141,7 @@ FROM
         ,block_time
         ,block_number
         ,tx_hash
+        ,tx_index
         ,tx_from
         ,tx_to
         ,gas_price

@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["zksync"]\',
-                                "sector",
-                                "bridge",
-                                \'["lgingerich"]\') }}'
+    unique_key = ['block_date', 'blockchain', 'tx_hash', 'evt_index']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -1,11 +1,7 @@
 {{ config(
     schema = 'ens',
-    alias = 'resolver_latest',
-    
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                            "project",
-                            "ens",
-                            \'["0xRob"]\') }}'
+    alias = 'resolver_latest'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

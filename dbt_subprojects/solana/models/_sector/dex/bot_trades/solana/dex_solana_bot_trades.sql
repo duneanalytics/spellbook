@@ -2,12 +2,8 @@
     config(
         schema = 'dex_solana',
         alias = 'bot_trades',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(
-                        blockchains = \'["solana"]\',
-                        spell_type = "sector",
-                        spell_name = "dex_solana",
-                        contributors = \'["whale_hunter", "hosuke", "clizzard"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

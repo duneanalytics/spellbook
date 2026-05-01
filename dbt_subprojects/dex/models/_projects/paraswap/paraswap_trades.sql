@@ -1,10 +1,10 @@
+-- CUR2-2163: touched so slim CI rebuilds this view in the same run as the
+-- map_internal_to_dex macro change; otherwise --defer resolves dex_aggregator_trades'
+-- ref to prod and the test reads stale upstream data.
 {{ config(
 	    schema='paraswap',
-        alias = 'trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","fantom","arbitrum","bnb","ethereum","optimism","polygon","base"]\',
-                                "project",
-                                "paraswap",
-                                \'["Henrystats","springzh"]\') }}'
+        alias = 'trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -19,6 +19,7 @@ ref('paraswap_avalanche_c_trades')
 ,ref('paraswap_base_trades')
 ,ref('paraswap_gnosis_trades')
 ,ref('paraswap_unichain_trades')
+,ref('paraswap_plasma_trades')
 ] %}
 
 

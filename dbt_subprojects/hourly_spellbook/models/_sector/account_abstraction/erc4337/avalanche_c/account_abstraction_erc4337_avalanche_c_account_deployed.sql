@@ -6,11 +6,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "project",
-                                    "erc4337",
-                                    \'["0xbitfly"]\') }}'
+    unique_key = ['userop_hash', 'tx_hash']
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 

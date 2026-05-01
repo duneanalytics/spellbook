@@ -1,12 +1,23 @@
 version: 2
 
 models:
-  - name: dex_mantle_base_trades
+  - name: dex_mantle_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_mantle_base_trades
 
   - name: merchant_moe_mantle_base_trades
     meta:
@@ -19,11 +30,13 @@ models:
     description: "merchant_moe mantle base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('merchant_moe_mantle_base_trades_seed')
+          arguments:
+            seed_file: ref('merchant_moe_mantle_base_trades_seed')
 
   - name: fusionx_mantle_base_trades
     meta:
@@ -36,11 +49,13 @@ models:
     description: "FusionX Finance mantle base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fusionx_mantle_base_trades_seed')
+          arguments:
+            seed_file: ref('fusionx_mantle_base_trades_seed')
 
   - name: agni_mantle_base_trades
     meta:
@@ -53,11 +68,13 @@ models:
     description: "AGNI Finance mantle base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('agni_mantle_base_trades_seed')
+          arguments:
+            seed_file: ref('agni_mantle_base_trades_seed')
 
   - name: swaap_v2_mantle_base_trades
     meta:
@@ -70,13 +87,15 @@ models:
     description: "swaap v2 mantle base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_mantle_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('swaap_mantle_base_trades_seed')
+            filter:
+              version: 2
 
   - name: clipper_mantle_base_trades
     meta:
@@ -89,13 +108,15 @@ models:
     description: "Clipper mantle base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('clipper_mantle_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('clipper_mantle_base_trades_seed')
+            filter:
+              version: 1
             
   - name: uniswap_v3_mantle_base_trades
     meta:
@@ -108,13 +129,15 @@ models:
     description: "uniswap mantle v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_mantle_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_mantle_base_trades_seed')
+            filter:
+              version: 3
 
   - name: tropicalswap_mantle_base_trades
     meta:
@@ -127,11 +150,13 @@ models:
     description: "tropicalswap mantle base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('tropicalswap_mantle_base_trades_seed')
+          arguments:
+            seed_file: ref('tropicalswap_mantle_base_trades_seed')
 
   - name: carbon_defi_mantle_base_trades
     meta:
@@ -144,8 +169,19 @@ models:
     description: "Carbon_defi mantle base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('carbon_defi_mantle_base_trades_seed')
+          arguments:
+            seed_file: ref('carbon_defi_mantle_base_trades_seed')
+
+  - name: dex_mantle_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

@@ -1,10 +1,7 @@
 {{ config(
         schema = 'odos',
-        alias = 'trades',
-        post_hook='{{ expose_spells(\'["optimism", "ethereum", "base", "arbitrum"]\',
-                                "project",
-                                "odos",
-                                \'["Henrystats", "amalashkevich","lequangphu"]\') }}'
+        alias = 'trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

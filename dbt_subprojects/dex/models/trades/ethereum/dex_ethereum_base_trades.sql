@@ -50,54 +50,20 @@
     , ref('native_ethereum_base_trades')
     , ref('eulerswap_ethereum_base_trades')
     , ref('ekubo_v1_ethereum_base_trades')
+    , ref('ekubo_v3_ethereum_base_trades')
     , ref('angstrom_ethereum_base_trades')
+    , ref('supernova_v2_ethereum_base_trades')
+    , ref('supernova_v3_ethereum_base_trades')
+    , ref('zeroex_ethereum_base_trades')
 ] %}
-with base_union as (
-    SELECT *
-    FROM
-    (
-        {% for base_model in base_models %}
-        SELECT
-            blockchain
-            , project
-            , version
-            , block_month
-            , block_date
-            , block_time
-            , block_number
-            , cast(token_bought_amount_raw as uint256) as token_bought_amount_raw
-            , cast(token_sold_amount_raw as uint256) as token_sold_amount_raw
-            , token_bought_address
-            , token_sold_address
-            , taker
-            , maker
-            , project_contract_address
-            , tx_hash
-            , evt_index
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
-        FROM
-            {{ base_model }}
-        WHERE
-           token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-    )
-    WHERE
-        duplicates_rank = 1
-        AND tx_hash != 0x1c27c4d625429acfc0f97e466eda725fd09ebdc77550e529ba4cbdbc33beb97b -- inflated volume (10trillion)
+WITH base AS (
+    {{ dex_base_trades_macro(
+        blockchain = 'ethereum',
+        base_models = base_models
+    ) }}
 )
-
-{{
-    add_tx_columns(
-        model_cte = 'base_union'
-        , blockchain = 'ethereum'
-        , columns = ['from', 'to', 'index']
-    )
-}}
-
--- refresh model
+SELECT * FROM base
+{% if not is_incremental() %}
+-- exclude tx with inflated volume (~10 trillion), only needed on backfill
+WHERE tx_hash != 0x1c27c4d625429acfc0f97e466eda725fd09ebdc77550e529ba4cbdbc33beb97b
+{% endif %}

@@ -2,11 +2,8 @@
     config(
         schema = 'balancer_v3_arbitrum',
         alias = 'trades',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(\'["arbitrum"]\',
-                                spell_type = "project",
-                                spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 
@@ -52,12 +49,11 @@ WITH
             dexs_arbitrum.swap_fee,
             dexs_arbitrum.pool_symbol,
             dexs_arbitrum.pool_type
-        FROM {{ ref('dex_trades') }} dexs
+        FROM {{ ref('dex_arbitrum_trades') }} dexs
             INNER JOIN dexs_arbitrum
                 ON dexs.tx_hash = dexs_arbitrum.tx_hash
                 AND dexs.evt_index = dexs_arbitrum.evt_index
-        WHERE dexs.blockchain = 'arbitrum'
-            AND dexs.project = 'balancer'
+        WHERE dexs.project = 'balancer'
             AND dexs.version = '3'
     ),
     

@@ -12,9 +12,10 @@ models:
     description: "All lending flashloans transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -84,11 +85,13 @@ models:
     description: "Aave v3 flashloans transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_optimism_base_flashloans_seed')
+          arguments:
+            seed_file: ref('aave_optimism_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -115,11 +118,13 @@ models:
     description: "Granary flashloans transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('granary_optimism_base_flashloans_seed')
+          arguments:
+            seed_file: ref('granary_optimism_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
@@ -146,9 +151,10 @@ models:
     description: "Balancer flashloans transactions on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -164,3 +170,32 @@ models:
       - *tx_hash
       - *evt_index
 
+  - name: morpho_optimism_base_flashloans
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: morpho
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'morpho', 'optimism']
+    description: "Morpho flashloans transactions on Optimism"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

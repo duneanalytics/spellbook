@@ -1,10 +1,7 @@
 {{ config(
     schema = 'gains_network',
-    alias = 'perpetual_trades',
-    post_hook='{{ expose_spells(blockchains = \'["base"]\',
-                                    spell_type = "project",
-                                    spell_name = "gains_network",
-                                    contributors = \'["princi"]\') }}'
+    alias = 'perpetual_trades'
+    , post_hook='{{ hide_spells() }}'
         )
 }}
 

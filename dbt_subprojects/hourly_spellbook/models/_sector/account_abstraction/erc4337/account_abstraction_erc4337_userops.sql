@@ -1,10 +1,7 @@
 {{ config(
         schema = 'account_abstraction_erc4337',
-        alias = 'userops',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","gnosis","optimism","polygon","zora"]\',
-                                "project",
-                                "erc4337",
-                                \'["0xbitfly", "hosuke","intensodefi"]\') }}'
+        alias = 'userops'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

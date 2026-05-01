@@ -2,11 +2,8 @@
   config(
     schema = 'lending',
     alias = 'supply_scaled',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "linea", "optimism", "polygon", "scroll", "sonic", "zksync"]\',
-                                "sector",
-                                "lending",
-                                \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

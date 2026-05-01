@@ -22,12 +22,14 @@ sources:
       - name: AugustusV6_1_call_swapExactAmountOutOnBalancerV2
       # v6.2
       - name: AugustusV6_2_call_swapExactAmountIn
+      - name: AugustusV6_2_call_swapExactAmountInPro
       - name: AugustusV6_2_call_swapExactAmountInOnUniswapV2
       - name: AugustusV6_2_call_swapExactAmountInOnUniswapV3
       - name: AugustusV6_2_call_swapExactAmountInOnCurveV1
       - name: AugustusV6_2_call_swapExactAmountInOnCurveV2
       - name: AugustusV6_2_call_swapExactAmountInOnBalancerV2
       - name: AugustusV6_2_call_swapExactAmountOut
+      - name: AugustusV6_2_call_swapExactAmountOutPro
       - name: AugustusV6_2_call_swapExactAmountOutOnUniswapV2
       - name: AugustusV6_2_call_swapExactAmountOutOnUniswapV3
       - name: AugustusV6_2_call_swapExactAmountOutOnBalancerV2

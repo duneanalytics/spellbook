@@ -1,12 +1,23 @@
 version: 2
 
 models:
-  - name: dex_bnb_base_trades
+  - name: dex_bnb_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_bnb_base_trades
 
   - name: uniswap_v4_bnb_base_trades
     meta:
@@ -19,13 +30,15 @@ models:
     description: "uniswap bnb v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_bnb_base_trades_seed')
-          filter:
-            version: 4
+          arguments:
+            seed_file: ref('uniswap_bnb_base_trades_seed')
+            filter:
+              version: 4
 
   - name: uniswap_v3_bnb_base_trades
     meta:
@@ -38,13 +51,15 @@ models:
     description: "uniswap bnb v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_bnb_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_bnb_base_trades_seed')
+            filter:
+              version: 3
 
   - name: airswap_bnb_base_trades
     meta:
@@ -57,11 +72,13 @@ models:
     description: "Airswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('airswap_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('airswap_bnb_base_trades_seed')
 
   - name: sushiswap_v1_bnb_base_trades
     meta:
@@ -74,13 +91,15 @@ models:
     description: "sushiswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_bnb_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('sushiswap_bnb_base_trades_seed')
+            filter:
+              version: 1
 
   - name: sushiswap_v2_bnb_base_trades
     meta:
@@ -93,13 +112,15 @@ models:
     description: "sushiswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_bnb_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('sushiswap_bnb_base_trades_seed')
+            filter:
+              version: 2
 
   - name: trader_joe_v2_bnb_base_trades
     meta:
@@ -112,13 +133,15 @@ models:
     description: "Trader Joe bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_bnb_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('trader_joe_bnb_base_trades_seed')
+            filter:
+              version: 2
 
   - name: trader_joe_v2_1_bnb_base_trades
     meta:
@@ -131,13 +154,15 @@ models:
     description: "Trader Joe bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_bnb_base_trades_seed')
-          filter:
-            version: 2.1
+          arguments:
+            seed_file: ref('trader_joe_bnb_base_trades_seed')
+            filter:
+              version: 2.1
 
   - name: apeswap_bnb_base_trades
     meta:
@@ -150,13 +175,15 @@ models:
     description: apeswap base trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('apeswap_bnb_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('apeswap_bnb_base_trades_seed')
+            filter:
+              version: 2
 
   - name: pancakeswap_v2_bnb_base_trades
     meta:
@@ -169,16 +196,18 @@ models:
     description: "Pancakeswap BNB v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_bnb_base_trades_seed')
-          filter:
-            version:
-              - 2
-              - mmpool
-              - stableswap
+          arguments:
+            seed_file: ref('pancakeswap_bnb_base_trades_seed')
+            filter:
+              version:
+                - 2
+                - mmpool
+                - stableswap
 
   - name: pancakeswap_v3_bnb_base_trades
     meta:
@@ -191,13 +220,15 @@ models:
     description: "Pancakeswap BNB v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_bnb_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('pancakeswap_bnb_base_trades_seed')
+            filter:
+              version: 3
 
   - name: pancakeswap_infinity_bnb_base_trades
     meta:
@@ -210,15 +241,17 @@ models:
     description: "Pancakeswap BNB Infinity base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_bnb_base_trades_seed')
-          filter:
-            version:
-              - infinity_cl
-              - infinity_lb
+          arguments:
+            seed_file: ref('pancakeswap_bnb_base_trades_seed')
+            filter:
+              version:
+                - infinity_cl
+                - infinity_lb
 
   - name: fraxswap_bnb_base_trades
     meta:
@@ -231,11 +264,13 @@ models:
     description: "Fraxswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fraxswap_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('fraxswap_bnb_base_trades_seed')
 
   - name: biswap_v2_bnb_base_trades
     meta:
@@ -248,13 +283,15 @@ models:
     description: "biswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('biswap_bnb_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('biswap_bnb_base_trades_seed')
+            filter:
+              version: 2
 
   - name: biswap_v3_bnb_base_trades
     meta:
@@ -267,13 +304,15 @@ models:
     description: "biswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('biswap_bnb_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('biswap_bnb_base_trades_seed')
+            filter:
+              version: 3
 
   - name: babyswap_bnb_base_trades
     meta:
@@ -286,13 +325,15 @@ models:
     description: "babyswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('babyswap_bnb_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('babyswap_bnb_base_trades_seed')
+            filter:
+              version: 1
 
   - name: mdex_bnb_base_trades
     meta:
@@ -305,13 +346,15 @@ models:
     description: "mdex bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('mdex_bnb_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('mdex_bnb_base_trades_seed')
+            filter:
+              version: 1
 
   - name: wombat_bnb_base_trades
     meta:
@@ -324,13 +367,15 @@ models:
     description: "Wombat bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('wombat_bnb_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('wombat_bnb_base_trades_seed')
+            filter:
+              version: 1
 
   - name: dodo_bnb_base_trades
     meta:
@@ -343,17 +388,19 @@ models:
     description: "Dodo bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dodo_bnb_base_trades_seed')
-          filter:
-            version:
-              - 1
-              - 2_dvm
-              - 2_dpp
-              - 2_dsp
+          arguments:
+            seed_file: ref('dodo_bnb_base_trades_seed')
+            filter:
+              version:
+                - 1
+                - 2_dvm
+                - 2_dpp
+                - 2_dsp
 
   - name: izumi_finance_bnb_base_trades
     meta:
@@ -366,11 +413,13 @@ models:
     description: "izumi_finance bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('izumi_finance_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('izumi_finance_bnb_base_trades_seed')
 
   - name: maverick_bnb_base_trades
     meta:
@@ -383,13 +432,15 @@ models:
     description: "Maverick bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_bnb_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('maverick_bnb_base_trades_seed')
+            filter:
+              version: 1
 
   - name: maverick_v2_bnb_base_trades
     meta:
@@ -402,13 +453,15 @@ models:
     description: "Maverick bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_bnb_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('maverick_bnb_base_trades_seed')
+            filter:
+              version: 2
 
   - name: nomiswap_bnb_base_trades
     meta:
@@ -421,11 +474,13 @@ models:
     description: "NomiSwap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('nomiswap_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('nomiswap_bnb_base_trades_seed')
 
   - name: kyberswap_bnb_base_trades
     meta:
@@ -438,15 +493,17 @@ models:
     description: "kyberswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('kyberswap_bnb_base_trades_seed')
-          filter:
-            version:
-              - classic
-              - elastic_2
+          arguments:
+            seed_file: ref('kyberswap_bnb_base_trades_seed')
+            filter:
+              version:
+                - classic
+                - elastic_2
 
   - name: xchange_bnb_base_trades
     meta:
@@ -459,11 +516,13 @@ models:
     description: "xchange bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('xchange_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('xchange_bnb_base_trades_seed')
 
   - name: thena_bnb_base_trades
     meta:
@@ -476,15 +535,17 @@ models:
     description: "thena bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('thena_bnb_base_trades_seed')
-          filter:
-            version:
-              - 1
-              - fusion
+          arguments:
+            seed_file: ref('thena_bnb_base_trades_seed')
+            filter:
+              version:
+                - 1
+                - fusion
 
   - name: ellipsis_finance_bnb_base_trades
     meta:
@@ -497,11 +558,13 @@ models:
     description: "ellipsis_finance bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('ellipsis_finance_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('ellipsis_finance_bnb_base_trades_seed')
 
   - name: onepunchswap_bnb_base_trades
     meta:
@@ -514,11 +577,13 @@ models:
     description: "onepunchswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('onepunchswap_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('onepunchswap_bnb_base_trades_seed')
 
   - name: woofi_bnb_base_trades
     meta:
@@ -531,11 +596,13 @@ models:
     description: "woofi bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('woofi_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('woofi_bnb_base_trades_seed')
 
   - name: hashflow_bnb_base_trades
     meta:
@@ -549,11 +616,13 @@ models:
       Hashflow contract trades on Binance Smart Chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('hashflow_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('hashflow_bnb_base_trades_seed')
 
   - name: uniswap_v2_bnb_base_trades
     meta:
@@ -566,13 +635,15 @@ models:
     description: "uniswap bnb v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_bnb_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('uniswap_bnb_base_trades_seed')
+            filter:
+              version: 2
 
   - name: swaap_v2_bnb_base_trades
     meta:
@@ -585,13 +656,15 @@ models:
     description: "swaap v2 bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_bnb_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('swaap_bnb_base_trades_seed')
+            filter:
+              version: 2
 
   - name: hyperjump_bnb_base_trades
     meta:
@@ -604,11 +677,13 @@ models:
     description: "hyperjump bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('hyperjump_bnb_base_trades_seed')
+          arguments:
+            seed_file: ref('hyperjump_bnb_base_trades_seed')
 
   - name: native_bnb_base_trades
     meta:
@@ -621,13 +696,15 @@ models:
     description: "native bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('native_bnb_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('native_bnb_base_trades_seed')
+            filter:
+              version: 1
 
   - name: eulerswap_bnb_base_trades
     meta:
@@ -640,10 +717,20 @@ models:
     description: "eulerswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('eulerswap_bnb_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('eulerswap_bnb_base_trades_seed')
+            filter:
+              version: 1
+  - name: dex_bnb_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

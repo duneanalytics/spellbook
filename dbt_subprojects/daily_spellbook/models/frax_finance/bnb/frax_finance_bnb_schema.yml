@@ -12,10 +12,11 @@ models:
     description: This model shows the amount of bribe frax_finance is paying, at each epoch, to voters on a DEX who vote for frax pools. Since frax also partakes in voting, both for its pools and other pools, this model also tracks the bribes that it receives as reward. 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - week_start
-            - week_end
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - week_start
+              - week_end
+              - contract_address
     columns:
       - &week_start
         name: week_start

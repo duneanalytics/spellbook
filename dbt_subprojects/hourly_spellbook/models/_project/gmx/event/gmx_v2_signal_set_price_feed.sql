@@ -1,10 +1,7 @@
 {{ config(
         schema='gmx_v2',
-        alias = 'signal_set_price_feed',
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c"]\',
-                                    "project",
-                                    "gmx",
-                                    \'["ai_data_master","gmx-io"]\') }}'
+        alias = 'signal_set_price_feed'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

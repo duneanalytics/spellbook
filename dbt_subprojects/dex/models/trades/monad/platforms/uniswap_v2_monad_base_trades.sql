@@ -19,3 +19,5 @@
         Factory_evt_PairCreated = source('uniswap_v2_monad', 'uniswapv2factory_evt_paircreated')
     )
 }}
+
+-- trigger refresh

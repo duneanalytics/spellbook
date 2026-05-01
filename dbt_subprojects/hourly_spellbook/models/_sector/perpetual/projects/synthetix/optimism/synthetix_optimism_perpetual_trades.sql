@@ -1,10 +1,7 @@
 {{ config(
 	schema = 'synthetix_optimism',
-    alias = 'perpetual_trades',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "synthetix",
-                                    \'["msilb7", "drethereum", "rplust"]\') }}'
+    alias = 'perpetual_trades'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

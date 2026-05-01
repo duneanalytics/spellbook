@@ -34,14 +34,15 @@ models:
       tags: [ 'dex', 'prices']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - blockchain
-            - contract_address
-            - symbol
-            - decimals
-            - block_number
-            - block_time
+          arguments:
+            combination_of_columns:
+              - block_month
+              - blockchain
+              - contract_address
+              - symbol
+              - decimals
+              - block_number
+              - block_time
   
   - name: dex_prices
     meta:
@@ -54,10 +55,11 @@ models:
       This table loads the prices of tokens from the dex.trades table. This helps for missing tokens from the prices.usd table
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - hour
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - hour
+              - blockchain
+              - contract_address
     columns:
       - &block_month
         name: block_month

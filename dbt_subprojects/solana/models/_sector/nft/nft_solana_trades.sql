@@ -4,10 +4,7 @@
 
         , alias = 'trades'
         , materialized = 'view'
-        ,post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["ilemi"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

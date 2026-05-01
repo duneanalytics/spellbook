@@ -8,6 +8,10 @@
 
         {{ ( target.schema + '_' + node.name | trim ) | truncate(128,True,'',0)}}
 
+    {%- elif target.schema.startswith("dune_spellbook_ci__tmp_") -%}
+
+        {{ node.name | trim | truncate(128,True,'',0) }}
+
     {%- else -%}
 
         {%- if custom_alias_name is none -%}

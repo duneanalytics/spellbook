@@ -1,9 +1,8 @@
 {{config(
-        alias = 'beets_gauges_sonic',
-        post_hook='{{ expose_spells(\'["sonic"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["viniabussafi"]\') }}')}}
+        alias = 'beets_gauges_sonic'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH gauges AS(
 SELECT distinct

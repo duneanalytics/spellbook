@@ -1,12 +1,23 @@
 version: 2
 
 models:
-  - name: dex_celo_base_trades
+  - name: dex_celo_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_celo_base_trades
 
   - name: uniswap_v3_celo_base_trades
     meta:
@@ -19,13 +30,15 @@ models:
     description: "uniswap celo v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_celo_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_celo_base_trades_seed')
+            filter:
+              version: 3
 
 
   - name: mento_v1_celo_base_trades
@@ -39,13 +52,15 @@ models:
     description: "Mento trades on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('mento_celo_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('mento_celo_base_trades_seed')
+            filter:
+              version: 1
 
   - name: mento_v2_celo_base_trades
     meta:
@@ -58,13 +73,15 @@ models:
     description: "Mento trades on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('mento_celo_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('mento_celo_base_trades_seed')
+            filter:
+              version: 2
 
   - name: curvefi_celo_base_trades
     meta:
@@ -77,11 +94,13 @@ models:
     description: "Curvefi Celo base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('curvefi_celo_base_trades_seed')
+          arguments:
+            seed_file: ref('curvefi_celo_base_trades_seed')
             
 
   - name: sushiswap_celo_base_trades
@@ -95,11 +114,13 @@ models:
     description: "Sushiswap Celo base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_celo_base_trades_seed')
+          arguments:
+            seed_file: ref('sushiswap_celo_base_trades_seed')
             
 
   - name: ubeswap_celo_base_trades
@@ -113,11 +134,13 @@ models:
     description: "Ubeswap Celo base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('ubeswap_celo_base_trades_seed')
+          arguments:
+            seed_file: ref('ubeswap_celo_base_trades_seed')
             
 
   - name: carbonhood_celo_base_trades
@@ -131,11 +154,13 @@ models:
     description: "Carbonhood trades on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('carbonhood_celo_base_trades_seed')
+          arguments:
+            seed_file: ref('carbonhood_celo_base_trades_seed')
 
 
   - name: carbon_defi_celo_base_trades
@@ -149,11 +174,13 @@ models:
     description: "Carbon_defi celo base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('carbon_defi_celo_base_trades_seed')
+          arguments:
+            seed_file: ref('carbon_defi_celo_base_trades_seed')
 
 
   - name: gooddollar_reserve_celo_base_trades
@@ -167,11 +194,13 @@ models:
     description: "Gooddollar Reserve trades on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('gooddollar_reserve_celo_base_trades_seed')
+          arguments:
+            seed_file: ref('gooddollar_reserve_celo_base_trades_seed')
 
   - name: uniswap_v4_celo_base_trades
     meta:
@@ -184,10 +213,41 @@ models:
     description: "Uniswap V4 Trades on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_celo_base_trades_seed')
-          filter:
-            version: 4
+          arguments:
+            seed_file: ref('uniswap_celo_base_trades_seed')
+            filter:
+              version: 4
+
+  - name: velodrome_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: velodrome
+      contributors: cursor
+    config:
+      tags: [ 'celo', 'dex', 'trades', 'velodrome', 'v2_cl' ]
+    description: "velodrome celo concentrated liquidity base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('velodrome_celo_base_trades_seed')
+            filter:
+              version: 2_cl
+  - name: dex_celo_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

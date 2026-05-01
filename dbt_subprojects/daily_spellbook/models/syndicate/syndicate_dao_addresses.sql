@@ -2,11 +2,9 @@
     schema = 'syndicate',
     alias = 'dao_addresses',
     materialized = 'view',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "polygon"]\',
-                                "project",
-                                "syndicate",
-                                \'["Henrystats"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 {% set syndicate_models = [

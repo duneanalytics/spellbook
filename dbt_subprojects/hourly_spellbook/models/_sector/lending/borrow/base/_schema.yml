@@ -12,11 +12,12 @@ models:
     description: "All lending borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,13 +99,15 @@ models:
     description: "Aave v3 borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('aave_base_base_borrow_seed')
+          arguments:
+            seed_file: ref('aave_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -134,15 +137,17 @@ models:
     description: "Compound v3 borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('compound_base_base_borrow_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('compound_base_base_borrow_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -172,13 +177,15 @@ models:
     description: "Seamless Protocol borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('seamlessprotocol_base_base_borrow_seed')
+          arguments:
+            seed_file: ref('seamlessprotocol_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -208,13 +215,15 @@ models:
     description: "Moonwell borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('moonwell_base_base_borrow_seed')
+          arguments:
+            seed_file: ref('moonwell_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -244,13 +253,15 @@ models:
     description: "Sonne Finance borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('sonne_finance_base_base_borrow_seed')
+          arguments:
+            seed_file: ref('sonne_finance_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -280,13 +291,15 @@ models:
     description: "Granary borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('granary_base_base_borrow_seed')
+          arguments:
+            seed_file: ref('granary_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -310,19 +323,21 @@ models:
       blockchain: base
       sector: lending
       project: Morpho
-      contributors: 0xDataWolf
+      contributors: 0xDataWolf, tomfutago
     config:
       tags: ["lending", "borrow", "Morpho", "base"]
     description: "Morpho borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('morpho_base_base_borrow_seed')
+          arguments:
+            seed_file: ref('morpho_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -352,13 +367,15 @@ models:
     description: "Pike borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('pike_base_base_borrow_seed')
+          arguments:
+            seed_file: ref('pike_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project

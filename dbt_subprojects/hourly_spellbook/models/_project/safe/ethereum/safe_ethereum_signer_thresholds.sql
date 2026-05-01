@@ -1,10 +1,6 @@
 {{ config(
-        alias = 'signer_thresholds',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "safe",
-                                    \'["gentrexha", "hosuke"]\') }}'
+        alias = 'signer_thresholds'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 -- PoC Query here - https://dune.com/queries/2116702

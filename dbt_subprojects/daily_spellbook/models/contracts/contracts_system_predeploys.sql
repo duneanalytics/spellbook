@@ -2,11 +2,8 @@
   config(
 	tags = ['static', 'prod_exclude'],
 	schema = 'contracts',
-        alias = 'system_predeploys',
-        post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
-                                    "sector",
-                                    "contracts",
-                                    \'["msilb7", "chuxin"]\') }}'
+        alias = 'system_predeploys'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 

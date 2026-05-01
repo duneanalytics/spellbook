@@ -2,11 +2,8 @@
   config(
         
         schema = 'hop_protocol',
-        alias = 'addresses',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "bridge",
-                                    \'["msilb7"]\') }}'
+        alias = 'addresses'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 

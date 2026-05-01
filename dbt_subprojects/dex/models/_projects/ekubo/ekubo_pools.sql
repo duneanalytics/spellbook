@@ -5,7 +5,8 @@
 }}
 
 {% set ekubo_models = [
-ref('ekubo_ethereum_pools')
+    ref('ekubo_ethereum_pools'),
+    ref('ekubo_v3_ethereum_pools')
 ] %}
 
 

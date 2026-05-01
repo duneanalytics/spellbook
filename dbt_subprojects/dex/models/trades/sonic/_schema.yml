@@ -1,12 +1,23 @@
 version: 2
 
 models:
-  - name: dex_sonic_base_trades
+  - name: dex_sonic_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_sonic_base_trades
 
   - name: beets_v2_sonic_base_trades
     meta:
@@ -19,11 +30,13 @@ models:
     description: "beets v2 sonic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('beets_sonic_base_trades_seed')
+          arguments:
+            seed_file: ref('beets_sonic_base_trades_seed')
 
   - name: beets_v3_sonic_base_trades
     meta:
@@ -36,13 +49,15 @@ models:
     description: "beets v3 sonic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('beets_sonic_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('beets_sonic_base_trades_seed')
+            filter:
+              version: 3
 
   - name: equalizer_sonic_base_trades
     meta:
@@ -55,11 +70,13 @@ models:
     description: "Equalizer sonic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('equalizer_sonic_base_trades_seed')
+          arguments:
+            seed_file: ref('equalizer_sonic_base_trades_seed')
           
   - name: wagmi_sonic_base_trades
     meta:
@@ -72,11 +89,13 @@ models:
     description: "wagmi sonic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('wagmi_sonic_base_trades_seed')
+          arguments:
+            seed_file: ref('wagmi_sonic_base_trades_seed')
           
   - name: shadow_sonic_base_trades
     meta:
@@ -89,11 +108,13 @@ models:
     description: "Shadow sonic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('shadow_sonic_base_trades_seed')
+          arguments:
+            seed_file: ref('shadow_sonic_base_trades_seed')
           
   - name: silverswap_sonic_base_trades
     meta:
@@ -106,11 +127,13 @@ models:
     description: "Silverswap sonic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('silverswap_sonic_base_trades_seed')
+          arguments:
+            seed_file: ref('silverswap_sonic_base_trades_seed')
 
   - name: uniswap_v3_sonic_base_trades
     meta:
@@ -123,13 +146,15 @@ models:
     description: "uniswap sonic v3 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_sonic_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_sonic_base_trades_seed')
+            filter:
+              version: 3
 
   - name: tapio_sonic_base_trades
     meta:
@@ -142,10 +167,21 @@ models:
     description: "Tapio sonic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('tapio_sonic_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('tapio_sonic_base_trades_seed')
+            filter:
+              version: 1
+
+  - name: dex_sonic_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

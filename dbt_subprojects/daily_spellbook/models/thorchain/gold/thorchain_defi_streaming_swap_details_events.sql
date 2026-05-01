@@ -9,9 +9,9 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'streaming_swaps', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
-                              "defi",
-                              "defi_streaming_swap_details_events",
-                              \'["krishhh"]\') }}'
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 WITH base AS (
@@ -73,8 +73,5 @@ SELECT
 FROM base a
 
 {% if is_incremental() %}
-WHERE a.block_time >= (
-  SELECT MAX(block_time - INTERVAL '1' HOUR)
-  FROM {{ this }}
-) 
+WHERE {{ incremental_predicate('a.block_time') }}
 {% endif %}

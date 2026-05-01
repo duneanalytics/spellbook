@@ -5,10 +5,7 @@
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['blockchain', 'tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "optimism", "polygon"]\',
-                                  "project",
-                                  "synapse",
-                                  \'["hildobby"]\') }}'
+      , post_hook='{{ hide_spells() }}'
   )
 }}
 

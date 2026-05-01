@@ -177,7 +177,7 @@ op_addresses AS (
 ),
 
 filtered_balances AS (
-  {{ balances_incremental_subset_daily(
+  {{ balances_incremental_subset_daily_legacy(
        blockchain='optimism',
        start_date='2021-11-11',
        address_token_list='op_addresses'

@@ -1,0 +1,67 @@
+---
+description: Core dbt conventions for Spellbook development. Critical rules for materializations, incremental models, DuneSQL types, performance, and sector spell architecture.
+alwaysApply: true
+---
+
+# dbt Core Conventions
+
+## Materializations
+
+- **`view`** — Default. No data stored, runs on each query. Best for lightweight transformations.
+- **`table`** — Full refresh every run. Requires `file_format='delta'`. Best for dimension tables, static data.
+- **`incremental`** — Processes only new/changed rows. Requires `file_format='delta'`, `incremental_strategy`, and `unique_key`.
+- Run frequency depends on sub-project (hourly in `hourly_spellbook`, daily in `daily_spellbook`), not materialization type.
+- Always use `source()` and `ref()` — never hardcode table names.
+
+## Incremental Model Critical Rules
+
+- **NULLs in unique keys**: Trino NULL merge lookups fail silently, creating duplicates. Use `coalesce()` or `dbt_utils.generate_surrogate_key()`.
+- **Partition columns in unique_key**: If partitioned, always include partition column(s) in `unique_key` for merge performance.
+- **`incremental_predicate()` macro**: Always use the macro, never hardcode. Only for time-series data — do NOT use when checking full history (e.g., pool creation events).
+  ```
+  incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+  ```
+- **Jinja whitespace**: Use trailing `-` only (`{% if is_incremental() -%}`, `{% else -%}`, `{% endif -%}`). Never leading `-`.
+- **Unique key consistency**: Must match exactly across config block, `_schema.yml` tests, and seed match columns.
+
+## DuneSQL Data Types
+
+- `varbinary` for addresses/hashes — use hex literals without quotes: `0x039e...` not `'0x039e...'`
+- `uint256 / int256` for large numbers
+- `block_date` is DATE, `block_time` is TIMESTAMP
+- Use native functions (`bytearray_substring()`, `bytearray_to_uint256()`) rather than casting
+
+## Performance Essentials
+
+- **Partition filtering**: Always filter by partition columns (`block_date`, `block_time`) to enable pruning. Cross-chain tables are partitioned by BOTH `blockchain` and time — specify both.
+- **Join ordering**: Larger table on left side of joins. Include time filters in both ON and WHERE clauses.
+- **Column selection**: Never `SELECT *` on large tables. Dune's columnar storage makes this critical.
+- **UNION ALL** instead of bare `UNION`. Use `UNION DISTINCT` only when deduplication is needed.
+- **ORDER BY**: Never without `LIMIT` on large result sets.
+- **Partitioning threshold**: Only partition tables with 1M+ rows per partition. Common patterns: `block_month` (most common), `block_date` (very high-volume), `['blockchain', 'project', 'block_month']` (cross-chain).
+
+## Sector Spell Architecture
+
+The standard lineage pattern for sector-level spells (e.g., `dex.trades`):
+
+1. **Platform base spells** (per project/version/chain) — raw data, materialized incrementally. Use macros for forked protocols.
+2. **Chain-level union** — unions all platform spells on one chain. **Materialize as table** to isolate chains from each other.
+3. **Cross-chain union** — unions all chain-level spells. **Materialize as view** — heavy lifting done at chain level.
+4. **Final sector spell** — cross-chain base passed into enrichment macro adding metadata.
+
+Granularity pattern: `project (version) -> blockchain -> cross-chain -> sector spell`
+
+## Code Reuse
+
+- Use macros when logic repeats across chains or forked protocols (Uniswap V2/V3 forks, ERC20 patterns).
+- One model per protocol, per version, per blockchain.
+- Keep upstream models (base) simple — save metadata enrichment for downstream.
+
+## Development Workflow
+
+1. Start with a working query in the Dune app
+2. Convert to dbt model with correct materialization
+3. `dbt compile` locally, test compiled SQL on Dune or via `dune_query.py`
+4. Use temporary hardcoded short date filters (3-7 days) for initial CI GitHub Action runs to verify end-to-end success
+5. Submit PR — CI builds and tests all modified models
+6. **Always revert hardcoded date filters before merge** — the final model must use `incremental_predicate()` (not hardcoded dates). Historical backfill is handled via `--full-refresh` post-merge, not by widening filters in model logic

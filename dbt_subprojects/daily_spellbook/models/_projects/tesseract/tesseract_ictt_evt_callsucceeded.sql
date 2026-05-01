@@ -4,12 +4,8 @@
     config(
 	    schema = 'tesseract',
         alias = alias,
-        materialized = 'view',
-        post_hook='{{ expose_spells(
-                      blockchains = \'["avalanche_c"]\',
-                      spell_type = "project",
-                      spell_name = "tesseract",
-                      contributors = \'["angus_1"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

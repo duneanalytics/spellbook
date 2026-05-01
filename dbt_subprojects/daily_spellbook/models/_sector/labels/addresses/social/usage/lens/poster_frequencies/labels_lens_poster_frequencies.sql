@@ -1,10 +1,7 @@
 {{config(
     alias = 'lens_poster_frequencies'
     
-    , post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["scoffie"]\') }}')
+    , post_hook='{{ hide_spells() }}')
 }}
 
 WITH lens_addresses as (

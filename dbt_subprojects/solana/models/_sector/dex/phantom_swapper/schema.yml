@@ -5,10 +5,11 @@ models:
     description: "Historical prices of tokens used for fee payments by Phantom Swapper on Solana"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - minute
-            - contract_address_varbinary
+          arguments:
+            combination_of_columns:
+              - block_month
+              - minute
+              - contract_address_varbinary
     columns:
       - name: minute
         description: "The minute timestamp for the price data"
@@ -43,10 +44,11 @@ models:
     description: "Raw fee payments collected by Phantom Swapper on Solana"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - token_address
     columns:
       - name: block_time
         description: "The timestamp when the fee was paid"
@@ -85,10 +87,11 @@ models:
     description: "Fee payments collected by Phantom Swapper on Solana enriched with USD values"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - token_address
     columns:
       - name: block_time
         description: "The timestamp when the fee was paid"
@@ -135,11 +138,12 @@ models:
     description: "Trades executed by Phantom Swapper on Solana, enriched with fee payment information"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - outer_instruction_index
+              - inner_instruction_index
     columns:
       - name: blockchain
         description: "The blockchain (solana)"

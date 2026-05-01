@@ -16,7 +16,6 @@ with
 
 raw_calls as (
     select *
-        , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
     from {{ ref('oneinch_' + blockchain.name + '_ar_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
@@ -49,6 +48,7 @@ raw_calls as (
                 , {{ method_data.get("dst_token_mask", "null") }} as dst_token_mask
                 , {{ method_data.get("dst_token_offset", "null") }} as dst_token_offset
                 , {{ method_data.get("router_type", "null") }} as router_type
+                , {{ method_data.get("useful", "null") }} as useful
                 , {% if method_data["src_token_amount"] == "call_value" %}true{% else %}false{% endif %} as src_token_amount_from_value
             from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
             where true
@@ -112,6 +112,7 @@ raw_calls as (
                     , raw_pools
                 ) as call_pools
                 , if(router_type = 'unoswap', cardinality(raw_pools) > 0) as ordinary -- true if call pools is not empty, null for generic
+                , substr(call_input, coalesce(useful, call_input_length - mod(call_input_length - 4, 32)) + 1) as call_input_remains
             from decoded
             join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
         )
@@ -171,7 +172,7 @@ select
     , dst_token_amount_min
     , router_type
     , pools
-    , coalesce(try(transform(sequence(1, length(call_input_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(call_input_remains), x, 4))))), array[]) as remains
+    , coalesce(try(filter(transform(sequence(1, length(call_input_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(call_input_remains), x, 4)))), y -> y <> 0)), array[]) as remains
     , map_from_entries(array[
         ('ordinary', ordinary)
         , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but due to zksync trace structure, it is necessary to switch to this

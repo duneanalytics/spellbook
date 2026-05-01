@@ -1,11 +1,7 @@
 {{ config(
         schema = 'lido',
-        alias = 'liquidity',
-
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "base", "zksync"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["pipistrella", "zergil1397", "hosuke"]\') }}'
+        alias = 'liquidity'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

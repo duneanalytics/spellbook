@@ -41,5 +41,13 @@ SELECT
     p.baseMint,
     p.quoteMint,
     p.baseMintDecimals,
-    p.quoteMintDecimals
+    p.quoteMintDecimals,
+    p.quoteMint IN (
+        'So11111111111111111111111111111111111111112' -- SOL
+        ,'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So' -- mSOL
+        ,'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' -- USDC
+        ,'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB' -- USDT
+        ,'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn' -- PUMP
+        ,'DEkqHyPN7GMRJ5cArtQFAWefqbZb33Hyf6s5iCwjEonT' -- BONK
+    ) AS is_valid_pool
 FROM pool_creation p

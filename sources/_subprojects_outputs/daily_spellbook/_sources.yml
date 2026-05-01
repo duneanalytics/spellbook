@@ -24,6 +24,8 @@ sources:
       - name: beethoven_x_pools_fantom
       - name: beets_pools_sonic
       - name: addresses
+      - name: cex
+      - name: bridge
       
   - name: evms
     description: "Cross-chain EVM raw data"
@@ -60,9 +62,21 @@ sources:
       - name: hours
       - name: minutes
 
+  - name: tornado_cash
+    tables:
+      - name: withdrawals
+
   - name: aave
     tables:
       - name: flashloans
+
+  - name: balancer
+    tables:
+      - name: gauge_mappings
+      - name: flashloans
+      - name: pools_metrics_daily
+      - name: token_whitelist
+      - name: single_recipient_gauges
 
   - name: aave_ethereum
     tables:

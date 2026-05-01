@@ -1,10 +1,7 @@
 {{config(
     
-    alias = 'l2_batch_submitters',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "labels",
-                                \'["msilb7"]\') }}'
+    alias = 'l2_batch_submitters'
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT 'ethereum'                                                                    AS blockchain

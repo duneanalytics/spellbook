@@ -1,12 +1,8 @@
 {{ 
     config(
         materialized='table',
-        alias = 'singletons',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "safe",
-                                    \'["tschubotz", "danielpartida"]\') }}'
+        alias = 'singletons'
+        , post_hook='{{ hide_spells() }}'
     ) 
 }}
 

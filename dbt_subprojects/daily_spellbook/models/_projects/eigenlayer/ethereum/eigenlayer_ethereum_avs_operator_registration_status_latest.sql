@@ -1,12 +1,9 @@
 {{ 
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'avs_operator_registration_status_latest',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}',
-        unique_key = ['avs', 'operator']
+        alias = 'avs_operator_registration_status_latest'
+        , post_hook='{{ hide_spells() }}'
+        , unique_key = ['avs', 'operator']
     )
 }}
 

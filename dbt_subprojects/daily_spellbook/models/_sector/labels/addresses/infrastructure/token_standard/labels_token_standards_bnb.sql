@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_bnb',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_bnb'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'bnb' AS blockchain
 , erc20.contract_address AS address

@@ -4,6 +4,7 @@ models:
   - name: utils_days
     meta:
       contributors: 0xRob
+      docs_slug: /curated/utilities/days
     config:
       tags: [ 'utils', 'days' ]
     description: >
@@ -12,6 +13,7 @@ models:
   - name: utils_hours
     meta:
       contributors: 0xRob
+      docs_slug: /curated/utilities/hours
     config:
       tags: [ 'utils', 'hours' ]
     description: >
@@ -20,6 +22,7 @@ models:
   - name: utils_minutes
     meta:
       contributors: 0xRob
+      docs_slug: /curated/utilities/minutes
     config:
       tags: [ 'utils', 'minutes' ]
     description: >
@@ -28,6 +31,7 @@ models:
   - name: utils_weeks
     meta:
       contributors: 0xRob, hildobby
+      docs_slug: /curated/utilities/weeks
     config:
       tags: [ 'utils', 'weeks' ]
     description: >
@@ -36,6 +40,7 @@ models:
   - name: utils_months
     meta:
       contributors: 0xRob, hildobby
+      docs_slug: /curated/utilities/months
     config:
       tags: [ 'utils', 'months' ]
     description: >
@@ -44,6 +49,7 @@ models:
   - name: utils_years
     meta:
       contributors: 0xRob, hildobby
+      docs_slug: /curated/utilities/years
     config:
       tags: [ 'utils', 'years' ]
     description: >
@@ -52,6 +58,7 @@ models:
   - name: utils_quarters
     meta:
       contributors: 0xRob, hildobby
+      docs_slug: /curated/utilities/quarters
     config:
       tags: [ 'utils', 'quarters' ]
     description: >
@@ -65,8 +72,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'day'
+              arguments:
+                interval: 1
+                datepart: 'day'
 
   - name: utils_hours_table
     description: >
@@ -76,8 +84,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'hour'
+              arguments:
+                interval: 1
+                datepart: 'hour'
 
   - name: utils_minutes_table
     description: >
@@ -87,8 +96,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'minute'
+              arguments:
+                interval: 1
+                datepart: 'minute'
 
   - name: utils_weeks_table
     description: >
@@ -98,8 +108,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'week'
+              arguments:
+                interval: 1
+                datepart: 'week'
 
   - name: utils_months_table
     description: >
@@ -109,8 +120,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'month'
+              arguments:
+                interval: 1
+                datepart: 'month'
 
   - name: utils_years_table
     description: >
@@ -120,8 +132,9 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'year'
+              arguments:
+                interval: 1
+                datepart: 'year'
 
   - name: utils_quarters_table
     description: >
@@ -131,5 +144,6 @@ models:
         data_tests:
           - unique
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'quarter'
+              arguments:
+                interval: 1
+                datepart: 'quarter'

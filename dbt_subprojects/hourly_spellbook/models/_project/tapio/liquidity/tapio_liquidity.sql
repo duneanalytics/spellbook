@@ -1,10 +1,7 @@
 {{ config(
         schema = 'tapio',
-        alias = 'liquidity',
-        post_hook='{{ expose_spells(blockchains = \'["base", "sonic"]\',
-                                spell_type = "project",
-                                spell_name = "tapio",
-                                contributors = \'["brunota20"]\') }}'
+        alias = 'liquidity'
+        , post_hook='{{ hide_spells() }}'
     ) 
 }}
 

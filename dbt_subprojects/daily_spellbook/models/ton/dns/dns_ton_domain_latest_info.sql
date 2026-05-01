@@ -2,7 +2,8 @@
        schema = 'dns_ton'
        , alias = 'domain_latest_info'
        , materialized = 'table'
-       , post_hook='{{ expose_spells(\'["ton"]\',
+       ,
+    post_hook='{{ expose_spells(\'["ton"]\',
                                    "project",
                                    "dns_ton",
                                    \'["markysha", "pshuvalov"]\') }}'

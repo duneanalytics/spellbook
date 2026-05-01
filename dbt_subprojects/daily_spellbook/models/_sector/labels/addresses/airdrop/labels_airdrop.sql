@@ -1,10 +1,7 @@
 {{config(
         tags=[ 'prod_exclude'],
-        alias = 'airdrop',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["ilemi", "hosuke"]\') }}'
+        alias = 'airdrop'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 {% set airdrop_labels_models = [

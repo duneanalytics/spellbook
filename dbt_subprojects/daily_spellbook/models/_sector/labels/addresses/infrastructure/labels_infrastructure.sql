@@ -1,11 +1,9 @@
 {{ config(
     alias = 'infrastructure',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "labels",
-                                \'["ilemi", "hildobby"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 --exclude due to duplicates:

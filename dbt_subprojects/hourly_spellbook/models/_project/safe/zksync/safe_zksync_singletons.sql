@@ -2,11 +2,8 @@
     config(
         materialized='table',
         schema = 'safe_zksync',
-        alias = 'singletons',
-        post_hook='{{ expose_spells(\'["zksync"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida", "kryptaki"]\') }}'
+        alias = 'singletons'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

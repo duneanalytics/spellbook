@@ -12,9 +12,10 @@ models:
     description: "Metadata about OP chains - Chains which build on the OP Stack and contirbute back to Optimism."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - chain_id
+          arguments:
+            combination_of_columns:
+                - blockchain
+                - chain_id
 
     columns:
       - &blockchain
@@ -34,5 +35,6 @@ models:
         description: "Binary flag if the chain is known to be Superchain aligned (does not exist yet - to be launched)."
         data_tests:
           - accepted_values:
-              values: [0, 1]
-              quote: false
+              arguments:
+                values: [0, 1]
+                quote: false

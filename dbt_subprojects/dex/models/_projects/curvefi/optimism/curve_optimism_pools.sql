@@ -4,11 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['version', 'tokenid', 'token', 'pool'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "curve",
-                                \'["msilb7"]\') }}'
+    unique_key = ['version', 'tokenid', 'token', 'pool']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

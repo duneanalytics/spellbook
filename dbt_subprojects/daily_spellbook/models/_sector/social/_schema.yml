@@ -10,10 +10,11 @@ models:
       tags: ['table', 'social', 'base', 'trades', 'friend_tech']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -76,10 +77,11 @@ models:
       tags: ['table', 'social', 'base', 'trades', 'friend_tech']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - &block_month
@@ -122,8 +124,9 @@ models:
         socials info
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
+          arguments:
+            combination_of_columns:
+              - project
     columns:
       - *project
       - &name

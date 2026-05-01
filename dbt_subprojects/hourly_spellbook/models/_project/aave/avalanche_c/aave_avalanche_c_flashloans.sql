@@ -2,11 +2,8 @@
   config(
     schema = 'aave_avalanche_c',
     alias = 'flashloans',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["avalanche_c"]\',
-                                  spell_type = "project",
-                                  spell_name = "aave",
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

@@ -1,11 +1,10 @@
 {{config(
         tags = ['static'],
         schema = 'cex_aptos',
-        alias = 'addresses',
-        post_hook='{{ expose_spells(\'["aptos"]\',
-                                    "sector",
-                                    "cex",
-                                    \'["hildobby"]\') }}')}}
+        alias = 'addresses'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 -- from https://github.com/aptos-labs/explorer/blob/main/src/constants.tsx
 SELECT blockchain, address, cex_name, distinct_name, added_by, added_date

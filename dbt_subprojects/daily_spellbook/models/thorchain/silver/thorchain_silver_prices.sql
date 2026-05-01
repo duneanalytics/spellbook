@@ -47,14 +47,17 @@ SELECT DISTINCT
     cast(date_trunc('day', b.block_timestamp) as date) as block_date,
     b.block_timestamp,
     COALESCE(
-        b.rune_e8 / b.asset_e8,
+        cast(b.rune_e8 as double) / nullif(cast(b.asset_e8 as double), 0),
         0
     ) AS price_rune_asset,
     COALESCE(
-        b.asset_e8 / b.rune_e8,
+        cast(b.asset_e8 as double) / nullif(cast(b.rune_e8 as double), 0),
         0
     ) AS price_asset_rune,
-    COALESCE(ru.rune_usd * (b.rune_e8 / b.asset_e8), 0) AS asset_usd,
+    COALESCE(
+        ru.rune_usd * (cast(b.rune_e8 as double) / nullif(cast(b.asset_e8 as double), 0)),
+        0
+    ) AS asset_usd,
     COALESCE(
         ru.rune_usd,
         0

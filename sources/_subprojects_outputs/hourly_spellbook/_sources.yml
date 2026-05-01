@@ -26,14 +26,6 @@ sources:
       - name: market
       - name: market_hourly_agg
 
-  - name: balancer
-    tables:
-      - name: gauge_mappings
-      - name: flashloans
-      - name: pools_metrics_daily
-      - name: token_whitelist
-      - name: single_recipient_gauges
-
   - name: staking_ethereum
     tables:
       - name: entities
@@ -159,3 +151,24 @@ sources:
   - name: dune
     tables:
       - name: blockchains
+        meta:
+          docs_slug: /curated/utilities/blockchains
+
+  - name: nft
+    description: "output models of the NFT sector"
+    tables:
+      - name: trades
+      - name: aggregators
+      - name: base_trades
+
+  - name: nft_optimism
+    tables:
+      - name: wash_trades
+
+  - name: nft_blast
+    tables:
+      - name: wash_trades
+
+  - name: nft_ethereum
+    tables:
+      - name: wallet_metrics

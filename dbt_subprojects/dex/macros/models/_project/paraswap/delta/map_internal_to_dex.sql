@@ -1,7 +1,7 @@
 {% macro map_internal_to_dex(blockchain, version, from_alias) %}
 select 
         {{from_alias}}.blockchain,
-        'velora_delta' as project,
+        'velora' as project,
         '{{version}}' as version,
         date_trunc('month', call_block_time) AS block_month,
         DATE_TRUNC('day', call_block_time) as block_date,
@@ -31,7 +31,7 @@ select
         call_tx_from as tx_from,
         call_tx_to as tx_to,
         case when CARDINALITY(call_trace_address) > 0 then call_trace_address else ARRAY[-1] end as trace_address,
-        COALESCE(evt_index, 0) as evt_index, -- TMP: after joining envents in swapSettle can remove it
+        COALESCE(evt_index, order_index) as evt_index, -- delta has no events; use order_index so batch orders get distinct keys downstream
         order_index,
         method
     from {{from_alias}}  

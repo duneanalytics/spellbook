@@ -1,10 +1,7 @@
  {{
   config(
-    alias = 'nft_bridged_mapping',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["chuxin"]\') }}'
+    alias = 'nft_bridged_mapping'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 select distinct

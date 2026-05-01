@@ -2,11 +2,9 @@
   config(
         schema = 'raydium_launchlab_v1',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "raydium_launchlab_v1",
-                                    \'["krishhh"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 select

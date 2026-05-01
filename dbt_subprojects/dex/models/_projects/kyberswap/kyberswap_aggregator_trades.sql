@@ -3,11 +3,8 @@
     
     schema = 'kyberswap_aggregator',
     alias = 'trades',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook='{{ expose_spells(\'["arbitrum", "base"]\',
-                            "project",
-                            "kyberswap",
-                            \'["nhd98z", "Henrystats"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

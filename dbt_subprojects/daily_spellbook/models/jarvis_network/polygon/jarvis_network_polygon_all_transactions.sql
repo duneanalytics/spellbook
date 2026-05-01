@@ -6,11 +6,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'evt_tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["polygon"]\',
-                                      "project",
-                                      "jarvis_network",
-                                      \'["0xroll"]\') }}')
+    unique_key = ['block_date', 'evt_tx_hash', 'evt_index']
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 {% set project_start_date = '2021-08-16' %}

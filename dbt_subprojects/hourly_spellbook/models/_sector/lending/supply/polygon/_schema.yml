@@ -12,11 +12,12 @@ models:
     description: "All lending supply transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,15 +99,17 @@ models:
     description: "Aave v2 supply transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_polygon_base_supply_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('aave_polygon_base_supply_seed')
+            filter:
+              version: 2
     columns:
       - *blockchain
       - *project
@@ -136,15 +139,17 @@ models:
     description: "Aave v3 supply transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('aave_polygon_base_supply_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('aave_polygon_base_supply_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -174,15 +179,52 @@ models:
     description: "Compound v3 supply transactions on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('compound_polygon_base_supply_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('compound_polygon_base_supply_seed')
+            filter:
+              version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
+  - name: morpho_polygon_base_supply
+    meta:
+      blockchain: polygon
+      sector: lending
+      project: morpho
+      contributors: tomfutago
+    config:
+      tags: ["lending", "supply", "morpho", "polygon"]
+    description: "Morpho supply transactions on Polygon"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

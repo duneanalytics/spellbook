@@ -29,9 +29,10 @@ models:
     description: "Mapping of contracts to its creators and names on bnb."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
 
             
     columns:
@@ -142,9 +143,10 @@ models:
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
 
     columns:
       - *blockchain
@@ -172,9 +174,10 @@ models:
     description: "Base Level for mapping of contracts to its creators and names on bnb."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
 
             
     columns:
@@ -206,9 +209,10 @@ models:
     description: "Iterated creators for mapping of contracts to its creators and names on bnb."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
 
             
     columns:
@@ -245,3 +249,32 @@ models:
       - &token_standard_erc20
         name: token_standard_erc20
         description: "Token Standard ERC20 Only"
+
+  - name: contracts_bnb_deployments
+    meta:
+      blockchain: bnb
+      sector: contracts
+      contributors: kryptaki
+    config:
+      tags: ['bnb', 'contracts', 'addresses']
+    description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on BNB."
+
+    columns:
+      - *blockchain
+      - *contract_address
+      - name: deployment_block_time
+        description: "Block timestamp when the contract was created"
+      - name: deployment_block_month
+        description: "Monthly partition, when the contract was created"
+      - name: deployment_block_number
+        description: "Block number when the contract was created"
+      - name: deployment_tx_hash
+        description: "Transaction hash of the contract creation"
+      - name: function_selectors
+        description: "Array of 4-byte function selectors extracted from the contract bytecode"
+      - name: erc20_flag
+        description: "Boolean flag indicating if the contract is an ERC20 token (based on event tables or function selector detection)"
+      - name: erc721_flag
+        description: "Boolean flag indicating if the contract is an ERC721 token (based on event tables or function selector detection)"
+      - name: bytecode
+        description: "Runtime bytecode of the contract"

@@ -33,4 +33,5 @@ FROM
     , ('bttc-bittorrent-chain', 'BTT', 'TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4', 18)
     , ('sun-sun', 'SUN', 'TSSMHYeV2uE9qYH95DqyoCuNCzEL1NvU3S', 18)
     , ('usdd-usdd', 'USDD', 'TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn', 18)
+    , ('busd-binance-usd', 'BUSDOLD', 'TMz2SWatiAtZVVcH2ebpsbVtYwUPT9EdjH', 18)
 ) as temp (token_id, symbol, contract_address, decimals)

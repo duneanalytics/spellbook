@@ -1,7 +1,7 @@
 {{ config (
     
-    alias = 'distributions',
-    post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
+    alias = 'distributions'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 -- PROTOFORM DISTRIBUTION. for example LPDA
 WITH lpda_creations AS (

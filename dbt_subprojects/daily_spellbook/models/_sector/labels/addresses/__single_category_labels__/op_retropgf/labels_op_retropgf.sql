@@ -1,10 +1,8 @@
 {{config(
         
-        alias = 'op_retropgf',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["soispoke", "msilb7"]\') }}')
+        alias = 'op_retropgf'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT blockchain,

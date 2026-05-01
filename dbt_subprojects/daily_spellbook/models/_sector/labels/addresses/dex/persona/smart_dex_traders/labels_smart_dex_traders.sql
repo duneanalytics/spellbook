@@ -1,7 +1,7 @@
 {{config(
     
-    alias = 'smart_dex_traders',
-    post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "labels", \'["stone"]\') }}'
+    alias = 'smart_dex_traders'
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT * FROM {{ ref('labels_smart_dex_traders_ethereum') }}

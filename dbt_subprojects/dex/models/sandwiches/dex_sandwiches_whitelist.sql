@@ -6,11 +6,8 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'block_number', 'tx_hash'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "base"]\',
-                                "sector",
-                                "dex",
-                                \'["hildobby"]\') }}'
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

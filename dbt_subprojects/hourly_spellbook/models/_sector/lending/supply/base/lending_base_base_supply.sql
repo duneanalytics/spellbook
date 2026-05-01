@@ -31,6 +31,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,

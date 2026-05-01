@@ -14,17 +14,19 @@ models:
       Tigris perpetuals trades/swaps on avalanche_c
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - check_perpetuals_seed:
-          blockchain: arbitrum
-          project: tigris_trade
-          version: v2.3
+          arguments:
+            blockchain: arbitrum
+            project: tigris_trade
+            version: v2.3
     columns:
       - &blockchain
         name: blockchain
@@ -110,13 +112,14 @@ models:
         tigirstrades on Arbitrum v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id 
-            - trade_type
-            - positions_contract
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id 
+              - trade_type
+              - positions_contract
+              - protocol_version
     columns:
       - *blockchain
       - &day
@@ -184,13 +187,14 @@ models:
       Tigris Options Trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id
-            - trade_type
-            - positions_contract
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id
+              - trade_type
+              - positions_contract
+              - protocol_version
     columns:
       - *day
       - *evt_block_time

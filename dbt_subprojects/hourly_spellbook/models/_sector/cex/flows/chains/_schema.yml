@@ -11,8 +11,9 @@ models:
     description: "All CEX-tied flows identified on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - &blockchain
         name: blockchain
@@ -88,8 +89,9 @@ models:
     description: "All CEX-tied flows identified on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -123,8 +125,9 @@ models:
     description: "All CEX-tied flows identified on Avalanche"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -158,8 +161,9 @@ models:
     description: "All CEX-tied flows identified on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -193,8 +197,9 @@ models:
     description: "All CEX-tied flows identified on BNB"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -228,8 +233,9 @@ models:
     description: "All CEX-tied flows identified on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -263,8 +269,9 @@ models:
     description: "All CEX-tied flows identified on Gnosis"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -298,8 +305,9 @@ models:
     description: "All CEX-tied flows identified on Optimism Mainnet"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -333,8 +341,9 @@ models:
     description: "All CEX-tied flows identified on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -368,8 +377,9 @@ models:
     description: "All CEX-tied flows identified on Scroll"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -403,8 +413,9 @@ models:
     description: "All CEX-tied flows identified on zkSync"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -438,8 +449,9 @@ models:
     description: "All CEX-tied flows identified on ZORA Network"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -473,8 +485,9 @@ models:
     description: "All CEX-tied flows identified on ZORA Network"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -508,8 +521,9 @@ models:
     description: "All CEX-tied flows identified on ZORA Network"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -543,8 +557,9 @@ models:
     description: "All CEX-tied flows identified on ZORA Network"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -578,8 +593,9 @@ models:
     description: "All CEX-tied flows identified on Berachain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -613,8 +629,9 @@ models:
     description: "All CEX-tied flows identified on Ink"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -648,8 +665,45 @@ models:
     description: "All CEX-tied flows identified on Katana"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_kaia_flows
+    meta:
+      blockchain: kaia
+      sector: cex
+      contributors: anton
+    config:
+      tags: ['cex','flows', 'kaia']
+    description: "All CEX-tied flows identified on Kaia"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -683,8 +737,9 @@ models:
     description: "All CEX-tied flows identified on Nova"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -718,8 +773,9 @@ models:
     description: "All CEX-tied flows identified on opBNB"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -753,8 +809,9 @@ models:
     description: "All CEX-tied flows identified on Unichain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - unique_key
     columns:
       - *blockchain
       - *block_month

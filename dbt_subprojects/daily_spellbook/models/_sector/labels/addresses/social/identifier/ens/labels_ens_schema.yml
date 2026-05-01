@@ -6,18 +6,21 @@ models:
       blockchain: ethereum
       sector: labels
       category: ens
+      short_description: "ENS (Ethereum Name Service) name-to-address mappings, providing human-readable labels for Ethereum addresses."
       contributors:  0xRob
+      docs_slug: /curated/labels/ens-labels
     config:
       tags: ['query','labels', 'ethereum', 'ens', 'ENS resolver', 'ENS reverse']
     description: "ENS labels"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - name
-            - category
-            - model_name
-            - blockchain
+          arguments:
+            combination_of_columns:
+              - address
+              - name
+              - category
+              - model_name
+              - blockchain
     columns:
       - name: blockchain
         description: "Blockchain"

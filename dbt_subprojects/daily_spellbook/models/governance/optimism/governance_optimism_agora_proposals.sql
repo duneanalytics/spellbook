@@ -6,10 +6,7 @@
     ,schema = 'governance_optimism'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
-    ,post_hook='{{ expose_spells(\'["optimism"]\',
-                                      "sector",
-                                      "governance",
-                                    \'["chain_l", "chuxin"]\') }}'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 -- v5

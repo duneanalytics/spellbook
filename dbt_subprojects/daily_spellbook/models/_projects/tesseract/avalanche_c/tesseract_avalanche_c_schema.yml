@@ -12,8 +12,9 @@ models:
         Avalanche L1 blockchains which have used ICM (Teleporter) to communicate with this blockchain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain_id
+          arguments:
+            combination_of_columns:
+              - blockchain_id
     columns:
       - name: blockchain
         description: "Blockchain on which TeleporterMessenger contract is deployed which has had this contact with other chains through ICM"
@@ -44,11 +45,12 @@ models:
         Pairs of ICTT TokenHome and TokenRemote contracts where either the home or remote is deployed on the Avalanche C-Chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_home_blockchain_id
-            - token_home_address
-            - token_remote_blockchain_id
-            - token_remote_address
+          arguments:
+            combination_of_columns:
+              - token_home_blockchain_id
+              - token_home_address
+              - token_remote_blockchain_id
+              - token_remote_address
     columns:
       - name: blockchain
         description: "Blockchain on which the events / calls to identify these pairs were made"
@@ -80,8 +82,9 @@ models:
         Unique list of ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -113,9 +116,10 @@ models:
         TokensAndCallSent events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -188,9 +192,10 @@ models:
         TokensAndCallRouted events for all ICTT TokenHome contracts deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -224,9 +229,10 @@ models:
         TokensSent events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -260,9 +266,10 @@ models:
         TokensRouted events for all ICTT TokenHome contracts deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -293,9 +300,10 @@ models:
         TokensWithdrawn events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -318,9 +326,10 @@ models:
         CallSucceeded events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -343,9 +352,10 @@ models:
         CallFailed events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -368,9 +378,10 @@ models:
         All volume-generating events (involving the transfer of tokens) for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -404,9 +415,10 @@ models:
         CellRouted events for Tesseract Cell contracts (all types) deployed on the Avalanche c-chain, combined into a single view.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -461,9 +473,10 @@ models:
         Initiated events for Tesseract Cell contracts (all types) deployed on the Avalanche c-chain, combined into a single view.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_number
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_number
+              - evt_index
     columns:
       - *blockchain
       - *contract_address

@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='vrf_gas_daily',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_jon"]\') }}'
+    alias='vrf_gas_daily'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

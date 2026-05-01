@@ -3,11 +3,8 @@
     schema = 'gooddollar_celo',
     alias = 'ubi_claimer_streaks',
     materialized = 'view',
-    unique_key = ['claimer'],
-    post_hook = '{{ expose_spells(blockchains = \'["celo"]\',
-                                  spell_type = "project",
-                                  spell_name = "gooddollar",
-                                  contributors = \'["tomfutago"]\') }}'
+    unique_key = ['claimer']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

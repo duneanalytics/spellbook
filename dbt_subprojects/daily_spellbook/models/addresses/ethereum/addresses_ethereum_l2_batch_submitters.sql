@@ -1,11 +1,10 @@
 {{ config(
         schema = 'addresses_ethereum',
         alias = 'l2_batch_submitters',
-        tags=['static'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["msilb7"]\') }}') }}
+        tags=['static']
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT address AS address, protocol_name, codebase, submitter_type, role_type, version, description
 FROM (VALUES

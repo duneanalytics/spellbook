@@ -1,10 +1,7 @@
 {{
     config(
-        alias = 'contract_deployers_bnb',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby", "hosuke"]\') }}'
+        alias = 'contract_deployers_bnb'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

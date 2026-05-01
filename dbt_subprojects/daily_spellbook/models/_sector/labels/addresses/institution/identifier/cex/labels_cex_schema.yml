@@ -6,6 +6,7 @@ models:
       blockchain: ethereum, bnb, fantom, optimism, arbitrum, avalanche_c, bitcoin, polygon
       sector: labels
       project: cex
+      short_description: "Known centralized exchange wallet addresses across chains, labeled by exchange name."
       contributors: hildobby, soispoke, Henrystats, msilb7
     config:
       tags: ['labels', 'ethereum', 'fantom', 'bnb', 'optimism', 'avalanche_c', 'bitcoin', 'polygon', 'arbitrum', 'cex']

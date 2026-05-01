@@ -1,10 +1,7 @@
 {{ config(
         schema = 'fluid',
-        alias = 'tvl_daily',
-        post_hook='{{ expose_spells(blockchains = \'["base","ethereum","polygon","arbitrum"]\',
-                                      spell_type = "project", 
-                                      spell_name = "fluid", 
-                                      contributors = \'["Henrystats","dknugo"]\') }}'
+        alias = 'tvl_daily'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

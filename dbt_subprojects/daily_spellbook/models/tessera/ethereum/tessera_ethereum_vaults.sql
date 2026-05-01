@@ -1,7 +1,7 @@
 {{ config (
     
-    alias = 'vaults',
-    post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
+    alias = 'vaults'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 -- VAULT DEPLOY
 SELECT

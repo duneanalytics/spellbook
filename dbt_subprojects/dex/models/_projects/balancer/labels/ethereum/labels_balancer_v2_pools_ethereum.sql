@@ -1,10 +1,7 @@
 {{config(
   schema = 'labels',
-  alias = 'balancer_v2_pools_ethereum',
-  post_hook = '{{ expose_spells(\'["ethereum"]\',
-                               "sector",
-                               "labels",
-                               \'["balancerlabs"]\') }}'
+  alias = 'balancer_v2_pools_ethereum'
+  , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH pools AS (

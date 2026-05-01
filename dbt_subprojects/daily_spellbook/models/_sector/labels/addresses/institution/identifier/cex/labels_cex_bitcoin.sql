@@ -1,10 +1,9 @@
 {{config(
 
-        alias = 'cex_bitcoin',
-        post_hook='{{ expose_spells(\'["bitcoin"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+        alias = 'cex_bitcoin'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain
 , from_base58(cast(address as varchar)) as address

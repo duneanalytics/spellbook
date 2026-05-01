@@ -1,12 +1,9 @@
 {{ 
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'avs_metadata_uri_latest',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}',
-        unique_key = ['avs']
+        alias = 'avs_metadata_uri_latest'
+        , post_hook='{{ hide_spells() }}'
+        , unique_key = ['avs']
     )
 }}
 

@@ -1,12 +1,23 @@
 version: 2
 
 models:
-  - name: dex_unichain_base_trades
+  - name: dex_unichain_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_unichain_base_trades
 
   - name: uniswap_v2_unichain_base_trades
     meta:
@@ -19,13 +30,15 @@ models:
     description: "uniswap unichain v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_unichain_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('uniswap_unichain_base_trades_seed')
+            filter:
+              version: 2
 
   - name: uniswap_v3_unichain_base_trades
     meta:
@@ -38,13 +51,15 @@ models:
     description: "uniswap unichain v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_unichain_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_unichain_base_trades_seed')
+            filter:
+              version: 3
 
   - name: uniswap_v4_unichain_base_trades
     meta:
@@ -57,13 +72,15 @@ models:
     description: "uniswap unichain v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_unichain_base_trades_seed')
-          filter:
-            version: 4
+          arguments:
+            seed_file: ref('uniswap_unichain_base_trades_seed')
+            filter:
+              version: 4
 
   - name: dyorswap_unichain_base_trades
     meta:
@@ -76,13 +93,15 @@ models:
     description: "dyorswap unichain v2 base trades (uniswap v2 compatible)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dyorswap_unichain_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('dyorswap_unichain_base_trades_seed')
+            filter:
+              version: 2
 
   - name: unichainswap_unichain_base_trades
     meta:
@@ -95,9 +114,10 @@ models:
     description: "unichainswap unichain v2 base trades (uniswap v2 compatible)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: velodrome_unichain_base_trades
     meta:
@@ -110,15 +130,17 @@ models:
     description: "velodrome unichain base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('velodrome_unichain_base_trades_seed')
-          filter:
-            version:
-              - '2'
-              - '2_cl'
+          arguments:
+            seed_file: ref('velodrome_unichain_base_trades_seed')
+            filter:
+              version:
+                - '2'
+                - '2_cl'
 
   - name: eulerswap_unichain_base_trades
     meta:
@@ -131,10 +153,20 @@ models:
     description: "eulerswap unichain base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('eulerswap_unichain_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('eulerswap_unichain_base_trades_seed')
+            filter:
+              version: 1
+  - name: dex_unichain_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

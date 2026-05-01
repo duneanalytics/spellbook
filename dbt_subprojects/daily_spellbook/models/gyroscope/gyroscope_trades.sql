@@ -1,11 +1,8 @@
 {{ config(
     schema = 'gyroscope',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "ethereum","optimism", "polygon"]\',
-                                "project",
-                                "gyroscope",
-                                \'["fmarrr", "viniabussafi"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

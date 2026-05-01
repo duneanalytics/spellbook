@@ -1,13 +1,10 @@
- {{
-  config(
-        schema = 'solana_utils',
-        alias = 'sns_domains',
-        materialized='table',
-        
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "solana_utils",
-                                    \'["ilemi"]\') }}')
+{{
+ config(
+       schema = 'solana_utils',
+       alias = 'sns_domains',
+       materialized='view'
+       , post_hook='{{ hide_spells() }}'
+)
 }}
 
 with 

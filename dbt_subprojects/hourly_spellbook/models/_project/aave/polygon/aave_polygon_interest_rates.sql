@@ -2,11 +2,8 @@
   config(
     schema = 'aave_polygon',
     alias = 'interest_rates',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
-                                  spell_type = "project",
-                                  spell_name = "aave",
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

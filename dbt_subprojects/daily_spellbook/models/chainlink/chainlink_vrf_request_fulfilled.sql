@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='request_fulfilled',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_jon"]\') }}'
+    alias='request_fulfilled'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

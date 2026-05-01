@@ -5,11 +5,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_number', 'tx_hash', 'index'],
-        post_hook='{{ expose_spells(\'["sonic"]\',
-                                    "project",
-                                    "beethoven_x",
-                                    \'["viniabussafi"]\') }}'
+        unique_key = ['block_number', 'tx_hash', 'index']
+        , post_hook='{{ hide_spells() }}'
     ) 
 }}
 

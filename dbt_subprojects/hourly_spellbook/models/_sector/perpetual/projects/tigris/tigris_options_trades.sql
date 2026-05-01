@@ -1,10 +1,7 @@
 {{ config(
 	schema = 'tigris',
-	alias = 'options_trades',
-    post_hook='{{ expose_spells(\'["arbitrum", "polygon"]\',
-                                "project",
-                                "tigris",
-                                \'["Henrystats"]\') }}'
+	alias = 'options_trades'
+	, post_hook='{{ hide_spells() }}'
 	)
 }}
 

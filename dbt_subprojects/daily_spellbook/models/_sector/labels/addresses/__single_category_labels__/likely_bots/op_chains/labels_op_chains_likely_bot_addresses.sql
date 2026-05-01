@@ -2,11 +2,9 @@
     config(
         alias = 'op_chains_likely_bot_addresses',
         materialized ='table',
-        partition_by = ['blockchain'],
-        post_hook='{{ expose_spells(\'["optimism","base","zora"]\',
-        "sector",
-        "labels",
-        \'["msilb7"]\') }}'
+        partition_by = ['blockchain']
+        , tags = ['prod_exclude']
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

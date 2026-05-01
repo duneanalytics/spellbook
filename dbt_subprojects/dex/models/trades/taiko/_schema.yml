@@ -1,6 +1,22 @@
 version: 2
 
 models:
+  - name: dex_taiko_trades
+    data_tests:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
   - name: dex_taiko_base_trades
     meta:
       blockchain: taiko
@@ -9,11 +25,6 @@ models:
     config:
       tags: ['taiko', 'dex', 'trades']
     description: 'All DEX trades on Taiko'
-    data_tests:
-      - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
 
   - name: oku_v3_taiko_base_trades
     meta:
@@ -26,9 +37,10 @@ models:
     description: 'Oku V3 DEX trades on Taiko'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
   - name: unagi_v3_taiko_base_trades
     meta:
       blockchain: taiko
@@ -40,9 +52,10 @@ models:
     description: 'Unagi V3 DEX trades on Taiko'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
   - name: izumi_finance_taiko_base_trades
     meta:
       blockchain: taiko
@@ -54,6 +67,16 @@ models:
     description: 'Izumi DEX trades on Taiko'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+
+  - name: dex_taiko_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

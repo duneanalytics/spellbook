@@ -5,9 +5,10 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date','unique_key'],
-)
+    )
 }}
 
 WITH 
@@ -31,6 +32,7 @@ tokens_gnosis_base_transfers AS (
         , to
         , contract_address
         , amount_raw
+        , _updated_at
     FROM 
         {{ ref('tokens_gnosis_base_transfers') }}
     {% if is_incremental() %}
@@ -57,6 +59,7 @@ tokens_gnosis_base_non_standard_transfers AS (
         , to
         , contract_address
         , amount_raw
+        , _updated_at
     FROM 
         {{ ref('tokens_gnosis_base_non_standard_transfers') }}
     {% if is_incremental() %}

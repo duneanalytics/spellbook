@@ -6,11 +6,10 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'],
-    alias = 'matic',
-    post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["Henrystats"]\') }}') }}
+    alias = 'matic'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH
 

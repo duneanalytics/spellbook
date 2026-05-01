@@ -90,6 +90,7 @@ where cardinality(se.element) = 2 -- only inlcude valid schemas
 %}
 
 {% set decoded_project_name = project if decoded_project_name == '' else decoded_project_name %}
+{% set exp_time_raw = "try_cast(json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as bigint)" %}
 
 with
 
@@ -126,7 +127,13 @@ select distinct
   cast(
     if(
       json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) <> '0',
-      from_unixtime(try_cast(json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as bigint))
+      from_unixtime(
+        case
+          when {{ exp_time_raw }} >= 1000000000000000 then cast({{ exp_time_raw }} as double) / 1000000000
+          when {{ exp_time_raw }} >= 1000000000000 then cast({{ exp_time_raw }} as double) / 1000
+          else cast({{ exp_time_raw }} as double)
+        end
+      )
     ) as timestamp
   ) as expiration_time,
   cast(er.evt_block_time as timestamp) as revocation_time,

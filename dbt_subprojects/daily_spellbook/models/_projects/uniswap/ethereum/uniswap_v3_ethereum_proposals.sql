@@ -3,11 +3,8 @@
     schema = 'uniswap_v3_ethereum',
     alias = 'proposals',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "uniswap_v3",
-                                \'["soispoke"]\') }}'
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -2,10 +2,7 @@
       schema = 'tokens_ethereum'
       , alias = 'rwa'
       , tags=['static']
-      , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                  "sector",
-                                  "tokens_ethereum",
-                                  \'["synthquest"]\') }}'
+      , post_hook='{{ hide_spells() }}'
       , unique_key = ['contract_address']
   )
 }}

@@ -2,11 +2,8 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'staked_per_token',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project",
-                                  spell_name = "nexusmutual",
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

@@ -13,8 +13,9 @@ models:
     description: "Table showing what chain an address was first funded on and its details"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - &blockchain
         name: blockchain
@@ -67,8 +68,9 @@ models:
     description: "Table showing what chain an address first received tokens on and its details"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - *blockchain
       - *address

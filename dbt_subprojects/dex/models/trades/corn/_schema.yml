@@ -1,6 +1,22 @@
 version: 2
 
 models:
+  - name: dex_corn_trades
+    data_tests:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
   - name: dex_corn_base_trades
     meta:
       blockchain: corn
@@ -9,8 +25,6 @@ models:
     config:
       tags: ['corn', 'dex', 'trades']
     description: 'All DEX trades on Corn'
-    data_tests:
-      - check_columns_dex_base_trades
 
   - name: oku_corn_base_trades
     meta:
@@ -23,11 +37,13 @@ models:
     description: 'Oku DEX trades on Corn'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('oku_corn_base_trades_seed')
+          arguments:
+            seed_file: ref('oku_corn_base_trades_seed')
 
   - name: camelot_v2_corn_base_trades
     meta:
@@ -40,9 +56,10 @@ models:
     description: 'Camelot v2 DEX trades on Corn'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
 
   - name: camelot_v3_corn_base_trades
     meta:
@@ -55,13 +72,15 @@ models:
     description: 'Camelot v3 DEX trades on Corn'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('camelot_corn_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('camelot_corn_base_trades_seed')
+            filter:
+              version: 3
 
   - name: camelot_yak_corn_base_trades
     meta:
@@ -74,10 +93,21 @@ models:
     description: 'Camelot Yak DEX trades on Corn'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('camelot_corn_base_trades_seed')
-          filter:
-            version: yak
+          arguments:
+            seed_file: ref('camelot_corn_base_trades_seed')
+            filter:
+              version: yak
+
+  - name: dex_corn_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

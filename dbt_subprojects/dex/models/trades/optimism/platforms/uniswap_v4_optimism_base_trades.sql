@@ -16,5 +16,7 @@
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_optimism', 'PoolManager_call_Swap') 
         , PoolManager_evt_Swap = source('uniswap_v4_optimism', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0x9a13f98cb987694c9f086b1f5eb990eea8264ec3'
+        , start_date = '2025-01-23'
     )
 }}

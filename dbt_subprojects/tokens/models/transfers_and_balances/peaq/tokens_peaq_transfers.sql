@@ -5,13 +5,11 @@
      materialized = 'incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',
+     merge_skip_unchanged = true,
      unique_key = ['block_date','unique_key'],
-     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-     post_hook='{{ expose_spells(blockchains = \'["peaq"]\',
-                                 spell_type = "sector",
-                                 spell_name = "tokens",
-                                 contributors = \'["krishhh"]\') }}'
-  )
+     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+     , post_hook='{{ hide_spells() }}'
+     )
 }}
 
 -- Peaq mainnet launch date: 2024-04-25 (Block #1)

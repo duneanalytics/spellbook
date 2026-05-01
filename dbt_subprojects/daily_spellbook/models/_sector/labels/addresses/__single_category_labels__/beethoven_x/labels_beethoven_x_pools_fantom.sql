@@ -1,9 +1,6 @@
 {{config(
-  alias = 'beethoven_x_pools_fantom',
-  post_hook = '{{ expose_spells(\'["fantom"]\',
-                               "sector",
-                               "labels",
-                               \'["balancerlabs"]\') }}'
+  alias = 'beethoven_x_pools_fantom'
+  , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH pools AS (

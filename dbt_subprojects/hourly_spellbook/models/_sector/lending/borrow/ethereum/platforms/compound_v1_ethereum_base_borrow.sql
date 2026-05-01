@@ -21,6 +21,7 @@ SELECT 'ethereum' AS blockchain
 , CAST(NULL AS varbinary) AS repayer
 , CAST(NULL AS varbinary) AS liquidator
 , amount
+, amount AS amount_raw
 , CAST(date_trunc('month', evt_block_time) AS date) AS block_month
 , evt_block_time AS block_time
 , evt_block_number AS block_number
@@ -45,6 +46,7 @@ SELECT 'ethereum' AS blockchain
 , account AS repayer
 , CAST(NULL AS varbinary) AS liquidator
 , amount
+, amount AS amount_raw
 , CAST(date_trunc('month', evt_block_time) AS date) AS block_month
 , evt_block_time AS block_time
 , evt_block_number AS block_number
@@ -69,6 +71,7 @@ SELECT 'ethereum' AS blockchain
 , CAST(NULL AS varbinary) AS repayer
 , liquidator
 , amountRepaid AS amount
+, amountRepaid AS amount_raw
 , CAST(date_trunc('month', evt_block_time) AS date) AS block_month
 , evt_block_time AS block_time
 , evt_block_number AS block_number

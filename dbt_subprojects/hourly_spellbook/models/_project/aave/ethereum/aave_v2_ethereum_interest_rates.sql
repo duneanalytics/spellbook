@@ -2,11 +2,8 @@
   config(
     schema = 'aave_v2_ethereum',
     alias = 'interest_rates',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project",
-                                  spell_name = "aave",
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

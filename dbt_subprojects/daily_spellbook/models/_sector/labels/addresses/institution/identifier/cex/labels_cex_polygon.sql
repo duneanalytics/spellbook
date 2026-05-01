@@ -1,10 +1,9 @@
 {{config(
 
-        alias = 'cex_polygon',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+        alias = 'cex_polygon'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain
 , address

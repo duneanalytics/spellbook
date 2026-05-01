@@ -20,8 +20,19 @@ swap_events as (
         el.block_number,
         el.tx_from,
         substr(el."data", 21, 32) AS id,
-        cast(varbinary_to_decimal(substr(el."data", 53, 16)) as decimal(38,0)) as amount0,
-        cast(varbinary_to_decimal(substr(el."data", 69, 16)) as decimal(38,0)) as amount1,
+        -- amount0/amount1 are signed int128 deltas packed into 16 bytes each.
+        -- varbinary_to_int256 zero-pads shorter inputs, so a negative int128 (high bit set)
+        -- comes back as ~2^128 unless we sign-extend with 0xFF*16 first.
+        case
+            when bitwise_and(varbinary_to_bigint(substr(el."data", 53, 1)), from_base('80', 16)) = from_base('80', 16)
+            then varbinary_to_int256(varbinary_concat(from_hex('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), substr(el."data", 53, 16)))
+            else varbinary_to_int256(varbinary_concat(from_hex('0x00000000000000000000000000000000'), substr(el."data", 53, 16)))
+        end as amount0,
+        case
+            when bitwise_and(varbinary_to_bigint(substr(el."data", 69, 1)), from_base('80', 16)) = from_base('80', 16)
+            then varbinary_to_int256(varbinary_concat(from_hex('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), substr(el."data", 69, 16)))
+            else varbinary_to_int256(varbinary_concat(from_hex('0x00000000000000000000000000000000'), substr(el."data", 69, 16)))
+        end as amount1,
         el.tx_hash,
         el.index as evt_index,
         'swap' as event_type
@@ -36,6 +47,9 @@ swap_events as (
 ),
 
 liquidity_events as (
+
+    {%-if version == '1' %}
+
     select 
         evt_block_time as block_time,
         evt_block_number as block_number,
@@ -51,6 +65,33 @@ liquidity_events as (
     {%- if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {%- endif %} 
+
+    {%-else %}
+    select 
+        evt_block_time as block_time,
+        evt_block_number as block_number,
+        evt_tx_from as tx_from,
+        poolId as id,
+        case
+            when bitwise_and(varbinary_to_bigint(substr(balanceUpdate, 1, 1)), from_base('80', 16)) = from_base('80', 16)
+            then varbinary_to_int256(varbinary_concat(from_hex('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), substr(balanceUpdate, 1, 16)))
+            else varbinary_to_int256(varbinary_concat(from_hex('0x00000000000000000000000000000000'), substr(balanceUpdate, 1, 16)))
+        end as amount0,
+        case
+            when bitwise_and(varbinary_to_bigint(substr(balanceUpdate, 1+16, 1)), from_base('80', 16)) = from_base('80', 16)
+            then varbinary_to_int256(varbinary_concat(from_hex('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), substr(balanceUpdate, 1+16, 16)))
+            else varbinary_to_int256(varbinary_concat(from_hex('0x00000000000000000000000000000000'), substr(balanceUpdate, 1+16, 16)))
+        end as amount1,
+        evt_tx_hash as tx_hash,
+        evt_index,
+        'modify_liquidity' as event_type 
+    from 
+    {{ position_updated }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %} 
+    {%- endif %} 
+
 
     union all 
 
@@ -115,7 +156,7 @@ get_pools as (
         '{{version}}' as version,
         cast(date_trunc('month', ae.block_time) as date) as block_month,
         cast(date_trunc('day', ae.block_time) as date) as block_date,
-        date_trunc('minute', ae.block_time) as block_time, -- for prices
+        ae.block_time as block_time,
         ae.block_number,
         ae.id,
         ae.tx_hash,

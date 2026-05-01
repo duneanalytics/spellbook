@@ -3,11 +3,8 @@
   schema = 'tokens_solana',
   alias = 'nft',
   
-  materialized='table',
-  post_hook='{{ expose_spells(\'["solana"]\',
-                                  "sector",
-                                  "tokens_solana",
-                                  \'["ilemi"]\') }}'
+  materialized='table'
+  , post_hook='{{ hide_spells() }}'
 )
 }}
 

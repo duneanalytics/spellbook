@@ -5,11 +5,8 @@
     partition_by = ['month'],
     file_format = 'delta',
     unique_key = ['month', 'slot'],
-    incremental_strategy = 'merge',
-    post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "solana_utils",
-                                    \'["0xBoxer"]\') }}'
+    incremental_strategy = 'merge'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 SELECT 

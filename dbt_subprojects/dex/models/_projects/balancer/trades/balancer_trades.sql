@@ -1,11 +1,8 @@
 {{ config(
         schema = 'balancer',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
-                                      spell_type = "project", 
-                                      spell_name = "balancer", 
-                                      contributors = \'["bizzyvinci", "thetroyharris", "viniabussafi"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -15,6 +12,7 @@
     ref('balancer_base_trades'),
     ref('balancer_ethereum_trades'),
     ref('balancer_gnosis_trades'),
+    ref('balancer_monad_trades'),
     ref('balancer_optimism_trades'),
     ref('balancer_polygon_trades'),
     ref('balancer_zkevm_trades')

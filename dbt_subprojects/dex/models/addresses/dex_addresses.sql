@@ -2,11 +2,8 @@
         
         alias = 'addresses',
         schema = 'dex',
-        unique_key = ['blockchain', 'address', 'dex_name', 'distinct_name'],
-        post_hook='{{ expose_spells(\'["arbitrum", "base", "bnb", "ethereum", "optimism", "polygon"]\',
-                                "sector",
-                                "dex",
-                                \'["rantum"]\') }}'
+        unique_key = ['blockchain', 'address', 'dex_name', 'distinct_name']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
