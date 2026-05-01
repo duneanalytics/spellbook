@@ -2,7 +2,7 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_payment_channel_claims',
-    materialized = 'view',
+    materialized = 'view'
   )
 }}
 
