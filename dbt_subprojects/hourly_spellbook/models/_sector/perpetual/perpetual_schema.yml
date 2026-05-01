@@ -3,7 +3,7 @@ version: 2
 models:
   - name: perpetual_trades
     meta:
-      blockchain: optimism, avalanche_c, arbitrum, polygon, katana
+      blockchain: optimism, avalanche_c, arbitrum, polygon, katana, megaeth
       sector: perpetual
       contributors: msilb7, drethereum, rplust, Henrystats, cursor-agent
     config:
