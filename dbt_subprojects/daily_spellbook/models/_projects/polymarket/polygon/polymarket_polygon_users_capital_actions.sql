@@ -21,7 +21,7 @@
 with transfers as (
 	select
 		t.block_time
-		, date_trunc('month', t.block_time) as block_month
+		, t.block_month
 		, t.block_date
 		, t.block_number
 		, t."from" as from_address
