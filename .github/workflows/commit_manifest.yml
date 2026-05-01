@@ -49,8 +49,8 @@ jobs:
     - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
       run: "uv run bash ./scripts/ensure_cluster.sh"
 
-    - name: dbt compile to create prod manifest from main
-      run: "uv run dbt compile --target-path . $PROFILE --project-dir ${PROJECT_DIR}"
+    - name: dbt parse to create prod manifest from main
+      run: "uv run dbt parse --target-path . $PROFILE --project-dir ${PROJECT_DIR}"
 
     - name: copy old manifest locally
       run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/previous_manifest.json"
