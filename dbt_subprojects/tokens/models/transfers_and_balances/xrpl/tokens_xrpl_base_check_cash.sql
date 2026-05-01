@@ -36,6 +36,7 @@ with check_cash_transactions as (
 check_nodes as (
   select
     n.tx_hash,
+    n.block_date,
     json_extract_scalar(n.final_fields, '$.Account') as check_account,
     json_extract_scalar(n.final_fields, '$.Destination') as check_destination,
     coalesce(
@@ -77,6 +78,7 @@ prepared_transfers as (
   from check_cash_transactions t
   inner join check_nodes n
     on t.tx_hash = n.tx_hash
+    and t.block_date = n.block_date
 ),
 
 normalized_transfers as (
