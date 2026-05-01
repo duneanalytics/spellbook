@@ -46,9 +46,6 @@ jobs:
       working-directory: ${{env.PROJECT_DIR}}
       run: "uv run dbt deps"
 
-    - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
-      run: "uv run bash ./scripts/ensure_cluster.sh"
-
     - name: dbt parse to create prod manifest from main
       run: "uv run dbt parse --target-path . $PROFILE --project-dir ${PROJECT_DIR}"
 
