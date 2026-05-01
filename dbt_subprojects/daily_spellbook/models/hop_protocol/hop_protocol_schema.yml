@@ -11,12 +11,13 @@ models:
         Table aggregating bridge transfers through Hop Protocol.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - block_date
-              - blockchain
-              - tx_hash
-              - evt_index
-              - transfer_id
+          arguments:
+            combination_of_columns:
+                - block_date
+                - blockchain
+                - tx_hash
+                - evt_index
+                - transfer_id
     columns:
       - &blockchain
         name: blockchain
@@ -119,17 +120,18 @@ models:
         Table storing address mapping inoformation for Hop's bridge addresses and underlying tokens.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - blockchain
-              - l1CanonicalToken
-              - l1Bridge
-              - l1CanonicalBridge
-              - bridgeDeployedBlockNumber
-              - l2CanonicalToken
-              - l2Bridge
-              - l2HopBridgeToken
-              - l2SaddleSwap
-              - l2SaddleLpToken
+          arguments:
+            combination_of_columns:
+                - blockchain
+                - l1CanonicalToken
+                - l1Bridge
+                - l1CanonicalBridge
+                - bridgeDeployedBlockNumber
+                - l2CanonicalToken
+                - l2Bridge
+                - l2HopBridgeToken
+                - l2SaddleSwap
+                - l2SaddleLpToken
     columns:
       - name: blockchain
         description: "Blockchain of the bridge contract"

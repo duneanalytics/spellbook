@@ -4,10 +4,11 @@ models:
   - name: zora_ethereum_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:  # this is only the minimal subset of columns that have tests defined.
       - &project
         name: project
@@ -24,7 +25,8 @@ models:
         description: "project category (NFT/AMM/Staking/...)"
         data_tests:
           - accepted_values:
-                values: [ 'NFT', 'AMM', 'Quest', 'Staking' ]
+                arguments:
+                  values: [ 'NFT', 'AMM', 'Quest', 'Staking' ]
       - &referrer_address
         name:  referrer_address
         description: "address of the person making the referral"
@@ -62,10 +64,11 @@ models:
   - name: zora_base_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -82,10 +85,11 @@ models:
   - name: zora_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -101,10 +105,11 @@ models:
   - name: zora_zora_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -121,10 +126,11 @@ models:
   - name: rabbithole_arbitrum_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -141,10 +147,11 @@ models:
   - name: rabbithole_base_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -161,10 +168,11 @@ models:
   - name: rabbithole_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -181,10 +189,11 @@ models:
   - name: rabbithole_polygon_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -201,10 +210,11 @@ models:
   - name: soundxyz_v1_ethereum_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -221,10 +231,11 @@ models:
   - name: soundxyz_v1_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -240,18 +251,20 @@ models:
   - name: soundxyz_v2_ethereum_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('sound_xyz_v2_ethereum_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('sound_xyz_v2_ethereum_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -267,18 +280,20 @@ models:
   - name: soundxyz_v2_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('sound_xyz_v2_optimism_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('sound_xyz_v2_optimism_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -294,18 +309,20 @@ models:
   - name: soundxyz_v2_base_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('sound_xyz_v2_base_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('sound_xyz_v2_base_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -321,18 +338,20 @@ models:
   - name: slugs_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('slugs_optimism_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('slugs_optimism_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -348,10 +367,11 @@ models:
   - name: mintfun_ethereum_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -367,10 +387,11 @@ models:
   - name: mintfun_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -386,10 +407,11 @@ models:
   - name: mintfun_base_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -405,10 +427,11 @@ models:
   - name: mintfun_zora_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -424,18 +447,20 @@ models:
   - name: mirror_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('mirror_optimism_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('mirror_optimism_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -451,18 +476,20 @@ models:
   - name: mirror_base_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('mirror_base_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('mirror_base_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -478,18 +505,20 @@ models:
   - name: paragraph_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('paragraph_optimism_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('paragraph_optimism_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -505,18 +534,20 @@ models:
   - name: paragraph_base_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('paragraph_base_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('paragraph_base_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -532,18 +563,20 @@ models:
   - name: paragraph_zora_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('paragraph_zora_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('paragraph_zora_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -559,18 +592,20 @@ models:
   - name: paragraph_polygon_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('paragraph_polygon_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('paragraph_polygon_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -586,10 +621,11 @@ models:
   - name: fabric_base_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -605,10 +641,11 @@ models:
   - name: fabric_ethereum_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -624,10 +661,11 @@ models:
   - name: fabric_optimism_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -643,10 +681,11 @@ models:
   - name: fabric_zora_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
     columns:
       - *project
       - *tx_hash
@@ -662,18 +701,20 @@ models:
   - name: basepaint_base_rewards
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - tx_hash
-            - sub_tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - tx_hash
+              - sub_tx_id
       - check_seed:
-          seed_file: ref('basepaint_base_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
+          arguments:
+            seed_file: ref('basepaint_base_rewards_seed')
+            match_columns:
+              - tx_hash
+            check_columns:
+              - referrer_address
+              - referee_address
+              - reward_amount_raw
     columns:
       - *project
       - *tx_hash

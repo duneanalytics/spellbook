@@ -11,11 +11,12 @@ models:
     description: "All lending supply transactions on Tron"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -100,13 +101,15 @@ models:
     description: "JustLend supply transactions on Tron"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_supply_seed:
-          seed_file: ref('justlend_tron_base_supply_seed')
+          arguments:
+            seed_file: ref('justlend_tron_base_supply_seed')
     columns:
       - *blockchain
       - *project

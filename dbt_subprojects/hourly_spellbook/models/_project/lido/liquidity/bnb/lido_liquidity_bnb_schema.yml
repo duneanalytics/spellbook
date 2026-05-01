@@ -12,10 +12,11 @@ models:
         Lido wstETH liquidity pools on Pancake v3 BNB Chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
+          arguments:
+            combination_of_columns:
+              - pool
+              - blockchain
+              - time
     columns:
       - &pool_name
         name: pool_name

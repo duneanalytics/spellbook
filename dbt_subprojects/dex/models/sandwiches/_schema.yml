@@ -13,11 +13,12 @@ models:
       The dex.sandwiches table captures detailed data on the outer trades of sandwich attacks in decentralized exchanges (DEXs), recording front-running and back-running trades across various EVM networks.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - project_contract_address
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -104,10 +105,11 @@ models:
       The dex.sandwiched table captures detailed data on the victim trades of sandwich attacks in decentralized exchanges (DEXs), recording transactions that have been sandwiched across various EVM networks.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -145,10 +147,11 @@ models:
       DEX MEV Sandwich Trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -186,10 +189,11 @@ models:
       DEX MEV Sandwich Trades on Arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -227,10 +231,11 @@ models:
       DEX MEV Sandwich Trades on Avalanche
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -268,10 +273,11 @@ models:
       DEX MEV Sandwich Trades on BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -309,10 +315,11 @@ models:
       DEX MEV Sandwich Trades on Fantom
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -350,10 +357,11 @@ models:
       DEX MEV Sandwich Trades on Gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -391,10 +399,11 @@ models:
       DEX MEV Sandwich Trades on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -432,10 +441,11 @@ models:
       DEX MEV Sandwich Trades on Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -473,10 +483,11 @@ models:
       DEX MEV Sandwich Trades on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -514,10 +525,11 @@ models:
       DEX MEV Sandwich Trades on zkSync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -555,10 +567,11 @@ models:
       DEX MEV Sandwich Trades on Celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -596,10 +609,11 @@ models:
       DEX MEV Sandwich Trades on Scroll
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -637,10 +651,11 @@ models:
       DEX MEV Sandwich Trades on Zora Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -678,10 +693,11 @@ models:
       DEX MEV Sandwich Trades on SEI Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -719,10 +735,11 @@ models:
       DEX MEV Sandwiched Trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -760,10 +777,11 @@ models:
       DEX MEV Sandwiched Trades on Arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -801,10 +819,11 @@ models:
       DEX MEV Sandwiched Trades on Avalanche
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -842,10 +861,11 @@ models:
       DEX MEV Sandwiched Trades on BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -883,10 +903,11 @@ models:
       DEX MEV Sandwiched Trades on Fantom
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -924,10 +945,11 @@ models:
       DEX MEV Sandwiched Trades on Gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -965,10 +987,11 @@ models:
       DEX MEV Sandwiched Trades on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -1006,10 +1029,11 @@ models:
       DEX MEV Sandwiched Trades on Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -1047,10 +1071,11 @@ models:
       DEX MEV Sandwiched Trades on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -1088,10 +1113,11 @@ models:
       DEX MEV Sandwiched Trades on Celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -1129,10 +1155,11 @@ models:
       DEX MEV Sandwiched Trades on zkSync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -1170,10 +1197,11 @@ models:
       DEX MEV Sandwiched Trades on Scroll
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -1211,10 +1239,11 @@ models:
       DEX MEV Sandwiched Trades on Zora Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project
@@ -1252,10 +1281,11 @@ models:
       DEX MEV Sandwiched Trades on SEI Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

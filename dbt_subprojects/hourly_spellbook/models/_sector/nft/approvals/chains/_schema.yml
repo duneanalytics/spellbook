@@ -6,10 +6,11 @@ models:
   - name: nft_arbitrum_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -20,7 +21,8 @@ models:
         name: token_standard
         data_tests:
           - accepted_values:
-              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
+              arguments:
+                values: ['erc721', 'erc1155', 'bep721', 'bep1155']
       - &block_month
         name: block_month
         description: " block month date"
@@ -39,10 +41,11 @@ models:
   - name: nft_avalanche_c_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -53,10 +56,11 @@ models:
   - name: nft_base_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -67,10 +71,11 @@ models:
   - name: nft_bnb_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -81,10 +86,11 @@ models:
   - name: nft_celo_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -95,10 +101,11 @@ models:
   - name: nft_ethereum_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -109,10 +116,11 @@ models:
   - name: nft_fantom_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -123,10 +131,11 @@ models:
   - name: nft_gnosis_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -137,10 +146,11 @@ models:
   - name: nft_goerli_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -151,10 +161,11 @@ models:
   - name: nft_optimism_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -165,10 +176,11 @@ models:
   - name: nft_polygon_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard
@@ -179,10 +191,11 @@ models:
   - name: nft_scroll_approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *token_standard

@@ -4,10 +4,11 @@ models:
   - name: jupiter_solana_perp_events
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - position_change
-          - position_key
-          - tx_id
+        arguments:
+          combination_of_columns:
+            - position_change
+            - position_key
+            - tx_id
     meta:
       blockchain: solana
       contributors: [ilemi]
@@ -52,13 +53,14 @@ models:
   - name: jupiter_v4_solana_aggregator_swaps
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - block_month
-          - amm
-          - log_index
-          - tx_id
-          - output_mint
-          - input_mint
+        arguments:
+          combination_of_columns:
+            - block_month
+            - amm
+            - log_index
+            - tx_id
+            - output_mint
+            - input_mint
     meta:
       blockchain: solana
       contributors: [ilemi]
@@ -111,13 +113,14 @@ models:
   - name: jupiter_v5_solana_aggregator_swaps
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - block_month
-          - amm
-          - log_index
-          - tx_id
-          - output_mint
-          - input_mint
+        arguments:
+          combination_of_columns:
+            - block_month
+            - amm
+            - log_index
+            - tx_id
+            - output_mint
+            - input_mint
     meta:
       blockchain: solana
       contributors: [ilemi]
@@ -130,13 +133,14 @@ models:
   - name: jupiter_v6_solana_aggregator_swaps
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - block_month
-          - amm
-          - log_index
-          - tx_id
-          - output_mint
-          - input_mint
+        arguments:
+          combination_of_columns:
+            - block_month
+            - amm
+            - log_index
+            - tx_id
+            - output_mint
+            - input_mint
     meta:
       blockchain: solana
       contributors: [ilemi]
@@ -149,11 +153,12 @@ models:
   - name: jupiter_v6_solana_swapsevent_aggregator_swaps
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - block_month
-          - tx_id
-          - outer_instruction_index
-          - inner_instruction_index
+        arguments:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
     meta:
       blockchain: solana
       contributors: [Eekeyguy]
@@ -214,14 +219,15 @@ models:
   - name: jupiter_solana_aggregator_swaps
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - block_month
-          - amm
-          - log_index
-          - tx_id
-          - output_mint
-          - input_mint
-          - jup_version
+        arguments:
+          combination_of_columns:
+            - block_month
+            - amm
+            - log_index
+            - tx_id
+            - output_mint
+            - input_mint
+            - jup_version
     meta:
       blockchain: solana
       contributors: [ilemi]

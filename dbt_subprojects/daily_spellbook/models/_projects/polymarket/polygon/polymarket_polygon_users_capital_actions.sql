@@ -1,168 +1,217 @@
-{{
-  config(
-    schema = 'polymarket_polygon',
-    alias = 'users_capital_actions',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_time','evt_index','tx_hash'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , post_hook='{{ hide_spells() }}'
-  )
-}}
+{{ config(
+	schema='polymarket_polygon',
+	alias='users_capital_actions',
+	materialized='incremental',
+	file_format='delta',
+	incremental_strategy='microbatch',
+	event_time='block_date',
+	begin='2020-09-27',
+	batch_size=var('polymarket_polygon_capital_actions_batch_size', 'day'),
+	lookback=3,
+	partition_by=['block_month'],
+	unique_key=['block_month', 'block_time', 'evt_index', 'tx_hash'],
+	tags=['microbatch'],
+) }}
 
--- lots of edge cases here to ensure that we're just picking up on actual deposits and not internal transfers
--- this is a bit of a mess, but it works for now
+-- Polymarket user capital actions on Polygon: deposits, withdrawals, internal transfers,
+-- and USDC <-> USDC.e conversions through the canonical Uniswap pool (0xd36e...a418).
+-- Tokens: USDC.e and USDC drive deposit/withdrawal/transfer/convert; pUSD (V2 collateral,
+-- no USD price feed) is treated 1:1 with USDC for amount_usd.
 
--- we look for usdc.e and usdc transfers
--- usdc.e is the wrapped version of usdc on polygon polymarket runs on this
--- if you deposit using usdc, the UI will prompt you to wrap your USDC into USDC.e by signing a message
--- this will just use uniswap to swap your usdc for usdc.e, so we need to exclude 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 as this is the uniswap pool
--- by ignoring the uniswap pool, but looking for USDC transfers, we can get a better read on funding sources
-
-
-
-
--- get all known polymarket contract and filter them out as these are not users
-with polymarket_addresses as (
-  select * from (values 
-    (0x4D97DCd97eC945f40cF65F87097ACe5EA0476045), -- Conditional Tokens
-    (0x3A3BD7bb9528E159577F7C2e685CC81A765002E2), -- Wrapped Collateral
-    (0x4bFb41d5B3570DeFd03C39a9A4D8dE6Bd8B8982E), -- CTFExchange
-    (0xC5d563A36AE78145C45a50134d48A1215220f80a), -- NegRiskCTFExchange
-    (0xc288480574783BD7615170660d71753378159c47),  -- Polymarket Rewards
-    (0x94a3db2f861b01c027871b08399e1ccecfc847f6),  -- liq mining merkle distributor
-    (0xD36ec33c8bed5a9F7B6630855f1533455b98a418)   -- USDC.e - USDC uniswap pool
-  ) as t(address)
-  UNION ALL 
-  select 
-    address
-  from {{ source('polygon', 'creation_traces') }}
-  where "from" = 0x8b9805a2f595b6705e74f7310829f2d299d21522 -- fpmm factory
-  -- get all safe and magic wallet proxies to filter for polymarket user addresses
--- there are some rare EOA addresses that trade directly on polymarket, but they are few and far between
+with transfers as (
+	select
+		t.block_time
+		, t.block_month
+		, t.block_date
+		, t.block_number
+		, t."from" as from_address
+		, t."to" as to_address
+		, t.contract_address
+		, case
+			when t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 then 'USDC.e'
+			when t.contract_address = 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 then 'USDC'
+			when t.contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then 'pUSD'
+		end as symbol
+		, t.amount_raw
+		, t.amount
+		, case
+			when t.contract_address = 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb then t.amount
+			else t.amount_usd
+		end as amount_usd
+		, t.evt_index
+		, t.tx_hash
+	from
+		{{ source('tokens_polygon', 'transfers') }} as t
+	where
+		t.contract_address in (
+			0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- usdc.e
+			, 0x3c499c542cef5e3811e1192ce70d8cc03d5c3359 -- usdc
+			, 0xc011a7e12a19f7b1f670d46f03b03f3342e82dfb -- pusd (v2 collateral; 1:1 usdc-backed)
+		)
 )
-,polymarket_wallets as ( 
-  Select proxy from {{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
-  UNION ALL
-  Select proxy from {{ ref('polymarket_polygon_users_safe_proxies') }}
-  -- these are fpmm contracts
+, transfer_candidates as (
+	select
+		t.block_time
+		, t.block_month
+		, t.block_date
+		, t.block_number
+		, t.from_address
+		, t.to_address
+		, t.symbol
+		, t.amount_raw
+		, t.amount
+		, t.amount_usd
+		, t.evt_index
+		, t.tx_hash
+		, exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_users_proxies') }} as to_wallet
+			where
+				t.to_address = to_wallet.proxy
+		) as to_wallet
+		, exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_users_proxies') }} as from_wallet
+			where
+				t.from_address = from_wallet.proxy
+		) as from_wallet
+		, exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_market_addresses') }} as to_polymarket_address
+			where
+				t.to_address = to_polymarket_address.address
+		) as to_polymarket_address
+		, exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_market_addresses') }} as from_polymarket_address
+			where
+				t.from_address = from_polymarket_address.address
+		) as from_polymarket_address
+	from
+		transfers as t
+	where
+		exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_users_proxies') }} as w
+			where
+				t.to_address = w.proxy
+		)
+		or exists (
+			select
+				1
+			from
+				{{ ref('polymarket_polygon_users_proxies') }} as w
+			where
+				t.from_address = w.proxy
+		)
+)
+, classified as (
+	select
+		t.block_time
+		, t.block_month
+		, t.block_date
+		, t.block_number
+		, case
+			when t.to_address = 0xd36ec33c8bed5a9f7b6630855f1533455b98a418
+				and t.from_wallet
+				and t.symbol in ('USDC.e', 'USDC')
+				then 'convert'
+			when t.from_address = 0xd36ec33c8bed5a9f7b6630855f1533455b98a418
+				and t.to_wallet
+				and t.symbol in ('USDC.e', 'USDC')
+				then 'convert'
+			when t.to_wallet
+				and not t.from_wallet
+				and not t.to_polymarket_address
+				and not t.from_polymarket_address
+				then 'deposit'
+			when t.from_wallet
+				and not t.to_wallet
+				and not t.to_polymarket_address
+				and not t.from_polymarket_address
+				then 'withdrawal'
+			when t.from_wallet
+				and t.to_wallet
+				and not t.to_polymarket_address
+				and not t.from_polymarket_address
+				then 'transfer'
+		end as action
+		, t.from_address
+		, t.to_address
+		, t.symbol
+		, t.amount_raw
+		, t.amount
+		, t.amount_usd
+		, t.evt_index
+		, t.tx_hash
+	from
+		transfer_candidates as t
+)
+, deduped as (
+	select
+		c.block_time
+		, c.block_month
+		, c.block_date
+		, c.block_number
+		, c.action
+		, c.from_address
+		, c.to_address
+		, c.symbol
+		, c.amount_raw
+		, c.amount
+		, c.amount_usd
+		, c.evt_index
+		, c.tx_hash
+		, row_number() over (
+			partition by
+				c.block_time
+				, c.block_month
+				, c.block_date
+				, c.block_number
+				, c.action
+				, c.from_address
+				, c.to_address
+				, c.symbol
+				, c.amount_raw
+				, c.amount
+				, c.amount_usd
+				, c.evt_index
+				, c.tx_hash
+			order by
+				c.tx_hash
+		) as duplicate_rank
+	from
+		classified as c
+	where
+		c.action is not null
 )
 
--- get all deposits
-
 select
-  block_time,
-  block_date,
-  block_number,
-  'deposit' as action,
-  "from" as from_address,
-  "to" as to_address,
-  case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
-    when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
-  end as symbol,
-  amount_raw,
-  amount,
-  amount_usd,
-  evt_index,
-  tx_hash
-from {{ source('tokens_polygon', 'transfers')}}
-where (
-    contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
-    or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
-  )
-  and "to" in (select proxy from polymarket_wallets) --deposits are to the wallet
-  and "from" not in (select proxy from polymarket_wallets) --not looking for transfers
-  and "to" not in (select address from polymarket_addresses)
-  and "from" not in (select address from polymarket_addresses) 
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
-
-union all
-
--- get all withdrawals
-
-select
-  block_time,
-  block_date,
-  block_number,
-  'withdrawal' as action,
-  "from" as from_address,
-  "to" as to_address,
-  case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
-    when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
-  end as symbol,
-  amount_raw,
-  amount,
-  amount_usd,
-  evt_index,
-  tx_hash
-from {{ source('tokens_polygon', 'transfers')}}
-where (
-    contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
-    or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
-  )
-  and "from" in (select proxy from polymarket_wallets) --withdrawals are from the wallet
-  and "to" not in (select proxy from polymarket_wallets)  --not looking for transfers
-  and "to" not in (select address from polymarket_addresses)
-  and "from" not in (select address from polymarket_addresses)
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
-
-union all
-
--- get all transfers between safes, this is very rare but a possible edge case
-
-select distinct 
-  block_time,
-  block_date,
-  block_number,
-  'transfer' as action, -- transfer between safes
-  "from" as from_address,
-  "to" as to_address,
-  case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
-    when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
-  end as symbol,
-  amount_raw,
-  amount,
-  amount_usd,
-  evt_index,
-  tx_hash
-from {{ source('tokens_polygon', 'transfers')}}
-where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
-  or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
-  and "to" not in (select address from polymarket_addresses)
-  and "from" not in (select address from polymarket_addresses)
-  and "from" in (select proxy from polymarket_wallets)
-  and "to" in (select proxy from polymarket_wallets)
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
-
-union all
-
-select
-  block_time,
-  block_date,
-  block_number,
-  'convert' as action, -- convert between USDC and USDC.e via uniswap pool
-  "from" as from_address,
-  "to" as to_address,
-  case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
-    when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
-  end as symbol,
-  amount_raw,
-  amount,
-  amount_usd,
-  evt_index,
-  tx_hash
-from {{ source('tokens_polygon', 'transfers')}}
-where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
-  or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
-  and (("to" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "from" in (select proxy from polymarket_wallets))
-  or ("from" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "to" in (select proxy from polymarket_wallets)))
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+	d.block_time
+	, d.block_month
+	, d.block_date
+	, d.block_number
+	, d.action
+	, d.from_address
+	, d.to_address
+	, d.symbol
+	, d.amount_raw
+	, d.amount
+	, d.amount_usd
+	, d.evt_index
+	, d.tx_hash
+from
+	deduped as d
+where
+	d.action != 'transfer'
+	or d.duplicate_rank = 1

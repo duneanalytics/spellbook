@@ -12,8 +12,9 @@ models:
         All Gitcoin grant round dates on Ethereum & Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - round_name
+          arguments:
+            combination_of_columns:
+              - round_name
     columns:
       - name: round_name
       - name: start_date
@@ -30,10 +31,11 @@ models:
         All Gitcoin donations on Ethereum & Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - name: blockchain
       - name: project

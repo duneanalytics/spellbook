@@ -13,18 +13,20 @@ models:
         A table containing all trades of odos v1 on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index 
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index 
+              - trace_address
       - check_dex_aggregator_seed:
-          blockchain: arbitrum
-          project: odos
-          version: 1
+          arguments:
+            blockchain: arbitrum
+            project: odos
+            version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -111,18 +113,20 @@ models:
         A table containing all trades of odos v2 on arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index 
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index 
+              - trace_address
       - check_dex_aggregator_seed:
-          blockchain: arbitrum
-          project: odos
-          version: 2
+          arguments:
+            blockchain: arbitrum
+            project: odos
+            version: 2
     columns:
       - *blockchain
       - *project 

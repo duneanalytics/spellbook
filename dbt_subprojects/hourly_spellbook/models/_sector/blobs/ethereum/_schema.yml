@@ -12,9 +12,10 @@ models:
     description: Blob table but enriched with size, blob version hash, blob submitter, base fee, ..
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - beacon_slot_number
-            - blob_index
+          arguments:
+            combination_of_columns:
+              - beacon_slot_number
+              - blob_index
     columns:
       - name: beacon_slot_time
         description: "UTC slot time of the beacon slot"
@@ -74,13 +75,15 @@ models:
     description: Blob submission transactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_index
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - beacon_slot_number
-            - blob_indexes
+          arguments:
+            combination_of_columns:
+              - beacon_slot_number
+              - blob_indexes
     columns:
       - name: block_number
         description: "Block number of the transaction"
@@ -115,8 +118,9 @@ models:
     description: Blob submitting address tags
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - name: address
         description: "Blob submitting address"
@@ -138,8 +142,9 @@ models:
     description: Blob submitting address tags
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - tx_hash
     columns:
       - name: tx_hash
         description: "Blob submitting address"

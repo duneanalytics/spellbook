@@ -12,11 +12,12 @@ models:
         yield yak deposits
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -60,11 +61,12 @@ models:
         yield yak withdraws
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -90,11 +92,12 @@ models:
         yield yak reinvests
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -134,10 +137,11 @@ models:
         yield yak vault/farm/pool balances as a temporal table
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - from_time
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - from_time
     columns:
       - *blockchain
       - *contract_address
@@ -162,11 +166,12 @@ models:
         yield yak user-level YRT balances as a temporal table
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - user_address
-            - contract_address
-            - from_time
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - user_address
+              - contract_address
+              - from_time
     columns:
       - *blockchain
       - name: user_address
@@ -191,11 +196,12 @@ models:
         yield yak aggregator yak swaps
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_index
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_index
+              - evt_index
     columns:
       - *blockchain
       - &yak_router_address
@@ -252,11 +258,12 @@ models:
         yield yak aggregator yak adapter swaps
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_index
-            - adapter_evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_index
+              - adapter_evt_index
     columns:
       - *blockchain
       - *yak_router_address
@@ -307,9 +314,10 @@ models:
         yield yak strategies on all chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
     columns:
       - *blockchain
       - *contract_address

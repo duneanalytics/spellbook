@@ -15,10 +15,11 @@ models:
       the Orderly Vault contract events by toroperp's broker hash.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_time
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain

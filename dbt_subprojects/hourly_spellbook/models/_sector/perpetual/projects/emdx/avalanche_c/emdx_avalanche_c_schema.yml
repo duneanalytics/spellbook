@@ -13,13 +13,14 @@ models:
       Emdx perpetuals trades/swaps on avalanche_c
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
 #      - check_perpetuals_seed:
 #          blockchain: avalanche_c
 #          project: emdx

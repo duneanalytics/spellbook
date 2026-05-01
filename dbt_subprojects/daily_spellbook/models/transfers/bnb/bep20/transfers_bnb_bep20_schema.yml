@@ -12,11 +12,12 @@ models:
     description: "bep20 Token Transfers on bnb. This table is updated every 30 minutes."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transfer_type
-            - wallet_address
-            - evt_tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transfer_type
+              - wallet_address
+              - evt_tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -56,10 +57,11 @@ models:
       tags: ['transfers', 'bnb', 'bep20', 'agg_hour', 'hosuke']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - hour
-            - wallet_address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - hour
+              - wallet_address
+              - token_address
     columns:
       - *blockchain
       - &hour
@@ -86,10 +88,11 @@ models:
       tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - wallet_address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - wallet_address
+              - token_address
     columns:
       - *blockchain
       - &day

@@ -15,9 +15,10 @@ models:
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
 
     columns:
       - &blockchain  
@@ -96,7 +97,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation','StopIncrease']
+              arguments:
+                values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation','StopIncrease']
       - name: decrease_position_swap_type
         description: |
           The type of swap for decreasing position, with possible values:
@@ -845,9 +847,10 @@ models:
       account addresses, event keys, and strings representing the reason for the order being frozen.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - key
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - key
 
     columns:
       - *blockchain

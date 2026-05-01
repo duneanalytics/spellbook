@@ -13,14 +13,15 @@ models:
       Tokenlon AMM v1 trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -83,14 +84,15 @@ models:
       Tokenlon AMM v2 trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -151,14 +153,15 @@ models:
       Tokenlon PMM v5 trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -219,14 +222,15 @@ models:
       Tokenlon RFQ v1 trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -287,14 +291,15 @@ models:
       Tokenlon RFQ v2 trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'
@@ -355,18 +360,20 @@ models:
       Tokenlon v5 all trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: tokenlon
-          version: 5
+          arguments:
+            blockchain: ethereum
+            project: tokenlon
+            version: 5
     columns:
       - name: blockchain
         description: 'Blockchain which the DEX is deployed'

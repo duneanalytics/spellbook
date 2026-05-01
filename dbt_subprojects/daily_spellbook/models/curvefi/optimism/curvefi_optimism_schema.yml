@@ -12,9 +12,10 @@ models:
       Gauge to Pool mappings for curve on optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - pool_contract
-              - incentives_contract
+          arguments:
+            combination_of_columns:
+                - pool_contract
+                - incentives_contract
     columns:
       - &blockchain
         name: blockchain

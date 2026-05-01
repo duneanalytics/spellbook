@@ -1,0 +1,48 @@
+version: 2
+
+seeds:
+  - name: tokens_xrpl_transaction_metadata_seed
+    config:
+      column_types:
+        block_date: date
+        tx_hash: varchar
+        tx_from: varchar
+        tx_to: varchar
+        tx_index: bigint
+        transaction_type: varchar
+        transaction_result: varchar
+        delivered_currency: varchar
+        delivered_issuer: varchar
+        delivered_value: varchar
+
+  - name: tokens_xrpl_affected_nodes_seed
+    config:
+      column_types:
+        block_date: date
+        tx_hash: varchar
+        node_index: integer
+        transaction_type: varchar
+        transaction_result: varchar
+        node_action: varchar
+        ledger_entry_type: varchar
+        ledger_entry_id: varchar
+
+  - name: tokens_xrpl_base_transfers_seed
+    config:
+      column_types:
+        block_date: date
+        tx_hash: varchar
+        transfer_type: varchar
+        token_standard: varchar
+        tx_from: varchar
+        tx_to: varchar
+        tx_index: bigint
+        xrpl_asset_id: varchar
+        issuer: varchar
+        currency: varchar
+        currency_hex: varchar
+        amount_raw: double
+        amount: double
+        transaction_type: varchar
+        transaction_result: varchar
+        partial_payment_flag: boolean

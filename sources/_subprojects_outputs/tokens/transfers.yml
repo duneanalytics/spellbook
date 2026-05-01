@@ -261,6 +261,8 @@ sources:
   - name: tokens_polygon
     tables:
       - name: transfers
+        config:
+          event_time: block_date
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
       
@@ -356,6 +358,12 @@ sources:
       - name: trc20_stablecoins
       - name: trc20_stablecoins_core
       - name: trc20_stablecoins_extended
+
+  - name: tokens_xrpl
+    tables:
+      - name: transaction_metadata
+      - name: transfers
+      - name: net_transfers_daily
 
   - name: tokens_unichain
     tables:

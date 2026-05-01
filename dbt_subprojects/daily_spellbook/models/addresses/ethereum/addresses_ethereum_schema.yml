@@ -92,9 +92,10 @@ models:
     description: "Unique combinations of Optimism batch inbox addresses across versions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - l1_batch_inbox_from_address
-              - l1_batch_inbox_to_address
+          arguments:
+            combination_of_columns:
+                - l1_batch_inbox_from_address
+                - l1_batch_inbox_to_address
     columns:
       - name: protocol_name
         description: "Protocol Name"
@@ -114,9 +115,10 @@ models:
     description: "Unique combinations of Optimism output oracle addresses across versions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - l2_output_oracle_from_address
-              - l2_output_oracle_to_address
+          arguments:
+            combination_of_columns:
+                - l2_output_oracle_from_address
+                - l2_output_oracle_to_address
     columns:
       - name: protocol_name
         description: "Protocol Name"

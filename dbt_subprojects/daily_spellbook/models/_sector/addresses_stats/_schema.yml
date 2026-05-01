@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: addresses_stats
+    meta:
+      sector: addresses
+      project: addresses
+      short_description: "Cross-chain per-address stats (first funded, contract flag) unioning all supported chains."
+      contributors: kryptaki
+    description: "Cross-chain view of per-address stats. Unions chain-level `addresses_<chain>.stats` tables. Use `_updated_at` for incremental reads."
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Address"
+      - name: first_funded_by
+        description: "Address that first funded this address with this chain's native token"
+      - name: first_funded_at
+        description: "Block time at which the address was first funded with this chain's native token"
+      - name: is_smart_contract
+        description: "True if the address is a smart contract"
+      - name: is_eoa
+        description: "True if the address is an externally owned account (EOA)"
+      - name: first_deployment_date
+        description: "Block time when the smart contract was first deployed (NULL for EOAs)"
+      - name: _updated_at
+        description: "When this row was last written; use for incremental sync (e.g. WHERE _updated_at > :last_sync)"

@@ -14,8 +14,9 @@ models:
       Uniswap V4 worldchain DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - &blockchain
         name: blockchain
@@ -59,8 +60,9 @@ models:
       Uniswap V3 worldchain DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -86,9 +88,10 @@ models:
       Uniswap worldchain DEX pools across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
-            - version
+          arguments:
+            combination_of_columns:
+              - id
+              - version
     columns:
       - *blockchain
       - *project
@@ -114,10 +117,11 @@ models:
       Retrieves the most recent price (sqrtPriceX96) for each pool ID, reflecting the current price after the latest swap or liquidity modification.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - id
-            - block_index_sum
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - id
+              - block_index_sum
     columns:
       - *blockchain
       - *project
@@ -151,14 +155,16 @@ models:
       "uniswap worldchain v4 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
       - check_dex_base_liquidity_seed:
-          seed_file: ref('uniswap_worldchain_base_liquidity_seed')
-          filter:
-            event_type: modify_liquidity
+          arguments:
+            seed_file: ref('uniswap_worldchain_base_liquidity_seed')
+            filter:
+              event_type: modify_liquidity
     columns:
       - *blockchain
       - *project
@@ -209,10 +215,11 @@ models:
       "uniswap worldchain V3 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -243,10 +250,11 @@ models:
       "uniswap worldchain base liquidity events across all versions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -274,7 +282,8 @@ models:
       tags: [ 'dex' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index
