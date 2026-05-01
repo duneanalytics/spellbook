@@ -15,10 +15,10 @@ models:
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - tx_hash
-              - index
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
 
     columns:
       - &blockchain  
@@ -847,10 +847,10 @@ models:
       account addresses, event keys, and strings representing the reason for the order being frozen.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - tx_hash
-              - key
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - key
 
     columns:
       - *blockchain
