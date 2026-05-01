@@ -1,6 +1,7 @@
 {{ config(
         schema = 'uniswap_v2_forks',
         alias = 'automated_base_trades',
+        tags = ['prod_exclude'],
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

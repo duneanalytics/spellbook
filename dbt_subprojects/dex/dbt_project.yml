@@ -70,5 +70,3 @@ models:
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
     +view_security: invoker
-    automated_trades:
-      +tags: ['prod_exclude']
