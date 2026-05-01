@@ -801,6 +801,7 @@ FROM
         ('met-meteora','solana','MET','METvsvVRapdj9cFLzq4Tr43xK4tAjQfwX76z3n6mWQL',6),
         ('xaut0-tether-gold-tokens','solana','XAUt0','AymATz4TCL9sWNEEV9Kvyz45CHVhDZ6kUgjTJPzLpU9P',6),
         ('chsb-swissborg', 'solana', 'BORG', '3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z', 9),
+        ('prl-perle', 'solana', 'PRL', 'PERLEQKUNUp1dgFZ8EvyXHdN9d6ZQqfGxALDvfs6pDs', 8),
         --Tokenized Equities Xstocks
         ('tslax-tesla-tokenized-stock-xstock','solana','TSLAx','XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB',8),
         ('nvdax-nvidia-tokenized-stock-xstock','solana','NVDAx','Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh',8),
