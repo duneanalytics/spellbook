@@ -1,6 +1,6 @@
 {{ config(
         schema='gmx_v2',
-        alias = 'open_interest_in_tokens_updated'
+        alias = 'funding'
         , post_hook='{{ hide_spells() }}'
         )
 }}
@@ -20,19 +20,16 @@ SELECT
     tx_hash,
     index,
     contract_address,
-    tx_index,
     tx_from,
     tx_to,
     event_name,
     msg_sender,
     market,
-    collateral_token,
-    is_long,
-    next_value,
-    delta
-FROM {{ ref('gmx_v2_' ~ chain ~ '_open_interest_in_tokens_updated') }}
+    market_name,
+    funding_factor_per_second_raw,
+    funding_factor_per_second
+FROM {{ ref('gmx_v2_' ~ chain ~ '_funding') }}
 {% if not loop.last %}
 UNION ALL
 {% endif %}
 {%- endfor -%}
-

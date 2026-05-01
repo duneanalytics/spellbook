@@ -3458,3 +3458,39 @@ models:
         description: The identifier for the distribution whose terms were set.
       - name: terms_hash
         description: The hash of the terms for the distribution.
+
+  - name: gmx_v2_funding
+    meta:
+      blockchain: arbitrum, avalanche_c, megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'funding']
+    description: |
+      Extracts and decodes the Funding event log data from the Arbitrum, Avalanche, and MegaETH blockchains.
+      This model processes log entries related to funding events, extracting key variables such as
+      the market and the funding factor per second.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'Funding' for this model
+        data_tests:
+          - not_null
+      - *msg_sender
+      - name: market
+        description: The address of the market where the funding occurred
+      - name: market_name
+        description: The human-readable name of the market
+      - name: funding_factor_per_second_raw
+        description: The raw, unscaled funding factor value applied per second
+      - name: funding_factor_per_second
+        description: The adjusted funding factor per second, scaled appropriately
