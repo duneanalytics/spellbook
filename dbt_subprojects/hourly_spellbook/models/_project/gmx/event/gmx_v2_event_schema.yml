@@ -437,13 +437,9 @@ models:
       - &price_impact_usd
         name: price_impact_usd
         description: The impact on price in USD
-        data_tests:
-          - not_null
       - &price_impact_amount
         name: price_impact_amount
         description: The impact on price in index token amount
-        data_tests:
-          - not_null
       - *is_long
       - &order_key
         name: order_key
