@@ -252,14 +252,14 @@ models:
 
   - name: gmx_v2_market_created
     meta:
-      blockchain: arbitrum, avalanche_c
+      blockchain: arbitrum, avalanche_c, megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c',  'gmx', 'event', 'market_created']
+      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'market_created']
     description: |
-      This model extracts and parses `MarketCreated` events from the Arbitrum, Avalanche blockchains.
+      This model extracts and parses `MarketCreated` events from the Arbitrum, Avalanche and MegaETH blockchains.
       It includes transaction details, addresses, and other relevant metrics related to 
       the creation of markets within the GMX protocol.
 
@@ -1413,14 +1413,14 @@ models:
 
   - name: gmx_v2_glv_created
     meta:
-      blockchain: arbitrum, avalanche_c
+      blockchain: arbitrum, avalanche_c, megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c',  'gmx', 'event', 'glv_created']
+      tags: ['arbitrum', 'avalanche_c', 'megaeth', 'gmx', 'event', 'glv_created']
     description: |
-      Processes decoded event data for `GLVCreated` events on the GMX platform in the Arbitrum, Avalanche blockchains.
+      Processes decoded event data for `GLVCreated` events on the GMX platform in the Arbitrum, Avalanche and MegaETH blockchains.
       This model extracts key details such as the GLV token, associated tokens, and transaction specifics, enabling
       analysis of GLV creation events on the platform.
 

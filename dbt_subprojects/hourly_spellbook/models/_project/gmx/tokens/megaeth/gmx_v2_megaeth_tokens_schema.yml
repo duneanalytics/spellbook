@@ -1,25 +1,20 @@
 version: 2
 
 models:
-  - name: gmx_v2_collateral_tokens_data
+  - name: gmx_v2_megaeth_collateral_tokens_data
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth',  'gmx', 'event', 'collateral_tokens']
+      tags: ['megaeth', 'gmx', 'event', 'collateral_tokens']
     description: |
-      Extracts token information related to collateral from the public GMX API for Arbitrum, Avalanche and MegaETH blockchains.
+      Extracts token information related to collateral from the megaeth API.
       This model retrieves details such as contract addresses and decimals of tokens used as collateral 
-      in the GMX perpetual trading DEX on the Arbitrum, Avalanche and MegaETH blockchains.
+      in the GMX perpetual trading DEX on the megaeth blockchain.
 
     columns:
-      - &blockchain
-        name: blockchain
-        description: The blockchain network where the token information was retrieved
-        data_tests:
-          - not_null    
       - name: collateral_token
         description: The contract address of the token used as collateral.
         data_tests:
@@ -29,21 +24,25 @@ models:
         data_tests:
           - not_null
 
-  - name: gmx_v2_erc20
+  - name: gmx_v2_megaeth_erc20
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth',  'gmx', 'tokens', 'erc20']
+      tags: ['megaeth', 'gmx', 'tokens', 'erc20']
     description: |
       This model extracts and parses ERC20 token information from the public GMX API.
       It includes token symbols, contract addresses, decimals, and whether the token is synthetic.
       The data reflects all available tokens on the decentralized exchange.
       
     columns:
-      - *blockchain
+      - &blockchain
+        name: blockchain
+        description: The blockchain network where the token information was retrieved (megaeth)
+        data_tests:
+          - not_null
       - &project
         name: project
         description: The project related to the tokens (GMX v2)
@@ -77,22 +76,23 @@ models:
           - not_null
 
 
-  - name: gmx_v2_markets_data
+  - name: gmx_v2_megaeth_markets_data
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth',  'gmx', 'event', 'markets']
+      tags: ['megaeth', 'gmx', 'event', 'markets']
     description: |
-      This model retrieves market data for GMX on the Arbitrum, Avalanche and MegaETH blockchains, including information
+      This model retrieves market data for GMX on the megaeth blockchain, including information
       about the index token, long token, and short token. The data is extracted from various tables
       containing market creation events and ERC-20 token details, providing insights into the 
-      market tokens used within the GMX perpetual trading DEX.
+      market tokens used within the GMX perpetual trading DEX. The `market_name` column is 
+      constructed using the format `index_token/USD [long_token-short_token]`, which represents 
+      the market pair.    
 
     columns:
-      - *blockchain
       - name: market
         description: The contract address of the market token.
         data_tests:
@@ -135,24 +135,23 @@ models:
       - name: short_token_decimals
         description: The number of decimal places for the short token used in the market.
         data_tests:
-          - not_null         
+          - not_null  
 
 
-  - name: gmx_v2_glvs_data
+  - name: gmx_v2_megaeth_glvs_data
     meta:
-      blockchain: arbitrum, avalanche_c, megaeth
+      blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'megaeth',  'gmx', 'pools', 'glvs_data']
+      tags: ['megaeth', 'gmx', 'pools', 'glvs_data']
     description: |
-      Processes decoded data for GLV pools on the GMX platform in the Arbitrum, Avalanche and MegaETH blockchains.
+      Processes decoded data for GLV pools on the GMX platform in the megaeth blockchain.
       This model extracts key details such as pool names, token symbols, and decimals, enabling
       comprehensive analysis of GLV pools.
 
     columns:
-      - *blockchain
       - name: glv
         description: The identifier of the GLV pool.
       - name: glv_name
