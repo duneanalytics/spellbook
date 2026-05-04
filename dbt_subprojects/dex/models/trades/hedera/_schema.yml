@@ -24,7 +24,7 @@ models:
       blockchain: hedera
       sector: dex
       project: saucerswap
-      contributors: alicecha
+      contributors: kryptaki
     config:
       tags: ["hedera", "dex", "trades", "saucerswap", "v1"]
     description: "saucerswap hedera v1 swap events decoded from hedera.logs"
@@ -41,7 +41,7 @@ models:
       blockchain: hedera
       sector: dex
       project: saucerswap
-      contributors: alicecha
+      contributors: kryptaki
     config:
       tags: ["hedera", "dex", "trades", "saucerswap", "v1"]
     description: "saucerswap hedera v1 base trades (UniswapV2 fork)"
@@ -62,7 +62,7 @@ models:
       blockchain: hedera
       sector: dex
       project: saucerswap
-      contributors: alicecha
+      contributors: kryptaki
     config:
       tags: ["hedera", "dex", "trades", "saucerswap", "v2"]
     description: "saucerswap hedera v2 swap events decoded from hedera.logs"
@@ -79,7 +79,7 @@ models:
       blockchain: hedera
       sector: dex
       project: saucerswap
-      contributors: alicecha
+      contributors: kryptaki
     config:
       tags: ["hedera", "dex", "trades", "saucerswap", "v2"]
     description: "saucerswap hedera v2 base trades (UniswapV3 fork)"
