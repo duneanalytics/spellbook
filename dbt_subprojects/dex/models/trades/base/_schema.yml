@@ -1373,6 +1373,27 @@ models:
           arguments:
             seed_file: ref('carbon_defi_base_base_trades_seed')
 
+  - name: tessera_v_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: tessera_v
+      contributors: karimhass
+    config:
+      tags: ["base", "dex", "trades", "tessera_v"]
+    description: "tessera_v base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('tessera_v_base_base_trades_seed')
+            filter:
+              version: 1
+
   - name: dex_base_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
