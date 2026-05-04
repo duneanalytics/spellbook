@@ -27,6 +27,7 @@ with amm_transactions as (
 parsed_nodes as (
   select
     n.tx_hash,
+    n.block_date,
     n.node_index,
     n.ledger_entry_type,
     json_extract_scalar(n.final_fields, '$.Account') as final_account,
@@ -55,6 +56,7 @@ parsed_nodes as (
 amm_nodes as (
   select
     n.tx_hash,
+    n.block_date,
     n.final_account as pool_account,
     n.lp_token_currency
   from parsed_nodes n
@@ -64,6 +66,7 @@ amm_nodes as (
 pool_xrp_deltas as (
   select
     n.tx_hash,
+    n.block_date,
     n.node_index,
     a.pool_account,
     a.lp_token_currency,
@@ -73,6 +76,7 @@ pool_xrp_deltas as (
   from parsed_nodes n
   inner join amm_nodes a
     on n.tx_hash = a.tx_hash
+    and n.block_date = a.block_date
   where n.ledger_entry_type = 'AccountRoot'
     and n.final_account = a.pool_account
     and n.previous_balance_value is not null
@@ -81,6 +85,7 @@ pool_xrp_deltas as (
 pool_trustline_deltas as (
   select
     n.tx_hash,
+    n.block_date,
     n.node_index,
     a.pool_account,
     a.lp_token_currency,
@@ -99,6 +104,7 @@ pool_trustline_deltas as (
   from parsed_nodes n
   inner join amm_nodes a
     on n.tx_hash = a.tx_hash
+    and n.block_date = a.block_date
   where n.ledger_entry_type = 'RippleState'
     and (
       n.low_limit_issuer = a.pool_account
@@ -109,6 +115,7 @@ pool_trustline_deltas as (
 all_pool_deltas as (
   select
     tx_hash,
+    block_date,
     node_index,
     pool_account,
     lp_token_currency,
@@ -121,6 +128,7 @@ all_pool_deltas as (
 
   select
     tx_hash,
+    block_date,
     node_index,
     pool_account,
     lp_token_currency,
@@ -133,6 +141,7 @@ all_pool_deltas as (
 classified_pool_deltas as (
   select
     tx_hash,
+    block_date,
     node_index,
     pool_account,
     lp_token_currency,
@@ -202,6 +211,7 @@ normalized_deltas as (
   from classified_pool_deltas d
   inner join amm_transactions t
     on d.tx_hash = t.tx_hash
+    and d.block_date = t.block_date
   where d.pool_balance_delta is not null
     and d.pool_balance_delta != 0
 )

@@ -1,6 +1,7 @@
 {{ config(
         schema = 'dex',
         alias = 'mapping',
+        tags = ['prod_exclude'],
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['blockchain', 'factory']
