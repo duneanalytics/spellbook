@@ -65,6 +65,7 @@
     ,ref('prices_tac_tokens')
     ,ref('prices_taiko_tokens')
     ,ref('prices_tempo_tokens')
+    ,ref('prices_tezos_evm_tokens')
     ,ref('prices_thorchain_tokens')
     ,ref('prices_tron_tokens')
     ,ref('prices_unichain_tokens')

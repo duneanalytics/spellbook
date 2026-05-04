@@ -77,6 +77,7 @@ with prices_native_tokens as (
         , ('story', 'ip-story')
         , ('superseed', 'eth-ethereum')
         , ('taiko', 'eth-ethereum')
+        , ('tezos_evm', 'xtz-tezos')
         , ('ton', 'ton-toncoin')
         , ('tron', 'trx-tron')
         , ('unichain', 'eth-ethereum')
