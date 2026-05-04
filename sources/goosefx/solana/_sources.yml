@@ -6,4 +6,6 @@ sources:
     tables:
       - name: gfx_ssl_v2_call_createPair
       - name: gfx_ssl_v2_call_swap
+        config:
+          event_time: call_block_date
         

@@ -10,9 +10,15 @@ jobs:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
   
     steps:
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: true
       - name: Checkout main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 0
@@ -20,22 +26,20 @@ jobs:
       - name: Setup variables
         run: |
             echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
-      
+
+      - name: Sync Python dependencies
+        run: uv sync --locked
+
       - name: dbt dependencies
-        run: "dbt deps"
+        run: "uv run dbt deps"
 
       - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
-        run: "./scripts/ensure_cluster.sh"
-      
-      - name: Install Python dependencies
-        run: |
-          pip install requests
-          pip install pyyaml
-      
+        run: "uv run bash ./scripts/ensure_cluster.sh"
+
       - name: Create Manifest
-        run: "dbt compile --profiles-dir $HOME/.dbt --profile dunesql"
+        run: "uv run dbt compile --profiles-dir $HOME/.dbt --profile dunesql"
 
       - name: Upload translation status CSV to Dune
         env:
           DUNE_API_KEY_PROD: ${{ secrets.DUNE_API_KEY_PROD }}
-        run: "python scripts/spells_metadata.py"
+        run: "uv run python scripts/spells_metadata.py"

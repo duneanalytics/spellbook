@@ -13,18 +13,20 @@ models:
         Paraswap V5 contract aggregator trades on base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
       - check_dex_aggregator_seed:
-         blockchain: base
-         project: paraswap
-         version: 5
+         arguments:
+           blockchain: base
+           project: paraswap
+           version: 5
     columns:
       - &blockchain
         name: blockchain
@@ -143,18 +145,20 @@ models:
       Paraswap V6 contract aggregator trades on eptighte
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - method
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - method
+              - trace_address
       - check_dex_aggregator_seed:
-          blockchain: base
-          project: paraswap
-          version: 6
+          arguments:
+            blockchain: base
+            project: paraswap
+            version: 6
     columns:      
       - *blockchain
       - *project
@@ -188,10 +192,11 @@ models:
     description: "Paraswap V6 trades decoded"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:            
-            - call_tx_hash
-            - method
-            - call_trace_address                        
+          arguments:
+            combination_of_columns:            
+              - call_tx_hash
+              - method
+              - call_trace_address                        
     columns:
       - *blockchain
       - *project
@@ -250,11 +255,12 @@ models:
     description: "Paraswap Delta V2 trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - method
-            - tx_hash
-            - trace_address  
-            - order_index
+          arguments:
+            combination_of_columns:
+              - method
+              - tx_hash
+              - trace_address  
+              - order_index
     columns:
       - name: method
         description: "Call Method"

@@ -14,8 +14,9 @@ models:
       ekubo V1 ethereum DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - &blockchain
         name: blockchain
@@ -56,10 +57,11 @@ models:
       "ekubo ethereum base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project

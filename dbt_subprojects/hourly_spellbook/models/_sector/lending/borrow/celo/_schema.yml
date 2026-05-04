@@ -12,11 +12,12 @@ models:
     description: "All Moola borrow transactions on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,13 +99,15 @@ models:
     description: "Moola borrow transactions on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('moola_celo_base_borrow_seed')
+          arguments:
+            seed_file: ref('moola_celo_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -134,13 +137,15 @@ models:
     description: "Aave v3 borrow transactions on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('aave_celo_base_borrow_seed')
+          arguments:
+            seed_file: ref('aave_celo_base_borrow_seed')
     columns:
       - *blockchain
       - *project

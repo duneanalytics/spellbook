@@ -26,22 +26,24 @@ We need to split the onboarding process into multiple PRs because of the way we 
 
 1.  **Add EVM Chain Info (`daily_spellbook`):**
     -   **What:** Add a row for the new blockchain to the [`evms.info`](./dbt_subprojects/daily_spellbook/models/evms/evms_info.sql) model in the [`dbt_subprojects/daily_spellbook/models/evms/`](./dbt_subprojects/daily_spellbook/models/evms/) directory.
+    -   **Important:** The `wrapped_native_token_address` column must be the **wrapped** token contract address (e.g., WETH, WHBAR), **not** the native/zero address. This is the ERC20-wrapped version of the native token used for on-chain trading.
     -   **Why:** This model centralizes EVM chain identifiers. The `chain_id` is particularly critical for linking automated token data sources later.
     -   *Example PR:* [Kaia Metadata PR](https://github.com/duneanalytics/spellbook/pull/6957/files) (Illustrates `evms.info` update)
-
 
 2.  **Configure Token Prices (`tokens` project):**
     -   **What:**
         -   Add the native token to [`prices_native_tokens.sql`](./dbt_subprojects/tokens/models/prices/prices_native_tokens.sql) if it's not already present via another chain.
-        -   Create a new `prices_<blockchain>.tokens` model (e.g., [`prices_lens_tokens.sql`](./dbt_subprojects/tokens/models/prices/lens/prices_lens_tokens.sql)) in `dbt_subprojects/tokens/models/prices/<blockchain>/`. Manually list the native token and other key tokens (e.g., top 5 transferred, stables, WETH).
-        -   Add the new `prices_<blockchain>.tokens` model to the union in [`prices_tokens.sql`](./dbt_subprojects/tokens/models/prices/prices_tokens.sql).
-        -  After this PR is merged we have to add the new chain to the `prices_trusted_tokens` pipeline on the sqlmesh project so our price feeds are updated.
+        -   Create a new `prices_<blockchain>_tokens.sql` model (e.g., [`prices_lens_tokens.sql`](./dbt_subprojects/tokens/models/prices/lens/prices_lens_tokens.sql)) in `dbt_subprojects/tokens/models/prices/<blockchain>/`. Manually list key tokens (e.g., wrapped native token, top 5 transferred, stables, WETH). **Do NOT include the native token here** — it is already covered by `prices_native_tokens.sql` and duplicating it will create duplicate rows in the `prices.day/hour/minute` pipelines.
+        -   All `token_id` values must exist and be active on the [CoinPaprika API](https://api.coinpaprika.com/v1/coins). CI runs `scripts/check_tokens.py` which validates every token ID against this API — missing or inactive IDs will fail the build.
+        -   Create a corresponding `_schema.yml` file in the same `dbt_subprojects/tokens/models/prices/<blockchain>/` directory.
+        -   Add the new `prices_<blockchain>_tokens` model to the union in [`prices_tokens.sql`](./dbt_subprojects/tokens/models/prices/prices_tokens.sql).
+        -   After this PR is merged we have to add the new chain to the `prices_trusted_tokens` pipeline on the sqlmesh project so our price feeds are updated.
     -   **Why:** Establishes price feeds for the native token and key ERC20s. We rely on CoinPaprika for feeds, so coverage might be limited initially.
     -   *Future State Note:* The dependency on CoinPaprika for *all* tokens is being reduced, but the `prices_trusted_tokens` pipeline will likely remain.
 
-3.  **Configure ERC20 Metadata (`tokens` project) (not always required):**
+3.  **Configure ERC20 Metadata (`tokens` project) (no longer required for new chains):**
 
-    *Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
+    *Note: The `tokens_<blockchain>_v1_erc20` model is no longer part of the `tokens.erc20` lineage. **Skip this step for new chains.** The automated `dune.definedfi.dataset_tokens` source now provides sufficient coverage, keyed on `chain_id` from `dune.blockchains`. This step only remains for legacy chains that were onboarded before that automated source existed.*
 
     -   **What:**
         -   Create a new `tokens_<blockchain>_v1_erc20` model (e.g., [`tokens_lens_v1_erc20.sql`](./dbt_subprojects/tokens/models/tokens/lens/tokens_lens_v1_erc20.sql)) in `dbt_subprojects/tokens/models/tokens/<blockchain>/`. Add the same tokens listed in the blockchain-specific prices model.
@@ -49,15 +51,18 @@ We need to split the onboarding process into multiple PRs because of the way we 
     -   **Why:** Supplements the automated `dune.definedfi.dataset_tokens` source, which often lacks full blockchain or token coverage. Ensures essential tokens have metadata (symbol, decimals) available in Spellbook.
 
 4.  **Define Raw Data Sources:**
-    -   **What:** Add the new blockchain\'s raw tables (`transactions`, `logs`, `traces`, `blocks`, `creation_traces`) as sources in a new YAML file within [`sources/_base_sources/evm/`](./sources/_base_sources/evm/) (e.g., [`lens_base_sources.yml`](./sources/_base_sources/evm/lens_base_sources.yml)). Also, create a corresponding `<blockchain>_docs_block.md` file (e.g., [`lens_docs_block.md`](./sources/_base_sources/evm/lens_docs_block.md)) in the same directory to document these sources.
-    -   **How:** 
+    -   **What:** Add the new blockchain's raw tables (`transactions`, `logs`, `traces`, `blocks`, `creation_traces`) as sources in a new YAML file within [`sources/_base_sources/evm/`](./sources/_base_sources/evm/) (e.g., [`lens_base_sources.yml`](./sources/_base_sources/evm/lens_base_sources.yml)). Also, create a corresponding `<blockchain>_docs_block.md` file (e.g., [`lens_docs_block.md`](./sources/_base_sources/evm/lens_docs_block.md)) in the same directory to document these sources.
+    -   **How:**
         - You can either copy and replace an existing source file and docs and replace occurrences or create a new one.
         - You can also use the script `scripts/generate_evm_sources.py` and `scripts/generate_evm_docs.py` to generate the source file and docs. Simply replace the chain name in the script and run it.
     -   **Why:** Makes the raw data accessible within the dbt project, allowing models to reference them using the `source()` function.
 
 5.  **Integrate into Aggregate EVM Models (`daily_spellbook`):**
-    -   **What:** Update the `blockchains` list [here](../../dbt_subprojects/daily_spellbook/macros/helpers/evms_blockchains_list.sql)
+    -   **What:** Update the `blockchains` list in [`evms_blockchains_list.sql`](/dbt_subprojects/daily_spellbook/macros/helpers/evms_blockchains_list.sql).
     -   **Why:** Incorporates the new chain's base data (blocks, transactions, logs, etc.) into the primary cross-chain EVM tables used throughout Spellbook and Dune.
+
+6.  **Final Checks:**
+    -   Run `dbt compile` in both `dbt_subprojects/tokens` and `dbt_subprojects/daily_spellbook` to validate syntax and references. Fix any errors before submitting the PR.
 
 ### PR 2: Core Transfer and Fee Models
 
@@ -67,24 +72,41 @@ We need to split the onboarding process into multiple PRs because of the way we 
 
 **Steps:**
 
-1.  **Implement Token Transfers (`tokens` project):**
+1.  **Implement Gas Fees (`hourly_spellbook` project):**
     -   **What:**
-        -   Create a `tokens_<blockchain>_base_transfers.sql` model using the [`transfers_base`](./dbt_subprojects/tokens/macros/transfers_base.sql) macro. **Carefully specify the correct native token address** (e.g., `0x000000000000000000000000000000000000800a` for Lens).
-        -   Create the final enriched `tokens_<blockchain>_transfers.sql` model using the [`transfers_enrich`](./dbt_subprojects/tokens/macros/transfers_enrich.sql) macro.
-        -   Create `tokens_<blockchain>_net_transfers_daily.sql` using the [`evm_net_transfers_daily`](./dbt_subprojects/tokens/macros/evm_net_transfers_daily.sql) macro.
-        -   Create `tokens_<blockchain>_net_transfers_daily_asset.sql` using the [`evm_net_transfers_daily_asset`](./dbt_subprojects/tokens/macros/evm_net_transfers_daily_asset.sql) macro.
-        -   Add the new `tokens_<blockchain>_transfers.sql` model to the union in the main [`tokens_transfers.sql`](./dbt_subprojects/tokens/models/transfers_and_balances/tokens_transfers.sql) model.
-    -   **Why:** Creates the standardized token transfer table, combining native and ERC20 transfers and enriching them with USD values and metadata from PR 1. The `base_transfers` handles the core extraction, while `transfers_enrich` adds pricing and metadata. Net transfer models provide daily aggregates. Correct native token identification is critical and sometimes requires investigation (e.g., L2s might use specific contracts, not the zero address).
-    -   *Example PR:* [Multi-chain Transfers PR](https://github.com/duneanalytics/spellbook/pull/7603/files)
-
-
-2.  **Implement Gas Fees (`hourly_spellbook` project):**
-    -   **What:**
-        -   Create a `gas_<blockchain>_fees.sql` model in `dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/<blockchain>/`. Adapt the standard EVM gas fee logic, potentially modifying the `evm_gas_fees` macro if the chain has unique fee mechanisms (e.g., OP Stack L1 fees, ZK rollups specificities).
-        -   Add the new blockchain to the union in the main [`gas_fees.sql`](./dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/gas_fees.sql) model.
+        -   Determine whether the chain is L1 or L2/rollup, as this affects which macro to use:
+            -   L1 chains: use the `evm_l1_gas_fees` macro.
+            -   OP Stack L2s: use the `op_stack_gas_fees` macro.
+            -   Arbitrum Orbit L2s: use the `arbitrum_orbit_stack_gas_fees` macro.
+            -   Non-standard chains: write custom gas fee logic.
+        -   Create a `gas_<blockchain>_fees.sql` model in `dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/<blockchain>/`.
+        -   Create a corresponding `gas_<blockchain>_schema.yml` schema file in the same directory.
         -   Add a few example transactions (including different tx types if applicable) for the new blockchain to the [`evm_gas_fees.csv`](./dbt_subprojects/hourly_spellbook/seeds/_sector/gas/evm_gas_fees.csv) seed file.
+        -   Add the new blockchain to the union in the main [`gas_fees.sql`](./dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/gas_fees.sql) model.
     -   **Why:** Provides a standardized view of transaction costs on the new chain. This is often the **most complex** part, requiring chain-specific research into how fees (base, priority, L1 data/blob fees for L2s) are calculated and recorded. Collaboration with GTM/chain experts is often necessary. The seed file ensures the `check_seed` data test passes.
     -   *Example PR:* [Base Gas Fees PR](https://github.com/duneanalytics/spellbook/pull/7635/files)
+
+2.  **Implement Token Transfers (`tokens` project):**
+    -   **What:**
+        -   Create all transfer models in `dbt_subprojects/tokens/models/transfers_and_balances/<blockchain>/`:
+            -   `tokens_<blockchain>_base_transfers.sql` — using the [`transfers_base`](/dbt_subprojects/tokens/macros/transfers/transfers_base.sql) macro. **Carefully specify the correct native token address** (e.g., `0x000000000000000000000000000000000000800a` for Lens).
+            -   `tokens_<blockchain>_transfers.sql` — using the [`transfers_enrich`](/dbt_subprojects/tokens/macros/transfers/transfers_enrich.sql) macro.
+            -   `tokens_<blockchain>_net_transfers_daily.sql` — using the `evm_net_transfers_daily` macro in [`net_transfers.sql`](/dbt_subprojects/tokens/macros/transfers/net_transfers.sql).
+            -   `tokens_<blockchain>_net_transfers_daily_asset.sql` — using the `evm_net_transfers_daily_asset` macro in the same file.
+            -   `tokens_<blockchain>_transfers_from_traces.sql` — using the [`transfers_from_traces_macro`](/dbt_subprojects/tokens/macros/transfers_from_traces/transfers_from_traces_macro.sql).
+            -   `tokens_<blockchain>_transfers_from_traces_base.sql` — using the [`transfers_from_traces_base_macro`](/dbt_subprojects/tokens/macros/transfers_from_traces/transfers_from_traces_base_macro.sql).
+            -   `tokens_<blockchain>_transfers_from_traces_base_wrapper_deposits.sql` — using the [`transfers_from_traces_base_wrapper_deposits_macro`](/dbt_subprojects/tokens/macros/transfers_from_traces/transfers_from_traces_base_wrapper_deposits_macro.sql).
+        -   Create a `_schema.yml` file in the same directory defining all 7 models with tests and column descriptions.
+        -   Add the new chain to the relevant union models:
+            -   [`tokens_transfers.sql`](/dbt_subprojects/tokens/models/transfers_and_balances/tokens_transfers.sql)
+            -   [`tokens_net_transfers_daily.sql`](/dbt_subprojects/tokens/models/transfers_and_balances/tokens_net_transfers_daily.sql)
+            -   [`tokens_net_transfers_daily_asset.sql`](/dbt_subprojects/tokens/models/transfers_and_balances/tokens_net_transfers_daily_asset.sql)
+        -   Add the new chain to [`transfers_from_traces_exposed_blockchains_macro.sql`](/dbt_subprojects/tokens/macros/transfers_from_traces/transfers_from_traces_exposed_blockchains_macro.sql).
+    -   **Why:** Creates the standardized token transfer table, combining native and ERC20 transfers and enriching them with USD values and metadata from PR 1. The `base_transfers` handles the core extraction, while `transfers_enrich` adds pricing and metadata. The `transfers_from_traces` models handle native token transfers extracted from transaction traces. Net transfer models provide daily aggregates. Correct native token identification is critical and sometimes requires investigation (e.g., L2s might use specific contracts, not the zero address).
+    -   *Example PR:* [Multi-chain Transfers PR](https://github.com/duneanalytics/spellbook/pull/7603/files)
+
+3.  **Final Checks:**
+    -   Run `dbt compile` in both `dbt_subprojects/tokens` and `dbt_subprojects/hourly_spellbook` to validate syntax and references. Fix any errors before submitting the PR.
 
 ### PR 3: DEX Integration
 
@@ -95,23 +117,39 @@ We need to split the onboarding process into multiple PRs because of the way we 
 **Steps:**
 
 1.  **Define DEX Sources:**
-    -   **What:** Ensure the decoded event tables for the requested DEX (e.g., `Pair_evt_Swap`, `Factory_evt_PoolCreated`) are defined as sources in a relevant YAML file (e.g., [`sources/uniswap/lens/uniswap_v3_lens_sources.yml`](./sources/uniswap/lens/uniswap_v3_lens_sources.yml)).
+    -   **What:** Create or update the source YAML file at `sources/_sector/dex/trades/<blockchain>/_sources.yml` with the decoded event tables for the requested DEX (e.g., `Pair_evt_Swap`, `Factory_evt_PoolCreated`).
     -   **Why:** Makes the decoded DEX event data accessible to the Spellbook models.
 
 2.  **Build DEX Base Trades Model (`dex` project):**
     -   **What:**
-        -   Create a new model in `dbt_subprojects/dex/models/trades/<blockchain>/platforms/` (e.g., [`uniswap_v3_lens_base_trades.sql`](./dbt_subprojects/dex/models/trades/lens/platforms/uniswap_v3_lens_base_trades.sql)).
-        -   Use existing macros like [`uniswap_compatible_v3_trades`](./dbt_subprojects/dex/macros/models/_project/uniswap_compatible_v3_trades.sql) or [`uniswap_compatible_v2_trades`](./dbt_subprojects/dex/macros/models/_project/uniswap_compatible_v2_trades.sql) if the DEX is a known fork (e.g., Uniswap V2/V3).
+        -   Create a new model in `dbt_subprojects/dex/models/trades/<blockchain>/platforms/` (e.g., [`uniswap_v3_lens_base_trades.sql`](/dbt_subprojects/dex/models/trades/lens/platforms/uniswap_v3_lens_base_trades.sql)).
+        -   Use existing macros like [`uniswap_compatible_v3_trades`](/dbt_subprojects/dex/macros/models/_project/uniswap_compatible_v3_trades.sql) or [`uniswap_compatible_v2_trades`](/dbt_subprojects/dex/macros/models/_project/uniswap_compatible_v2_trades.sql) if the DEX is a known fork (e.g., Uniswap V2/V3).
         -   If it's a novel DEX design, significant custom modeling work might be required, often needing input from the DEX team via GTM.
-        -   Add the new base model to the union in `dex_<blockchain>_base_trades.sql`.
-        -   Create or update the corresponding DEX seed file (e.g., [`uniswap_lens_base_trades_seed.csv`](./dbt_subprojects/dex/seeds/trades/uniswap_lens_base_trades_seed.csv)) in [`dbt_subprojects/dex/seeds/trades/`](./dbt_subprojects/dex/seeds/trades/) with a few example trades.
+        -   Create or update the corresponding DEX seed file (e.g., [`uniswap_lens_base_trades_seed.csv`](/dbt_subprojects/dex/seeds/trades/uniswap_lens_base_trades_seed.csv)) in [`dbt_subprojects/dex/seeds/trades/`](/dbt_subprojects/dex/seeds/trades/) with a few example trades. Also add the seed definition to the [`seeds/trades/_schema.yml`](/dbt_subprojects/dex/seeds/trades/_schema.yml).
     -   **Why:** Translates the raw DEX events into the standardized `dex.trades` schema columns. Reusing macros for known forks saves significant effort. The seed file ensures the `check_dex_base_trades_seed` data test passes.
 
-3.  **Add to Aggregate `dex.trades`:**
-    -   **What:** Add the `dex_<blockchain>_base_trades` view to the main [`dex.trades`](./dbt_subprojects/dex/models/trades/dex_trades.sql) union if the chain is intended for cross-chain DEX analysis.
-    -   **Why:** Includes the new chain\'s DEX activity in the top-level `dex.trades` table used by many dashboards and queries.
+3.  **Chain-Level Setup (new chain only):**
+    -   **What:** If this is the first DEX for a new chain, create the chain-level models:
+        -   `dbt_subprojects/dex/models/trades/<blockchain>/dex_<blockchain>_base_trades.sql` — unions all platform base trades on the chain.
+        -   `dbt_subprojects/dex/models/trades/<blockchain>/dex_<blockchain>_trades.sql` — chain-level enriched trades.
+        -   `dbt_subprojects/dex/models/trades/<blockchain>/dex_<blockchain>_token_volumes_daily.sql` — daily token volume aggregates.
+        -   Create or update the `_schema.yml` file in `dbt_subprojects/dex/models/trades/<blockchain>/` with all chain-level and platform model definitions.
+    -   If the chain already exists, add the new platform base trades model to the existing `dex_<blockchain>_base_trades.sql` union and append to the schema file.
 
-- **Example PR:** [Sonic DEX PR](https://github.com/duneanalytics/spellbook/pull/7510/files)
+4.  **Add to Cross-Chain Unions:**
+    -   **What:** For a new chain, add `<blockchain>` to the chain lists in:
+        -   [`dex_trades.sql`](/dbt_subprojects/dex/models/trades/dex_trades.sql)
+        -   [`dex_token_volumes_daily.sql`](/dbt_subprojects/dex/models/trades/dex_token_volumes_daily.sql)
+    -   **Why:** Includes the new chain's DEX activity in the top-level cross-chain tables used by many dashboards and queries.
+
+5.  **Update `dex_info.sql`:**
+    -   **What:** If the DEX project is not already listed, append it to [`dex_info.sql`](/dbt_subprojects/dex/models/dex_info.sql).
+    -   **Why:** Maintains the registry of all DEX projects tracked in `dex.trades`.
+
+6.  **Final Checks:**
+    -   Run `dbt compile` in `dbt_subprojects/dex` to validate syntax and references. Fix any errors before submitting the PR.
+
+-   *Example PR:* [Sonic DEX PR](https://github.com/duneanalytics/spellbook/pull/7510/files)
 
 ## Key Considerations
 

@@ -17,7 +17,8 @@ select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
      (0x564a341df6c126f90cf3ecb92120fd7190acb401, 'TRY'), -- TRYB
-     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF')  -- ZCHF
+     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF'), -- ZCHF
+     (0x09d4214c03d01f49544c0448dbe3a27f768f2b34, 'USD')  -- rUSD
 
      /* rebasing / interest accruing tokens
      (0xabe7a9dfda35230ff60d1590a929ae0644c47dc1), -- aUSD (aave)

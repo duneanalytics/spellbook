@@ -1,0 +1,31 @@
+---
+description: CI only detects SQL body and macro changes. Config-only changes need a stamp comment to trigger CI.
+globs:
+  - "**/models/**/*.sql"
+---
+
+# CI State Detection
+
+CI uses `state:modified.body` and `state:modified.macros` to select models for testing. Config-only changes (in the `config()` block or `_schema.yml`) do **not** trigger CI.
+
+## When to add a stamp comment
+
+If your change modifies config that affects the physical table, add or bump a stamp comment in the SQL body to force CI:
+
+```sql
+-- ci-stamp: 1
+SELECT ...
+```
+
+Config changes that need a stamp:
+- `materialized` (e.g. view → incremental)
+- `partition_by`
+- `incremental_strategy`
+- `file_format`
+- `schema` or `alias`
+
+Config changes that do **not** need a stamp (CI skip is intentional):
+- `tags`
+- `unique_key`
+- `expose_spells` / `mark_as_spell` post-hooks
+- descriptions in `_schema.yml`

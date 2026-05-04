@@ -16,5 +16,7 @@
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_bnb', 'PoolManager_call_Swap') 
         , PoolManager_evt_Swap = source('uniswap_v4_bnb', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0x28e2ea090877bf75740558f6bfb36a5ffee9e9df'
+        , start_date = '2025-01-23'
     )
 }}

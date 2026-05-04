@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: stellar
+    description: "Stellar blockchain data"
+    tables:
+      - name: token_transfers
+        description: "Stellar token transfer events emitted by classic operations and Soroban contracts"
+        columns:
+          - name: transaction_hash
+            description: "Transaction hash"
+          - name: transaction_id
+            description: "Transaction identifier (TOID)"
+          - name: operation_id
+            description: "Operation identifier (TOID) for classic operations; null for Soroban events"
+          - name: contract_id
+            description: "Stellar Asset Contract (SAC) or Soroban contract id for the asset being transferred"
+          - name: closed_at
+            description: "Ledger close time (transaction timestamp)"
+          - name: ledger_sequence
+            description: "Ledger sequence number"
+          - name: to
+            description: "Recipient address (StrKey G.../C.../L...)"
+          - name: from
+            description: "Sender address (StrKey G.../C.../L...)"
+          - name: asset
+            description: "Full asset identifier (native or CODE:ISSUER)"
+          - name: asset_type
+            description: "Asset type: native, credit_alphanum4, credit_alphanum12, or soroban"
+          - name: asset_code
+            description: "Classic asset code; null for native and some Soroban assets"
+          - name: asset_issuer
+            description: "Classic asset issuer address; null for native"
+          - name: amount_raw
+            description: "Raw transfer amount as string (stroops for classic assets)"
+          - name: amount
+            description: "Scaled transfer amount when available upstream; nullable"
+          - name: event_topic
+            description: "Soroban event topic (e.g. transfer, mint, burn, fee)"
+          - name: event_type
+            description: "Classic operation type that produced the event"
+          - name: is_soroban
+            description: "Whether the event originated from a Soroban contract"
+          - name: unique_key
+            description: "Surrogate key provided by the source for each transfer row"
+          - name: to_muxed
+            description: "Muxed recipient address when present"
+          - name: to_muxed_id
+            description: "Muxed recipient id when present"
+          - name: updated_at
+            description: "Last update timestamp on the source row"
+          - name: ingested_at
+            description: "Ingestion timestamp on the source row"

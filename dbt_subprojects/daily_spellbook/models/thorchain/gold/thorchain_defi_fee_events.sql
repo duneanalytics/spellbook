@@ -43,8 +43,5 @@ SELECT
 FROM base a
 
 {% if is_incremental() %}
-WHERE a.block_time >= (
-  SELECT MAX(block_time - INTERVAL '1' HOUR)
-  FROM {{ this }}
-) 
+WHERE {{ incremental_predicate('a.block_time') }}
 {% endif %}

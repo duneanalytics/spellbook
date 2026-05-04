@@ -4,7 +4,9 @@ models:
   - name: dune_blockchains
     meta:
       sector: dune
+      short_description: "Reference table of all blockchains available on Dune, including chain metadata and identifiers."
       contributors: 0xRob
+      docs_slug: /curated/utilities/blockchains
     description: >
         Core table listing blockchains on Dune with meta info
     columns:

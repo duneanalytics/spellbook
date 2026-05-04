@@ -4,7 +4,9 @@ models:
   - name: gas_fees
     meta:
       sector: gas
+      short_description: "Gas fees paid per transaction across all EVM-compatible chains, including base fee, priority fee, and USD-denominated cost."
       contributors: soispoke, ilemi, 0xRob, jeff-dude, hosuke, tomfutago
+      docs_slug: /curated/gas-fees/fees
     description: >
         Gas Fees across chains
     columns:
@@ -26,6 +28,9 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
+      - &tx_index
+        name: tx_index
+        description: "Index position of the transaction within its block"
       - &tx_sender
         name: tx_sender
         description: "Initiated the transaction"

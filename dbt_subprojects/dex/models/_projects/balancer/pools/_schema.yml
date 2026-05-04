@@ -11,11 +11,12 @@ models:
       Balancer v2 and v3 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_number
+              - tx_hash
+              - index
     columns:
       - &blockchain
         name: blockchain
@@ -70,10 +71,11 @@ models:
       Balancer v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -96,10 +98,11 @@ models:
       Balancer v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -122,10 +125,11 @@ models:
       Balancer v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -148,10 +152,11 @@ models:
       Balancer v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -174,10 +179,11 @@ models:
       Balancer v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -200,10 +206,11 @@ models:
       Balancer v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -226,10 +233,11 @@ models:
       Balancer v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -252,10 +260,11 @@ models:
       Balancer v2 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -278,10 +287,11 @@ models:
       Balancer v3 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -304,10 +314,11 @@ models:
       Balancer v3 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -330,10 +341,11 @@ models:
       Balancer v3 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -356,10 +368,11 @@ models:
       Balancer v3 swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *version
@@ -369,4 +382,58 @@ models:
       - *tx_index
       - *block_time
       - *block_number
-      - *swap_fee_percentage       
+      - *swap_fee_percentage
+
+  - name: balancer_v3_hyperevm_pools_fees
+    meta:
+      blockchain: hyperevm
+      project: balancer_v3
+      contributors: gustavobftorres
+    config:
+      tags: ['hyperevm', 'balancer', 'pools_fees']
+    description: >
+      Balancer v3 swap fees stored at the pool level.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
+    columns:
+      - *blockchain
+      - *version
+      - *contract_address
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *block_time
+      - *block_number
+      - *swap_fee_percentage    
+       
+  - name: balancer_v3_monad_pools_fees
+    meta:
+      blockchain: monad
+      project: balancer_v3
+      contributors: gustavobftorres
+    config:
+      tags: ['monad', 'balancer', 'pools_fees']
+    description: >
+      Balancer v3 swap fees stored at the pool level for Monad.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
+    columns:
+      - *blockchain
+      - *version
+      - *contract_address
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *block_time
+      - *block_number
+      - *swap_fee_percentage

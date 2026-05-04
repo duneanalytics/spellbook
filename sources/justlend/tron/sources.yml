@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: justlend_tron
+    tables:
+      - name: jusdt_evt_Borrow
+      - name: jusdt_evt_RepayBorrow
+      - name: jusdt_evt_LiquidateBorrow
+      - name: jusdt_evt_Mint
+      - name: jusdt_evt_Redeem
+      - name: jusdd_evt_Borrow
+      - name: jusdd_evt_RepayBorrow
+      - name: jusdd_evt_LiquidateBorrow
+      - name: jusdd_evt_Mint
+      - name: jusdd_evt_Redeem
+      - name: cether_evt_Borrow
+      - name: cether_evt_RepayBorrow
+      - name: cether_evt_LiquidateBorrow
+      - name: cether_evt_Mint
+      - name: cether_evt_Redeem

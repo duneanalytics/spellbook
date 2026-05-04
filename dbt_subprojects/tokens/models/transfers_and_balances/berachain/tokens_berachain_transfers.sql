@@ -5,10 +5,11 @@
      materialized = 'incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',
+     merge_skip_unchanged = true,
      unique_key = ['block_date','unique_key'],
      incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
      , post_hook='{{ hide_spells() }}'
-  )
+     )
 }}
 
 -- Berachain mainnet launch date: 2025-01-20 (Block #1)

@@ -1,0 +1,548 @@
+version: 2
+
+models:
+  - name: tokens_xrpl_transaction_metadata
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "Normalized XRPL transaction metadata for transfer modeling."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Normalized XRPL transaction metadata and typed transaction fields used by downstream XRPL transfer models."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+      - check_seed:
+          arguments:
+            seed_file: ref('tokens_xrpl_transaction_metadata_seed')
+            match_columns:
+              - block_date
+              - tx_hash
+            check_columns:
+              - tx_from
+              - tx_to
+              - tx_index
+              - transaction_type
+              - transaction_result
+              - delivered_currency
+              - delivered_issuer
+              - delivered_value
+    columns:
+      - &unique_key
+        name: unique_key
+        description: "Surrogate key for one transfer row."
+      - &tx_hash
+        name: tx_hash
+        description: "XRPL transaction hash."
+        data_tests:
+          - not_null
+      - &block_date
+        name: block_date
+        description: "Ledger close date."
+        data_tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Ledger close timestamp."
+      - &block_month
+        name: block_month
+        description: "Month bucket derived from block_time."
+      - &block_number
+        name: block_number
+        description: "XRPL ledger index."
+      - &tx_from
+        name: tx_from
+        description: "Transaction sender account."
+      - &tx_to
+        name: tx_to
+        description: "Transaction destination account when present."
+      - &tx_index
+        name: tx_index
+        description: "Transaction index within the ledger."
+      - &transaction_type
+        name: transaction_type
+        description: "XRPL transaction type."
+      - &transaction_result
+        name: transaction_result
+        description: "XRPL transaction result."
+
+  - name: tokens_xrpl_affected_nodes
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "Unnested XRPL affected nodes."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "One row per XRPL metadata affected node, preserving node type and field payloads for transfer reconstruction."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
+      - check_seed:
+          arguments:
+            seed_file: ref('tokens_xrpl_affected_nodes_seed')
+            match_columns:
+              - block_date
+              - tx_hash
+              - node_index
+            check_columns:
+              - transaction_type
+              - transaction_result
+              - node_action
+              - ledger_entry_type
+              - ledger_entry_id
+    columns:
+      - <<: *unique_key
+        data_tests:
+          - not_null
+      - *tx_hash
+      - *block_date
+      - name: node_index
+        description: "Zero-based position of the affected node within metadata."
+      - name: node_action
+        description: "Node mutation type: CreatedNode, ModifiedNode, or DeletedNode."
+      - name: ledger_entry_type
+        description: "XRPL ledger entry type for the affected node."
+
+  - name: tokens_xrpl_currency_mapping
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "Static XRPL currency-code to symbol mapping."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Static helper table used to map known XRPL 160-bit currency codes to display symbols."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - currency_hex
+    columns:
+      - name: currency_hex
+        description: "XRPL 160-bit currency code in hexadecimal form."
+        data_tests:
+          - not_null
+      - name: symbol
+        description: "Mapped display symbol."
+
+  - name: tokens_xrpl_base_payments
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL payment transfer rows."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Transfer rows derived from successful XRPL Payment transactions using delivered amount semantics."
+    columns:
+      - *unique_key
+      - &blockchain
+        name: blockchain
+        description: "The blockchain of the transfers"
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - &token_standard
+        name: token_standard
+        description: "The token standard of the transfer"
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - &transfer_from
+        name: from
+        description: "Transfer sender account."
+      - &transfer_to
+        name: to
+        description: "Transfer receiver account."
+      - &xrpl_asset_id
+        name: xrpl_asset_id
+        description: "Synthetic XRPL asset identifier built from issuer and currency."
+      - &issuer
+        name: issuer
+        description: "XRPL issuer or XRPL native sentinel issuer."
+      - &currency
+        name: currency
+        description: "XRPL currency code."
+      - &currency_hex
+        name: currency_hex
+        description: "XRPL currency code in hexadecimal form when applicable."
+      - &amount_raw
+        name: amount_raw
+        description: "XRPL ledger-native amount representation."
+      - &amount
+        name: amount
+        description: "Display amount normalized for XRP."
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer classification within XRPL transaction families."
+      - *transaction_type
+      - *transaction_result
+      - &partial_payment_flag
+        name: partial_payment_flag
+        description: "Whether the originating XRPL transaction was flagged as a partial payment."
+      - &updated_at
+        name: _updated_at
+        description: "Timestamp when this row was last written."
+
+  - name: tokens_xrpl_base_check_cash
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL CheckCash transfer rows."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Transfer rows derived from successful XRPL CheckCash transactions using the settled delivered amount and deleted Check participants."
+    columns:
+      - *unique_key
+      - *blockchain
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *transfer_from
+      - *transfer_to
+      - *xrpl_asset_id
+      - *issuer
+      - *currency
+      - *currency_hex
+      - *amount_raw
+      - *amount
+      - *transfer_type
+      - *transaction_type
+      - *transaction_result
+      - *partial_payment_flag
+      - *updated_at
+
+  - name: tokens_xrpl_base_escrow_finish
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL EscrowFinish transfer rows."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Transfer rows derived from successful XRPL EscrowFinish transactions using deleted Escrow ledger objects."
+    columns:
+      - *unique_key
+      - *blockchain
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *transfer_from
+      - *transfer_to
+      - *xrpl_asset_id
+      - *issuer
+      - *currency
+      - *currency_hex
+      - *amount_raw
+      - *amount
+      - *transfer_type
+      - *transaction_type
+      - *transaction_result
+      - *partial_payment_flag
+      - *updated_at
+
+  - name: tokens_xrpl_base_payment_channel_claims
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL PaymentChannelClaim transfer rows."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Transfer rows derived from successful XRPL PaymentChannelClaim transactions using PayChannel balance deltas."
+    columns:
+      - *unique_key
+      - *blockchain
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *transfer_from
+      - *transfer_to
+      - *xrpl_asset_id
+      - *issuer
+      - *currency
+      - *currency_hex
+      - *amount_raw
+      - *amount
+      - *transfer_type
+      - *transaction_type
+      - *transaction_result
+      - *partial_payment_flag
+      - *updated_at
+
+  - name: tokens_xrpl_amm_balance_deltas
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL AMM pool-side balance deltas."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Normalized XRPL AMM pool balance deltas used to derive deposit, withdraw, mint, and burn transfer rows."
+    columns:
+      - *unique_key
+      - *blockchain
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *transfer_from
+      - *transfer_to
+      - name: xrpl_asset_id
+        description: "Synthetic XRPL asset identifier built from issuer and currency for local AMM normalization."
+      - *issuer
+      - *currency
+      - *currency_hex
+      - *amount_raw
+      - *amount
+      - *transfer_type
+      - *transaction_type
+      - *transaction_result
+      - *partial_payment_flag
+      - *updated_at
+
+  - name: tokens_xrpl_base_amm_deposits
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL AMM deposit transfer rows."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Transfer rows derived from successful XRPL AMMDeposit transactions, including pool asset deposits and LP token mints."
+    columns:
+      - *unique_key
+      - *blockchain
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *transfer_from
+      - *transfer_to
+      - *xrpl_asset_id
+      - *issuer
+      - *currency
+      - *currency_hex
+      - *amount_raw
+      - *amount
+      - *transfer_type
+      - *transaction_type
+      - *transaction_result
+      - *partial_payment_flag
+      - *updated_at
+
+  - name: tokens_xrpl_base_amm_withdraws
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL AMM withdraw transfer rows."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Transfer rows derived from successful XRPL AMMWithdraw transactions, including pool asset withdrawals and LP token burns."
+    columns:
+      - *unique_key
+      - *blockchain
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *transfer_from
+      - *transfer_to
+      - *xrpl_asset_id
+      - *issuer
+      - *currency
+      - *currency_hex
+      - *amount_raw
+      - *amount
+      - *transfer_type
+      - *transaction_type
+      - *transaction_result
+      - *partial_payment_flag
+      - *updated_at
+
+  - name: tokens_xrpl_base_transfers
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "Unified XRPL base transfer rows."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "Unified XRPL base transfer rows built by unioning per-transaction-type XRPL transfer models."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
+      - check_seed:
+          arguments:
+            seed_file: ref('tokens_xrpl_base_transfers_seed')
+            match_columns:
+              - block_date
+              - tx_hash
+              - transfer_type
+              - xrpl_asset_id
+            check_columns:
+              - token_standard
+              - tx_from
+              - tx_to
+              - tx_index
+              - issuer
+              - currency
+              - currency_hex
+              - amount_raw
+              - amount
+              - transaction_type
+              - transaction_result
+              - partial_payment_flag
+    columns:
+      - <<: *unique_key
+        data_tests:
+          - not_null
+      - *blockchain
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *transfer_from
+      - *transfer_to
+      - *xrpl_asset_id
+      - *issuer
+      - *currency
+      - *currency_hex
+      - *amount_raw
+      - *amount
+      - *transfer_type
+      - *transaction_type
+      - *transaction_result
+      - *partial_payment_flag
+      - *updated_at
+
+  - name: tokens_xrpl_transfers
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL transfers with metadata and pricing."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'xrpl']
+    description: "XRPL token transfers enriched with currency display metadata and XRP USD pricing."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
+    columns:
+      - <<: *unique_key
+        data_tests:
+          - not_null
+      - *blockchain
+      - *block_date
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *transfer_from
+      - *transfer_to
+      - *xrpl_asset_id
+      - *issuer
+      - *currency
+      - *currency_hex
+      - name: symbol
+        description: "Display symbol for the XRPL asset."
+      - name: decimals
+        description: "Display decimals for XRP; null for issued assets whose values are already decimalized."
+      - *amount_raw
+      - *amount
+      - name: price_usd
+        description: "Minute-level XRP USD price when available."
+      - name: amount_usd
+        description: "USD value for XRP transfers when price data is available."
+      - *transfer_type
+      - *transaction_type
+      - *transaction_result
+      - *partial_payment_flag
+      - *updated_at
+
+  - name: tokens_xrpl_net_transfers_daily
+    meta:
+      blockchain: xrpl
+      sector: tokens
+      short_description: "XRPL daily net transfer volume."
+      contributors: krishhh, tomfutago
+    config:
+      tags: ['tokens', 'net_transfers', 'xrpl']
+    description: "Daily XRPL net transfer volume in USD, computed by netting sender and receiver address flows within each day."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+    columns:
+      - name: blockchain
+        description: "The blockchain of the transfer volume."
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "The date of the transfer volume bucket."
+        data_tests:
+          - not_null
+      - name: net_transfer_amount_usd
+        description: "The total positive net USD transfer volume for the day."

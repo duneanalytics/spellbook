@@ -34,7 +34,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20']
+              arguments:
+                values: ['native', 'erc20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"
@@ -80,7 +81,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20']
+              arguments:
+                values: ['native', 'erc20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"
@@ -126,7 +128,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'bep20']
+              arguments:
+                values: ['native', 'bep20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"
@@ -172,7 +175,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20']
+              arguments:
+                values: ['native', 'erc20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"
@@ -218,7 +222,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20']
+              arguments:
+                values: ['native', 'erc20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"
@@ -264,7 +269,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20']
+              arguments:
+                values: ['native', 'erc20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"
@@ -310,7 +316,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20']
+              arguments:
+                values: ['native', 'erc20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"
@@ -356,7 +363,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20']
+              arguments:
+                values: ['native', 'erc20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"
@@ -402,7 +410,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20']
+              arguments:
+                values: ['native', 'erc20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"

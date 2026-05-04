@@ -14,10 +14,11 @@ models:
       eulerswap Uni V4 DEX pools across all chains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-            - eulerAccount
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
+              - eulerAccount
     columns:
       - &blockchain
         name: blockchain
@@ -91,6 +92,7 @@ models:
     description: "Eulerswap trades across all chains"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index

@@ -13,10 +13,11 @@ models:
     description: "Tornado Cash Deposits on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - &block_time
         name: block_time
@@ -31,13 +32,15 @@ models:
         name: blockchain
         data_tests:
           - accepted_values:
-              values: ['optimism']
+              arguments:
+                values: ['optimism']
         description: "Blockchain"
       - &tornado_version
         name: tornado_version
         data_tests:
           - accepted_values:
-              values: ['classic', 'nova']
+              arguments:
+                values: ['classic', 'nova']
         description: "Version of Tornado Cash used for this transaction"
       - &depositor
         name: depositor
@@ -61,10 +64,11 @@ models:
     description: "Tornado Cash Withdrawals on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - *block_time
       - *currency_contract

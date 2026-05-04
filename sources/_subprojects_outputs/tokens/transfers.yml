@@ -40,6 +40,7 @@ sources:
   - name: tokens_base
     tables:
       - name: transfers
+      - name: base_transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
@@ -232,6 +233,7 @@ sources:
   - name: tokens_optimism
     tables:
       - name: transfers
+      - name: base_transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
@@ -259,6 +261,8 @@ sources:
   - name: tokens_polygon
     tables:
       - name: transfers
+        config:
+          event_time: block_date
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
       
@@ -298,6 +302,7 @@ sources:
     tables:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: spl_stablecoins
 
   - name: tokens_shape
     tables:
@@ -350,8 +355,15 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: trc20_stablecoins
       - name: trc20_stablecoins_core
       - name: trc20_stablecoins_extended
+
+  - name: tokens_xrpl
+    tables:
+      - name: transaction_metadata
+      - name: transfers
+      - name: net_transfers_daily
 
   - name: tokens_unichain
     tables:
@@ -384,6 +396,7 @@ sources:
   - name: tokens_zksync
     tables:
       - name: transfers
+      - name: base_transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
@@ -414,6 +427,12 @@ sources:
       - name: net_transfers_daily
       - name: erc20_stablecoins_core
       - name: erc20_stablecoins_extended
+
+  - name: tokens_tempo
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
 
   - name: tokens_taiko
     tables:

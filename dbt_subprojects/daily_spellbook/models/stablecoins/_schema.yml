@@ -5,7 +5,9 @@ models:
     meta:
       sector: stablecoin
       project: stablecoin
+      short_description: "Unified stablecoin balances across all supported chains (EVM, Solana, Tron), providing a single cross-chain view of stablecoin holdings."
       contributors: tomfutago
+      docs_slug: /curated/stablecoins/balances/stablecoins-multichain-balances
     config:
       tags: ['stablecoin', 'balances']
     description: "Union of EVM, SVM (Solana) and Tron stablecoin balances with normalized address/token_address types"
@@ -46,6 +48,68 @@ models:
       - &last_updated
         name: last_updated
         description: "UTC timestamp when data was last updated"
+
+  - name: stablecoins_multichain_transfers
+    meta:
+      sector: stablecoin
+      project: stablecoin
+      short_description: "Unified stablecoin transfers across all supported chains (EVM, Solana, Tron), providing a single cross-chain view of stablecoin movement."
+      contributors: tomfutago
+      docs_slug: /curated/stablecoins/transfers/stablecoins-multichain-transfers
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Union of EVM, SVM (Solana) and Tron stablecoin transfers with normalized address/token_address/tx_hash types"
+    columns:
+      - *blockchain
+      - name: block_month
+        description: "Month of the transfer"
+      - name: block_date
+        description: "Date of the transfer"
+      - name: block_time
+        description: "Timestamp of the transfer"
+      - name: block_number
+        description: "Block number of the transfer (null for Solana)"
+      - name: tx_hash
+        description: "Transaction hash (varchar)"
+      - name: evt_index
+        description: "Event index within the transaction (null for Solana)"
+      - name: token_standard
+        description: "Token standard (e.g. erc20, spl_token)"
+      - *token_address
+      - *token_symbol
+      - *currency
+      - name: amount_raw
+        description: "Raw transfer amount (not adjusted for decimals)"
+      - name: amount
+        description: "Transfer amount (adjusted for decimals)"
+      - name: price_usd
+        description: "USD price per unit of the stablecoin"
+      - name: amount_usd
+        description: "USD value of the transfer"
+      - name: from
+        description: "Sender address (varchar)"
+      - name: to
+        description: "Recipient address (varchar)"
+      - name: unique_key
+        description: "Unique identifier for the transfer"
+
+  - name: stablecoins_multichain_tokens
+    meta:
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+      docs_slug: /curated/stablecoins/stablecoins-multichain-tokens
+    config:
+      tags: ['stablecoin', 'tokens']
+    description: "Union of EVM, SVM (Solana), and Tron stablecoin token lists with enriched symbol/decimals metadata"
+    columns:
+      - *blockchain
+      - *token_address
+      - *currency
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
 
   - name: stablecoins_balances
     meta:

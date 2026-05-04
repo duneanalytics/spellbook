@@ -114,11 +114,12 @@ models:
     description: "CELO transfers into or out of Safes"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - address
-            - tx_hash
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - address
+              - tx_hash
+              - trace_address
     columns:
       - *blockchain
       - &symbol

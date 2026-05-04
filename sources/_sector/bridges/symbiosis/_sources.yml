@@ -81,6 +81,10 @@ sources:
     description: "Symbiosis's bridge events on Taiko"
     tables:
       - name: portal_evt_synthesizerequest
+  - name: symbiosis_tron
+    description: "Symbiosis's bridge events on Tron"
+    tables:
+      - name: portal_evt_synthesizerequest
   - name: symbiosis_unichain
     description: "Symbiosis's bridge events on Unichain"
     tables:

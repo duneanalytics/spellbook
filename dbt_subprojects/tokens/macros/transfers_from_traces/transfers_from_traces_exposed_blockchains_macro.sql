@@ -41,6 +41,7 @@
     "plume",
     "polygon",
     "ronin",
+    "rise",
     "scroll",
     "sei",
     "sepolia",

@@ -10,14 +10,62 @@ sources:
           Decoded table of gyroscope pool created
         columns:
           - name: contract_address
-            description: 'creator address'
+            description: "creator address"
           - name: evt_tx_hash
-            description: 'Primary key of the transaction'
+            description: "Primary key of the transaction"
           - name: evt_index
-            description: 'Index value of the transaction'
+            description: "Index value of the transaction"
           - name: evt_block_time
-            description: 'Timestamp for block event time in UTC'
+            description: "Timestamp for block event time in UTC"
           - name: evt_block_number
-            description: 'Block number which processed the unique transaction hash'
+            description: "Block number which processed the unique transaction hash"
           - name: pool
-            description: 'created ECLP pool address'
+            description: "created ECLP pool address"
+      - name: newer_gyroeclppoolfactory_call_create
+        description: >
+          Decoded calls to the newer Gyro ECLP pool factory on avalanche_c.
+        columns:
+          - name: contract_address
+            description: "Factory contract address"
+          - name: call_success
+            description: "Whether the factory call succeeded"
+          - name: call_tx_hash
+            description: "Transaction hash of the factory call"
+          - name: call_tx_from
+            description: "Sender address of the factory call transaction"
+          - name: call_tx_to
+            description: "Recipient address of the factory call transaction"
+          - name: call_tx_index
+            description: "Transaction index within the block"
+          - name: call_trace_address
+            description: "Trace address of the call within the transaction"
+          - name: call_block_time
+            description: "Timestamp for block event time in UTC"
+          - name: call_block_number
+            description: "Block number which processed the factory call"
+          - name: call_block_date
+            description: "Block date for the factory call"
+          - name: derivedEclpParams
+            description: "Derived ECLP parameters (JSON-encoded)"
+          - name: disableUnbalancedLiquidity
+            description: "Flag indicating whether unbalanced liquidity is disabled"
+          - name: eclpParams
+            description: "Raw ECLP parameters (JSON-encoded)"
+          - name: enableDonation
+            description: "Flag indicating whether donation is enabled"
+          - name: name
+            description: "Pool name returned by the factory"
+          - name: output_pool
+            description: "Address of the created ECLP pool"
+          - name: poolHooksContract
+            description: "Address of the pool hooks contract"
+          - name: roleAccounts
+            description: "JSON-encoded role accounts configuration"
+          - name: salt
+            description: "Salt used for CREATE2 / deterministic deployment"
+          - name: swapFeePercentage
+            description: "Swap fee percentage configured for the pool"
+          - name: symbol
+            description: "Symbol of the created ECLP pool"
+          - name: tokens
+            description: "Array of token addresses used in the pool"

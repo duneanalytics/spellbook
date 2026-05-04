@@ -93,12 +93,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_avalanche_c_roundtrip_trades
     meta:
@@ -109,12 +110,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_base_roundtrip_trades
     meta:
@@ -125,12 +127,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_blast_roundtrip_trades
     meta:
@@ -141,12 +144,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_bnb_roundtrip_trades
     meta:
@@ -157,12 +161,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_celo_roundtrip_trades
     meta:
@@ -173,12 +178,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_ethereum_roundtrip_trades
     meta:
@@ -189,12 +195,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_gnosis_roundtrip_trades
     meta:
@@ -205,12 +212,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_ink_roundtrip_trades
     meta:
@@ -221,12 +229,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_linea_roundtrip_trades
     meta:
@@ -237,12 +246,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_mantle_roundtrip_trades
     meta:
@@ -253,12 +263,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_monad_roundtrip_trades
     meta:
@@ -269,12 +280,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_optimism_roundtrip_trades
     meta:
@@ -285,12 +297,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_plasma_roundtrip_trades
     meta:
@@ -301,12 +314,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_polygon_roundtrip_trades
     meta:
@@ -317,12 +331,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_scroll_roundtrip_trades
     meta:
@@ -333,12 +348,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_sonic_roundtrip_trades
     meta:
@@ -349,12 +365,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_unichain_roundtrip_trades
     meta:
@@ -365,12 +382,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_worldchain_roundtrip_trades
     meta:
@@ -381,12 +399,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_zksync_roundtrip_trades
     meta:
@@ -397,12 +416,13 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address
 
   - name: dex_zora_roundtrip_trades
     meta:
@@ -413,9 +433,10 @@ models:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - tx_hash
-            - evt_index
-            - pool_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - tx_hash
+              - evt_index
+              - pool_address

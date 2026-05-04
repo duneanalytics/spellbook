@@ -10,10 +10,6 @@
 - changed-files:
     - any-glob-to-any-file: 'dbt_subprojects/hourly_spellbook/**'
 
-"dbt: nft":
-- changed-files:
-    - any-glob-to-any-file: 'dbt_subprojects/nft/**'
-
 "dbt: solana":
 - changed-files:
     - any-glob-to-any-file: 'dbt_subprojects/solana/**'

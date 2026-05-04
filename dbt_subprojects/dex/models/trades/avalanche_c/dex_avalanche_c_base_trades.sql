@@ -23,6 +23,7 @@
     , ref('trader_joe_v2_1_avalanche_c_base_trades')
     , ref('trader_joe_v2_2_avalanche_c_base_trades')
     , ref('balancer_v2_avalanche_c_base_trades')
+    , ref('balancer_v3_avalanche_c_base_trades')
     , ref('glacier_v2_avalanche_c_base_trades')
     , ref('glacier_v3_avalanche_c_base_trades')
     , ref('gmx_avalanche_c_base_trades')
@@ -39,61 +40,8 @@
     , ref('pharaoh_v3_legacy_avalanche_c_base_trades')
 	, ref('pharaoh_v3_cl_avalanche_c_base_trades')
 ] %}
-with base_union as (
-        {% for base_model in base_models %}
-        SELECT
-            blockchain
-            , project
-            , version
-            , block_month
-            , block_date
-            , block_time
-            , block_number
-            , cast(token_bought_amount_raw as uint256) as token_bought_amount_raw
-            , cast(token_sold_amount_raw as uint256) as token_sold_amount_raw
-            , token_bought_address
-            , token_sold_address
-            , taker
-            , maker
-            , project_contract_address
-            , tx_hash
-            , evt_index
-        FROM
-            {{ base_model }}
-        WHERE
-           token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if var('dev_dates', false) -%}
-            AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
-        {%- else -%}
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-            {% endif %}
-        {%- endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-)
 
-, add_tx_columns as (
-    {{
-        add_tx_columns(
-            model_cte = 'base_union'
-            , blockchain = 'avalanche_c'
-            , columns = ['from', 'to', 'index']
-        )
-    }}
-)
-, final as (
-    select
-        *
-        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
-    from
-        add_tx_columns
-)
-select
-    *
-from
-    final
-where
-    duplicates_rank = 1
+{{ dex_base_trades_macro(
+    blockchain = 'avalanche_c',
+    base_models = base_models
+) }}

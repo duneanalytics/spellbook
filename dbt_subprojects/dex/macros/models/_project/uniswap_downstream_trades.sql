@@ -191,12 +191,11 @@ get_trades as (
         , tx_to
         , evt_index
     from
-    {{ ref('dex_trades') }}
-    where 1 = 1 
+    {{ ref('dex_' ~ blockchain ~ '_trades') }}
+    where 1 = 1
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
-    and blockchain = '{{blockchain}}'
     and project = 'uniswap'
 ),
 

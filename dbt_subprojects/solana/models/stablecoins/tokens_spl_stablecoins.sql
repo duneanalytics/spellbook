@@ -15,10 +15,8 @@ select
   s.blockchain,
   s.token_mint_address,
   s.currency,
-  m.backing,
-  coalesce(fungible.symbol, m.symbol) as symbol,
-  coalesce(fungible.decimals, m.decimals) as decimals,
-  m.name
+  fungible.symbol,
+  fungible.decimals
 from (
   {% for chain in chains %}
   select
@@ -33,7 +31,4 @@ from (
 ) s
 inner join {{ source('tokens_solana', 'fungible') }} fungible
   on s.token_mint_address = fungible.token_mint_address
-left join {{ ref('tokens_spl_stablecoins_metadata') }} m
-  on s.blockchain = m.blockchain
-  and s.token_mint_address = m.token_mint_address
 

@@ -11,8 +11,9 @@ models:
     description: "Nexus Mutual Claims v1"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - claim_id
+          arguments:
+            combination_of_columns:
+              - claim_id
     columns:
       - &block_time
         name: block_time
@@ -67,8 +68,9 @@ models:
     description: "Nexus Mutual Claims v2"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - claim_id
+          arguments:
+            combination_of_columns:
+              - claim_id
     columns:
       - *block_time
       - *block_number
@@ -109,9 +111,10 @@ models:
     description: "Nexus Mutual Claims v2"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - version
-            - claim_id
+          arguments:
+            combination_of_columns:
+              - version
+              - claim_id
     columns:
       - name: version
       - *cover_id

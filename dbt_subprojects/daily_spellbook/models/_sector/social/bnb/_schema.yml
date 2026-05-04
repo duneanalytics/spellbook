@@ -12,9 +12,10 @@ models:
     description: "Friend3 basic trades info"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -81,9 +82,10 @@ models:
     description: "social trades on Avalanche"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *block_month

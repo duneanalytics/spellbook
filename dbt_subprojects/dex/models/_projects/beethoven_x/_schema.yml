@@ -12,10 +12,11 @@ models:
       Beethoven X swap fees stored at the pool level.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - index
     columns:
       - &blockchain
         name: blockchain

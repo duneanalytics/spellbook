@@ -13,14 +13,16 @@ models:
       Ellipsis underlying tokens for token_exchange_underlying event
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - token_id
-            - token_type
+          arguments:
+            combination_of_columns:
+              - pool
+              - token_id
+              - token_type
       - check_dex_pools_seed:
-          blockchain: bnb
-          project: ellipsis_finance
-          version: 1
+          arguments:
+            blockchain: bnb
+            project: ellipsis_finance
+            version: 1
     columns:
       - &blockchain
         name: blockchain

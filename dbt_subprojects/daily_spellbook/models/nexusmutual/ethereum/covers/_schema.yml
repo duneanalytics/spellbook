@@ -11,8 +11,9 @@ models:
     description: "Nexus Mutual Product Types v2"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - product_type_id
+          arguments:
+            combination_of_columns:
+              - product_type_id
     columns:
       - &block_time
         name: block_time
@@ -61,8 +62,9 @@ models:
     description: "Nexus Mutual Products v2"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - product_id
+          arguments:
+            combination_of_columns:
+              - product_id
     columns:
       - *block_time
       - *block_number
@@ -104,8 +106,9 @@ models:
     description: "Nexus Mutual Products v1"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - product_contract_address
+          arguments:
+            combination_of_columns:
+              - product_contract_address
     columns:
       - &product_contract_address
         name: product_contract_address
@@ -130,8 +133,9 @@ models:
     description: "Nexus Mutual Covers v1"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - cover_id
+          arguments:
+            combination_of_columns:
+              - cover_id
     columns:
       - *block_time
       - &block_date
@@ -198,9 +202,10 @@ models:
     description: "Nexus Mutual Covers v2"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - cover_id
-            - staking_pool
+          arguments:
+            combination_of_columns:
+              - cover_id
+              - staking_pool
     columns:
       - *block_time
       - *block_date
@@ -260,10 +265,11 @@ models:
     description: "Nexus Mutual Covers Full List"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - version
-            - cover_id
-            - staking_pool
+          arguments:
+            combination_of_columns:
+              - version
+              - cover_id
+              - staking_pool
     columns:
       - *block_time 
       - *block_date
@@ -379,9 +385,10 @@ models:
     description: "Nexus Mutual Active Covers"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - cover_id
-            - staking_pool_id
+          arguments:
+            combination_of_columns:
+              - cover_id
+              - staking_pool_id
     columns:
       - *cover_id
       - *cover_start_time
@@ -416,8 +423,9 @@ models:
     description: "Daily Covers aggregates"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
+          arguments:
+            combination_of_columns:
+              - block_date
     columns:
       - *block_date
 
@@ -431,8 +439,9 @@ models:
     description: "Cover Owners aggregates"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - cover_owner
+          arguments:
+            combination_of_columns:
+              - cover_owner
     columns:
       - *cover_owner
 
@@ -449,19 +458,21 @@ models:
         nexusmutual quotation trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
-            - cid
+          arguments:
+            combination_of_columns:
+              - block_date
+              - evt_tx_hash
+              - evt_index
+              - cid
       - check_seed:
-          seed_file: ref("nexusmutual_ethereum_trades_seed")
-          match_columns:
-            - evt_tx_hash
-          check_columns:
-            - premium
-            - premium_nxm
-            - sum_assured
+          arguments:
+            seed_file: ref("nexusmutual_ethereum_trades_seed")
+            match_columns:
+              - evt_tx_hash
+            check_columns:
+              - premium
+              - premium_nxm
+              - sum_assured
     columns:
       - &cid
         name: cid

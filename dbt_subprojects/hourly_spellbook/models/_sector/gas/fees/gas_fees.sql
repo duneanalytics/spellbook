@@ -40,6 +40,7 @@
                                     , "plume"
                                     , "polygon"
                                     , "ronin"
+                                    , "rise"
                                     , "scroll"
                                     , "sei"
                                     , "shape"
@@ -50,6 +51,7 @@
                                     , "superseed"
                                     , "tac"
                                     , "taiko"
+                                    , "tempo"
                                     , "tron"
                                     , "unichain"
                                     , "worldchain"
@@ -105,6 +107,7 @@
     , "plume"
     , "polygon"
     , "ronin"
+    , "rise"
     , "scroll"
     , "sei"
     , "shape"
@@ -115,6 +118,7 @@
     , "superseed"
     , "tac"
     , "taiko"
+    , "tempo"
     , "tron"
     , "unichain"
     , "worldchain"
@@ -137,6 +141,7 @@ FROM
         ,block_time
         ,block_number
         ,tx_hash
+        ,tx_index
         ,tx_from
         ,tx_to
         ,gas_price

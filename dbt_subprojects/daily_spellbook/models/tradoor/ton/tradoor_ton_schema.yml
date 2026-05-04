@@ -6,16 +6,17 @@ models:
       blockchain: ton
       sector: dex
       contributors: pshuvalov
+      short_description: "Perpetual futures orders on the Tradoor protocol on TON."
     config:
       tags: ['ton', 'tradoor', 'perpetual']
-    description: >
-      Tradoor Perp orders events
+    description: "Perpetual futures orders on the Tradoor protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
-            - op_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
+              - op_type
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -56,15 +57,16 @@ models:
       blockchain: ton
       sector: dex
       contributors: pshuvalov
+      short_description: "Perpetual futures position changes on the Tradoor protocol on TON, tracking opens, closes, and modifications."
     config:
       tags: ['ton', 'tradoor', 'perpetual']
-    description: >
-      Tradoor Perp position change events
+    description: "Perpetual futures position changes on the Tradoor protocol on TON, tracking opens, closes, and modifications."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"

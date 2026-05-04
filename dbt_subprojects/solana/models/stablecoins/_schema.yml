@@ -12,9 +12,10 @@ models:
         Union view of all SPL stablecoin token addresses across SVM chains with metadata.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_mint_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_mint_address
     columns:
       - &blockchain
         name: blockchain
@@ -25,18 +26,12 @@ models:
       - &currency
         name: currency
         description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
-      - &backing
-        name: backing
-        description: "Type of backing for the stablecoin"
       - &symbol
         name: symbol
         description: "Token symbol"
       - &decimals
         name: decimals
         description: "Token decimals"
-      - &name
-        name: name
-        description: "Token name or issuer"
 
   - name: tokens_spl_stablecoins_metadata
     meta:
@@ -49,16 +44,19 @@ models:
         Metadata for SPL stablecoins including backing type, symbol, decimals, and name.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_mint_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_mint_address
     columns:
       - *blockchain
       - *token_mint_address
-      - *backing
+      - name: backing
+        description: "Type of backing for the stablecoin"
       - *symbol
       - *decimals
-      - *name
+      - name: name
+        description: "Token name or issuer"
 
   - name: stablecoins_svm_balances
     meta:
@@ -141,12 +139,6 @@ models:
         description: "Token program version (spl_token, token2022)"
       - *token_mint_address
       - *token_symbol
-      - &token_backing
-        name: token_backing
-        description: "Stablecoin backing type"
-      - &token_name
-        name: token_name
-        description: "Stablecoin name"
       - *currency
       - &amount_raw
         name: amount_raw

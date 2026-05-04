@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: sunswap_v1_tron
+    tables:
+      - name: justswapfactory_evt_newexchange
+  - name: sunswap_tron
+    tables:
+      - name: v3factory_evt_poolcreated
+      - name: v3pool_evt_swap
+  - name: sunswap_v2_tron
+    tables:
+      - name: sunswapv2factory_evt_paircreated

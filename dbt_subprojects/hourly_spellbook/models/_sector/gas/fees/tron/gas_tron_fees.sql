@@ -15,6 +15,7 @@ WITH base_model as (
         txns.block_time
         ,txns.block_number
         ,txns.hash AS tx_hash
+        ,txns."index" AS tx_index
         ,txns."from" AS tx_from
         ,txns.to AS tx_to
         ,cast(gas_price as uint256) as gas_price
@@ -39,6 +40,7 @@ SELECT
     ,block_time
     ,block_number
     ,tx_hash
+    ,tx_index
     ,SUBSTR(cast(tx_hash as varchar), 3) as tx_hash_varchar
     ,tx_from
     ,to_tron_address(tx_from) as tx_from_varchar

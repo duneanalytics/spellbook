@@ -40,15 +40,14 @@ base_trades as (
         , token_bought_protocol_fees_paid_raw
         , trade_type
     from 
-    {{ ref('dex_trades') }} dexs 
-    inner join 
-    base_trades bt 
+    {{ ref('dex_' ~ blockchain ~ '_trades') }} dexs
+    inner join
+    base_trades bt
         on dexs.block_number = bt.block_number
-        and dexs.tx_hash = bt.tx_hash 
-        and dexs.evt_index = bt.evt_index 
+        and dexs.tx_hash = bt.tx_hash
+        and dexs.evt_index = bt.evt_index
         and dexs.block_date = bt.block_date
-    where dexs.blockchain = '{{blockchain}}'
-    and dexs.project = '{{dex_project}}'
+    where dexs.project = '{{dex_project}}'
     and dexs.version = '{{dex_version}}'
     {%- if is_incremental() %}
     and {{ incremental_predicate('dexs.block_time') }}

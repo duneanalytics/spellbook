@@ -13,9 +13,10 @@ models:
         Sushiswap contract deployment constuctor configurations for rewarder contracts
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -45,10 +46,11 @@ models:
         Sushiswap masterchef mapping of pool ids to lp token addresses
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - lp_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - lp_address
     columns:
       - *blockchain
       - *contract_address
@@ -71,12 +73,13 @@ models:
         Sushiswap mapping of allocation points and token emissions per second by pool and rewarder
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - reward_token
-            - pid
-            - evt_block_number
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - reward_token
+              - pid
+              - evt_block_number
     columns:
       - &block_date
         name: block_date

@@ -42,6 +42,8 @@ models:
         description: "The contract address of the transfer."
       - name: amount_raw
         description: "The raw amount of the transfer."
+      - name: _updated_at
+        description: "Timestamp when this row was last written"
 
   - name: tokens_gnosis_transfers
     description: "All token transfers on the Gnosis blockchain, enriched with additional data."
@@ -61,6 +63,8 @@ models:
         description: "The USD price used to calculate the amount_usd."
       - name: amount_usd
         description: "The USD amount of the transfer."
+      - name: _updated_at
+        description: "Timestamp when this row was last written"
 
   - name: tokens_gnosis_suicide_transfers
     description: "Token transfers related to account destruction or contract suicide on the Gnosis blockchain."
@@ -122,9 +126,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: tokens_gnosis_net_transfers_daily_asset
     meta:
@@ -136,9 +141,10 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
 
 

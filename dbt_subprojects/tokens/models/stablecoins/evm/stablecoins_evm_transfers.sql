@@ -62,8 +62,6 @@ select
   token_address,
   token_symbol,
   currency,
-  token_backing,
-  token_name,
   amount_raw,
   amount,
   price_usd,

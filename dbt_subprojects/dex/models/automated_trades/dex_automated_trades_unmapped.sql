@@ -1,6 +1,7 @@
 {{ config(
     schema = 'dex'
     , alias = 'automated_trades_unmapped'
+    , tags = ['prod_exclude']
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'

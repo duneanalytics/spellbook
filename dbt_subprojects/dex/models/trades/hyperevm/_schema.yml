@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_hyperevm_base_trades
 
@@ -28,13 +30,15 @@ models:
     description: "PRJX V3 HyperEVM base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('prjx_hyperevm_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('prjx_hyperevm_base_trades_seed')
+            filter:
+              version: 3
 
   - name: hyperswap_v2_hyperevm_base_trades
     meta:
@@ -47,13 +51,15 @@ models:
     description: "HyperSwap V2 HyperEVM base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('hyperswap_hyperevm_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('hyperswap_hyperevm_base_trades_seed')
+            filter:
+              version: 2
 
   - name: hyperswap_v3_hyperevm_base_trades
     meta:
@@ -66,13 +72,15 @@ models:
     description: "HyperSwap V3 HyperEVM base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('hyperswap_hyperevm_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('hyperswap_hyperevm_base_trades_seed')
+            filter:
+              version: 3
 
   - name: hybra_v3_hyperevm_base_trades
     meta:
@@ -85,18 +93,42 @@ models:
     description: "Hybra V3 HyperEVM base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('hybra_hyperevm_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('hybra_hyperevm_base_trades_seed')
+            filter:
+              version: 3
  
   - name: dex_hyperevm_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date
+
+  - name: balancer_v3_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: balancer
+      contributors: krishg
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'balancer' ]
+    description: "Balancer V3 HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('balancer_hyperevm_base_trades_seed')
+            filter:
+              version: 3

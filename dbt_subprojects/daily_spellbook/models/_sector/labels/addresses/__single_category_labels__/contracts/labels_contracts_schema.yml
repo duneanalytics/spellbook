@@ -4,12 +4,13 @@ models:
   - name: labels_contracts
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - address
-          - name
-          - category
-          - model_name
-          - blockchain
+        arguments:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
     meta:
       blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c, fantom, polygon
       sector: labels

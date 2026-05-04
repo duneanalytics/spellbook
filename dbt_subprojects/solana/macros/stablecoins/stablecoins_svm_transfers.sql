@@ -33,6 +33,7 @@ where exists (
     from {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_' ~ token_list) }} s
     where s.token_mint_address = t.token_mint_address
   )
+  and t.amount > 0
 {# microbatch auto-filters via event_time; no is_incremental() block needed #}
 
 {% endmacro %}

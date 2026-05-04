@@ -14,6 +14,7 @@ FROM (
         ('Perena', 'NUMERUNsFCP3kuNmWZuXtm1AaQCPj9uw6Guv2Ekoi5P'),
         ('stabble Stable Swap', 'swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ'),
         ('stabble Weighted Swap', 'swapFpHZwjELNnjvThjajtiVmkz3yPQEHjLtka2fwHW'),
+        ('stabble CLMM', '6dMXqGZ3ga2dikrYS9ovDXgHGh5RUsb2RTUj6hrQXhk6'),
         ('Invariant', 'HyaB3W9q6XdA5xwpU4XnSZV94htfmbmqJXZcEbRaJutt'),
         ('Saber (Decimals)', 'DecZY86MU5Gj7kppfUCEmd4LbXXuyZH1yHaP2NTqdiZB'),
         ('Balansol', 'D3BBjqUdCYuP18fNvvMbPAZ8DpcRi4io2EsYHQawJDag'),

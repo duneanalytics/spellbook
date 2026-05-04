@@ -1,6 +1,7 @@
 {{ config(
     schema = 'dex'
     , alias = 'automated_base_trades'
+    , tags = ['prod_exclude']
     , materialized = 'view'
     )
 }}

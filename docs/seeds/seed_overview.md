@@ -1,6 +1,6 @@
 # What are Seeds and How Should I Use Them?
 
-Similar to macros, while there are various use cases for seeds within DBT, the main use case for wizards in Spellbook comes down to one approach. For sector-level spells, wizards should manually build a dataset in CSV format with expected results of a new model to enable a test-driven development approach.
+Similar to macros, while there are various use cases for seeds within dbt, the main use case for wizards in Spellbook comes down to one approach. For sector-level spells, wizards should manually build a dataset in CSV format with expected results of a new model to enable a test-driven development approach.
 
 Seeds will be required in these sector-level spell additions to ensure proper level of data quality is maintained. For standalone project spells, this is less of a requirement, although still encouraged for your own data quality.
 
@@ -10,8 +10,9 @@ Seeds will be required in these sector-level spell additions to ensure proper le
 2. Build a seed file in CSV format, which contains:
    - All the unique keys on the model for downstream join conditions in tests.
    - Fields which we want to test the results of the model execution.
+   - Keep it small — a handful of representative rows is sufficient. Large seeds slow down CI.
    - Example seed file [here](/dbt_subprojects/dex/seeds/trades/aerodrome_base_base_trades_seed.csv).
-3. Within the [model schema file](/dbt_subprojects/dex/models/trades/arbitrum/_schema.yml#23-25), call the [generic seed test](/dbt_subprojects/dex/tests/generic/check_dex_base_trades_seed.sql) with parameters necessary:
+3. Within the [model schema file](/dbt_subprojects/dex/models/trades/arbitrum/_schema.yml), call the [generic seed test](/dbt_subprojects/dex/tests/generic/check_dex_base_trades_seed.sql) with parameters necessary:
    - Seed file name.
    - Filter(s) for project versions, if the spell is split into versions per project.
 4. Ultimately, following the above steps, the test query built and executed against seed files lives in the generic seed macro [here](/dbt_macros/generic-tests/check_seed_macro.sql).

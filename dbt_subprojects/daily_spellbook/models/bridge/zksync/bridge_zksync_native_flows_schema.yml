@@ -11,11 +11,12 @@ models:
         Table aggregating bridge transfers through zkSync Era's Native Bridge.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - block_date
-              - blockchain
-              - tx_hash
-              - evt_index
+          arguments:
+            combination_of_columns:
+                - block_date
+                - blockchain
+                - tx_hash
+                - evt_index
     columns:
       - &blockchain
         name: blockchain

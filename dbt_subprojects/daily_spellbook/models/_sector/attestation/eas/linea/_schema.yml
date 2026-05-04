@@ -12,8 +12,9 @@ models:
     description: "EAS schema registry on Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - schema_uid
+          arguments:
+            combination_of_columns:
+              - schema_uid
     columns:
       - &schema_uid
         name: schema_uid
@@ -32,9 +33,10 @@ models:
     description: "EAS schema registry details on Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - schema_uid
-            - ordinality
+          arguments:
+            combination_of_columns:
+              - schema_uid
+              - ordinality
     columns:
       - *schema_uid
       - &ordinality
@@ -54,9 +56,10 @@ models:
     description: "EAS attestations on Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - schema_uid
-            - attestation_uid
+          arguments:
+            combination_of_columns:
+              - schema_uid
+              - attestation_uid
     columns:
       - *schema_uid
       - &attestation_uid
@@ -76,10 +79,11 @@ models:
     description: "EAS attestation details on Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - schema_uid
-            - attestation_uid
-            - ordinality
+          arguments:
+            combination_of_columns:
+              - schema_uid
+              - attestation_uid
+              - ordinality
     columns:
       - *schema_uid
       - *attestation_uid

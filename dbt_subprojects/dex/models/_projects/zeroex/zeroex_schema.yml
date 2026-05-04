@@ -12,20 +12,22 @@ models:
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
       - check_seed:
-          seed_file: ref('zeroex_api_fills_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
-            - taker_symbol
-            - maker_symbol
+          arguments:
+            seed_file: ref('zeroex_api_fills_sample')
+            match_columns:
+              - tx_hash
+              - evt_index
+            check_columns:
+              - maker
+              - taker
+              - taker_symbol
+              - maker_symbol
     columns:
       - &tx_hash
         name: tx_hash
@@ -105,7 +107,7 @@ models:
 
   - name: zeroex_api_fills_deduped
     meta: 
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast, mantle, worldchain, berachain, ink
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast, mantle, worldchain, berachain, ink, monad
       sector: dex
       project: zeroex
       contributors: rantum, bakabhai993
@@ -115,20 +117,22 @@ models:
         Zeroex API on all chains across all contracts and versions. This table will load dex trades downstream.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
       - check_seed:
-          seed_file: ref('zeroex_api_fills_deduped_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
-            - taker_symbol
-            - maker_symbol
+          arguments:
+            seed_file: ref('zeroex_api_fills_deduped_sample')
+            match_columns:
+              - tx_hash
+              - evt_index
+            check_columns:
+              - maker
+              - taker
+              - taker_symbol
+              - maker_symbol
     columns:
       - *tx_hash
       - *block_number
@@ -227,10 +231,11 @@ models:
         0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - *tx_hash
       - *contract_address
@@ -272,10 +277,11 @@ models:
         0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project 

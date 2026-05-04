@@ -55,7 +55,9 @@ TON_STATES AS (
         MAX_BY(end_status, lt) status,
         MAX(block_time) last_tx_at,
         MAX_BY(hash, lt) last_tx_hash,
-        MAX_BY(account_state_balance_after, lt) FILTER (WHERE account_state_balance_after IS NOT NULL) balance,
+        CASE WHEN MAX_BY(end_status, lt) = 'nonexist' THEN 0
+             ELSE MAX_BY(account_state_balance_after, lt) FILTER (WHERE account_state_balance_after IS NOT NULL)
+        END AS balance,
         MAX_BY(account_state_code_hash_after, lt) FILTER (WHERE account_state_code_hash_after IS NOT NULL) code_hash,
 
         MAX_BY(hash, lt) FILTER (WHERE end_status = 'active' AND orig_status != 'active') deployment_tx_hash,

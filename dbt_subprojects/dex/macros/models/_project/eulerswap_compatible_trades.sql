@@ -165,14 +165,13 @@ eulerswap_og_trades as (
       , ee.sender 
       , 'OG' as source 
     from 
-    {{ref('dex_trades')}} dexs 
-    inner join 
-    eulerswap_events ee 
-      on dexs.block_number = ee.block_number 
-      and dexs.tx_hash = ee.tx_hash 
-      and dexs.evt_index = ee.tx_index 
-    where dexs.blockchain = '{{blockchain}}'
-    and dexs.project = '{{project}}'
+    {{ref('dex_' ~ blockchain ~ '_trades')}} dexs
+    inner join
+    eulerswap_events ee
+      on dexs.block_number = ee.block_number
+      and dexs.tx_hash = ee.tx_hash
+      and dexs.evt_index = ee.tx_index
+    where dexs.project = '{{project}}'
     and dexs.version = '{{version}}'
     {% if is_incremental() %}
     and {{ incremental_predicate('dexs.block_time') }}
@@ -191,14 +190,13 @@ eulerswap_univ4_trades as (
       , ee.sender 
       , 'uni_v4' as source
     from 
-    {{ref('dex_trades')}} dexs 
-    inner join 
-    eulerswap_events ee 
-      on dexs.block_number = ee.block_number 
-      and dexs.tx_hash = ee.tx_hash 
-      and dexs.evt_index = ee.tx_index + 1 
-    where dexs.blockchain = '{{blockchain}}'
-    and dexs.project = 'uniswap'
+    {{ref('dex_' ~ blockchain ~ '_trades')}} dexs
+    inner join
+    eulerswap_events ee
+      on dexs.block_number = ee.block_number
+      and dexs.tx_hash = ee.tx_hash
+      and dexs.evt_index = ee.tx_index + 1
+    where dexs.project = 'uniswap'
     and dexs.version = '4'
     {% if is_incremental() %}
     and {{ incremental_predicate('dexs.block_time') }}
