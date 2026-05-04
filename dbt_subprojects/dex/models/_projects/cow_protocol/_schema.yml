@@ -105,10 +105,11 @@ models:
       CoW Protocol enriched trades list on Arbitrum Chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -182,10 +183,11 @@ models:
       CoW Protocol enriched trades list on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -266,10 +268,11 @@ models:
       CoW Protocol enriched trades list on Gnosis Chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -343,10 +346,11 @@ models:
       CoW Protocol enriched trades list on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -420,10 +424,11 @@ models:
       CoW Protocol enriched trades list on Avalanche
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -497,10 +502,11 @@ models:
       CoW Protocol enriched trades list on Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -574,10 +580,11 @@ models:
       CoW Protocol enriched trades list on Lens
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -651,10 +658,11 @@ models:
       CoW Protocol enriched trades list on Binance Smart Chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -728,10 +736,11 @@ models:
       CoW Protocol enriched trades list on Linea
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -805,10 +814,11 @@ models:
       CoW Protocol enriched trades list on Plasma
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"
@@ -882,12 +892,13 @@ models:
       CoW Protocol enriched trades list on Ink
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_number
-            - tx_hash
-            - order_uid
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_number
+              - tx_hash
+              - order_uid
+              - evt_index
     columns:
       - name: block_date
         description: "UTC event block date of each trade"

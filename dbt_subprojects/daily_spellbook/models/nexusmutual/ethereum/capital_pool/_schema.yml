@@ -11,12 +11,13 @@ models:
     description: "Token transfers in the Nexus Mutual Capital Pool"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - transfer_type
-            - symbol
-            - unique_key
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_time
+              - transfer_type
+              - symbol
+              - unique_key
+              - tx_hash
     columns:
       - &block_time
         name: block_time
@@ -84,8 +85,9 @@ models:
     description: "Daily running totals for core tokens in the Nexus Mutual Capital Pool"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
+          arguments:
+            combination_of_columns:
+              - block_date
     columns:
       - *block_date
       - &avg_eth_usd_price
@@ -198,8 +200,9 @@ models:
     description: "Minimum Capital Requirement (MCR) in the Nexus Mutual Capital Pool"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
+          arguments:
+            combination_of_columns:
+              - block_date
     columns:
       - *block_date
       - *avg_eth_usd_price
@@ -223,8 +226,9 @@ models:
     description: "Combined daily avg prices for base assets: ETH, DAI, USDC, cbBTC and NXM"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
+          arguments:
+            combination_of_columns:
+              - block_date
     columns:
       - *block_date
       - *avg_eth_usd_price
@@ -248,9 +252,10 @@ models:
     description: "swap/limit orders placed"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - order_id
+          arguments:
+            combination_of_columns:
+              - block_time
+              - order_id
     columns:
       - *block_time
       - *block_date
@@ -285,10 +290,11 @@ models:
     description: "swap/limit orders closed"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - fill_type
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_time
+              - fill_type
+              - tx_hash
     columns:
       - *block_time
       - *block_date

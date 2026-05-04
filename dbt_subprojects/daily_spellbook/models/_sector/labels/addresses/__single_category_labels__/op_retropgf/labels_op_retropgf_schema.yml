@@ -4,12 +4,13 @@ models:
   - name: labels_op_retropgf
     data_tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - address
-          - name
-          - category
-          - model_name
-          - blockchain
+        arguments:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
     meta:
       blockchain: optimism
       sector: labels

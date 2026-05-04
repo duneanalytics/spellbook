@@ -1,25 +1,6 @@
 version: 2
 
 models:
-  - name: tokens_gnosis_v1_erc20
-    meta:
-      blockchain: gnosis
-      sector: tokens
-      project: erc20
-      contributors: hildobby
-    config:
-      tags: ['table', 'metadata', 'gnosis', 'erc20']
-    description: "ERC20 Token Addresses, Symbols and Decimals"
-    columns:
-      - name: contract_address
-        description: "ERC20 token contract address"
-        data_tests:
-          - unique
-      - name: symbol
-        description: "ERC20 token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible an ERC20 token can be"
-
   - name: tokens_gnosis_nft_curated
     meta:
       blockchain: gnosis
@@ -60,7 +41,8 @@ models:
       - name: standard
         data_tests:
           - accepted_values:
-              values: [ 'erc721', 'erc1155']
+              arguments:
+                values: [ 'erc721', 'erc1155']
         description: >
           The token standard. This is the set of rules that the contract must respect
           to be compatible with the common standards. Accepted values are presently standards represented.
@@ -85,4 +67,5 @@ models:
         description: "The NFT standard erc721/erc1155/..."
         data_tests:
           - accepted_values:
-              values: [ 'erc721', 'erc1155']
+              arguments:
+                values: [ 'erc721', 'erc1155']

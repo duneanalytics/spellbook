@@ -34,7 +34,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['native', 'erc20', 'bep20']
+              arguments:
+                values: ['native', 'erc20', 'bep20']
         description: "Token standard"
       - name: tx_from
         description: "Address that initiated the transaction"

@@ -12,10 +12,11 @@ models:
       pairs added for trading on tigris on arbitrum  on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - protocol_version
-            - asset_id 
-            - pair 
+          arguments:
+            combination_of_columns:
+              - protocol_version
+              - asset_id 
+              - pair 
     columns:
       - &protocol_version
         name: protocol_version
@@ -38,11 +39,12 @@ models:
       open position events for tigris events on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id
+              - protocol_version
     columns:
       - &day
         name: day 
@@ -112,13 +114,14 @@ models:
       add margin events for tigris events on v1
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id 
-            - trader
-            - margin
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id 
+              - trader
+              - margin
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -148,14 +151,15 @@ models:
       modify margin events for tigris events on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id 
-            - trader
-            - margin
-            - leverage
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id 
+              - trader
+              - margin
+              - leverage
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -186,12 +190,13 @@ models:
       close position events for tigris events on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id 
-            - evt_index
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id 
+              - evt_index
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -222,12 +227,13 @@ models:
       liquidate position events for tigris events on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id 
-            - trader
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id 
+              - trader
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -253,11 +259,12 @@ models:
       limit order events on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -290,9 +297,10 @@ models:
       tigris trading contracts and their corresponding positions contract
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - trading_contract
-            - positions_contract
+          arguments:
+            combination_of_columns:
+              - trading_contract
+              - positions_contract
     columns:
       - &trading_contract
         name: trading_contract
@@ -316,11 +324,12 @@ models:
       limit cancelled events on v1 & v2
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -345,11 +354,12 @@ models:
       options open position across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -398,11 +408,12 @@ models:
       options close position across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -440,11 +451,12 @@ models:
       options limit order across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -479,11 +491,12 @@ models:
       options limit cancel across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - position_id
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - position_id
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -518,11 +531,12 @@ models:
       fees distributed events 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - version
-            - protocol_version
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - version
+              - protocol_version
     columns:
       - *day
       - *evt_block_time
@@ -547,10 +561,11 @@ models:
       fees distributed events 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - evt_tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - evt_block_time
+              - evt_tx_hash
+              - evt_index
     columns:
       - *day
       - *evt_block_time

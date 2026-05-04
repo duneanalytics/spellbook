@@ -11,7 +11,8 @@ models:
     description: "Bridge deposits events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -86,7 +87,8 @@ models:
     description: "Bridge withdrawals events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -121,7 +123,8 @@ models:
     description: "Bridge deposits events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -154,7 +157,8 @@ models:
     description: "Bridge withdrawals events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -187,7 +191,8 @@ models:
     description: "Bridge deposits events on OP Mainnet"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -220,7 +225,8 @@ models:
     description: "Bridge withdrawals events on OP Mainnet"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -253,7 +259,8 @@ models:
     description: "Bridge deposits events on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -286,7 +293,8 @@ models:
     description: "Bridge withdrawals events on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -319,7 +327,8 @@ models:
     description: "Bridge deposits events on Unichain"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -352,7 +361,8 @@ models:
     description: "Bridge withdrawals events on Unichain"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain

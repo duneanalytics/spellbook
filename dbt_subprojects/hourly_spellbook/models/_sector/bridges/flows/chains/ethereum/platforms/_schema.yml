@@ -12,10 +12,12 @@ models:
     description: "Circle's CCTP v1 bridge deposits events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_ethereum', 'tokenmessenger_evt_depositforburn')
+          arguments:
+            evt_sources:
+              - source('circle_ethereum', 'tokenmessenger_evt_depositforburn')
   - name: bridges_ethereum_cctp_v1_withdrawals
     meta:
       blockchain: ethereum
@@ -27,10 +29,12 @@ models:
     description: "Circle's CCTP v1 bridge withdrawals events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
+          arguments:
+            evt_sources:
+              - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_ethereum_celer_v1_deposits
     meta:
       blockchain: ethereum
@@ -42,10 +46,12 @@ models:
     description: "Celer v1 bridge deposits events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('celer_ethereum','bridge_evt_send')
+          arguments:
+            evt_sources:
+              - source('celer_ethereum','bridge_evt_send')
   - name: bridges_ethereum_celer_v1_withdrawals
     meta:
       blockchain: ethereum
@@ -57,10 +63,12 @@ models:
     description: "Celer v1 bridge withdrawals events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('celer_ethereum','bridge_evt_relay')
+          arguments:
+            evt_sources:
+              - source('celer_ethereum','bridge_evt_relay')
   - name: bridges_ethereum_across_v1_deposits
     meta:
       blockchain: ethereum

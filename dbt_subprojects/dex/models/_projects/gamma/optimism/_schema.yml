@@ -12,9 +12,10 @@ models:
         A canonical table containing Uniswap mappings for known Gamma pools created on Optimism. 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              - pool_contract
+          arguments:
+            combination_of_columns:
+                - contract_address
+                - pool_contract
     columns:
       - &blockchain
         name: blockchain

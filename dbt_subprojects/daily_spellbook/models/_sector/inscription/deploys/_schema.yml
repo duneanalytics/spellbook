@@ -12,9 +12,10 @@ models:
       Inscription deploys on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - &blockchain
         name: blockchain
@@ -70,9 +71,10 @@ models:
       Inscription deploys on Arbitrum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -101,9 +103,10 @@ models:
       Inscription deploys on Avalanche
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -132,9 +135,10 @@ models:
       Inscription deploys on BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -163,9 +167,10 @@ models:
       Inscription deploys on Fantom
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -194,9 +199,10 @@ models:
       Inscription deploys on Gnosis
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -225,9 +231,10 @@ models:
       Inscription deploys on Optimism
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -256,9 +263,10 @@ models:
       Inscription deploys on Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -287,9 +295,10 @@ models:
       Inscription deploys on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -318,9 +327,10 @@ models:
       Inscription deploys on Celo
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -349,9 +359,10 @@ models:
       Inscription deploys on zkSync
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -380,9 +391,10 @@ models:
       Inscription deploys on Zora Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -411,9 +423,10 @@ models:
       Inscription deploys on Scroll
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -442,9 +455,10 @@ models:
       Inscription deploys on Goerli Testnet
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -473,9 +487,10 @@ models:
       Inscription deploys on Linea
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time
@@ -505,9 +520,10 @@ models:
       Inscription deploys on Polygon zkEVM
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
     columns: 
       - *blockchain
       - *block_time

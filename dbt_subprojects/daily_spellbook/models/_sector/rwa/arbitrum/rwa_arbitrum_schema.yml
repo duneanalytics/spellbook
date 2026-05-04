@@ -14,8 +14,9 @@ models:
     description: "RWA tokens"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_address
+          arguments:
+            combination_of_columns:
+              - token_address
 
     columns:
     - &token_address
@@ -50,8 +51,9 @@ models:
     description: "RWA tokens DEX Pools"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_address, pool
+          arguments:
+            combination_of_columns:
+              - token_address, pool
 
     columns:
     - *project
@@ -79,10 +81,11 @@ models:
     description: "Balances of RWA token holders"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
     columns:
     - &blockchain
       name: blockchain
@@ -131,10 +134,11 @@ models:
     description: "Balances of RWA token DEXes"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
     columns:
     - *blockchain
     - *project

@@ -12,10 +12,11 @@ models:
         NFT approvals
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -36,7 +37,8 @@ models:
       - name: token_standard
         data_tests:
           - accepted_values:
-              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
+              arguments:
+                values: ['erc721', 'erc1155', 'bep721', 'bep1155']
       - name: approval_for_all
         description: "Was this an ApprovalForAll or a simple Approval?"
       - name: contract_address

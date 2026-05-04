@@ -12,13 +12,15 @@ models:
         All Gitcoin donations on Polygon
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('gitcoin_polygon', 'BulkCheckout_evt_DonationSent')
+          arguments:
+            evt_sources:
+              - source('gitcoin_polygon', 'BulkCheckout_evt_DonationSent')
     columns:
       - name: blockchain
       - name: project

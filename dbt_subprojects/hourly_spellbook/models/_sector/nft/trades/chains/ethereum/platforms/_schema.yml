@@ -13,24 +13,27 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+          arguments:
+            combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('archipelago_ethereum','ArchipelagoMarket_evt_Trade')
+          arguments:
+            evt_sources:
+              - source('archipelago_ethereum','ArchipelagoMarket_evt_Trade')
       - check_seed:
-          seed_file: ref('archipelago_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('archipelago_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
 
   - name: superrare_ethereum_base_trades
@@ -45,21 +48,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('superrare_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('superrare_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
 
   - name: foundation_ethereum_base_trades
@@ -74,29 +79,32 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('foundation_ethereum','market_evt_ReserveAuctionFinalized')
-            - source('foundation_ethereum','market_evt_BuyPriceAccepted')
-            - source('foundation_ethereum','market_evt_OfferAccepted')
-            - source('foundation_ethereum','market_evt_PrivateSaleFinalized')
-            - source('foundation_ethereum','NFTDropMarket_evt_MintFromFixedPriceDrop')
-            - source('foundation_ethereum','NFTDropMarket_evt_MintFromDutchAuction')
+          arguments:
+            evt_sources:
+              - source('foundation_ethereum','market_evt_ReserveAuctionFinalized')
+              - source('foundation_ethereum','market_evt_BuyPriceAccepted')
+              - source('foundation_ethereum','market_evt_OfferAccepted')
+              - source('foundation_ethereum','market_evt_PrivateSaleFinalized')
+              - source('foundation_ethereum','NFTDropMarket_evt_MintFromFixedPriceDrop')
+              - source('foundation_ethereum','NFTDropMarket_evt_MintFromDutchAuction')
       - check_seed:
-          seed_file: ref('foundation_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('foundation_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: cryptopunks_ethereum_base_trades
     meta:
@@ -110,25 +118,28 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - equal_rowcount_with_sources:
-          error_if: ">1"
-          evt_sources:
-            - source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought')
+          arguments:
+            error_if: ">1"
+            evt_sources:
+              - source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought')
       - check_seed:
-          seed_file: ref('cryptopunks_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('cryptopunks_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: blur_ethereum_base_trades
     meta:
@@ -142,21 +153,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('blur_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('blur_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: blur_seaport_ethereum_base_trades
     meta:
@@ -170,21 +183,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('blur_seaport_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('blur_seaport_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: blur_v2_ethereum_base_trades
     meta:
@@ -198,21 +213,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('blur_v2_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('blur_v2_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: element_ethereum_base_trades
     meta:
@@ -226,27 +243,30 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('element_ex_ethereum','OrdersFeature_evt_ERC721SellOrderFilled')
-            - source('element_ex_ethereum','OrdersFeature_evt_ERC721BuyOrderFilled')
-            - source('element_ex_ethereum','OrdersFeature_evt_ERC1155SellOrderFilled')
-            - source('element_ex_ethereum','OrdersFeature_evt_ERC1155BuyOrderFilled')
+          arguments:
+            evt_sources:
+              - source('element_ex_ethereum','OrdersFeature_evt_ERC721SellOrderFilled')
+              - source('element_ex_ethereum','OrdersFeature_evt_ERC721BuyOrderFilled')
+              - source('element_ex_ethereum','OrdersFeature_evt_ERC1155SellOrderFilled')
+              - source('element_ex_ethereum','OrdersFeature_evt_ERC1155BuyOrderFilled')
       - check_seed:
-          seed_file: ref('element_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('element_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: x2y2_ethereum_base_trades
     meta:
@@ -260,24 +280,27 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('x2y2_ethereum','X2Y2_r1_evt_EvInventory')
+          arguments:
+            evt_sources:
+              - source('x2y2_ethereum','X2Y2_r1_evt_EvInventory')
       - check_seed:
-          seed_file: ref('x2y2_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('x2y2_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: looksrare_v1_ethereum_base_trades
     meta:
@@ -291,25 +314,28 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('looksrare_ethereum','LooksRareExchange_evt_TakerAsk')
-            - source('looksrare_ethereum','LooksRareExchange_evt_TakerBid')
+          arguments:
+            evt_sources:
+              - source('looksrare_ethereum','LooksRareExchange_evt_TakerAsk')
+              - source('looksrare_ethereum','LooksRareExchange_evt_TakerBid')
       - check_seed:
-          seed_file: ref('looksrare_v1_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('looksrare_v1_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: looksrare_v2_ethereum_base_trades
     meta:
@@ -323,25 +349,28 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('looksrare_v2_ethereum','LooksRareProtocol_evt_TakerAsk')
-            - source('looksrare_v2_ethereum','LooksRareProtocol_evt_TakerBid')
+          arguments:
+            evt_sources:
+              - source('looksrare_v2_ethereum','LooksRareProtocol_evt_TakerAsk')
+              - source('looksrare_v2_ethereum','LooksRareProtocol_evt_TakerBid')
       - check_seed:
-          seed_file: ref('looksrare_v2_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('looksrare_v2_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: looksrare_seaport_ethereum_base_trades
     meta:
@@ -355,21 +384,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('looksrare_seaport_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('looksrare_seaport_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: zora_v1_ethereum_base_trades
     meta:
@@ -383,21 +414,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('zora_v1_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('zora_v1_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: zora_v2_ethereum_base_trades
     meta:
@@ -411,24 +444,27 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('zora_ethereum','AuctionHouse_evt_AuctionEnded')
+          arguments:
+            evt_sources:
+              - source('zora_ethereum','AuctionHouse_evt_AuctionEnded')
       - check_seed:
-          seed_file: ref('zora_v2_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('zora_v2_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: zora_v3_ethereum_base_trades
     meta:
@@ -442,34 +478,37 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - equal_rowcount_with_sources:
-          evt_sources:
-            - source('zora_v3_ethereum','OffersV1_evt_ExchangeExecuted')
-            - source('zora_v3_ethereum','AsksV1_0_evt_ExchangeExecuted')
-            - source('zora_v3_ethereum','AsksV1_1_evt_ExchangeExecuted')
-            - source('zora_v3_ethereum','ReserveAuctionFindersEth_evt_AuctionEnded')
-            - source('zora_v3_ethereum','ReserveAuctionFindersErc20_evt_AuctionEnded')
-            - source('zora_v3_ethereum','ReserveAuctionCoreEth_evt_AuctionEnded')
-            - source('zora_v3_ethereum','ReserveAuctionCoreErc20_evt_AuctionEnded')
-            - source('zora_v3_ethereum','ReserveAuctionListingEth_evt_AuctionEnded')
-            - source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_AuctionEnded')
-            - source('zora_v3_ethereum','AsksPrivateEth_evt_AskFilled')
-            - source('zora_v3_ethereum','AsksCoreEth_evt_AskFilled')
+          arguments:
+            evt_sources:
+              - source('zora_v3_ethereum','OffersV1_evt_ExchangeExecuted')
+              - source('zora_v3_ethereum','AsksV1_0_evt_ExchangeExecuted')
+              - source('zora_v3_ethereum','AsksV1_1_evt_ExchangeExecuted')
+              - source('zora_v3_ethereum','ReserveAuctionFindersEth_evt_AuctionEnded')
+              - source('zora_v3_ethereum','ReserveAuctionFindersErc20_evt_AuctionEnded')
+              - source('zora_v3_ethereum','ReserveAuctionCoreEth_evt_AuctionEnded')
+              - source('zora_v3_ethereum','ReserveAuctionCoreErc20_evt_AuctionEnded')
+              - source('zora_v3_ethereum','ReserveAuctionListingEth_evt_AuctionEnded')
+              - source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_AuctionEnded')
+              - source('zora_v3_ethereum','AsksPrivateEth_evt_AskFilled')
+              - source('zora_v3_ethereum','AsksCoreEth_evt_AskFilled')
       - check_seed:
-          seed_file: ref('zora_v3_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('zora_v3_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: sudoswap_ethereum_base_trades
     meta:
@@ -483,21 +522,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('sudoswap_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('sudoswap_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: sudoswap_v2_ethereum__pools
     meta:
@@ -526,21 +567,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('sudoswap_v2_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('sudoswap_v2_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: collectionswap_ethereum__pools
     meta:
@@ -569,21 +612,23 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('collectionswap_ethereum_base_trades_seed')
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('collectionswap_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
 
   - name: trove_ethereum_base_trades
     meta:
@@ -597,7 +642,8 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
   - name: liquidifty_ethereum_base_trades
     meta:
@@ -611,7 +657,8 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
   - name: magiceden_ethereum_base_trades
     meta:
@@ -625,7 +672,8 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
   - name: opensea_v1_ethereum_base_trades
     meta:
@@ -639,20 +687,22 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+          arguments:
+            combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
       - check_seed:
-          seed_file: ref('opensea_wyvern_trades_samples')
-          match_columns:
-            - tx_hash
-            - sub_tx_trade_id
-          check_columns:
-            - buyer
-            - seller
-            - nft_contract_address
-            - nft_token_id
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('opensea_wyvern_trades_samples')
+            match_columns:
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
   - name: opensea_v3_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -665,26 +715,28 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
       - check_seed:
-          seed_file: ref('opensea_seaport_trades_samples')
-          filter:
-            blockchain: ethereum
-            project: opensea
-            project_version: v3
-          check_columns:
-            - buyer
-            - seller
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
+          arguments:
+            seed_file: ref('opensea_seaport_trades_samples')
+            filter:
+              blockchain: ethereum
+              project: opensea
+              project_version: v3
+            check_columns:
+              - buyer
+              - seller
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
 
   - name: opensea_v4_ethereum_base_trades
     meta:
@@ -698,26 +750,28 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
       - check_seed:
-          seed_file: ref('opensea_seaport_trades_samples')
-          filter:
-            blockchain: ethereum
-            project: opensea
-            project_version: v4
-          check_columns:
-            - buyer
-            - seller
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
+          arguments:
+            seed_file: ref('opensea_seaport_trades_samples')
+            filter:
+              blockchain: ethereum
+              project: opensea
+              project_version: v4
+            check_columns:
+              - buyer
+              - seller
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
 
   - name: spaace_v1_ethereum_base_trades
     meta:
@@ -731,23 +785,25 @@ models:
     data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
       - check_seed:
-          seed_file: ref('spaace_seaport_trades_samples')
-          filter:
-            blockchain: ethereum
-            project: spaace
-            project_version: v1
-          check_columns:
-            - buyer
-            - seller
-            - price_raw
-            - platform_fee_amount_raw
-            - royalty_fee_amount_raw
-          match_columns:
-            - block_number
-            - tx_hash
-            - sub_tx_trade_id
+          arguments:
+            seed_file: ref('spaace_seaport_trades_samples')
+            filter:
+              blockchain: ethereum
+              project: spaace
+              project_version: v1
+            check_columns:
+              - buyer
+              - seller
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id

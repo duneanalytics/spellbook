@@ -12,9 +12,10 @@ models:
     description: "Mapping of contracts to its creators and names on celo."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
     columns:
       - &created_month
         name: created_month
@@ -123,9 +124,10 @@ models:
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
     columns:
       - *blockchain
       - *created_time
@@ -152,9 +154,10 @@ models:
     description: "Base Level for mapping of contracts to its creators and names on celo."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
     columns:
       - *blockchain
       - *trace_creator_address
@@ -183,9 +186,10 @@ models:
     description: "Iterated creators for mapping of contracts to its creators and names on celo."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
     columns:
       - *blockchain
       - *trace_creator_address

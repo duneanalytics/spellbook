@@ -18,8 +18,9 @@ models:
       source_updated_at is stored for lineage; merge does not use dest incremental_predicates (correctness).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - ticker
+          arguments:
+            combination_of_columns:
+              - ticker
     columns:
       - name: ticker
         description: "Unique market identifier (e.g., KXBTCD-26APR04-T99499.99)"
@@ -157,9 +158,10 @@ models:
       moved in the window (refreshes dimension columns on historical trades).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - trade_id
+          arguments:
+            combination_of_columns:
+              - block_month
+              - trade_id
     columns:
       - name: trade_id
         description: "Unique trade identifier"
@@ -223,11 +225,12 @@ models:
       No is implied as 1 - Yes. Full history on first build.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - hour
-            - market_id
-            - outcome
+          arguments:
+            combination_of_columns:
+              - block_month
+              - hour
+              - market_id
+              - outcome
     columns:
       - name: block_month
         description: "UTC month partition derived from hour (date_trunc('month', hour))"
@@ -268,7 +271,7 @@ models:
       - name: market_end_time
         description: "Market expiration time"
       - name: market_outcome
-        description: "Settled outcome of the market (yes/no/empty if unresolved)"
+        description: "Settled outcome of the market (yes/no/scalar/unresolved)"
       - name: event_market_name
         description: "Parent event title (event_title), falling back to market title — aligns with polymarket_polygon_ohlcv_hourly.event_market_name"
       - name: is_forward_filled

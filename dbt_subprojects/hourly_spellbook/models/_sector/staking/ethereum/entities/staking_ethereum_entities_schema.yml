@@ -11,8 +11,9 @@ models:
     description: Ethereum staking identified depositor entities (where a contract is called and the ETH comes from a different address)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
+          arguments:
+            combination_of_columns:
+              - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -26,7 +27,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_coinbase
     meta:
@@ -38,8 +40,9 @@ models:
     description: Coinbase's Ethereum staking identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
+          arguments:
+            combination_of_columns:
+              - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -53,7 +56,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_binance
     meta:
@@ -65,8 +69,9 @@ models:
     description: Binance's Ethereum staking identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
+          arguments:
+            combination_of_columns:
+              - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -80,7 +85,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_bitcoin_suisse
     meta:
@@ -92,8 +98,9 @@ models:
     description: Bitcoin Suisse's Ethereum staking identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
+          arguments:
+            combination_of_columns:
+              - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -107,7 +114,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_batch_contracts_tx_from
     meta:
@@ -119,8 +127,9 @@ models:
     description: Batch staking contracts identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_from
+          arguments:
+            combination_of_columns:
+              - tx_from
     columns:
       - name: tx_from
         description: "Transaction sender of identified depositor entity"
@@ -134,7 +143,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_batch_contracts_pubkey
     meta:
@@ -146,8 +156,9 @@ models:
     description: Batch staking contracts identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pubkey
+          arguments:
+            combination_of_columns:
+              - pubkey
     columns:
       - name: pubkey
         description: "Pubkey of identified depositor entity"
@@ -161,7 +172,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_withdrawal_credentials
     meta:
@@ -173,8 +185,9 @@ models:
     description: Depositor entities identified through withdrawal credentials
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - withdrawal_credentials
+          arguments:
+            combination_of_columns:
+              - withdrawal_credentials
     columns:
       - name: withdrawal_credentials
         description: "Withdrawal Credentials of identified depositor entity"
@@ -188,7 +201,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_depositor_addresses
     meta:
@@ -200,8 +214,9 @@ models:
     description: Ethereum staking identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
+          arguments:
+            combination_of_columns:
+              - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -215,7 +230,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_tx_from_addresses
     meta:
@@ -227,8 +243,9 @@ models:
     description: Ethereum staking identified tx_from entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_from
+          arguments:
+            combination_of_columns:
+              - tx_from
     columns:
       - name: tx_from
         description: "Address that initiated the deposit transaction(s)"
@@ -242,7 +259,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_darma_capital
     meta:
@@ -254,8 +272,9 @@ models:
     description: DARMA Capital's Ethereum staking identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
+          arguments:
+            combination_of_columns:
+              - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -269,7 +288,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_stakewise_v3
     meta:
@@ -281,8 +301,9 @@ models:
     description: StakeWise v3 Ethereum staking vaults identified
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
+          arguments:
+            combination_of_columns:
+              - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -296,7 +317,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_entities_chorusone
     meta:
@@ -308,8 +330,9 @@ models:
     description:  Chorus One's Ethereum staking identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pubkey
+          arguments:
+            combination_of_columns:
+              - pubkey
     columns:
       - name: pubkey
         description: "Pubkey of identified validator"
@@ -323,4 +346,5 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]

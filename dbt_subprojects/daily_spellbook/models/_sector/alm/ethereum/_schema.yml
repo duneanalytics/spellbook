@@ -20,7 +20,8 @@ models:
     description: "arrakis finance ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - vault_address
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - vault_address

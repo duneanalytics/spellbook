@@ -7,12 +7,15 @@
 -- use uint256_max_double for safe double comparison
 {% set uint256_max_double = '1.0e77' %}
 
-with non_circulating_inventory_accounts as (
+{% set non_circulating_inventory_relation = ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_non_circulating_inventory_accounts') %}
+
+with
+non_circulating_inventory_accounts as (
   select
     blockchain,
     token_mint_address,
     token_account
-  from {{ ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_accounts') }}
+  from {{ non_circulating_inventory_relation }}
   where excluded
 ),
 

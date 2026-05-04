@@ -12,7 +12,8 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
+          arguments:
+            combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
 
   - name: dex_solana_trades
     meta:
@@ -26,7 +27,8 @@ models:
         The dex_solana.trades table captures detailed data on decentralized exchange (DEX) trades on the Solana blockchain, recording all trade events across various protocols.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
+          arguments:
+            combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
     columns:
       - &blockchain
         name: blockchain
@@ -72,7 +74,8 @@ models:
         description: "USD value of the trade at time of execution"
         data_tests:
           - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+              arguments:
+                max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &fee_tier
         name: fee_tier
         description: "Whirlpool fee tier (fee %)"
@@ -122,10 +125,11 @@ models:
         All token price in Orca pool
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - hour
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - contract_address
+              - hour
     columns:
       - name: blockchain
         description: "Blockchain which the DEX is deployed"

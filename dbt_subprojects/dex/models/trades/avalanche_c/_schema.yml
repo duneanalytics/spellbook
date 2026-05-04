@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_avalanche_c_base_trades
 
@@ -28,13 +30,15 @@ models:
     description: "uniswap avalanche_c v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_avalanche_c_base_trades_seed')
-          filter:
-            version: 4
+          arguments:
+            seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+            filter:
+              version: 4
 
   - name: uniswap_v3_avalanche_c_base_trades
     meta:
@@ -47,13 +51,15 @@ models:
     description: "uniswap avalanche_c v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_avalanche_c_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+            filter:
+              version: 3
 
 
   - name: airswap_avalanche_c_base_trades
@@ -67,11 +73,13 @@ models:
     description: "Airswap avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('airswap_avalanche_c_base_trades_seed')
+          arguments:
+            seed_file: ref('airswap_avalanche_c_base_trades_seed')
 
 
   - name: sushiswap_v1_avalanche_c_base_trades
@@ -85,13 +93,15 @@ models:
     description: "Sushiswap avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_avalanche_c_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('sushiswap_avalanche_c_base_trades_seed')
+            filter:
+              version: 1
 
 
   - name: sushiswap_v2_avalanche_c_base_trades
@@ -105,13 +115,15 @@ models:
     description: "Sushiswap avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_avalanche_c_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('sushiswap_avalanche_c_base_trades_seed')
+            filter:
+              version: 2
 
 
   - name: trader_joe_v1_avalanche_c_base_trades
@@ -125,13 +137,15 @@ models:
     description: "Trader Joe avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+            filter:
+              version: 1
 
 
   - name: trader_joe_v2_avalanche_c_base_trades
@@ -145,13 +159,15 @@ models:
     description: "Trader Joe avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+            filter:
+              version: 2
 
 
   - name: trader_joe_v2_1_avalanche_c_base_trades
@@ -165,13 +181,15 @@ models:
     description: "Trader Joe avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
-          filter:
-            version: 2.1
+          arguments:
+            seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+            filter:
+              version: 2.1
 
   - name: trader_joe_v2_2_avalanche_c_base_trades
     meta:
@@ -184,13 +202,15 @@ models:
     description: "Trader Joe avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
-          filter:
-            version: 2.2
+          arguments:
+            seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+            filter:
+              version: 2.2
 
   - name: balancer_v2_avalanche_c_base_trades
     meta:
@@ -203,13 +223,15 @@ models:
     description: "Balancer v2 avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_avalanche_c_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('balancer_avalanche_c_base_trades_seed')
+            filter:
+              version: 2
 
   - name: fraxswap_avalanche_c_base_trades
     meta:
@@ -222,13 +244,15 @@ models:
     description: "Fraxswap avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fraxswap_avalanche_c_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('fraxswap_avalanche_c_base_trades_seed')
+            filter:
+              version: 1
 
   - name: glacier_v2_avalanche_c_base_trades
     meta:
@@ -241,13 +265,15 @@ models:
     description: "Glacier avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('glacier_avalanche_c_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('glacier_avalanche_c_base_trades_seed')
+            filter:
+              version: 2
             
   - name: glacier_v3_avalanche_c_base_trades
     meta:
@@ -260,13 +286,15 @@ models:
     description: "Glacier avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('glacier_avalanche_c_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('glacier_avalanche_c_base_trades_seed')
+            filter:
+              version: 3
             
   - name: gmx_avalanche_c_base_trades
     meta:
@@ -279,11 +307,13 @@ models:
     description: "GMX avalanche_c v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('gmx_avalanche_c_base_trades_seed')
+          arguments:
+            seed_file: ref('gmx_avalanche_c_base_trades_seed')
 
   - name: pharaoh_avalanche_c_base_trades
     meta:
@@ -296,11 +326,13 @@ models:
     description: "pharaoh avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pharaoh_avalanche_c_base_trades_seed')
+          arguments:
+            seed_file: ref('pharaoh_avalanche_c_base_trades_seed')
 
 
   - name: kyberswap_avalanche_c_base_trades
@@ -314,16 +346,18 @@ models:
     description: "kyberswap avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('kyberswap_avalanche_c_base_trades_seed')
-          filter:
-            version:
-              - classic
-              - elastic
-              - elastic_2
+          arguments:
+            seed_file: ref('kyberswap_avalanche_c_base_trades_seed')
+            filter:
+              version:
+                - classic
+                - elastic
+                - elastic_2
 
   - name: platypus_finance_avalanche_c_base_trades
     meta:
@@ -336,11 +370,13 @@ models:
     description: "Platypus Finance avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('platypus_finance_avalanche_c_base_trades_seed')
+          arguments:
+            seed_file: ref('platypus_finance_avalanche_c_base_trades_seed')
           
   - name: openocean_avalanche_c_base_trades
     meta:
@@ -353,11 +389,13 @@ models:
     description: "openocean avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('openocean_avalanche_c_base_trades_seed')
+          arguments:
+            seed_file: ref('openocean_avalanche_c_base_trades_seed')
 
   - name: woofi_avalanche_c_base_trades
     meta:
@@ -370,11 +408,13 @@ models:
     description: "woofi avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('woofi_avalanche_c_base_trades_seed')
+          arguments:
+            seed_file: ref('woofi_avalanche_c_base_trades_seed')
           
   - name: curvefi_avalanche_c_base_trades
     meta:
@@ -387,11 +427,13 @@ models:
     description: "Curvefi avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('curvefi_avalanche_c_base_trades_seed')
+          arguments:
+            seed_file: ref('curvefi_avalanche_c_base_trades_seed')
 
 
   - name: hashflow_avalanche_c_base_trades
@@ -406,11 +448,13 @@ models:
       Hashflow contract trades on Avalanche C-Chain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('hashflow_avalanche_c_base_trades_seed')
+          arguments:
+            seed_file: ref('hashflow_avalanche_c_base_trades_seed')
 
   - name: uniswap_v2_avalanche_c_base_trades
     meta:
@@ -423,13 +467,15 @@ models:
     description: "uniswap avalanche_c v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_avalanche_c_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+            filter:
+              version: 2
 
   - name: elk_finance_avalanche_c_base_trades
     meta:
@@ -442,13 +488,15 @@ models:
     description: "elk_finance avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('elk_finance_avalanche_c_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('elk_finance_avalanche_c_base_trades_seed')
+            filter:
+              version: 1
 
   - name: blackhole_v2_avalanche_c_base_trades
     meta:
@@ -461,13 +509,15 @@ models:
     description: "Blackhole avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('blackhole_avalanche_c_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('blackhole_avalanche_c_base_trades_seed')
+            filter:
+              version: 2
             
   - name: blackhole_v3_avalanche_c_base_trades
     meta:
@@ -480,13 +530,15 @@ models:
     description: "Blackhole avalanche_c base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('blackhole_avalanche_c_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('blackhole_avalanche_c_base_trades_seed')
+            filter:
+              version: 3
 
   - name: pharaoh_v3_legacy_avalanche_c_base_trades
     meta:
@@ -499,13 +551,15 @@ models:
     description: "Pharaoh V3 legacy (uni v2) base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pharaoh_v3_avalanche_c_base_trades_seed')
-          filter:
-            version: legacy
+          arguments:
+            seed_file: ref('pharaoh_v3_avalanche_c_base_trades_seed')
+            filter:
+              version: legacy
 
   - name: pharaoh_v3_cl_avalanche_c_base_trades
     meta:
@@ -518,18 +572,21 @@ models:
     description: "Pharaoh V3 cl (uni v3) base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pharaoh_v3_avalanche_c_base_trades_seed')
-          filter:
-            version: cl
+          arguments:
+            seed_file: ref('pharaoh_v3_avalanche_c_base_trades_seed')
+            filter:
+              version: cl
 
   - name: dex_avalanche_c_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

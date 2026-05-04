@@ -37,10 +37,11 @@ models:
       Beethoven X pools liquidity by token in sonic.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_id
+              - token_address
     columns:
       - name: day
         description: 'UTC event block time truncated to the day mark'
@@ -80,11 +81,12 @@ models:
       Daily Protocol Fee collected and Revenue by pool on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_id
-            - token_address
-            - fee_type
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_id
+              - token_address
+              - fee_type
     columns:
       - name: day
       - name: pool_id
@@ -122,10 +124,11 @@ models:
       Balancer Pool Token (BPT) supply for Beethoven X pools built on Balancer.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - blockchain
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - blockchain
+              - token_address
     columns:
       - name: day
       - name: pool_type
@@ -145,10 +148,11 @@ models:
       Balancer Pool Token (BPT) daily price by pool on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - day
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - day
+              - contract_address
     columns:
       - name: blockchain
       - name: version
@@ -169,10 +173,11 @@ models:
       Balancer Pool Token (BPT) transfer logs on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_tx_hash
-            - evt_index
-            - block_date
+          arguments:
+            combination_of_columns:
+              - evt_tx_hash
+              - evt_index
+              - block_date
     columns:
       - name: blockchain
       - name: contract_address
@@ -197,11 +202,12 @@ models:
       Token Balance Changes on Beethoven X Pools.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - evt_tx_hash
+              - evt_index
+              - token_address
     columns:
       - name: block_date
         description: "UTC event block date of each DEX trade"
@@ -245,10 +251,11 @@ models:
       Token Balance Changes on Beethoven X Pools, grouped by day.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool_id
+              - token_address
     columns:
       - name: block_date
       - name: pool_id
@@ -280,11 +287,12 @@ models:
       Balancer Pool Token (BPT) supply change events on Beethoven X.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
-            - label
+          arguments:
+            combination_of_columns:
+              - block_date
+              - evt_tx_hash
+              - evt_index
+              - label
     columns:
       - name: block_date
       - name: evt_block_time
@@ -319,10 +327,11 @@ models:
       Balancer Pool Token (BPT) supply change events on Beethoven X, grouped by day
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - token_address
     columns:
       - name: block_date
       - name: blockchain
@@ -343,12 +352,13 @@ models:
       This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - project_contract_address
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - project_contract_address
     columns:
       - *blockchain
       - name: project

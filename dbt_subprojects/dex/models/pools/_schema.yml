@@ -12,11 +12,12 @@ models:
       DEX raw pools initialization calls
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-            - tx_hash
-            - call_trace_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
+              - tx_hash
+              - call_trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -56,9 +57,10 @@ models:
       DEX raw pools on all chains across all contracts and versions parsed from logs
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
     columns:
       - *blockchain
       - *type
@@ -93,9 +95,10 @@ models:
       DEX raw pools on all chains across all contracts and versions parsed from logs + filtered degen pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
     columns:
       - *blockchain
       - *type
@@ -121,9 +124,10 @@ models:
       DEX pools on all chains across all contracts and versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
     columns:
       - *blockchain
       - &project

@@ -31,7 +31,7 @@ select
         call_tx_from as tx_from,
         call_tx_to as tx_to,
         case when CARDINALITY(call_trace_address) > 0 then call_trace_address else ARRAY[-1] end as trace_address,
-        COALESCE(evt_index, 0) as evt_index, -- TMP: after joining envents in swapSettle can remove it
+        COALESCE(evt_index, order_index) as evt_index, -- delta has no events; use order_index so batch orders get distinct keys downstream
         order_index,
         method
     from {{from_alias}}  
