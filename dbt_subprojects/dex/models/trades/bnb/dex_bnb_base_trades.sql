@@ -48,6 +48,7 @@
     , ref('native_bnb_base_trades')
     , ref('eulerswap_bnb_base_trades')
     , ref('zeroex_bnb_base_trades')
+    , ref('tessera_v_bnb_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
