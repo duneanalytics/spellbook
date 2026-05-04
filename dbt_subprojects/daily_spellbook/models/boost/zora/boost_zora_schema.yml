@@ -11,9 +11,10 @@ models:
     description: Boost deployments on [boost.xyz](https://boost.xyz), an open source platform to incentivize any onchain action, with any token, on any chain. 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - boost_address
-            - boost_id    
+          arguments:
+            combination_of_columns:
+              - boost_address
+              - boost_id    
     columns:
       - &reward_network
         name: reward_network
@@ -71,10 +72,11 @@ models:
     description: "Reward claimed from Boost completion"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - boost_address
-            - claim_tx_hash
-            - action_tx_hash
+          arguments:
+            combination_of_columns:
+              - boost_address
+              - claim_tx_hash
+              - action_tx_hash
     columns:
       - name: reward_network
       - name: boost_address

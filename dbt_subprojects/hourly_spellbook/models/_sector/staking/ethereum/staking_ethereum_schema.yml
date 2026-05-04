@@ -15,11 +15,12 @@ models:
     description: Ethereum staking identified depositor entities
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - depositor_address
-            - tx_from
-            - pubkey
-            - withdrawal_credentials
+          arguments:
+            combination_of_columns:
+              - depositor_address
+              - tx_from
+              - pubkey
+              - withdrawal_credentials
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -53,7 +54,8 @@ models:
         description: "Category of entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
       - name: sub_entity
         description: "Identified sub entity name"
       - name: sub_entity_unique_name
@@ -62,7 +64,8 @@ models:
         description: "Category of sub entity"
         data_tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+              arguments:
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
   - name: staking_ethereum_deposits
     meta:
@@ -76,9 +79,10 @@ models:
     description: Ethereum staking deposits
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
     columns:
       - name: block_time
         description: "Block time of deposit transaction"
@@ -188,8 +192,9 @@ models:
         Ethereum staking entities info
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - entity
+          arguments:
+            combination_of_columns:
+              - entity
     columns:
       - name: entity
         description: "Entity name"

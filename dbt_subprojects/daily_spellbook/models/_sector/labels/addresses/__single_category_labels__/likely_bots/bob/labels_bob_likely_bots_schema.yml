@@ -15,7 +15,8 @@ models:
         tests:
           - not_null
           - unique:
-              where: "blockchain = 'bob'"
+              arguments:
+                where: "blockchain = 'bob'"
       - name: name
         description: "The label name"
         tests:
@@ -63,7 +64,8 @@ models:
         tests:
           - not_null
           - unique:
-              where: "blockchain = 'bob'"
+              arguments:
+                where: "blockchain = 'bob'"
       - name: name
         description: "The label name"
         tests:

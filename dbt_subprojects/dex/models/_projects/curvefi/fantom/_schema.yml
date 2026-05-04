@@ -13,10 +13,11 @@ models:
         Curvefi underlying tokens for token_exchange_underlying event
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - token_id
-            - token_type
+          arguments:
+            combination_of_columns:
+              - pool
+              - token_id
+              - token_type
     columns:
       - &blockchain
         name: blockchain

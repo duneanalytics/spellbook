@@ -12,12 +12,13 @@ models:
       Liquidity by token on Balancer, an automated portfolio manager and trading platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_id
-            - blockchain
-            - token_address
-            - token_symbol
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_id
+              - blockchain
+              - token_address
+              - token_symbol
     columns:
       - &day
         name: day

@@ -12,9 +12,10 @@ models:
     description: "Events of native ETH transfers on Ethereum."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - trace_address
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - trace_address
     columns:
       - &from
         name: from

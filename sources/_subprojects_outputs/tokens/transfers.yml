@@ -261,6 +261,8 @@ sources:
   - name: tokens_polygon
     tables:
       - name: transfers
+        config:
+          event_time: block_date
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
       
@@ -362,10 +364,6 @@ sources:
       - name: transaction_metadata
       - name: transfers
       - name: net_transfers_daily
-
-  - name: gas_xrpl
-    tables:
-      - name: fees
 
   - name: tokens_unichain
     tables:

@@ -12,28 +12,30 @@ models:
        magiceden solana trades
     data_tests:
      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - trade_category
-            - outer_instruction_index
-            - inner_instruction_index
-            - account_mint
-            - tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - trade_category
+              - outer_instruction_index
+              - inner_instruction_index
+              - account_mint
+              - tx_id
      - check_seed:
-         seed_file: ref('magiceden_v2_solana_trades_seed')
-         match_columns:
-           - block_slot
-           - tx_id
-           - outer_instruction_index
-           - inner_instruction_index
-         check_columns:
-           - buyer
-           - seller
-           - account_mint
-           - amount_raw
-           - taker_fee_amount_raw
-           - maker_fee_amount_raw
-           - royalty_fee_amount_raw
+         arguments:
+           seed_file: ref('magiceden_v2_solana_trades_seed')
+           match_columns:
+             - block_slot
+             - tx_id
+             - outer_instruction_index
+             - inner_instruction_index
+           check_columns:
+             - buyer
+             - seller
+             - account_mint
+             - amount_raw
+             - taker_fee_amount_raw
+             - maker_fee_amount_raw
+             - royalty_fee_amount_raw
     columns:
      - &blockchain
        name: blockchain
@@ -170,25 +172,27 @@ models:
       magiceden solana trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - instruction
-            - account_merkle_tree
-            - leaf_id
-            - tx_id
+          arguments:
+            combination_of_columns:
+              - instruction
+              - account_merkle_tree
+              - leaf_id
+              - tx_id
       - check_seed:
-          seed_file: ref('magiceden_v3_solana_trades_seed')
-          match_columns:
-            - instruction
-            - account_merkle_tree
-            - leaf_id
-            - tx_id
-          check_columns:
-            - buyer
-            - seller
-            - amount_raw
-            - taker_fee_amount_raw
-            - maker_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('magiceden_v3_solana_trades_seed')
+            match_columns:
+              - instruction
+              - account_merkle_tree
+              - leaf_id
+              - tx_id
+            check_columns:
+              - buyer
+              - seller
+              - amount_raw
+              - taker_fee_amount_raw
+              - maker_fee_amount_raw
+              - royalty_fee_amount_raw
     columns:
       - *blockchain
       - *project
@@ -242,27 +246,29 @@ models:
       magiceden solana trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - trade_category
-            - outer_instruction_index
-            - inner_instruction_index
-            - account_mint
-            - tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - trade_category
+              - outer_instruction_index
+              - inner_instruction_index
+              - account_mint
+              - tx_id
       - check_seed:
-          seed_file: ref('magiceden_mmm_solana_trades_seed')
-          match_columns:
-            - block_slot
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-          check_columns:
-            - buyer
-            - seller
-            - account_mint
-            - amount_raw
-            - royalty_fee_amount_raw
-            - amm_fee_amount_raw
+          arguments:
+            seed_file: ref('magiceden_mmm_solana_trades_seed')
+            match_columns:
+              - block_slot
+              - tx_id
+              - outer_instruction_index
+              - inner_instruction_index
+            check_columns:
+              - buyer
+              - seller
+              - account_mint
+              - amount_raw
+              - royalty_fee_amount_raw
+              - amm_fee_amount_raw
     columns:
       - *blockchain
       - *project
@@ -316,28 +322,30 @@ models:
       tensorswap solana trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - trade_category
-            - outer_instruction_index
-            - inner_instruction_index
-            - account_mint
-            - tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - trade_category
+              - outer_instruction_index
+              - inner_instruction_index
+              - account_mint
+              - tx_id
       - check_seed:
-          seed_file: ref('tensorswap_v1_solana_trades_seed')
-          match_columns:
-            - block_slot
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-          check_columns:
-            - buyer
-            - seller
-            - account_mint
-            - amount_raw
-            - taker_fee_amount_raw
-            - maker_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('tensorswap_v1_solana_trades_seed')
+            match_columns:
+              - block_slot
+              - tx_id
+              - outer_instruction_index
+              - inner_instruction_index
+            check_columns:
+              - buyer
+              - seller
+              - account_mint
+              - amount_raw
+              - taker_fee_amount_raw
+              - maker_fee_amount_raw
+              - royalty_fee_amount_raw
     columns:
       - *blockchain
       - *project
@@ -391,30 +399,32 @@ models:
       tensorswap solana trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-            - trade_category
-            - outer_instruction_index
-            - inner_instruction_index
-            - account_merkle_tree
-            - leaf_id
-            - tx_id
+          arguments:
+            combination_of_columns:
+              - project
+              - trade_category
+              - outer_instruction_index
+              - inner_instruction_index
+              - account_merkle_tree
+              - leaf_id
+              - tx_id
       - check_seed:
-          seed_file: ref('tensorswap_v2_solana_trades_seed')
-          match_columns:
-            - block_slot
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-          check_columns:
-            - buyer
-            - seller
-            - account_merkle_tree
-            - leaf_id
-            - amount_raw
-            - taker_fee_amount_raw
-            - maker_fee_amount_raw
-            - royalty_fee_amount_raw
+          arguments:
+            seed_file: ref('tensorswap_v2_solana_trades_seed')
+            match_columns:
+              - block_slot
+              - tx_id
+              - outer_instruction_index
+              - inner_instruction_index
+            check_columns:
+              - buyer
+              - seller
+              - account_merkle_tree
+              - leaf_id
+              - amount_raw
+              - taker_fee_amount_raw
+              - maker_fee_amount_raw
+              - royalty_fee_amount_raw
     columns:
       - *blockchain
       - *project

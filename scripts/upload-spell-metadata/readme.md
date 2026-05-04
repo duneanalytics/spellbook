@@ -31,7 +31,7 @@ Uploads the CSV to Dune Analytics via API.
 
 1. Ensure all requirements are met.
 2. Navigate to the script's directory.
-3. Run: `python upload-to-dune.py`
+3. Run: `uv run python upload-to-dune.py`
 4. Check console output for upload status.
 
 ## Output

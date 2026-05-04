@@ -12,9 +12,10 @@ models:
       Token base transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
       - name: unique_key
         description: "Surrogate key to identify unique row"
@@ -62,9 +63,10 @@ models:
       Token transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
       - name: unique_key
         description: "Surrogate key to identify unique row"
@@ -227,9 +229,10 @@ models:
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
 
   - name: tokens_ethereum_net_transfers_daily_asset
     meta:
@@ -241,8 +244,9 @@ models:
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_date
+              - contract_address
             

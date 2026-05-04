@@ -5,15 +5,17 @@ models:
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
       - dbt_utils.accepted_range:
-          column_name: amount_usd
-          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_base_base_trades
 
@@ -28,13 +30,15 @@ models:
     description: "uniswap base v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_base_base_trades_seed')
-          filter:
-            version: 4
+          arguments:
+            seed_file: ref('uniswap_base_base_trades_seed')
+            filter:
+              version: 4
 
   - name: uniswap_v3_base_base_trades
     meta:
@@ -47,13 +51,15 @@ models:
     description: "uniswap base v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_base_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('uniswap_base_base_trades_seed')
+            filter:
+              version: 3
 
   - name: aerodrome_base_base_trades
     meta:
@@ -66,11 +72,13 @@ models:
     description: aerodrome base trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('aerodrome_base_base_trades_seed')
+          arguments:
+            seed_file: ref('aerodrome_base_base_trades_seed')
 
   - name: stablebase_base_base_trades
     meta:
@@ -83,11 +91,13 @@ models:
     description: stablebase base trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('stablebase_base_base_trades_seed')
+          arguments:
+            seed_file: ref('stablebase_base_base_trades_seed')
 
   - name: sushiswap_v1_base_base_trades
     meta:
@@ -100,13 +110,15 @@ models:
     description: "sushiswap base v1 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('sushiswap_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: sushiswap_v2_base_base_trades
     meta:
@@ -119,13 +131,15 @@ models:
     description: "sushiswap base v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sushiswap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('sushiswap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: pancakeswap_v2_base_base_trades
     meta:
@@ -138,13 +152,15 @@ models:
     description: "Pancakeswap Base v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('pancakeswap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: balancer_v2_base_base_trades
     meta:
@@ -157,13 +173,15 @@ models:
     description: "Balancer v2 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('balancer_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: pancakeswap_v3_base_base_trades
     meta:
@@ -176,13 +194,15 @@ models:
     description: "Pancakeswap Base v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_base_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('pancakeswap_base_base_trades_seed')
+            filter:
+              version: 3
 
   - name: pancakeswap_infinity_base_base_trades
     meta:
@@ -195,15 +215,17 @@ models:
     description: "Pancakeswap BASE Infinity base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('pancakeswap_base_base_trades_seed')
-          filter:
-            version:
-              - infinity_cl
-              - infinity_lb
+          arguments:
+            seed_file: ref('pancakeswap_base_base_trades_seed')
+            filter:
+              version:
+                - infinity_cl
+                - infinity_lb
 
   - name: dodo_base_base_trades
     meta:
@@ -216,13 +238,15 @@ models:
     description: "Dodo base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dodo_base_base_trades_seed')
-          filter:
-            version: 2_dpp
+          arguments:
+            seed_file: ref('dodo_base_base_trades_seed')
+            filter:
+              version: 2_dpp
 
   - name: maverick_base_base_trades
     meta:
@@ -235,13 +259,15 @@ models:
     description: "Maverick Base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('maverick_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: maverick_v2_base_base_trades
     meta:
@@ -254,13 +280,15 @@ models:
     description: "Maverick Base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('maverick_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: smardex_base_base_trades
     meta:
@@ -273,11 +301,13 @@ models:
     description: "smardex base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('smardex_base_base_trades_seed')
+          arguments:
+            seed_file: ref('smardex_base_base_trades_seed')
 
   - name: baseswap_base_base_trades
     meta:
@@ -290,13 +320,15 @@ models:
     description: "baseswap base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('baseswap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('baseswap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: baseswap_v3_base_base_trades
     meta:
@@ -309,13 +341,15 @@ models:
     description: "baseswap base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('baseswap_base_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('baseswap_base_base_trades_seed')
+            filter:
+              version: 3
 
   - name: dackieswap_base_base_trades
     meta:
@@ -328,11 +362,13 @@ models:
     description: "dackieswap base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('dackieswap_base_base_trades_seed')
+          arguments:
+            seed_file: ref('dackieswap_base_base_trades_seed')
 
   - name: scale_base_base_trades
     meta:
@@ -345,11 +381,13 @@ models:
     description: "scale base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('scale_base_base_trades_seed')
+          arguments:
+            seed_file: ref('scale_base_base_trades_seed')
 
   - name: rubicon_base_base_trades
     meta:
@@ -362,11 +400,13 @@ models:
     description: "rubicon base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('rubicon_base_base_trades_seed')
+          arguments:
+            seed_file: ref('rubicon_base_base_trades_seed')
 
   - name: kyberswap_base_base_trades
     meta:
@@ -379,13 +419,15 @@ models:
     description: "kyberswap base  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('kyberswap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('kyberswap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: woofi_base_base_trades
     meta:
@@ -398,13 +440,15 @@ models:
     description: "woofi base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('woofi_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('woofi_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: velocimeter_v2_base_base_trades
     meta:
@@ -417,13 +461,15 @@ models:
     description: "velocimeter_v2 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('velocimeter_v2_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('velocimeter_v2_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: moonbase_base_base_trades
     meta:
@@ -436,13 +482,15 @@ models:
     description: "moonbase base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('moonbase_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('moonbase_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: sobal_base_base_trades
     meta:
@@ -455,13 +503,15 @@ models:
     description: "sobal base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sobal_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('sobal_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: plantbaseswap_base_base_trades
     meta:
@@ -474,13 +524,15 @@ models:
     description: "plantbaseswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('plantbaseswap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('plantbaseswap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: derpdex_base_base_trades
     meta:
@@ -493,13 +545,15 @@ models:
     description: "derpdex base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('derpdex_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('derpdex_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: torus_base_base_trades
     meta:
@@ -512,11 +566,13 @@ models:
     description: "torus base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('torus_base_base_trades_seed')
+          arguments:
+            seed_file: ref('torus_base_base_trades_seed')
 
   - name: throne_exchange_v2_base_base_trades
     meta:
@@ -529,13 +585,15 @@ models:
     description: "throne_exchange base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('throne_exchange_v2_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('throne_exchange_v2_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: sharkswap_base_base_trades
     meta:
@@ -548,13 +606,15 @@ models:
     description: "sharkswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sharkswap_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('sharkswap_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: throne_exchange_v3_base_base_trades
     meta:
@@ -567,13 +627,15 @@ models:
     description: "throne_exchange base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('throne_exchange_v3_base_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('throne_exchange_v3_base_base_trades_seed')
+            filter:
+              version: 3
 
   - name: horizondex_base_base_trades
     meta:
@@ -586,13 +648,15 @@ models:
     description: "horizondex dex swaps on base chain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('horizondex_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('horizondex_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: citadelswap_base_base_trades
     meta:
@@ -605,13 +669,15 @@ models:
     description: "citadelswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('citadelswap_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('citadelswap_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: autotronic_base_base_trades
     meta:
@@ -624,13 +690,15 @@ models:
     description: "autotronic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('autotronic_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('autotronic_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: uniswap_v2_base_base_trades
     meta:
@@ -643,13 +711,15 @@ models:
     description: "uniswap base v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('uniswap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: soswap_base_base_trades
     meta:
@@ -662,13 +732,15 @@ models:
     description: "soswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('soswap_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('soswap_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: elk_finance_base_base_trades
     meta:
@@ -681,13 +753,15 @@ models:
     description: "elk_finance base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('elk_finance_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('elk_finance_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: oasisswap_base_base_trades
     meta:
@@ -700,13 +774,15 @@ models:
     description: "oasisswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('oasisswap_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('oasisswap_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: leetswap_v2_base_base_trades
     meta:
@@ -719,13 +795,15 @@ models:
     description: "leetswap_v2 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('leetswap_v2_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('leetswap_v2_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: openocean_base_base_trades
     meta:
@@ -738,11 +816,13 @@ models:
     description: "openocean base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('openocean_base_base_trades_seed')
+          arguments:
+            seed_file: ref('openocean_base_base_trades_seed')
 
   - name: rocketswap_base_base_trades
     meta:
@@ -755,13 +835,15 @@ models:
     description: "rocketswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('rocketswap_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('rocketswap_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: wombat_exchange_base_base_trades
     meta:
@@ -774,13 +856,15 @@ models:
     description: "wombat exchange base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('wombat_exchange_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('wombat_exchange_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: icecreamswap_base_base_trades
     meta:
@@ -793,11 +877,13 @@ models:
     description: "icecreamswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('icecreamswap_base_base_trades_seed')
+          arguments:
+            seed_file: ref('icecreamswap_base_base_trades_seed')
 
   - name: alienbase_base_base_trades
     meta:
@@ -810,13 +896,15 @@ models:
     description: "alienbase base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('alienbase_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('alienbase_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: alienbase_v3_base_base_trades
     meta:
@@ -829,13 +917,15 @@ models:
     description: "alienbase base v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('alienbase_base_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('alienbase_base_base_trades_seed')
+            filter:
+              version: 3
 
   - name: swapbased_base_base_trades
     meta:
@@ -848,13 +938,15 @@ models:
     description: "swapbased base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swapbased_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('swapbased_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: gridex_base_base_trades
     meta:
@@ -867,13 +959,15 @@ models:
     description: "gridex base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('gridex_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('gridex_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: baseswap_basex_base_base_trades
     meta:
@@ -886,13 +980,15 @@ models:
     description: "baseswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('baseswap_basex_base_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('baseswap_basex_base_base_trades_seed')
+            filter:
+              version: 3
 
   - name: synthswap_base_base_trades
     meta:
@@ -905,13 +1001,15 @@ models:
     description: "synthswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('synthswap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('synthswap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: solidly_v3_base_base_trades
     meta:
@@ -924,13 +1022,15 @@ models:
     description: "solidly base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('solidly_base_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('solidly_base_base_trades_seed')
+            filter:
+              version: 3
 
   - name: energon_base_base_trades
     meta:
@@ -943,13 +1043,15 @@ models:
     description: "energon base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('energon_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('energon_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: voltswap_base_base_trades
     meta:
@@ -962,13 +1064,15 @@ models:
     description: "voltswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('voltswap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('voltswap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: crescentswap_base_base_trades
     meta:
@@ -981,13 +1085,15 @@ models:
     description: "crescentswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('crescentswap_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('crescentswap_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: baso_finance_base_base_trades
     meta:
@@ -1000,11 +1106,13 @@ models:
     description: "baso finance base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('baso_finance_base_base_trades_seed')
+          arguments:
+            seed_file: ref('baso_finance_base_base_trades_seed')
 
   - name: clipper_base_base_trades
     meta:
@@ -1017,14 +1125,16 @@ models:
     description: "clipper base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('clipper_base_base_trades_seed')
-          filter:
-            version:
-              - 1
+          arguments:
+            seed_file: ref('clipper_base_base_trades_seed')
+            filter:
+              version:
+                - 1
 
   - name: swaap_v2_base_base_trades
     meta:
@@ -1037,13 +1147,15 @@ models:
     description: "swaap v2 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_base_base_trades_seed')
-          filter:
-            version: 2
+          arguments:
+            seed_file: ref('swaap_base_base_trades_seed')
+            filter:
+              version: 2
 
   - name: xchange_base_base_trades
     meta:
@@ -1056,11 +1168,13 @@ models:
     description: "xchange base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('xchange_base_base_trades_seed')
+          arguments:
+            seed_file: ref('xchange_base_base_trades_seed')
 
   - name: infusion_base_base_trades
     meta:
@@ -1073,11 +1187,13 @@ models:
     description: "infusion base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('infusion_base_base_trades_seed')
+          arguments:
+            seed_file: ref('infusion_base_base_trades_seed')
 
   - name: flashliquidity_base_base_trades
     meta:
@@ -1090,11 +1206,13 @@ models:
     description: "flashliquidity base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('flashliquidity_base_base_trades_seed')
+          arguments:
+            seed_file: ref('flashliquidity_base_base_trades_seed')
 
   - name: akronswap_base_base_trades
     meta:
@@ -1107,11 +1225,13 @@ models:
     description: "akronswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('akronswap_base_base_trades_seed')
+          arguments:
+            seed_file: ref('akronswap_base_base_trades_seed')
 
   - name: otsea_base_base_trades
     meta:
@@ -1124,11 +1244,13 @@ models:
     description: "otsea base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('otsea_base_base_trades_seed')
+          arguments:
+            seed_file: ref('otsea_base_base_trades_seed')
 
   - name: jojo_base_base_trades
     meta:
@@ -1141,11 +1263,13 @@ models:
     description: "jojo base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('jojo_base_base_trades_seed')
+          arguments:
+            seed_file: ref('jojo_base_base_trades_seed')
 
   - name: balancer_v3_base_base_trades
     meta:
@@ -1158,13 +1282,15 @@ models:
     description: "Balancer v3 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('balancer_base_base_trades_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('balancer_base_base_trades_seed')
+            filter:
+              version: 3
 
   - name: tapio_base_base_trades
     meta:
@@ -1177,13 +1303,15 @@ models:
     description: "Tapio base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('tapio_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('tapio_base_base_trades_seed')
+            filter:
+              version: 1
   - name: fluid_v1_base_base_trades
     meta:
       blockchain: base
@@ -1195,13 +1323,15 @@ models:
     description: "fluid dex base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fluid_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('fluid_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: native_base_base_trades
     meta:
@@ -1214,13 +1344,15 @@ models:
     description: "native base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('native_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('native_base_base_trades_seed')
+            filter:
+              version: 1
 
   - name: carbon_defi_base_base_trades
     meta:
@@ -1233,19 +1365,14 @@ models:
     description: "Carbon_defi base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('carbon_defi_base_base_trades_seed')
+          arguments:
+            seed_file: ref('carbon_defi_base_base_trades_seed')
 
-  - name: dex_base_token_volumes_daily
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-            - block_date
   - name: tessera_v_base_base_trades
     meta:
       blockchain: base
@@ -1257,14 +1384,24 @@ models:
     description: "tessera_v base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('tessera_v_base_base_trades_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('tessera_v_base_base_trades_seed')
+            filter:
+              version: 1
 
+  - name: dex_base_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date
   - name: elfomofi_base_base_trades
     meta:
       blockchain: base
@@ -1276,8 +1413,10 @@ models:
     description: "ElfomoFi base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('elfomofi_base_base_trades_seed')
+          arguments:
+            seed_file: ref('elfomofi_base_base_trades_seed')

@@ -12,27 +12,29 @@ models:
     description: "rswETH withdrawals"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_id
+          arguments:
+            combination_of_columns:
+              - token_id
       - check_seed:
-          seed_file: ref('swell_rsweth_ethereum_withdrawals_seed')
-          match_columns:
-            - token_id
-          check_columns:
-            - request_tx_hash
-            - request_block_number
-            - request_index
-            - owner
-            - rswETH_amount
-            - rswETH_request_rate
-            - processed_tx_hash
-            - processed_block_number
-            - processed_index
-            - rswETH_processed_rate
-            - claim_tx_hash
-            - claim_block_number
-            - claim_index
-            - ETH_amount
+          arguments:
+            seed_file: ref('swell_rsweth_ethereum_withdrawals_seed')
+            match_columns:
+              - token_id
+            check_columns:
+              - request_tx_hash
+              - request_block_number
+              - request_index
+              - owner
+              - rswETH_amount
+              - rswETH_request_rate
+              - processed_tx_hash
+              - processed_block_number
+              - processed_index
+              - rswETH_processed_rate
+              - claim_tx_hash
+              - claim_block_number
+              - claim_index
+              - ETH_amount
 
     columns:
       - &request_block_time

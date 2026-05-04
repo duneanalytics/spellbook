@@ -12,8 +12,9 @@ models:
     description: "Polymarket: markets"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - question_id
+          arguments:
+            combination_of_columns:
+              - question_id
     columns:
       - &block_time
         name: block_time
@@ -49,8 +50,9 @@ models:
     description: "Polymarket: market outcomes"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - question_id
+          arguments:
+            combination_of_columns:
+              - question_id
     columns:
       - *block_time
       - *block_number
@@ -72,8 +74,9 @@ models:
     description: "Polymarket: market conditions (helper table)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - condition_id
+          arguments:
+            combination_of_columns:
+              - condition_id
     columns:
       - *block_time
       - *block_number
@@ -108,10 +111,11 @@ models:
     description: "Polymarket: CTF tokens (helper table)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - condition_id
-            - token0
-            - token1
+          arguments:
+            combination_of_columns:
+              - condition_id
+              - token0
+              - token1
     columns:
       - *block_time
       - *block_number
@@ -136,13 +140,14 @@ models:
     description: "All market activity including complementary matching (A buys shares from B), MINT matching (A wants to buy, but not enough sell orders in book, system mints shares if conditions are right), and MERGE matching (A wants to sell shares, but not enough buy orders in book, system matches yes and no shares to unlock collateral). Technically correct volume, but not directly comparable to dex volume or similar. The internal operations increase volume significantly."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_time
-            - asset_id
-            - evt_index
-            - tx_hash
-            - contract_address
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - asset_id
+              - evt_index
+              - tx_hash
+              - contract_address
     columns:
       - name: block_month
         description: "UTC month of the event block time used for partitioning"
@@ -203,13 +208,34 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['v1', 'v2']
+              arguments:
+                values: ['v1', 'v2']
       - name: builder
         description: "V2 only: builder attribution field (bytes32) embedded in signed orders, replacing V1's HMAC header authentication. NULL for V1 rows."
       - name: metadata
         description: "V2 only: arbitrary metadata field (bytes32) in signed orders. NULL for V1 rows."
       - name: _updated_at
         description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
+
+  - name: polymarket_polygon_market_addresses
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket protocol and market addresses used to exclude internal transfers from user capital action classification"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - address
+    columns:
+      - name: address
+        description: "Polymarket protocol or market contract address"
+        data_tests:
+          - not_null
 
   - name: polymarket_polygon_users_capital_actions
     meta:
@@ -218,26 +244,51 @@ models:
       project: polymarket
       contributors: tomfutago
     config:
-      tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Polymarket: user capital actions"
+      tags: ['polygon','prediction_markets','polymarket','markets','microbatch']
+    description: "Polymarket: user capital actions (deposits, withdrawals, internal transfers, and USDC <-> USDC.e conversions) classified per token transfer. Microbatched on block_date to avoid the planner-side hash sizing blowup on full-history single-shot builds."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - evt_index
-            - tx_hash
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_time
+              - evt_index
+              - tx_hash
     columns:
+      - name: block_month
+        description: "UTC month of the capital action block time used for partitioning"
+        data_tests:
+          - not_null
       - name: block_time
+        description: "UTC block timestamp for the capital action"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "UTC block date for the capital action"
       - name: block_number
+        description: "Polygon block number for the capital action"
       - name: action
+        description: "Capital action type: deposit, withdrawal, transfer (wallet-to-wallet between two Polymarket users), or convert (USDC <-> USDC.e via the canonical Uniswap pool)"
       - name: from_address
+        description: "Transfer sender address"
       - name: to_address
+        description: "Transfer recipient address"
       - name: symbol
+        description: "Transferred token symbol: USDC.e, USDC, or pUSD"
       - name: amount_raw
+        description: "Raw token transfer amount"
       - name: amount
+        description: "Token transfer amount adjusted for decimals"
       - name: amount_usd
+        description: "USD transfer amount; pUSD is treated 1:1 with USDC"
       - name: evt_index
+        description: "Transfer event index within the transaction"
+        data_tests:
+          - not_null
       - name: tx_hash
+        description: "Transfer transaction hash"
+        data_tests:
+          - not_null
 
   - name: polymarket_polygon_users_safe_proxies
     meta:
@@ -250,8 +301,9 @@ models:
     description: "Safes deployed by the SafeProxyFactory on behalf of Polymarket users that use their own EOA to sign transactions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - proxy
+          arguments:
+            combination_of_columns:
+              - proxy
     columns:
       - *block_time
       - *block_number
@@ -260,6 +312,30 @@ models:
         description: "Safe wallet address deployed for the Polymarket user"
       - *evt_index
       - *tx_hash
+
+  - name: polymarket_polygon_users_proxies
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Deduped Polymarket user proxy wallets across both factories (Safe + magic.link). Materialized to avoid re-running the union+distinct inside every downstream `exists` subquery (Trino inlines CTEs)."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - proxy
+    columns:
+      - name: proxy
+        description: "Polymarket user wallet address (Safe or magic.link proxy)"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Earliest observed creation timestamp for the proxy across factories"
+        data_tests:
+          - not_null
 
   - name: polymarket_polygon_users_magic_wallet_proxies
     meta:
@@ -272,8 +348,9 @@ models:
     description: "Magic wallets deployed by the MagicWalletFactory on behalf of Polymarket users that use magic.link to sign up to polymarket"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - proxy
+          arguments:
+            combination_of_columns:
+              - proxy
     columns:
       - *block_time
       - *block_number
@@ -294,8 +371,9 @@ models:
     description: "Polymarket: combined market data from on-chain and API sources"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_id
+          arguments:
+            combination_of_columns:
+              - token_id
     columns:
       - name: unique_key
         description: "Unique identifier for the market"
@@ -353,11 +431,12 @@ models:
     description: "Polymarket: raw user positions in markets"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-            - token_id
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
+              - token_id
     columns:
       - name: blockchain
         description: "The blockchain the position is on"
@@ -389,10 +468,11 @@ models:
     description: "Polymarket: user positions in markets with market details"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_id
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_id
     columns:
       - name: day
         description: "The date of the position"
@@ -455,11 +535,12 @@ models:
     description: "Hourly OHLCV (Open-High-Low-Close-Volume) candles per Polymarket outcome token, with VWAP, volume metrics, and market metadata. Includes forward-filled rows for no-trade hours (prices carried forward, volume/count zeroed). For resolved markets past market_end_time, all four OHLC fields are corrected to the terminal settlement value (1.0/0.0) so every candle preserves the invariant low <= {open, close} <= high. Covers full Polymarket on Polygon trading history. Incremental merge on (block_month, hour, market_id, outcome) using an incremental_predicate filter on new trades plus a prior per-hour sparse anchor from this table so market_bounds and asof forward-fill stay correct across the window boundary."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - hour
-            - market_id
-            - outcome
+          arguments:
+            combination_of_columns:
+              - block_month
+              - hour
+              - market_id
+              - outcome
     columns:
       - name: block_month
         description: "UTC month partition derived from hour (date_trunc('month', hour))"
@@ -521,9 +602,10 @@ models:
     description: "Daily market prices for Polymarket on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - token_id
+          arguments:
+            combination_of_columns:
+              - day
+              - token_id
     columns:
       - name: day
         description: "The day for which the price is valid"
@@ -547,10 +629,11 @@ models:
     description: "Hourly market prices for Polymarket on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - hour
-            - token_id
+          arguments:
+            combination_of_columns:
+              - block_month
+              - hour
+              - token_id
     columns:
       - name: block_month
         description: "Month partition derived from hour"
@@ -582,8 +665,9 @@ models:
     description: "Incremental helper table tracking tokens requiring historical price recomputation after market metadata or resolution updates"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_id
+          arguments:
+            combination_of_columns:
+              - token_id
     columns:
       - name: token_id
         description: "Outcome token ID that needs recomputation"
@@ -611,8 +695,9 @@ models:
     description: "Comprehensive lookup table for Polymarket user addresses, including both Safe and Magic wallet proxies with funding information"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - polymarket_wallet
+          arguments:
+            combination_of_columns:
+              - polymarket_wallet
     columns:
       - name: created_time
         description: "Timestamp when the Polymarket wallet was created"

@@ -27,6 +27,7 @@ with escrow_finish_transactions as (
 escrow_nodes as (
   select
     n.tx_hash,
+    n.block_date,
     json_extract_scalar(n.final_fields, '$.Account') as escrow_account,
     json_extract_scalar(n.final_fields, '$.Destination') as escrow_destination,
     coalesce(
@@ -91,6 +92,7 @@ normalized_transfers as (
   from escrow_finish_transactions t
   inner join escrow_nodes n
     on t.tx_hash = n.tx_hash
+    and t.block_date = n.block_date
 )
 
 select

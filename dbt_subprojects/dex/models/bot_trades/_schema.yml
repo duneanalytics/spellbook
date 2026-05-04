@@ -105,12 +105,14 @@ models:
       Banana Gun trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('banana_gun_ethereum_trades_seed')
+          arguments:
+            seed_file: ref('banana_gun_ethereum_trades_seed')
 
   - name: banana_gun_base_bot_trades
     meta:
@@ -124,12 +126,14 @@ models:
       Banana Gun trades on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('banana_gun_base_trades_seed')
+          arguments:
+            seed_file: ref('banana_gun_base_trades_seed')
 
   - name: pepeboost_ethereum_bot_trades
     meta:
@@ -143,12 +147,14 @@ models:
       Pepeboost trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('pepeboost_ethereum_trades_seed')
+          arguments:
+            seed_file: ref('pepeboost_ethereum_trades_seed')
 
   - name: readyswap_ethereum_bot_trades
     meta:
@@ -162,12 +168,14 @@ models:
       ReadySwap trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('readyswap_ethereum_trades_seed')
+          arguments:
+            seed_file: ref('readyswap_ethereum_trades_seed')
           
   - name: flokibot_ethereum_bot_trades
     meta:
@@ -181,12 +189,14 @@ models:
       Flokibot trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('flokibot_ethereum_trades_seed')
+          arguments:
+            seed_file: ref('flokibot_ethereum_trades_seed')
 
   - name: flokibot_base_bot_trades
     meta:
@@ -200,12 +210,14 @@ models:
       Flokibot trades on Base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('flokibot_base_trades_seed')
+          arguments:
+            seed_file: ref('flokibot_base_trades_seed')
 
   - name: flokibot_bnb_bot_trades
     meta:
@@ -219,9 +231,11 @@ models:
       Flokibot trades on BNB
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('flokibot_bnb_trades_seed')
+          arguments:
+            seed_file: ref('flokibot_bnb_trades_seed')

@@ -97,9 +97,10 @@ models:
       These tokens are being launched in Gyroscope pools, priced at 1 USD, a value that tends to grow marginally over time. This list is an approximation to price these tokens while they're not available on prices.usd and dex.prices
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
     columns:
       - name: blockchain
       - name: token_address

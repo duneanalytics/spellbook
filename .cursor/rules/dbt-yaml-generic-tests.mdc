@@ -1,0 +1,46 @@
+---
+description: dbt YAML generic test syntax for dbt 1.10+ compatibility.
+globs:
+  - "**/*.yml"
+  - "**/*.yaml"
+alwaysApply: false
+---
+
+# dbt YAML Generic Tests
+
+Spellbook runs dbt 1.10+ with `--warn-error`, so deprecated generic test syntax fails CI.
+
+## Required Format
+
+- For any generic test with parameters, nest test inputs under `arguments:`.
+- Keep dbt configs under `config:`; do not mix configs and arguments at the test root.
+- Use `data_tests:` for new or edited model-level tests. Do not introduce typos like `cdata_tests`.
+- This applies to `dbt_utils` tests and custom generic tests whenever they accept arguments.
+
+```yaml
+data_tests:
+  - dbt_utils.unique_combination_of_columns:
+      arguments:
+        combination_of_columns:
+          - block_date
+          - unique_key
+```
+
+```yaml
+data_tests:
+  - check_seed:
+      arguments:
+        seed_file: ref('my_model_seed')
+        match_columns:
+          - block_date
+          - tx_hash
+      config:
+        severity: error
+```
+
+## Avoid
+
+- Do not put `combination_of_columns`, `seed_file`, `match_columns`, `filter`, or other test inputs directly under the test name.
+- Do not create misspelled resource keys such as `cdata_tests`.
+
+Before finishing YAML edits, search for `dbt_utils.unique_combination_of_columns:` followed directly by `combination_of_columns:` and fix it.

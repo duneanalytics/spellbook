@@ -14,8 +14,9 @@ models:
       Uniswap V4 monad DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - &blockchain
         name: blockchain
@@ -59,8 +60,9 @@ models:
       Uniswap V3 monad DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -86,8 +88,9 @@ models:
       Uniswap V2 monad DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
+          arguments:
+            combination_of_columns:
+              - id
     columns:
       - *blockchain
       - *project
@@ -113,9 +116,10 @@ models:
       Uniswap monad DEX pools across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
-            - version
+          arguments:
+            combination_of_columns:
+              - id
+              - version
     columns:
       - *blockchain
       - *project
@@ -141,10 +145,11 @@ models:
       Retrieves the most recent price (sqrtPriceX96) for each pool ID, reflecting the current price after the latest swap or liquidity modification.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - id
-            - block_index_sum
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - id
+              - block_index_sum
     columns:
       - *blockchain
       - *project
@@ -178,10 +183,11 @@ models:
       "uniswap monad v4 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -232,10 +238,11 @@ models:
       "uniswap monad V3 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -266,10 +273,11 @@ models:
       "uniswap monad V2 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -300,10 +308,11 @@ models:
       "uniswap monad base liquidity events across all versions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - event_type
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+              - event_type
     columns:
       - *blockchain
       - *project
@@ -331,7 +340,8 @@ models:
       tags: [ 'dex' ]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - evt_index

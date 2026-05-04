@@ -12,11 +12,12 @@ models:
     description: "All lending borrow transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -98,13 +99,15 @@ models:
     description: "Aave v3 borrow transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('aave_arbitrum_base_borrow_seed')
+          arguments:
+            seed_file: ref('aave_arbitrum_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -134,15 +137,17 @@ models:
     description: "Compound v3 borrow transactions on Ethereum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('compound_arbitrum_base_borrow_seed')
-          filter:
-            version: 3
+          arguments:
+            seed_file: ref('compound_arbitrum_base_borrow_seed')
+            filter:
+              version: 3
     columns:
       - *blockchain
       - *project
@@ -172,13 +177,15 @@ models:
     description: "Radiant borrow transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('radiant_arbitrum_base_borrow_seed')
+          arguments:
+            seed_file: ref('radiant_arbitrum_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -208,15 +215,17 @@ models:
     description: "Lodestar v0 borrow transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('lodestar_arbitrum_base_borrow_seed')
-          filter:
-            version: 0
+          arguments:
+            seed_file: ref('lodestar_arbitrum_base_borrow_seed')
+            filter:
+              version: 0
     columns:
       - *blockchain
       - *project
@@ -246,15 +255,17 @@ models:
     description: "Lodestar v1 borrow transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('lodestar_arbitrum_base_borrow_seed')
-          filter:
-            version: 1
+          arguments:
+            seed_file: ref('lodestar_arbitrum_base_borrow_seed')
+            filter:
+              version: 1
     columns:
       - *blockchain
       - *project
@@ -284,13 +295,15 @@ models:
     description: "Granary borrow transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
       - check_lending_base_borrow_seed:
-          seed_file: ref('granary_arbitrum_base_borrow_seed')
+          arguments:
+            seed_file: ref('granary_arbitrum_base_borrow_seed')
     columns:
       - *blockchain
       - *project
@@ -320,11 +333,12 @@ models:
     description: "Morpho borrow transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          arguments:
+            combination_of_columns:
+              - transaction_type
+              - token_address
+              - tx_hash
+              - evt_index
     columns:
       - *blockchain
       - *project

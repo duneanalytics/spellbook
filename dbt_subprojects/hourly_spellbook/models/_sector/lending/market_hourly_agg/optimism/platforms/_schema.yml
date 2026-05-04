@@ -11,9 +11,10 @@ models:
     description: "Hourly aggregated lending market on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_hour
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_hour
+              - token_address
     columns:
       - &blockchain
         name: blockchain
@@ -74,9 +75,10 @@ models:
     description: "Hourly aggregated Aave v3 market on Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_hour
-            - token_address
+          arguments:
+            combination_of_columns:
+              - block_hour
+              - token_address
     columns:
       - *blockchain
       - *project

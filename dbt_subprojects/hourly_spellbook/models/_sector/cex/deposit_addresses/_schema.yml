@@ -13,8 +13,9 @@ models:
     description: "All identified CEX deposit addresses across EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
+          arguments:
+            combination_of_columns:
+              - address
     columns:
       - name: address
         description: "Deposit address"
