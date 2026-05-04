@@ -15,7 +15,7 @@
         blockchain = 'hedera',
         project = 'saucerswap',
         version = '2',
-        Pair_evt_Swap = source('saucer_swap_hedera', 'v2pool_evt_swap'),
+        Pair_evt_Swap = ref('saucerswap_v2_hedera_swap_events'),
         Factory_evt_PoolCreated = source('saucer_swap_hedera', 'saucerswapv2factory_evt_poolcreated')
     )
 }}

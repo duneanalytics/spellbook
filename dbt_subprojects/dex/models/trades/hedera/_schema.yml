@@ -19,6 +19,23 @@ models:
 
   - name: dex_hedera_base_trades
 
+  - name: saucerswap_v1_hedera_swap_events
+    meta:
+      blockchain: hedera
+      sector: dex
+      project: saucerswap
+      contributors: alicecha
+    config:
+      tags: ["hedera", "dex", "trades", "saucerswap", "v1"]
+    description: "saucerswap hedera v1 swap events decoded from hedera.logs"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - evt_tx_hash
+              - evt_index
+              - contract_address
+
   - name: saucerswap_v1_hedera_base_trades
     meta:
       blockchain: hedera
@@ -39,6 +56,23 @@ models:
             seed_file: ref('saucerswap_v1_hedera_base_trades_seed')
             filter:
               version: 1
+
+  - name: saucerswap_v2_hedera_swap_events
+    meta:
+      blockchain: hedera
+      sector: dex
+      project: saucerswap
+      contributors: alicecha
+    config:
+      tags: ["hedera", "dex", "trades", "saucerswap", "v2"]
+    description: "saucerswap hedera v2 swap events decoded from hedera.logs"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - evt_tx_hash
+              - evt_index
+              - contract_address
 
   - name: saucerswap_v2_hedera_base_trades
     meta:
