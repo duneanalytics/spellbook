@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: saucer_swap_hedera
+    tables:
+      - name: pool_evt_swap
+      - name: v1_factory_evt_paircreated
+      - name: v2pool_evt_swap
+      - name: saucerswapv2factory_evt_poolcreated

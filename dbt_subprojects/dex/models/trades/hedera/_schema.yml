@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: dex_hedera_trades
+    data_tests:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_hedera_base_trades
+
+  - name: saucerswap_v1_hedera_base_trades
+    meta:
+      blockchain: hedera
+      sector: dex
+      project: saucerswap
+      contributors: alicecha
+    config:
+      tags: ["hedera", "dex", "trades", "saucerswap", "v1"]
+    description: "saucerswap hedera v1 base trades (UniswapV2 fork)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('saucerswap_v1_hedera_base_trades_seed')
+            filter:
+              version: 1
+
+  - name: saucerswap_v2_hedera_base_trades
+    meta:
+      blockchain: hedera
+      sector: dex
+      project: saucerswap
+      contributors: alicecha
+    config:
+      tags: ["hedera", "dex", "trades", "saucerswap", "v2"]
+    description: "saucerswap hedera v2 base trades (UniswapV3 fork)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('saucerswap_v2_hedera_base_trades_seed')
+            filter:
+              version: 2
+
+  - name: dex_hedera_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date
