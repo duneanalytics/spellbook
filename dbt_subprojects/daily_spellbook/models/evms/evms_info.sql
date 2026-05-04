@@ -98,4 +98,5 @@ FROM (
         , (4326, 'megaeth', 'MegaETH', 'Layer 1', NULL, 'ETH', 0x4eB2Bd7beE16F38B1F4a0A5796Fffd028b6040e9, 'https://miniblocks.io/', timestamp '2025-11-10 17:50:12', NULL, NULL, NULL, true, NULL)
         , (4153, 'rise', 'Rise', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.risechain.com/', timestamp '2026-01-05 09:36:00', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (4217, 'tempo', 'Tempo', 'Layer 1', NULL, 'USD', 0x20c0000000000000000000000000000000000000, 'https://explorer.tempo.xyz/', timestamp '2026-01-16 20:51', NULL, NULL, NULL, true, NULL)
+        , (42793, 'tezos_evm', 'Tezos EVM', 'Layer 2', 'Optimistic Rollup', 'XTZ', 0xc9B53AB2679f573e480d01e0f49e2B5CFB7a3EAb, 'https://explorer.etherlink.com/', timestamp '2024-05-02 13:25:55', 'Tezos Smart Rollup EVM stack', 'Tezos L1', 'Tezos', true, 'Tezos')
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
