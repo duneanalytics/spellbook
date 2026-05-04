@@ -13,3 +13,5 @@ sources:
       - name: whirlpool_call_setFeeRate
       - name: whirlpool_call_initializeFeeTier
       - name: whirlpool_call_setDefaultFeeRate
+      - name: whirlpool_call_initializePoolWithAdaptiveFee
+      - name: whirlpool_call_initializeAdaptiveFeeTier

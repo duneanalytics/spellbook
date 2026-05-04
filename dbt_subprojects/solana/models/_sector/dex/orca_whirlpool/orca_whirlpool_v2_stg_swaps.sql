@@ -29,6 +29,17 @@ WITH fee_tiers_defaults AS (
     FROM {{ source('whirlpool_solana', 'whirlpool_call_setDefaultFeeRate') }}
 )
 
+-- Adaptive-fee pools (`initializePoolWithAdaptiveFee`) reference an adaptive
+-- fee tier instead of a static fee tier. The realized fee varies per swap
+-- with volatility; we approximate fee_rate with the tier's defaultBaseFeeRate.
+, adaptive_fee_tiers AS (
+    SELECT
+          account_adaptiveFeeTier AS adaptive_fee_tier
+        , defaultBaseFeeRate AS fee_rate
+        , call_block_time AS fee_time
+    FROM {{ source('whirlpool_solana', 'whirlpool_call_initializeAdaptiveFeeTier') }}
+)
+
 , fee_updates AS (
     SELECT whirlpool_id, update_time, fee_rate
     FROM (
@@ -67,6 +78,22 @@ WITH fee_tiers_defaults AS (
         , call_block_time AS update_time
         , feeRate AS fee_rate
     FROM {{ source('whirlpool_solana', 'whirlpool_call_setFeeRate') }}
+
+    UNION ALL
+
+    SELECT whirlpool_id, update_time, fee_rate
+    FROM (
+        SELECT
+              ip.account_whirlpool AS whirlpool_id
+            , ip.call_block_time AS update_time
+            , aft.fee_rate
+            , row_number() OVER (PARTITION BY ip.account_whirlpool ORDER BY aft.fee_time DESC) AS recent_update
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolWithAdaptiveFee') }} ip
+        LEFT JOIN adaptive_fee_tiers aft
+            ON aft.adaptive_fee_tier = ip.account_adaptiveFeeTier
+            AND aft.fee_time <= ip.call_block_time
+    )
+    WHERE recent_update = 1
 )
 
 , whirlpools AS (
@@ -96,6 +123,16 @@ WITH fee_tiers_defaults AS (
             , account_tokenVaultB
             , account_whirlpool
         FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolV2') }}
+
+        UNION ALL
+
+        SELECT
+              account_tokenMintA
+            , account_tokenMintB
+            , account_tokenVaultA
+            , account_tokenVaultB
+            , account_whirlpool
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolWithAdaptiveFee') }}
     ) ip
     LEFT JOIN fee_updates fu
         ON fu.whirlpool_id = ip.account_whirlpool
