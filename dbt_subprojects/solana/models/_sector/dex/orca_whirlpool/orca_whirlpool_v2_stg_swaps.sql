@@ -29,9 +29,10 @@ WITH fee_tiers_defaults AS (
     FROM {{ source('whirlpool_solana', 'whirlpool_call_setDefaultFeeRate') }}
 )
 
--- Adaptive-fee pools (`initializePoolWithAdaptiveFee`) reference an adaptive
--- fee tier instead of a static fee tier. The realized fee varies per swap
--- with volatility; we approximate fee_rate with the tier's defaultBaseFeeRate.
+-- Adaptive-fee pools (`initializePoolWithAdaptiveFee`) approximate fee_rate via
+-- the tier's defaultBaseFeeRate; realized fee varies per swap with volatility.
+-- Caveat: `initializeAdaptiveFeeTier` decoder coverage is partial, so most
+-- adaptive pools resolve to fee_rate = NULL (trades still flow; fee_tier/fee_usd null).
 , adaptive_fee_tiers AS (
     SELECT
           account_adaptiveFeeTier AS adaptive_fee_tier
