@@ -188,13 +188,11 @@ taker_logs as (
                 AND bytearray_substring(logs.topic1, 13, 20) IN (tx_from, taker, tx_to, settler_address)
             )
         ) 
-        AND CASE 
-            WHEN cow_rn IS NOT NULL THEN (
-                bytearray_substring(logs.topic1, 13, 20) IN (settler_address, 0x9008D19f58AAbD9eD0D60971565AA8510560ab41) 
-                OR bytearray_substring(logs.topic2, 13, 20) IN (settler_address, st.contract_address)
-            )
-            ELSE TRUE 
-        END
+        AND (
+            cow_rn IS NULL 
+            OR bytearray_substring(logs.topic1, 13, 20) IN (settler_address, 0x9008D19f58AAbD9eD0D60971565AA8510560ab41) 
+            OR bytearray_substring(logs.topic2, 13, 20) IN (settler_address, st.contract_address)
+        )
     )
     select * 
     from tbl_base
@@ -239,7 +237,7 @@ maker_logs as (
             AND bytearray_substring(logs.topic1, 13, 20) IN (settler_address, tx_from)
         )
         
-        
+        )
     ),
     tbl_logs_rn as (
     select
