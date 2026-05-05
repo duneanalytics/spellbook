@@ -66,6 +66,9 @@ raw_decoded as (
         where l.topic0 = {{ swap_topic0 }}
         {% if is_incremental() %}
           and {{ incremental_predicate('l.block_time') }}
+        {% else %}
+          -- TODO: remove before merge — temp CI date filter so the first full build doesn't scan all history
+          and l.block_time >= NOW() - INTERVAL '7' DAY
         {% endif %}
       )
     )
