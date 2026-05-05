@@ -1,6 +1,7 @@
 {{ config(
         schema = 'uniswap_v2_forks_new_chains',
         alias = 'decoded_factory_events',
+        tags = ['prod_exclude'],
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
