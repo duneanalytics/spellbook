@@ -261,6 +261,8 @@ sources:
   - name: tokens_polygon
     tables:
       - name: transfers
+        config:
+          event_time: block_date
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
       
