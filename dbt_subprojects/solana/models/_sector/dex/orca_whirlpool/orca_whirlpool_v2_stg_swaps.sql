@@ -39,6 +39,14 @@ WITH fee_tiers_defaults AS (
         , defaultBaseFeeRate AS fee_rate
         , call_block_time AS fee_time
     FROM {{ source('whirlpool_solana', 'whirlpool_call_initializeAdaptiveFeeTier') }}
+
+    UNION ALL
+
+    SELECT
+          account_adaptiveFeeTier AS adaptive_fee_tier
+        , defaultBaseFeeRate AS fee_rate
+        , call_block_time AS fee_time
+    FROM {{ source('whirlpool_solana', 'whirlpool_call_setDefaultBaseFeeRate') }}
 )
 
 , fee_updates AS (
