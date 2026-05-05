@@ -189,7 +189,7 @@ models:
       - <<: *block_date_transfer
       - <<: *block_month_transfer
       - name: block_number
-        description: "Chain-native block, slot, checkpoint, ledger, or transaction-version ordering number for the transfer, such as EVM block number, Solana slot, Aptos transaction version, Sui checkpoint, Stellar ledger sequence, or XRPL ledger index."
+        description: "Chain-native block, slot, checkpoint, ledger, or transaction ordering number for the transfer, such as EVM block number, Solana slot, Aptos block height, Sui checkpoint, Stellar ledger sequence, or XRPL ledger index."
       - name: tx_id
         description: "Chain-native transaction identifier, such as EVM transaction hash, Solana transaction id/signature, Sui transaction digest, Aptos transaction hash, Stellar transaction hash, or XRPL transaction hash."
       - name: tx_index
