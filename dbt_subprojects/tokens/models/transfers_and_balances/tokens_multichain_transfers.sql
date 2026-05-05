@@ -136,7 +136,7 @@ select
   block_time,
   block_date,
   block_month,
-  cast(null as bigint) as block_number, -- TODO: add aptos block_height downstream
+  cast(block_height as bigint) as block_number,
   cast(tx_hash as varchar) as tx_id,
   cast(tx_index as bigint) as tx_index,
   cast(event_index as bigint) as event_index,
