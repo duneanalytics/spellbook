@@ -11,14 +11,17 @@ models:
     description: >
         Gas Fees on Hedera.
 
-        Known limitation: `tx_fee` is computed as `gas_price * gas_used`, where
-        `gas_price` from the JSON-RPC is the user's bid, not the effective rate
-        the network charges. Legacy txs (simple HBAR transfers) match HashScan
-        exactly; AccessList contract calls can over-estimate the actual charged
-        fee by up to ~20%. The authoritative `charged_tx_fee` lives on the
-        parent Hedera record (mirror node) but is not currently exposed on
-        `hedera.transactions`. Switch to `charged_tx_fee` once the indexer
-        surfaces it.
+        Known limitation: `tx_fee` is computed as `gas_price * gas_used` and
+        does NOT match the actual HBAR debited from the sender for storage-
+        modifying contract calls. Legacy txs (simple HBAR transfers) match
+        HashScan exactly; AccessList / contract-call txs can over-estimate the
+        actual charged fee by up to ~20%. Hedera's debited amount is recorded
+        as `charged_tx_fee` on the parent transaction record (Mirror Node),
+        but that field is not currently exposed on `hedera.transactions`.
+        Verified example: tx
+        `0xc3c133f775b6fde6bcd851681c7cd572271e5d5ee24c1df662849bd62131b92f`
+        — model output 0.29066 HBAR, actual debit 0.24011 HBAR. Switch this
+        model to `charged_tx_fee` once the indexer surfaces it.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
