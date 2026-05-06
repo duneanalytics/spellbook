@@ -1,3 +1,4 @@
+# team-reviewers is valid on GitHub Dependabot; json.schemastore.org/dependabot-2.0.json omits it — IDE schema warnings are safe to ignore.
 version: 2
 
 updates:
@@ -5,7 +6,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    # team-reviewers: valid for GitHub Dependabot; omitted from json.schemastore.org/dependabot-2.0.json
     team-reviewers:
       - "duneanalytics/team-curated-data"
     groups:
@@ -26,7 +26,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    # team-reviewers: valid for GitHub Dependabot; omitted from json.schemastore.org/dependabot-2.0.json
     team-reviewers:
       - "duneanalytics/team-curated-data"
     groups:
