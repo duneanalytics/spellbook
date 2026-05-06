@@ -7,6 +7,19 @@ updates:
       interval: "weekly"
     team-reviewers:
       - "duneanalytics/team-curated-data"
+    groups:
+      security-updates:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types: ["minor", "patch"]
+      major-updates:
+        patterns:
+          - "*"
+        update-types: ["major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -14,3 +27,16 @@ updates:
       interval: "weekly"
     team-reviewers:
       - "duneanalytics/team-curated-data"
+    groups:
+      security-updates:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types: ["minor", "patch"]
+      major-updates:
+        patterns:
+          - "*"
+        update-types: ["major"]
