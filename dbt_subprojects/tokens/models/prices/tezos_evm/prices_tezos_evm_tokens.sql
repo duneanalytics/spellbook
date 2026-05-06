@@ -18,7 +18,7 @@ SELECT
 FROM
 (
     VALUES
-    ('xtz-tezos', 'XTZ', 0xc9B53AB2679f573e480d01e0f49e2B5CFB7a3EAb, 18)
+    ('xtz-tezos', 'WXTZ', 0xc9B53AB2679f573e480d01e0f49e2B5CFB7a3EAb, 18)
     , ('usdc-usd-coin', 'USDC', 0x796Ea11Fa2dD751eD01b53C372fFDB4AAa8f00F9, 6)
     , ('usdt-tether', 'USDT', 0x2C03058C8AFC06713be23e58D2febC8337dbfE6A, 6)
     , ('wbtc-wrapped-bitcoin', 'WBTC', 0xbFc94CD2B1E55999Cfc7347a9313e88702B83d0F, 8)
