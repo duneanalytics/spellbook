@@ -1,0 +1,16 @@
+version: 2
+
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    team-reviewers:
+      - "duneanalytics/team-curated-data"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    team-reviewers:
+      - "duneanalytics/team-curated-data"
