@@ -5,8 +5,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    team-reviewers:
-      - "duneanalytics/team-curated-data"
     groups:
       security-updates:
         applies-to: "security-updates"
@@ -25,8 +23,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    team-reviewers:
-      - "duneanalytics/team-curated-data"
     groups:
       security-updates:
         applies-to: "security-updates"
