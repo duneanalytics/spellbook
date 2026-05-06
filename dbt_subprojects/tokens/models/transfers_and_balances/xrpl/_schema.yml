@@ -475,6 +475,7 @@ models:
       sector: tokens
       short_description: "XRPL transfers with metadata and pricing."
       contributors: krishhh, tomfutago
+      docs_slug: /curated/token-transfers/xrpl/xrpl-token-transfers
     config:
       tags: ['tokens', 'transfers', 'xrpl']
     description: "XRPL token transfers enriched with currency display metadata and XRP USD pricing."
