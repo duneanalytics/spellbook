@@ -110,14 +110,25 @@ sparse_ohlcv as (
 ),
 
 market_bounds as (
+    -- last_hour is bounded by the market's resolution time (market_end_time_ts,
+    -- or now() if still active / no end time set), not by the last observed
+    -- trade. Forward-fill keeps emitting bars through gap days where a market
+    -- has no trades but is still open or still pre-settlement. now() also
+    -- caps so we don't extend beyond the current hour for active markets.
     select
-        market_id,
-        token_outcome,
-        max(token_id)                                                           as token_id,
-        min(hour)                                                               as first_hour,
-        max(hour)                                                               as last_hour
-    from sparse_ohlcv
-    group by market_id, token_outcome
+        s.market_id,
+        s.token_outcome,
+        max(s.token_id)                                                         as token_id,
+        min(s.hour)                                                             as first_hour,
+        least(
+            date_trunc('hour', now()),
+            coalesce(max(m.market_end_time_ts), date_trunc('hour', now()))
+        )                                                                       as last_hour
+    from sparse_ohlcv s
+    left join market_meta m
+        on  m.market_id     = s.market_id
+        and m.token_outcome = s.token_outcome
+    group by s.market_id, s.token_outcome
 ),
 
 hour_spine as (
