@@ -251,4 +251,5 @@ FROM (VALUES
     , ('sunswap', 'SunSwap', 'Direct', 'SunSwap')
     , ('tempo_exchange', 'Tempo Exchange', 'Direct', 'tempo')
     , ('bitget_dex_aggregator', 'Bitget Wallet Aggregator', 'Aggregator', 'BitgetWalletAggregator')
+    , ('tessera_v', 'Tessera-V', 'Direct', 'tessera_v')
 ) AS temp_table (project, name, marketplace_type, x_username)

@@ -1,31 +1,6 @@
 version: 2
 
 models:
-  - name: tokens_v1_erc20
-    meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, mantle, optimism, fantom, polygon, base, blast, sepolia, sei, nova, worldchain, kaia, ronin, boba, flare, viction, sonic, ink, abstract, sophon, shape
-      sector: tokens
-      short_description: "ERC20 token metadata (symbol, decimals, contract address) across all EVM-compatible chains."
-      contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy, angus_1, Henrystats, viniabussafi, jeff-dude, rantum, hosuke, irishlatte19
-    config:
-      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova', 'linea', 'worldchain', 'kaia', 'ronin', 'boba', 'flare', 'viction', 'sonic', 'ink', 'abstract', 'sophon', 'shape']
-
-    description: >
-        Crosschain ERC20 tokens
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - blockchain
-              - contract_address
-    columns:
-      - name: contract_address
-        description: "ERC20 Token's contract address"
-      - name: symbol
-        description: "ERC20 Token's symbol"
-      - name: decimals
-        description: "ERC20 Token's number of decimals"
-
   - name: tokens_nft
     meta:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, base, celo, zora, zksync
