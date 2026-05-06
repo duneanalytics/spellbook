@@ -1,0 +1,143 @@
+version: 2
+
+models:
+  - name: gmx_v2_megaeth_market_created
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'market_created']
+    description: |
+      This model extracts and parses `MarketCreated` events from the megaeth blockchain.
+      It includes transaction details, addresses, and other relevant metrics related to 
+      the creation of markets within the GMX protocol.
+
+    columns:
+      - &blockchain  
+        name: blockchain
+        description: The blockchain network where the event occurred (megaeth)
+      - &block_time
+        name: block_time
+        description: The timestamp of the block when the event was recorded
+      - &block_date
+        name: block_date
+        description: The date extracted from the block timestamp, representing the day the block was created      
+      - &block_number
+        name: block_number
+        description: The block number where the event is included
+      - &tx_hash
+        name: tx_hash
+        description: The hash of the transaction where the event was logged
+      - &index
+        name: index
+        description: The position of the event within the transaction
+      - &contract_address
+        name: contract_address
+        description: The contract address associated with the event 
+      - &tx_from
+        name: tx_from
+        description: The originating address of the transaction, usually representing the sender
+      - &tx_to
+        name: tx_to
+        description: The destination address of the transaction, representing the receiver
+      - name: event_name
+        description: The type of event recorded, always 'MarketCreated' for this model
+        data_tests:
+          - not_null 
+      - &msg_sender
+        name: msg_sender
+        description: The address of the sender of the message or transaction.
+      - name: account
+        description: The address associated with the event
+      - &market_token
+        name: market_token
+        description: The token used to represent the market
+        data_tests:
+          - not_null
+          - unique
+      - &index_token
+        name: index_token
+        description: The token used as the index in the market
+        data_tests:
+          - not_null
+      - &long_token
+        name: long_token
+        description: The token used for long positions in the market
+        data_tests:
+          - not_null
+      - &short_token
+        name: short_token
+        description: The token used for short positions in the market
+        data_tests:
+          - not_null
+      - &salt
+        name: salt
+        description: A unique value used to prevent hash collisions
+        data_tests:
+          - not_null
+      - &spot_only
+        name: spot_only
+        description: Indicates if the market is spot-only (true when index_token is the zero address)
+        data_tests:
+          - not_null          
+      - &market_token_symbol
+        name: market_token_symbol
+        description: The symbol of the market token (hardcoded as 'GM' in this model)  
+        data_tests:
+          - not_null    
+      - &market_token_decimals
+        name: market_token_decimals
+        description: The decimal precision of the market token (hardcoded as 18 in this model)          
+        data_tests:
+          - not_null         
+
+  - name: gmx_v2_megaeth_glv_created
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'glv_created']
+    description: |
+      Processes decoded event data for `GLVCreated` events on the GMX platform in the megaeth blockchain.
+      This model extracts key details such as the GLV token, associated tokens, and transaction specifics, enabling
+      analysis of GLV creation events on the platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address that initiated the transaction.
+      - name: tx_to
+        description: The destination address of the transaction.
+      - name: event_name
+        description: The type of event recorded, always `GLVCreated` for this model.
+      - *msg_sender
+      - name: glv_token
+        description: The identifier of the GLV token created in the transaction.
+      - name: long_token
+        description: The long token associated with the GLV creation.
+      - name: short_token
+        description: The short token associated with the GLV creation.
+      - name: salt
+        description: A unique salt value used in the GLV creation.
+      - name: glv_type
+        description: The type of GLV created.
+      - name: market_token_symbol
+        description: The symbol of the market token involved in the GLV creation.
+      - name: market_token_decimals
+        description: The decimal precision of the market token involved in the GLV creation.
+
