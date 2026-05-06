@@ -250,6 +250,13 @@ models:
         description: "Always 'Yes' — Kalshi candles are built on yes_price_dollars"
         data_tests:
           - not_null
+      - name: yes_outcome_name
+        description: >
+          Per-binary keyword Kalshi populates as the Yes-side label, sourced
+          from kalshi_market_details.yes_sub_title (e.g. 'China' for
+          KXEARNINGSMENTIONTSLA-25MAY-CHINA). Falls back to the ticker suffix
+          when missing, then to 'Yes'. Use this as the human-readable outcome
+          label; the `outcome` column is the side flag (always 'Yes').
       - name: category
         description: "Market category extracted from product_metadata JSON"
       - name: open

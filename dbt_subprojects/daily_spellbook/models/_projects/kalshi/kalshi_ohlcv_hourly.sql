@@ -40,7 +40,15 @@ market_meta as (
 		md.event_title,
 		md.result,
 		md.expiration_time,
-		md.category
+		md.category,
+		-- Per-binary keyword Kalshi populates as the Yes-side label, e.g.
+		-- "China" for KXEARNINGSMENTIONTSLA-25MAY-CHINA. Falls back to the
+		-- ticker suffix when missing, then to 'Yes'.
+		coalesce(
+			md.yes_sub_title,
+			element_at(split(md.ticker, '-'), -1),
+			'Yes'
+		) as yes_outcome_name
 	from {{ ref('kalshi_market_details') }} as md
 ),
 
@@ -165,6 +173,7 @@ with_settlement as (
 		f.volume_usd,
 		f.trade_count,
 		m.category,
+		m.yes_outcome_name,
 		m.expiration_time as market_end_time,
 		case when m.result = '' then 'unresolved' else m.result end as market_outcome,
 		coalesce(m.event_title, m.title) as event_market_name,
@@ -185,6 +194,7 @@ with_settlement as (
 		hour,
 		market_id,
 		outcome,
+		yes_outcome_name,
 		market_name,
 		coalesce(settled_price, open) as open,
 		coalesce(settled_price, high) as high,
@@ -208,6 +218,7 @@ select
 	r.market_id,
 	r.market_name,
 	r.outcome,
+	r.yes_outcome_name,
 	r.category,
 	r.open,
 	r.high,
