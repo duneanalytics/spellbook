@@ -110,14 +110,20 @@ market_bounds as (
 	-- last_hour is bounded by the market's expiration_time (or now() if still
 	-- active / no expiration set), not by the last observed trade. This keeps
 	-- the hour_spine forward-filling through gap days when a market has no
-	-- trades but is still open or still pre-settlement.
+	-- trades but is still open or still pre-settlement. The outer greatest()
+	-- preserves real trade hours past expiration_time (rare but possible);
+	-- the bottom-of-file filter only drops forward-filled post-settlement
+	-- rows, so actual trade rows must not be excluded here.
 	select
 		s.market_id,
 		s.outcome,
 		min(s.hour) as first_hour,
-		least(
-			date_trunc('hour', now()),
-			coalesce(max(m.expiration_time), date_trunc('hour', now()))
+		greatest(
+			max(s.hour),
+			least(
+				date_trunc('hour', now()),
+				coalesce(max(m.expiration_time), date_trunc('hour', now()))
+			)
 		) as last_hour
 	from sparse_ohlcv as s
 	left join market_meta as m
