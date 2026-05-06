@@ -1,3 +1,4 @@
+# PRs only for Dependabot security alerts, not routine version bumps (open-pull-requests-limit: 0).
 version: 2
 
 updates:
@@ -5,6 +6,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
     groups:
       security-updates:
         applies-to: "security-updates"
@@ -15,6 +17,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
     groups:
       security-updates:
         applies-to: "security-updates"
