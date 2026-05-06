@@ -5,6 +5,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # team-reviewers: valid for GitHub Dependabot; omitted from json.schemastore.org/dependabot-2.0.json
+    team-reviewers:
+      - "duneanalytics/team-curated-data"
     groups:
       security-updates:
         applies-to: "security-updates"
@@ -23,6 +26,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # team-reviewers: valid for GitHub Dependabot; omitted from json.schemastore.org/dependabot-2.0.json
+    team-reviewers:
+      - "duneanalytics/team-curated-data"
     groups:
       security-updates:
         applies-to: "security-updates"
