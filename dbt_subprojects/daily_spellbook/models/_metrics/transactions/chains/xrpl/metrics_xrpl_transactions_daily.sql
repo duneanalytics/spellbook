@@ -10,9 +10,18 @@
     )
 }}
 
--- Temporary placeholder while XRPL transfer outputs stay in the tokens rollout path.
 select
-    cast('xrpl' as varchar) as blockchain
-    , cast(null as date) as block_date
-    , cast(null as bigint) as tx_count
-where false
+    blockchain
+    , block_date
+    , approx_distinct(tx_hash) as tx_count -- max 2% error, matching EVM metrics
+from
+    {{ source('tokens_xrpl', 'transfers') }}
+where
+    blockchain = 'xrpl'
+    and amount_usd >= 1
+    {% if is_incremental() %}
+    and {{ incremental_predicate('block_date') }}
+    {% endif %}
+group by
+    blockchain
+    , block_date

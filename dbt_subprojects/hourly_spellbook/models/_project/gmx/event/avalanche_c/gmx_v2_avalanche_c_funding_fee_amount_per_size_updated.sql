@@ -179,7 +179,7 @@ WITH evt_data_1 AS (
         is_long
         
     FROM event_data AS ED
-    LEFT JOIN gmx_v2_avalanche_c.collateral_tokens_data AS CTD
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_collateral_tokens_data') }} AS CTD
         ON ED.collateral_token = CTD.collateral_token
 )
 
