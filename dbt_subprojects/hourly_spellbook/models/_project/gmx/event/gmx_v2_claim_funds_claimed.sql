@@ -7,8 +7,7 @@
 
 {%- set chains = [
     'arbitrum',
-    'avalanche_c',
-    'megaeth'
+    'avalanche_c'
 ] -%}
 
 {%- for chain in chains -%}
