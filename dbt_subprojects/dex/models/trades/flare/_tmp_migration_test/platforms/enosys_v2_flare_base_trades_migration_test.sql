@@ -6,7 +6,7 @@
     , incremental_strategy = 'merge'
     , unique_key = ['tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , tags = ['migration_test']
+    , tags = ['migration_test', 'prod_exclude']
     )
 }}
 
