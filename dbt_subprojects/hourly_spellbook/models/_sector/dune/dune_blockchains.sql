@@ -17,5 +17,6 @@ select
         ,token_address
         ,token_symbol
         ,token_decimals
+        ,decoding_enabled
         ,start_date
 from {{ source("dune", "dataset_core_blockchains", database="dune") }}
