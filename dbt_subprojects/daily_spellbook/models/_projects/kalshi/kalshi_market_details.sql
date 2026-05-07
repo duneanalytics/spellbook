@@ -73,6 +73,25 @@ with markets as (
 				where
 					{{ incremental_predicate('ed.last_updated_ts') }}
 			)
+			-- Include markets whose parent series row was refreshed in the
+			-- window. Without this, series-driven changes to category /
+			-- frequency / fee_type / fee_multiplier wouldn't propagate to
+			-- already-existing market rows on incremental runs.
+			or m.event_ticker in (
+				select
+					ed.event_ticker
+				from
+					{{ source('kalshi', 'market_details_raw') }} as ed
+				where
+					ed.series_ticker in (
+						select
+							sr.ticker
+						from
+							{{ source('kalshi', 'series_0001') }} as sr
+						where
+							{{ incremental_predicate('sr.last_updated_ts') }}
+					)
+			)
 		)
 	{% endif -%}
 )
@@ -123,6 +142,8 @@ with markets as (
 -- Series-level dim (~10k rows). Provides canonical category (preferred over
 -- event-level when present), recurring-template frequency, and the fee
 -- coefficients that let downstream trades compute fee_usd per fill.
+-- Sources kalshi.series_0001 directly until the series_raw view is created
+-- alongside the other _raw views (markets_raw, market_details_raw, etc.).
 , series as (
 	select
 		ticker as series_ticker
@@ -130,8 +151,9 @@ with markets as (
 		, frequency
 		, fee_type
 		, fee_multiplier
+		, last_updated_ts as series_last_updated_ts
 	from
-		{{ source('kalshi', 'series_raw') }}
+		{{ source('kalshi', 'series_0001') }}
 )
 
 select
@@ -194,7 +216,14 @@ select
 	, s.frequency
 	, s.fee_type
 	, s.fee_multiplier
-	, greatest(m.updated_time, coalesce(ed.last_updated_ts, m.updated_time)) as source_updated_at
+	-- source_updated_at incorporates series_last_updated_ts so trades-side
+	-- incremental detection picks up series-driven dim changes (category,
+	-- fee_type, fee_multiplier, frequency).
+	, greatest(
+		m.updated_time,
+		coalesce(ed.last_updated_ts, m.updated_time),
+		coalesce(s.series_last_updated_ts, m.updated_time)
+	) as source_updated_at
 	, now() as _updated_at
 from
 	markets as m
