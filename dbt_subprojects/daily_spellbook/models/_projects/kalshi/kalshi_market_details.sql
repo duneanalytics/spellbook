@@ -86,6 +86,13 @@ with markets as (
 							{{ incremental_predicate('sr.last_updated_ts') }}
 					)
 			)
+			-- Late-arriving settlements: markets_raw.updated_time can lag ingest by weeks; lifecycle.received_ts is real ingest time.
+			or m.ticker in (
+				select lc.market_ticker
+				from {{ source('kalshi', 'markets_lifecycle_raw') }} as lc
+				where {{ incremental_predicate('lc.received_ts') }}
+					and lc.event_type in ('determined', 'settled')
+			)
 		)
 	{% endif -%}
 )
@@ -145,6 +152,23 @@ with markets as (
 		{{ source('kalshi', 'series_raw') }}
 )
 
+-- Lifecycle events stream: settlement-relevant fields populated per event_type.
+, lifecycle as (
+	select
+		market_ticker as ticker
+		, max_by(result, received_ts) filter (where event_type = 'determined') as result
+		, max_by(settlement_value, received_ts) filter (where event_type = 'determined') as settlement_value
+		, max_by(determination_ts, received_ts) filter (where event_type = 'determined') as determination_ts
+		, max_by(settled_ts, received_ts) filter (where event_type = 'settled') as settled_ts
+		, max(received_ts) as last_event_received_ts
+	from
+		{{ source('kalshi', 'markets_lifecycle_raw') }}
+	where
+		event_type in ('determined', 'settled')
+	group by
+		market_ticker
+)
+
 select
 	m.ticker
 	, m.event_ticker
@@ -160,10 +184,11 @@ select
 	, m.expiration_time
 	, m.latest_expiration_time
 	, m.expected_expiration_time
-	, m.settlement_ts
+	-- Lifecycle wins when present: markets_raw settlement fields can lag ingest by weeks.
+	, coalesce(lc.settled_ts, m.settlement_ts) as settlement_ts
 	, m.status
-	, m.result
-	, m.settlement_value_dollars
+	, coalesce(lc.result, m.result) as result
+	, coalesce(try_cast(lc.settlement_value as double), m.settlement_value_dollars) as settlement_value_dollars
 	, m.expiration_value
 	, m.can_close_early
 	, m.early_close_condition
@@ -207,7 +232,8 @@ select
 	, greatest(
 		m.updated_time,
 		coalesce(ed.last_updated_ts, m.updated_time),
-		coalesce(s.series_last_updated_ts, m.updated_time)
+		coalesce(s.series_last_updated_ts, m.updated_time),
+		coalesce(lc.last_event_received_ts, m.updated_time)
 	) as source_updated_at
 	, now() as _updated_at
 from
@@ -216,3 +242,5 @@ left join event_details as ed
 	on m.event_ticker = ed.event_ticker
 left join series as s
 	on s.series_ticker = ed.series_ticker
+left join lifecycle as lc
+	on m.ticker = lc.ticker
