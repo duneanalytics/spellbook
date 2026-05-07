@@ -384,8 +384,16 @@ models:
     config:
       tags: ['tokens', 'transfers', 'xrpl']
     description: "Transfer rows derived from successful XRPL AMMDeposit transactions, including pool asset deposits and LP token mints."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
-      - *unique_key
+      - <<: *unique_key
+        data_tests:
+          - not_null
       - *blockchain
       - *block_date
       - *block_time
@@ -419,8 +427,16 @@ models:
     config:
       tags: ['tokens', 'transfers', 'xrpl']
     description: "Transfer rows derived from successful XRPL AMMWithdraw transactions, including pool asset withdrawals and LP token burns."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
-      - *unique_key
+      - <<: *unique_key
+        data_tests:
+          - not_null
       - *blockchain
       - *block_date
       - *block_time
