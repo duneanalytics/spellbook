@@ -10,12 +10,10 @@ models:
     config:
       tags: ['kalshi', 'prediction_markets', 'markets']
     description: >
-      Kalshi market reference table (incremental merge on ticker). Joins market-level data
-      (markets_raw) with event-level metadata (market_details_raw). Filtered to markets with
-      >= 100 contracts traded, retaining 99.7% of total volume. Includes latest-state pricing
-      snapshot, strike structure, settlement info, and resolution rules. Incremental source
-      filter uses market updated_time or events touched via market_details_raw.last_updated_ts;
-      source_updated_at is stored for lineage; merge does not use dest incremental_predicates (correctness).
+      Kalshi market reference table. Joins markets_raw with event-level metadata from
+      market_details_raw and series-level metadata from series_raw. Filtered to markets with
+      >= 100 contracts traded (99.7% of total volume). Includes latest-state pricing snapshot,
+      strike structure, settlement info, resolution rules, and series-level fee parameters.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -125,7 +123,7 @@ models:
       - name: product_metadata
         description: "JSON blob with additional product metadata"
       - name: category
-        description: "Market category. Prefers series-level value from series_raw (canonical, one row per series_ticker); falls back to event-level market_details_raw.category. NULL only when neither source has a row."
+        description: "Market category. Prefers the series-level value (canonical, one row per series); falls back to event-level when the series has no row."
       - name: competition
         description: "Competition name from product_metadata (e.g., Pro Football, College Basketball (M), NHL, XRP)"
       - name: strike_date
@@ -133,17 +131,16 @@ models:
       - name: strike_period
         description: "Strike period description from event metadata"
       - name: frequency
-        description: "Series-level recurrence cadence (custom, one_off, annual, monthly, weekly, daily, hourly, fifteen_min). NULL when series_raw has no row for the series_ticker."
+        description: "Series-level recurrence cadence (custom, one_off, annual, monthly, weekly, daily, hourly, fifteen_min)."
       - name: fee_type
-        description: "Series-level fee model. Currently 'quadratic' (taker fees only) or 'quadratic_with_maker_fees' (taker + maker fees)."
+        description: "Series-level fee model: 'quadratic' (taker only) or 'quadratic_with_maker_fees' (taker + maker)."
       - name: fee_multiplier
-        description: "Series-level fee scalar applied on top of Kalshi's standard 0.07 taker / 0.0175 maker coefficients. Standard rate has multiplier=1.0; specialised series may scale up or down."
+        description: "Series-level fee scalar applied on top of Kalshi's standard 0.07 taker / 0.0175 maker coefficients (1.0 = standard rate)."
       - name: source_updated_at
         description: >
-          greatest of markets_raw.updated_time and market_details_raw.last_updated_ts (falls back to
-          market updated_time when no event row). Static to the row between source refreshes; used by
-          downstream spells to detect refreshed dimension columns. Not used for merge target pruning
-          (avoids missed updates on event-only changes).
+          Greatest of markets_raw.updated_time, market_details_raw.last_updated_ts, and
+          series_raw.last_updated_ts. Used by downstream spells to detect refreshed dimension
+          columns on rows whose own updated_time did not move.
         data_tests:
           - not_null
       - name: _updated_at
@@ -158,10 +155,9 @@ models:
     config:
       tags: ['kalshi', 'prediction_markets', 'trades']
     description: >
-      Kalshi trade-level table (incremental merge on block_month + trade_id). Trade facts from
-      market_trades_raw joined to kalshi_market_details. Incremental source: new trades in the
-      rolling window (created_time), or all trades for tickers whose market_details.source_updated_at
-      moved in the window (refreshes dimension columns on historical trades).
+      Kalshi trade-level table. Trade facts from market_trades_raw joined to kalshi_market_details,
+      with USD notional and a derived per-trade taker fee. Trades for tickers whose dimension
+      columns refreshed are reprocessed so historical rows stay current.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -197,11 +193,11 @@ models:
         description: "USD notional value of the trade (taker price * count_fp, where taker price depends on taker_side)"
       - name: fee_usd
         description: >
-          Taker fee for this fill in USD, computed per Kalshi's published formula:
+          Taker fee for this fill in USD, per Kalshi's published formula:
           ceil(0.07 * fee_multiplier * yes_price_dollars * (1 - yes_price_dollars) * count_fp * 100) / 100.
-          NULL when the parent series has no fee_type populated. Maker-side fees
-          (when fee_type='quadratic_with_maker_fees') are not surfaced here; consumers
-          can compute them from fee_type + fee_multiplier with a 0.0175 base coefficient.
+          NULL when the parent series has no fee_type. Maker fees (when
+          fee_type='quadratic_with_maker_fees') are not surfaced; consumers can compute them
+          from fee_type + fee_multiplier with a 0.0175 base coefficient.
       - name: event_ticker
         description: "Parent event identifier"
       - name: series_ticker
@@ -266,7 +262,7 @@ models:
       - name: market_name
         description: "Market question text (e.g., 'Will X happen by Y date?')"
       - name: outcome
-        description: "Always 'Yes' — Kalshi candles are built on yes_price_dollars"
+        description: "Always 'Yes'; Kalshi candles are built on yes_price_dollars"
         data_tests:
           - not_null
       - name: category
@@ -292,7 +288,7 @@ models:
       - name: market_outcome
         description: "Settled outcome of the market (yes/no/scalar/unresolved)"
       - name: event_market_name
-        description: "Parent event title (event_title), falling back to market title — aligns with polymarket_polygon_ohlcv_hourly.event_market_name"
+        description: "Parent event title (event_title), falling back to market title; aligns with polymarket_polygon_ohlcv_hourly.event_market_name"
       - name: is_forward_filled
         description: "True if this row was generated by forward-fill (no trades in this hour)"
         data_tests:

@@ -7,10 +7,7 @@
 	unique_key = ['ticker'],
 ) }}
 
--- Bronze -> Gold: Kalshi market reference table.
--- Filter: markets with >= 100 contracts traded (drops 85% of dust, keeps 99.7% of volume).
--- Incremental source filter is the union of (markets touched) + (markets whose event was touched),
--- so dimension columns from market_details_raw stay fresh even when the market row didn't change.
+-- volume_fp >= 100 drops 85% of dust while keeping 99.7% of volume.
 -- Merge target is NOT pruned by incremental_predicates: an event-only update on a historical
 -- ticker would miss the pruned dest row and INSERT a duplicate, breaking unique(ticker).
 
@@ -73,10 +70,7 @@ with markets as (
 				where
 					{{ incremental_predicate('ed.last_updated_ts') }}
 			)
-			-- Include markets whose parent series row was refreshed in the
-			-- window. Without this, series-driven changes to category /
-			-- frequency / fee_type / fee_multiplier wouldn't propagate to
-			-- already-existing market rows on incremental runs.
+			-- Refreshed series rows: propagate category / frequency / fee_* to existing markets.
 			or m.event_ticker in (
 				select
 					ed.event_ticker
@@ -139,9 +133,6 @@ with markets as (
 		d.rn = 1
 )
 
--- Series-level dim (~10k rows). Provides canonical category (preferred over
--- event-level when present), recurring-template frequency, and the fee
--- coefficients that let downstream trades compute fee_usd per fill.
 , series as (
 	select
 		ticker as series_ticker
@@ -204,19 +195,15 @@ select
 	, ed.mutually_exclusive
 	, ed.available_on_brokers
 	, ed.product_metadata
-	-- Prefer series-level category (canonical, one row per series) over
-	-- event-level. Falls back to event-level when series has no row.
+	-- Series category is canonical (one row per series); event category is the fallback.
 	, coalesce(s.series_category, ed.category) as category
 	, try(json_extract_scalar(ed.product_metadata, '$.competition')) as competition
 	, ed.strike_date
 	, ed.strike_period
-	-- Series-level columns
 	, s.frequency
 	, s.fee_type
 	, s.fee_multiplier
-	-- source_updated_at incorporates series_last_updated_ts so trades-side
-	-- incremental detection picks up series-driven dim changes (category,
-	-- fee_type, fee_multiplier, frequency).
+	-- Includes series_last_updated_ts so downstream trades pick up series-driven dim changes.
 	, greatest(
 		m.updated_time,
 		coalesce(ed.last_updated_ts, m.updated_time),
