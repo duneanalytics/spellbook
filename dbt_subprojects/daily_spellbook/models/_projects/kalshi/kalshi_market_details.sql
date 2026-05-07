@@ -87,7 +87,7 @@ with markets as (
 						select
 							sr.ticker
 						from
-							{{ source('kalshi', 'series_0001') }} as sr
+							{{ source('kalshi', 'series_raw') }} as sr
 						where
 							{{ incremental_predicate('sr.last_updated_ts') }}
 					)
@@ -142,8 +142,6 @@ with markets as (
 -- Series-level dim (~10k rows). Provides canonical category (preferred over
 -- event-level when present), recurring-template frequency, and the fee
 -- coefficients that let downstream trades compute fee_usd per fill.
--- Sources kalshi.series_0001 directly until the series_raw view is created
--- alongside the other _raw views (markets_raw, market_details_raw, etc.).
 , series as (
 	select
 		ticker as series_ticker
@@ -153,7 +151,7 @@ with markets as (
 		, fee_multiplier
 		, last_updated_ts as series_last_updated_ts
 	from
-		{{ source('kalshi', 'series_0001') }}
+		{{ source('kalshi', 'series_raw') }}
 )
 
 select

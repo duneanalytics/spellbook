@@ -17,8 +17,5 @@ sources:
         description: "Market-level snapshot with pricing, volume, and metadata from Kalshi API"
       - name: market_details_raw
         description: "Event-level metadata from Kalshi API"
-      # TODO: switch to series_raw view once the catalog view is created
-      # (mirroring markets_raw / market_details_raw / market_trades_raw pattern).
-      # For now the spell sources the partition base table directly.
-      - name: series_0001
+      - name: series_raw
         description: "Series-level metadata from Kalshi API (one row per series_ticker). Carries canonical category, frequency, fee structure, and other series-stable fields."
