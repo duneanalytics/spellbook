@@ -72,10 +72,10 @@ WITH evt_data_1 AS (
 , evt_data AS (
     SELECT * 
     FROM evt_data_1
-    UNION ALL
+    UNION DISTINCT
     SELECT *
     FROM evt_data_2
-    UNION ALL
+    UNION 
     SELECT *
     FROM evt_data_3
 )
