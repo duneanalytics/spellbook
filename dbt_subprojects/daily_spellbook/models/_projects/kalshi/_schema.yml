@@ -125,13 +125,19 @@ models:
       - name: product_metadata
         description: "JSON blob with additional product metadata"
       - name: category
-        description: "Market category from market_details_raw (e.g., Sports, Elections, Politics). NULL when no event details row matches."
+        description: "Market category. Prefers series-level value from series_raw (canonical, one row per series_ticker); falls back to event-level market_details_raw.category. NULL only when neither source has a row."
       - name: competition
         description: "Competition name from product_metadata (e.g., Pro Football, College Basketball (M), NHL, XRP)"
       - name: strike_date
         description: "Strike/resolution date from event metadata"
       - name: strike_period
         description: "Strike period description from event metadata"
+      - name: frequency
+        description: "Series-level recurrence cadence (custom, one_off, annual, monthly, weekly, daily, hourly, fifteen_min). NULL when series_raw has no row for the series_ticker."
+      - name: fee_type
+        description: "Series-level fee model. Currently 'quadratic' (taker fees only) or 'quadratic_with_maker_fees' (taker + maker fees)."
+      - name: fee_multiplier
+        description: "Series-level fee scalar applied on top of Kalshi's standard 0.07 taker / 0.0175 maker coefficients. Standard rate has multiplier=1.0; specialised series may scale up or down."
       - name: source_updated_at
         description: >
           greatest of markets_raw.updated_time and market_details_raw.last_updated_ts (falls back to
@@ -189,6 +195,13 @@ models:
         description: "Price paid for the No side"
       - name: amount_usd
         description: "USD notional value of the trade (taker price * count_fp, where taker price depends on taker_side)"
+      - name: fee_usd
+        description: >
+          Taker fee for this fill in USD, computed per Kalshi's published formula:
+          ceil(0.07 * fee_multiplier * yes_price_dollars * (1 - yes_price_dollars) * count_fp * 100) / 100.
+          NULL when the parent series has no fee_type populated. Maker-side fees
+          (when fee_type='quadratic_with_maker_fees') are not surfaced here; consumers
+          can compute them from fee_type + fee_multiplier with a 0.0175 base coefficient.
       - name: event_ticker
         description: "Parent event identifier"
       - name: series_ticker
@@ -203,6 +216,12 @@ models:
         description: "Market lifecycle state"
       - name: result
         description: "Settlement outcome"
+      - name: frequency
+        description: "Series-level recurrence cadence (passthrough from kalshi_market_details)"
+      - name: fee_type
+        description: "Series-level fee model (passthrough from kalshi_market_details)"
+      - name: fee_multiplier
+        description: "Series-level fee scalar (passthrough from kalshi_market_details)"
       - name: _updated_at
         description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
 

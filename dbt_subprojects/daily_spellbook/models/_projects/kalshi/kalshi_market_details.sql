@@ -114,10 +114,24 @@ with markets as (
 			from
 				markets as m
 		) as k
-			on ed.event_ticker = k.event_ticker
+				on ed.event_ticker = k.event_ticker
 	) as d
 	where
 		d.rn = 1
+)
+
+-- Series-level dim (~10k rows). Provides canonical category (preferred over
+-- event-level when present), recurring-template frequency, and the fee
+-- coefficients that let downstream trades compute fee_usd per fill.
+, series as (
+	select
+		ticker as series_ticker
+		, category as series_category
+		, frequency
+		, fee_type
+		, fee_multiplier
+	from
+		{{ source('kalshi', 'series_raw') }}
 )
 
 select
@@ -170,13 +184,21 @@ select
 	, ed.mutually_exclusive
 	, ed.available_on_brokers
 	, ed.product_metadata
-	, ed.category
+	-- Prefer series-level category (canonical, one row per series) over
+	-- event-level. Falls back to event-level when series has no row.
+	, coalesce(s.series_category, ed.category) as category
 	, try(json_extract_scalar(ed.product_metadata, '$.competition')) as competition
 	, ed.strike_date
 	, ed.strike_period
+	-- Series-level columns
+	, s.frequency
+	, s.fee_type
+	, s.fee_multiplier
 	, greatest(m.updated_time, coalesce(ed.last_updated_ts, m.updated_time)) as source_updated_at
 	, now() as _updated_at
 from
 	markets as m
 left join event_details as ed
 	on m.event_ticker = ed.event_ticker
+left join series as s
+	on s.series_ticker = ed.series_ticker
