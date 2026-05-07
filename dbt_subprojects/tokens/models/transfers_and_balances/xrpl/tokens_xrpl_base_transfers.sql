@@ -12,6 +12,8 @@
   )
 }}
 
+-- stamp: 1
+
 {% set base_transfer_models = [
   'tokens_xrpl_base_payments',
   'tokens_xrpl_base_check_cash',

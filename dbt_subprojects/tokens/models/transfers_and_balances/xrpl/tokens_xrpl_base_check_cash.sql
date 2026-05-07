@@ -2,9 +2,17 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_check_cash',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    partition_by = ['block_month'],
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_key'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    merge_skip_unchanged = true,
   )
 }}
+
+{% set xrpl_transfer_start_date = '2016-01-01' %} -- ci test, revert to '2013-01-01'
 
 with check_cash_transactions as (
   select
@@ -29,8 +37,12 @@ with check_cash_transactions as (
     t.delivered_issuer,
     t.delivered_value
   from {{ ref('tokens_xrpl_transaction_metadata') }} t
-  where t.transaction_type = 'CheckCash'
+  where t.block_date >= date '{{ xrpl_transfer_start_date }}'
+    and t.transaction_type = 'CheckCash'
     and t.transaction_result = 'tesSUCCESS'
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('t.block_date') }}
+    {% endif -%}
 ),
 
 check_nodes as (
@@ -51,10 +63,14 @@ check_nodes as (
       else json_extract_scalar(n.final_fields, '$.SendMax.issuer')
     end as send_max_issuer
   from {{ ref('tokens_xrpl_affected_nodes') }} n
-  where n.transaction_type = 'CheckCash'
+  where n.block_date >= date '{{ xrpl_transfer_start_date }}'
+    and n.transaction_type = 'CheckCash'
     and n.transaction_result = 'tesSUCCESS'
     and n.node_action = 'DeletedNode'
     and n.ledger_entry_type = 'Check'
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('n.block_date') }}
+    {% endif -%}
 ),
 
 prepared_transfers as (

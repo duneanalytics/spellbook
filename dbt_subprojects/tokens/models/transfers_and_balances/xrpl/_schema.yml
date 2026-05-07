@@ -142,8 +142,16 @@ models:
     config:
       tags: ['tokens', 'transfers', 'xrpl']
     description: "Transfer rows derived from successful XRPL Payment transactions using delivered amount semantics."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
-      - *unique_key
+      - <<: *unique_key
+        data_tests:
+          - not_null
       - &blockchain
         name: blockchain
         description: "The blockchain of the transfers"
@@ -203,8 +211,16 @@ models:
     config:
       tags: ['tokens', 'transfers', 'xrpl']
     description: "Transfer rows derived from successful XRPL CheckCash transactions using the settled delivered amount and deleted Check participants."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
-      - *unique_key
+      - <<: *unique_key
+        data_tests:
+          - not_null
       - *blockchain
       - *block_date
       - *block_time
@@ -238,8 +254,16 @@ models:
     config:
       tags: ['tokens', 'transfers', 'xrpl']
     description: "Transfer rows derived from successful XRPL EscrowFinish transactions using deleted Escrow ledger objects."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
-      - *unique_key
+      - <<: *unique_key
+        data_tests:
+          - not_null
       - *blockchain
       - *block_date
       - *block_time
@@ -273,8 +297,16 @@ models:
     config:
       tags: ['tokens', 'transfers', 'xrpl']
     description: "Transfer rows derived from successful XRPL PaymentChannelClaim transactions using PayChannel balance deltas."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
-      - *unique_key
+      - <<: *unique_key
+        data_tests:
+          - not_null
       - *blockchain
       - *block_date
       - *block_time
@@ -308,8 +340,16 @@ models:
     config:
       tags: ['tokens', 'transfers', 'xrpl']
     description: "Normalized XRPL AMM pool balance deltas used to derive deposit, withdraw, mint, and burn transfer rows."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
     columns:
-      - *unique_key
+      - <<: *unique_key
+        data_tests:
+          - not_null
       - *blockchain
       - *block_date
       - *block_time

@@ -2,9 +2,17 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_escrow_finish',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    partition_by = ['block_month'],
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_key'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    merge_skip_unchanged = true,
   )
 }}
+
+{% set xrpl_transfer_start_date = '2016-01-01' %} -- ci test, revert to '2013-01-01'
 
 with escrow_finish_transactions as (
   select
@@ -20,8 +28,12 @@ with escrow_finish_transactions as (
     t.transaction_type,
     t.transaction_result
   from {{ ref('tokens_xrpl_transaction_metadata') }} t
-  where t.transaction_type = 'EscrowFinish'
+  where t.block_date >= date '{{ xrpl_transfer_start_date }}'
+    and t.transaction_type = 'EscrowFinish'
     and t.transaction_result = 'tesSUCCESS'
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('t.block_date') }}
+    {% endif -%}
 ),
 
 escrow_nodes as (
@@ -46,10 +58,14 @@ escrow_nodes as (
       json_extract_scalar(n.final_fields, '$.Amount')
     ) as amount_value
   from {{ ref('tokens_xrpl_affected_nodes') }} n
-  where n.transaction_type = 'EscrowFinish'
+  where n.block_date >= date '{{ xrpl_transfer_start_date }}'
+    and n.transaction_type = 'EscrowFinish'
     and n.transaction_result = 'tesSUCCESS'
     and n.node_action = 'DeletedNode'
     and n.ledger_entry_type = 'Escrow'
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('n.block_date') }}
+    {% endif -%}
 ),
 
 normalized_transfers as (
