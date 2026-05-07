@@ -21,3 +21,19 @@ sources:
         description: "Series-level metadata from Kalshi API (one row per series_ticker). Carries canonical category, frequency, fee structure, and other series-stable fields."
       - name: markets_lifecycle_raw
         description: "Per-market lifecycle events (created, determined, settled, deactivated) streamed from Kalshi WebSocket. received_ts is reliable ingest time; event_type='determined' carries result/settlement_value/determination_ts, event_type='settled' carries settled_ts."
+        columns:
+          - name: event_type
+            description: "Lifecycle transition label from Kalshi WS. Allowlist tripwires when Kalshi adds a new value: investigate whether it carries settlement-relevant fields, then extend this list."
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values:
+                      - created
+                      - activated
+                      - deactivated
+                      - close_date_updated
+                      - determined
+                      - settled
+                      - fractional_trading_updated
+                      - price_level_structure_updated
+                      - metadata_updated

@@ -87,11 +87,15 @@ with markets as (
 					)
 			)
 			-- Late-arriving settlements: markets_raw.updated_time can lag ingest by weeks; lifecycle.received_ts is real ingest time.
+			-- Filter on field population, not event_type label, so new Kalshi event_types carrying these fields are picked up automatically.
 			or m.ticker in (
 				select lc.market_ticker
 				from {{ source('kalshi', 'markets_lifecycle_raw') }} as lc
 				where {{ incremental_predicate('lc.received_ts') }}
-					and lc.event_type in ('determined', 'settled')
+					and (lc.result is not null
+						or lc.settled_ts is not null
+						or lc.determination_ts is not null
+						or lc.settlement_value is not null)
 			)
 		)
 	{% endif -%}
@@ -152,19 +156,23 @@ with markets as (
 		{{ source('kalshi', 'series_raw') }}
 )
 
--- Lifecycle events stream: settlement-relevant fields populated per event_type.
+-- Lifecycle events stream. Filter on column population, not event_type label,
+-- so new Kalshi event_types that carry these fields are picked up automatically.
 , lifecycle as (
 	select
 		market_ticker as ticker
-		, max_by(result, received_ts) filter (where event_type = 'determined') as result
-		, max_by(settlement_value, received_ts) filter (where event_type = 'determined') as settlement_value
-		, max_by(determination_ts, received_ts) filter (where event_type = 'determined') as determination_ts
-		, max_by(settled_ts, received_ts) filter (where event_type = 'settled') as settled_ts
-		, max(received_ts) as last_event_received_ts
+		, max_by(result, received_ts) filter (where result is not null) as result
+		, max_by(settlement_value, received_ts) filter (where settlement_value is not null) as settlement_value
+		, max_by(determination_ts, received_ts) filter (where determination_ts is not null) as determination_ts
+		, max_by(settled_ts, received_ts) filter (where settled_ts is not null) as settled_ts
+		, max(received_ts) filter (
+			where result is not null
+				or settled_ts is not null
+				or determination_ts is not null
+				or settlement_value is not null
+		) as last_event_received_ts
 	from
 		{{ source('kalshi', 'markets_lifecycle_raw') }}
-	where
-		event_type in ('determined', 'settled')
 	group by
 		market_ticker
 )
