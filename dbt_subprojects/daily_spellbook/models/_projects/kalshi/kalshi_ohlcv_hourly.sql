@@ -40,7 +40,12 @@ market_meta as (
 		md.event_title,
 		md.result,
 		md.expiration_time,
-		md.category
+		md.category,
+		coalesce(
+			md.yes_sub_title,
+			element_at(split(md.ticker, '-'), -1),
+			'Yes'
+		) as yes_outcome_name
 	from {{ ref('kalshi_market_details') }} as md
 ),
 
@@ -99,12 +104,22 @@ sparse_ohlcv as (
 ),
 
 market_bounds as (
+	-- bound last_hour by expiration_time (or now() if still active), not last trade, so forward-fill emits bars through gap periods.
+	-- outer greatest(max(s.hour), ...) preserves real trade rows past expiration; bottom-of-file filter drops only forward-filled post-settlement rows.
 	select
 		s.market_id,
 		s.outcome,
 		min(s.hour) as first_hour,
-		least(max(s.hour), date_trunc('hour', now())) as last_hour
+		greatest(
+			max(s.hour),
+			least(
+				date_trunc('hour', now()),
+				coalesce(max(m.expiration_time), date_trunc('hour', now()))
+			)
+		) as last_hour
 	from sparse_ohlcv as s
+	left join market_meta as m
+		on m.market_id = s.market_id
 	group by s.market_id, s.outcome
 ),
 
@@ -156,6 +171,7 @@ with_settlement as (
 		f.volume_usd,
 		f.trade_count,
 		m.category,
+		m.yes_outcome_name,
 		m.expiration_time as market_end_time,
 		case when m.result = '' then 'unresolved' else m.result end as market_outcome,
 		coalesce(m.event_title, m.title) as event_market_name,
@@ -176,6 +192,7 @@ with_settlement as (
 		hour,
 		market_id,
 		outcome,
+		yes_outcome_name,
 		market_name,
 		coalesce(settled_price, open) as open,
 		coalesce(settled_price, high) as high,
@@ -199,6 +216,7 @@ select
 	r.market_id,
 	r.market_name,
 	r.outcome,
+	r.yes_outcome_name,
 	r.category,
 	r.open,
 	r.high,
