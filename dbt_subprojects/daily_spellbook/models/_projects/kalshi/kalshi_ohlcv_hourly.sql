@@ -41,9 +41,6 @@ market_meta as (
 		md.result,
 		md.expiration_time,
 		md.category,
-		-- Per-binary keyword Kalshi populates as the Yes-side label, e.g.
-		-- "China" for KXEARNINGSMENTIONTSLA-25MAY-CHINA. Falls back to the
-		-- ticker suffix when missing, then to 'Yes'.
 		coalesce(
 			md.yes_sub_title,
 			element_at(split(md.ticker, '-'), -1),
@@ -107,13 +104,8 @@ sparse_ohlcv as (
 ),
 
 market_bounds as (
-	-- last_hour is bounded by the market's expiration_time (or now() if still
-	-- active / no expiration set), not by the last observed trade. This keeps
-	-- the hour_spine forward-filling through gap days when a market has no
-	-- trades but is still open or still pre-settlement. The outer greatest()
-	-- preserves real trade hours past expiration_time (rare but possible);
-	-- the bottom-of-file filter only drops forward-filled post-settlement
-	-- rows, so actual trade rows must not be excluded here.
+	-- bound last_hour by expiration_time (or now() if still active), not last trade, so forward-fill emits bars through gap periods.
+	-- outer greatest(max(s.hour), ...) preserves real trade rows past expiration; bottom-of-file filter drops only forward-filled post-settlement rows.
 	select
 		s.market_id,
 		s.outcome,
