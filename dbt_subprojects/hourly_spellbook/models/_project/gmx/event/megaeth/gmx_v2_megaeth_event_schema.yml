@@ -173,7 +173,7 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['megaeth', 'gmx', 'event', 'order_executed']
-    description: |      
+    description: | 
       Extracts and decodes the `OrderExecuted` event log data from the MegaETH blockchain. 
       This model processes log entries related to executed orders, extracting key variables such as 
       account addresses, event keys, and integer values.
@@ -213,3 +213,861 @@ models:
           - not_null
 
 
+  - name: gmx_v2_megaeth_order_cancelled
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'order_cancelled']
+    description: |
+      Extracts and decodes the `OrderCancelled` event log data from the MegaETH blockchain. 
+      This model processes log entries related to cancelled orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'OrderCancelled' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender         
+      - *key
+      - name: account
+        description: The address associated with the order 
+      - name: reason_bytes
+        description: The reason for the cancellation in byte format.
+        data_tests:
+          - not_null
+      - name: reason
+        description: The reason for the cancellation in string format.
+        data_tests:
+          - not_null
+
+
+  - name: gmx_v2_megaeth_market_created
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'market_created']
+    description: |
+      This model extracts and parses `MarketCreated` events from the MegaETH blockchain.
+      It includes transaction details, addresses, and other relevant metrics related to 
+      the creation of markets within the GMX protocol.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'MarketCreated' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender
+      - name: account
+        description: The address associated with the event
+      - &market_token
+        name: market_token
+        description: The token used to represent the market
+        data_tests:
+          - not_null
+          - unique
+      - &index_token
+        name: index_token
+        description: The token used as the index in the market
+        data_tests:
+          - not_null
+      - &long_token
+        name: long_token
+        description: The token used for long positions in the market
+        data_tests:
+          - not_null
+      - &short_token
+        name: short_token
+        description: The token used for short positions in the market
+        data_tests:
+          - not_null
+      - &salt
+        name: salt
+        description: A unique value used to prevent hash collisions
+        data_tests:
+          - not_null
+      - &spot_only
+        name: spot_only
+        description: Indicates if the market is spot-only (true when index_token is the zero address)
+        data_tests:
+          - not_null          
+      - &market_token_symbol
+        name: market_token_symbol
+        description: The symbol of the market token (hardcoded as 'GM' in this model)  
+        data_tests:
+          - not_null    
+      - &market_token_decimals
+        name: market_token_decimals
+        description: The decimal precision of the market token (hardcoded as 18 in this model)          
+        data_tests:
+          - not_null         
+
+
+  - name: gmx_v2_megaeth_position_increase
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth','gmx','event','position_increase']
+    description: |
+      This model extracts and parses `PositionIncrease` events from the MegaETH blockchain.
+      It includes transaction details, addresses, and various metrics related to the event, 
+      such as market data, collateral amounts, price impacts, and more.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address   
+      - *tx_from
+      - *tx_to       
+      - name: event_name
+        description: The type of event recorded, always 'PositionIncrease' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender
+      - name: account
+        description: The address associated with the event
+      - name: market
+        description: The market associated with the position increase
+        data_tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position increase
+        data_tests:
+          - not_null
+      - &size_in_usd
+        name: size_in_usd
+        description: The size of the position in USD
+        data_tests:
+          - not_null
+      - &size_in_tokens
+        name: size_in_tokens
+        description: The size of the position in index tokens
+        data_tests:
+          - not_null
+      - name: collateral_amount
+        description: The amount of collateral in the position after it was increased
+        data_tests:
+          - not_null
+      - &borrowing_factor
+        name: borrowing_factor
+        description: The cumulative borrowing factor applied to the position over time
+        data_tests:
+          - not_null
+      - &funding_fee_amount_per_size
+        name: funding_fee_amount_per_size
+        description: The cumulative funding fee amount per size
+        data_tests:
+          - not_null
+      - &long_token_claimable_funding_amount_per_size
+        name: long_token_claimable_funding_amount_per_size
+        description: The cumulative claimable funding amount per size for long tokens
+        data_tests:
+          - not_null
+      - &short_token_claimable_funding_amount_per_size
+        name: short_token_claimable_funding_amount_per_size
+        description: The cumulative claimable funding amount per size for short tokens
+        data_tests:
+          - not_null
+      - &execution_price
+        name: execution_price
+        description: The execution price of the position after price impact
+        data_tests:
+          - not_null
+      - &index_token_price_max
+        name: index_token_price_max
+        description: The maximum price of the index token during the event
+        data_tests:
+          - not_null
+      - &index_token_price_min
+        name: index_token_price_min
+        description: The minimum price of the index token during the event
+        data_tests:
+          - not_null
+      - &collateral_token_price_max
+        name: collateral_token_price_max
+        description: The maximum price of the collateral token during the event
+        data_tests:
+          - not_null
+      - &collateral_token_price_min
+        name: collateral_token_price_min
+        description: The minimum price of the collateral token during the event
+        data_tests:
+          - not_null
+      - *size_delta_usd
+      - &size_delta_in_tokens
+        name: size_delta_in_tokens
+        description: The change in position size in tokens
+        data_tests:
+          - not_null
+      - *order_type
+      - name: increased_at_time
+        description: The block timestamp when the position was increased
+      - &collateral_delta_amount
+        name: collateral_delta_amount
+        description: The change in collateral amount
+        data_tests:
+          - not_null
+      - &price_impact_usd
+        name: price_impact_usd
+        description: The impact on price in USD
+        data_tests:
+          - not_null
+      - &price_impact_amount
+        name: price_impact_amount
+        description: The impact on price in index token amount
+        data_tests:
+          - not_null
+      - *is_long
+      - &order_key
+        name: order_key
+        description: A unique key identifying the order
+        data_tests:
+          - not_null
+          - unique
+      - &position_key
+        name: position_key
+        description: A unique key identifying the position
+
+
+  - name: gmx_v2_megaeth_position_decrease
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth','gmx','event','position_decrease']
+    description: |
+      This model extracts and parses `PositionDecrease` events from the MegaETH blockchain.
+      It includes transaction details, addresses, and various metrics related to the event, 
+      such as market data, collateral amounts, price impacts, and more.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'PositionDecrease' for this model
+        data_tests:
+          - not_null  
+      - *msg_sender
+      - name: account
+        description: The address associated with the event
+      - name: market
+        description: The market associated with the position decrease
+        data_tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position decrease
+        data_tests:
+          - not_null
+      - *size_in_usd
+      - *size_in_tokens
+      - name: collateral_amount
+        description: The amount of collateral in the position after it was decreased
+        data_tests:
+          - not_null
+      - *borrowing_factor
+      - *funding_fee_amount_per_size
+      - *long_token_claimable_funding_amount_per_size
+      - *short_token_claimable_funding_amount_per_size
+      - *execution_price
+      - *index_token_price_max
+      - *index_token_price_min
+      - *collateral_token_price_max
+      - *collateral_token_price_min
+      - *size_delta_usd
+      - *size_delta_in_tokens
+      - *collateral_delta_amount
+      - &price_impact_diff_usd
+        name: price_impact_diff_usd
+        description: The difference in price impact in USD compared to a baseline or previous value, considering the maximum price impact limit
+        data_tests:
+          - not_null       
+      - *order_type 
+      - &decreased_at_time
+        name: decreased_at_time
+        description: The block timestamp when the position was decreased             
+      - *price_impact_usd
+      - &base_pnl_usd
+        name: base_pnl_usd
+        description: The base profit and loss in USD for the position
+        data_tests:
+          - not_null
+      - &uncapped_base_pnl_usd
+        name: uncapped_base_pnl_usd
+        description: The uncapped base profit and loss in USD, without any limits or caps applied
+        data_tests:
+          - not_null      
+      - *is_long
+      - *order_key
+      - *position_key
+
+
+  - name: gmx_v2_megaeth_position_fees_collected
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'position_fees_collected']
+    description: |
+      This model extracts and parses `PositionFeesCollected` events from the MegaETH blockchain.
+      It includes details about the transaction, addresses involved, and various metrics related to 
+      fees collected from positions, including fee amounts and related market data.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'PositionFeesCollected' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender
+      - name: market
+        description: The market associated with the position fees collected event
+        data_tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position fees collected event
+        data_tests:
+          - not_null
+      - &affiliate
+        name: affiliate
+        description: The affiliate address
+        data_tests:
+          - not_null
+      - &trader
+        name: trader
+        description: The trader's address
+        data_tests:
+          - not_null
+      - &ui_fee_receiver
+        name: ui_fee_receiver
+        description: The address receiving the UI fee
+        data_tests:
+          - not_null
+      - *collateral_token_price_min
+      - *collateral_token_price_max      
+      - &trade_size_usd
+        name: trade_size_usd
+        description: The size of the trade in USD
+        data_tests:
+          - not_null        
+      - &funding_fee_amount
+        name: funding_fee_amount
+        description: The amount of funding fee charged
+        data_tests:
+          - not_null
+      - &claimable_long_token_amount
+        name: claimable_long_token_amount
+        description: The amount of long tokens claimable
+      - &claimable_short_token_amount
+        name: claimable_short_token_amount
+        description: The amount of short tokens claimable
+      - &latest_funding_fee_amount_per_size
+        name: latest_funding_fee_amount_per_size
+        description: The latest funding fee amount per size
+      - &latest_long_token_claimable_funding_amount_per_size
+        name: latest_long_token_claimable_funding_amount_per_size
+        description: The latest claimable long token funding amount per size
+      - &latest_short_token_claimable_funding_amount_per_size
+        name: latest_short_token_claimable_funding_amount_per_size
+        description: The latest claimable short token funding amount per size
+      - &borrowing_fee_usd
+        name: borrowing_fee_usd
+        description: The borrowing fee amount in USD
+        data_tests:
+          - not_null
+      - &borrowing_fee_amount
+        name: borrowing_fee_amount
+        description: The amount of borrowing fee charged
+        data_tests:
+          - not_null
+      - &borrowing_fee_receiver_factor
+        name: borrowing_fee_receiver_factor
+        description: The factor used to calculate the borrowing fee amount for the fee receiver
+        data_tests:
+          - not_null
+      - &borrowing_fee_amount_for_fee_receiver
+        name: borrowing_fee_amount_for_fee_receiver
+        description: The amount of borrowing fee allocated for the fee receiver
+        data_tests:
+          - not_null
+      - &position_fee_factor
+        name: position_fee_factor
+        description: The fee factor for the position
+        data_tests:
+          - not_null
+      - &protocol_fee_amount
+        name: protocol_fee_amount
+        description: The amount of protocol fee charged
+        data_tests:
+          - not_null
+      - &position_fee_receiver_factor
+        name: position_fee_receiver_factor
+        description: The factor used to calculate the position fee amount for the receiver
+        data_tests:
+          - not_null
+      - &fee_receiver_amount
+        name: fee_receiver_amount
+        description: The amount of fee received by the fee receiver
+        data_tests:
+          - not_null
+      - &fee_amount_for_pool
+        name: fee_amount_for_pool
+        description: The amount of fee allocated for the pool
+        data_tests:
+          - not_null
+      - &position_fee_amount_for_pool
+        name: position_fee_amount_for_pool
+        description: The amount of position fee allocated for the pool
+        data_tests:
+          - not_null
+      - &position_fee_amount
+        name: position_fee_amount
+        description: The total position fee amount
+        data_tests:
+          - not_null
+      - &total_cost_amount
+        name: total_cost_amount
+        description: The total cost amount for the position
+        data_tests:
+          - not_null
+      - &ui_fee_receiver_factor
+        name: ui_fee_receiver_factor
+        description: The factor used to calculate the UI fee amount for the receiver
+        data_tests:
+          - not_null
+      - &ui_fee_amount
+        name: ui_fee_amount
+        description: The total amount of UI fee collected
+        data_tests:
+          - not_null
+      - &referral_total_rebate_factor
+        name: referral_total_rebate_factor
+        description: The total rebate factor associated with referrals.
+        data_tests:
+          - not_null
+      - &referral_total_rebate_amount
+        name: referral_total_rebate_amount
+        description: The total rebate amount given for referrals.
+        data_tests:
+          - not_null
+      - &referral_trader_discount_factor
+        name: referral_trader_discount_factor
+        description: The discount factor applied to the trader through referrals.
+        data_tests:
+          - not_null
+      - &referral_adjusted_affiliate_reward_factor
+        name: referral_adjusted_affiliate_reward_factor
+        description: The adjusted affiliate reward factor based on referral criteria.
+        data_tests:
+          - not_null
+      - &referral_affiliate_reward_amount
+        name: referral_affiliate_reward_amount
+        description: The reward amount given to the affiliate for referrals.
+        data_tests:
+          - not_null
+      - &referral_trader_discount_amount
+        name: referral_trader_discount_amount
+        description: The discount amount given to the trader through referrals.
+        data_tests:
+          - not_null
+      - &pro_trader_discount_factor
+        name: pro_trader_discount_factor
+        description: The discount factor applied for pro traders.
+        data_tests:
+          - not_null
+      - &pro_trader_discount_amount
+        name: pro_trader_discount_amount
+        description: The discount amount given to pro traders.
+        data_tests:
+          - not_null
+      - &liquidation_fee_amount
+        name: liquidation_fee_amount
+        description: The amount of fees charged during liquidation.
+        data_tests:
+          - not_null
+      - &liquidation_fee_receiver_factor
+        name: liquidation_fee_receiver_factor
+        description: The factor used to calculate the liquidation fee allocated to the receiver.
+        data_tests:
+          - not_null
+      - &liquidation_fee_amount_for_fee_receiver
+        name: liquidation_fee_amount_for_fee_receiver
+        description: The amount of liquidation fee allocated to the fee receiver.
+        data_tests:
+          - not_null
+      - &is_increase
+        name: is_increase
+        description: Indicates whether the position is increased (true) or decreased (false)
+        data_tests:
+          - not_null
+      - *order_key
+      - *position_key
+      - &referral_code
+        name: referral_code
+        description: The referral code associated with the position
+        data_tests:
+          - not_null   
+
+
+  - name: gmx_v2_megaeth_position_fees_info
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'position_fees_info']
+    description: |
+      This model extracts and parses `PositionFeesInfo` events from the MegaETH blockchain.
+      It includes details about the transaction, addresses involved, and various metrics related to 
+      position fees, including fee amounts and related market data.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address 
+      - *tx_from
+      - *tx_to       
+      - name: event_name
+        description: The type of event recorded, always 'PositionFeesInfo' for this model
+        data_tests:
+          - not_null
+      - *msg_sender         
+      - name: market
+        description: The market associated with the position fees info event
+        data_tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position fees info event
+        data_tests:
+          - not_null
+      - *affiliate
+      - *trader
+      - *ui_fee_receiver
+      - *collateral_token_price_min
+      - *collateral_token_price_max
+      - *trade_size_usd
+      - *funding_fee_amount
+      - *claimable_long_token_amount
+      - *claimable_short_token_amount
+      - *latest_funding_fee_amount_per_size
+      - *latest_long_token_claimable_funding_amount_per_size
+      - *latest_short_token_claimable_funding_amount_per_size
+      - *borrowing_fee_usd
+      - *borrowing_fee_amount
+      - *borrowing_fee_receiver_factor
+      - *borrowing_fee_amount_for_fee_receiver
+      - *position_fee_factor
+      - *protocol_fee_amount
+      - *position_fee_receiver_factor
+      - *fee_receiver_amount
+      - *fee_amount_for_pool
+      - *position_fee_amount_for_pool
+      - *position_fee_amount
+      - *total_cost_amount
+      - *ui_fee_receiver_factor
+      - *ui_fee_amount
+      - *referral_total_rebate_factor
+      - *referral_total_rebate_amount
+      - *referral_trader_discount_factor
+      - *referral_adjusted_affiliate_reward_factor
+      - *referral_affiliate_reward_amount
+      - *referral_trader_discount_amount
+      - *pro_trader_discount_factor
+      - *pro_trader_discount_amount
+      - *liquidation_fee_amount
+      - *liquidation_fee_receiver_factor
+      - *liquidation_fee_amount_for_fee_receiver
+      - *is_increase
+      - *order_key
+      - *position_key
+      - *referral_code
+
+
+  - name: gmx_v2_megaeth_order_frozen
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'order_frozen']
+    description: |
+      Extracts and decodes the `OrderFrozen` event log data from the MegaETH blockchain. 
+      This model processes log entries related to frozen orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for the order being frozen.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'OrderFrozen' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender         
+      - name: key
+        description: The key associated with the frozen order. Extracted as a bytes32 value
+        data_tests:
+          - not_null
+      - name: account
+        description: The address associated with the order 
+      - name: reason_bytes
+        description: The reason for the order being frozen in byte format.
+        data_tests:
+          - not_null
+      - name: reason
+        description: The reason for the order being frozen in string format.
+        data_tests:
+          - not_null
+
+
+  - name: gmx_v2_megaeth_order_updated
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'order_updated']
+    description: |
+      Extracts and decodes the `OrderUpdated` event log data from the MegaETH blockchain. 
+      This model processes log entries related to updated orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to  
+      - name: event_name
+        description: The type of event recorded, always 'OrderUpdated' for this model.
+        data_tests:
+          - not_null
+      - *msg_sender
+      - name: key
+        description: The key associated with the updated order. Extracted as a bytes32 value
+        data_tests:
+          - not_null
+      - name: market
+        description: The market in which the order was updated
+      - name: account
+        description: The address associated with the order.
+      - *size_delta_usd
+      - *trigger_price_raw
+      - *trigger_price
+      - *acceptable_price_raw 
+      - *acceptable_price
+      - *min_output_amount_raw   
+      - *updated_at_time
+      - name: valid_from_time
+        description: The time from which the order becomes valid for execution.
+      - name: auto_cancel
+        description: Boolean indicating whether the order will be automatically canceled under certain conditions.
+
+
+  - name: gmx_v2_megaeth_open_interest_in_tokens_updated
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'open_interest_in_tokens_updated']
+    description: |
+      Combines and processes decoded event data to produce a normalized dataset of updated orders 
+      on the GMX platform for the MegaETH blockchain. 
+      This model integrates data from the `open_interest_in_tokens_updated` table, enriching it with market-specific details.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'OpenInterestInTokensUpdated' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender
+      - name: market
+        description: The market in which the order was updated, decoded from a hexadecimal value.
+        data_tests:
+          - not_null
+      - name: collateral_token
+        description: The token used as collateral for the order, decoded from a hexadecimal value.
+        data_tests:
+          - not_null
+      - name: is_long
+        description: A boolean flag indicating whether the order is a long position (true) or short position (false).
+      - name: next_value
+        description: |
+          Represents the updated open interest vlaue after the transaction. It is derived by normalizing 
+          the raw value using index token decimals.
+          This ensures consistent scaling of the value across tokens with varying decimals.
+      - name: delta
+        description: |
+          Indicates the change in open interest. It is calculated by normalizing the raw delta value 
+          using index token decimals.
+          This normalization accounts for token decimal differences and provides a standardized measure of change.
+      - name: tx_from
+        description: The address that initiated the transaction
+      - name: tx_to
+        description: The destination address of the transaction
+      - name: tx_index
+        description: Index value related to the transaction
+
+
+  - name: gmx_v2_megaeth_glv_created
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'glv_created']
+    description: |
+      Processes decoded event data for `GLVCreated` events on the GMX platform in the MegaETH blockchain.
+      This model extracts key details such as the GLV token, associated tokens, and transaction specifics, enabling
+      analysis of GLV creation events on the platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address that initiated the transaction.
+      - name: tx_to
+        description: The destination address of the transaction.
+      - name: event_name
+        description: The type of event recorded, always `GLVCreated` for this model.
+      - *msg_sender
+      - name: glv_token
+        description: The identifier of the GLV token created in the transaction.
+      - name: long_token
+        description: The long token associated with the GLV creation.
+      - name: short_token
+        description: The short token associated with the GLV creation.
+      - name: salt
+        description: A unique salt value used in the GLV creation.
+      - name: glv_type
+        description: The type of GLV created.
+      - name: market_token_symbol
+        description: The symbol of the market token involved in the GLV creation.
+      - name: market_token_decimals
+        description: The decimal precision of the market token involved in the GLV creation.
