@@ -146,14 +146,26 @@ with markets as (
 
 , series as (
 	select
-		ticker as series_ticker
-		, category as series_category
-		, frequency
-		, fee_type
-		, fee_multiplier
-		, last_updated_ts as series_last_updated_ts
-	from
-		{{ source('kalshi', 'series_raw') }}
+		s.series_ticker
+		, s.series_category
+		, s.frequency
+		, s.fee_type
+		, s.fee_multiplier
+		, s.series_last_updated_ts
+	from (
+		select
+			ticker as series_ticker
+			, category as series_category
+			, frequency
+			, fee_type
+			, fee_multiplier
+			, last_updated_ts as series_last_updated_ts
+			, row_number() over (partition by ticker order by last_updated_ts desc) as rn
+		from
+			{{ source('kalshi', 'series_raw') }}
+	) as s
+	where
+		s.rn = 1
 )
 
 -- Lifecycle events stream. Filter on column population, not event_type label,
