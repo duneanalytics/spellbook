@@ -41,14 +41,12 @@ We need to split the onboarding process into multiple PRs because of the way we 
     -   **Why:** Establishes price feeds for the native token and key ERC20s. We rely on CoinPaprika for feeds, so coverage might be limited initially.
     -   *Future State Note:* The dependency on CoinPaprika for *all* tokens is being reduced, but the `prices_trusted_tokens` pipeline will likely remain.
 
-3.  **Configure ERC20 Metadata (`tokens` project) (no longer required for new chains):**
+3.  **Configure ERC20 Metadata (`tokens` project):**
 
-    *Note: The `tokens_<blockchain>_v1_erc20` model is no longer part of the `tokens.erc20` lineage. **Skip this step for new chains.** The automated `dune.definedfi.dataset_tokens` source now provides sufficient coverage, keyed on `chain_id` from `dune.blockchains`. This step only remains for legacy chains that were onboarded before that automated source existed.*
+    *Note: `tokens.erc20` metadata is sourced directly from Dune's automated token coverage. There is no `tokens_v1_erc20` lineage to update in Spellbook.*
 
-    -   **What:**
-        -   Create a new `tokens_<blockchain>_v1_erc20` model (e.g., [`tokens_lens_v1_erc20.sql`](./dbt_subprojects/tokens/models/tokens/lens/tokens_lens_v1_erc20.sql)) in `dbt_subprojects/tokens/models/tokens/<blockchain>/`. Add the same tokens listed in the blockchain-specific prices model.
-        -   Add this new model to the union in [`tokens_v1_erc20.sql`](./dbt_subprojects/tokens/models/tokens/tokens_v1_erc20.sql).
-    -   **Why:** Supplements the automated `dune.definedfi.dataset_tokens` source, which often lacks full blockchain or token coverage. Ensures essential tokens have metadata (symbol, decimals) available in Spellbook.
+    -   **What:** Skip creating chain-specific ERC20 metadata models in this repository for onboarding. Use `tokens.erc20` directly in downstream models.
+    -   **Why:** ERC20 symbol/decimal coverage now comes from automated datasets keyed on `chain_id` from `dune.blockchains`, rather than a maintained dbt union model.
 
 4.  **Define Raw Data Sources:**
     -   **What:** Add the new blockchain's raw tables (`transactions`, `logs`, `traces`, `blocks`, `creation_traces`) as sources in a new YAML file within [`sources/_base_sources/evm/`](./sources/_base_sources/evm/) (e.g., [`lens_base_sources.yml`](./sources/_base_sources/evm/lens_base_sources.yml)). Also, create a corresponding `<blockchain>_docs_block.md` file (e.g., [`lens_docs_block.md`](./sources/_base_sources/evm/lens_docs_block.md)) in the same directory to document these sources.

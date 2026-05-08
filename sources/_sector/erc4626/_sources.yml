@@ -197,6 +197,10 @@ sources:
     tables:
       - name: evt_deposit
       - name: evt_withdraw
+  - name: erc4626_tezos_evm
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
   - name: erc4626_unichain
     tables:
       - name: evt_deposit

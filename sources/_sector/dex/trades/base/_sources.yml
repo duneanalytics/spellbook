@@ -247,3 +247,6 @@ sources:
   - name: elfomofi_base
     tables:
       - name: ElfomoFi_evt_ElfomoTrade
+  - name: tesseraswap_base
+    tables:
+      - name: tesseraswap_evt_tesseratrade

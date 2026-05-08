@@ -60,6 +60,7 @@ base_transfers as (
 tx_metadata as (
   select
     t.version as tx_version,
+    t.block_height,
     t.tx_index,
     from_hex(
       lpad(to_hex(t.sender), 64, '0')
@@ -108,6 +109,7 @@ transfers as (
     b.block_month,
     b.block_date,
     b.block_time,
+    tx.block_height,
     b.tx_version,
     b.tx_hash,
     b.event_index,
@@ -164,6 +166,7 @@ select
   block_month,
   block_date,
   block_time,
+  block_height,
   tx_version,
   tx_hash,
   event_index,

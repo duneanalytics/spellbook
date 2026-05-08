@@ -191,6 +191,9 @@ models:
         name: blockchain
         description: "Blockchain identifier."
       - *block_time
+      - &block_height
+        name: block_height
+        description: "Aptos block height."
       - *block_month
       - *tx_version
       - *tx_hash
