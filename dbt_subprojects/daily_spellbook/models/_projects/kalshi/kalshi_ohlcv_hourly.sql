@@ -29,7 +29,16 @@ with base as (
 		) as rn_last
 	from {{ ref('kalshi_market_trades') }} as t
 	{% if is_incremental() -%}
-	where {{ incremental_predicate('t.created_time') }}
+	where
+		{{ incremental_predicate('t.created_time') }}
+		-- Late-arriving settlements: pull historical trades for tickers whose market_details
+		-- dim columns (result, category, event_title, ...) refreshed via lifecycle, so old
+		-- hours can be re-emitted with the current market_outcome.
+		or t.ticker in (
+			select md.ticker
+			from {{ ref('kalshi_market_details') }} as md
+			where {{ incremental_predicate('md.source_updated_at') }}
+		)
 	{%- endif %}
 ),
 
@@ -68,7 +77,9 @@ new_sparse as (
 ),
 
 {% if is_incremental() -%}
--- pre-window sparse anchor from {{ this }} so market_bounds and asof forward-fill stay correct across the window boundary
+-- pre-window sparse anchor from {{ this }} so market_bounds and asof forward-fill stay correct across the window boundary.
+-- Excludes tickers being re-aggregated from base (refreshed market_details), since their hours are
+-- already coming through new_sparse and double-emitting them here would break the merge unique key.
 prior_sparse as (
 	select
 		t.hour,
@@ -86,6 +97,11 @@ prior_sparse as (
 	from {{ this }} as t
 	where t.is_forward_filled = false
 		and not {{ incremental_predicate('t.hour') }}
+		and t.market_id not in (
+			select md.ticker
+			from {{ ref('kalshi_market_details') }} as md
+			where {{ incremental_predicate('md.source_updated_at') }}
+		)
 ),
 {% endif %}
 
@@ -239,5 +255,15 @@ where not (
 	and r.market_outcome in ('yes', 'no')
 )
 {% if is_incremental() -%}
-  and {{ incremental_predicate('r.hour') }}
+  and (
+    {{ incremental_predicate('r.hour') }}
+    -- Late-arriving settlements: when a ticker's market_details refreshed via lifecycle,
+    -- emit all its hours so historical rows pick up the new market_outcome / category /
+    -- event_market_name. Pairs with the OR-branch in the base CTE.
+    or r.market_id in (
+      select md.ticker
+      from {{ ref('kalshi_market_details') }} as md
+      where {{ incremental_predicate('md.source_updated_at') }}
+    )
+  )
 {%- endif %}
