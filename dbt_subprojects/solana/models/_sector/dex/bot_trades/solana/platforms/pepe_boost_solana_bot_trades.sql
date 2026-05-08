@@ -6,8 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index'],
-    pre_hook = '{{ set_trino_session_property(true, "join_reordering_strategy", "ELIMINATE_CROSS_JOINS") }}'
+    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
    )
 }}
 
@@ -19,6 +18,7 @@ WITH
   allFeePayments AS (
     SELECT
       tx_id,
+      block_time,
       IF(balance_change > 0, 'SOL', 'SPL') AS feeTokenType,
       IF(
         balance_change > 0,
@@ -75,10 +75,13 @@ WITH
       inner_instruction_index
     FROM
       {{ source('dex_solana', 'trades') }} AS trades
-      JOIN allFeePayments AS feePayments ON trades.tx_id = feePayments.tx_id
+      JOIN allFeePayments AS feePayments ON (
+        trades.tx_id = feePayments.tx_id
+        AND trades.block_time = feePayments.block_time
+      )
       LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
         feeTokenPrices.blockchain = 'solana'
-        AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)
+        AND feeTokenPrices.contract_address = from_base58(fee_token_mint_address)
         AND date_trunc('minute', trades.block_time) = minute
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
@@ -88,6 +91,7 @@ WITH
       )
       JOIN {{ source('solana','transactions') }} AS transactions ON (
         trades.tx_id = id
+        AND trades.block_time = transactions.block_time
         {% if is_incremental() %}
         AND {{ incremental_predicate('transactions.block_time') }}
         {% else %}
