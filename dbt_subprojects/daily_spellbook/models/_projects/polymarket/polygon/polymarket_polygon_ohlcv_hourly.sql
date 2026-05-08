@@ -110,14 +110,26 @@ sparse_ohlcv as (
 ),
 
 market_bounds as (
+    -- bound last_hour by market_end_time_ts (or now() if still active), not last trade, so forward-fill emits bars through gap periods.
+    -- outer greatest(max(s.hour), ...) preserves real trade rows past resolution; bottom-of-file filter drops only forward-filled post-settlement rows.
+    -- token_id falls back to market_meta because prior_sparse from {{ this }} carries token_id=NULL on incremental runs (column not stored), which would break the downstream join in with_settlement.
     select
-        market_id,
-        token_outcome,
-        max(token_id)                                                           as token_id,
-        min(hour)                                                               as first_hour,
-        max(hour)                                                               as last_hour
-    from sparse_ohlcv
-    group by market_id, token_outcome
+        s.market_id,
+        s.token_outcome,
+        coalesce(max(s.token_id), max(m.token_id))                              as token_id,
+        min(s.hour)                                                             as first_hour,
+        greatest(
+            max(s.hour),
+            least(
+                date_trunc('hour', now()),
+                coalesce(max(m.market_end_time_ts), date_trunc('hour', now()))
+            )
+        )                                                                       as last_hour
+    from sparse_ohlcv s
+    left join market_meta m
+        on  m.market_id     = s.market_id
+        and m.token_outcome = s.token_outcome
+    group by s.market_id, s.token_outcome
 ),
 
 hour_spine as (
