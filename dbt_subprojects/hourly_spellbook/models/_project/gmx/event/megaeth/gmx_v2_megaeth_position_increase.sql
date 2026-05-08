@@ -177,8 +177,8 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'orderType' THEN value END) AS order_type,
         MAX(CASE WHEN key_name = 'increasedAtTime' THEN value END) AS increased_at_time,
         MAX(CASE WHEN key_name = 'collateralDeltaAmount' THEN value END) AS collateral_delta_amount,
-        MAX(CASE WHEN key_name = 'priceImpactUsd' THEN value END) AS price_impact_usd,
-        MAX(CASE WHEN key_name = 'priceImpactAmount' THEN value END) AS price_impact_amount,
+        MAX(CASE WHEN key_name = 'pendingPriceImpactUsd' THEN value END) AS price_impact_usd,
+        MAX(CASE WHEN key_name = 'pendingPriceImpactAmount' THEN value END) AS price_impact_amount,
         MAX(CASE WHEN key_name = 'isLong' THEN value END) AS is_long,
         MAX(CASE WHEN key_name = 'orderKey' THEN value END) AS order_key,
         MAX(CASE WHEN key_name = 'positionKey' THEN value END) AS position_key
