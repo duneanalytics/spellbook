@@ -19,6 +19,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -38,6 +40,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -166,8 +170,11 @@ WITH evt_data_1 AS (
         TRY_CAST(ui_fee_amount AS DOUBLE) ui_fee_amount,
 
         from_hex(trade_key) AS trade_key,
-        from_hex(swap_fee_type) AS swap_fee_type
+        from_hex(swap_fee_type) AS swap_fee_type,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
@@ -203,18 +210,16 @@ WITH evt_data_1 AS (
             WHEN swap_fee_type = 0x39226eb4fed85317aa310fa53f734c7af59274c49325ab568f9c4592250e8cc5 THEN 'deposit'
             WHEN swap_fee_type = 0xda1ac8fcb4f900f8ab7c364d553e5b6b8bdc58f74160df840be80995056f3838 THEN 'withdrawal'
             WHEN swap_fee_type = 0x7ad0b6f464d338ea140ff9ef891b4a69cf89f107060a105c31bb985d9e532214 THEN 'swap'
-        END AS action_type
+        END AS action_type,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20
         ON ED.token = ERC20.contract_address
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd

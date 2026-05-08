@@ -19,6 +19,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -38,6 +40,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -129,8 +133,11 @@ WITH evt_data_1 AS (
 
         from_hex(market) AS market,
         TRY_CAST(distribution_amount AS DOUBLE) AS distribution_amount,
-        TRY_CAST(next_position_impact_pool_amount AS DOUBLE) AS next_position_impact_pool_amount
+        TRY_CAST(next_position_impact_pool_amount AS DOUBLE) AS next_position_impact_pool_amount,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
@@ -157,18 +164,16 @@ WITH evt_data_1 AS (
         CASE
             WHEN next_position_impact_pool_amount = 0 THEN 0
             ELSE next_position_impact_pool_amount / POWER(10, MD.index_token_decimals)
-        END AS next_position_impact_pool_amount
+        END AS next_position_impact_pool_amount,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
         ON ED.market = MD.market
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd

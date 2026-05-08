@@ -20,6 +20,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -39,6 +41,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -58,6 +62,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -175,7 +181,10 @@ WITH evt_data_1 AS (
         TRY_CAST(short_token_amount AS DOUBLE) AS short_token_amount,
         TRY_CAST(received_market_tokens AS DOUBLE) AS received_market_tokens,
         TRY_CAST(swap_pricing_type AS INTEGER) AS swap_pricing_type,
-        from_hex("key") AS "key"
+        from_hex("key") AS "key",
+
+        ED.tx_from,
+        ED.tx_to
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -200,8 +209,11 @@ WITH evt_data_1 AS (
         ED.short_token_amount / POWER(10, MD.short_token_decimals) AS short_token_amount,
         ED.received_market_tokens / POWER(10, 18) AS received_market_tokens,
         ED.swap_pricing_type,
-        ED."key"
+        ED."key",
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_deposit_created') }} AS DC
         ON ED."key" = DC."key"
@@ -209,13 +221,6 @@ WITH evt_data_1 AS (
         ON DC.market = MD.market
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
-
-
+SELECT
+    fd.*
+FROM full_data AS fd

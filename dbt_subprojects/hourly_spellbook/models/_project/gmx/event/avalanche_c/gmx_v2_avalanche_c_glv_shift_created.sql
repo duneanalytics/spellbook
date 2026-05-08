@@ -20,6 +20,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -39,6 +41,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -155,7 +159,10 @@ WITH evt_data_1 AS (
         TRY_CAST(market_token_amount AS DOUBLE) AS market_token_amount,
         TRY_CAST(min_market_tokens AS DOUBLE) AS min_market_tokens,
         TRY_CAST(updated_at_time AS DOUBLE) updated_at_time,
-        from_hex("key") AS "key"
+        from_hex("key") AS "key",
+
+        ED.tx_from,
+        ED.tx_to
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -184,17 +191,13 @@ WITH evt_data_1 AS (
             WHEN updated_at_time = 0 THEN NULL
             ELSE updated_at_time
         END AS updated_at_time,
-        "key"
+        "key",
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
-
-
+SELECT
+    fd.*
+FROM full_data AS fd

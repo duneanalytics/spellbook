@@ -19,6 +19,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -38,6 +40,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -228,8 +232,11 @@ WITH evt_data_1 AS (
         TRY_CAST(uncapped_base_pnl_usd AS DOUBLE) AS uncapped_base_pnl_usd,
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
         from_hex(order_key) AS order_key,
-        from_hex(position_key) AS position_key
+        from_hex(position_key) AS position_key,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
@@ -289,8 +296,11 @@ WITH evt_data_1 AS (
         uncapped_base_pnl_usd / POWER(10, 30) AS uncapped_base_pnl_usd,    
         is_long,
         order_key,
-        position_key
+        position_key,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
         ON ED.market = MD.market
@@ -298,11 +308,6 @@ WITH evt_data_1 AS (
         ON ED.collateral_token = CTD.collateral_token
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd

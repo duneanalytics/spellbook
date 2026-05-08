@@ -4,7 +4,9 @@
     alias = 'order_updated',
     materialized = 'incremental',
     unique_key = ['tx_hash', 'index'],
-    incremental_strategy = 'merge'
+    incremental_strategy = 'merge',
+    file_format = 'delta',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -19,6 +21,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -38,6 +42,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -53,7 +59,7 @@ WITH evt_data_1 AS (
 , evt_data AS (
     SELECT * 
     FROM evt_data_1
-    UNION DISTINCT
+    UNION ALL
     SELECT *
     FROM evt_data_2
 )
@@ -174,8 +180,11 @@ WITH evt_data_1 AS (
         TRY_CAST(min_output_amount AS DOUBLE) AS min_output_amount,
         TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time,
         TRY_CAST(valid_from_time AS DOUBLE) AS valid_from_time,
-        TRY_CAST(auto_cancel AS BOOLEAN) AS auto_cancel
+        TRY_CAST(auto_cancel AS BOOLEAN) AS auto_cancel,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
@@ -215,7 +224,10 @@ WITH evt_data_1 AS (
             ELSE ED.updated_at_time
         END AS updated_at_time,
         ED.valid_from_time,
-        ED.auto_cancel
+        ED.auto_cancel,
+
+        ED.tx_from,
+        ED.tx_to
 
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_order_created') }} AS OC
@@ -225,11 +237,6 @@ WITH evt_data_1 AS (
         
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd

@@ -19,6 +19,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -38,6 +40,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -269,7 +273,10 @@ WITH evt_data_1 AS (
         TRY_CAST(liquidation_fee_receiver_factor AS DOUBLE) AS liquidation_fee_receiver_factor, 
         TRY_CAST(liquidation_fee_amount_for_fee_receiver AS DOUBLE) AS liquidation_fee_amount_for_fee_receiver, 
 
-        TRY_CAST(is_increase AS BOOLEAN) AS is_increase
+        TRY_CAST(is_increase AS BOOLEAN) AS is_increase,
+
+        ED.tx_from,
+        ED.tx_to
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -344,8 +351,11 @@ WITH evt_data_1 AS (
         liquidation_fee_receiver_factor / POWER(10, 30) AS liquidation_fee_receiver_factor, 
         liquidation_fee_amount_for_fee_receiver / POWER(10, collateral_token_decimals) AS liquidation_fee_amount_for_fee_receiver, 
 
-        is_increase
+        is_increase,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
         ON ED.market = MD.market
@@ -442,11 +452,6 @@ WITH evt_data_1 AS (
     FROM full_data
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data_2'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data_2 AS fd

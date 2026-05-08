@@ -20,7 +20,7 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -39,7 +39,7 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -58,7 +58,7 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -148,8 +148,11 @@ WITH evt_data_1 AS (
         msg_sender,
         
         from_hex(market) AS market,
-        TRY_CAST(funding_factor_per_second AS DOUBLE) AS funding_factor_per_second
-        
+        TRY_CAST(funding_factor_per_second AS DOUBLE) AS funding_factor_per_second,
+
+        ED.tx_from,
+        ED.tx_to,
+        ED.tx_index
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
@@ -171,16 +174,17 @@ WITH evt_data_1 AS (
         ED.market,
         MD.market_name,
         ED.funding_factor_per_second AS funding_factor_per_second_raw,
-        ED.funding_factor_per_second / POWER(10, 30) AS funding_factor_per_second
+        ED.funding_factor_per_second / POWER(10, 30) AS funding_factor_per_second,
+
+        ED.tx_from,
+        ED.tx_to,
+        ED.tx_index
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
         ON ED.market = MD.market
 )
 
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to', 'index']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd
+

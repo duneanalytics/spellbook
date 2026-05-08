@@ -19,6 +19,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -38,6 +40,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -57,6 +61,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -154,8 +160,11 @@ WITH evt_data_1 AS (
         from_hex(token) AS token,
         TRY_CAST(distribution_id AS VARCHAR) AS distribution_id,
         TRY_CAST(amount AS DOUBLE) AS amount,
-        TRY_CAST(next_amount AS DOUBLE) AS next_amount
+        TRY_CAST(next_amount AS DOUBLE) AS next_amount,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
@@ -187,8 +196,11 @@ WITH evt_data_1 AS (
             ERC20.decimals,
             MD.market_token_decimals,
             GLV.glv_token_decimals
-        )) AS next_amount
+        )) AS next_amount,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20
         ON ED.token = ERC20.contract_address
@@ -198,11 +210,6 @@ WITH evt_data_1 AS (
         ON ED.token = GLV.glv
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd

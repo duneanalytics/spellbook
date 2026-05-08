@@ -20,6 +20,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -41,6 +43,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -62,6 +66,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -161,7 +167,10 @@ WITH evt_data_1 AS (
         CAST(time_key AS DOUBLE) AS time_key,
         CAST(delta AS DOUBLE) AS delta,
         CAST(next_value AS DOUBLE) AS next_value,
-        CAST(next_pool_value AS DOUBLE) AS next_pool_value
+        CAST(next_pool_value AS DOUBLE) AS next_pool_value,
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
@@ -187,18 +196,16 @@ WITH evt_data_1 AS (
         ED.time_key / POWER(10, erc20.decimals) AS time_key,
         ED.delta / POWER(10, erc20.decimals) AS delta,
         ED.next_value / POWER(10, erc20.decimals) AS next_value,
-        ED.next_pool_value / POWER(10, erc20.decimals) AS next_pool_value
+        ED.next_pool_value / POWER(10, erc20.decimals) AS next_pool_value,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS erc20
         ON erc20.contract_address = ED.token
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd

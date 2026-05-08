@@ -20,6 +20,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -39,6 +41,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -152,8 +156,11 @@ WITH evt_data_1 AS (
         from_hex(collateral_token) AS collateral_token,
         TRY_CAST(delta AS DOUBLE) delta, 
         TRY_CAST("value" AS DOUBLE) "value",  
-        TRY_CAST(is_long AS BOOLEAN) AS is_long
+        TRY_CAST(is_long AS BOOLEAN) AS is_long,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
@@ -176,20 +183,16 @@ WITH evt_data_1 AS (
         ED.collateral_token,
         delta / POWER(10, CTD.collateral_token_decimals + 15) AS delta,
         "value" / POWER(10, CTD.collateral_token_decimals + 15) AS "value",
-        is_long
+        is_long,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_collateral_tokens_data') }} AS CTD
         ON ED.collateral_token = CTD.collateral_token
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
-
-
+SELECT
+    fd.*
+FROM full_data AS fd

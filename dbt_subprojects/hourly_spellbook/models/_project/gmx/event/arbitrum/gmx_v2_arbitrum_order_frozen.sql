@@ -19,6 +19,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -38,6 +40,8 @@ WITH evt_data_1 AS (
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -166,7 +170,10 @@ WITH evt_data_1 AS (
         from_hex(key) AS key,
         from_hex(account) AS account,
         from_hex(reason_bytes) AS reason_bytes,
-        reason
+        reason,
+
+        ED.tx_from,
+        ED.tx_to
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -174,11 +181,6 @@ WITH evt_data_1 AS (
             AND ED.index = EDP.index
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd
