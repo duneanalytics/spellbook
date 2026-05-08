@@ -19,8 +19,7 @@ WITH
     SELECT
       tx_id,
       block_time,
-      'SOL' AS feeTokenType,
-      balance_change / 1e9 AS fee_token_amount,
+      SUM(balance_change) / 1e9 AS fee_token_amount,
       '{{wsol_token}}' AS fee_token_mint_address
     FROM
       {{ source('solana','account_activity') }}
@@ -34,6 +33,24 @@ WITH
       AND balance_change > 0
       AND address = '{{fee_receiver}}'
       AND NOT signed -- Exclude transactions signed by the fee wallet.
+    GROUP BY
+      tx_id,
+      block_time
+  ),
+  wsolPrices AS (
+    SELECT
+      minute,
+      price
+    FROM
+      {{ source('prices', 'usd') }}
+    WHERE
+      blockchain = 'solana'
+      AND contract_address = from_base58('{{wsol_token}}')
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('minute') }}
+      {% else %}
+      AND minute >= TIMESTAMP '{{project_start_date}}'
+      {% endif %}
   ),
   botTrades AS (
     SELECT
@@ -55,7 +72,7 @@ WITH
       token_sold_mint_address AS token_sold_address,
       fee_token_amount * price AS fee_usd,
       fee_token_amount,
-      IF(feeTokenType = 'SOL', 'SOL', symbol) AS fee_token_symbol,
+      'SOL' AS fee_token_symbol,
       fee_token_mint_address AS fee_token_address,
       project,
       trades.version,
@@ -72,15 +89,8 @@ WITH
         trades.tx_id = feePayments.tx_id
         AND trades.block_time = feePayments.block_time
       )
-      LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
-        feeTokenPrices.blockchain = 'solana'
-        AND feeTokenPrices.contract_address = from_base58(fee_token_mint_address)
-        AND date_trunc('minute', trades.block_time) = minute
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('minute') }}
-        {% else %}
-        AND minute >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
+      LEFT JOIN wsolPrices ON (
+        date_trunc('minute', trades.block_time) = wsolPrices.minute
       )
     WHERE
       trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
