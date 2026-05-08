@@ -55,6 +55,8 @@ models:
       - &block_month
         name: block_month
         description: "Month bucket derived from block_time."
+        data_tests:
+          - not_null
       - &event_index
         name: event_index
         description: "Primary event index used for the transfer row."
@@ -190,6 +192,8 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain identifier."
+        data_tests:
+          - not_null
       - *block_time
       - &block_height
         name: block_height
@@ -229,3 +233,28 @@ models:
         description: "USD value computed as amount * hourly price."
       - *transfer_type
       - *updated_at
+
+  - name: tokens_aptos_transfers_last_updated
+    meta:
+      blockchain: aptos
+      sector: tokens
+      short_description: "Per-month metadata showing when tokens_aptos.transfers was last updated."
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'transfers', 'aptos', 'metadata']
+    description: >
+      Metadata table tracking the last update timestamp for each block_month partition
+      in tokens_aptos.transfers. Used for monitoring data freshness and shared via Databricks.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_month
+    columns:
+      - *blockchain
+      - *block_month
+      - name: last_update_date
+        description: "The most recent _updated_at timestamp across all rows in this block_month partition."
+        data_tests:
+          - not_null
