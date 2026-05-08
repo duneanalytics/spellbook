@@ -244,13 +244,30 @@ models:
         description: The minimum price of the collateral token during the event
         data_tests:
           - not_null
-      - *size_delta_usd
+      - &size_delta_usd
+        name: size_delta_usd
+        description: The change in position size in USD
+        data_tests:
+          - not_null
       - &size_delta_in_tokens
         name: size_delta_in_tokens
         description: The change in position size in tokens
         data_tests:
           - not_null
-      - *order_type
+      - &order_type    
+        name: order_type
+        description: |
+          The type of order executed. The following table describes each order type:
+          - MarketSwap: Swap token A to token B at the current market price.
+          - LimitSwap: Swap token A to token B if the minOutputAmount can be fulfilled.
+          - MarketIncrease: Increase the position at the current market price.
+          - LimitIncrease: Increase the position if the triggerPrice is reached.
+          - MarketDecrease: Decrease the position at the current market price.
+          - LimitDecrease: Decrease the position if the triggerPrice is reached.
+          - StopLossDecrease: Decrease the position if the triggerPrice is reached.
+          - Liquidation: Decrease the position if the position is liquidated.
+        data_tests:
+          - not_null
       - name: increased_at_time
         description: The block timestamp when the position was increased
       - &collateral_delta_amount
@@ -268,7 +285,11 @@ models:
         description: The impact on price in index token amount
         data_tests:
           - not_null
-      - *is_long
+      - &is_long
+        name: is_long
+        description: Indicates whether the position is long (true) or short (false)
+        data_tests:
+          - not_null
       - &order_key
         name: order_key
         description: A unique key identifying the order
