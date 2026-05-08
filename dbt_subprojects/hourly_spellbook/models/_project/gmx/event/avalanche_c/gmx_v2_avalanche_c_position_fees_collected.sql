@@ -455,7 +455,9 @@ WITH evt_data_1 AS (
         COALESCE(liquidation_fee_receiver_factor, 0) AS liquidation_fee_receiver_factor,
         COALESCE(liquidation_fee_amount_for_fee_receiver, 0) AS liquidation_fee_amount_for_fee_receiver, 
     
-        is_increase
+        is_increase,
+        tx_from,
+        tx_to
     
     FROM full_data
 )
