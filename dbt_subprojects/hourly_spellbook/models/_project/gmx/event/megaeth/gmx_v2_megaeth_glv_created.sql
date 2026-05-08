@@ -2,7 +2,7 @@
 	schema='gmx_v2_megaeth',
 	alias='glv_created',
 	materialized='incremental',
-	unique_key=['tx_hash', 'index'],
+	unique_key=['block_date', 'tx_hash', 'index'],
 	incremental_strategy='merge',
 ) }}
 
