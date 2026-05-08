@@ -53,6 +53,7 @@
     "superseed",
     "tac",
     "taiko",
+    "tezos_evm",
     "unichain",
     "viction",
     "worldchain",
