@@ -6,9 +6,15 @@
 	incremental_strategy = 'merge',
 	partition_by = ['block_month'],
 	unique_key = ['block_month', 'hour', 'market_id', 'outcome'],
-	incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.hour')],
 	merge_skip_unchanged = true,
 ) }}
+
+-- Merge target is NOT pruned by incremental_predicates: the source emits historical hours
+-- for tickers whose market_details refreshed via lifecycle, and a destination predicate on
+-- DBT_INTERNAL_DEST.hour would hide their existing target rows from the ON clause, sending
+-- them through the INSERT branch and breaking unique(block_month, hour, market_id, outcome).
+-- Same reasoning as kalshi_market_details. Trades the destination-pruning speedup for
+-- correctness on late-arriving settlements.
 
 with base as (
 	select
