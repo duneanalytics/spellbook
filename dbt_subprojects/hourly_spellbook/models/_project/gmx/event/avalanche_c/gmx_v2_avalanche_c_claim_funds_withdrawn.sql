@@ -3,7 +3,7 @@
     schema = 'gmx_v2_avalanche_c',
     alias = 'claim_funds_withdrawn',
     materialized = 'incremental',
-    unique_key = ['tx_hash', 'index'],
+    unique_key = ['block_date', 'tx_hash', 'index'],
     incremental_strategy = 'merge'
     )
 }}
@@ -16,9 +16,12 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -35,9 +38,12 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -54,9 +60,12 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -84,6 +93,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        block_date,
         json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items,
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items
     FROM
@@ -94,6 +104,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -107,6 +118,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -128,6 +140,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        block_date,
         MAX(CASE WHEN key_name = 'account' THEN value END) AS account,
         MAX(CASE WHEN key_name = 'token' THEN value END) AS token,
         MAX(CASE WHEN key_name = 'receiver' THEN value END) AS receiver,
@@ -135,7 +148,7 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'amount' THEN value END) AS amount
     FROM
         combined
-    GROUP BY tx_hash, index
+    GROUP BY tx_hash, index, block_date
 )
 
 -- full data 
@@ -143,6 +156,7 @@ WITH evt_data_1 AS (
     SELECT 
         blockchain,
         block_time,
+        ED.block_date AS block_date,
         block_number,
         ED.tx_hash,
         ED.index,
@@ -154,12 +168,16 @@ WITH evt_data_1 AS (
         from_hex(token) AS token,
         from_hex(receiver) AS receiver,
         TRY_CAST(distribution_id AS VARCHAR) AS distribution_id,
-        TRY_CAST(amount AS DOUBLE) AS amount
+        TRY_CAST(amount AS DOUBLE) AS amount,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
             AND ED.index = EDP.index
+            AND ED.block_date = EDP.block_date
 )
 
 -- full data 
@@ -167,7 +185,7 @@ WITH evt_data_1 AS (
     SELECT 
         ED.blockchain,
         ED.block_time,
-        DATE(ED.block_time) AS block_date,
+        ED.block_date AS block_date,
         ED.block_number,
         ED.tx_hash,
         ED.index,
@@ -183,8 +201,11 @@ WITH evt_data_1 AS (
             ERC20.decimals,
             MD.market_token_decimals,
             GLV.glv_token_decimals
-        )) AS amount
+        )) AS amount,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20
         ON ED.token = ERC20.contract_address
@@ -194,11 +215,6 @@ WITH evt_data_1 AS (
         ON ED.token = GLV.glv
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd
