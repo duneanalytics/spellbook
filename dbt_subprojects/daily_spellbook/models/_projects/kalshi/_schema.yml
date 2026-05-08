@@ -53,13 +53,13 @@ models:
       - name: expected_expiration_time
         description: "Expected expiration time"
       - name: settlement_ts
-        description: "When the market was settled (null if unsettled)"
+        description: "When the market was settled (null if unsettled). Sourced from markets_lifecycle_raw event_type='settled' when available, else from markets_raw."
       - name: status
         description: "Market lifecycle state (active, finalized, closed, etc.)"
       - name: result
-        description: "Settlement outcome (yes, no, or empty if unresolved)"
+        description: "Settlement outcome (yes, no, scalar). Sourced from markets_lifecycle_raw event_type='determined' when available, else from markets_raw."
       - name: settlement_value_dollars
-        description: "Payout value per contract at settlement"
+        description: "Payout value per contract at settlement. Sourced from markets_lifecycle_raw event_type='determined' (cast from varchar) when available, else from markets_raw."
       - name: expiration_value
         description: "Expiration outcome value"
       - name: can_close_early
@@ -138,9 +138,9 @@ models:
         description: "Series-level fee scalar applied on top of Kalshi's standard 0.07 taker / 0.0175 maker coefficients (1.0 = standard rate)."
       - name: source_updated_at
         description: >
-          Greatest of markets_raw.updated_time, market_details_raw.last_updated_ts, and
-          series_raw.last_updated_ts. Used by downstream spells to detect refreshed dimension
-          columns on rows whose own updated_time did not move.
+          Greatest of markets_raw.updated_time, market_details_raw.last_updated_ts,
+          series_raw.last_updated_ts, and markets_lifecycle_raw.received_ts. Used by downstream
+          spells to detect refreshed dimension columns on rows whose own updated_time did not move.
         data_tests:
           - not_null
       - name: _updated_at
