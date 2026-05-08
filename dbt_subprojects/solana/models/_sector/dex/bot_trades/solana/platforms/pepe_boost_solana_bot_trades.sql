@@ -6,7 +6,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
+    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index'],
+    pre_hook = '{{ set_trino_session_property(true, "join_reordering_strategy", "ELIMINATE_CROSS_JOINS") }}'
    )
 }}
 
@@ -78,7 +79,7 @@ WITH
       LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
         feeTokenPrices.blockchain = 'solana'
         AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)
-        AND date_trunc('minute', block_time) = minute
+        AND date_trunc('minute', trades.block_time) = minute
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
         {% else %}
@@ -101,17 +102,6 @@ WITH
       {% else %}
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
-  ),
-  highestInnerInstructionIndexForEachTrade AS (
-    SELECT
-      tx_id,
-      outer_instruction_index,
-      MAX(inner_instruction_index) AS highestInnerInstructionIndex
-    FROM
-      botTrades
-    GROUP BY
-      tx_id,
-      outer_instruction_index
   )
 SELECT
   block_time,
@@ -141,18 +131,11 @@ SELECT
   botTrades.outer_instruction_index,
   COALESCE(inner_instruction_index, 0) AS inner_instruction_index,
   IF(
-    inner_instruction_index = highestInnerInstructionIndex,
+    inner_instruction_index = MAX(inner_instruction_index) OVER (
+      PARTITION BY botTrades.tx_id, botTrades.outer_instruction_index
+    ),
     true,
     false
   ) AS is_last_trade_in_transaction
 FROM
   botTrades
-  JOIN highestInnerInstructionIndexForEachTrade ON (
-    botTrades.tx_id = highestInnerInstructionIndexForEachTrade.tx_id
-    AND botTrades.outer_instruction_index = highestInnerInstructionIndexForEachTrade.outer_instruction_index
-  )
-ORDER BY
-  block_time DESC,
-  tx_index DESC,
-  outer_instruction_index DESC,
-  inner_instruction_index DESC
