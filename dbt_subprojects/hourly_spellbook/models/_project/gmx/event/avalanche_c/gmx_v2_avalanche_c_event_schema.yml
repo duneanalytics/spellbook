@@ -17,6 +17,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -181,6 +182,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -230,6 +232,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -349,6 +352,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -488,6 +492,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -574,6 +579,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -797,6 +803,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -881,6 +888,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
 
@@ -931,6 +939,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -985,6 +994,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1044,6 +1054,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1109,6 +1120,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1165,6 +1177,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1224,6 +1237,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1277,6 +1291,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1318,6 +1333,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1359,6 +1375,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1402,6 +1419,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1471,6 +1489,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1518,6 +1537,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1567,6 +1587,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1610,6 +1631,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1685,6 +1707,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1728,6 +1751,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1769,6 +1793,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1818,6 +1843,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1857,6 +1883,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1902,6 +1929,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -1971,6 +1999,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2012,6 +2041,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2069,6 +2099,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2110,6 +2141,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2153,6 +2185,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2218,6 +2251,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2257,6 +2291,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2300,6 +2335,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2343,6 +2379,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2400,6 +2437,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2439,6 +2477,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2484,6 +2523,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2528,6 +2568,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2564,6 +2605,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2610,6 +2652,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2654,6 +2697,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2690,6 +2734,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2726,6 +2771,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2762,6 +2808,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2802,6 +2849,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2838,6 +2886,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2874,6 +2923,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2916,6 +2966,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2952,6 +3003,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -2988,6 +3040,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3024,6 +3077,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3060,6 +3114,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3100,6 +3155,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3136,6 +3192,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3172,6 +3229,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3214,6 +3272,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3272,6 +3331,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3312,6 +3372,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3352,6 +3413,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3392,6 +3454,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3434,6 +3497,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3473,6 +3537,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3515,6 +3580,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3557,6 +3623,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
@@ -3596,6 +3663,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3638,6 +3706,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3680,6 +3749,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3722,6 +3792,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3766,6 +3837,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3808,6 +3880,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3842,6 +3915,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     
@@ -3879,6 +3953,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
            arguments:
              combination_of_columns:
+               - block_date
                - tx_hash
                - index
     columns:
