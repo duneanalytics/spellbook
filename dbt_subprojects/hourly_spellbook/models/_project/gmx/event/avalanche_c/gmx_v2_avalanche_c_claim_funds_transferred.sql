@@ -157,6 +157,7 @@ WITH evt_data_1 AS (
     SELECT 
         blockchain,
         block_time,
+        ED.block_date AS block_date,
         block_number,
         ED.tx_hash,
         ED.index,
