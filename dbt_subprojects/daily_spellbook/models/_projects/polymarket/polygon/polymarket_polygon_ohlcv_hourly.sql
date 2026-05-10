@@ -188,6 +188,10 @@ with_settlement as (
         m.market_end_time_ts                                                    as market_end_time,
         m.market_outcome,
         f.is_forward_filled,
+        -- Pin only Yes/No-tokenized binary markets where market_outcome is yes/no.
+        -- Multi-outcome markets (sports teams, Up/Down, Over/Under, 50/50) cannot be pinned
+        -- here because market_details.outcome is the binary "yes/no" representation, not the
+        -- winning token name. Per-token resolution would need a separate upstream source.
         case
             when m.market_end_time_ts is not null
                  and f.hour > m.market_end_time_ts
@@ -249,11 +253,18 @@ select
     r.is_forward_filled,
     now()                                                                       as _updated_at
 from with_resolution r
+-- Drop forward-filled rows past expiration for any resolved market. Today this filter only
+-- fires for market_outcome IN ('yes','no'); the wider condition closes the gap where
+-- multi-outcome markets (Rays/Red Sox, Up/Down, Over/Under, 50/50) keep stale forward-filled
+-- prices indefinitely after resolution. We can't pin them to a terminal value without a
+-- per-token resolution source, so we drop the noise.
 where not (
     r.is_forward_filled
     and r.market_end_time is not null
     and r.hour > r.market_end_time
-    and r.market_outcome in ('yes', 'no')
+    and r.market_outcome is not null
+    and r.market_outcome != ''
+    and r.market_outcome != 'unresolved'
 )
 {% if is_incremental() -%}
   and {{ incremental_predicate('r.hour') }}
