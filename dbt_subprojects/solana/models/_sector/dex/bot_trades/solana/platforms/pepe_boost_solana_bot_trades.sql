@@ -44,6 +44,7 @@ WITH
       AND tx_success
       AND balance_change > 0
       AND address = '{{fee_receiver}}'
+      AND NOT signed -- Exclude trades signed by FeeWallet
   ),
   botTrades AS (
     SELECT
@@ -89,17 +90,8 @@ WITH
         AND minute >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
       )
-      JOIN {{ source('solana','transactions') }} AS transactions ON (
-        trades.tx_id = id
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('transactions.block_time') }}
-        {% else %}
-        AND transactions.block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-      )
     WHERE
       trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
