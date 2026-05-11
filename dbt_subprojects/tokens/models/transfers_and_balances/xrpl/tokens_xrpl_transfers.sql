@@ -9,6 +9,10 @@
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
+    post_hook = '{{ expose_spells(blockchains = \'["xrpl"]\',
+                    spell_type = "sector",
+                    spell_name = "tokens_xrpl",
+                    contributors = \'["krishhh", "tomfutago"]\') }}'
   )
 }}
 

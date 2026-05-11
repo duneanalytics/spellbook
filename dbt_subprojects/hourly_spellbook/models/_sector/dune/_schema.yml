@@ -24,3 +24,5 @@ models:
         description: "The token symbol of the native token"
       - name: token_decimals
         description: "The token decimals of the native token"
+      - name: decoding_enabled
+        description: "Whether the decoding of this blockchain is enabled"

@@ -3,7 +3,7 @@
     schema = 'gmx_v2_arbitrum',
     alias = 'signal_set_price_feed',
     materialized = 'incremental',
-    unique_key = ['tx_hash', 'index'],
+    unique_key = ['block_date', 'tx_hash', 'index'],
     incremental_strategy = 'merge'
     )
 }}
@@ -17,10 +17,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -38,10 +39,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -59,10 +61,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -89,6 +92,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index, 
+        block_date,
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
         json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items
     FROM
@@ -98,6 +102,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -110,6 +115,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -129,6 +135,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        block_date,
         MAX(CASE WHEN key_name = 'token' THEN value END) AS token,
         MAX(CASE WHEN key_name = 'priceFeed' THEN value END) AS price_feed,
         MAX(CASE WHEN key_name = 'priceFeedMultiplier' THEN value END) AS price_feed_multiplier,
@@ -136,7 +143,7 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'stablePrice' THEN value END) AS stable_price 
     FROM
         combined
-    GROUP BY tx_hash, index
+    GROUP BY tx_hash, index, block_date
 )
 
 -- full data 
@@ -156,22 +163,22 @@ WITH evt_data_1 AS (
         from_hex(EDP.price_feed) AS price_feed,
         TRY_CAST(EDP.price_feed_multiplier AS DOUBLE) / POWER(10, 30) AS price_feed_multiplier,
         TRY_CAST(EDP.price_feed_heartbeat_duration AS DOUBLE) AS price_feed_heartbeat_duration,
-        TRY_CAST(EDP.stable_price AS DOUBLE) / POWER(10, 30 - ERC20.decimals) AS stable_price
+        TRY_CAST(EDP.stable_price AS DOUBLE) / POWER(10, 30 - ERC20.decimals) AS stable_price,
 
+        ED.tx_from,
+        ED.tx_to,
+        ED.tx_index
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
         AND ED.index = EDP.index
+        AND ED.block_date = EDP.block_date
     LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20
         ON from_hex(EDP.token) = ERC20.contract_address
 )
 
--- can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to', 'index']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd
+
 

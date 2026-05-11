@@ -48,6 +48,7 @@
     ,'tac'
     ,'taiko'
     ,'tempo'
+    ,'tezos_evm'
     ,'tron'
     ,'unichain'
     ,'viction'
