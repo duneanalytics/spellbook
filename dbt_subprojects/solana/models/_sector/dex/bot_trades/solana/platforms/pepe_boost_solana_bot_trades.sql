@@ -6,7 +6,10 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    pre_hook = '{{ set_trino_session_property(true, "join_reordering_strategy", "NONE") }}',
+    pre_hook = [
+      '{{ set_trino_session_property(true, "join_reordering_strategy", "NONE") }}',
+      '{{ enforce_join_distribution("PARTITIONED") }}'
+    ],
     unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
    )
 }}
