@@ -66,4 +66,5 @@ FROM
     , ('usdc-usd-coin', 'metaUSD', 0x1111111199558661Bf7Ff27b4F1623dC6b91Aa3e, 18)
     , ('equal-equalizer-on-sonic', 'EQUAL', 0xddf26b42c1d903de8962d3f79a74a501420d5f19, 18)
     , ('fly-flytrade', 'FLY', 0x6c9B3A74ae4779da5Ca999371eE8950e8DB3407f, 18)
+    , ('hedge-hedge-token', 'HEDGE', 0x5cccEbCb0C0af721a6539aFDa1628EeaAF7d6C5c, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
