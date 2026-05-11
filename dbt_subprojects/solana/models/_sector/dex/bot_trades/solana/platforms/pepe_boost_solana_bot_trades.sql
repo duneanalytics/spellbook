@@ -9,7 +9,7 @@
     pre_hook = [
       '{{ set_trino_session_property(true, "join_reordering_strategy", "NONE") }}',
       '{{ enforce_join_distribution("PARTITIONED") }}',
-      '{{ set_trino_session_property(true, "join_partitioned_build_min_row_count", 0) }}'
+      'SET SESSION join_partitioned_build_min_row_count=0'
     ],
     unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
    )
