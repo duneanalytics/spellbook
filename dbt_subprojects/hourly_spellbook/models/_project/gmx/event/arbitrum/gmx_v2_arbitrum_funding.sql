@@ -3,7 +3,7 @@
     schema = 'gmx_v2_arbitrum',
     alias = 'funding',
     materialized = 'incremental',
-    unique_key = ['tx_hash', 'index'],
+    unique_key = ['block_date', 'tx_hash', 'index'],
     incremental_strategy = 'merge'
     )
 }}
@@ -17,10 +17,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -36,10 +37,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -55,10 +57,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -85,6 +88,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        block_date,
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
         json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items
     FROM
@@ -95,6 +99,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -108,6 +113,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -129,17 +135,19 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        block_date,
         MAX(CASE WHEN key_name = 'market' THEN value END) AS market,
         MAX(CASE WHEN key_name = 'fundingFactorPerSecond' THEN value END) AS funding_factor_per_second
     FROM
         combined
-    GROUP BY tx_hash, index
+    GROUP BY tx_hash, index, block_date
 )
 
 , event_data AS (
     SELECT 
         blockchain,
         block_time,
+        ED.block_date AS block_date,
         block_number,
         ED.tx_hash,
         ED.index,
@@ -148,19 +156,23 @@ WITH evt_data_1 AS (
         msg_sender,
         
         from_hex(market) AS market,
-        TRY_CAST(funding_factor_per_second AS DOUBLE) AS funding_factor_per_second
-        
+        TRY_CAST(funding_factor_per_second AS DOUBLE) AS funding_factor_per_second,
+
+        ED.tx_from,
+        ED.tx_to,
+        ED.tx_index
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
             AND ED.index = EDP.index
+            AND ED.block_date = EDP.block_date
 )
 
 , full_data AS (
     SELECT 
         ED.blockchain,
         ED.block_time,
-        DATE(ED.block_time) AS block_date,
+        ED.block_date AS block_date,
         ED.block_number,
         ED.tx_hash,
         ED.index,
@@ -171,16 +183,17 @@ WITH evt_data_1 AS (
         ED.market,
         MD.market_name,
         ED.funding_factor_per_second AS funding_factor_per_second_raw,
-        ED.funding_factor_per_second / POWER(10, 30) AS funding_factor_per_second
+        ED.funding_factor_per_second / POWER(10, 30) AS funding_factor_per_second,
+
+        ED.tx_from,
+        ED.tx_to,
+        ED.tx_index
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
         ON ED.market = MD.market
 )
 
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to', 'index']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd
+
