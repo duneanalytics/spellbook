@@ -3,7 +3,7 @@
     schema = 'gmx_v2_arbitrum',
     alias = 'glv_shift_created',
     materialized = 'incremental',
-    unique_key = ['tx_hash', 'index'],
+    unique_key = ['block_date', 'tx_hash', 'index'],
     incremental_strategy = 'merge'
     )
 }}
@@ -17,9 +17,12 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -36,9 +39,12 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -63,6 +69,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index, 
+        block_date,
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
         json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items,
         json_query(data, 'lax $.bytes32Items' OMIT QUOTES) AS bytes32_items
@@ -74,6 +81,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -87,6 +95,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -100,6 +109,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -124,6 +134,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        block_date,
         
         MAX(CASE WHEN key_name = 'fromMarket' THEN value END) AS from_market,
         MAX(CASE WHEN key_name = 'toMarket' THEN value END) AS to_market,
@@ -135,7 +146,7 @@ WITH evt_data_1 AS (
 
     FROM
         combined
-    GROUP BY tx_hash, index
+    GROUP BY tx_hash, index, block_date
 )
 
 , event_data AS (
@@ -155,12 +166,16 @@ WITH evt_data_1 AS (
         TRY_CAST(market_token_amount AS DOUBLE) AS market_token_amount,
         TRY_CAST(min_market_tokens AS DOUBLE) AS min_market_tokens,
         TRY_CAST(updated_at_time AS DOUBLE) updated_at_time,
-        from_hex("key") AS "key"
+        from_hex("key") AS "key",
+
+        ED.tx_from,
+        ED.tx_to
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
             AND ED.index = EDP.index
+            AND ED.block_date = EDP.block_date
 )
 
 , full_data AS (
@@ -184,17 +199,13 @@ WITH evt_data_1 AS (
             WHEN updated_at_time = 0 THEN NULL
             ELSE updated_at_time
         END AS updated_at_time,
-        "key"
+        "key",
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
-
-
+SELECT
+    fd.*
+FROM full_data AS fd
