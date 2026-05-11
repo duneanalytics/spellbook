@@ -12,7 +12,7 @@
   )
 }}
 
-{% set xrpl_transfer_start_date = '2016-01-01' %} -- ci test, revert to '2013-01-01'
+{% set xrpl_transfer_start_date = '2013-01-01' %}
 
 with check_cash_transactions as (
   select
