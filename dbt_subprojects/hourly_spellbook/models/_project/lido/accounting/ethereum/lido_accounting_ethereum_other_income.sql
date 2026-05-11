@@ -1,12 +1,11 @@
 {{ config(
 	schema='lido_accounting_ethereum',
 	alias='other_income',
-	materialized='incremental',
+	materialized='table',
 	file_format='delta',
-	incremental_strategy='merge',
-	unique_key=['blockchain', 'period', 'evt_tx_hash', 'token', 'amount_token'],
-	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
 ) }}
+
+-- ci-stamp: 1
 
 {% set project_start_date = '2020-12-17' %}
 
