@@ -145,6 +145,44 @@ with tokens as (
     ) as list(address)    
 )
 
+, income_recipient_multisigs as (
+	select distinct
+		address
+	from
+		multisigs_list
+	where
+		chain = 'Ethereum'
+		and name in ('Aragon', 'FinanceOpsMsig')
+)
+
+, aragon_multisig as (
+	select distinct
+		address
+	from
+		multisigs_list
+	where
+		chain = 'Ethereum'
+		and name = 'Aragon'
+)
+
+, excluded_income_senders as (
+	select address from multisigs_list
+	union all
+	select address from ldo_referral_payments_addr
+	union all
+	select address from dai_referral_payments_addr
+	union all
+	select address from steth_referral_payments_addr
+	union all
+	select address from diversifications_addresses
+)
+
+, excluded_eth_income_senders as (
+	select address from multisigs_list
+	union all
+	select address from diversifications_addresses
+)
+
 , stonks_orders as (
 	select
 		cast(replace(l.topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
@@ -174,13 +212,14 @@ with tokens as (
 	inner join stonks_orders as s
 		on tr."from" = s.order_addr
 		and tr.contract_address = s.token_out
+	inner join cow_settlement as c
+		on c.address = tr.to
 	where
 		{% if not is_incremental() -%}
 		tr.evt_block_time >= timestamp '{{ project_start_date }}'
 		{% else -%}
 		{{ incremental_predicate('tr.evt_block_time') }}
 		{% endif -%}
-		and exists (select 1 from cow_settlement as c where c.address = tr.to)
 )
 
 , stonks_to_treasury as (
@@ -191,24 +230,20 @@ with tokens as (
 	inner join stonks_orders_txns as s
 		on tr.evt_tx_hash = s.evt_tx_hash
 		and tr.contract_address = s.token_in
-		and exists (select 1 from tokens as tok where tok.address = tr.contract_address)
+	inner join tokens as tok
+		on tok.address = tr.contract_address
+	inner join aragon_multisig as m
+		on m.address = tr.to
+	inner join cow_settlement as c
+		on c.address = tr."from"
 	where
 		{% if not is_incremental() -%}
 		tr.evt_block_time >= timestamp '{{ project_start_date }}'
 		{% else -%}
 		{{ incremental_predicate('tr.evt_block_time') }}
 		{% endif -%}
-		and exists (
-			select
-				1
-			from
-				multisigs_list as m
-			where
-				m.address = tr.to
-				and m.name = 'Aragon'
-				and m.chain = 'Ethereum'
-		)
-		and exists (select 1 from cow_settlement as c where c.address = tr."from")
+	group by
+		tr.evt_tx_hash
 )
 
 
@@ -222,30 +257,23 @@ with tokens as (
 		, 'ethereum' as blockchain
 	from
 		{{ source('erc20_ethereum', 'evt_Transfer') }} as t
+	inner join tokens as tok
+		on tok.address = t.contract_address
+	inner join income_recipient_multisigs as m
+		on m.address = t.to
+	left join excluded_income_senders as excluded
+		on excluded.address = t."from"
+	left join stonks_to_treasury as st
+		on st.evt_tx_hash = t.evt_tx_hash
 	where
 		{% if not is_incremental() -%}
 		t.evt_block_time >= timestamp '{{ project_start_date }}'
 		{% else -%}
 		{{ incremental_predicate('t.evt_block_time') }}
 		{% endif -%}
-		and exists (select 1 from tokens as tok where tok.address = t.contract_address)
-		and exists (
-			select
-				1
-			from
-				multisigs_list as m
-			where
-				m.address = t.to
-				and m.name in ('Aragon', 'FinanceOpsMsig')
-				and m.chain = 'Ethereum'
-		)
-		and not exists (select 1 from multisigs_list as m where m.address = t."from")
-		and not exists (select 1 from ldo_referral_payments_addr as l where l.address = t."from")
-		and not exists (select 1 from dai_referral_payments_addr as d where d.address = t."from")
-		and not exists (select 1 from steth_referral_payments_addr as s where s.address = t."from")
 		and t."from" != 0x0000000000000000000000000000000000000000
-		and not exists (select 1 from diversifications_addresses as d where d.address = t."from")
-		and not exists (select 1 from stonks_to_treasury as st where st.evt_tx_hash = t.evt_tx_hash)
+		and excluded.address is null
+		and st.evt_tx_hash is null
 
 	union all
 
@@ -262,6 +290,8 @@ with tokens as (
 		on t.evt_tx_hash = s.evt_tx_hash
 		and t.evt_block_time = s.evt_block_time
 		and t.evt_block_number = s.evt_block_number
+	inner join aragon_multisig as m
+		on m.address = t.to
 	where
 		{% if not is_incremental() -%}
 		t.evt_block_time >= timestamp '{{ project_start_date }}'
@@ -269,7 +299,6 @@ with tokens as (
 		{{ incremental_predicate('t.evt_block_time') }}
 		{% endif -%}
 		and t.contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
-		and exists (select 1 from multisigs_list as m where m.address = t.to and m.chain = 'Ethereum' and m.name = 'Aragon')
 		and t."from" = 0x0000000000000000000000000000000000000000
 )
 
@@ -335,6 +364,10 @@ from
 			, cast(tr.value as double) as amount_token
 		from
 			{{ source('ethereum', 'traces') }} as tr
+		inner join income_recipient_multisigs as m
+			on m.address = tr.to
+		left join excluded_eth_income_senders as excluded
+			on excluded.address = tr."from"
 		where
 			{% if not is_incremental() -%}
 			tr.block_time >= timestamp '{{ project_start_date }}'
@@ -342,18 +375,7 @@ from
 			{{ incremental_predicate('tr.block_time') }}
 			{% endif -%}
 			and tr.success = true
-			and exists (
-				select
-					1
-				from
-					multisigs_list as m
-				where
-					m.address = tr.to
-					and m.name in ('Aragon', 'FinanceOpsMsig')
-					and m.chain = 'Ethereum'
-			)
-			and not exists (select 1 from multisigs_list as m where m.address = tr."from")
-			and not exists (select 1 from diversifications_addresses as d where d.address = tr."from")
+			and excluded.address is null
 			and tr.type = 'call'
 			and (tr.call_type not in ('delegatecall', 'callcode', 'staticcall') or tr.call_type is null)
 
