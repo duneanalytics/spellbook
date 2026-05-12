@@ -6,9 +6,15 @@
 	incremental_strategy = 'merge',
 	partition_by = ['block_month'],
 	unique_key = ['block_month', 'hour', 'market_id', 'outcome'],
-	incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.hour')],
 	merge_skip_unchanged = true,
 ) }}
+
+-- Merge target is NOT pruned by incremental_predicates: the source emits historical hours
+-- for tickers whose market_details refreshed via lifecycle, and a destination predicate on
+-- DBT_INTERNAL_DEST.hour would hide their existing target rows from the ON clause, sending
+-- them through the INSERT branch and breaking unique(block_month, hour, market_id, outcome).
+-- Same reasoning as kalshi_market_details. Trades the destination-pruning speedup for
+-- correctness on late-arriving settlements.
 
 with base as (
 	select
@@ -29,7 +35,16 @@ with base as (
 		) as rn_last
 	from {{ ref('kalshi_market_trades') }} as t
 	{% if is_incremental() -%}
-	where {{ incremental_predicate('t.created_time') }}
+	where
+		{{ incremental_predicate('t.created_time') }}
+		-- Late-arriving settlements: pull historical trades for tickers whose market_details
+		-- dim columns (result, category, event_title, ...) refreshed via lifecycle, so old
+		-- hours can be re-emitted with the current market_outcome.
+		or t.ticker in (
+			select md.ticker
+			from {{ ref('kalshi_market_details') }} as md
+			where {{ incremental_predicate('md.source_updated_at') }}
+		)
 	{%- endif %}
 ),
 
@@ -40,7 +55,12 @@ market_meta as (
 		md.event_title,
 		md.result,
 		md.expiration_time,
-		md.category
+		md.category,
+		coalesce(
+			md.yes_sub_title,
+			element_at(split(md.ticker, '-'), -1),
+			'Yes'
+		) as yes_outcome_name
 	from {{ ref('kalshi_market_details') }} as md
 ),
 
@@ -63,7 +83,9 @@ new_sparse as (
 ),
 
 {% if is_incremental() -%}
--- pre-window sparse anchor from {{ this }} so market_bounds and asof forward-fill stay correct across the window boundary
+-- pre-window sparse anchor from {{ this }} so market_bounds and asof forward-fill stay correct across the window boundary.
+-- Excludes tickers being re-aggregated from base (refreshed market_details), since their hours are
+-- already coming through new_sparse and double-emitting them here would break the merge unique key.
 prior_sparse as (
 	select
 		t.hour,
@@ -81,6 +103,11 @@ prior_sparse as (
 	from {{ this }} as t
 	where t.is_forward_filled = false
 		and not {{ incremental_predicate('t.hour') }}
+		and t.market_id not in (
+			select md.ticker
+			from {{ ref('kalshi_market_details') }} as md
+			where {{ incremental_predicate('md.source_updated_at') }}
+		)
 ),
 {% endif %}
 
@@ -99,12 +126,22 @@ sparse_ohlcv as (
 ),
 
 market_bounds as (
+	-- bound last_hour by expiration_time (or now() if still active), not last trade, so forward-fill emits bars through gap periods.
+	-- outer greatest(max(s.hour), ...) preserves real trade rows past expiration; bottom-of-file filter drops only forward-filled post-settlement rows.
 	select
 		s.market_id,
 		s.outcome,
 		min(s.hour) as first_hour,
-		least(max(s.hour), date_trunc('hour', now())) as last_hour
+		greatest(
+			max(s.hour),
+			least(
+				date_trunc('hour', now()),
+				coalesce(max(m.expiration_time), date_trunc('hour', now()))
+			)
+		) as last_hour
 	from sparse_ohlcv as s
+	left join market_meta as m
+		on m.market_id = s.market_id
 	group by s.market_id, s.outcome
 ),
 
@@ -156,6 +193,7 @@ with_settlement as (
 		f.volume_usd,
 		f.trade_count,
 		m.category,
+		m.yes_outcome_name,
 		m.expiration_time as market_end_time,
 		case when m.result = '' then 'unresolved' else m.result end as market_outcome,
 		coalesce(m.event_title, m.title) as event_market_name,
@@ -176,6 +214,7 @@ with_settlement as (
 		hour,
 		market_id,
 		outcome,
+		yes_outcome_name,
 		market_name,
 		coalesce(settled_price, open) as open,
 		coalesce(settled_price, high) as high,
@@ -199,6 +238,7 @@ select
 	r.market_id,
 	r.market_name,
 	r.outcome,
+	r.yes_outcome_name,
 	r.category,
 	r.open,
 	r.high,
@@ -221,5 +261,15 @@ where not (
 	and r.market_outcome in ('yes', 'no')
 )
 {% if is_incremental() -%}
-  and {{ incremental_predicate('r.hour') }}
+  and (
+    {{ incremental_predicate('r.hour') }}
+    -- Late-arriving settlements: when a ticker's market_details refreshed via lifecycle,
+    -- emit all its hours so historical rows pick up the new market_outcome / category /
+    -- event_market_name. Pairs with the OR-branch in the base CTE.
+    or r.market_id in (
+      select md.ticker
+      from {{ ref('kalshi_market_details') }} as md
+      where {{ incremental_predicate('md.source_updated_at') }}
+    )
+  )
 {%- endif %}

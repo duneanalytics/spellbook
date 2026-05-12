@@ -3,7 +3,7 @@
     schema = 'gmx_v2_arbitrum',
     alias = 'swap_fees_collected',
     materialized = 'incremental',
-    unique_key = ['tx_hash', 'index'],
+    unique_key = ['block_date', 'tx_hash', 'index'],
     incremental_strategy = 'merge'
     )
 }}
@@ -16,9 +16,12 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -35,9 +38,12 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
+        evt_tx_from AS tx_from,
+        evt_tx_to AS tx_to,
         contract_address,
         eventName AS event_name,
         eventData AS data,
@@ -62,6 +68,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index, 
+        block_date,
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
         json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items,
         json_query(data, 'lax $.bytes32Items' OMIT QUOTES) AS bytes32_items
@@ -73,6 +80,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -86,6 +94,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -99,6 +108,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -123,6 +133,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        block_date,
 
         MAX(CASE WHEN key_name = 'uiFeeReceiver' THEN value END) AS ui_fee_receiver,
         MAX(CASE WHEN key_name = 'market' THEN value END) AS market,
@@ -140,7 +151,7 @@ WITH evt_data_1 AS (
         
     FROM
         combined
-    GROUP BY tx_hash, index
+    GROUP BY tx_hash, index, block_date
 )
 
 , event_data AS (
@@ -166,12 +177,16 @@ WITH evt_data_1 AS (
         TRY_CAST(ui_fee_amount AS DOUBLE) ui_fee_amount,
 
         from_hex(trade_key) AS trade_key,
-        from_hex(swap_fee_type) AS swap_fee_type
+        from_hex(swap_fee_type) AS swap_fee_type,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
         AND ED.index = EDP.index
+        AND ED.block_date = EDP.block_date
 )
 
 , full_data AS (
@@ -203,18 +218,16 @@ WITH evt_data_1 AS (
             WHEN swap_fee_type = 0x39226eb4fed85317aa310fa53f734c7af59274c49325ab568f9c4592250e8cc5 THEN 'deposit'
             WHEN swap_fee_type = 0xda1ac8fcb4f900f8ab7c364d553e5b6b8bdc58f74160df840be80995056f3838 THEN 'withdrawal'
             WHEN swap_fee_type = 0x7ad0b6f464d338ea140ff9ef891b4a69cf89f107060a105c31bb985d9e532214 THEN 'swap'
-        END AS action_type
+        END AS action_type,
         
+        ED.tx_from,
+        ED.tx_to
+
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20
         ON ED.token = ERC20.contract_address
 )
 
---can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd
