@@ -2,9 +2,17 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_payments',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    partition_by = ['block_month'],
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_key'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    merge_skip_unchanged = true,
   )
 }}
+
+{% set xrpl_transfer_start_date = '2013-01-01' %}
 
 with payment_transactions as (
   select
@@ -24,9 +32,13 @@ with payment_transactions as (
     coalesce(t.delivered_issuer, t.amount_issuer, t.deliver_max_issuer) as issuer_raw,
     coalesce(t.delivered_value, t.amount_value, t.deliver_max_value) as amount_value
   from {{ ref('tokens_xrpl_transaction_metadata') }} t
-  where t.transaction_type = 'Payment'
+  where t.block_date >= date '{{ xrpl_transfer_start_date }}'
+    and t.transaction_type = 'Payment'
     and t.transaction_result = 'tesSUCCESS'
     and t.tx_to is not null
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('t.block_date') }}
+    {% endif -%}
 ),
 
 normalized_transfers as (

@@ -3,7 +3,7 @@
     schema = 'gmx_v2_arbitrum',
     alias = 'signal_set_data_stream',
     materialized = 'incremental',
-    unique_key = ['tx_hash', 'index'],
+    unique_key = ['block_date', 'tx_hash', 'index'],
     incremental_strategy = 'merge'
     )
 }}
@@ -17,10 +17,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -38,10 +39,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -59,10 +61,11 @@ WITH evt_data_1 AS (
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
+        DATE(evt_block_time) AS block_date,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
         evt_index AS index,
-        contract_address,
+        evt_tx_from AS tx_from,        evt_tx_to AS tx_to,        evt_tx_index AS tx_index,        contract_address,
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
@@ -89,6 +92,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index, 
+        block_date,
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
         json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items,
         json_query(data, 'lax $.bytes32Items' OMIT QUOTES) AS bytes32_items
@@ -99,6 +103,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -111,6 +116,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -123,6 +129,7 @@ WITH evt_data_1 AS (
     SELECT 
         tx_hash,
         index,
+        block_date,
         json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
         json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
     FROM 
@@ -145,13 +152,14 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        block_date,
         MAX(CASE WHEN key_name = 'token' THEN value END) AS token,
         MAX(CASE WHEN key_name = 'feedId' THEN value END) AS feed_id,
         MAX(CASE WHEN key_name = 'dataStreamMultiplier' THEN value END) AS data_stream_multiplier,
         MAX(CASE WHEN key_name = 'dataStreamSpreadReductionFactor' THEN value END) AS data_stream_spread_reduction_factor
     FROM
         combined
-    GROUP BY tx_hash, index
+    GROUP BY tx_hash, index, block_date
 )
 
 -- full data 
@@ -170,19 +178,20 @@ WITH evt_data_1 AS (
         from_hex(EDP.token) AS token,
         from_hex(EDP.feed_id) AS feed_id,
         TRY_CAST(EDP.data_stream_multiplier AS DOUBLE) / POWER(10, 30) AS data_stream_multiplier,
-        TRY_CAST(EDP.data_stream_spread_reduction_factor AS DOUBLE) / POWER(10, 30) AS data_stream_spread_reduction_factor
+        TRY_CAST(EDP.data_stream_spread_reduction_factor AS DOUBLE) / POWER(10, 30) AS data_stream_spread_reduction_factor,
+
+        ED.tx_from,
+        ED.tx_to,
+        ED.tx_index
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
         AND ED.index = EDP.index
+        AND ED.block_date = EDP.block_date
 )
 
--- can be removed once decoded tables are fully denormalized
-{{
-    add_tx_columns(
-        model_cte = 'full_data'
-        , blockchain = blockchain_name
-        , columns = ['from', 'to', 'index']
-    )
-}}
+SELECT
+    fd.*
+FROM full_data AS fd
+
 

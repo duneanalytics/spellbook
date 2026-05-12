@@ -2,9 +2,17 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_payment_channel_claims',
-    materialized = 'view'
+    materialized = 'incremental',
+    file_format = 'delta',
+    partition_by = ['block_month'],
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_key'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    merge_skip_unchanged = true,
   )
 }}
+
+{% set xrpl_transfer_start_date = '2013-01-01' %}
 
 with payment_channel_transactions as (
   select
@@ -20,8 +28,12 @@ with payment_channel_transactions as (
     t.transaction_type,
     t.transaction_result
   from {{ ref('tokens_xrpl_transaction_metadata') }} t
-  where t.transaction_type = 'PaymentChannelClaim'
+  where t.block_date >= date '{{ xrpl_transfer_start_date }}'
+    and t.transaction_type = 'PaymentChannelClaim'
     and t.transaction_result = 'tesSUCCESS'
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('t.block_date') }}
+    {% endif -%}
 ),
 
 paychannel_nodes as (
@@ -46,9 +58,13 @@ paychannel_nodes as (
       json_extract_scalar(n.previous_fields, '$.Balance')
     ) as previous_balance_value
   from {{ ref('tokens_xrpl_affected_nodes') }} n
-  where n.transaction_type = 'PaymentChannelClaim'
+  where n.block_date >= date '{{ xrpl_transfer_start_date }}'
+    and n.transaction_type = 'PaymentChannelClaim'
     and n.transaction_result = 'tesSUCCESS'
     and n.ledger_entry_type = 'PayChannel'
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('n.block_date') }}
+    {% endif -%}
 ),
 
 paychannel_claims as (

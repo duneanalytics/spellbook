@@ -9,10 +9,8 @@
 	merge_skip_unchanged = true,
 ) }}
 
--- Bronze -> Gold: Kalshi trade-level table.
--- Inner join to market_details (>= 100 contracts). Incremental source filter is the union of
--- (new trades by created_time) + (trades for tickers whose market_details.source_updated_at moved
--- in the window) so dimension columns stay current on historical trades.
+-- Source filter unions new trades with trades whose market_details.source_updated_at moved,
+-- so dim columns (status, result, fee_*, etc.) stay current on historical rows.
 
 with trades_filtered as (
 	select
@@ -49,6 +47,9 @@ with trades_filtered as (
 		, md.subtitle
 		, md.status
 		, md.result
+		, md.frequency
+		, md.fee_type
+		, md.fee_multiplier
 	from
 		{{ ref('kalshi_market_details') }} as md
 	inner join (
@@ -70,6 +71,16 @@ select
 	, t.yes_price_dollars
 	, t.no_price_dollars
 	, case when t.taker_side = 'yes' then t.yes_price_dollars else t.no_price_dollars end * t.count_fp as amount_usd
+	-- Taker leg only. Maker fee (1.75% base when fee_type='quadratic_with_maker_fees') is
+	-- left for consumers. NULL when the series has no fee metadata.
+	, case
+		when md.fee_type in ('quadratic', 'quadratic_with_maker_fees') then
+			ceil(
+				0.07 * coalesce(md.fee_multiplier, 1.0)
+				* t.yes_price_dollars * (1 - t.yes_price_dollars)
+				* t.count_fp * 100
+			) / 100.0
+	  end as fee_usd
 	, md.event_ticker
 	, md.series_ticker
 	, md.market_type
@@ -77,6 +88,9 @@ select
 	, md.subtitle
 	, md.status
 	, md.result
+	, md.frequency
+	, md.fee_type
+	, md.fee_multiplier
 	, now() as _updated_at
 from
 	trades_filtered as t
