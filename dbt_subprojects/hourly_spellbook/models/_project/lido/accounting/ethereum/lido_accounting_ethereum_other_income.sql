@@ -6,6 +6,7 @@
 	incremental_strategy='merge',
 	unique_key=['blockchain', 'period', 'evt_tx_hash', 'token', 'amount_token'],
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
+	tags=['prod_exclude'],
 ) }}
 
 {% set project_start_date = '2020-12-17' %}
