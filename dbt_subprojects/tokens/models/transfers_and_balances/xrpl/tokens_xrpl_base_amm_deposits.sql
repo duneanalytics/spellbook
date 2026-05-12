@@ -2,9 +2,17 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_amm_deposits',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    partition_by = ['block_month'],
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'unique_key'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    merge_skip_unchanged = true,
   )
 }}
+
+{% set xrpl_transfer_start_date = '2013-01-01' %}
 
 select
   unique_key,
@@ -32,5 +40,9 @@ select
   partial_payment_flag,
   _updated_at
 from {{ ref('tokens_xrpl_amm_balance_deltas') }}
-where transaction_type = 'AMMDeposit'
+where block_date >= date '{{ xrpl_transfer_start_date }}'
+  and transaction_type = 'AMMDeposit'
   and transfer_type in ('amm_deposit', 'amm_lp_mint')
+  {% if is_incremental() -%}
+  and {{ incremental_predicate('block_date') }}
+  {% endif -%}
