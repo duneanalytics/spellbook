@@ -35,7 +35,7 @@
 -- tx) and `trade` describing the taker's direction. amountCNS < 0 means
 -- the maker bought, so the taker sold (short).
 
-{% set project_start_date = '2026-03-01' %}
+{% set project_start_date = '2026-02-11' %}
 -- Wide lower bound for the historical-lookup CTEs (deposits, market_config).
 -- Those scan FULL history (not time-series) per the Spellbook convention:
 -- "do NOT use incremental_predicate when checking full history (e.g., pool
