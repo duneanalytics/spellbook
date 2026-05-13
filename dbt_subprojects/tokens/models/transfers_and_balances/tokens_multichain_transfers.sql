@@ -67,10 +67,9 @@
     schema = 'tokens_multichain',
     alias = 'transfers',
     materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
+    post_hook = '{{ private_data_explorer(blockchains = \'["' + chains | join('","') + '"]\',
                     spell_type = "sector",
-                    spell_name = "tokens_multichain",
-                    contributors = \'["kryptaki", "tomfutago"]\') }}'
+                    spell_name = "tokens_multichain") }}'
   )
 }}
 
