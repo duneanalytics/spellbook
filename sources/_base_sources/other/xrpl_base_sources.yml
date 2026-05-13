@@ -7,6 +7,9 @@ sources:
     tables:
       - name: accounts
         description: "Contains all XRPL accounts observed on the ledger, including their creation and deletion history, current XRP balance, and identity labels where available. Use this table to profile accounts, track lifecycle events, and filter activity by named entities."
+        meta:
+          docs_slug: /xrpl/accounts
+          short_description: The 'xrpl.accounts' table contains all XRPL accounts observed on the ledger, including creation/deletion history, current XRP balance, and identity labels.
         columns:
           - name: account_id
             description: "Unique surrogate primary key for the account"
@@ -39,6 +42,9 @@ sources:
 
       - name: aggregated_metrics_daily
         description: "Aggregated daily metrics for XRP Ledger activity, including transaction volumes, DEX activity, and AMM statistics."
+        meta:
+          docs_slug: /xrpl/aggregated_metrics_daily
+          short_description: The 'xrpl.aggregated_metrics_daily' table contains aggregated daily metrics for XRP Ledger activity, including transaction volumes, DEX activity, and AMM statistics.
         columns:
           - name: date
             description: "The date for which the metrics are aggregated (YYYY-MM-DD)."
@@ -73,6 +79,9 @@ sources:
 
       - name: amm_events
         description: "A unified view of all activity in XRP Ledger AMM liquidity pools, combining deposits, withdrawals, fee-setting votes, and auction-slot bids in a single table for cross-event analytics. Each row represents one AMM event with the event category identified by event_type; columns specific to a particular event kind are null for rows of other types. Covers all AMM events recorded on the XRPL mainnet since the AMM amendment was activated."
+        meta:
+          docs_slug: /xrpl/amm_events
+          short_description: The 'xrpl.amm_events' table is a unified view of all activity in XRP Ledger AMM liquidity pools, combining deposits, withdrawals, fee-setting votes, and auction-slot bids.
         columns:
           - name: pool_id
             description: "Surrogate key identifying the AMM liquidity pool in which this event occurred."
@@ -135,6 +144,9 @@ sources:
 
       - name: amm_pools
         description: "Contains all Automated Market Maker (AMM) liquidity pools on the XRP Ledger, one row per pool. Each pool pairs two assets and issues LP tokens to liquidity providers in return for their deposit. Use this table to analyze pool composition, trading fees, liquidity depth, and pool lifecycle events."
+        meta:
+          docs_slug: /xrpl/amm_pools
+          short_description: The 'xrpl.amm_pools' table contains all Automated Market Maker (AMM) liquidity pools on the XRP Ledger, one row per pool.
         columns:
           - name: pool_id
             description: "Unique surrogate primary key for the AMM pool record"
@@ -183,6 +195,9 @@ sources:
 
       - name: annotations
         description: "A lookup table of labeled addresses providing human-readable names for known XRPL wallets, exchanges, and entities. Used to enrich account and transaction data with contextual identity information. Referenced by accounts to annotate well-known addresses."
+        meta:
+          docs_slug: /xrpl/annotations
+          short_description: The 'xrpl.annotations' table is a lookup of labeled addresses providing human-readable names for known XRPL wallets, exchanges, and entities.
         columns:
           - name: annotation_id
             description: "Unique surrogate primary key for the annotation record"
@@ -195,6 +210,9 @@ sources:
 
       - name: dex_ohlcv_daily
         description: "Daily OHLCV (open, high, low, close, volume) price data for all trading pairs on the XRP Ledger decentralized exchange (DEX), combining both the central limit order book (CLOB) and automated market maker (AMM) pools. Each row represents one trading pair per calendar day, with all prices expressed as counter token units per one unit of base token. Pair direction is normalized for consistency so the same pair always appears with the same base/counter assignment regardless of which side initiated the trade. Use this table for price charting, liquidity analysis, and DEX volume reporting."
+        meta:
+          docs_slug: /xrpl/dex_ohlcv_daily
+          short_description: The 'xrpl.dex_ohlcv_daily' table contains daily OHLCV price data for all trading pairs on the XRP Ledger DEX, combining CLOB and AMM activity.
         columns:
           - name: ledger_close_date
             description: "Calendar date of the trading day; all trades for this pair on this date are aggregated into one row"
@@ -231,6 +249,9 @@ sources:
 
       - name: dex_swaps
         description: "A unified view of all token exchanges on the XRP Ledger DEX, combining AMM pool swaps and order-book offer executions into a single table for cross-venue trade analytics. Each row represents one trade execution, with the execution venue identified by fulfilled_by (AMM for pool swaps, OfferCreate or Payment for order-book fills). Token amounts are expressed in human-readable units (XRP in XRP, issued currencies in their native denomination). Columns specific to a venue are null for rows from the other venue."
+        meta:
+          docs_slug: /xrpl/dex_swaps
+          short_description: The 'xrpl.dex_swaps' table is a unified view of all token exchanges on the XRP Ledger DEX, combining AMM pool swaps and order-book offer executions.
         columns:
           - name: offer_id
             description: "Surrogate key for the order-book offer execution record; null for AMM swaps."
@@ -309,6 +330,9 @@ sources:
 
       - name: token_holders_daily
         description: "Daily snapshot of token holder metrics for all IOU and MPT tokens on the XRP Ledger, including AMM LP tokens (which are a type of IOU). Each row represents one token and captures holder count, supply distribution, and concentration metrics as of the current date."
+        meta:
+          docs_slug: /xrpl/token_holders_daily
+          short_description: The 'xrpl.token_holders_daily' table is a daily snapshot of token holder metrics for all IOU and MPT tokens on the XRP Ledger.
         columns:
           - name: ledger_close_date
             description: "Date of the most recent ledger state available in the data, derived from the latest trustline timestamp; may lag the current calendar date"
@@ -333,6 +357,9 @@ sources:
 
       - name: tokens
         description: "Represents all fungible tokens (IOUs) and Multi-Purpose Tokens (MPTs) issued on the XRP Ledger, one row per token. Tracks token supply, holder counts, compliance flags, and lifecycle metadata for token analytics, issuer monitoring, and market analysis. Links to accounts for issuer identity."
+        meta:
+          docs_slug: /xrpl/tokens
+          short_description: The 'xrpl.tokens' table contains all fungible tokens (IOUs) and Multi-Purpose Tokens (MPTs) issued on the XRP Ledger, one row per token.
         columns:
           - name: token_id
             description: "Unique surrogate primary key for the token record"
@@ -395,6 +422,9 @@ sources:
 
       - name: transactions_base
         description: "Contains every validated transaction recorded on the XRP Ledger, covering payments, token operations, DEX trades, NFT activity, and more. Use this table to analyze on-chain transaction volume, fees, outcomes, and account behavior over time."
+        meta:
+          docs_slug: /xrpl/transactions_base
+          short_description: The 'xrpl.transactions_base' table contains every validated transaction recorded on the XRP Ledger, covering payments, token operations, DEX trades, NFT activity, and more.
         columns:
           - name: transaction_id
             description: "Unique surrogate primary key for the transaction record"
@@ -451,6 +481,9 @@ sources:
 
       - name: transfers
         description: "Contains all successful direct, same-asset Payment transactions on the XRP Ledger, one row per transfer. Only includes transfers where the sender and recipient transact in the same currency — cross-currency and DEX-routed payments are excluded."
+        meta:
+          docs_slug: /xrpl/transfers
+          short_description: The 'xrpl.transfers' table contains all successful direct, same-asset Payment transactions on the XRP Ledger, one row per transfer.
         columns:
           - name: transfer_id
             description: "Unique surrogate primary key for this transfer record"
