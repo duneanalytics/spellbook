@@ -154,9 +154,27 @@ SELECT
     CAST(date_trunc('day', mf.block_time) AS date)   AS block_date,
     CAST(date_trunc('month', mf.block_time) AS date) AS block_month,
     mf.block_time,
-    CAST(NULL AS VARCHAR) AS virtual_asset,
-    CAST(NULL AS VARCHAR) AS underlying_asset,
-    CAST(mf.market_id AS VARCHAR) AS market,
+    -- Base / quote tickers. Perpl's on-chain ContractAdded event does
+    -- not expose the symbol string in a documented slot (Exchange.json
+    -- ABI in PerplFoundation/dex-sdk only declares addContract() as a
+    -- function), so the mapping is maintained inline. Update when a
+    -- new market lists.
+    CASE mf.market_id
+        WHEN UINT256 '1'  THEN 'BTC'
+        WHEN UINT256 '10' THEN 'MON'
+        WHEN UINT256 '20' THEN 'ETH'
+        WHEN UINT256 '30' THEN 'SOL'
+    END AS virtual_asset,
+    'AUSD' AS underlying_asset,
+    COALESCE(
+        CASE mf.market_id
+            WHEN UINT256 '1'  THEN 'BTC-AUSD'
+            WHEN UINT256 '10' THEN 'MON-AUSD'
+            WHEN UINT256 '20' THEN 'ETH-AUSD'
+            WHEN UINT256 '30' THEN 'SOL-AUSD'
+        END,
+        'market_' || CAST(mf.market_id AS VARCHAR)
+    ) AS market,
     {{ perpl_contract }} AS market_address,
     -- volume = price * size / 10^(priceDecimals + lotDecimals)
     CAST(mf.price_raw AS DOUBLE)
@@ -173,7 +191,11 @@ SELECT
     '1' AS version,
     'perpl' AS frontend,
     am.wallet AS trader,
-    CAST(mf.size_raw AS UINT256) AS volume_raw,
+    -- Normalize fill size to 18-decimal units of the base asset:
+    --   volume_raw = lotLNS * 10^(18 - lotDecimals)
+    -- e.g. BTC market (lotDecimals=5) with raw lot 17 (=0.00017 BTC)
+    -- yields volume_raw = 17 * 10^13 = 170000000000000.
+    mf.size_raw * CAST(power(10, 18 - CAST(mc.size_precision AS INTEGER)) AS UINT256) AS volume_raw,
     mf.tx_hash,
     tx.tx_from,
     tx.tx_to,

@@ -41,13 +41,13 @@ models:
         description: "Time of the transaction"
       - &virtual_asset
         name: virtual_asset
-        description: "How the protocol represents the underlying asset"
+        description: "Base asset ticker of the perp market (BTC, MON, ETH, SOL). NULL for any market_id not yet in the inline mapping."
       - &underlying_asset
         name: underlying_asset
-        description: "The real underlying asset that is represented in the swap"
+        description: "Quote/settlement asset — always 'AUSD' for Perpl on Monad."
       - &market
         name: market
-        description: "The futures market involved in the transaction (Perpl market_id as a string)"
+        description: "Human-readable pair string '<base>-AUSD' (e.g. 'BTC-AUSD'); falls back to 'market_<id>' for markets not yet in the inline mapping."
       - &market_address
         name: market_address
         description: "Contract address of the market (Perpl exchange contract; shared across all markets)"
@@ -81,7 +81,7 @@ models:
         description: "The taker's wallet, resolved via AccountDeposit → tx.from binding"
       - &volume_raw
         name: volume_raw
-        description: "Fill size in raw lot units (lotLNS, scaled by the market's lotDecimals)"
+        description: "Fill size in 18-decimal units of the base asset: lotLNS * 10^(18 − lotDecimals). Divide by 10^18 for the human-readable base-asset quantity."
       - &tx_hash
         name: tx_hash
         description: "The hash of the transaction"
