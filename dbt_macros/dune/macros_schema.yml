@@ -30,7 +30,22 @@ macros:
   - name: mark_as_spell
     description: >
       Catch all macro to mark all models as spells even if they are not exposed in the data explorer
-  
+
+  - name: private_data_explorer
+    description: >
+      Prod post-hook: set dune.public false and dune.visible true with data explorer abstraction metadata
+      (no contributors). For team-private relations that should still appear in the explorer for entitled users.
+    arguments:
+      - name: blockchains
+        type: string
+        description: "JSON array string of blockchains, e.g. '[\"ethereum\"]'"
+      - name: spell_type
+        type: string
+        description: "dune.data_explorer.abstraction.type value"
+      - name: spell_name
+        type: string
+        description: "dune.data_explorer.abstraction.name value"
+
   - name: source
     description: >
       Change source database.
