@@ -3,11 +3,11 @@ version: 2
 models:
   - name: perpetual_trades
     meta:
-      blockchain: optimism, avalanche_c, arbitrum, polygon, katana
+      blockchain: optimism, avalanche_c, arbitrum, polygon, katana, monad
       sector: perpetual
-      contributors: msilb7, drethereum, rplust, Henrystats, cursor-agent
+      contributors: msilb7, drethereum, rplust, Henrystats, cursor-agent, kkqzhou
     config:
-      tags: ['optimism', 'avalanche_c', 'arbitrum', 'katana', 'perpetuals', 'perps', 'cross-chain', 'pika', 'perpetual-protocol', 'synthetix']
+      tags: ['optimism', 'avalanche_c', 'arbitrum', 'katana', 'monad', 'perpetuals', 'perps', 'cross-chain', 'pika', 'perpetual-protocol', 'synthetix', 'perpl']
     description: >
       Perpetual swaps/trades table
     data_tests:

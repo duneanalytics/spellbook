@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: perpl_monad_perpetual_trades
+    meta:
+      blockchain: monad
+      sector: perpetual
+      project: perpl
+      contributors: kkqzhou
+    config:
+      tags: ['monad', 'perpetual', 'perpl', 'perps']
+    description: >
+      Perpl perpetual fills on Monad. One row per MakerOrderFilled event
+      from the Perpl exchange contract; `trader` is the taker (the EOA
+      that initiated the tx) resolved via AccountDeposit-bound wallets,
+      and `trade` describes the taker's direction.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - check_perpetuals_seed:
+          arguments:
+            blockchain: monad
+            project: perpl
+            version: 1
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where the perpetuals market is deployed"
+      - &block_date
+        name: block_date
+        description: "Date of the transaction"
+      - &block_time
+        name: block_time
+        description: "Time of the transaction"
+      - &virtual_asset
+        name: virtual_asset
+        description: "How the protocol represents the underlying asset"
+      - &underlying_asset
+        name: underlying_asset
+        description: "The real underlying asset that is represented in the swap"
+      - &market
+        name: market
+        description: "The futures market involved in the transaction (Perpl market_id as a string)"
+      - &market_address
+        name: market_address
+        description: "Contract address of the market (Perpl exchange contract; shared across all markets)"
+        data_tests:
+          - perpetual_trades_market_address:
+              arguments:
+                perpetual_trades_seed: ref('perpetual_trades_seed')
+      - &volume_usd
+        name: volume_usd
+        description: "Notional of the fill in USD (price * size, decimal-normalized via the market's priceDecimals + lotDecimals)"
+      - &fee_usd
+        name: fee_usd
+        description: "Maker fee charged on this fill, denominated in AUSD (6 decimals)"
+      - &margin_usd
+        name: margin_usd
+        description: "Margin used in USD (NULL for Perpl — not derivable from MakerOrderFilled)"
+      - &trade
+        name: trade
+        description: "Taker direction: 'long' or 'short' (flipped from the maker's amountCNS sign)"
+      - &project
+        name: project
+        description: "The underlying protocol/project where the swap took place"
+      - &version
+        name: version
+        description: "The version of the protocol/project"
+      - &frontend
+        name: frontend
+        description: "The frontend protocol/project where the specific swap was executed; defaults to the project"
+      - &trader
+        name: trader
+        description: "The taker's wallet, resolved via AccountDeposit → tx.from binding"
+      - &volume_raw
+        name: volume_raw
+        description: "Fill size in raw lot units (lotLNS, scaled by the market's lotDecimals)"
+      - &tx_hash
+        name: tx_hash
+        description: "The hash of the transaction"
+      - &tx_from
+        name: tx_from
+        description: "The address that originated the transaction; from monad.transactions"
+      - &tx_to
+        name: tx_to
+        description: "The address receiving the transaction; from monad.transactions"
+      - &evt_index
+        name: evt_index
+        description: "Log index of the MakerOrderFilled event within the block"
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"
