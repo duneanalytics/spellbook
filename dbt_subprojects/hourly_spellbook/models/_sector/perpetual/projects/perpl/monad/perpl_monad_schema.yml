@@ -11,9 +11,11 @@ models:
       tags: ['monad', 'perpetual', 'perpl', 'perps']
     description: >
       Perpl perpetual fills on Monad. One row per MakerOrderFilled event
-      from the Perpl exchange contract; `trader` is the taker (the EOA
-      that initiated the tx) resolved via AccountDeposit-bound wallets,
-      and `trade` describes the taker's direction.
+      from the Perpl exchange contract, read from Dune's decoded
+      `perpl_monad.v1_*` tables. `trader` is the taker (the EOA that
+      initiated the tx) resolved from the TakerOrderFilled event in the
+      same tx, with fallback to the maker's wallet via the AccountCreated
+      account-id → wallet map. `trade` describes the taker's direction.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -41,13 +43,13 @@ models:
         description: "Time of the transaction"
       - &virtual_asset
         name: virtual_asset
-        description: "Base asset ticker of the perp market (BTC, MON, ETH, SOL). NULL for any market_id not yet in the inline mapping."
+        description: "Base asset ticker of the perp market, derived from the on-chain `symbol` field of the `addContract()` call (e.g. BTC, MON, ETH, SOL, HYPE)."
       - &underlying_asset
         name: underlying_asset
         description: "Quote/settlement asset — always 'AUSD' for Perpl on Monad."
       - &market
         name: market
-        description: "Human-readable pair string '<base>-AUSD' (e.g. 'BTC-AUSD'); falls back to 'market_<id>' for markets not yet in the inline mapping."
+        description: "Human-readable pair string '<symbol>-AUSD' (e.g. 'BTC-AUSD'). Falls back to 'market_<id>' if the market's addContract() call isn't yet indexed."
       - &market_address
         name: market_address
         description: "Contract address of the market (Perpl exchange contract; shared across all markets)"
@@ -78,7 +80,7 @@ models:
         description: "The frontend protocol/project where the specific swap was executed; defaults to the project"
       - &trader
         name: trader
-        description: "The taker's wallet, resolved via AccountDeposit → tx.from binding"
+        description: "The taker's wallet, resolved as `TakerOrderFilled.evt_tx_from` (the EOA that submitted the fill tx); falls back to the maker's wallet via the AccountCreated account-id → wallet map when no taker event is present."
       - &volume_raw
         name: volume_raw
         description: "Fill size in 18-decimal units of the base asset: lotLNS * 10^(18 − lotDecimals). Divide by 10^18 for the human-readable base-asset quantity."
@@ -87,10 +89,10 @@ models:
         description: "The hash of the transaction"
       - &tx_from
         name: tx_from
-        description: "The address that originated the transaction; from monad.transactions"
+        description: "The address that originated the transaction (carried through from the decoded MakerOrderFilled event's `evt_tx_from`)."
       - &tx_to
         name: tx_to
-        description: "The address receiving the transaction; from monad.transactions"
+        description: "The address receiving the transaction (the Perpl exchange contract; from the decoded MakerOrderFilled event's `evt_tx_to`)."
       - &evt_index
         name: evt_index
         description: "Log index of the MakerOrderFilled event within the block"
