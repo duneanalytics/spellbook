@@ -7,6 +7,9 @@
 	partition_by = ['block_month'],
 	unique_key = ['block_month', 'trade_id'],
 	merge_skip_unchanged = true,
+	post_hook = '{{ private_data_explorer(blockchains = \'[]\',
+	                spell_type = "project",
+	                spell_name = "kalshi") }}'
 ) }}
 
 -- Source filter unions new trades with trades whose market_details.source_updated_at moved,
