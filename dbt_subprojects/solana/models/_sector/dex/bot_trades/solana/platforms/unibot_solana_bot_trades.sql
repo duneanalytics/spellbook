@@ -36,6 +36,7 @@ WITH
         address = '{{fee_receiver_1}}'
         OR address = '{{fee_receiver_2}}'
       )
+      AND address_prefix IN ('{{ fee_receiver_1[:2] }}', '{{ fee_receiver_2[:2] }}')
   ),
   botTrades AS (
     SELECT
