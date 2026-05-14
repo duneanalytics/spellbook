@@ -1,0 +1,59 @@
+name: Deploy Lock Expiry
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: read
+  statuses: write
+  contents: read
+
+jobs:
+  expire:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      STATE_LABEL: deploy-lock-state
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Release expired lock
+        id: release
+        run: |
+          echo "released=false" >> "$GITHUB_OUTPUT"
+          num=$(gh issue list --label "$STATE_LABEL" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$num" ]; then exit 0; fi
+          body=$(gh issue view "$num" --json body --jq '.body')
+          locked=$(jq -r '.locked // false' <<<"$body" 2>/dev/null || echo false)
+          if [ "$locked" != 'true' ]; then exit 0; fi
+          expires=$(jq -r '.expires_at // empty' <<<"$body")
+          if [ -z "$expires" ]; then exit 0; fi
+          now_ts=$(date -u +%s)
+          exp_ts=$(python3 -c "import datetime,sys; print(int(datetime.datetime.strptime(sys.argv[1],'%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=datetime.timezone.utc).timestamp()))" "$expires")
+          if [ "$now_ts" -lt "$exp_ts" ]; then
+            echo "Not yet expired ($expires)"; exit 0
+          fi
+          scope=$(jq -r '.scope' <<<"$body")
+          gh issue edit "$num" --title 'Deploy Lock: unlocked (auto-released)' --body '{"locked":false}'
+          echo "released=true" >> "$GITHUB_OUTPUT"
+          echo "scope=$scope" >> "$GITHUB_OUTPUT"
+
+      - name: Refresh statuses on open PRs
+        if: steps.release.outputs.released == 'true'
+        run: |
+          export STATE_JSON='{"locked":false}'
+          for pr in $(gh pr list --state open --json number --jq '.[].number'); do
+            ./.github/scripts/deploy_lock_status.sh "$pr" || echo "status refresh failed for PR #$pr"
+          done
+
+      - name: Slack notify auto-release
+        if: steps.release.outputs.released == 'true' && env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          text=":hourglass: Deploy lock auto-released (scope \`${{ steps.release.outputs.scope }}\`, TTL expired)."
+          jq -n --arg t "$text" '{text:$t}' | curl -sS -X POST -H 'content-type: application/json' --data @- "$SLACK_WEBHOOK_URL"

@@ -1,0 +1,27 @@
+name: Deploy Lock Check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+      - unlabeled
+
+permissions:
+  issues: read
+  pull-requests: read
+  statuses: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post deploy-lock status
+        run: ./.github/scripts/deploy_lock_status.sh "${{ github.event.pull_request.number }}"
