@@ -8,6 +8,9 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: read
+
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
@@ -16,6 +19,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Set up Python 3.13
         uses: actions/setup-python@v6
@@ -64,6 +69,11 @@ jobs:
       - name: dbt run initial model(s)
         run: "uv run dbt -x run $PROFILE --select state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
+      - name: Store initial dbt run results
+        run: |
+          mkdir -p "$RUNNER_TEMP/dbt-built-relations"
+          cp "$PROJECT_DIR/target/run_results.json" "$RUNNER_TEMP/dbt-built-relations/initial_run_results.json"
+
       - name: dbt test initial model(s)
         run: "uv run dbt test $PROFILE --select state:new state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
@@ -78,3 +88,82 @@ jobs:
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
         run: "uv run dbt test $PROFILE --select state:modified.body,config.materialized:incremental state:modified.macros,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+
+      - name: Build queryable Dune CI tables comment
+        if: github.event_name == 'pull_request'
+        env:
+          DBT_BUILT_RELATIONS_DIR: ${{ runner.temp }}/dbt-built-relations
+          DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-built-relations/comment_body.md
+          PROJECT_DIR: ${{ env.PROJECT_DIR }}
+          PROJECT_NAME: ${{ inputs.project }}
+          RUN_URL: __DBT_RUN_URL__
+        run: uv run python scripts/comment_dbt_ci_tables.py
+
+      - name: Upsert queryable Dune CI tables comment
+        if: github.event_name == 'pull_request'
+        env:
+          DBT_CI_TABLES_COMMENT_PATH: ${{ runner.temp }}/dbt-built-relations/comment_body.md
+          GITHUB_TOKEN: ${{ github.token }}
+          MARKER: <!-- spellbook-dbt-run-built-tables:${{ inputs.project }} -->
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          [ -f "$DBT_CI_TABLES_COMMENT_PATH" ] || exit 0
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          token = os.environ["GITHUB_TOKEN"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          pr_number = os.environ["PR_NUMBER"]
+          marker = os.environ["MARKER"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          fallback_run_url = f"{os.environ['GITHUB_SERVER_URL']}/{repo}/actions/runs/{run_id}"
+
+          def github_request(method, path, data=None):
+              body = json.dumps(data).encode() if data is not None else None
+              request = urllib.request.Request(
+                  f"https://api.github.com/repos/{repo}/{path}",
+                  data=body,
+                  method=method,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {token}",
+                      "Content-Type": "application/json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                  },
+              )
+              with urllib.request.urlopen(request) as response:
+                  return json.loads(response.read() or b"{}")
+
+          jobs = github_request("GET", f"actions/runs/{run_id}/jobs?per_page=100").get("jobs", [])
+          dbt_run_url = next(
+              (
+                  job["html_url"]
+                  for job in jobs
+                  if job.get("name") == "dbt-test" or job.get("name", "").endswith(" / dbt-test")
+              ),
+              fallback_run_url,
+          )
+
+          comment_path = Path(os.environ["DBT_CI_TABLES_COMMENT_PATH"])
+          comment_body = comment_path.read_text().replace("__DBT_RUN_URL__", dbt_run_url)
+          comment_path.write_text(comment_body)
+
+          comments = github_request("GET", f"issues/{pr_number}/comments?per_page=100")
+          existing_comment = next(
+              (comment for comment in comments if comment.get("body", "").startswith(marker)),
+              None,
+          )
+
+          if existing_comment:
+              if existing_comment.get("body") != comment_body:
+                  github_request(
+                      "PATCH",
+                      f"issues/comments/{existing_comment['id']}",
+                      {"body": comment_body},
+                  )
+          else:
+              github_request("POST", f"issues/{pr_number}/comments", {"body": comment_body})
+          PY
