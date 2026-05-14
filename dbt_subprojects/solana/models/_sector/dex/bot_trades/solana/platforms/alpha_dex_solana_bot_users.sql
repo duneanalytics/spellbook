@@ -30,3 +30,4 @@ where
     tx_success
     and balance_change > 0
     and address = '{{fee_receiver}}'
+    {{ account_activity_prefix_filter(fee_receiver) }}

@@ -31,9 +31,8 @@ WITH
       {% endif %}
       AND tx_success
       AND balance_change > 0
-      AND (
-        address = '{{fee_receiver_1}}'
-      )
+      AND address = '{{fee_receiver_1}}'
+      {{ account_activity_prefix_filter(fee_receiver_1) }}
   ),
   botTrades AS (
     SELECT

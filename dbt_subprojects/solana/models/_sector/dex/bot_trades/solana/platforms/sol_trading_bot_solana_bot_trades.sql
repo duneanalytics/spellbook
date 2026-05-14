@@ -40,6 +40,7 @@ WITH
         OR address = '{{buy_fee_receiver_2}}'
         OR address = '{{sell_fee_receiver_2}}'
       )
+      {{ account_activity_prefix_filter([buy_fee_receiver_1, sell_fee_receiver_1, buy_fee_receiver_2, sell_fee_receiver_2]) }}
   ),
   botTrades AS (
     SELECT

@@ -293,6 +293,7 @@ with tokens as (
 		and i.pre_token_balance is not null
 		and i.token_mint_address = '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj'
 		and i.address = 'CYpYPtwY9QVmZsjCmguAud1ctQjXWKpWD7xeL5mnpcXk'
+		{{ account_activity_prefix_filter('CYpYPtwY9QVmZsjCmguAud1ctQjXWKpWD7xeL5mnpcXk', 'i') }}
 		and i.token_balance_change > 0
 )
 

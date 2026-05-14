@@ -32,7 +32,7 @@ WITH
       AND tx_success
       AND balance_change > 0
       AND address = '{{buy_fee_receiver_1}}'
-
+      {{ account_activity_prefix_filter(buy_fee_receiver_1) }}
   ),
   botTrades AS (
     SELECT
