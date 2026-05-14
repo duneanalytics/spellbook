@@ -7,7 +7,7 @@
     {%- if target.database == 'dune' -%}
       CREATE SCHEMA IF NOT EXISTS {{ relation }}
     {%- else -%}
-      CREATE SCHEMA {{ relation }} WITH (location = 's3a://{{s3_bucket()}}/')
+      CREATE SCHEMA IF NOT EXISTS {{ relation }} WITH (location = 's3a://{{s3_bucket()}}/')
     {%- endif -%}
   {% endcall %}
 {% endmacro %}
