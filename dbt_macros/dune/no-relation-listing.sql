@@ -13,11 +13,11 @@
 {%- endmacro %}
 
 {% macro list_schemas(database) -%}
-  {% do log(target) %}
   {%- if (var('no-relation-listing', 'false').lower() == 'true') or (target.profile_name == 'spellbook-local') -%}
     {{ return([]) }}
   {%- else -%}
-    {{ return(adapter.dispatch('list_schemas')(database)) }}
+    {# Workaround for https://github.com/dbt-labs/dbt-adapters/issues/1929 -- drop once fixed. #}
+    {{ return([]) }}
   {%- endif -%}
 {%- endmacro %}
 
