@@ -48,7 +48,7 @@ WITH
         OR address = '{{fee_receiver_7}}'
         OR address = '{{fee_receiver_8}}'
       )
-      {{ account_activity_prefix_filter([fee_receiver_1, fee_receiver_2, fee_receiver_3, fee_receiver_4, fee_receiver_5, fee_receiver_6, fee_receiver_7, fee_receiver_8]) }}
+      AND address_prefix IN ('{{ fee_receiver_1[:2] }}', '{{ fee_receiver_2[:2] }}', '{{ fee_receiver_3[:2] }}', '{{ fee_receiver_4[:2] }}', '{{ fee_receiver_5[:2] }}', '{{ fee_receiver_6[:2] }}', '{{ fee_receiver_7[:2] }}', '{{ fee_receiver_8[:2] }}')
       AND tx_id != 'AT915GhHaLdGsdFkywx2uE6jqSXeyTauveYH2BQqWMyptGhUtjE6dcdr74ErELg79VY9apZ9Egiyc1VtA6Ddykb' -- Edge case that sent fees to multiple fee wallets
   ),
   botTrades AS (

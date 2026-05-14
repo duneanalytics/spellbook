@@ -37,7 +37,7 @@ with
             and tx_success
             and balance_change > 0
             and address = '{{fee_receiver}}'
-            {{ account_activity_prefix_filter(fee_receiver) }}
+            and address_prefix = '{{ fee_receiver[:2] }}'
     ),
     bot_trades as (
         select

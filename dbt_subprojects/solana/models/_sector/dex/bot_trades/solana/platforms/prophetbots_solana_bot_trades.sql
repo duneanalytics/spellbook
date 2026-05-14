@@ -33,7 +33,7 @@ WITH
       AND tx_success
       AND balance_change > 0
       AND (address = '{{fee_receiver_1}}' OR address = '{{fee_receiver_2}}')
-      {{ account_activity_prefix_filter([fee_receiver_1, fee_receiver_2]) }}
+      AND address_prefix IN ('{{ fee_receiver_1[:2] }}', '{{ fee_receiver_2[:2] }}')
       GROUP BY tx_id
   ),
   botTrades AS (
