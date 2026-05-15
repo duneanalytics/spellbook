@@ -8,10 +8,9 @@
     partition_by = ['day'],
     unique_key = ['day', 'address', 'token_id'],
     merge_skip_unchanged = true,
-    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
+    post_hook = '{{ private_data_explorer(blockchains = \'["polygon"]\',
                                   spell_type = "project",
-                                  spell_name = "polymarket",
-                                  contributors = \'["tomfutago"]\') }}'
+                                  spell_name = "polymarket") }}'
   )
 }}
 

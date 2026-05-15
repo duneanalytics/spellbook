@@ -8,6 +8,9 @@
     unique_key = ['block_month', 'hour', 'market_id', 'outcome'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.hour')],
     merge_skip_unchanged = true,
+    post_hook = '{{ private_data_explorer(blockchains = \'["polygon"]\',
+                    spell_type = "project",
+                    spell_name = "polymarket") }}'
   )
 }}
 

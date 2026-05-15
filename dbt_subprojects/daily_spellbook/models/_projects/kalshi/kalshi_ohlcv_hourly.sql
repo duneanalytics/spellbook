@@ -7,6 +7,9 @@
 	partition_by = ['block_month'],
 	unique_key = ['block_month', 'hour', 'market_id', 'outcome'],
 	merge_skip_unchanged = true,
+	post_hook = '{{ private_data_explorer(blockchains = \'[]\',
+	                spell_type = "project",
+	                spell_name = "kalshi") }}'
 ) }}
 
 -- Merge target is NOT pruned by incremental_predicates: the source emits historical hours
