@@ -47,6 +47,7 @@ FROM
     ('axlatom-axelar-wrapped-atom', 'ethereum', 'axlATOM', 0x27292cf0016e5df1d8b37306b2a98588acbd6fca, 6),
     ('axs-axie-infinity', 'ethereum', 'AXS', 0xf5d669627376ebd411e34b98f19c868c8aba5ada, 18),
     ('axs-axie-infinity', 'ethereum', 'AXS', 0xbb0e17ef65f82ab018d8edd776e8dd940327b28b, 18),
+    ('aztec-aztec', 'ethereum', 'AZTEC', 0xA27EC0006e59f245217Ff08CD52A7E8b169E62D2, 18),
     ('babl-babylonfinance', 'ethereum', 'BABL', 0xf4dc48d260c93ad6a96c5ce563e70ca578987c74, 18),
     ('badger-badger', 'ethereum', 'BADGER', 0x3472a5a71965499acd81997a54bba8d852c6e53d, 18),
     ('bal-balancer', 'ethereum', 'BAL', 0xba100000625a3754423978a60c9317c58a424e3d, 18),
