@@ -40,6 +40,7 @@ WITH
       AND tx_success
       AND balance_change > 0
       AND address = '{{fee_receiver}}'
+      AND address_prefix = '{{ fee_receiver[:2] }}'
   ),
   botTrades AS (
     SELECT
