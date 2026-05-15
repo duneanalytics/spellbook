@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: leverup_monad_perpetual_trades
+    meta:
+      blockchain: monad
+      sector: perpetual
+      project: leverup
+      contributors: kkqzhou
+    config:
+      tags: ['monad', 'perpetual', 'leverup', 'perps']
+    description: >
+      LeverUp (gTrade-fork perp DEX) trade legs on Monad. One row per
+      LimitOrderFilled, TradeClosedManual, or TradeClosedTrigger event
+      from the LeverUp Diamond contract. Symbol mapping for each market
+      (pairBase address) is decoded on the fly from PairAdded events.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - check_perpetuals_seed:
+          arguments:
+            blockchain: monad
+            project: leverup
+            version: 1
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where the perpetuals market is deployed"
+      - &block_date
+        name: block_date
+        description: "Date of the transaction"
+      - &block_time
+        name: block_time
+        description: "Time of the transaction"
+      - &virtual_asset
+        name: virtual_asset
+        description: "Base-asset ticker decoded from the on-chain PairAdded event (e.g. BTC, ETH, MON, AAPL, XAU). For inverse pairs like USD/JPY this is 'USD'."
+      - &underlying_asset
+        name: underlying_asset
+        description: "Always 'USD' for LeverUp on Monad."
+      - &market
+        name: market
+        description: "Full pair name from PairAdded (e.g. 'BTC/USD', 'XAU/USD', 'kPEPE/USD'). NULL when a pairBase has no matching PairAdded event."
+        data_tests:
+          - perpetual_trades_market_address:
+              arguments:
+                perpetual_trades_seed: ref('perpetual_trades_seed')
+      - &market_address
+        name: market_address
+        description: "LeverUp Diamond contract address (all markets share the same router/settler on Monad)."
+      - &volume_usd
+        name: volume_usd
+        description: "Notional in USD: price_raw * size_raw / 1e28 (price is 1e18 fixed-point, size is 1e10)."
+      - &fee_usd
+        name: fee_usd
+        description: "NULL on opens (LimitOrderFilled doesn't carry fees). To be populated from the close-event PnL slots in a follow-up."
+      - &margin_usd
+        name: margin_usd
+        description: "NULL until margin extraction is wired in."
+      - &trade
+        name: trade
+        description: "'long' | 'short' on opens; 'close-long' | 'close-short' on TradeClosedManual / TradeClosedTrigger (closing direction = the position being closed)."
+      - &project
+        name: project
+        description: "The underlying protocol/project where the swap took place"
+      - &version
+        name: version
+        description: "The version of the protocol/project"
+      - &frontend
+        name: frontend
+        description: "The frontend protocol/project; defaults to the project"
+      - &trader
+        name: trader
+        description: "Trader's wallet (taken from indexed topic1 of the fill event)."
+      - &volume_raw
+        name: volume_raw
+        description: "Fill size in 18-decimal units of the base asset: size_raw * 10^8 (LeverUp uses gTrade's 1e10 fixed-point for all markets). Divide by 1e18 for the human-readable position size."
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash (the keeper's settlement tx, NOT the user's submission tx)."
+      - &tx_from
+        name: tx_from
+        description: "Address that originated the settlement tx (typically the keeper); from monad.transactions."
+      - &tx_to
+        name: tx_to
+        description: "Recipient of the settlement tx (the Diamond contract); from monad.transactions."
+      - &evt_index
+        name: evt_index
+        description: "Log index of the fill event within the block."
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"
