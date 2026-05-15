@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: gas_hedera_fees
+    meta:
+      blockchain: hedera
+      sector: gas
+      contributors: alicecha
+    config:
+      tags: ['hedera', 'gas', 'fees']
+    description: >
+        Gas Fees on Hedera.
+
+        Known limitation: `tx_fee` is computed as `gas_price * gas_used` and
+        does NOT match the actual HBAR debited from the sender for storage-
+        modifying contract calls. Legacy txs (simple HBAR transfers) match
+        HashScan exactly; AccessList / contract-call txs can over-estimate the
+        actual charged fee by up to ~20%. Hedera's debited amount is recorded
+        as `charged_tx_fee` on the parent transaction record (Mirror Node),
+        but that field is not currently exposed on `hedera.transactions`.
+        Verified example: tx
+        `0xc3c133f775b6fde6bcd851681c7cd572271e5d5ee24c1df662849bd62131b92f`
+        — model output 0.29066 HBAR, actual debit 0.24011 HBAR. Switch this
+        model to `charged_tx_fee` once the indexer surfaces it.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: hedera
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"
