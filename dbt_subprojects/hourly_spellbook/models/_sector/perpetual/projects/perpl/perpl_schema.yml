@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: perpl_perpetual_trades
+    meta:
+      blockchain: monad
+      sector: perpetual
+      project: perpl
+      contributors: kkqzhou
+    config:
+      tags: ['monad', 'perpetual', 'perpl', 'perps']
+    description: >
+      Cross-chain rollup of Perpl perpetual fills (currently Monad only).
