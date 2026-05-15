@@ -1,23 +1,28 @@
 version: 2
 
 models:
-  - name: gmx_v2_megaeth_market_created
+  - name: gmx_v2_megaeth_order_created
     meta:
       blockchain: megaeth
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['megaeth', 'gmx', 'event', 'market_created']
+      tags: ['megaeth', 'gmx', 'event', 'order_created']
     description: |
-      This model extracts and parses `MarketCreated` events from the megaeth blockchain.
-      It includes transaction details, addresses, and other relevant metrics related to 
-      the creation of markets within the GMX protocol.
-
+      Extracts and decodes the `OrderCreated` event log data from the MegaETH blockchain. 
+      This model processes log entries related to created orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
     columns:
       - &blockchain  
         name: blockchain
-        description: The blockchain network where the event occurred (megaeth)
+        description: The blockchain network where the event occurred (MegaETH)
       - &block_time
         name: block_time
         description: The timestamp of the block when the event was recorded
@@ -41,14 +46,247 @@ models:
         description: The originating address of the transaction, usually representing the sender
       - &tx_to
         name: tx_to
-        description: The destination address of the transaction, representing the receiver
+        description: The destination address of the transaction, representing the receiver                 
+      - name: event_name
+        description: The type of event recorded, always 'OrderCreated' for this model.
+      - &msg_sender
+        name: msg_sender
+        description: The address of the sender of the message or transaction.
+      - name: account
+        description: The address associated with the order.
+      - name: receiver
+        description: The address designated as the receiver in the order.
+        data_tests:
+          - not_null
+      - name: callback_contract
+        description: The contract address for callback functions.
+        data_tests:
+          - not_null        
+      - name: ui_fee_receiver
+        description: The address designated to receive UI fees.
+        data_tests:
+          - not_null        
+      - name: market
+        description: The market in which the order was created.
+        data_tests:
+          - not_null        
+      - name: initial_collateral_token
+        description: The token used as initial collateral in the order.
+        data_tests:
+          - not_null   
+      - name: cancellation_receiver
+        description: The address that will receive remaining collateral if the order is cancelled.     
+      - name: swap_path
+        description: JSON array of markets through which the swap was routed.
+        data_tests:
+          - not_null  
+      - &order_type    
+        name: order_type
+        description: |
+          The type of order executed. The following table describes each order type:
+          - MarketSwap: Swap token A to token B at the current market price. The order will be cancelled if the minOutputAmount cannot be fulfilled.
+          - LimitSwap: Swap token A to token B if the minOutputAmount can be fulfilled.
+          - MarketIncrease: Increase position at the current market price. The order will be cancelled if the position cannot be increased at the acceptablePrice.
+          - LimitIncrease: Increase position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - MarketDecrease: Decrease position at the current market price. The order will be cancelled if the position cannot be decreased at the acceptablePrice.
+          - LimitDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - StopLossDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - Liquidation: Allows liquidation of positions if the criteria for liquidation are met.
+          - StopIncrease: Increase position if the stop price is reached, providing an additional execution condition.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation','StopIncrease']
+      - name: decrease_position_swap_type
+        description: |
+          The type of swap for decreasing position, with possible values:
+          - 'NoSwap'
+          - 'SwapPnlTokenToCollateralToken'
+          - 'SwapCollateralTokenToPnlToken'
+      - &size_delta_usd
+        name: size_delta_usd
+        description: The change in position size in USD
+        data_tests:
+          - not_null
+      - name: initial_collateral_delta_amount
+        description: The change in initial collateral amount.
+        data_tests:
+          - not_null
+      - &trigger_price_raw
+        name: trigger_price_raw
+        description: The original trigger price that initiates order execution before adjustments.
+      - &trigger_price
+        name: trigger_price
+        description: The adjusted trigger price based on the index token decimals, ensuring correct scaling of the value.
+      - &acceptable_price_raw 
+        name: acceptable_price_raw
+        description: The original minimum acceptable price for order execution before adjustments.
+      - &acceptable_price
+        name: acceptable_price
+        description: The adjusted acceptable price based on the index token decimals, ensuring correct scaling of the value.
+      - name: execution_fee
+        description: The fee paid for executing the order in native tokens
+        data_tests:
+          - not_null        
+      - name: callback_gas_limit
+        description: The gas limit set for callback functions.
+        data_tests:
+          - not_null        
+      - &min_output_amount_raw
+        name: min_output_amount_raw
+        description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
+        data_tests:
+          - not_null        
+      - name: updated_at_block
+        description: The block number at which the order was last updated. 
+      - &updated_at_time     
+        name: updated_at_time
+        description: The timestamp when the order was last updated.
+      - name: valid_from_time
+        description: The time from which the order becomes valid for execution.
+      - name: src_chain_id
+        description: The identifier of the source blockchain for the multichain transaction.
+      - &is_long
+        name: is_long
+        description: A boolean indicating whether the position is long
+        data_tests:
+          - not_null
+      - name: should_unwrap_native_token
+        description: Boolean indicating if the native token should be unwrapped.
+      - name: auto_cancel
+        description: Boolean indicating whether the order will be automatically canceled under certain conditions.
+      - &key
+        name: key
+        description: The unique identifier for the order, stored as a bytes32 value.
+        data_tests:
+          - not_null
+          - unique
+      - name: data_list
+        description: An array of encoded bytes used to pass additional metadata for advanced order logic.
+
+  - name: gmx_v2_megaeth_order_executed
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'order_executed']
+    description: | 
+      Extracts and decodes the `OrderExecuted` event log data from the MegaETH blockchain. 
+      This model processes log entries related to executed orders, extracting key variables such as 
+      account addresses, event keys, and integer values.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'OrderExecuted' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender
+      - *key
+      - name: account
+        description: The address associated with the order
+      - name: secondary_order_type
+        description: |
+          The type of secondary order associated with the executed order. 
+          This column indicates the nature of any additional order handling or adjustments made. 
+          
+          The `secondary_order_type` is represented as an unsigned integer with the following possible values:
+          - `0`: **None** - No secondary order type is applied.
+          - `1`: **Adl (Auto-Deleveraging)** - Indicates that the order is associated with the Auto-Deleveraging mechanism. ADL is used to manage risk by automatically reducing or closing positions that are at risk of liquidation due to insufficient margin or other factors. This mechanism helps in maintaining the stability of the trading platform.
+        data_tests:
+          - not_null
+
+
+  - name: gmx_v2_megaeth_order_cancelled
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'order_cancelled']
+    description: |
+      Extracts and decodes the `OrderCancelled` event log data from the MegaETH blockchain. 
+      This model processes log entries related to cancelled orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'OrderCancelled' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender         
+      - *key
+      - name: account
+        description: The address associated with the order 
+      - name: reason_bytes
+        description: The reason for the cancellation in byte format.
+        data_tests:
+          - not_null
+      - name: reason
+        description: The reason for the cancellation in string format.
+        data_tests:
+          - not_null
+
+
+  - name: gmx_v2_megaeth_market_created
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'market_created']
+    description: |
+      This model extracts and parses `MarketCreated` events from the MegaETH blockchain.
+      It includes transaction details, addresses, and other relevant metrics related to 
+      the creation of markets within the GMX protocol.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'MarketCreated' for this model
         data_tests:
           - not_null 
-      - &msg_sender
-        name: msg_sender
-        description: The address of the sender of the message or transaction.
+      - *msg_sender
       - name: account
         description: The address associated with the event
       - &market_token
@@ -93,6 +331,110 @@ models:
         data_tests:
           - not_null         
 
+
+  - name: gmx_v2_megaeth_order_frozen
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'order_frozen']
+    description: |
+      Extracts and decodes the `OrderFrozen` event log data from the MegaETH blockchain. 
+      This model processes log entries related to frozen orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for the order being frozen.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'OrderFrozen' for this model
+        data_tests:
+          - not_null 
+      - *msg_sender         
+      - name: key
+        description: The key associated with the frozen order. Extracted as a bytes32 value
+        data_tests:
+          - not_null
+      - name: account
+        description: The address associated with the order 
+      - name: reason_bytes
+        description: The reason for the order being frozen in byte format.
+        data_tests:
+          - not_null
+      - name: reason
+        description: The reason for the order being frozen in string format.
+        data_tests:
+          - not_null
+
+
+  - name: gmx_v2_megaeth_order_updated
+    meta:
+      blockchain: megaeth
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['megaeth', 'gmx', 'event', 'order_updated']
+    description: |
+      Extracts and decodes the `OrderUpdated` event log data from the MegaETH blockchain. 
+      This model processes log entries related to updated orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+           arguments:
+             combination_of_columns:
+               - tx_hash
+               - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to  
+      - name: event_name
+        description: The type of event recorded, always 'OrderUpdated' for this model.
+        data_tests:
+          - not_null
+      - *msg_sender
+      - name: key
+        description: The key associated with the updated order. Extracted as a bytes32 value
+        data_tests:
+          - not_null
+      - name: market
+        description: The market in which the order was updated
+      - name: account
+        description: The address associated with the order.
+      - *size_delta_usd
+      - *trigger_price_raw
+      - *trigger_price
+      - *acceptable_price_raw 
+      - *acceptable_price
+      - *min_output_amount_raw   
+      - *updated_at_time
+      - name: valid_from_time
+        description: The time from which the order becomes valid for execution.
+      - name: auto_cancel
+        description: Boolean indicating whether the order will be automatically canceled under certain conditions.
+
+
   - name: gmx_v2_megaeth_glv_created
     meta:
       blockchain: megaeth
@@ -102,7 +444,7 @@ models:
     config:
       tags: ['megaeth', 'gmx', 'event', 'glv_created']
     description: |
-      Processes decoded event data for `GLVCreated` events on the GMX platform in the megaeth blockchain.
+      Processes decoded event data for `GLVCreated` events on the GMX platform in the MegaETH blockchain.
       This model extracts key details such as the GLV token, associated tokens, and transaction specifics, enabling
       analysis of GLV creation events on the platform.
     data_tests:
@@ -141,4 +483,3 @@ models:
         description: The symbol of the market token involved in the GLV creation.
       - name: market_token_decimals
         description: The decimal precision of the market token involved in the GLV creation.
-
