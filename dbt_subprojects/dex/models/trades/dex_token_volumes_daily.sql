@@ -15,6 +15,7 @@
     , 'flare'
     , 'flow'
     , 'gnosis'
+    , 'hedera'
     , 'hemi'
     , 'hyperevm'
     , 'ink'

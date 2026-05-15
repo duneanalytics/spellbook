@@ -195,6 +195,7 @@ FROM (VALUES
     , ('levinswap', 'Levinswap', 'Direct', 'levinswap')
     , ('sparkdex', 'SparkDEX', 'Direct', 'SparkDexAI')
     , ('blazeswap', 'BlazeSwap', 'Direct', 'blazeswapdex')
+    , ('saucerswap', 'SaucerSwap', 'Direct', 'SaucerSwapLabs')
     , ('unagi', 'Unagi', 'Direct', 'UnagiProtocol')
     , ('izumi_finance', 'iZUMi Finance', 'Direct', 'izumi_Finance')
     , ('enosys', 'Enosys', 'Direct', 'enosys_global')

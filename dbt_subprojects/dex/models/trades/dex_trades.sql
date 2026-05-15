@@ -15,6 +15,7 @@
     , 'flare'
     , 'flow'
     , 'gnosis'
+    , 'hedera'
     , 'hemi'
     , 'hyperevm'
     , 'ink'
@@ -103,6 +104,9 @@ WHERE block_date > current_date - interval '3' day
 {%- else -%}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}
+{% else %}
+-- TODO: remove before merge — temp CI date filter to keep partition count under Trino's 100-writer limit
+WHERE block_time >= NOW() - INTERVAL '7' DAY
 {% endif %}
 {%- endif %}
 {% if not loop.last %}
