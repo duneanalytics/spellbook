@@ -14,6 +14,24 @@ WITH pool_labels AS (
         AND model_name = '{{pool_labels_model}}'
     ),
 
+    filtered_transfers_bpt AS (
+        SELECT
+            evt_block_time,
+            evt_block_number,
+            evt_tx_hash,
+            evt_index,
+            contract_address,
+            "from",
+            to,
+            value
+        FROM {{ ref(base_spells_namespace + '_transfers_bpt') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
+    ),
+
     -- Extract mints and burns from transfers
     transfers AS (
         SELECT
@@ -37,13 +55,8 @@ WITH pool_labels AS (
                 THEN - value
                 ELSE 0
                 END AS amount
-        FROM {{ ref(base_spells_namespace + '_transfers_bpt') }} t
+        FROM filtered_transfers_bpt t
         LEFT JOIN pool_labels l ON t.contract_address = l.address
-        WHERE t.blockchain = '{{blockchain}}'
-        AND t.version = '{{version}}'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('t.evt_block_time') }}
-        {% endif %}
     ),
 
     -- Calculating Joins(mint) and Exits(burn) via Swap
@@ -149,6 +162,24 @@ WITH pool_labels AS (
         AND model_name = '{{pool_labels_model}}'
     ),
 
+    filtered_transfers_bpt AS (
+        SELECT
+            evt_block_time,
+            evt_block_number,
+            evt_tx_hash,
+            evt_index,
+            contract_address,
+            "from",
+            to,
+            value
+        FROM {{ ref(base_spells_namespace + '_transfers_bpt') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
+    ),
+
     -- Extract mints and burns from transfers
     transfers AS (
         SELECT
@@ -172,13 +203,8 @@ WITH pool_labels AS (
                 THEN - value
                 ELSE 0
                 END AS amount
-        FROM {{ ref(base_spells_namespace + '_transfers_bpt') }} t
+        FROM filtered_transfers_bpt t
         LEFT JOIN pool_labels l ON t.contract_address = l.address
-        WHERE t.blockchain = '{{blockchain}}'
-        AND t.version = '{{version}}'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('t.evt_block_time') }}
-        {% endif %}
     ),
 
     -- Calculating Joins(mint) and Exits(burn) via Swap
