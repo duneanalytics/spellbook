@@ -1,16 +1,18 @@
 {{ config(
     schema = 'staking_solana'
     , alias = 'validator_stake_account_epochs_raw'
-    , materialized = 'table'
+    , materialized = 'incremental'
     , file_format = 'delta'
-    , unique_key = ['epoch', 'epoch_time', 'stake_account', 'vote_account']
+    , incremental_strategy = 'merge'
+    , unique_key = ['epoch', 'stake_account']
+    , incremental_predicates = ['DBT_INTERNAL_DEST.epoch_time >= now() - interval \'10\' day']
 )
 }}
 
 --don't expose this table in DE
-with 
+with
     base as (
-        SELECT 
+        SELECT
             epoch.epoch
             , epoch.block_time as epoch_time
             , epoch.epoch_start_slot
@@ -21,6 +23,12 @@ with
         LEFT JOIN {{ ref('solana_utils_epochs') }} epoch
             ON first_block_epoch = true --cross join
         WHERE vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
+        {% if is_incremental() %}
+        -- Once an epoch starts, its (epoch_start_slot) cutoff is immutable.
+        -- Reprocess the last ~4-5 epochs (epoch p99 = 57h, max ~60h) on each run
+        -- so we re-emit the in-flight epoch and absorb late-arriving delegations.
+        AND epoch.block_time >= now() - interval '10' day
+        {% endif %}
         GROUP BY 1,2,3,4,5
     )
 
