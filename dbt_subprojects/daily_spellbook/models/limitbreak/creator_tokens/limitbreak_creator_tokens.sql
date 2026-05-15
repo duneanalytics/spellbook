@@ -24,6 +24,8 @@
 ,ref('limitbreak_berachain_creator_tokens')
 ,ref('limitbreak_abstract_creator_tokens')
 ,ref('limitbreak_abstract_zkevm_creator_tokens')
+,ref('limitbreak_megaeth_creator_tokens')
+,ref('limitbreak_ronin_creator_tokens')
 ] %}
 
 WITH creator_tokens_union as
