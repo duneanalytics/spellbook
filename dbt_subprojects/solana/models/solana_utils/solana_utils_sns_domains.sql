@@ -28,6 +28,7 @@ with
                   --0x11 https://solscan.io/tx/325dGEvxPLdMJgQH62ea89EJcaRSEuJtrd761Xhxadj1ZtirPhJmLvgx2ENaSodU74tXwzQk8ShvFsZQ1qw3T53E
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'jCebN34bUfdeUYJT13J1yG16XWQpt5PDx6Mse9GUqhR'
+        AND executing_account_prefix = 'jC'
         and bytearray_substring(data,1,1) IN (0x01, 0x09, 0x0d, 0x00, 0x11) --different register instructions
     )
     
@@ -41,6 +42,7 @@ with
             , tx_id
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'namesLPneVptA9Z5rqUDD9tMTWEJwofgaYwp8cawRkX'
+        AND executing_account_prefix = 'na'
         and bytearray_substring(data,1,1) = 0x02
     )
     
@@ -74,6 +76,7 @@ with
             , row_number() OVER (partition by account_arguments[1] order by block_time desc) as latest_by_domain
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = '85iDfUvr3HJyLM2zcq5BXSiDvUWfw6cSE1FfNBo8Ap29'
+        AND executing_account_prefix = '85'
         and bytearray_substring(data,1,1) = 0x06
         ) f
         LEFT JOIN names n ON n.domain_account = f.domain_account

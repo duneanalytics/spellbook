@@ -38,6 +38,7 @@ SELECT
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
+AND executing_account_prefix = 'PE'
 AND bytearray_substring(data,1+8,8) = 0xf5715534d6bb9984 -- IncreasePosition
 AND tx_success = true
 {% if is_incremental() %}
@@ -73,6 +74,7 @@ SELECT
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
+AND executing_account_prefix = 'PE'
 AND bytearray_substring(data,1+8,8) = 0x409c2b4a6d83107f -- DecreasePosition
 AND tx_success = true
 {% if is_incremental() %}
@@ -104,6 +106,7 @@ SELECT
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
+AND executing_account_prefix = 'PE'
 AND bytearray_substring(data,1+8,8) IN (0x68452084d423bf2f, 0x806547a880485654) --LiquidatePosition, LiquidateFullPosition
 AND tx_success = true
 {% if is_incremental() %}

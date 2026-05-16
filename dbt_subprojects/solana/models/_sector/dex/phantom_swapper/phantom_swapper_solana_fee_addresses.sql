@@ -27,6 +27,7 @@ FROM (
     , account_arguments[4] AS referraltokenaccount
     FROM {{ source('solana','instruction_calls') }}
     WHERE executing_account = 'REFER4ZgmyYx9c6He5XfaTMiGfdLwRnkV4RPp9t9iF3'
+    AND executing_account_prefix = 'RE'
     AND account_arguments[2] = '45ruCyfdRkWpRNGEqWzjCiXRHkZs8WXCLQ67Pnpye7Hp'
     AND TRY_CAST(data AS VARCHAR) like '%7d12465f%'
     AND block_time >= TIMESTAMP '2023-11-30' -- First date phantom ReferralTokenAccount created

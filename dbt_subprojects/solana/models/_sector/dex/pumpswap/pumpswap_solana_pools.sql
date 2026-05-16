@@ -26,6 +26,7 @@ WITH pool_creation AS (
     FROM {{ source('solana','instruction_calls') }}
     WHERE varbinary_starts_with(data, 0xe445a52e51cb9a1db1310cd2a076a774)
         AND executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
+        AND executing_account_prefix = 'pA'
         AND tx_success = true
     {% if is_incremental() %}
     AND {{incremental_predicate('block_time')}}
