@@ -27,6 +27,7 @@ WITH swaps AS (
           ) }} AS surrogate_key
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE 1=1
+        AND executing_account_prefix = '{{ program_id[:2] }}'
         AND executing_account = '{{ program_id }}'
         AND tx_success = true
         AND {{ discriminator_filter }}
