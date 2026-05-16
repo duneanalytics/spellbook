@@ -23,6 +23,8 @@ with
         LEFT JOIN {{ ref('solana_utils_epochs') }} epoch
             ON first_block_epoch = true --cross join
         WHERE vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
+        -- TEMP-CI-FILTER: bound CI build to a recent slice for fast iteration. REMOVE BEFORE MERGE.
+        AND epoch.block_time >= DATE '2026-04-15'
         {% if is_incremental() %}
         -- Once an epoch starts, its (epoch_start_slot) cutoff is immutable.
         -- Reprocess the last ~4-5 epochs (epoch p99 = 57h, max ~60h) on each run
