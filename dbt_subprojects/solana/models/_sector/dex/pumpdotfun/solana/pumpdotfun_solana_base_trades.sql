@@ -22,6 +22,7 @@ with
             , account_arguments[4] as bonding_curve_vault
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
+            AND executing_account_prefix = '6E'
             AND bytearray_substring(data,1,8) = 0x181ec828051c0777 --Create https://solscan.io/tx/2Vfq4gS9nq2jvpmZSxVXJ3uHGeheENXetwUus6KnhBzFu23Brqbt5EoNiTLds6jr72yZYGJ9YbMDG1BYKMRe3hSQ
             and tx_success = true
         {% if is_incremental() %}
@@ -52,6 +53,7 @@ with
             , outer_executing_account
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
+        AND executing_account_prefix = '6E'
         AND bytearray_substring(data,1,16) = 0xe445a52e51cb9a1dbddb7fd34ee661ee --SwapEvent
         and tx_success = true
         {% if is_incremental() %}
