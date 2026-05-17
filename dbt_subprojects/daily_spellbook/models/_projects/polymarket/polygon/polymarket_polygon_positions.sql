@@ -14,173 +14,105 @@
   )
 }}
 
-with positions as (
-  select
-    p.day,
-    p.address,
-    mm.unique_key,
-    p.token_id,
-    mm.token_outcome,
-    mm.token_outcome_name,
-    p.balance,
-    mm.question_id,
-    mm.question AS market_question,
-    mm.market_description,
-    mm.event_market_name,
-    mm.event_market_description,
-    mm.active,
-    mm.closed,
-    mm.accepting_orders,
-    mm.polymarket_link,
-    mm.market_start_time,
-    mm.market_end_time,
-    mm.outcome as market_outcome,
-    mm.resolved_on_timestamp
-  from {{ ref('polymarket_polygon_positions_raw') }} as p
-  inner join {{ ref('polymarket_polygon_market_details') }} as mm on p.token_id = mm.token_id
-)
-
 {% if is_incremental() -%}
 
-, changed_markets AS (
+-- Triggers only on outcome / resolved_on_timestamp changes; other market flags are snapshot-at-write.
+with changed_markets as (
   select distinct
-    mm_check.token_id
+    mm_check.token_id,
+    cast(mm_check.market_start_time as timestamp) as market_start_time,
+    cast(mm_check.resolved_on_timestamp as timestamp) as resolved_on_timestamp
   from {{ ref('polymarket_polygon_market_details') }} as mm_check
   inner join {{ this }} as existing
     on mm_check.token_id = existing.token_id
     and existing.day >= cast(try_cast(mm_check.market_start_time as timestamp) as date)
-  where existing.active is distinct from mm_check.active
-    or existing.closed is distinct from mm_check.closed
-    or existing.accepting_orders is distinct from mm_check.accepting_orders
-    or existing.market_outcome is distinct from mm_check.outcome
+  where existing.market_outcome is distinct from mm_check.outcome
     or existing.resolved_on_timestamp is distinct from mm_check.resolved_on_timestamp
 ),
 
-recent_positions AS (
-  select
-    jp.day,
-    jp.address,
-    jp.unique_key,
-    jp.token_id,
-    jp.token_outcome,
-    jp.token_outcome_name,
-    jp.balance,
-    jp.question_id,
-    jp.market_question,
-    jp.market_description,
-    jp.event_market_name,
-    jp.event_market_description,
-    jp.active,
-    jp.closed,
-    jp.accepting_orders,
-    jp.polymarket_link,
-    jp.market_start_time,
-    jp.market_end_time,
-    jp.market_outcome,
-    jp.resolved_on_timestamp
-  from positions as jp
-  where {{ incremental_predicate('jp.day') }}
+-- Scalar bound pushed as a partition predicate; per-row day-range can't be.
+changed_markets_day_bounds as (
+  select min(cast(market_start_time as date)) as min_day
+  from changed_markets
 ),
 
-historical_changed_positions as (
+positions_to_emit as (
   select
-    jp.day,
-    jp.address,
-    jp.unique_key,
-    jp.token_id,
-    jp.token_outcome,
-    jp.token_outcome_name,
-    jp.balance,
-    jp.question_id,
-    jp.market_question,
-    jp.market_description,
-    jp.event_market_name,
-    jp.event_market_description,
-    jp.active,
-    jp.closed,
-    jp.accepting_orders,
-    jp.polymarket_link,
-    jp.market_start_time,
-    jp.market_end_time,
-    jp.market_outcome,
-    jp.resolved_on_timestamp
-  from positions as jp
-  inner join changed_markets as cm on jp.token_id = cm.token_id
-  where not ({{ incremental_predicate('jp.day') }})
+    p.day,
+    p.address,
+    p.token_id,
+    p.balance
+  from {{ ref('polymarket_polygon_positions_raw') }} as p
+  where {{ incremental_predicate('p.day') }}
+
+  union all
+
+  select
+    p.day,
+    p.address,
+    p.token_id,
+    p.balance
+  from {{ ref('polymarket_polygon_positions_raw') }} as p
+  inner join changed_markets as cm
+    on p.token_id = cm.token_id
+    and p.day between cast(cm.market_start_time as date)
+                  and cast(cm.resolved_on_timestamp as date)
+  where not ({{ incremental_predicate('p.day') }})
+    and p.day >= (select min_day from changed_markets_day_bounds)
 )
 
 select
-  day,
-  address,
-  unique_key,
-  token_id,
-  token_outcome,
-  token_outcome_name,
-  balance,
-  question_id,
-  market_question,
-  market_description,
-  event_market_name,
-  event_market_description,
-  active,
-  closed,
-  accepting_orders,
-  polymarket_link,
-  market_start_time,
-  market_end_time,
-  market_outcome,
-  resolved_on_timestamp,
+  p.day,
+  p.address,
+  mm.unique_key,
+  p.token_id,
+  mm.token_outcome,
+  mm.token_outcome_name,
+  p.balance,
+  mm.question_id,
+  mm.question as market_question,
+  mm.market_description,
+  mm.event_market_name,
+  mm.event_market_description,
+  mm.active,
+  mm.closed,
+  mm.accepting_orders,
+  mm.polymarket_link,
+  mm.market_start_time,
+  mm.market_end_time,
+  mm.outcome as market_outcome,
+  mm.resolved_on_timestamp,
   now() as _updated_at
-from recent_positions
-union all
-select
-  day,
-  address,
-  unique_key,
-  token_id,
-  token_outcome,
-  token_outcome_name,
-  balance,
-  question_id,
-  market_question,
-  market_description,
-  event_market_name,
-  event_market_description,
-  active,
-  closed,
-  accepting_orders,
-  polymarket_link,
-  market_start_time,
-  market_end_time,
-  market_outcome,
-  resolved_on_timestamp,
-  now() as _updated_at
-from historical_changed_positions
+from positions_to_emit as p
+inner join {{ ref('polymarket_polygon_market_details') }} as mm
+  on p.token_id = mm.token_id
 
-{% else -%}
+{%- else -%}
 
 select
-  day,
-  address,
-  unique_key,
-  token_id,
-  token_outcome,
-  token_outcome_name,
-  balance,
-  question_id,
-  market_question,
-  market_description,
-  event_market_name,
-  event_market_description,
-  active,
-  closed,
-  accepting_orders,
-  polymarket_link,
-  market_start_time,
-  market_end_time,
-  market_outcome,
-  resolved_on_timestamp,
+  p.day,
+  p.address,
+  mm.unique_key,
+  p.token_id,
+  mm.token_outcome,
+  mm.token_outcome_name,
+  p.balance,
+  mm.question_id,
+  mm.question as market_question,
+  mm.market_description,
+  mm.event_market_name,
+  mm.event_market_description,
+  mm.active,
+  mm.closed,
+  mm.accepting_orders,
+  mm.polymarket_link,
+  mm.market_start_time,
+  mm.market_end_time,
+  mm.outcome as market_outcome,
+  mm.resolved_on_timestamp,
   now() as _updated_at
-from positions
+from {{ ref('polymarket_polygon_positions_raw') }} as p
+inner join {{ ref('polymarket_polygon_market_details') }} as mm
+  on p.token_id = mm.token_id
 
-{% endif -%}
+{%- endif %}

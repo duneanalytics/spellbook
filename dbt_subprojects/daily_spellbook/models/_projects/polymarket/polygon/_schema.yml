@@ -420,6 +420,36 @@ models:
       - name: last_uploaded_at
         description: "Timestamp of the last API upload for this market record"
 
+  - name: polymarket_polygon_positions_raw_changes
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: per-(address, token_id) balance change events for the CTF token (no forward-fill). Used internally to build polymarket_polygon_positions_raw."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_id
+    columns:
+      - name: blockchain
+        description: "The blockchain the position is on"
+      - name: day
+        description: "The date the balance changed"
+      - name: address
+        description: "The address whose balance changed"
+      - name: token_address
+        description: "The CTF token contract address"
+      - name: token_id
+        description: "ERC-1155 token ID (CTF outcome token)"
+      - name: balance_raw
+        description: "Balance after the change (uint256, 6 decimals)"
+
   - name: polymarket_polygon_positions_raw
     meta:
       blockchain: polygon
