@@ -22,8 +22,6 @@ select
 from {{ source('tokens_polygon', 'balances_daily_agg_base') }}
 where token_address = 0x4D97DCd97eC945f40cF65F87097ACe5EA0476045
   and day >= cast('2020-09-03' as date)
-  -- TEMP CI VALIDATION SAMPLE - REVERT BEFORE MERGE - filters to ~1/1000 of addresses
-  and mod(abs(from_big_endian_64(xxhash64(address))), 1000) = 0
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}
