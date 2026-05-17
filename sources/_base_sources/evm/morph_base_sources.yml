@@ -415,3 +415,23 @@ sources:
           - *owner
           - name: operator
             description: "Address granted or revoked permission to manage all of the owner's tokens"
+
+  # ===========================================
+  # TIP20 Source
+  # ===========================================
+  - name: tip20_morph
+    description: "TIP20 token event tables for morph"
+    tables:
+      - name: evt_Transfer
+        description: "Transfer events for TIP20 tokens on morph"
+        columns:
+          - name: contract_address
+            description: "Address of the TIP20 token contract that emitted this event"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - name: amount
+            description: "Amount of TIP20 tokens transferred, in the token's native decimal representation (raw value)"
