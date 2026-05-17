@@ -53,6 +53,7 @@ with prices_native_tokens as (
         , ('mode', 'eth-ethereum')
         , ('mezo', 'btc-bitcoin')
         , ('monad', 'mon-monad')
+        , ('morph', 'eth-ethereum')
         , ('noble', 'eth-ethereum')
         , ('nova', 'eth-ethereum')
         , ('opbnb', 'bnb-binance-coin')
