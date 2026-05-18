@@ -102,50 +102,79 @@ opens AS (
     {% endif %}
 ),
 
+-- Closes look up the open snapshot by tradeHash, but the hash is NOT a
+-- one-shot identifier: at least one trade (0x421ba4… on 2025-12-03)
+-- emitted openmarkettrade three times within one tx, and the contract is
+-- free to reuse a hash after a close. The LEFT JOIN keeps every candidate
+-- open and a window picks the latest one at-or-before each close, so a
+-- single close yields exactly one row even if multiple opens share the
+-- hash.
 closes_manual AS (
     SELECT
-        c.evt_block_time                                                  AS block_time,
-        c.evt_block_number                                                AS block_number,
-        c.evt_block_date                                                  AS block_date,
-        c.evt_tx_hash                                                     AS tx_hash,
-        c.evt_index                                                       AS evt_index,
-        c."user"                                                          AS trader,
-        c.tradeHash                                                       AS trade_hash,
-        m.pair_base,
-        CAST(json_extract_scalar(c.closeInfo, '$.closePrice') AS UINT256) AS price_raw,
-        m.size_raw,
-        m.is_long,
-        'close_manual' AS leg
-    FROM {{ source('leverup_monad', 'leverup_evt_closetradesuccessful') }} c
-    LEFT JOIN opens_decoded m
-      ON m.trade_hash = c.tradeHash
-    WHERE c.evt_block_date >= DATE '{{ project_start_date }}'
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('c.evt_block_time') }}
-    {% endif %}
+        block_time, block_number, block_date, tx_hash, evt_index,
+        trader, trade_hash, pair_base, price_raw, size_raw, is_long, leg
+    FROM (
+        SELECT
+            c.evt_block_time                                                  AS block_time,
+            c.evt_block_number                                                AS block_number,
+            c.evt_block_date                                                  AS block_date,
+            c.evt_tx_hash                                                     AS tx_hash,
+            c.evt_index                                                       AS evt_index,
+            c."user"                                                          AS trader,
+            c.tradeHash                                                       AS trade_hash,
+            m.pair_base,
+            CAST(json_extract_scalar(c.closeInfo, '$.closePrice') AS UINT256) AS price_raw,
+            m.size_raw,
+            m.is_long,
+            'close_manual' AS leg,
+            row_number() OVER (
+                PARTITION BY c.evt_tx_hash, c.evt_index
+                ORDER BY m.block_time DESC, m.block_number DESC, m.evt_index DESC
+            ) AS rn
+        FROM {{ source('leverup_monad', 'leverup_evt_closetradesuccessful') }} c
+        LEFT JOIN opens_decoded m
+          ON m.trade_hash = c.tradeHash
+         AND m.block_time <= c.evt_block_time
+        WHERE c.evt_block_date >= DATE '{{ project_start_date }}'
+        {% if is_incremental() %}
+          AND {{ incremental_predicate('c.evt_block_time') }}
+        {% endif %}
+    )
+    WHERE rn = 1
 ),
 
 closes_trigger AS (
     SELECT
-        c.evt_block_time                                                  AS block_time,
-        c.evt_block_number                                                AS block_number,
-        c.evt_block_date                                                  AS block_date,
-        c.evt_tx_hash                                                     AS tx_hash,
-        c.evt_index                                                       AS evt_index,
-        c."user"                                                          AS trader,
-        c.tradeHash                                                       AS trade_hash,
-        m.pair_base,
-        CAST(json_extract_scalar(c.closeInfo, '$.closePrice') AS UINT256) AS price_raw,
-        m.size_raw,
-        m.is_long,
-        'close_trigger' AS leg
-    FROM {{ source('leverup_monad', 'leverup_evt_executeclosesuccessful') }} c
-    LEFT JOIN opens_decoded m
-      ON m.trade_hash = c.tradeHash
-    WHERE c.evt_block_date >= DATE '{{ project_start_date }}'
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('c.evt_block_time') }}
-    {% endif %}
+        block_time, block_number, block_date, tx_hash, evt_index,
+        trader, trade_hash, pair_base, price_raw, size_raw, is_long, leg
+    FROM (
+        SELECT
+            c.evt_block_time                                                  AS block_time,
+            c.evt_block_number                                                AS block_number,
+            c.evt_block_date                                                  AS block_date,
+            c.evt_tx_hash                                                     AS tx_hash,
+            c.evt_index                                                       AS evt_index,
+            c."user"                                                          AS trader,
+            c.tradeHash                                                       AS trade_hash,
+            m.pair_base,
+            CAST(json_extract_scalar(c.closeInfo, '$.closePrice') AS UINT256) AS price_raw,
+            m.size_raw,
+            m.is_long,
+            'close_trigger' AS leg,
+            row_number() OVER (
+                PARTITION BY c.evt_tx_hash, c.evt_index
+                ORDER BY m.block_time DESC, m.block_number DESC, m.evt_index DESC
+            ) AS rn
+        FROM {{ source('leverup_monad', 'leverup_evt_executeclosesuccessful') }} c
+        LEFT JOIN opens_decoded m
+          ON m.trade_hash = c.tradeHash
+         AND m.block_time <= c.evt_block_time
+        WHERE c.evt_block_date >= DATE '{{ project_start_date }}'
+        {% if is_incremental() %}
+          AND {{ incremental_predicate('c.evt_block_time') }}
+        {% endif %}
+    )
+    WHERE rn = 1
 ),
 
 all_legs AS (
