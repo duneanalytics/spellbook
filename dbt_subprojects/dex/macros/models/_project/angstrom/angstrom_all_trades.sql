@@ -64,29 +64,43 @@ WITH
             AND b.maker = se.pool_id
             AND b.pool_rn = se.pool_rn
     )
+    all_trades AS (
+        SELECT * FROM composable_orders
+        UNION ALL
+        SELECT * FROM bundle_with_real_evt_index
+    ),
+    deduped AS (
+        SELECT *,
+            row_number() over(
+                partition by tx_hash, evt_index
+                order by CASE WHEN trade_type = 'Composable Swap' THEN 1 ELSE 0 END
+            ) AS _rn
+        FROM all_trades
+    )
 SELECT
     '{{ blockchain }}' AS blockchain,
     '{{ project }}' AS project,
     '{{ version }}' AS version,
     CAST(date_trunc('month', block_time) AS date) AS block_month,
     CAST(date_trunc('day', block_time) AS date) AS block_date,
-    *
-FROM composable_orders co
-WHERE NOT EXISTS (
-    SELECT 1 FROM bundle_with_real_evt_index bw
-    WHERE co.tx_hash = bw.tx_hash AND co.evt_index = bw.evt_index
-)
-
-UNION ALL
-
-SELECT
-    '{{ blockchain }}' AS blockchain,
-    '{{ project }}' AS project,
-    '{{ version }}' AS version,
-    CAST(date_trunc('month', block_time) AS date) AS block_month,
-    CAST(date_trunc('day', block_time) AS date) AS block_date,
-    *
-FROM bundle_with_real_evt_index
+    block_time,
+    block_number,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    token_sold_lp_fees_paid_raw,
+    token_bought_lp_fees_paid_raw,
+    token_sold_protocol_fees_paid_raw,
+    token_bought_protocol_fees_paid_raw,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    evt_index,
+    trade_type
+FROM deduped
+WHERE _rn = 1
 
 
 {% endmacro %}
