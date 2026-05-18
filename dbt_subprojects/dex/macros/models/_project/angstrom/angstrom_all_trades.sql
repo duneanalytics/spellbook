@@ -63,7 +63,7 @@ WITH
             ON b.tx_hash = se.evt_tx_hash
             AND b.maker = se.pool_id
             AND b.pool_rn = se.pool_rn
-    )
+    ),
     all_trades AS (
         SELECT * FROM composable_orders
         UNION ALL
