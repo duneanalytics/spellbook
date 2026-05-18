@@ -71,7 +71,11 @@ SELECT
     CAST(date_trunc('month', block_time) AS date) AS block_month,
     CAST(date_trunc('day', block_time) AS date) AS block_date,
     *
-FROM composable_orders
+FROM composable_orders co
+WHERE NOT EXISTS (
+    SELECT 1 FROM bundle_with_real_evt_index bw
+    WHERE co.tx_hash = bw.tx_hash AND co.evt_index = bw.evt_index
+)
 
 UNION ALL
 
