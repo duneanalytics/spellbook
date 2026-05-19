@@ -100,10 +100,6 @@ select
   t.fee / 1e6 as fee,
   t.maker,
   t.taker,
-  -- Each CLOB match emits two OrderFilled events (maker leg + taker leg). The
-  -- row with taker IN (V1+V2 exchange contracts) is the canonical taker-side
-  -- accounting; sum amount/shares filtered to is_taker_side=true to match
-  -- Polymarket's published volume and avoid the 2x double-count.
   t.taker in (
     0x4bfb41d5b3570defd03c39a9a4d8de6bd8b8982e,
     0xc5d563a36ae78145c45a50134d48a1215220f80a,
