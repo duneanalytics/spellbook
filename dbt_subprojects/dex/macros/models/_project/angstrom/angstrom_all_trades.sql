@@ -26,6 +26,8 @@ WITH
     swap_events AS (
         SELECT
             evt_tx_hash,
+            evt_block_number,
+            evt_block_date,
             evt_index AS real_evt_index,
             id AS pool_id,
             row_number() over(partition by evt_tx_hash, id order by evt_index) AS pool_rn
@@ -37,6 +39,7 @@ WITH
     ),
     bundle_ranked AS (
         SELECT *,
+            CAST(date_trunc('day', block_time) AS date) AS block_date,
             row_number() over(partition by tx_hash, maker order by evt_index) AS pool_rn
         FROM bundle_orders
     ),
@@ -61,6 +64,8 @@ WITH
         FROM bundle_ranked b
         LEFT JOIN swap_events se
             ON b.tx_hash = se.evt_tx_hash
+            AND b.block_number = se.evt_block_number
+            AND b.block_date = se.evt_block_date
             AND b.maker = se.pool_id
             AND b.pool_rn = se.pool_rn
     ),
