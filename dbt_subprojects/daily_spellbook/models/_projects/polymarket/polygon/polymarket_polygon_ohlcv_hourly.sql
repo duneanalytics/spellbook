@@ -40,6 +40,8 @@ with base as (
       and is_taker_side
     {% if is_incremental() -%}
       and {{ incremental_predicate('block_time') }}
+    {%- else -%}
+      and block_time >= date_trunc('day', now() - interval '7' day)
     {%- endif %}
 ),
 
@@ -272,4 +274,6 @@ where not (
 )
 {% if is_incremental() -%}
   and {{ incremental_predicate('r.hour') }}
+{%- else -%}
+  and r.hour >= date_trunc('day', now() - interval '7' day)
 {%- endif %}
