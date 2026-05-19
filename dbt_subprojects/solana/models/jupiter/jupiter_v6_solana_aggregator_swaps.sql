@@ -52,6 +52,7 @@ with
             FROM {{ source('solana','instruction_calls') }}
             WHERE
                 executing_account = 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4'
+                AND executing_account_prefix = 'JU'
                 AND bytearray_substring(data,1+8,8) = 0x40c6cde8260871e2 --SwapEvent https://solscan.io/account/JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4#anchorProgramIDL
                 and tx_success = true
                 {% if is_incremental() -%}

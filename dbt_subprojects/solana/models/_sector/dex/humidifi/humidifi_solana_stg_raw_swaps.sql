@@ -36,6 +36,7 @@ WITH swaps AS (
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE 1=1
         AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
+        AND executing_account_prefix = '9H'
         AND tx_success = true
         AND cardinality(account_arguments) > 8
         {% if is_incremental() -%}
