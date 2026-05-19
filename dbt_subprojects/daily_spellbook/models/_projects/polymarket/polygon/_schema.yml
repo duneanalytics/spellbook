@@ -199,6 +199,8 @@ models:
         description: "Trader whose order is being filled"
       - name: taker
         description: "Trader who is filling the order (often a contract from Polymarket)"
+      - name: is_taker_side
+        description: "TRUE on the taker leg of a CLOB match (one of the two OrderFilled events the exchange emits per match). Filter `WHERE is_taker_side` to get one-sided volume that matches Polymarket's published methodology and avoids 2x double-counting. Predicate: `taker IN (V1 CTF 0x4bfb…82e, V1 NegRisk 0xc5d5…80a, V2 CTF 0xe111…996b, V2 NegRisk 0xe222…0f59)`."
       - name: unique_key
         description: "Unique key of the event or market"
       - name: token_outcome_name
