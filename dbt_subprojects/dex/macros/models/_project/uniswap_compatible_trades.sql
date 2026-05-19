@@ -245,8 +245,8 @@ WITH dexs AS
     , e.evt_block_time AS block_time
     , {% if taker_column_name -%} t.{{ taker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as taker
     , e.id as maker -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
-    , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN ABS(e.amount1) ELSE ABS(e.amount0) END AS token_bought_amount_raw
-    , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN ABS(e.amount0) ELSE ABS(e.amount1) END AS token_sold_amount_raw
+    , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN ABS(c.amount1) ELSE ABS(c.amount0) END AS token_bought_amount_raw
+    , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN ABS(c.amount0) ELSE ABS(c.amount1) END AS token_sold_amount_raw
     , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN c.currency1 ELSE c.currency0 END AS token_bought_address
     , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN c.currency0 ELSE c.currency1 END AS token_sold_address
     , e.contract_address AS project_contract_address
