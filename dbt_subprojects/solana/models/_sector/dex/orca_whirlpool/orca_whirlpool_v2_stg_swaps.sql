@@ -273,6 +273,7 @@ FROM (
         AND ((sp.call_is_inner = false AND memo.inner_instruction_index = 1)
             OR (sp.call_is_inner = true AND memo.inner_instruction_index = sp.call_inner_instruction_index + 1))
         AND memo.executing_account = 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'
+        AND memo.executing_account_prefix = 'Me'
         {% if is_incremental() -%}
         AND {{ incremental_predicate('memo.block_time') }}
         {% else -%}
