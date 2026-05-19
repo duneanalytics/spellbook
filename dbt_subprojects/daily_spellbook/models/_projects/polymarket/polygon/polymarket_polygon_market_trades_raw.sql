@@ -118,8 +118,6 @@ from {{ source('polymarket_polygon', 'CTFExchange_evt_OrderFilled') }} t
   inner join {{ ref('polymarket_polygon_base_ctf_tokens') }} ctf on coalesce(nullif(t.makerAssetId, 0), nullif(t.takerAssetID, 0)) = ctf.token0
 {% if is_incremental() %}
 where {{ incremental_predicate('t.evt_block_time') }}
-{% else %}
-where t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 
 
@@ -160,8 +158,6 @@ from {{ source('polymarket_polygon', 'NegRiskCtfExchange_evt_OrderFilled') }} t
   inner join {{ ref('polymarket_polygon_base_ctf_tokens') }} ctf on coalesce(nullif(t.makerAssetId, 0), nullif(t.takerAssetID, 0)) = ctf.token0
 {% if is_incremental() %}
 where {{ incremental_predicate('t.evt_block_time') }}
-{% else %}
-where t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 
 
@@ -207,6 +203,4 @@ from {{ source('polymarket_v2_polygon', 'CTFExchange_evt_OrderFilled') }} t
   inner join {{ ref('polymarket_polygon_base_ctf_tokens') }} ctf on t.tokenId = ctf.token0
 {% if is_incremental() %}
 where {{ incremental_predicate('t.evt_block_time') }}
-{% else %}
-where t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
