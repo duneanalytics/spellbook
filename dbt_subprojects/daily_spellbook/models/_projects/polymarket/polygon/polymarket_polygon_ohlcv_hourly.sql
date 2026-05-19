@@ -37,6 +37,7 @@ with base as (
     from {{ ref('polymarket_polygon_market_trades') }}
     where token_outcome is not null
       and price between 0 and 1  -- drop upstream bad-price trades (MINT/MERGE artefacts)
+      and is_taker_side          -- one-sided volume; each CLOB match emits two OrderFilled events and we want only the taker leg to match Polymarket's published volume methodology
     {% if is_incremental() -%}
       and {{ incremental_predicate('block_time') }}
     {%- endif %}
