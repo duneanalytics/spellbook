@@ -64,6 +64,7 @@ source_trades as (
     fee,
     maker,
     taker,
+    is_taker_side,
     contract_version,
     builder,
     metadata
@@ -106,6 +107,7 @@ source_trades as (
     fee,
     maker,
     taker,
+    is_taker_side,
     contract_version,
     builder,
     metadata
@@ -135,6 +137,7 @@ select
   t.fee,
   t.maker,
   t.taker,
+  t.is_taker_side,
   t.contract_version,
   t.builder,
   t.metadata,
