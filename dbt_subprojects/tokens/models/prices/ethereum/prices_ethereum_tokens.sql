@@ -1714,7 +1714,6 @@ FROM
     ('frxeth-frax-ether', 'ethereum', 'FRXETH',0x5e8422345238f34275888049021821e8e08caa1f,18),  
     --('cgpt-chaingpt', 'ethereum', 'CGPT',0x25931894a86d47441213199621f1f2994e1c39aa,18), 
     ('cswap-chainswap', 'ethereum', 'CSWAP',0xae41b275aaaf484b541a5881a2dded9515184cca,18),
-    ('bobo-bobo-coin', 'ethereum', 'BOBO',0xb90b2a35c65dbc466b04240097ca756ad2005295,18),
     ('bvm-bvm', 'ethereum', 'BVM',0x069d89974f4edabde69450f9cf5cf7d8cbd2568d,18),
     ('naka-nakachain', 'ethereum', 'NAKA',0xfae30394a76796dc3df37c2714f5fc12083dfdb0,18),
     ('pooh-pooh', 'ethereum', 'POOH',0xb69753c06bb5c366be51e73bfc0cc2e3dc07e371,18),
