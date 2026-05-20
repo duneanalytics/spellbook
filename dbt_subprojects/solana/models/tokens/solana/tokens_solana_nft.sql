@@ -5,11 +5,34 @@
   materialized = 'incremental',
   file_format = 'delta',
   incremental_strategy = 'merge',
-  unique_key = ['version','account_metadata','account_merkle_tree','leaf_id'],
-  incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.call_block_time')],
+  unique_key = ['unique_key', 'block_date'],
+  partition_by = ['block_date'],
   post_hook='{{ hide_spells() }}'
 )
 }}
+
+{#
+  Merge keys:
+    `unique_key` is a surrogate built from stable source-row identifiers
+    per row type (see CASE at the bottom).
+      - Token Metadata rows: namespaced by version + account_metadata
+        (call_tx_id/instruction indices intentionally excluded because
+        recent_update=1 can pick a different Create winning row when a
+        new Verify lands, but the row's identity follows account_metadata).
+      - cNFT rows: namespaced by version + (account_merkle_tree, call_tx_id,
+        call_outer_instruction_index, call_inner_instruction_index) — the
+        immutable mint-instruction identifier.
+    `block_date` is the Create-time/mint-time partition; stable per row
+    across runs. Including it in unique_key lets Delta merge prune target
+    files by partition.
+
+  Note: we intentionally do NOT set `incremental_predicates`. For the
+  cNFT half that would be safe (mints are append-only), but the Token
+  Metadata half can re-emit a row years after its block_date when a late
+  Verify event lands — a target-side block_date predicate would exclude
+  the existing row and the merge would insert a duplicate. Full-target
+  merge scan is the price of strict parity for late Verify events.
+#}
 
 
 with
@@ -229,9 +252,25 @@ with
         )
 
         , new_mints as (
-            SELECT * FROM mint_collection_v1
-            UNION ALL
-            SELECT * FROM mint_v1
+            SELECT * FROM (
+                SELECT * FROM mint_collection_v1
+                UNION ALL
+                SELECT * FROM mint_v1
+            ) src
+            {% if is_incremental() %}
+            -- Idempotency: skip mints already in {{ this }} so the per-tree
+            -- leaf_id row_number() doesn't double-assign positions that the
+            -- prior run already used. A mint's identity is the immutable
+            -- (account_merkle_tree, call_tx_id, instruction indices) tuple.
+            WHERE NOT EXISTS (
+                SELECT 1 FROM {{ this }} t
+                WHERE t.version = 'cNFT'
+                  AND t.account_merkle_tree = src.account_merkleTree
+                  AND t.call_tx_id = src.call_tx_id
+                  AND coalesce(t.call_outer_instruction_index, -1) = coalesce(src.call_outer_instruction_index, -1)
+                  AND coalesce(t.call_inner_instruction_index, -1) = coalesce(src.call_inner_instruction_index, -1)
+            )
+            {% endif %}
         )
 
         SELECT
@@ -273,6 +312,11 @@ SELECT
     , call_block_time
     , call_block_slot
     , call_tx_signer
+    -- additive columns (do not change existing ones above)
+    , cast(null as integer) as call_outer_instruction_index
+    , cast(null as integer) as call_inner_instruction_index
+    , cast(date_trunc('day', call_block_time) as date) as block_date
+    , {{ dbt_utils.generate_surrogate_key(['version', 'account_metadata']) }} as unique_key
 FROM token_metadata tk
 WHERE recent_update = 1
 
@@ -299,4 +343,9 @@ SELECT
     , call_block_time
     , call_block_slot
     , call_tx_signer
+    -- additive columns
+    , call_outer_instruction_index
+    , call_inner_instruction_index
+    , cast(date_trunc('day', call_block_time) as date) as block_date
+    , {{ dbt_utils.generate_surrogate_key(['version', 'account_merkleTree', 'call_tx_id', 'call_outer_instruction_index', 'call_inner_instruction_index']) }} as unique_key
 FROM cnfts
