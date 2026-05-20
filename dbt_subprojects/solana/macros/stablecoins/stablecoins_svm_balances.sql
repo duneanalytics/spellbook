@@ -7,8 +7,8 @@
 -- use uint256_max_double for safe double comparison
 {% set uint256_max_double = '1.0e77' %}
 
-{% set non_circulating_inventory_accounts_relation = ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_non_circulating_inventory_accounts') %}
-{% set non_circulating_inventory_owners_relation = ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_non_circulating_inventory_owners') %}
+{% set non_circulating_inventory_accounts_relation = ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_accounts') %}
+{% set non_circulating_inventory_owners_relation = ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_owners') %}
 
 with
 non_circulating_inventory_accounts as (
