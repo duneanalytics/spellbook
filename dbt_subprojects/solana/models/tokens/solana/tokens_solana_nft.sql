@@ -59,6 +59,19 @@ with
             select account_metadata
             from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_Verify') }}
             where {{ incremental_predicate('call_block_time') }}
+            -- Master-edition events also affect which NFTs surface, since
+            -- the metadata + master-edition INNER JOIN gates row inclusion.
+            -- A legacy Create whose master edition first lands today must
+            -- be re-considered today; without these unions the NFT would
+            -- be missed entirely.
+            union all
+            select account_metadata
+            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMasterEdition') }}
+            where {{ incremental_predicate('call_block_time') }}
+            union all
+            select account_metadata
+            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMasterEditionV3') }}
+            where {{ incremental_predicate('call_block_time') }}
         )
     ),
     -- prior max leaf_id per merkle tree so new cNFT mints continue numbering
