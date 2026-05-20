@@ -1,4 +1,5 @@
-{{ 
+-- ci stamp: 1
+{{
     config(
         schema = 'eigenlayer_ethereum',
         alias = 'slashing_withdrawal_completed_enriched',

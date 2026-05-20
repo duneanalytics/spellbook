@@ -24,6 +24,7 @@ SELECT
     ) as compute_limit
 FROM {{ source('solana', 'instruction_calls') }}
 WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
+AND executing_account_prefix = 'Co'
 AND bytearray_substring(data,1,1) = 0x02
 AND inner_instruction_index is null
 {% if is_incremental() %}
