@@ -163,6 +163,7 @@ token_amounts AS (
         AND ic.block_slot = b.block_slot
     WHERE 1=1
         AND ic.executing_account = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+        AND ic.executing_account_prefix = 'To'
         AND (
             (b.amount_type = 'mintTo' AND bytearray_substring(ic.data, 1, 1) = 0x07 AND ELEMENT_AT(ic.account_arguments, 1) = b.token_bought_mint_address)
             OR

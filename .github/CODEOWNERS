@@ -1,0 +1,6 @@
+# team-curated-data reviews dependency & CI files (Dependabot no longer supports reviewers in dependabot.yml; use CODEOWNERS).
+# https://github.blog/changelog/2025-08-08-dependabot-reviewers-configuration-option-is-replaced-by-code-owners/
+/.github/dependabot.yml @duneanalytics/team-curated-data
+/pyproject.toml @duneanalytics/team-curated-data
+/uv.lock @duneanalytics/team-curated-data
+/.github/workflows/ @duneanalytics/team-curated-data

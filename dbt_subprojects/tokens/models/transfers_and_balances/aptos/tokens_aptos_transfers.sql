@@ -9,10 +9,9 @@
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     merge_skip_unchanged = true,
-    post_hook = '{{ expose_spells(blockchains = \'["aptos"]\',
+    post_hook = '{{ private_data_explorer(blockchains = \'["aptos"]\',
                     spell_type = "sector",
-                    spell_name = "tokens_aptos",
-                    contributors = \'["tomfutago"]\') }}'
+                    spell_name = "tokens_aptos") }}'
   )
 }}
 
