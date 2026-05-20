@@ -104,9 +104,6 @@ WHERE block_date > current_date - interval '3' day
 {%- else -%}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}
-{% else %}
--- TEMP: limit historical build to last 7 days so CI doesn't time out; revert before merge
-WHERE block_date > current_date - interval '7' day
 {% endif %}
 {%- endif %}
 {% if not loop.last %}
