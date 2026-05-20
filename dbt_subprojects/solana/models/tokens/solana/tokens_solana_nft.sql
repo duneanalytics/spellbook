@@ -347,5 +347,6 @@ SELECT
     , call_outer_instruction_index
     , call_inner_instruction_index
     , cast(date_trunc('day', call_block_time) as date) as block_date
-    , {{ dbt_utils.generate_surrogate_key(['version', 'account_merkleTree', 'call_tx_id', 'call_outer_instruction_index', 'call_inner_instruction_index']) }} as unique_key
+    -- pass 'cNFT' literally (Trino can't forward-reference the same-SELECT alias `version`)
+    , {{ dbt_utils.generate_surrogate_key(["'cNFT'", 'account_merkleTree', 'call_tx_id', 'call_outer_instruction_index', 'call_inner_instruction_index']) }} as unique_key
 FROM cnfts
