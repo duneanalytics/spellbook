@@ -78,7 +78,7 @@ select
   a.token_mint_address,
   a.token_account,
   a.source_class,
-  cast(a.source_class = 'legacy_inventory' as boolean) as excluded,
+  cast(a.source_class in ('legacy_inventory', 'official_circle_premint') as boolean) as excluded,
   o.observed_owners
 from relevant_token_accounts as a
 left join observed_owners as o
