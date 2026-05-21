@@ -243,6 +243,7 @@ FROM (VALUES
     , ('mezo_swap', 'Mezo Swap', 'Direct', 'mezoswap')
     , ('kuru', 'Kuru', 'Direct', 'kuru')
     , ('pinot', 'Pinot', 'Direct', 'pinot')
+    , ('nad_fun', 'nad.fun', 'Direct', 'naddotfun')
     , ('potatoswap', 'PotatoSwap', 'Direct', 'potatoswap')
     , ('elfomofi', 'ElfomoFi', 'Direct', 'elfomo_fi')
     , ('kumbaya', 'Kumbaya', 'Direct', 'kumbaya')
