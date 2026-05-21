@@ -28,6 +28,7 @@
     ,'megaeth'
     ,'mezo'
     ,'monad'
+    ,'morph'
     ,'nova'
     ,'opbnb'
     ,'optimism'
