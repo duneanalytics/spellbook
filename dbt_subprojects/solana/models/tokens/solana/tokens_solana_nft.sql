@@ -34,44 +34,57 @@
   merge scan is the price of strict parity for late Verify events.
 #}
 
+{# Sources that can move an account_metadata into the "affected" set
+   for a given incremental window. Any new row in any of these for an
+   account_metadata means we must recompute that account_metadata. #}
+{% set affected_metadata_sources = [
+    'mpl_token_metadata_call_Create',
+    'mpl_token_metadata_call_CreateMetadataAccount',
+    'mpl_token_metadata_call_CreateMetadataAccountV2',
+    'mpl_token_metadata_call_CreateMetadataAccountV3',
+    'mpl_token_metadata_call_Verify',
+    'mpl_token_metadata_call_CreateMasterEdition',
+    'mpl_token_metadata_call_CreateMasterEditionV3'
+] %}
+
+{# CreateMetadataAccount versions: each has its own args column and JSON
+   path root but is otherwise identical in shape. #}
+{% set metadata_account_versions = [
+    {'src': 'mpl_token_metadata_call_CreateMetadataAccount',   'args_col': 'createMetadataAccountArgs',   'json_root': 'lax $.CreateMetadataAccountArgs.data.Data'},
+    {'src': 'mpl_token_metadata_call_CreateMetadataAccountV2', 'args_col': 'createMetadataAccountArgsV2', 'json_root': 'lax $.CreateMetadataAccountArgsV2.data.DataV2'},
+    {'src': 'mpl_token_metadata_call_CreateMetadataAccountV3', 'args_col': 'createMetadataAccountArgsV3', 'json_root': 'lax $.CreateMetadataAccountArgsV3.data.DataV2'}
+] %}
+
+{# Master-edition sources unioned in the INNER JOIN that gates NFT
+   inclusion. #}
+{% set master_edition_sources = [
+    'mpl_token_metadata_call_CreateMasterEdition',
+    'mpl_token_metadata_call_CreateMasterEditionV3'
+] %}
+
+{# Bubblegum cNFT mint sources. Same projection logic; only the source
+   table and the args column name differ. #}
+{% set bubblegum_mint_sources = [
+    {'src': 'bubblegum_call_mintToCollectionV1', 'args_col': 'metadataArgs'},
+    {'src': 'bubblegum_call_mintV1',             'args_col': 'message'}
+] %}
+
 
 with
 {% if is_incremental() %}
-    -- account_metadata keys touched in the incremental window: any new Create*/Verify
+    -- account_metadata keys touched in the incremental window: any new
+    -- row in any of the affected_metadata_sources above. Master-edition
+    -- sources are included because the metadata + master-edition INNER
+    -- JOIN gates NFT inclusion, so a late master-edition for legacy
+    -- metadata must also force a recompute.
     affected_metadata as (
         select distinct account_metadata from (
+            {% for src in affected_metadata_sources %}
             select account_metadata
-            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_Create') }}
+            from {{ source('mpl_token_metadata_solana', src) }}
             where {{ incremental_predicate('call_block_time') }}
-            union all
-            select account_metadata
-            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMetadataAccount') }}
-            where {{ incremental_predicate('call_block_time') }}
-            union all
-            select account_metadata
-            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMetadataAccountV2') }}
-            where {{ incremental_predicate('call_block_time') }}
-            union all
-            select account_metadata
-            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMetadataAccountV3') }}
-            where {{ incremental_predicate('call_block_time') }}
-            union all
-            select account_metadata
-            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_Verify') }}
-            where {{ incremental_predicate('call_block_time') }}
-            -- Master-edition events also affect which NFTs surface, since
-            -- the metadata + master-edition INNER JOIN gates row inclusion.
-            -- A legacy Create whose master edition first lands today must
-            -- be re-considered today; without these unions the NFT would
-            -- be missed entirely.
-            union all
-            select account_metadata
-            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMasterEdition') }}
-            where {{ incremental_predicate('call_block_time') }}
-            union all
-            select account_metadata
-            from {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMasterEditionV3') }}
-            where {{ incremental_predicate('call_block_time') }}
+            {% if not loop.last %}union all{% endif %}
+            {% endfor %}
         )
     ),
     -- prior max leaf_id per merkle tree so new cNFT mints continue numbering
@@ -107,6 +120,9 @@ with
             , joined_m.call_tx_signer
             , row_number() over (partition by joined_m.account_metadata order by COALESCE(v.call_block_time, joined_m.call_block_time) desc) as recent_update
         FROM (
+            -- Unified "Create" instruction (the newer combined flow):
+            -- one tx contains both the metadata create and the master
+            -- edition, so the inner-join below is not needed.
             SELECT
                 call_tx_id
                 , call_block_slot
@@ -123,7 +139,12 @@ with
             {% if is_incremental() %}
             WHERE account_metadata in (select account_metadata from affected_metadata)
             {% endif %}
+
             UNION ALL
+
+            -- Legacy CreateMetadataAccount{,V2,V3} flows: metadata is created
+            -- separately from the master edition, so we INNER JOIN them to
+            -- ensure only NFTs (master edition exists) surface.
             SELECT
                 m.call_tx_id
                 , m.call_block_slot
@@ -137,94 +158,60 @@ with
                 , m.call_tx_signer
                 , m.version
             FROM (
+                {% for v in metadata_account_versions %}
                 SELECT
                     call_tx_id
                     , call_outer_instruction_index
                     , call_inner_instruction_index
                     , call_block_slot
                     , call_block_time
-                    , json_query(createMetadataAccountArgs, 'lax $.CreateMetadataAccountArgs.data.Data') as args
+                    , json_query({{ v.args_col }}, '{{ v.json_root }}') as args
                     , account_metadata
                     , account_payer
                     , account_mint
                     , call_tx_signer
                     , 'Token Metadata' as version
-                FROM {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMetadataAccount') }}
+                FROM {{ source('mpl_token_metadata_solana', v.src) }}
                 {% if is_incremental() %}
                 WHERE account_metadata in (select account_metadata from affected_metadata)
                 {% endif %}
-                UNION ALL
-                SELECT
-                    call_tx_id
-                    , call_outer_instruction_index
-                    , call_inner_instruction_index
-                    , call_block_slot
-                    , call_block_time
-                    , json_query(createMetadataAccountArgsV2, 'lax $.CreateMetadataAccountArgsV2.data.DataV2') as args
-                    , account_metadata
-                    , account_payer
-                    , account_mint
-                    , call_tx_signer
-                    , 'Token Metadata' as version
-                FROM {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMetadataAccountV2') }}
-                {% if is_incremental() %}
-                WHERE account_metadata in (select account_metadata from affected_metadata)
-                {% endif %}
-                UNION ALL
-                SELECT
-                    call_tx_id
-                    , call_outer_instruction_index
-                    , call_inner_instruction_index
-                    , call_block_slot
-                    , call_block_time
-                    , json_query(createMetadataAccountArgsV3, 'lax $.CreateMetadataAccountArgsV3.data.DataV2') as args
-                    , account_metadata
-                    , account_payer
-                    , account_mint
-                    , call_tx_signer
-                    , 'Token Metadata' as version
-                FROM {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMetadataAccountV3') }}
-                {% if is_incremental() %}
-                WHERE account_metadata in (select account_metadata from affected_metadata)
-                {% endif %}
-
+                {% if not loop.last %}UNION ALL{% endif %}
+                {% endfor %}
             ) m
             --we don't want it if it doesn't have a master edition
             INNER JOIN (
+                {% for src in master_edition_sources %}
                 SELECT account_mintAuthority, account_edition, account_metadata
-                FROM {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMasterEdition') }}
+                FROM {{ source('mpl_token_metadata_solana', src) }}
                 {% if is_incremental() %}
                 WHERE account_metadata in (select account_metadata from affected_metadata)
                 {% endif %}
-                UNION ALL
-                SELECT account_mintAuthority, account_edition, account_metadata
-                FROM {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_CreateMasterEditionV3') }}
-                {% if is_incremental() %}
-                WHERE account_metadata in (select account_metadata from affected_metadata)
-                {% endif %}
-                ) master ON master.account_metadata = m.account_metadata
-            ) joined_m
-            LEFT JOIN {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_Verify') }} v
-                ON v.account_metadata = joined_m.account_metadata
-                and v.account_collectionMint != 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' --if it is this then collection was null in the update
-                {% if is_incremental() %}
-                and v.account_metadata in (select account_metadata from affected_metadata)
-                {% endif %}
+                {% if not loop.last %}UNION ALL{% endif %}
+                {% endfor %}
+            ) master ON master.account_metadata = m.account_metadata
+        ) joined_m
+        LEFT JOIN {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_Verify') }} v
+            ON v.account_metadata = joined_m.account_metadata
+            and v.account_collectionMint != 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' --if it is this then collection was null in the update
+            {% if is_incremental() %}
+            and v.account_metadata in (select account_metadata from affected_metadata)
+            {% endif %}
     )
 
     , cnfts as (
         with
-        mint_collection_v1 as (
+        bubblegum_mints as (
+            {% for b in bubblegum_mint_sources %}
             SELECT
                 account_merkleTree
-                , json_value(metadataArgs, 'strict $.MetadataArgs.name') as token_name
-                , json_value(metadataArgs, 'strict $.MetadataArgs.symbol') as token_symbol
-                , json_value(metadataArgs, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
-                , replace(replace(json_value(metadataArgs, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
-                , replace(replace(json_value(metadataArgs, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
-                , json_value(metadataArgs, 'strict $.MetadataArgs.uri') as token_uri
-                , cast(json_value(metadataArgs, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
-                , json_query(metadataArgs, 'strict $.MetadataArgs.creators') as creators_struct
+                , json_value({{ b.args_col }}, 'strict $.MetadataArgs.name') as token_name
+                , json_value({{ b.args_col }}, 'strict $.MetadataArgs.symbol') as token_symbol
+                , json_value({{ b.args_col }}, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
+                , replace(replace(json_value({{ b.args_col }}, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
+                , replace(replace(json_value({{ b.args_col }}, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
+                , json_value({{ b.args_col }}, 'strict $.MetadataArgs.uri') as token_uri
+                , cast(json_value({{ b.args_col }}, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
+                , json_query({{ b.args_col }}, 'strict $.MetadataArgs.creators') as creators_struct
                 , account_leafOwner
                 , call_block_slot
                 , call_block_time
@@ -232,44 +219,17 @@ with
                 , call_inner_instruction_index
                 , call_tx_id
                 , call_tx_signer
-            FROM {{ source('bubblegum_solana','bubblegum_call_mintToCollectionV1') }}
+            FROM {{ source('bubblegum_solana', b.src) }}
             WHERE 1=1
             {% if is_incremental() %}
                 AND {{ incremental_predicate('call_block_time') }}
             {% endif %}
-        )
-
-        , mint_v1 as (
-            SELECT
-                account_merkleTree
-                , json_value(message, 'strict $.MetadataArgs.name') as token_name
-                , json_value(message, 'strict $.MetadataArgs.symbol') as token_symbol
-                , json_value(message, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
-                , replace(replace(json_value(message, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
-                , replace(replace(json_value(message, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
-                , json_value(message, 'strict $.MetadataArgs.uri') as token_uri
-                , cast(json_value(message, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
-                , json_query(message, 'strict $.MetadataArgs.creators') as creators_struct
-                , account_leafOwner
-                , call_block_slot
-                , call_block_time
-                , call_outer_instruction_index
-                , call_inner_instruction_index
-                , call_tx_id
-                , call_tx_signer
-            FROM {{ source('bubblegum_solana','bubblegum_call_mintV1') }}
-            WHERE 1=1
-            {% if is_incremental() %}
-                AND {{ incremental_predicate('call_block_time') }}
-            {% endif %}
+            {% if not loop.last %}UNION ALL{% endif %}
+            {% endfor %}
         )
 
         , new_mints as (
-            SELECT * FROM (
-                SELECT * FROM mint_collection_v1
-                UNION ALL
-                SELECT * FROM mint_v1
-            ) src
+            SELECT * FROM bubblegum_mints src
             {% if is_incremental() %}
             -- Idempotency: skip mints already in {{ this }} so the per-tree
             -- leaf_id row_number() doesn't double-assign positions that the
