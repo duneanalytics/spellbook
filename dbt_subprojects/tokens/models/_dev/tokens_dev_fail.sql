@@ -4,5 +4,5 @@
     tags = ['prod_exclude']
 ) }}
 
---stamp 2
-select 2 as stamp
+select *
+from nonexistent_catalog.nonexistent_schema.nonexistent_table_for_failure_test
