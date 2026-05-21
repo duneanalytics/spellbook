@@ -25,6 +25,7 @@
     , 'megaeth'
     , 'mezo'
     , 'monad'
+    , 'morph'
     , 'opbnb'
     , 'optimism'
     , 'plasma'

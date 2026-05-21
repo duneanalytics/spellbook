@@ -8,6 +8,9 @@
     unique_key = ['block_month', 'hour', 'market_id', 'outcome'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.hour')],
     merge_skip_unchanged = true,
+    post_hook = '{{ private_data_explorer(blockchains = \'["polygon"]\',
+                    spell_type = "project",
+                    spell_name = "polymarket") }}'
   )
 }}
 
@@ -34,6 +37,7 @@ with base as (
     from {{ ref('polymarket_polygon_market_trades') }}
     where token_outcome is not null
       and price between 0 and 1  -- drop upstream bad-price trades (MINT/MERGE artefacts)
+      and is_taker_side
     {% if is_incremental() -%}
       and {{ incremental_predicate('block_time') }}
     {%- endif %}

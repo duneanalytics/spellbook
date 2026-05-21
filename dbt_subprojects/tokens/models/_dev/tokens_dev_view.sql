@@ -1,7 +1,8 @@
 {{ config(
     schema = 'dev',
-    materialized = 'view'
+    materialized = 'view',
+    tags = ['prod_exclude']
 ) }}
 
---stamp 1
-select 1 as stamp
+--stamp 2
+select 2 as stamp

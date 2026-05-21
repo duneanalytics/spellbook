@@ -25,7 +25,7 @@ SELECT
     t.evt_block_number,
     t.withdrawalRoot,
     from_hex(substr(u.strategy, 3)) AS strategy,
-    CAST(v.shares AS DECIMAL(38,0)) AS shares
+    CAST(v.shares AS INT256) AS shares
 FROM
     parsed_data AS t
     CROSS JOIN UNNEST (

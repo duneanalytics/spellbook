@@ -5,19 +5,32 @@
     )
 %}
 
+{% set default_cols = {
+    'taker': 'senderWallet',
+    'maker': 'signerWallet',
+    'token_sold_amount_raw': 'senderAmount',
+    'token_bought_amount_raw': 'signerAmount',
+    'token_sold_address': 'senderToken',
+    'token_bought_address': 'signerToken'
+} %}
+
 WITH dexs AS
 (
     {% for src in sources %}
+        {% set cols = default_cols.copy() %}
+        {% if src.get("cols") %}
+            {% set _ = cols.update(src["cols"]) %}
+        {% endif %}
         SELECT
             '{{ src["version"] }}' as version,
             evt_block_number AS block_number,
             evt_block_time AS block_time,
-            senderWallet AS taker,
-            signerWallet AS maker,
-            senderAmount AS token_sold_amount_raw,
-            signerAmount AS token_bought_amount_raw,
-            senderToken AS token_sold_address,
-            signerToken AS token_bought_address,
+            {{ cols["taker"] }} AS taker,
+            {{ cols["maker"] }} AS maker,
+            {{ cols["token_sold_amount_raw"] }} AS token_sold_amount_raw,
+            {{ cols["token_bought_amount_raw"] }} AS token_bought_amount_raw,
+            {{ cols["token_sold_address"] }} AS token_sold_address,
+            {{ cols["token_bought_address"] }} AS token_bought_address,
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
             evt_index

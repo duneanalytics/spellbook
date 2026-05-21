@@ -1,8 +1,9 @@
 {{ config(
     schema = 'dev',
     materialized = 'table',
-    file_format = 'delta'
+    file_format = 'delta',
+    tags = ['prod_exclude']
 ) }}
 
---stamp 1
-select 1 as stamp
+--stamp 2
+select 2 as stamp

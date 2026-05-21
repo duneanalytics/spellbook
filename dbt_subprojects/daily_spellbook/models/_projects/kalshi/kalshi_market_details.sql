@@ -5,6 +5,9 @@
 	file_format = 'delta',
 	incremental_strategy = 'merge',
 	unique_key = ['ticker'],
+	post_hook = '{{ private_data_explorer(blockchains = \'[]\',
+	                spell_type = "project",
+	                spell_name = "kalshi") }}'
 ) }}
 
 -- volume_fp >= 100 drops 85% of dust while keeping 99.7% of volume.
