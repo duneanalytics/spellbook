@@ -14,7 +14,20 @@ sources:
       - name: market_trades_raw
         description: "Individual trade executions from Kalshi API"
       - name: markets_raw
-        description: "Market-level snapshot with pricing, volume, and metadata from Kalshi API"
+        description: "Market-level snapshot with pricing, volume, and metadata from Kalshi API. NOTE: ingest cursor is min_created_ts, so per-row volume_fp/updated_time can freeze at creation for actively-traded markets. Use `market_updates_raw` for live volume."
+      - name: market_updates_raw
+        description: "Per-tick market state updates streamed from the Kalshi ticker WebSocket (one row per state change). Carries live volume_fp, open_interest_fp, bid/ask, and last price. Use this when fresh per-ticker volume is required; `markets_raw` can lag because its ingest cursor is min_created_ts and does not re-fetch existing markets."
+        columns:
+          - name: market_ticker
+            description: "Kalshi ticker. Joins to `markets_raw.ticker` and `market_trades_raw.ticker`."
+          - name: ts
+            description: "Unix epoch seconds at which Kalshi sent the update."
+          - name: ts_ms
+            description: "Unix epoch milliseconds at which Kalshi sent the update."
+          - name: received_hour
+            description: "Hour bucket (UTC, YYYY-MM-DDTHH) used as the table partition column."
+          - name: volume_fp
+            description: "Cumulative volume in contracts for the market, as of `ts`."
       - name: market_details_raw
         description: "Event-level metadata from Kalshi API"
       - name: series_raw
