@@ -14,7 +14,14 @@
     set config_sources = [
         {'version': 'light', 'source': 'Light_evt_Swap'},
         {'version': 'light_v0', 'source': 'Light_v0_evt_Swap'},
-        {'version': 'swap', 'source': 'swap_evt_Swap'},
+        {'version': 'swap', 'source': 'swap_evt_Swap', 'cols': {
+            'taker': 'takerWallet',
+            'maker': 'makerWallet',
+            'token_sold_amount_raw': 'takerParam',
+            'token_bought_amount_raw': 'makerParam',
+            'token_sold_address': 'takerToken',
+            'token_bought_address': 'makerToken'
+        }},
         {'version': 'swap_v3', 'source': 'Swap_v3_evt_Swap'},
         {'version': 'swap_erc20_v4', 'source': 'SwapERC20_v4_evt_SwapERC20'},
     ]

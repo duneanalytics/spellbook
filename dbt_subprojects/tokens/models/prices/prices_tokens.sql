@@ -42,6 +42,7 @@
     ,ref('prices_mezo_tokens')
     ,ref('prices_megaeth_tokens')
     ,ref('prices_monad_tokens')
+    ,ref('prices_morph_tokens')
     ,ref('prices_nova_tokens')
     ,ref('prices_opbnb_tokens')
     ,ref('prices_optimism_tokens')
