@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   commit_manifest:
-    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         project: [ 'tokens', 'daily_spellbook', 'dex', 'solana', 'hourly_spellbook']
@@ -33,6 +33,13 @@ jobs:
 
     - name: Sync Python dependencies
       run: uv sync --locked
+
+    - name: Configure dbt
+      env:
+        DBT_PROFILES_YML_BASE64: ${{ secrets.DBT_PROFILES_YML_BASE64 }}
+      run: |
+        mkdir $HOME/.dbt
+        echo $DBT_PROFILES_YML_BASE64 | base64 --decode > $HOME/.dbt/profiles.yml
 
     - name: Setup variables
       run: |
