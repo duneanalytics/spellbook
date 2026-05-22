@@ -13,6 +13,9 @@ concurrency:
 jobs:
   commit_manifest:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     strategy:
       matrix:
         project: [ 'tokens', 'daily_spellbook', 'dex', 'solana', 'hourly_spellbook']
