@@ -49,6 +49,12 @@ jobs:
         PROJECT_DIR=dbt_subprojects/${{ matrix.project }}
         echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: ${{ secrets.SPELLBOOK_CI_IAM_ROLE }}
+        aws-region: eu-west-1
+
     - name: dbt dependencies
       working-directory: ${{env.PROJECT_DIR}}
       run: "uv run dbt deps"
