@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   dbt-precommit-hooks:
-    runs-on: [ self-hosted, linux, spellbook ]
+    runs-on: ubuntu-latest
     timeout-minutes: 60
 
     steps:
@@ -32,6 +32,12 @@ jobs:
           enable-cache: true
       - name: Sync Python dependencies
         run: uv sync --locked
+      - name: Configure dbt
+        env:
+          DBT_PROFILES_YML_BASE64: ${{ secrets.DBT_PROFILES_YML_BASE64 }}
+        run: |
+          mkdir $HOME/.dbt
+          echo $DBT_PROFILES_YML_BASE64 | base64 --decode > $HOME/.dbt/profiles.yml
       - uses: jitterbit/get-changed-files@v1
         id: abc
         with:

@@ -3,5 +3,5 @@
     materialized = 'view'
 ) }}
 
---stamp 1
-select 1 as stamp
+--stamp 2
+select 2 as stamp
