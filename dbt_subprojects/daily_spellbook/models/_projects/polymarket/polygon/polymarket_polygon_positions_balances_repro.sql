@@ -224,32 +224,27 @@ with constants as (
   from changed_balances_base as b
 )
 
-, days as (
-  select
-    cast(d.timestamp as date) as day
-  from {{ source('utils', 'days') }} as d
-  cross join constants as c
-  where cast(d.timestamp as date) >= c.start_date
-    and cast(d.timestamp as date) < current_date
-    {% if is_incremental() %}
-    and {{ incremental_predicate('cast(d.timestamp as date)') }}
-    {% endif %}
-)
-
 , forward_fill as (
   select
-    d.day
+    expanded_day as day
     , b.address
     , b.token_id
     , b.balance_raw
     , b.day as last_updated
-  from days as d
-  left join changed_balances as b
-    on d.day >= b.day
-    and (
-      b.next_update_day is null
-      or cast(d.day as timestamp) < b.next_update_day
+  from changed_balances as b
+  cross join unnest(
+    sequence(
+      b.day
+      , coalesce(
+          date_add('day', -1, cast(b.next_update_day as date))
+          , current_date - interval '1' day
+        )
+      , interval '1' day
     )
+  ) as expanded(expanded_day)
+  {% if is_incremental() %}
+  where {{ incremental_predicate('expanded_day') }}
+  {% endif %}
 )
 
 select
