@@ -110,6 +110,7 @@ with constants as (
     , f.token_id
     , sum(f.delta_raw) as delta_raw
   from daily_flows as f
+  where f.day < current_date
   group by 1, 4, 5
 )
 
@@ -242,8 +243,12 @@ with constants as (
       , interval '1' day
     )
   ) as expanded(expanded_day)
+  where coalesce(
+      date_add('day', -1, cast(b.next_update_day as date))
+      , current_date - interval '1' day
+    ) >= b.day
   {% if is_incremental() %}
-  where {{ incremental_predicate('expanded_day') }}
+  and {{ incremental_predicate('expanded_day') }}
   {% endif %}
 )
 
