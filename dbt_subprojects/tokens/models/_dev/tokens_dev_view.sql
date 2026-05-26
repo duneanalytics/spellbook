@@ -1,6 +1,7 @@
 {{ config(
     schema = 'dev',
-    materialized = 'view'
+    materialized = 'view',
+    tags = ['prod_exclude']
 ) }}
 
 --stamp 2

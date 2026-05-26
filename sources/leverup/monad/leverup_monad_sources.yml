@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: leverup_monad
+    description: "Decoded contract tables for LeverUp on Monad"
+    tables:
+      - name: leverup_evt_openmarkettrade
+        description: "Open-trade fill event emitted by the LeverUp Diamond once a market or limit order resolves on-chain. The ot column carries the full open-trade struct as JSON (entryPrice, qty, pairBase, isLong, ...)."
+      - name: leverup_evt_closetradesuccessful
+        description: "User-initiated close (manual close) event. closeInfo is a JSON struct {closePrice, fundingFee, closeFee, pnl, holdingFee}; pair/qty/direction must be looked up from the matching openmarkettrade by tradeHash."
+      - name: leverup_evt_executeclosesuccessful
+        description: "Keeper-triggered close event (TP/SL/liquidation). Same closeInfo JSON as the manual close; executionType discriminates the trigger type."
