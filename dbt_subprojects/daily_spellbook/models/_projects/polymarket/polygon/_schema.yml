@@ -457,6 +457,47 @@ models:
       - name: last_updated
         description: "Timestamp of the last balance update"
 
+  - name: polymarket_polygon_positions_balances_repro
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket-only ERC1155 daily balance reconstruction used as the positions input source"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
+              - token_id
+    columns:
+      - name: blockchain
+        description: "The blockchain the position is on"
+      - name: day
+        description: "The date of the position snapshot"
+        data_tests:
+          - not_null
+      - name: address
+        description: "The address holding the position"
+        data_tests:
+          - not_null
+      - name: token_address
+        description: "Polymarket ERC1155 token contract address"
+        data_tests:
+          - not_null
+      - name: token_id
+        description: "Token ID of the position"
+        data_tests:
+          - not_null
+      - name: balance_raw
+        description: "Raw ERC1155 token balance"
+      - name: last_updated
+        description: "Most recent day with a transfer-derived balance change"
+
   - name: polymarket_polygon_positions
     meta:
       blockchain: polygon

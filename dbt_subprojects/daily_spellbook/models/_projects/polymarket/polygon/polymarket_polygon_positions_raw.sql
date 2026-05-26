@@ -11,19 +11,16 @@
   )
 }}
 
-with token_list as (
+with balances as (
     select
-        0x4D97DCd97eC945f40cF65F87097ACe5EA0476045 as token_address
-),
-
-balances as (
-    {{
-      balances_incremental_subset_daily(
-            blockchain = 'polygon',
-            token_list = 'token_list',
-            start_date = '2020-09-03'
-      )
-    }}
+        blockchain
+        , day
+        , address
+        , token_address
+        , token_id
+        , balance_raw
+        , last_updated
+    from {{ ref('polymarket_polygon_positions_balances_repro') }}
 )
 
 select
