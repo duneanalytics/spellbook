@@ -44,7 +44,7 @@ with constants as (
     , a.token_id
     , a.amount_raw
   from {{ source('erc1155_polygon', 'evt_TransferBatch') }} as t
-  cross join unnest(t.ids, t.values) as a(token_id, amount_raw)
+  cross join unnest(t.ids, t."values") as a(token_id, amount_raw)
   cross join constants as c
   where t.contract_address = c.token_address
     and cast(t.evt_block_time as date) >= c.start_date
