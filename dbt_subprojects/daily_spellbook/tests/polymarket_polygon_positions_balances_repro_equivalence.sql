@@ -12,7 +12,7 @@ with params as (
         , p.token_address
         , p.token_id
         , p.balance_raw
-    from polymarket_polygon.positions_raw as p
+    from dune.polymarket_polygon.positions_raw as p
     cross join params as w
     where p.day between w.window_start_day and w.window_end_day
 )
