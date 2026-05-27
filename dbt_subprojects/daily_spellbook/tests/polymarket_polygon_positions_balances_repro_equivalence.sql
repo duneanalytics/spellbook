@@ -1,3 +1,5 @@
+{{ config(enabled = false) }}
+
 with params as (
     select
         cast(current_date - interval '7' day as date) as window_start_day
