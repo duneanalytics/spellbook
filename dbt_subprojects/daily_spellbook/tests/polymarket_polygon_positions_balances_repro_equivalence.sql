@@ -1,32 +1,33 @@
-{% set rolling_window_days = 7 %}
-{% set window_start_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=rolling_window_days)).strftime('%Y-%m-%d') %}
-
-with token_list as (
+with params as (
     select
-        0x4d97dcd97ec945f40cf65f87097ace5ea0476045 as token_address
+        cast(current_date - interval '7' day as date) as window_start_day
+        , cast(current_date - interval '1' day as date) as window_end_day
 )
 
 , expected as (
-    {{
-      balances_incremental_subset_daily(
-            blockchain = 'polygon',
-            token_list = 'token_list',
-            start_date = window_start_date
-      )
-    }}
+    select
+        p.blockchain
+        , p.day
+        , p.address
+        , p.token_address
+        , p.token_id
+        , p.balance_raw
+    from polymarket_polygon.positions_raw as p
+    cross join params as w
+    where p.day between w.window_start_day and w.window_end_day
 )
 
 , actual as (
     select
-        a.blockchain
-        , a.day
-        , a.address
-        , a.token_address
-        , a.token_id
-        , a.balance_raw
-        , a.last_updated
-    from {{ ref('polymarket_polygon_positions_balances_repro') }} as a
-    where a.day >= cast('{{ window_start_date }}' as date)
+        p.blockchain
+        , p.day
+        , p.address
+        , p.token_address
+        , p.token_id
+        , p.balance_raw
+    from {{ ref('polymarket_polygon_positions_raw') }} as p
+    cross join params as w
+    where p.day between w.window_start_day and w.window_end_day
 )
 
 , expected_minus_actual as (
@@ -37,7 +38,6 @@ with token_list as (
         , token_address
         , token_id
         , balance_raw
-        , last_updated
     from expected
     except
     select
@@ -47,7 +47,6 @@ with token_list as (
         , token_address
         , token_id
         , balance_raw
-        , last_updated
     from actual
 )
 
@@ -59,7 +58,6 @@ with token_list as (
         , token_address
         , token_id
         , balance_raw
-        , last_updated
     from actual
     except
     select
@@ -69,7 +67,6 @@ with token_list as (
         , token_address
         , token_id
         , balance_raw
-        , last_updated
     from expected
 )
 
