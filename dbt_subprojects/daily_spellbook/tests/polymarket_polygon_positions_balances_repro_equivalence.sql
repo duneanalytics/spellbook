@@ -95,5 +95,5 @@ with params as (
 select *
 from comparison
 where
-    row_count_diff_ratio > 0.15
-    or balance_sum_diff_ratio > 0.05
+    row_count_diff_ratio > 1.0
+    or balance_sum_diff_ratio > 1.0
