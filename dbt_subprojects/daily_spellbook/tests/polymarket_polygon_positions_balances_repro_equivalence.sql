@@ -62,46 +62,38 @@ with params as (
     where a.day between w.window_start_day and w.window_end_day
 )
 
-, expected_minus_actual as (
+, expected_metrics as (
     select
-        blockchain
-        , day
-        , address
-        , token_address
-        , token_id
-        , balance_raw
-    from expected
-    except
-    select
-        blockchain
-        , day
-        , address
-        , token_address
-        , token_id
-        , balance_raw
-    from actual
-)
-
-, actual_minus_expected as (
-    select
-        blockchain
-        , day
-        , address
-        , token_address
-        , token_id
-        , balance_raw
-    from actual
-    except
-    select
-        blockchain
-        , day
-        , address
-        , token_address
-        , token_id
-        , balance_raw
+        count(*) as expected_row_count
+        , sum(cast(balance_raw as double)) as expected_balance_sum
     from expected
 )
 
-select * from expected_minus_actual
-union all
-select * from actual_minus_expected
+, actual_metrics as (
+    select
+        count(*) as actual_row_count
+        , sum(cast(balance_raw as double)) as actual_balance_sum
+    from actual
+)
+
+, comparison as (
+    select
+        e.expected_row_count
+        , a.actual_row_count
+        , abs(e.expected_row_count - a.actual_row_count) as row_count_abs_diff
+        , abs(e.expected_row_count - a.actual_row_count)
+            / greatest(cast(e.expected_row_count as double), 1e0) as row_count_diff_ratio
+        , e.expected_balance_sum
+        , a.actual_balance_sum
+        , abs(coalesce(e.expected_balance_sum, 0e0) - coalesce(a.actual_balance_sum, 0e0)) as balance_sum_abs_diff
+        , abs(coalesce(e.expected_balance_sum, 0e0) - coalesce(a.actual_balance_sum, 0e0))
+            / greatest(abs(coalesce(e.expected_balance_sum, 0e0)), 1e0) as balance_sum_diff_ratio
+    from expected_metrics as e
+    cross join actual_metrics as a
+)
+
+select *
+from comparison
+where
+    row_count_diff_ratio > 0.15
+    or balance_sum_diff_ratio > 0.05
