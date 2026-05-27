@@ -13,14 +13,17 @@
 
 with balances as (
     select
-        blockchain
-        , day
-        , address
-        , token_address
-        , token_id
-        , balance_raw
-        , last_updated
-    from {{ ref('polymarket_polygon_positions_balances_repro') }}
+        b.blockchain
+        , b.day
+        , b.address
+        , b.token_address
+        , b.token_id
+        , b.balance_raw
+        , b.last_updated
+    from {{ ref('polymarket_polygon_positions_balances_repro') }} as b
+    {% if is_incremental() %}
+    where {{ incremental_predicate('b.day') }}
+    {% endif %}
 )
 
 select
