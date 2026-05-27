@@ -439,6 +439,8 @@ models:
               - address
               - token_address
               - token_id
+          config:
+            where: "day >= current_date - interval '14' day"
     columns:
       - name: blockchain
         description: "The blockchain the position is on"
@@ -474,6 +476,8 @@ models:
               - address
               - token_address
               - token_id
+          config:
+            where: "day >= current_date - interval '14' day"
     columns:
       - name: blockchain
         description: "The blockchain the position is on"

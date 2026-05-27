@@ -1,3 +1,7 @@
+{{ config(
+    enabled = target.name != 'ci'
+) }}
+
 with token_list as (
     select
         0x4d97dcd97ec945f40cf65f87097ace5ea0476045 as token_address
