@@ -25,7 +25,7 @@ with params as (
         , p.token_address
         , p.token_id
         , p.balance_raw
-    from {{ ref('polymarket_polygon_positions_raw') }} as p
+    from dune.{{ env_var('DBT_CI_SCHEMA', 'polymarket_polygon') }}.positions_raw as p
     cross join params as w
     where p.day between w.window_start_day and w.window_end_day
 )
