@@ -28,6 +28,12 @@
 {%- set token_address = '0x4d97dcd97ec945f40cf65f87097ace5ea0476045' %}
 {%- set start_date = '2020-09-03' %}
 {%- set zero_address = '0x0000000000000000000000000000000000000000' %}
+{#- The start of the incremental merge window. Identical expression to the one
+    `incremental_predicate('day')` expands to, so we can clip sequence ranges
+    to the same bounds the predicate would otherwise filter out. -#}
+{%- set incremental_window_start -%}
+date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }})
+{%- endset %}
 
 with transfers as (
   select
@@ -84,14 +90,17 @@ daily_deltas as (
 ),
 
 {% if is_incremental() -%}
--- Seed: latest balance per (address, token_id) from before the incremental
--- window. Carried forward by the forward-fill below.
+-- Seed: latest *real change* balance per (address, token_id) from before the
+-- incremental window. Aggregate by `last_updated` rather than `day` because
+-- {{ this }} carries forward-filled rows where `day` is the fill day and
+-- `last_updated` is the underlying change day; using `max(day)` would rewrite
+-- `last_updated` for every inactive pair on every incremental run.
 prior_balances as (
   select
     address,
     token_id,
-    max(day) as day,
-    max_by(balance_raw, day) as balance_raw
+    max(last_updated) as day,
+    max_by(balance_raw, last_updated) as balance_raw
   from {{ this }}
   where not {{ incremental_predicate('day') }}
   group by 1, 2
@@ -147,9 +156,12 @@ balance_changes as (
 {%- endif %}
 ,
 
--- Forward-fill each balance row to the day before the next balance change
--- (or yesterday if no further change). The trailing day is excluded so we
--- emit nothing for `current_date` while data may still be arriving.
+-- Forward-fill each balance row to the day before the next balance change.
+-- For open positions the fill extends to yesterday. For closed positions the
+-- fill stops at the closure day itself, so we never expand a multi-year
+-- sequence just to have the final WHERE drop it. In incremental runs the
+-- fill_start is also clipped to the window start so cold pairs (anchor far
+-- in the past) don't expand the full history before predicate filtering.
 forward_fill as (
   select
     expanded_day as day,
@@ -159,21 +171,34 @@ forward_fill as (
     anchor_day as last_updated
   from (
     select
-      day as anchor_day,
+      anchor_day,
       address,
       token_id,
       balance_raw,
-      coalesce(
-        date_add('day', -1, cast(lead(day) over (partition by address, token_id order by day) as date)),
-        current_date - interval '1' day
-      ) as fill_end
-    from balance_changes
-  ) c
-  cross join unnest(sequence(anchor_day, fill_end, interval '1' day)) as t(expanded_day)
-  where fill_end >= anchor_day
-  {% if is_incremental() -%}
-    and {{ incremental_predicate('expanded_day') }}
-  {%- endif %}
+      fill_end,
+      {% if is_incremental() -%}
+      greatest(anchor_day, cast({{ incremental_window_start }} as date)) as fill_start
+      {%- else -%}
+      anchor_day as fill_start
+      {%- endif %}
+    from (
+      select
+        day as anchor_day,
+        address,
+        token_id,
+        balance_raw,
+        coalesce(
+          date_add('day', -1, cast(lead(day) over (partition by address, token_id order by day) as date)),
+          case
+            when balance_raw = uint256 '0' then day
+            else current_date - interval '1' day
+          end
+        ) as fill_end
+      from balance_changes
+    )
+  ) bounded
+  cross join unnest(sequence(fill_start, fill_end, interval '1' day)) as t(expanded_day)
+  where fill_end >= fill_start
 )
 
 select
