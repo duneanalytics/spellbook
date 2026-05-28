@@ -61,9 +61,10 @@ with transfers as (
 ),
 
 -- One signed delta row per (address, token_id, day). Mint (from = 0x0) and burn
--- (to = 0x0) sides drop out by not contributing on the 0x0 side. Net daily
--- delta of zero is filtered out so days with only no-op transfers do not
--- produce phantom `balance = 0` rows.
+-- (to = 0x0) sides drop out by not contributing on the 0x0 side. Days where
+-- every transfer carries value=0 are filtered out (no-op transfers would
+-- otherwise create phantom `balance=0` anchor rows). Intraday round-trips with
+-- non-zero amounts that net to zero are kept so the closure marker is emitted.
 daily_deltas as (
   select day, address, token_id, sum(delta) as delta_raw
   from (
@@ -79,7 +80,7 @@ daily_deltas as (
   ) flows
   where day < current_date  -- exclude today to avoid mid-day partials
   group by 1, 2, 3
-  having sum(delta) <> int256 '0'
+  having max(abs(delta)) > int256 '0'
 ),
 
 {% if is_incremental() -%}
