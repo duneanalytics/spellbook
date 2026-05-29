@@ -201,6 +201,20 @@ models:
         description: "Trader who is filling the order (often a contract from Polymarket)"
       - name: is_taker_side
         description: "TRUE on the taker leg of a CLOB match (one of the two OrderFilled events the exchange emits per match). Filter `WHERE is_taker_side` to get one-sided volume that matches Polymarket's published methodology and avoids 2x double-counting. Predicate: `taker IN (V1 CTF 0x4bfb…82e, V1 NegRisk 0xc5d5…80a, V2 CTF 0xe111…996b, V2 NegRisk 0xe222…0f59)`."
+      - name: maker_side
+        description: "Side of the maker's order w.r.t. asset_id: 'BUY' if the maker is acquiring outcome tokens (paying USDC on V1 / pUSD on V2), 'SELL' if releasing them. Always the inverse of taker_side. Derived from makerAssetId on V1 (0 = USDC, so maker is buying tokens) and from the explicit side enum on V2 (0 = BUY, 1 = SELL)."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['BUY', 'SELL']
+      - name: taker_side
+        description: "Side of the taker's leg w.r.t. asset_id: 'BUY' if the taker is acquiring outcome tokens, 'SELL' if releasing them. Always the inverse of maker_side. Lets consumers read the right side directly from whichever address (maker or taker) matches their wallet, without an inversion CASE."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['BUY', 'SELL']
       - name: unique_key
         description: "Unique key of the event or market"
       - name: token_outcome_name

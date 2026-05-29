@@ -106,6 +106,8 @@ select
     0xe111180000d2663c0091e4f400237545b87b996b,
     0xe2222d279d744050d28e00520010520000310f59
   ) as is_taker_side,
+  case when t.makerAssetId = 0 then 'BUY' else 'SELL' end as maker_side,
+  case when t.makerAssetId = 0 then 'SELL' else 'BUY' end as taker_side,
   t.makerAmountFilled as maker_amount_raw,
   t.takerAmountFilled as taker_amount_raw,
   t.contract_address,
@@ -146,6 +148,8 @@ select
     0xe111180000d2663c0091e4f400237545b87b996b,
     0xe2222d279d744050d28e00520010520000310f59
   ) as is_taker_side,
+  case when t.makerAssetId = 0 then 'BUY' else 'SELL' end as maker_side,
+  case when t.makerAssetId = 0 then 'SELL' else 'BUY' end as taker_side,
   t.makerAmountFilled as maker_amount_raw,
   t.takerAmountFilled as taker_amount_raw,
   t.contract_address,
@@ -191,6 +195,8 @@ select
     0xe111180000d2663c0091e4f400237545b87b996b,
     0xe2222d279d744050d28e00520010520000310f59
   ) as is_taker_side,
+  case when t.side = 0 then 'BUY' else 'SELL' end as maker_side,
+  case when t.side = 0 then 'SELL' else 'BUY' end as taker_side,
   t.makerAmountFilled as maker_amount_raw,
   t.takerAmountFilled as taker_amount_raw,
   t.contract_address,
