@@ -200,12 +200,12 @@ models:
         data_tests:
           - not_null
       - name: source_class
-        description: "Classification of the inventory token account source (official Circle premint or legacy inventory)"
+        description: "Classification of the inventory token account source (official Circle premint, legacy inventory, or derived from the non-circulating inventory owners list)"
         data_tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['official_circle_premint', 'legacy_inventory']
+                values: ['official_circle_premint', 'legacy_inventory', 'owner_derived']
       - name: excluded
         description: "Whether this token account is excluded from circulating balance computations"
         data_tests:

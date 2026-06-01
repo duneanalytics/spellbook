@@ -14,13 +14,17 @@
 
 -- non-circulating inventory token accounts for spl stablecoins on solana (core + extended)
 -- approach:
--- 1) curate known non-circulating token accounts inline via values() (not dbt seed-backed)
--- 2) derive observed owners from union of core+extended stablecoin transfer history
--- this keeps exclusions generic in runtime logic (no stale-age/threshold heuristics)
+-- 1) seed known non-circulating token accounts inline via values() (not dbt seed-backed)
+-- 2) expand the seed set with token accounts derived from the curated owners list
+--    (`stablecoins_solana_non_circulating_inventory_owners`) by walking core+extended
+--    transfer history. resolving owners → token accounts at build time keeps the
+--    runtime exclusion shape to a single token-account-keyed left join in the
+--    balances macro.
+-- 3) annotate each account with observed owners from transfer history (for traceability)
 -- source: https://github.com/solana-labs/token-list/blob/main/src/tokens/solana.tokenlist.json
 -- ref: https://www.circle.com/blog/gateway-new-pre-mint-address-for-usdc-on-solana
 
-with token_accounts as (
+with seeded_accounts as (
   select token_mint_address, token_account, source_class
   from (
     values
@@ -49,12 +53,60 @@ all_transfers as (
   from {{ ref('stablecoins_' ~ chain ~ '_extended_transfers') }}
 ),
 
+excluded_owners as (
+  select token_mint_address, owner_address
+  from {{ ref('stablecoins_' ~ chain ~ '_non_circulating_inventory_owners') }}
+  where excluded
+),
+
+-- token accounts derived from the curated owners list: any token account that has
+-- ever sent or received the stablecoin for an excluded owner is itself inventory.
+owner_derived_accounts as (
+  select distinct
+    o.token_mint_address,
+    t.from_token_account as token_account
+  from excluded_owners as o
+  inner join all_transfers as t
+    on t.token_mint_address = o.token_mint_address
+    and t.from_owner = o.owner_address
+  where t.from_token_account is not null
+    and t.block_date >= date '{{ owners_observation_start_date }}'
+
+  union
+
+  select distinct
+    o.token_mint_address,
+    t.to_token_account as token_account
+  from excluded_owners as o
+  inner join all_transfers as t
+    on t.token_mint_address = o.token_mint_address
+    and t.to_owner = o.owner_address
+  where t.to_token_account is not null
+    and t.block_date >= date '{{ owners_observation_start_date }}'
+),
+
+-- merge: seeded rows keep their richer source_class; owner-derived rows get
+-- 'owner_derived'. priority dedups (mint, account) so a seeded account that also
+-- shows up via owner-derivation stays classified as seeded.
+classified_accounts as (
+  select
+    token_mint_address,
+    token_account,
+    min_by(source_class, priority) as source_class
+  from (
+    select token_mint_address, token_account, source_class, 1 as priority from seeded_accounts
+    union all
+    select token_mint_address, token_account, 'owner_derived' as source_class, 2 as priority from owner_derived_accounts
+  )
+  group by 1, 2
+),
+
 owner_candidates as (
   select
     a.token_mint_address,
     a.token_account,
     t.from_owner as address
-  from token_accounts as a
+  from classified_accounts as a
   inner join all_transfers as t
     on t.token_mint_address = a.token_mint_address
     and a.token_account = t.from_token_account
@@ -66,7 +118,7 @@ owner_candidates as (
     a.token_mint_address,
     a.token_account,
     t.to_owner as address
-  from token_accounts as a
+  from classified_accounts as a
   inner join all_transfers as t
     on t.token_mint_address = a.token_mint_address
     and a.token_account = t.to_token_account
@@ -85,12 +137,12 @@ observed_owners as (
 
 select
   '{{ chain }}' as blockchain,
-  a.token_mint_address,
-  a.token_account,
-  a.source_class,
-  cast(a.source_class in ('legacy_inventory', 'official_circle_premint') as boolean) as excluded,
+  c.token_mint_address,
+  c.token_account,
+  c.source_class,
+  true as excluded,
   o.observed_owners
-from token_accounts as a
+from classified_accounts as c
 left join observed_owners as o
-  on o.token_mint_address = a.token_mint_address
-  and o.token_account = a.token_account
+  on o.token_mint_address = c.token_mint_address
+  and o.token_account = c.token_account

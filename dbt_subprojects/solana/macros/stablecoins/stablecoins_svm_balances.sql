@@ -8,7 +8,11 @@
 {% set uint256_max_double = '1.0e77' %}
 
 {% set non_circulating_inventory_accounts_relation = ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_accounts') %}
-{% set non_circulating_inventory_owners_relation = ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_owners') %}
+
+-- owner-level non-circulating exclusions are resolved to token accounts at build
+-- time inside `stablecoins_{blockchain}_non_circulating_inventory_accounts`, so a
+-- single token-account-keyed left join below covers both the seeded inventory and
+-- the owner-derived inventory.
 
 with
 non_circulating_inventory_accounts as (
@@ -17,15 +21,6 @@ non_circulating_inventory_accounts as (
     token_mint_address,
     token_account
   from {{ non_circulating_inventory_accounts_relation }}
-  where excluded
-),
-
-non_circulating_inventory_owners as (
-  select
-    blockchain,
-    token_mint_address,
-    owner_address
-  from {{ non_circulating_inventory_owners_relation }}
   where excluded
 ),
 
@@ -42,13 +37,8 @@ transfers_in as (
     on nci.blockchain = '{{ blockchain }}'
     and nci.token_mint_address = t.token_mint_address
     and nci.token_account = t.to_token_account
-  left join non_circulating_inventory_owners as nco
-    on nco.blockchain = '{{ blockchain }}'
-    and nco.token_mint_address = t.token_mint_address
-    and nco.owner_address = t.to_owner
   where t.to_owner is not null
     and nci.token_account is null
-    and nco.owner_address is null
     and t.block_date >= date '{{start_date}}'
   {% if is_incremental() %}
     and {{ incremental_predicate('t.block_date') }}
@@ -68,13 +58,8 @@ transfers_out as (
     on nci.blockchain = '{{ blockchain }}'
     and nci.token_mint_address = t.token_mint_address
     and nci.token_account = t.from_token_account
-  left join non_circulating_inventory_owners as nco
-    on nco.blockchain = '{{ blockchain }}'
-    and nco.token_mint_address = t.token_mint_address
-    and nco.owner_address = t.from_owner
   where t.from_owner is not null
     and nci.token_account is null
-    and nco.owner_address is null
     and t.block_date >= date '{{start_date}}'
   {% if is_incremental() %}
     and {{ incremental_predicate('t.block_date') }}
