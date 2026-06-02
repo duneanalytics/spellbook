@@ -18,17 +18,30 @@
 -- holds balances across multiple token accounts (e.g. Circle treasury wallets)
 -- ref: https://github.com/DefiLlama/peggedassets-server/blob/master/src/adapters/peggedAssets/usd-coin/config.ts
 
+with seeded_rows as (
+  select token_mint_address, owner_address, source_class
+  from (
+    values
+      -- usdc: circle treasury / mint wallets (also tracked by DefiLlama as non-circulating)
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '7VHUFJHWu2CuExkJcJrzhQPJ2oygupTWkL2A2For4BmE', 'circle_treasury'),
+      -- usdc: additional non-circulating owners tracked by DefiLlama
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '41zCUJsKk6cMB94DDtm99qWmyMZfp4GkAhhuz4xTwePu', 'defillama_excluded'),
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '42qwJUTbKf3D8ULfWadUSjnHf6pkJ4H1VjCcfSKHvDTN', 'defillama_excluded')
+  ) as t(token_mint_address, owner_address, source_class)
+),
+
+stablecoin_mints as (
+  select token_mint_address
+  from {{ ref('tokens_' ~ chain ~ '_spl_stablecoins') }}
+)
+
+-- defensive filter: seed entries must reference a known stablecoin mint
 select
   '{{ chain }}' as blockchain,
-  token_mint_address,
-  owner_address,
-  source_class,
+  s.token_mint_address,
+  s.owner_address,
+  s.source_class,
   true as excluded
-from (
-  values
-    -- usdc: circle treasury / mint wallets (also tracked by DefiLlama as non-circulating)
-    ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '7VHUFJHWu2CuExkJcJrzhQPJ2oygupTWkL2A2For4BmE', 'circle_treasury'),
-    -- usdc: additional non-circulating owners tracked by DefiLlama
-    ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '41zCUJsKk6cMB94DDtm99qWmyMZfp4GkAhhuz4xTwePu', 'defillama_excluded'),
-    ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '42qwJUTbKf3D8ULfWadUSjnHf6pkJ4H1VjCcfSKHvDTN', 'defillama_excluded')
-) as t(token_mint_address, owner_address, source_class)
+from seeded_rows as s
+inner join stablecoin_mints as m
+  on m.token_mint_address = s.token_mint_address
