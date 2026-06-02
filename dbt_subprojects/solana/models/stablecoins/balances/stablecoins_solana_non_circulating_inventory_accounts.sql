@@ -6,7 +6,6 @@
     alias = 'non_circulating_inventory_accounts',
     materialized = 'table',
     file_format = 'delta',
-    tags = ['static'],
     unique_key = ['token_mint_address', 'token_account']
   )
 }}
