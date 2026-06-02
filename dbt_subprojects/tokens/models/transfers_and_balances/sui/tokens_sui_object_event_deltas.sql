@@ -7,7 +7,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_date'],
-    incremental_strategy = 'merge',
+    incremental_strategy = 'delete+insert',
     unique_key = ['block_date', 'object_id', 'version'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
@@ -45,6 +45,13 @@ coin_window_ids as (
   from coin_object_history h
 ),
 
+coin_anchor_ids as (
+  select h.object_id
+  from coin_object_history h
+  group by 1
+  having min_by(h.object_status, h.version) != 'Created'
+),
+
 -- load deleted objects in the active window
 deleted_objects_raw as (
   select
@@ -69,7 +76,7 @@ deleted_objects_raw as (
 ),
 
 anchor_object_ids as (
-  select object_id from coin_window_ids
+  select object_id from coin_anchor_ids
   union
   select object_id from deleted_objects_raw
 ),
