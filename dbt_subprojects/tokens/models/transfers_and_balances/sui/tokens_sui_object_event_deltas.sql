@@ -9,7 +9,6 @@
     partition_by = ['block_date'],
     incremental_strategy = 'delete+insert',
     unique_key = ['block_date', 'object_id', 'version'],
-    merge_skip_unchanged = true,
   )
 }}
 
