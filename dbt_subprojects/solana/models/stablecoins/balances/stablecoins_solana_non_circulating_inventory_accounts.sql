@@ -4,8 +4,9 @@
   config(
     schema = 'stablecoins_' ~ chain,
     alias = 'non_circulating_inventory_accounts',
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
+    incremental_strategy = 'merge',
     unique_key = ['token_mint_address', 'token_account']
   )
 }}
@@ -14,13 +15,19 @@
 -- approach:
 -- 1) seed known non-circulating token accounts inline via values() (seeded_accounts)
 -- 2) seed known non-circulating owner wallets inline via values() (seeded_owners) and
---    resolve them to token accounts at build time via the indexer-maintained
---    `solana_utils_token_accounts` mapping. This covers owners (e.g. Circle treasury)
---    that hold balances across many token accounts, and catches accounts that received
---    the stablecoin via mint events (which SPL Transfer history misses).
+--    resolve them to their token accounts via the indexer state-history table. This
+--    covers owners (e.g. Circle treasury) that hold balances across many token
+--    accounts, and catches accounts that received the stablecoin via mint events
+--    (which SPL Transfer history misses).
 -- 3) merge: seeded token accounts win on classification when an account also surfaces
 --    via owner derivation, so the richer source_class is preserved
--- 4) annotate each account with its current owner from the state map (for traceability)
+--
+-- incremental: owner-derived accounts are appended as the indexer observes new token
+-- accounts for the seeded owners, watermarked on state_history.valid_from_block_time.
+-- exclusions are permanent (a closed/transferred account left in the list is harmless:
+-- the balances macro only ever LEFT JOINs against it). The seed lists are written on
+-- full-refresh only, so SEED OR SCOPE EDITS REQUIRE `dbt run --full-refresh`. A periodic
+-- full-refresh also reconciles edge cases (owner changes, closures).
 -- source: https://github.com/solana-labs/token-list/blob/main/src/tokens/solana.tokenlist.json
 -- ref: https://www.circle.com/blog/gateway-new-pre-mint-address-for-usdc-on-solana
 
@@ -34,7 +41,50 @@ in_scope_mints as (
   ) as t(token_mint_address)
 ),
 
--- (1) hand-curated non-circulating token accounts
+-- (2) hand-curated non-circulating owner wallets
+seeded_owner_rows as (
+  select token_mint_address, owner_address, source_class
+  from (
+    values
+      -- usdc: Circle Mint authority (manages pre-mint operations, issuer_operations in curated-stablecoins labels)
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '7VHUFJHWu2CuExkJcJrzhQPJ2oygupTWkL2A2For4BmE', 'circle_mint'),
+      -- usdc: Circle Treasury (issuer_treasury in curated-stablecoins labels)
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '41zCUJsKk6cMB94DDtm99qWmyMZfp4GkAhhuz4xTwePu', 'circle_treasury'),
+      -- usdc: Wormhole bridge to FOGO chain (locked liquidity, not circulating on Solana)
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '42qwJUTbKf3D8ULfWadUSjnHf6pkJ4H1VjCcfSKHvDTN', 'wormhole_bridge')
+  ) as t(token_mint_address, owner_address, source_class)
+),
+
+seeded_owners as (
+  select s.token_mint_address, s.owner_address, s.source_class
+  from seeded_owner_rows as s
+  inner join in_scope_mints as m
+    on m.token_mint_address = s.token_mint_address
+),
+
+-- resolve seeded owners to their token accounts via indexer state-history.
+-- read state_history directly (not the solana_utils view) so the owner filter
+-- bounds the scan and we get valid_from_block_time for the incremental watermark.
+owner_derived_accounts as (
+  select
+    sh.token_mint_address,
+    sh.address as token_account,
+    o.source_class,
+    sh.token_balance_owner as observed_owners,
+    sh.valid_from_block_time as indexed_at
+  from {{ source('token_accounts_solana', 'state_history') }} as sh
+  inner join seeded_owners as o
+    on o.token_mint_address = sh.token_mint_address
+    and o.owner_address = sh.token_balance_owner
+  where sh.is_active = true
+  {% if is_incremental() %}
+    and sh.valid_from_block_time >= (select coalesce(max(indexed_at), timestamp '1970-01-01 00:00:00 UTC') from {{ this }})
+  {% endif %}
+)
+
+{% if not is_incremental() %}
+,
+-- (1) hand-curated non-circulating token accounts — seeded on full-refresh only
 seeded_account_rows as (
   select token_mint_address, token_account, source_class
   from (
@@ -56,71 +106,39 @@ seeded_account_rows as (
   ) as t(token_mint_address, token_account, source_class)
 ),
 
--- (2) hand-curated non-circulating owner wallets
-seeded_owner_rows as (
-  select token_mint_address, owner_address, source_class
-  from (
-    values
-      -- usdc: Circle Mint authority (manages pre-mint operations, issuer_operations in curated-stablecoins labels)
-      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '7VHUFJHWu2CuExkJcJrzhQPJ2oygupTWkL2A2For4BmE', 'circle_mint'),
-      -- usdc: Circle Treasury (issuer_treasury in curated-stablecoins labels)
-      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '41zCUJsKk6cMB94DDtm99qWmyMZfp4GkAhhuz4xTwePu', 'circle_treasury'),
-      -- usdc: Wormhole bridge to FOGO chain (locked liquidity, not circulating on Solana)
-      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '42qwJUTbKf3D8ULfWadUSjnHf6pkJ4H1VjCcfSKHvDTN', 'wormhole_bridge')
-  ) as t(token_mint_address, owner_address, source_class)
-),
-
--- defensive filters: only emit rows for in-scope mints
 seeded_accounts as (
-  select s.token_mint_address, s.token_account, s.source_class
+  select
+    s.token_mint_address,
+    s.token_account,
+    s.source_class,
+    cast(null as varchar) as observed_owners,
+    cast(null as timestamp(3) with time zone) as indexed_at
   from seeded_account_rows as s
   inner join in_scope_mints as m
     on m.token_mint_address = s.token_mint_address
 ),
 
-seeded_owners as (
-  select s.token_mint_address, s.owner_address, s.source_class
-  from seeded_owner_rows as s
-  inner join in_scope_mints as m
-    on m.token_mint_address = s.token_mint_address
-),
-
--- (2 cont.) resolve owner wallets to their token accounts via indexer state
-owner_derived_accounts as (
-  select
-    o.token_mint_address,
-    ta.address as token_account,
-    o.source_class
-  from {{ ref('solana_utils_token_accounts') }} as ta
-  inner join seeded_owners as o
-    on o.token_mint_address = ta.token_mint_address
-    and o.owner_address = ta.token_balance_owner
-),
-
--- (3) merge with priority: seeded token accounts (priority 1) win over owner-derived
--- (priority 2) so the more specific source_class survives the dedupe
-classified_accounts as (
-  select
-    token_mint_address,
-    token_account,
-    min_by(source_class, priority) as source_class
-  from (
-    select token_mint_address, token_account, source_class, 1 as priority from seeded_accounts
-    union all
-    select token_mint_address, token_account, source_class, 2 as priority from owner_derived_accounts
-  )
-  group by 1, 2
+all_candidates as (
+  select token_mint_address, token_account, source_class, 1 as priority, observed_owners, indexed_at from seeded_accounts
+  union all
+  select token_mint_address, token_account, source_class, 2 as priority, observed_owners, indexed_at from owner_derived_accounts
 )
+{% else %}
+,
+all_candidates as (
+  select token_mint_address, token_account, source_class, 2 as priority, observed_owners, indexed_at from owner_derived_accounts
+)
+{% endif %}
 
--- (4) annotate with current owner from indexer state
+-- merge with priority: seeded token accounts (priority 1) win over owner-derived
+-- (priority 2) so the more specific source_class survives the dedupe
 select
   '{{ chain }}' as blockchain,
-  c.token_mint_address,
-  c.token_account,
-  c.source_class,
+  token_mint_address,
+  token_account,
+  min_by(source_class, priority) as source_class,
   true as excluded,
-  ta.token_balance_owner as observed_owners
-from classified_accounts as c
-left join {{ ref('solana_utils_token_accounts') }} as ta
-  on ta.address = c.token_account
-  and ta.token_mint_address = c.token_mint_address
+  max(observed_owners) as observed_owners,
+  max(indexed_at) as indexed_at
+from all_candidates
+group by 1, 2
