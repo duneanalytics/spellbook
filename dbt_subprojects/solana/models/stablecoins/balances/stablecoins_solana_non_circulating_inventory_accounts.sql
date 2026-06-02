@@ -141,4 +141,4 @@ select
   max(observed_owners) as observed_owners,
   max(indexed_at) as indexed_at
 from all_candidates
-group by 1, 2
+group by 1, 2, 3
