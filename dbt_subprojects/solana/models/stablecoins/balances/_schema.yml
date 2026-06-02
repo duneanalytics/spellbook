@@ -183,8 +183,10 @@ models:
     description: >
       Solana SPL stablecoin inventory token accounts used as a helper list for circulating balance
       exclusions across both core and extended lineages. Combines a seeded list of known inventory
-      accounts with token accounts resolved from `stablecoins_solana_non_circulating_inventory_owners`
-      via the indexer-maintained `solana_utils_token_accounts` mapping.
+      token accounts with token accounts resolved at build time from a seeded list of non-circulating
+      owner wallets via the indexer-maintained `solana_utils_token_accounts` mapping. Each row
+      carries the original source classification (seeded entries take precedence on dedupe so the
+      more specific classification survives).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -201,54 +203,18 @@ models:
         data_tests:
           - not_null
       - name: source_class
-        description: "Classification of the inventory token account source (official Circle premint, legacy inventory, or derived from the non-circulating inventory owners list)"
+        description: >
+          Classification of the inventory source. `official_circle_premint` and `legacy_inventory`
+          come from the seeded token-account list; `circle_treasury` and `defillama_excluded` come
+          from the seeded owners list (resolved to token accounts via `solana_utils_token_accounts`).
         data_tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['official_circle_premint', 'legacy_inventory', 'owner_derived']
+                values: ['official_circle_premint', 'legacy_inventory', 'circle_treasury', 'defillama_excluded']
       - name: excluded
         description: "Whether this token account is excluded from circulating balance computations"
         data_tests:
           - not_null
       - name: observed_owners
         description: "Current owner of this token account per `solana_utils_token_accounts` (null if the indexer has no active state for it)"
-
-  - name: stablecoins_solana_non_circulating_inventory_owners
-    meta:
-      blockchain: solana
-      sector: stablecoins
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances']
-    description: >
-      Solana SPL stablecoin owner wallets used as a helper list for circulating balance exclusions
-      across both core and extended lineages. Any token account whose owner appears here is treated
-      as non-circulating, covering cases where an owner holds non-circulating inventory across
-      multiple token accounts (e.g. Circle treasury).
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - token_mint_address
-              - owner_address
-    columns:
-      - *blockchain
-      - <<: *token_mint_address
-        data_tests:
-          - not_null
-      - name: owner_address
-        description: "Owner wallet address tracked in the non-circulating inventory helper list"
-        data_tests:
-          - not_null
-      - name: source_class
-        description: "Classification of the inventory owner source (Circle treasury or DefiLlama-tracked exclusion)"
-        data_tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values: ['circle_treasury', 'defillama_excluded']
-      - name: excluded
-        description: "Whether this owner is excluded from circulating balance computations"
-        data_tests:
-          - not_null

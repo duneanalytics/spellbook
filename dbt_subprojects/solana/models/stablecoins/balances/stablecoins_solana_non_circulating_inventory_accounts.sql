@@ -12,17 +12,31 @@
 
 -- non-circulating inventory token accounts for spl stablecoins on solana (core + extended)
 -- approach:
--- 1) seed known non-circulating token accounts inline via values() (not dbt seed-backed)
--- 2) expand the seed set with every active token account currently owned by an
---    address in `stablecoins_solana_non_circulating_inventory_owners`, resolved via
---    the indexer-maintained `solana_utils_token_accounts` mapping. This avoids
---    walking transfer history and also catches accounts that received the
---    stablecoin via mint events (not just SPL Transfer instructions).
--- 3) annotate each account with its current owner (for traceability)
+-- 1) seed known non-circulating token accounts inline via values() (seeded_accounts)
+-- 2) seed known non-circulating owner wallets inline via values() (seeded_owners) and
+--    resolve them to token accounts at build time via the indexer-maintained
+--    `solana_utils_token_accounts` mapping. This covers owners (e.g. Circle treasury)
+--    that hold balances across many token accounts, and catches accounts that received
+--    the stablecoin via mint events (which SPL Transfer history misses).
+-- 3) merge: seeded token accounts win on classification when an account also surfaces
+--    via owner derivation, so the richer source_class is preserved
+-- 4) annotate each account with its current owner from the state map (for traceability)
 -- source: https://github.com/solana-labs/token-list/blob/main/src/tokens/solana.tokenlist.json
 -- ref: https://www.circle.com/blog/gateway-new-pre-mint-address-for-usdc-on-solana
+-- ref: https://github.com/DefiLlama/peggedassets-server/blob/master/src/adapters/peggedAssets/usd-coin/config.ts
 
-with seeded_rows as (
+with
+-- mints in scope for this exclusion list (currently USDC only — extend here
+-- when other stablecoins need owner/account-level exclusions)
+in_scope_mints as (
+  select token_mint_address
+  from (values
+    ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')  -- usdc
+  ) as t(token_mint_address)
+),
+
+-- (1) hand-curated non-circulating token accounts
+seeded_account_rows as (
   select token_mint_address, token_account, source_class
   from (
     values
@@ -43,47 +57,48 @@ with seeded_rows as (
   ) as t(token_mint_address, token_account, source_class)
 ),
 
--- mints in scope for this exclusion list (currently USDC only — extend here
--- when other stablecoins need owner/account-level exclusions)
-in_scope_mints as (
-  select token_mint_address
-  from (values
-    ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')  -- usdc
-  ) as t(token_mint_address)
+-- (2) hand-curated non-circulating owner wallets
+seeded_owner_rows as (
+  select token_mint_address, owner_address, source_class
+  from (
+    values
+      -- usdc: circle treasury / mint wallets (also tracked by DefiLlama as non-circulating)
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '7VHUFJHWu2CuExkJcJrzhQPJ2oygupTWkL2A2For4BmE', 'circle_treasury'),
+      -- usdc: additional non-circulating owners tracked by DefiLlama
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '41zCUJsKk6cMB94DDtm99qWmyMZfp4GkAhhuz4xTwePu', 'defillama_excluded'),
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '42qwJUTbKf3D8ULfWadUSjnHf6pkJ4H1VjCcfSKHvDTN', 'defillama_excluded')
+  ) as t(token_mint_address, owner_address, source_class)
 ),
 
--- defensive filter: seed entries must reference an in-scope mint
+-- defensive filters: only emit rows for in-scope mints
 seeded_accounts as (
   select s.token_mint_address, s.token_account, s.source_class
-  from seeded_rows as s
+  from seeded_account_rows as s
   inner join in_scope_mints as m
     on m.token_mint_address = s.token_mint_address
 ),
 
-excluded_owners as (
-  select o.token_mint_address, o.owner_address
-  from {{ ref('stablecoins_' ~ chain ~ '_non_circulating_inventory_owners') }} as o
+seeded_owners as (
+  select s.token_mint_address, s.owner_address, s.source_class
+  from seeded_owner_rows as s
   inner join in_scope_mints as m
-    on m.token_mint_address = o.token_mint_address
-  where o.excluded
+    on m.token_mint_address = s.token_mint_address
 ),
 
--- token accounts derived from the curated owners list via the indexer state map.
--- bounded to in-scope mints — solana_utils_token_accounts would otherwise pull in
--- every spl account these owners hold (~241k+ rows for Circle wallets alone).
+-- (2 cont.) resolve owner wallets to their token accounts via indexer state
 owner_derived_accounts as (
   select
-    ta.token_mint_address,
-    ta.address as token_account
+    o.token_mint_address,
+    ta.address as token_account,
+    o.source_class
   from {{ ref('solana_utils_token_accounts') }} as ta
-  inner join excluded_owners as o
+  inner join seeded_owners as o
     on o.token_mint_address = ta.token_mint_address
     and o.owner_address = ta.token_balance_owner
 ),
 
--- merge: seeded rows keep their richer source_class; owner-derived rows get
--- 'owner_derived'. priority dedups (mint, account) so a seeded account that also
--- shows up via owner-derivation stays classified as seeded.
+-- (3) merge with priority: seeded token accounts (priority 1) win over owner-derived
+-- (priority 2) so the more specific source_class survives the dedupe
 classified_accounts as (
   select
     token_mint_address,
@@ -92,11 +107,12 @@ classified_accounts as (
   from (
     select token_mint_address, token_account, source_class, 1 as priority from seeded_accounts
     union all
-    select token_mint_address, token_account, 'owner_derived' as source_class, 2 as priority from owner_derived_accounts
+    select token_mint_address, token_account, source_class, 2 as priority from owner_derived_accounts
   )
   group by 1, 2
 )
 
+-- (4) annotate with current owner from indexer state
 select
   '{{ chain }}' as blockchain,
   c.token_mint_address,
