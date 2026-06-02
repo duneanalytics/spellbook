@@ -14,6 +14,7 @@ WITH opensea_tx_ids AS (
     SELECT DISTINCT(tx_id) AS tx_id
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE CONTAINS(log_messages, 'Program log: Memo (len 8): "865d8597"')
+        AND executing_account_prefix = 'Me'
         AND executing_account = 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'
         AND block_time > TRY_CAST('2025-05-26 00:00' AS TIMESTAMP)
         {% if is_incremental() %}

@@ -38,7 +38,11 @@ from (values
     ('2VhjJ9WxaGC3EZFwJG9BDUs9KxKCAjQY4vgd1qxgYWVg', 'EUR'),  -- EUROe
     ('CASHx9KJUStyftLFWGvEVf59SGeG9sh5FfcnZMVPCASH', 'USD'),  -- CASH
     ('AUSD1jCcCyPLybk1YnvPWsHQSrZ46dxwoMniN4N2UEB9', 'USD'),  -- AUSD
-    ('AUDDttiEpCydTm7joUMbYddm72jAWXZnCpPZtDoxqBSw', 'AUD')   -- AUDD
+    ('AUDDttiEpCydTm7joUMbYddm72jAWXZnCpPZtDoxqBSw', 'AUD'),  -- AUDD
+    ('72puLt71H93Z9CzHuBRTwFpL4TG3WZUhnoCC7p8gxigu', 'USD'),  -- USDGO
+    ('3AdhVEX6k85yNivHVXDEiY3WyP2WgFQTUZCahGaeC2qm', 'USD'),  -- MOVEUSD
+    ('8yXrtJ54jZtE84xEBzTESKuegjcAkAuDrdAhRd8i8n3T', 'USD'),  -- USDtb
+    ('HVWf8JmLoHs99Lw8Psf3fyqAtA4crWxCPkrmSdNjhNH3', 'USD')   -- USDPT
 
     /* yield-bearing / rebasing tokens
     ('AvZZF1YaZDziPY2RCK4oJrRVrbN3mTD9NL24hPeaZeUj', 'USD'),  -- syrupUSD

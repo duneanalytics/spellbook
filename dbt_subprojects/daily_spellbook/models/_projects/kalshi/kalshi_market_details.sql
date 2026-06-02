@@ -5,13 +5,37 @@
 	file_format = 'delta',
 	incremental_strategy = 'merge',
 	unique_key = ['ticker'],
+	post_hook = '{{ private_data_explorer(blockchains = \'[]\',
+	                spell_type = "project",
+	                spell_name = "kalshi") }}'
 ) }}
 
 -- volume_fp >= 100 drops 85% of dust while keeping 99.7% of volume.
 -- Merge target is NOT pruned by incremental_predicates: an event-only update on a historical
 -- ticker would miss the pruned dest row and INSERT a duplicate, breaking unique(ticker).
+--
+-- markets_raw.volume_fp can stay frozen because the markets-sync ingest only
+-- re-fetches when min_created_ts moves. The ticker WebSocket stream
+-- (kalshi.market_updates_raw, added 2026-05-08 via market-feed PR #110) carries
+-- live volume_fp per market. We merge the latest live volume in so the >= 100
+-- filter operates on the current value, and project the live value downstream.
+-- Without this merge, the 2026-05-08 ingest split silently dropped 50-91% of
+-- recent Kalshi trades from kalshi.market_trades via the INNER JOIN.
 
-with markets as (
+with latest_market_updates as (
+	select
+		market_ticker
+		, max_by(volume_fp, coalesce(ts_ms, ts * 1000)) as volume_fp
+	from
+		{{ source('kalshi', 'market_updates_raw') }}
+	{% if is_incremental() -%}
+		where {{ incremental_predicate('from_unixtime(ts)') }}
+	{% endif -%}
+	group by
+		market_ticker
+)
+
+, markets as (
 	select
 		m.ticker
 		, m.event_ticker
@@ -44,7 +68,9 @@ with markets as (
 		, m.previous_yes_bid_dollars
 		, m.previous_yes_ask_dollars
 		, m.previous_price_dollars
-		, m.volume_fp
+		-- Project live volume when present; fall back to markets_raw for tickers
+		-- with no ticker-stream updates in this incremental window.
+		, coalesce(u.volume_fp, m.volume_fp) as volume_fp
 		, m.volume_24h_fp
 		, m.open_interest_fp
 		, m.strike_type
@@ -57,11 +83,16 @@ with markets as (
 		, m.mve_collection_ticker
 	from
 		{{ source('kalshi', 'markets_raw') }} as m
+	left join latest_market_updates as u
+		on u.market_ticker = m.ticker
 	where
-		m.volume_fp >= 100
+		coalesce(u.volume_fp, m.volume_fp) >= 100
 	{% if is_incremental() -%}
 		and (
 			{{ incremental_predicate('m.updated_time') }}
+			-- Tickers whose live volume moved in this incremental window
+			-- (latest_market_updates is already scoped via incremental_predicate).
+			or u.market_ticker is not null
 			or m.event_ticker in (
 				select
 					ed.event_ticker

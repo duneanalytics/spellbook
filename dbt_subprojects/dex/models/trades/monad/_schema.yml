@@ -122,6 +122,25 @@ models:
             filter:
               version: 3
 
+  - name: nad_fun_v3_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: nad_fun
+      contributors: kkqzhou
+    config:
+      tags: ["monad", "dex", "trades", "nad_fun", "v3"]
+    description: "nad.fun monad v3 base trades — Uniswap V3-style pools graduated from the nad.fun bonding curve"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('nad_fun_monad_base_trades_seed')
+
   - name: trader_joe_v2_2_monad_base_trades
     meta:
       blockchain: monad

@@ -117,6 +117,10 @@ sources:
     tables:
       - name: evt_deposit
       - name: evt_withdraw
+  - name: erc4626_morph
+    tables:
+      - name: evt_deposit
+      - name: evt_withdraw
   - name: erc4626_nova
     tables:
       - name: evt_deposit
