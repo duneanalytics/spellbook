@@ -182,8 +182,9 @@ models:
       tags: ['stablecoin', 'balances']
     description: >
       Solana SPL stablecoin inventory token accounts used as a helper list for circulating balance
-      exclusions across both core and extended lineages, with source classification and observed
-      owners derived from stablecoin transfers.
+      exclusions across both core and extended lineages. Combines a seeded list of known inventory
+      accounts with token accounts resolved from `stablecoins_solana_non_circulating_inventory_owners`
+      via the indexer-maintained `solana_utils_token_accounts` mapping.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -211,7 +212,7 @@ models:
         data_tests:
           - not_null
       - name: observed_owners
-        description: "Observed owner addresses for the inventory token account (historical)"
+        description: "Current owner of this token account per `solana_utils_token_accounts` (null if the indexer has no active state for it)"
 
   - name: stablecoins_solana_non_circulating_inventory_owners
     meta:
