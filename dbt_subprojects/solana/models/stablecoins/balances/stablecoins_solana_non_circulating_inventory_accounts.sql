@@ -23,7 +23,6 @@
 -- 4) annotate each account with its current owner from the state map (for traceability)
 -- source: https://github.com/solana-labs/token-list/blob/main/src/tokens/solana.tokenlist.json
 -- ref: https://www.circle.com/blog/gateway-new-pre-mint-address-for-usdc-on-solana
--- ref: https://github.com/DefiLlama/peggedassets-server/blob/master/src/adapters/peggedAssets/usd-coin/config.ts
 
 with
 -- mints in scope for this exclusion list (currently USDC only — extend here
@@ -62,11 +61,12 @@ seeded_owner_rows as (
   select token_mint_address, owner_address, source_class
   from (
     values
-      -- usdc: circle treasury / mint wallets (also tracked by DefiLlama as non-circulating)
-      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '7VHUFJHWu2CuExkJcJrzhQPJ2oygupTWkL2A2For4BmE', 'circle_treasury'),
-      -- usdc: additional non-circulating owners tracked by DefiLlama
-      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '41zCUJsKk6cMB94DDtm99qWmyMZfp4GkAhhuz4xTwePu', 'defillama_excluded'),
-      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '42qwJUTbKf3D8ULfWadUSjnHf6pkJ4H1VjCcfSKHvDTN', 'defillama_excluded')
+      -- usdc: Circle Mint authority (manages pre-mint operations, issuer_operations in curated-stablecoins labels)
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '7VHUFJHWu2CuExkJcJrzhQPJ2oygupTWkL2A2For4BmE', 'circle_mint'),
+      -- usdc: Circle Treasury (issuer_treasury in curated-stablecoins labels)
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '41zCUJsKk6cMB94DDtm99qWmyMZfp4GkAhhuz4xTwePu', 'circle_treasury'),
+      -- usdc: Wormhole bridge to FOGO chain (locked liquidity, not circulating on Solana)
+      ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', '42qwJUTbKf3D8ULfWadUSjnHf6pkJ4H1VjCcfSKHvDTN', 'wormhole_bridge')
   ) as t(token_mint_address, owner_address, source_class)
 ),
 

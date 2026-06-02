@@ -205,13 +205,14 @@ models:
       - name: source_class
         description: >
           Classification of the inventory source. `official_circle_premint` and `legacy_inventory`
-          come from the seeded token-account list; `circle_treasury` and `defillama_excluded` come
-          from the seeded owners list (resolved to token accounts via `solana_utils_token_accounts`).
+          come from the seeded token-account list; `circle_mint`, `circle_treasury`, and
+          `wormhole_bridge` come from the seeded owners list (resolved to token accounts via
+          `solana_utils_token_accounts`).
         data_tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['official_circle_premint', 'legacy_inventory', 'circle_treasury', 'defillama_excluded']
+                values: ['official_circle_premint', 'legacy_inventory', 'circle_mint', 'circle_treasury', 'wormhole_bridge']
       - name: excluded
         description: "Whether this token account is excluded from circulating balance computations"
         data_tests:
