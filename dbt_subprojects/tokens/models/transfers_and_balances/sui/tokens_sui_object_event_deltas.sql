@@ -9,7 +9,6 @@
     partition_by = ['block_date'],
     incremental_strategy = 'delete+insert',
     unique_key = ['block_date', 'object_id', 'version'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     merge_skip_unchanged = true,
   )
 }}
