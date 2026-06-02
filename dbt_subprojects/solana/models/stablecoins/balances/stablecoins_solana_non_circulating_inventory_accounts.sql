@@ -43,29 +43,33 @@ with seeded_rows as (
   ) as t(token_mint_address, token_account, source_class)
 ),
 
-stablecoin_mints as (
+-- mints in scope for this exclusion list (currently USDC only — extend here
+-- when other stablecoins need owner/account-level exclusions)
+in_scope_mints as (
   select token_mint_address
-  from {{ ref('tokens_' ~ chain ~ '_spl_stablecoins') }}
+  from (values
+    ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')  -- usdc
+  ) as t(token_mint_address)
 ),
 
--- defensive filter: seed entries must reference a known stablecoin mint
+-- defensive filter: seed entries must reference an in-scope mint
 seeded_accounts as (
   select s.token_mint_address, s.token_account, s.source_class
   from seeded_rows as s
-  inner join stablecoin_mints as m
+  inner join in_scope_mints as m
     on m.token_mint_address = s.token_mint_address
 ),
 
 excluded_owners as (
   select o.token_mint_address, o.owner_address
   from {{ ref('stablecoins_' ~ chain ~ '_non_circulating_inventory_owners') }} as o
-  inner join stablecoin_mints as m
+  inner join in_scope_mints as m
     on m.token_mint_address = o.token_mint_address
   where o.excluded
 ),
 
 -- token accounts derived from the curated owners list via the indexer state map.
--- bounded to stablecoin mints — solana_utils_token_accounts would otherwise pull in
+-- bounded to in-scope mints — solana_utils_token_accounts would otherwise pull in
 -- every spl account these owners hold (~241k+ rows for Circle wallets alone).
 owner_derived_accounts as (
   select

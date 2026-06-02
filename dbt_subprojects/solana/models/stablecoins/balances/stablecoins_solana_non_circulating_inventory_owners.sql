@@ -30,12 +30,16 @@ with seeded_rows as (
   ) as t(token_mint_address, owner_address, source_class)
 ),
 
-stablecoin_mints as (
+-- mints in scope for this exclusion list (currently USDC only — extend here
+-- when other stablecoins need owner-level exclusions)
+in_scope_mints as (
   select token_mint_address
-  from {{ ref('tokens_' ~ chain ~ '_spl_stablecoins') }}
+  from (values
+    ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')  -- usdc
+  ) as t(token_mint_address)
 )
 
--- defensive filter: seed entries must reference a known stablecoin mint
+-- defensive filter: seed entries must reference an in-scope mint
 select
   '{{ chain }}' as blockchain,
   s.token_mint_address,
@@ -43,5 +47,5 @@ select
   s.source_class,
   true as excluded
 from seeded_rows as s
-inner join stablecoin_mints as m
+inner join in_scope_mints as m
   on m.token_mint_address = s.token_mint_address
