@@ -153,7 +153,7 @@ select
   amount_usd,
   transfer_type,
   _updated_at
-from {{ ref('tokens_aptos_transfers') }}
+from {{ source('tokens_aptos', 'transfers') }}
 
 union all
 

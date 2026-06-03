@@ -17,6 +17,10 @@ sources:
       - name: erc20_stablecoins_core
       - name: erc20_stablecoins_extended
 
+  - name: tokens_aptos
+    tables:
+      - name: transfers
+
   - name: tokens_arbitrum
     tables:
       - name: transfers
