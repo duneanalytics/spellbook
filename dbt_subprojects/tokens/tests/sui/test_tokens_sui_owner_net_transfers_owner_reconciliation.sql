@@ -26,6 +26,7 @@ tx_coin_scope_raw as (
     o.coin_type
   from {{ ref('tokens_sui_owner_net_transfers') }} o
   where {{ incremental_predicate('o.block_date') }}
+    and o.block_date < current_date
 ),
 
 window_object_scope as (
@@ -38,6 +39,7 @@ window_object_scope as (
     on f.tx_digest = s.tx_digest
     and f.coin_type = s.coin_type
   where {{ incremental_predicate('f.block_date') }}
+    and f.block_date < current_date
     and f.object_id is not null
 ),
 
