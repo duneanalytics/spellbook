@@ -11,12 +11,13 @@
     merge_skip_unchanged = true,
     post_hook = '{{ private_data_explorer(blockchains = \'["stellar"]\',
                     spell_type = "sector",
-                    spell_name = "tokens_stellar") }}'
+                    spell_name = "tokens_stellar") }}',
+    tags = ['prod_exclude']
 
   )
 }}
 
-{% set stellar_transfer_start_date = '2015-09-30' %}
+{% set stellar_transfer_start_date = '2026-04-01' %}
 {% set xlm_decimals = 7 %}
 {% set xlm_contract_id = 'CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA' %}
 {% set xlm_native_price_address_varchar = '0x0000000000000000000000000000000000000000' %}
