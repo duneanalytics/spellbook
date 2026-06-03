@@ -3,13 +3,13 @@ version: 2
 models:
   - name: nft_transfers
     meta:
-      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora, scroll, mantle, blast, sei,
+      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, celo, zksync, zora, scroll, mantle, blast, sei,
       sector: nft
       contributors: hildobby, rantum, petertherock
       short_description: "All NFT token transfers (ERC721 and ERC1155) across supported chains, including sender, receiver, and token ID."
       docs_slug: /curated/nft-trades/evm/nft-transfers
     config:
-      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
+      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
     description: >
         NFT transfers
     data_tests:
@@ -253,30 +253,6 @@ models:
   - name: nft_gnosis_transfers
     meta:
       blockchain: gnosis
-      sector: nft
-      contributors: hildobby
-    config:
-      tags: [ 'nft', 'transfers' ]
-    description: >
-      NFT transfers
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - block_month
-              - tx_hash
-              - evt_index
-              - token_id
-              - amount
-    columns:
-      # only listing columns that have tests here for simplicity
-      - *token_standard
-      - *transfer_type
-      - *unique_transfer_id
-
-  - name: nft_goerli_transfers
-    meta:
-      blockchain: goerli
       sector: nft
       contributors: hildobby
     config:
