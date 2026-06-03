@@ -11,7 +11,8 @@
     merge_skip_unchanged = true,
     post_hook = '{{ private_data_explorer(blockchains = \'["aptos"]\',
                     spell_type = "sector",
-                    spell_name = "tokens_aptos") }}'
+                    spell_name = "tokens_aptos") }}',
+    tags = ['prod_exclude']
   )
 }}
 
