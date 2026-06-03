@@ -2,6 +2,7 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_payment_channel_claims',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_month'],
@@ -12,7 +13,7 @@
   )
 }}
 
-{% set xrpl_transfer_start_date = '2013-01-01' %}
+{% set xrpl_transfer_start_date = '2026-04-01' %}
 
 with payment_channel_transactions as (
   select

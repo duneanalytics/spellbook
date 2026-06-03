@@ -2,6 +2,7 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'amm_balance_deltas',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_month'],
@@ -12,7 +13,7 @@
   )
 }}
 
-{% set xrpl_transfer_start_date = '2013-01-01' %}
+{% set xrpl_transfer_start_date = '2026-04-01' %}
 
 with amm_transactions as (
   select

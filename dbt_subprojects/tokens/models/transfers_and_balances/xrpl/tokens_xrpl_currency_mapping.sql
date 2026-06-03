@@ -2,7 +2,7 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'currency_mapping',
-    tags = ['static'],
+    tags = ['prod_exclude', 'static'],
     materialized = 'table',
     file_format = 'delta',
   )
