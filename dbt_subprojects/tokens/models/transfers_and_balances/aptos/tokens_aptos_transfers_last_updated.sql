@@ -6,7 +6,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'block_month'],
-    merge_skip_unchanged = true
+    merge_skip_unchanged = true,
+    tags = ['prod_exclude']
   )
 }}
 
