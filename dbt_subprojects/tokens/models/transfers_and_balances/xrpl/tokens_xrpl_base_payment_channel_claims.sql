@@ -13,7 +13,7 @@
   )
 }}
 
-{% set xrpl_transfer_start_date = '2026-04-01' %}
+{% set xrpl_transfer_start_date = '2013-01-01' %}
 
 with payment_channel_transactions as (
   select
