@@ -2,6 +2,7 @@
   config(
     schema = 'tokens_sui',
     alias = 'owner_net_transfers',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_date'],

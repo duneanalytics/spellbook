@@ -2,6 +2,7 @@
   config(
     schema = 'tokens_sui',
     alias = 'coin_object_anchor_state',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_month'],
