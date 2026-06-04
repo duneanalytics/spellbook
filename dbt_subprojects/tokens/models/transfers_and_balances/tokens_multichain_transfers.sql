@@ -237,4 +237,4 @@ select
   amount_usd,
   transfer_type,
   _updated_at
-from {{ ref('tokens_xrpl_transfers') }}
+from {{ source('tokens_xrpl', 'transfers') }}
