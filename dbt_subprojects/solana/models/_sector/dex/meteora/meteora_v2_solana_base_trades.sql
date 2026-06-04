@@ -56,6 +56,47 @@ swaps_call_data as (
 ),
 
 evt_table as (
+  with evt_raw as (
+    {# v0.5.0 - v0.11.x: emits the original `swap` event #}
+    select
+      evt_tx_id,
+      evt_block_time,
+      evt_tx_index,
+      evt_outer_instruction_index,
+      evt_inner_instruction_index,
+      amountIn,
+      amountOut,
+      swapForY
+    from {{ source('dlmm_solana','lb_clmm_evt_swap') }}
+    where 1=1
+      and evt_inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
+      {% if is_incremental() %}
+        and {{ incremental_predicate('evt_block_time') }}
+      {% else %}
+        and evt_block_time >= timestamp '{{ project_start_date }}'
+      {% endif %}
+
+    union all
+
+    {# v0.12.0+: `swap2` instruction emits the new `swap2evt` event (snake_case fields) #}
+    select
+      evt_tx_id,
+      evt_block_time,
+      evt_tx_index,
+      evt_outer_instruction_index,
+      evt_inner_instruction_index,
+      amount_in as amountIn,
+      amount_out as amountOut,
+      swap_for_y as swapForY
+    from {{ source('dlmm_solana','lb_clmm_evt_swap2evt') }}
+    where 1=1
+      and evt_inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
+      {% if is_incremental() %}
+        and {{ incremental_predicate('evt_block_time') }}
+      {% else %}
+        and evt_block_time >= timestamp '{{ project_start_date }}'
+      {% endif %}
+  )
   select
     evt_tx_id as tx_id,
     evt_block_time as block_time,
@@ -66,14 +107,7 @@ evt_table as (
     amountIn,
     amountOut,
     swapForY
-  from {{ source('dlmm_solana','lb_clmm_evt_swap') }}
-  where 1=1
-    and evt_inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
-    {% if is_incremental() %}
-      and {{ incremental_predicate('evt_block_time') }}
-    {% else %}
-      and evt_block_time >= timestamp '{{ project_start_date }}'
-    {% endif %}
+  from evt_raw
 ),
 
 met_v2_trades as (

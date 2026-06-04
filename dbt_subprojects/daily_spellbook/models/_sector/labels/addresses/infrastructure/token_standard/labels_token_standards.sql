@@ -13,7 +13,6 @@ ref('labels_token_standards_arbitrum')
  ,ref('labels_token_standards_ethereum')
  ,ref('labels_token_standards_fantom')
  ,ref('labels_token_standards_gnosis')
- ,ref('labels_token_standards_goerli')
  ,ref('labels_token_standards_optimism')
  ,ref('labels_token_standards_polygon')
 ] %}

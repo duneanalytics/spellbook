@@ -7,7 +7,6 @@
 	'arbitrum',
 	'polygon',
 	'fantom',
-	'goerli',
 	'base',
 	'zksync',
 	'zora',

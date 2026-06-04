@@ -147,27 +147,6 @@ models:
       - *model_name
       - *label_type
 
-  - name: labels_token_standards_goerli
-    meta:
-      blockchain: goerli
-      sector: labels
-      project: token_standards
-      contributors: hildobby
-    config:
-      tags: ['labels', 'goerli', 'token_standards', 'erc20', 'erc721', 'erc1155']
-    description: "Smart contract token standards on Goerli"
-    columns:
-      - *blockchain 
-      - *address
-      - *name
-      - *category
-      - *contributor
-      - *source
-      - *created_at
-      - *updated_at
-      - *model_name
-      - *label_type
-
   - name: labels_token_standards_optimism
     meta:
       blockchain: optimism
@@ -212,12 +191,12 @@ models:
 
   - name: labels_token_standards
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, goerli, optimism, polygon
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon
       sector: labels
       project: token_standards
       contributors: hildobby
     config:
-      tags: ['labels', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'token_standards', 'erc20', 'erc721', 'erc1155', 'bep20', 'bep721', 'bep1155']
+      tags: ['labels', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon', 'token_standards', 'erc20', 'erc721', 'erc1155', 'bep20', 'bep721', 'bep1155']
     description: "Smart contract token standards across blockchains"
     columns:
       - *blockchain 
