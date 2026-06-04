@@ -14,7 +14,7 @@
   )
 }}
 
-{% set sui_transfer_start_date = '2026-04-01' %}
+{% set sui_transfer_start_date = '2026-01-01' %}
 
 with
 

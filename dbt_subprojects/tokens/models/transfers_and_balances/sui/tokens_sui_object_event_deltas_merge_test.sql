@@ -14,4 +14,4 @@
   )
 }}
 
-{{ tokens_sui_object_event_deltas_optimized_select('2026-04-01') }}
+{{ tokens_sui_object_event_deltas_optimized_select('2026-01-01') }}
