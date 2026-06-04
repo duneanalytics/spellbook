@@ -1,21 +1,4 @@
--- depends_on: {{ ref('tokens_sui_coin_object_anchor_state') }}
-
-{{
-  config(
-    schema = 'tokens_sui',
-    alias = 'object_event_deltas',
-    materialized = 'incremental',
-    file_format = 'delta',
-    partition_by = ['block_date'],
-    incremental_strategy = 'merge',
-    unique_key = ['block_date', 'object_id', 'version'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    merge_skip_unchanged = true,
-  )
-}}
-
-{% set sui_transfer_start_date = '2026-04-01' %}
-
+{% macro tokens_sui_object_event_deltas_optimized_select(sui_transfer_start_date) %}
 with
 
 -- load created and mutated coin object history for the active window
@@ -45,6 +28,13 @@ coin_window_ids as (
   from coin_object_history h
 ),
 
+coin_anchor_ids as (
+  select h.object_id
+  from coin_object_history h
+  group by 1
+  having min_by(h.object_status, h.version) != 'Created'
+),
+
 -- load deleted objects in the active window
 deleted_objects_raw as (
   select
@@ -69,7 +59,7 @@ deleted_objects_raw as (
 ),
 
 anchor_object_ids as (
-  select object_id from coin_window_ids
+  select object_id from coin_anchor_ids
   union
   select object_id from deleted_objects_raw
 ),
@@ -259,3 +249,4 @@ select
 from object_state_deltas c
 where c.object_status != 'ANCHOR'
   and (c.coin_type is not null or c.prev_balance is not null)
+{% endmacro %}
