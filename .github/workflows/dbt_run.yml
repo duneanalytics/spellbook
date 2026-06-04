@@ -48,14 +48,8 @@ jobs:
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v6
-        with:
-          role-to-assume: ${{ secrets.SPELLBOOK_CI_IAM_ROLE }}
-          aws-region: eu-west-1
-
       - name: Get latest manifest
-        run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
+        run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json --no-sign-request"
 
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
