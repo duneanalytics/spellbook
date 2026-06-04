@@ -31,8 +31,10 @@ WITH dexs AS (
         CAST(NULL AS VARBINARY)                                                AS maker,
         bytearray_to_uint256(bytearray_substring(l.data, 97, 32))              AS token_bought_amount_raw,
         bytearray_to_uint256(bytearray_substring(l.data, 33, 32))              AS token_sold_amount_raw,
-        p.coins[CAST(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) AS int) + 1] AS token_bought_address,
-        p.coins[CAST(bytearray_to_uint256(bytearray_substring(l.data, 1,  32)) AS int) + 1] AS token_sold_address,
+        CASE WHEN CAST(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) AS int) + 1 <= CARDINALITY(p.coins)
+             THEN p.coins[CAST(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) AS int) + 1] END AS token_bought_address,
+        CASE WHEN CAST(bytearray_to_uint256(bytearray_substring(l.data, 1,  32)) AS int) + 1 <= CARDINALITY(p.coins)
+             THEN p.coins[CAST(bytearray_to_uint256(bytearray_substring(l.data, 1,  32)) AS int) + 1] END AS token_sold_address,
         l.contract_address                                                     AS project_contract_address,
         l.tx_hash,
         l.index                                                                AS evt_index
