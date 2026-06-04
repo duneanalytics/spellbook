@@ -49,7 +49,7 @@ jobs:
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
       - name: Get latest manifest
-        run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json --no-sign-request"
+        run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json --no-sign-request --region=eu-west-1"
 
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
