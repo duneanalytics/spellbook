@@ -10,7 +10,10 @@ on:
 
 jobs:
   dbt-test:
-    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     timeout-minutes: 90
 
     steps:
@@ -30,6 +33,13 @@ jobs:
       - name: Sync Python dependencies
         run: uv sync --locked
 
+      - name: Configure dbt
+        env:
+          DBT_PROFILES_YML_BASE64: ${{ secrets.DBT_PROFILES_YML_BASE64 }}
+        run: |
+          mkdir $HOME/.dbt
+          echo $DBT_PROFILES_YML_BASE64 | base64 --decode > $HOME/.dbt/profiles.yml
+
       - name: Setup variables
         run: |
           echo "DBT_CI_SCHEMA=dune_spellbook_ci__tmp_pr${{ github.event.number }}_${{ github.run_id }}_${{ github.run_attempt }}" >> $GITHUB_ENV
@@ -38,9 +48,14 @@ jobs:
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.SPELLBOOK_CI_IAM_ROLE }}
+          aws-region: eu-west-1
+
       - name: Get latest manifest
         run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
-        continue-on-error: true # Temprorary until all projects have manifest
 
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}

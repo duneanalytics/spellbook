@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: bulba_morph
+    description: "Decoded events and function calls for Bulba on morph"
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+        description: "Bulba V3 pool swap events"
+      - name: UniswapV3Factory_evt_PoolCreated
+        description: "Bulba V3 factory pool creation events"

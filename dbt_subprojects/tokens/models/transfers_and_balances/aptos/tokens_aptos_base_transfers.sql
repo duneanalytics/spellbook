@@ -8,7 +8,8 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    merge_skip_unchanged = true
+    merge_skip_unchanged = true,
+    tags = ['prod_exclude']
   )
 }}
 

@@ -199,6 +199,22 @@ models:
         description: "Trader whose order is being filled"
       - name: taker
         description: "Trader who is filling the order (often a contract from Polymarket)"
+      - name: is_taker_side
+        description: "TRUE on the taker leg of a CLOB match (one of the two OrderFilled events the exchange emits per match). Filter `WHERE is_taker_side` to get one-sided volume that matches Polymarket's published methodology and avoids 2x double-counting. Predicate: `taker IN (V1 CTF 0x4bfb…82e, V1 NegRisk 0xc5d5…80a, V2 CTF 0xe111…996b, V2 NegRisk 0xe222…0f59)`."
+      - name: maker_side
+        description: "Side of the maker's order w.r.t. asset_id: 'BUY' if the maker is acquiring outcome tokens (paying USDC on V1 / pUSD on V2), 'SELL' if releasing them. Always the inverse of taker_side. Derived from makerAssetId on V1 (0 = USDC, so maker is buying tokens) and from the explicit side enum on V2 (0 = BUY, 1 = SELL)."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['BUY', 'SELL']
+      - name: taker_side
+        description: "Side of the taker's leg w.r.t. asset_id: 'BUY' if the taker is acquiring outcome tokens, 'SELL' if releasing them. Always the inverse of maker_side. Lets consumers read the right side directly from whichever address (maker or taker) matches their wallet, without an inversion CASE."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['BUY', 'SELL']
       - name: unique_key
         description: "Unique key of the event or market"
       - name: token_outcome_name
@@ -437,6 +453,8 @@ models:
               - address
               - token_address
               - token_id
+          config:
+            where: "day >= current_date - interval '14' day"
     columns:
       - name: blockchain
         description: "The blockchain the position is on"
@@ -454,6 +472,49 @@ models:
         description: "Balance of the position (balance_raw / 1e6)"
       - name: last_updated
         description: "Timestamp of the last balance update"
+
+  - name: polymarket_polygon_positions_balances_repro
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket-only ERC1155 daily balance reconstruction used as the positions input source"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
+              - token_id
+          config:
+            where: "day >= current_date - interval '14' day"
+    columns:
+      - name: blockchain
+        description: "The blockchain the position is on"
+      - name: day
+        description: "The date of the position snapshot"
+        data_tests:
+          - not_null
+      - name: address
+        description: "The address holding the position"
+        data_tests:
+          - not_null
+      - name: token_address
+        description: "Polymarket ERC1155 token contract address"
+        data_tests:
+          - not_null
+      - name: token_id
+        description: "Token ID of the position"
+        data_tests:
+          - not_null
+      - name: balance_raw
+        description: "Raw ERC1155 token balance"
+      - name: last_updated
+        description: "Most recent day with a transfer-derived balance change"
 
   - name: polymarket_polygon_positions
     meta:

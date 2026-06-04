@@ -16,5 +16,6 @@ concurrency:
 jobs:
   dbt-run:
     uses: ./.github/workflows/dbt_run.yml
+    secrets: inherit
     with:
       project: 'solana'

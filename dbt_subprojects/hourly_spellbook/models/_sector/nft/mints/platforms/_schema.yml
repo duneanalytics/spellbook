@@ -187,7 +187,7 @@ models:
 
   - name: zora_mints
     meta:
-      blockchain: ethereum, optimism, base, goerli
+      blockchain: ethereum, optimism, base
       project: zora
       contributors: hildobby
     config:
