@@ -173,7 +173,7 @@ models:
       - *balance_usd
       - *last_updated
 
-  - name: stablecoins_solana_core_non_circulating_inventory_accounts
+  - name: stablecoins_solana_non_circulating_inventory_accounts
     meta:
       blockchain: solana
       sector: stablecoins
@@ -181,8 +181,14 @@ models:
     config:
       tags: ['stablecoin', 'balances']
     description: >
-      Solana SPL stablecoin inventory token accounts used as a helper list for core circulating balance exclusions,
-      with source classification and observed owners derived from stablecoin transfers.
+      Solana SPL stablecoin inventory token accounts used as a helper list for circulating balance
+      exclusions across both core and extended lineages. Combines a seeded list of known inventory
+      token accounts with token accounts resolved from a seeded list of non-circulating owner wallets
+      via the indexer state-history table (`token_accounts_solana.state_history`). Each row carries
+      the original source classification (seeded entries take precedence on dedupe so the more
+      specific classification survives). Incremental: owner-derived accounts are appended as the
+      indexer observes new token accounts, watermarked on `indexed_at`; seed/scope edits require
+      `dbt run --full-refresh`.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -199,54 +205,21 @@ models:
         data_tests:
           - not_null
       - name: source_class
-        description: "Classification of the inventory token account source (official Circle premint or legacy inventory)"
+        description: >
+          Classification of the inventory source. `official_circle_premint` and `legacy_inventory`
+          come from the seeded token-account list; `circle_mint`, `circle_treasury`, and
+          `wormhole_bridge` come from the seeded owners list (resolved to token accounts via
+          `token_accounts_solana.state_history`).
         data_tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['official_circle_premint', 'legacy_inventory']
+                values: ['official_circle_premint', 'legacy_inventory', 'circle_mint', 'circle_treasury', 'wormhole_bridge']
       - name: excluded
         description: "Whether this token account is excluded from circulating balance computations"
         data_tests:
           - not_null
       - name: observed_owners
-        description: "Observed owner addresses for the inventory token account (historical)"
-
-  - name: stablecoins_solana_extended_non_circulating_inventory_accounts
-    meta:
-      blockchain: solana
-      sector: stablecoins
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances']
-    description: >
-      Solana SPL stablecoin inventory token accounts used as a helper list for extended circulating balance exclusions,
-      with source classification and observed owners derived from extended stablecoin transfers.
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - token_mint_address
-              - token_account
-    columns:
-      - *blockchain
-      - <<: *token_mint_address
-        data_tests:
-          - not_null
-      - name: token_account
-        description: "SPL token account tracked in the non-circulating inventory helper list"
-        data_tests:
-          - not_null
-      - name: source_class
-        description: "Classification of the inventory token account source (official Circle premint or legacy inventory)"
-        data_tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values: ['official_circle_premint', 'legacy_inventory']
-      - name: excluded
-        description: "Whether this token account is excluded from circulating balance computations"
-        data_tests:
-          - not_null
-      - name: observed_owners
-        description: "Observed owner addresses for the inventory token account (historical)"
+        description: "Owner of this token account per the indexer state-history (null for seeded token accounts not owned by a seeded owner)"
+      - name: indexed_at
+        description: "state_history.valid_from_block_time of the owner-derived account; the incremental watermark (null for seeded token accounts)"

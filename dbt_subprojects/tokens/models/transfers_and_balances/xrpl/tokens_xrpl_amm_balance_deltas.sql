@@ -2,6 +2,7 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'amm_balance_deltas',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_month'],

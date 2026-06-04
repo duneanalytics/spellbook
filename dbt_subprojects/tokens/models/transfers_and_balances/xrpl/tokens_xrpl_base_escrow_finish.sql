@@ -2,6 +2,7 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_escrow_finish',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_month'],

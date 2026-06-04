@@ -11,7 +11,8 @@
     merge_skip_unchanged = true,
     post_hook = '{{ private_data_explorer(blockchains = \'["stellar"]\',
                     spell_type = "sector",
-                    spell_name = "tokens_stellar") }}'
+                    spell_name = "tokens_stellar") }}',
+    tags = ['prod_exclude']
 
   )
 }}

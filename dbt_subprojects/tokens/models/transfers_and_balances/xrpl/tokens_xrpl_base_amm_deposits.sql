@@ -2,6 +2,7 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'base_amm_deposits',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_month'],
