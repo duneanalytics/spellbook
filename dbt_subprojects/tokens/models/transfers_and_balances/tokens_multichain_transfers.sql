@@ -153,7 +153,7 @@ select
   amount_usd,
   transfer_type,
   _updated_at
-from {{ ref('tokens_aptos_transfers') }}
+from {{ source('tokens_aptos', 'transfers') }}
 
 union all
 
@@ -209,7 +209,7 @@ select
   amount_usd,
   coalesce(event_topic, event_type) as transfer_type,
   _updated_at
-from {{ ref('tokens_stellar_transfers') }}
+from {{ source('tokens_stellar', 'transfers') }}
 
 union all
 
@@ -237,4 +237,4 @@ select
   amount_usd,
   transfer_type,
   _updated_at
-from {{ ref('tokens_xrpl_transfers') }}
+from {{ source('tokens_xrpl', 'transfers') }}

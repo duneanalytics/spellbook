@@ -13,7 +13,6 @@
 ,ref('zora_optimism_mints')
 ,ref('zora_base_mints')
 ,ref('zora_zora_mints')
-,ref('zora_goerli_mints')
 ] %}
 
 SELECT *

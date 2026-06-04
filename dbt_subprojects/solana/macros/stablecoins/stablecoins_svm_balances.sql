@@ -7,7 +7,12 @@
 -- use uint256_max_double for safe double comparison
 {% set uint256_max_double = '1.0e77' %}
 
-{% set non_circulating_inventory_relation = ref('stablecoins_' ~ blockchain ~ '_' ~ token_list ~ '_non_circulating_inventory_accounts') %}
+{% set non_circulating_inventory_accounts_relation = ref('stablecoins_' ~ blockchain ~ '_non_circulating_inventory_accounts') %}
+
+-- owner-level non-circulating exclusions are resolved to token accounts at build
+-- time inside `stablecoins_{blockchain}_non_circulating_inventory_accounts`, so a
+-- single token-account-keyed left join below covers both the seeded inventory and
+-- the owner-derived inventory.
 
 with
 non_circulating_inventory_accounts as (
@@ -15,7 +20,7 @@ non_circulating_inventory_accounts as (
     blockchain,
     token_mint_address,
     token_account
-  from {{ non_circulating_inventory_relation }}
+  from {{ non_circulating_inventory_accounts_relation }}
   where excluded
 ),
 
