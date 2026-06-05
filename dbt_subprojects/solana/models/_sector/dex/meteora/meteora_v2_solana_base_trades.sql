@@ -4,6 +4,11 @@
 {# list of your swap tables to loop over #}
 {% set swap_tables = ['lb_clmm_call_swap', 'lb_clmm_call_swap2','lb_clmm_call_swapexactout','lb_clmm_call_swapexactout2','lb_clmm_call_swapwithpriceimpact','lb_clmm_call_swapwithpriceimpact2'] %}
 
+{# since v0.12.0 the decoder renamed the account columns on swap/swap2 to snake_case and
+   leaves the original camelCase columns NULL; coalesce both so mints/reserves/lb_pair
+   resolve across the rename. the exactout/withpriceimpact variants only expose camelCase. #}
+{% set snake_case_account_tables = ['lb_clmm_call_swap', 'lb_clmm_call_swap2'] %}
+
 {{ 
   config(
     schema='meteora_v2_solana',
@@ -31,11 +36,19 @@ swaps_call_data as (
       call_tx_id as tx_id,
       call_tx_signer as trader_id,
       call_outer_executing_account as outer_executing_account,
+      {% if tbl in snake_case_account_tables %}
+      coalesce(account_tokenXMint, account_token_x_mint) as account_tokenXMint,
+      coalesce(account_tokenYMint, account_token_y_mint) as account_tokenYMint,
+      coalesce(account_reserveX, account_reserve_x) as account_reserveX,
+      coalesce(account_reserveY, account_reserve_y) as account_reserveY,
+      coalesce(account_lbPair, account_lb_pair) as account_lbPair,
+      {% else %}
       account_tokenXMint as account_tokenXMint,
       account_tokenYMint as account_tokenYMint,
       account_reserveX as account_reserveX,
       account_reserveY as account_reserveY,
       account_lbPair as account_lbPair,
+      {% endif %}
       call_is_inner as is_inner_swap
     from {{ source('dlmm_solana', tbl) }}
     where 1=1
@@ -70,6 +83,8 @@ evt_table as (
     from {{ source('dlmm_solana','lb_clmm_evt_swap') }}
     where 1=1
       and evt_inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
+      {# drop post-v0.12.0 empty shells (amounts NULL); the populated row is in swap2evt #}
+      and amountIn is not null
       {% if is_incremental() %}
         and {{ incremental_predicate('evt_block_time') }}
       {% else %}

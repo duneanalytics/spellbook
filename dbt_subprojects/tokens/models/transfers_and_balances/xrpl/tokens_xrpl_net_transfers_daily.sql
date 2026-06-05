@@ -2,6 +2,7 @@
   config(
     schema = 'tokens_xrpl',
     alias = 'net_transfers_daily',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

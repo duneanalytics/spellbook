@@ -2,6 +2,7 @@
   config(
     schema = 'sui',
     alias = 'coin_info',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -66,6 +66,7 @@
   config(
     schema = 'tokens_multichain',
     alias = 'transfers',
+    tags = ['prod_exclude'],
     materialized = 'view',
     post_hook = '{{ private_data_explorer(blockchains = \'["' + chains | join('","') + '"]\',
                     spell_type = "sector",
@@ -181,7 +182,7 @@ select
   amount_usd,
   transfer_type,
   _updated_at
-from {{ ref('tokens_sui_transfers') }}
+from {{ source('tokens_sui', 'transfers') }}
 
 union all
 
@@ -209,7 +210,7 @@ select
   amount_usd,
   coalesce(event_topic, event_type) as transfer_type,
   _updated_at
-from {{ ref('tokens_stellar_transfers') }}
+from {{ source('tokens_stellar', 'transfers') }}
 
 union all
 
@@ -237,4 +238,4 @@ select
   amount_usd,
   transfer_type,
   _updated_at
-from {{ ref('tokens_xrpl_transfers') }}
+from {{ source('tokens_xrpl', 'transfers') }}

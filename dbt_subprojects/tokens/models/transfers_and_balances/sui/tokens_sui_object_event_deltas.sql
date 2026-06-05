@@ -4,6 +4,7 @@
   config(
     schema = 'tokens_sui',
     alias = 'object_event_deltas',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     partition_by = ['block_date'],
