@@ -18,9 +18,12 @@ concurrency:
 
 jobs:
   plan:
+    # head_repository check: this flow is for fork PRs only; in-repo PRs are
+    # built directly by dbt_full_run.yml
     if: >
       github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success'
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name != github.repository
     runs-on: ubuntu-latest
     permissions:
       contents: read
