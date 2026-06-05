@@ -535,6 +535,8 @@ models:
               - address
               - token_id
     columns:
+      - name: block_month
+        description: "UTC month derived from day (date_trunc('month', day)); used for partitioning"
       - name: day
         description: "The date of the position"
         data_tests:
