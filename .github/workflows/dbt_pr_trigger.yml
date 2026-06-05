@@ -6,11 +6,6 @@ name: Receive dbt PR
 
 on:
   pull_request:
-    paths:
-      - dbt_subprojects/**
-      - sources/**
-      - dbt_macros/shared/**
-      - .github/workflows/**
 
 permissions:
   contents: read

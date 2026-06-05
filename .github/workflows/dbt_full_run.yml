@@ -15,7 +15,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  find-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      pr_number: ${{ steps.pr.outputs.pr_number }}
+      head_sha: ${{ steps.pr.outputs.head_sha }}
+    steps:
+      - name: Find open PR for this branch
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # If the dispatched branch has an open PR, report commit statuses to it
+          # (same dbt-ci/<project> contexts as the PR flow); otherwise run silently.
+          pr_number=$(gh api "repos/${{ github.repository }}/pulls?head=${{ github.repository_owner }}:${{ github.ref_name }}&state=open" --jq '.[0].number // empty')
+          if [ -n "$pr_number" ]; then
+            echo "Found open PR #$pr_number for ${{ github.ref_name }}; reporting statuses to ${{ github.sha }}"
+            echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+            echo "head_sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "No open PR for ${{ github.ref_name }}; skipping status reporting"
+            echo "pr_number=" >> "$GITHUB_OUTPUT"
+            echo "head_sha=" >> "$GITHUB_OUTPUT"
+          fi
+
   dbt-run:
+    needs: find-pr
     strategy:
       fail-fast: false
       matrix:
@@ -33,3 +60,5 @@ jobs:
       statuses: write
     with:
       project: ${{ matrix.project }}
+      pr_number: ${{ needs.find-pr.outputs.pr_number }}
+      head_sha: ${{ needs.find-pr.outputs.head_sha }}
