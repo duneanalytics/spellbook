@@ -5,14 +5,13 @@ models:
     meta:
       docs_slug: /curated/token-transfers/evm/token-transfers
       sector: tokens
-      short_description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata. For a unified view that includes both EVM and non-EVM chains, use tokens_multichain.transfers instead."
+      short_description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata."
       contributors: aalan3, jeff-dude, 0xBoxer, hildobby, hosuke, tomfutago
     config:
       tags: ['tokens','transfers','evm']
     description: >
       Transfers of all kinds of fungible tokens across all EVM-compatible networks on Dune. This model contains
-      EVM-only data. For a unified view that includes both EVM and non-EVM chains, use
-      tokens_multichain.transfers instead.
+      EVM-only data.
     columns:
       - &unique_key
         name: unique_key
@@ -114,9 +113,7 @@ models:
       tags: ['tokens','transfers', 'evm']
     description: >
       Fungible token transfers across all EVM-compatible networks only. This model contains the same data as tokens.transfers
-      but is located in the tokens_evm schema to explicitly indicate it contains EVM-only data. Use this model when
-      you need to query EVM transfers specifically, or use tokens_multichain.transfers if you need transfers from
-      both EVM and non-EVM chains.
+      but is located in the tokens_evm schema to explicitly indicate it contains EVM-only data.
     columns:
       - <<: *unique_key
       - <<: *blockchain_transfer
@@ -170,52 +167,3 @@ models:
         data_tests:
           - not_null
 
-  - name: tokens_multichain_transfers
-    meta:
-      sector: tokens
-      short_description: "Unified fungible token transfers across EVM and non-EVM chains with a chain-agnostic schema."
-      contributors: kryptaki, tomfutago
-      docs_slug: /curated/token-transfers/multichain/multichain-token-transfers
-    config:
-      tags: ['tokens', 'transfers', 'multichain']
-    description: >
-      Unified view of fungible token transfers across EVM-compatible chains, Solana, Aptos, Sui, Stellar, and XRPL with a
-      chain-agnostic schema. For EVM-only transfers, use tokens_evm.transfers, and for chain-specific
-      transfer details, use the chain-level transfers models.
-    columns:
-      - <<: *unique_key
-      - <<: *blockchain_transfer
-      - <<: *block_time_transfer
-      - <<: *block_date_transfer
-      - <<: *block_month_transfer
-      - name: block_number
-        description: "Chain-native block, slot, checkpoint, ledger, or transaction ordering number for the transfer, such as EVM block number, Solana slot, Aptos block height, Sui checkpoint, Stellar ledger sequence, or XRPL ledger index."
-      - name: tx_id
-        description: "Chain-native transaction identifier, such as EVM transaction hash, Solana transaction id/signature, Sui transaction digest, Aptos transaction hash, Stellar transaction hash, or XRPL transaction hash."
-      - name: tx_index
-        description: "Nullable chain-native transaction index or transaction ordering identifier."
-      - name: event_index
-        description: "Nullable primary event, instruction, or operation index for the transfer."
-      - name: sub_event_index
-        description: "Nullable secondary event, instruction, or matched-counterpart index for the transfer."
-      - name: from_address
-        description: "The sender owner/account of the transfer, stored as string."
-      - name: to_address
-        description: "The receiver owner/account of the transfer, stored as string."
-      - name: tx_signer
-        description: "The transaction signer or sender when available, stored as string."
-      - name: token_address
-        description: "Address-like token identifier, such as EVM contract address, Solana mint, Sui package address, Aptos package address, Stellar contract id, or XRPL issuer."
-      - name: token_id
-        description: "Canonical full chain-native token identifier. This matches token_address on chains where the address is the full token id, and uses richer identifiers such as Sui coin type, Aptos asset type, Stellar asset/contract id, or XRPL asset id where needed."
-      - name: token_symbol
-        description: "The token symbol transferred"
-      - <<: *token_standard_transfer
-      - <<: *amount_raw_transfer
-      - <<: *amount_transfer
-      - <<: *price_usd_transfer
-      - <<: *amount_usd_transfer
-      - name: transfer_type
-        description: "Nullable chain-native transfer classification or action."
-      - name: _updated_at
-        description: "Timestamp when this row was last written, when provided by the source model."
