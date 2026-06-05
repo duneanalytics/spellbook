@@ -17,15 +17,16 @@
 {% if is_incremental() -%}
 
 -- Triggers only on outcome / resolved_on_timestamp changes; other market flags are snapshot-at-write.
+-- Full scan of {{ this }} preserves drift recovery for any token with history, matching prod.
 with changed_markets as (
   select distinct
     mm_check.token_id,
-    cast(mm_check.market_start_time as timestamp) as market_start_time,
-    cast(mm_check.resolved_on_timestamp as timestamp) as resolved_on_timestamp
+    mm_check.market_start_time,
+    mm_check.resolved_on_timestamp
   from {{ ref('polymarket_polygon_market_details') }} as mm_check
   inner join {{ this }} as existing
     on mm_check.token_id = existing.token_id
-    and existing.day >= cast(try_cast(mm_check.market_start_time as timestamp) as date)
+    and existing.day >= cast(mm_check.market_start_time as date)
   where existing.market_outcome is distinct from mm_check.outcome
     or existing.resolved_on_timestamp is distinct from mm_check.resolved_on_timestamp
 ),

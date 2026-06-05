@@ -426,9 +426,9 @@ models:
       - name: polymarket_link
         description: "Link to the Polymarket event page"
       - name: market_start_time
-        description: "Start time of the market"
+        description: "Timestamp when the market started accepting orders (parsed from API ISO-8601 string)"
       - name: market_end_time
-        description: "End time of the market"
+        description: "Timestamp when the market closed to new orders (parsed from API ISO-8601 string)"
       - name: market_outcome
         description: "Outcome of the market"
       - name: resolved_on_timestamp
@@ -576,9 +576,9 @@ models:
       - name: polymarket_link
         description: "Link to the Polymarket event page"
       - name: market_start_time
-        description: "Start time of the market"
+        description: "Timestamp when the market started accepting orders (parsed from API ISO-8601 string)"
       - name: market_end_time
-        description: "End time of the market"
+        description: "Timestamp when the market closed to new orders (parsed from API ISO-8601 string)"
       - name: market_outcome
         description: "Outcome of the market"
       - name: resolved_on_timestamp
