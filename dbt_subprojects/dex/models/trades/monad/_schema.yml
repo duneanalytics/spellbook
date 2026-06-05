@@ -38,6 +38,25 @@ models:
           arguments:
             seed_file: ref('kuru_monad_base_trades_seed')
 
+  - name: curve_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: curve
+      contributors: kkqzhou
+    config:
+      tags: ["monad", "dex", "trades", "curve"]
+    description: "curve monad base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('curvefi_monad_base_trades_seed')
+
   - name: pinot_v2_monad_base_trades
     meta:
       blockchain: monad
