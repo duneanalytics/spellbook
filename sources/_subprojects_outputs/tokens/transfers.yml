@@ -308,6 +308,10 @@ sources:
       - name: net_transfers_daily_asset
       - name: spl_stablecoins
 
+  - name: tokens_sui
+    tables:
+      - name: transfers
+
   - name: tokens_stellar
     tables:
       - name: transfers
