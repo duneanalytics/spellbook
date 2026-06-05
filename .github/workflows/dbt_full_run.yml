@@ -1,0 +1,35 @@
+name: dbt CI full run
+
+# Manually-triggered CI run across all dbt projects, without filtering on changes.
+# Useful to validate changes to shared tools (scripts, uv.lock, workflows) that the PR flow can't
+# exercise pre-merge.
+#
+# This runs the code of the selected branch directly, so it will only work on branches from the
+# duneanalytics/spellbook repo. It will not work from forks.
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dbt-run:
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - daily_spellbook
+          - dex
+          - hourly_spellbook
+          - solana
+          - tokens
+    uses: ./.github/workflows/dbt_run.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      actions: read
+      statuses: write
+    with:
+      project: ${{ matrix.project }}

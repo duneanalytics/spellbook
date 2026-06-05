@@ -1,11 +1,10 @@
 name: DBT Run Reusable Workflow
 
-# Called by dbt_pr_run.yml for each affected project. Runs in the privileged
-# base-repo context: the checkout (scripts/, uv.lock, workflows) is trusted
-# main-branch code, while the dbt code under dbt_subprojects/, sources/ and
-# dbt_macros/shared/ is replaced with the untrusted PR version downloaded
-# from the "Receive dbt PR" run's artifacts. Nothing from those directories
-# may be executed directly on the runner.
+# Called per project by:
+#  - dbt_pr_run.yml (fork-safe PR CI): runs in the privileged base-repo context. Only the dbt code
+#    is retrieved from the untrusted PR
+#  - dbt_full_run.yml (manual): trigger_run_id/pr_number/head_sha are omitted, so the artifact
+#    overlay and PR status reporting are skipped and the run uses the checked-out branch as-is.
 
 on:
   workflow_call:
@@ -15,17 +14,20 @@ on:
         required: true
         type: string
       trigger_run_id:
-        description: 'Run id of the "Receive dbt PR" run that holds the PR code artifacts'
-        required: true
+        description: 'Run id of the "Receive dbt PR" run that holds the PR code artifacts (empty: run in-repo code as-is)'
+        required: false
         type: string
+        default: ''
       pr_number:
         description: 'PR number, used in the CI schema name'
-        required: true
+        required: false
         type: string
+        default: ''
       head_sha:
-        description: 'PR head commit to report commit statuses to'
-        required: true
+        description: 'PR head commit to report commit statuses to (empty: no status reporting)'
+        required: false
         type: string
+        default: ''
 
 jobs:
   dbt-test:
@@ -38,6 +40,7 @@ jobs:
 
     steps:
       - name: Report pending status to PR
+        if: inputs.head_sha != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -47,13 +50,15 @@ jobs:
             -f "description=dbt CI running" \
             -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-      - name: Check out repository code (main branch, trusted)
+      - name: Check out repository code (trusted)
         uses: actions/checkout@v6
 
       - name: Drop main-branch dbt code
+        if: inputs.trigger_run_id != ''
         run: rm -rf dbt_subprojects sources dbt_macros/shared
 
       - name: Download PR dbt subprojects (untrusted)
+        if: inputs.trigger_run_id != ''
         uses: actions/download-artifact@v7
         with:
           name: dbt_subprojects
@@ -62,6 +67,7 @@ jobs:
           github-token: ${{ github.token }}
 
       - name: Download PR sources (untrusted)
+        if: inputs.trigger_run_id != ''
         uses: actions/download-artifact@v7
         with:
           name: sources
@@ -70,6 +76,7 @@ jobs:
           github-token: ${{ github.token }}
 
       - name: Download PR shared macros (untrusted)
+        if: inputs.trigger_run_id != ''
         uses: actions/download-artifact@v7
         with:
           name: dbt_macros_shared
@@ -99,7 +106,8 @@ jobs:
 
       - name: Setup variables
         run: |
-          echo "DBT_CI_SCHEMA=dune_spellbook_ci__tmp_pr${{ inputs.pr_number }}_${{ github.run_id }}_${{ github.run_attempt }}" >> $GITHUB_ENV
+          CI_ID="${{ inputs.pr_number != '' && format('pr{0}', inputs.pr_number) || 'manual' }}"
+          echo "DBT_CI_SCHEMA=dune_spellbook_ci__tmp_${CI_ID}_${{ github.run_id }}_${{ github.run_attempt }}" >> $GITHUB_ENV
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql --target ci" >> $GITHUB_ENV
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}
@@ -146,7 +154,7 @@ jobs:
         run: "uv run dbt test $PROFILE --select state:modified.body,config.materialized:incremental state:modified.macros,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: Report final status to PR
-        if: always()
+        if: always() && inputs.head_sha != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
