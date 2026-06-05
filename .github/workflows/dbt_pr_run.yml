@@ -1,0 +1,97 @@
+name: dbt CI
+
+# Second half of the fork-safe CI pipeline. This workflow has access to secrets.
+# It downloads the artefacts generated in "Receive dbt PR", and runs dbt CI from these.
+#
+# Note: because workflow_run checks attach to the main branch rather than the PR, we report
+# results to the PR head commit as commit statuses
+
+on:
+  workflow_run:
+    workflows: ["Receive dbt PR"]
+    types:
+      - completed
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_repo.full_name }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      statuses: write
+    outputs:
+      pr_number: ${{ steps.validate.outputs.pr_number }}
+      projects: ${{ steps.validate.outputs.projects }}
+    steps:
+      - name: Check out repository code (main branch, trusted)
+        uses: actions/checkout@v6
+
+      - name: Download PR metadata
+        uses: actions/download-artifact@v7
+        with:
+          name: pr_metadata
+          path: pr_metadata
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Validate PR metadata
+        id: validate
+        run: |
+          # The metadata artifact was produced by a workflow running untrusted
+          # PR code: validate everything before it reaches a privileged job.
+          pr_number=$(cat pr_metadata/pr_number)
+          if ! [[ "$pr_number" =~ ^[0-9]+$ ]]; then
+            echo "Invalid PR number in metadata artifact"; exit 1
+          fi
+          known=$(ls -d dbt_subprojects/*/ | cut -d/ -f2 | jq -Rnc '[inputs]')
+          projects=$(jq -ce --argjson known "$known" 'map(select(IN($known[])))' pr_metadata/projects.json)
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+          echo "projects=$projects" >> "$GITHUB_OUTPUT"
+          echo "PR #$pr_number, modified projects: $projects"
+
+      - name: Report initial statuses to PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          PROJECTS: ${{ steps.validate.outputs.projects }}
+        run: |
+          # Pending for modified projects; success for the rest so that
+          # per-project required checks don't block PRs that never run them.
+          for p in $(ls -d dbt_subprojects/*/ | cut -d/ -f2); do
+            if echo "$PROJECTS" | jq -e --arg p "$p" 'index($p)' > /dev/null; then
+              state=pending; description="dbt CI queued"
+            else
+              state=success; description="Skipped - no changes"
+            fi
+            gh api "repos/${{ github.repository }}/statuses/$HEAD_SHA" \
+              -f "state=$state" \
+              -f "context=dbt-ci/$p" \
+              -f "description=$description" \
+              -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          done
+
+  dbt-run:
+    needs: plan
+    if: needs.plan.outputs.projects != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJSON(needs.plan.outputs.projects) }}
+    uses: ./.github/workflows/dbt_run.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      actions: read
+      statuses: write
+    with:
+      project: ${{ matrix.project }}
+      trigger_run_id: ${{ github.event.workflow_run.id }}
+      pr_number: ${{ needs.plan.outputs.pr_number }}
+      head_sha: ${{ github.event.workflow_run.head_sha }}
