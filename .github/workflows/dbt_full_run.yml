@@ -1,9 +1,8 @@
 name: dbt CI full run
 
 # CI for PRs from duneanalytics/spellbook branches. Runs the code of the PR branch directly
-# (including workflows, scripts and uv.lock), so it must never run fork code: fork PRs are
-# skipped here and handled by the fork-safe two-part flow instead
-# (dbt_pr_trigger.yml + dbt_pr_run.yml).
+# (including workflows, scripts and uv.lock), and needs secrets.
+# PRs from forks are handled by the two-part flow instead (dbt_pr_trigger.yml + dbt_pr_run.yml)
 #
 # Both flows report the same dbt-ci/<project> commit statuses for every project on every PR
 # ("skipped" when unaffected), so branch protection can require those regardless of where the

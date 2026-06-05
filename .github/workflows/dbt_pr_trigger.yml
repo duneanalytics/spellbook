@@ -13,8 +13,8 @@ permissions:
 
 jobs:
   build:
-    # Fork PRs only: PRs from duneanalytics/spellbook branches run directly with secrets
-    # via dbt_full_run.yml instead
+    # Only run if this is a PR from a fork
+    # PRs from duneanalytics/spellbook run directly via dbt_full_run.yml instead
     if: github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
 
