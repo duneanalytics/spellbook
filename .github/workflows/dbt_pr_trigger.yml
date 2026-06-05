@@ -37,6 +37,8 @@ jobs:
           modified=""
           if grep -q '^dbt_macros/shared/' changed_files.txt; then
             modified="$projects"
+          elif grep -q '^.github/workflows/' changed_files.txt; then
+            modified="$projects"
           else
             for p in $projects; do
               if grep -q "^dbt_subprojects/$p/" changed_files.txt; then
