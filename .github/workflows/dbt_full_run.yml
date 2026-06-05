@@ -1,4 +1,4 @@
-name: dbt CI full run
+name: dbt CI internal
 
 # CI for PRs from duneanalytics/spellbook branches. Runs the code of the PR branch directly
 # (including workflows, scripts and uv.lock), and needs secrets.

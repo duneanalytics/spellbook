@@ -1,8 +1,8 @@
 name: Receive dbt PR
 
 # First half of the fork-safe CI pipeline. This workflow runs in the unprivileged pull_request
-# context and packages the dbt code + metadata as artefacts. The privileged "dbt CI" workflow
-# then picks them up via workflow_run and runs CI if needed.
+# context and packages the dbt code + metadata as artefacts. The privileged "dbt CI from fork"
+# workflow then picks them up via workflow_run and runs CI if needed.
 
 on:
   pull_request:
