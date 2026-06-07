@@ -10,62 +10,44 @@
 ) }}
 
 WITH fa_balance AS (
+    -- FungibleStore (balance), ConcurrentFungibleBalance (preferred balance when present) and the
+    -- owning Object resource share (tx_version, move_address) within a tx. Scan move_resources ONCE
+    -- and fan the per-resource columns out with conditional aggregation in a single GROUP BY,
+    -- instead of scanning the table 3x and LEFT JOINing on (tx_version, move_address) -- Trino does
+    -- not share repeated scans. The HAVING keeps only keys with the driving FungibleStore row.
+    -- (owner is NULL if the object was deleted in this tx, same as before.)
     SELECT
         tx_version,
-        tx_hash,
-        block_date,
-        block_time,
-        --
-        COALESCE(c.write_set_change_index, mr.write_set_change_index) AS write_set_change_index,
-        json_extract_scalar(move_data, '$.metadata.inner') AS asset_type,
         move_address,
-        fs_owner.owner_address,
-        move_is_deletion,
+        max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then tx_hash end) AS tx_hash,
+        max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then block_date end) AS block_date,
+        max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then block_time end) AS block_time,
+        --
         COALESCE(
-            c.balance, -- ConcurrentFungibleBalance
-            json_extract_scalar(move_data, '$.balance') -- FungibleStore
+            max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'ConcurrentFungibleBalance' then write_set_change_index end),
+            max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then write_set_change_index end)
+        ) AS write_set_change_index,
+        max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then json_extract_scalar(move_data, '$.metadata.inner') end) AS asset_type,
+        max(case when move_resource_module = 'object' and move_resource_name IN ('ObjectGroup', 'ObjectCore')
+            then '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.owner'), '0x'), 64, '0') end) AS owner_address,
+        max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then move_is_deletion end) AS move_is_deletion,
+        COALESCE(
+            max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'ConcurrentFungibleBalance' then json_extract_scalar(move_data, '$.balance.value') end), -- ConcurrentFungibleBalance
+            max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then json_extract_scalar(move_data, '$.balance') end) -- FungibleStore
         ) AS balance,
-        CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen
-    FROM {{ source('aptos', 'move_resources') }} mr
-    LEFT JOIN (
-        -- if Concurrent balance exists, use it
-        SELECT
-            tx_version,
-            move_address,
-            write_set_change_index,
-            json_extract_scalar(move_data, '$.balance.value') AS balance
-        FROM {{ source('aptos', 'move_resources') }}
-        WHERE 1=1
-            AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
-            AND move_resource_module = 'fungible_asset'
-            AND move_resource_name = 'ConcurrentFungibleBalance'
-            {% if is_incremental() -%}
-            AND {{ incremental_predicate('block_time') }}
-            {% endif -%}
-    ) c USING (tx_version, move_address)
-    LEFT JOIN (
-        -- get owner, if deleted in this tx then owner will be NULL
-        -- to fix this, need to create an Objects table and map to owner before delete
-        SELECT
-            tx_version,
-            move_address,
-            '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.owner'), '0x'), 64, '0') AS owner_address
-        FROM {{ source('aptos', 'move_resources') }}
-        WHERE 1=1
-            AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
-            AND move_resource_module = 'object'
-            AND move_resource_name IN ('ObjectGroup','ObjectCore')
-            {% if is_incremental() -%}
-            AND {{ incremental_predicate('block_time') }}
-            {% endif -%}
-    ) AS fs_owner USING(tx_version, move_address)
+        max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) end) AS is_frozen
+    FROM {{ source('aptos', 'move_resources') }}
     WHERE 1=1
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
-        AND move_resource_module = 'fungible_asset'
-        AND move_resource_name = 'FungibleStore'
+        AND (
+            (move_resource_module = 'fungible_asset' AND move_resource_name IN ('FungibleStore', 'ConcurrentFungibleBalance'))
+            OR (move_resource_module = 'object' AND move_resource_name IN ('ObjectGroup', 'ObjectCore'))
+        )
         {% if is_incremental() -%}
         AND {{ incremental_predicate('block_time') }}
         {% endif -%}
+    GROUP BY tx_version, move_address
+    HAVING max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then 1 else 0 end) = 1
 )
 
 SELECT
