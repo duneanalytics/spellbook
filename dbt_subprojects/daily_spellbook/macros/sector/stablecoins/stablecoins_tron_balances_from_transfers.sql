@@ -61,6 +61,11 @@ daily_aggregated as (
 ),
 
 {% if is_incremental() %}
+-- last known balance per address/token before the incremental window.
+-- core_balances is a daily forward-filled snapshot (one row per active
+-- address/token/day), so every still-active (non-zero) balance is present on
+-- the most recent pre-window day. Reading that single partition is equivalent
+-- to max_by(...) over all history but avoids a full self-scan of {{ this }}.
 prior_balances as (
   select
     blockchain,
@@ -68,12 +73,14 @@ prior_balances as (
     address_varchar,
     token_address,
     contract_address,
-    max(day) as day,
-    max_by(last_updated, day) as last_updated,
-    max_by(balance_raw, day) as balance_raw
+    day,
+    last_updated,
+    balance_raw
   from {{ this }}
-  where not {{ incremental_predicate('day') }}
-  group by 1, 2, 3, 4, 5
+  where day = (
+    select max(day) from {{ this }}
+    where not {{ incremental_predicate('day') }}
+  )
 ),
 
 {% endif %}
