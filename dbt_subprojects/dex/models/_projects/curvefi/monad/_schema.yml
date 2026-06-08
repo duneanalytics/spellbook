@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: curve_monad_view_pools
+    meta:
+      blockchain: monad
+      project: curve
+      contributors: kkqzhou
+    config:
+      tags: ['monad', 'curve', 'dex']
+    description: >
+      Pool registry for Curve on Monad. Sourced from the StableSwapFactory PlainPoolDeployed event;
+      coins are the underlying token addresses of each pool (indexed from position 1 to match the
+      Curve TokenExchange event's bought_id/sold_id semantics).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - pool_address
+    columns:
+      - name: version
+        description: "Pool type identifier (e.g. 'Factory V1 Plain')"
+      - name: pool_address
+        description: "Pool contract address"
+      - name: coins
+        description: "Array of token addresses in the pool"
+      - name: undercoins
+        description: "Array of underlying token addresses for meta pools (always NULL on monad: no meta pools yet)"

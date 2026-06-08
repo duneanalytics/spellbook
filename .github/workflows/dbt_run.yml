@@ -1,5 +1,11 @@
 name: DBT Run Reusable Workflow
 
+# Called per project by:
+#  - dbt_pr_run.yml (fork-safe PR CI): runs in the privileged base-repo context. Only the dbt code
+#    is retrieved from the untrusted PR
+#  - dbt_full_run.yml (manual): trigger_run_id/pr_number/head_sha are omitted, so the artifact
+#    overlay and PR status reporting are skipped and the run uses the checked-out branch as-is.
+
 on:
   workflow_call:
     inputs:
@@ -7,18 +13,76 @@ on:
         description: 'DBT run for project'
         required: true
         type: string
+      trigger_run_id:
+        description: 'Run id of the "Receive dbt PR" run that holds the PR code artifacts (empty: run in-repo code as-is)'
+        required: false
+        type: string
+        default: ''
+      pr_number:
+        description: 'PR number, used in the CI schema name'
+        required: false
+        type: string
+        default: ''
+      head_sha:
+        description: 'PR head commit to report commit statuses to (empty: no status reporting)'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   dbt-test:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
+      actions: read
+      statuses: write
     timeout-minutes: 90
 
     steps:
-      - name: Check out repository code
+      - name: Report pending status to PR
+        if: inputs.head_sha != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/statuses/${{ inputs.head_sha }}" \
+            -f "state=pending" \
+            -f "context=dbt-ci/${{ inputs.project }}" \
+            -f "description=dbt CI running" \
+            -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Check out repository code (trusted)
         uses: actions/checkout@v6
+
+      - name: Drop main-branch dbt code
+        if: inputs.trigger_run_id != ''
+        run: rm -rf dbt_subprojects sources dbt_macros/shared
+
+      - name: Download PR dbt subprojects (untrusted)
+        if: inputs.trigger_run_id != ''
+        uses: actions/download-artifact@v7
+        with:
+          name: dbt_subprojects
+          path: dbt_subprojects
+          run-id: ${{ inputs.trigger_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Download PR sources (untrusted)
+        if: inputs.trigger_run_id != ''
+        uses: actions/download-artifact@v7
+        with:
+          name: sources
+          path: sources
+          run-id: ${{ inputs.trigger_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Download PR shared macros (untrusted)
+        if: inputs.trigger_run_id != ''
+        uses: actions/download-artifact@v7
+        with:
+          name: dbt_macros_shared
+          path: dbt_macros/shared
+          run-id: ${{ inputs.trigger_run_id }}
+          github-token: ${{ github.token }}
 
       - name: Set up Python 3.13
         uses: actions/setup-python@v6
@@ -42,20 +106,15 @@ jobs:
 
       - name: Setup variables
         run: |
-          echo "DBT_CI_SCHEMA=dune_spellbook_ci__tmp_pr${{ github.event.number }}_${{ github.run_id }}_${{ github.run_attempt }}" >> $GITHUB_ENV
+          CI_ID="${{ inputs.pr_number != '' && format('pr{0}', inputs.pr_number) || 'manual' }}"
+          echo "DBT_CI_SCHEMA=dune_spellbook_ci__tmp_${CI_ID}_${{ github.run_id }}_${{ github.run_attempt }}" >> $GITHUB_ENV
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql --target ci" >> $GITHUB_ENV
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v6
-        with:
-          role-to-assume: ${{ secrets.SPELLBOOK_CI_IAM_ROLE }}
-          aws-region: eu-west-1
-
       - name: Get latest manifest
-        run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
+        run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json --no-sign-request --region=eu-west-1"
 
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
@@ -93,3 +152,15 @@ jobs:
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
         run: "uv run dbt test $PROFILE --select state:modified.body,config.materialized:incremental state:modified.macros,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+
+      - name: Report final status to PR
+        if: always() && inputs.head_sha != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then state=success; else state=failure; fi
+          gh api "repos/${{ github.repository }}/statuses/${{ inputs.head_sha }}" \
+            -f "state=$state" \
+            -f "context=dbt-ci/${{ inputs.project }}" \
+            -f "description=dbt CI $state" \
+            -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
