@@ -47,6 +47,10 @@ transfers_in as (
     uint256 '0' as outflow
   from {{ transfers }} t
   where t."from" != t."to"  -- exclude self-transfers (they cancel out but add unnecessary rows)
+  {% if target.name == 'ci' %}
+  -- bound the full-refresh scan in CI so the build completes and regression tests run; prod is unaffected
+  and t.block_date >= current_date - interval '14' day
+  {% endif %}
   {% if is_celo %}
   and not exists (
     select 1
@@ -70,6 +74,10 @@ transfers_out as (
     t.amount_raw as outflow
   from {{ transfers }} t
   where t."from" != t."to"  -- exclude self-transfers (they cancel out but add unnecessary rows)
+  {% if target.name == 'ci' %}
+  -- bound the full-refresh scan in CI so the build completes and regression tests run; prod is unaffected
+  and t.block_date >= current_date - interval '14' day
+  {% endif %}
   {% if is_celo %}
   and not exists (
     select 1

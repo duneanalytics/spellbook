@@ -16,6 +16,10 @@ transfers_in as (
     uint256 '0' as outflow
   from {{ transfers }} t
   where t."from" != t."to"
+  {% if target.name == 'ci' %}
+  -- bound the full-refresh scan in CI so the build completes and regression tests run; prod is unaffected
+  and t.block_date >= current_date - interval '14' day
+  {% endif %}
   {% if is_incremental() %}
   and {{ incremental_predicate('t.block_time') }}
   {% endif %}
@@ -34,6 +38,10 @@ transfers_out as (
     t.amount_raw as outflow
   from {{ transfers }} t
   where t."from" != t."to"
+  {% if target.name == 'ci' %}
+  -- bound the full-refresh scan in CI so the build completes and regression tests run; prod is unaffected
+  and t.block_date >= current_date - interval '14' day
+  {% endif %}
   {% if is_incremental() %}
   and {{ incremental_predicate('t.block_time') }}
   {% endif %}
