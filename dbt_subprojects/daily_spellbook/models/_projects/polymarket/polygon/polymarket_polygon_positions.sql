@@ -31,12 +31,6 @@ with changed_markets as (
     or existing.resolved_on_timestamp is distinct from mm_check.resolved_on_timestamp
 ),
 
--- Scalar bound pushed as a partition predicate; per-row day-range can't be.
-changed_markets_day_bounds as (
-  select min(cast(market_start_time as date)) as min_day
-  from changed_markets
-),
-
 positions_to_emit as (
   select
     p.day,
@@ -48,6 +42,9 @@ positions_to_emit as (
 
   union all
 
+  -- Per-token between-bounds via dynamic filter on token_id; no global min_day scalar
+  -- subquery because referencing changed_markets a second time made Trino re-scan
+  -- {{ this }} a second time (10 B-row scan duplicated, ~50 % of incremental cost).
   select
     p.day,
     p.address,
@@ -59,7 +56,6 @@ positions_to_emit as (
     and p.day between cast(cm.market_start_time as date)
                   and cast(cm.resolved_on_timestamp as date)
   where not ({{ incremental_predicate('p.day') }})
-    and p.day >= (select min_day from changed_markets_day_bounds)
 )
 
 select
