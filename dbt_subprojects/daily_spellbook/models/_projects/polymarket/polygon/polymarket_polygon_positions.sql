@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
-    unique_key = ['day', 'address', 'token_id'],
+    unique_key = ['block_month', 'day', 'address', 'token_id'],
     merge_skip_unchanged = true,
     post_hook = '{{ private_data_explorer(blockchains = \'["polygon"]\',
                                   spell_type = "project",
@@ -21,12 +21,11 @@
 with changed_markets as (
   select distinct
     mm_check.token_id,
-    mm_check.market_start_time,
-    mm_check.resolved_on_timestamp
+    mm_check.market_start_time
   from {{ ref('polymarket_polygon_market_details') }} as mm_check
   inner join {{ this }} as existing
     on mm_check.token_id = existing.token_id
-    and existing.day >= cast(mm_check.market_start_time as date)
+    and existing.day >= cast(try_cast(mm_check.market_start_time as timestamp) as date)
   where existing.market_outcome is distinct from mm_check.outcome
     or existing.resolved_on_timestamp is distinct from mm_check.resolved_on_timestamp
 ),
@@ -42,9 +41,10 @@ positions_to_emit as (
 
   union all
 
-  -- Per-token between-bounds via dynamic filter on token_id; no global min_day scalar
-  -- subquery because referencing changed_markets a second time made Trino re-scan
-  -- {{ this }} a second time (10 B-row scan duplicated, ~50 % of incremental cost).
+  -- Lower-bound on market_start_time partition-prunes positions_raw to the
+  -- affected markets' lifespans (no upper bound: positions_raw forward-fills
+  -- non-zero balances past resolved_on_timestamp for unredeemed holders, and
+  -- those post-resolution rows still need the outcome propagated to them).
   select
     p.day,
     p.address,
@@ -53,8 +53,7 @@ positions_to_emit as (
   from {{ ref('polymarket_polygon_positions_raw') }} as p
   inner join changed_markets as cm
     on p.token_id = cm.token_id
-    and p.day between cast(cm.market_start_time as date)
-                  and cast(cm.resolved_on_timestamp as date)
+    and p.day >= cast(try_cast(cm.market_start_time as timestamp) as date)
   where not ({{ incremental_predicate('p.day') }})
 )
 

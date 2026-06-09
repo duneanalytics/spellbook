@@ -426,9 +426,9 @@ models:
       - name: polymarket_link
         description: "Link to the Polymarket event page"
       - name: market_start_time
-        description: "Timestamp when the market started accepting orders (parsed from API ISO-8601 string)"
+        description: "Start time of the market"
       - name: market_end_time
-        description: "Timestamp when the market closed to new orders (parsed from API ISO-8601 string)"
+        description: "End time of the market"
       - name: market_outcome
         description: "Outcome of the market"
       - name: resolved_on_timestamp
@@ -531,6 +531,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
+              - block_month
               - day
               - address
               - token_id
@@ -576,9 +577,9 @@ models:
       - name: polymarket_link
         description: "Link to the Polymarket event page"
       - name: market_start_time
-        description: "Timestamp when the market started accepting orders (parsed from API ISO-8601 string)"
+        description: "Start time of the market"
       - name: market_end_time
-        description: "Timestamp when the market closed to new orders (parsed from API ISO-8601 string)"
+        description: "End time of the market"
       - name: market_outcome
         description: "Outcome of the market"
       - name: resolved_on_timestamp
