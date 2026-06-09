@@ -4,27 +4,9 @@
         )
 }}
 
-{% set uniswap_v4_aggregator_models = [
-ref('uniswap_v4_arbitrum_aggregator_base_trades')
-, ref('uniswap_v4_avalanche_c_aggregator_base_trades')
-, ref('uniswap_v4_base_aggregator_base_trades')
-, ref('uniswap_v4_blast_aggregator_base_trades')
-, ref('uniswap_v4_bnb_aggregator_base_trades')
-, ref('uniswap_v4_celo_aggregator_base_trades')
-, ref('uniswap_v4_ethereum_aggregator_base_trades')
-, ref('uniswap_v4_ink_aggregator_base_trades')
-, ref('uniswap_v4_monad_aggregator_base_trades')
-, ref('uniswap_v4_optimism_aggregator_base_trades')
-, ref('uniswap_v4_polygon_aggregator_base_trades')
-, ref('uniswap_v4_tempo_aggregator_base_trades')
-, ref('uniswap_v4_unichain_aggregator_base_trades')
-, ref('uniswap_v4_worldchain_aggregator_base_trades')
-, ref('uniswap_v4_zora_aggregator_base_trades')
-] %}
-
 SELECT *
 FROM (
-    {% for agg_model in uniswap_v4_aggregator_models %}
+    {% for chain in uniswap_v4_chains() %}
     SELECT
         blockchain,
         project,
@@ -44,7 +26,7 @@ FROM (
         tx_to,
         trace_address, --ensure field is explicitly cast as array<bigint> in base models
         evt_index
-    FROM {{ agg_model }}
+    FROM {{ ref('uniswap_v4_' ~ chain ~ '_aggregator_base_trades') }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
