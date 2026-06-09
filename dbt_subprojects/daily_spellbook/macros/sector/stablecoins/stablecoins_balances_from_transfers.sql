@@ -47,6 +47,10 @@ transfers_in as (
     uint256 '0' as outflow
   from {{ transfers }} t
   where t."from" != t."to"  -- exclude self-transfers (they cancel out but add unnecessary rows)
+  {% if target.name == 'ci' %}
+  -- bound the full-refresh scan in CI so the build completes and regression tests run; prod is unaffected
+  and t.block_date >= current_date - interval '14' day
+  {% endif %}
   {% if is_celo %}
   and not exists (
     select 1
@@ -70,6 +74,10 @@ transfers_out as (
     t.amount_raw as outflow
   from {{ transfers }} t
   where t."from" != t."to"  -- exclude self-transfers (they cancel out but add unnecessary rows)
+  {% if target.name == 'ci' %}
+  -- bound the full-refresh scan in CI so the build completes and regression tests run; prod is unaffected
+  and t.block_date >= current_date - interval '14' day
+  {% endif %}
   {% if is_celo %}
   and not exists (
     select 1
@@ -102,18 +110,24 @@ daily_aggregated as (
 ),
 
 {% if is_incremental() %}
--- get last known balance for each address/token from before the incremental window
+-- get last known balance for each address/token from before the incremental window.
+-- core/extended_balances is a daily forward-filled snapshot (one row per active
+-- address/token/day), so every still-active (non-zero) balance is present on the
+-- most recent pre-window day. Reading that single partition is equivalent to
+-- max_by(...) over all history but avoids a full self-scan of {{ this }}.
 prior_balances as (
   select
     blockchain,
     address,
     token_address,
-    max(day) as day,
-    max_by(last_updated, day) as last_updated,
-    max_by(balance_raw, day) as balance_raw
+    day,
+    last_updated,
+    balance_raw
   from {{ this }}
-  where not {{ incremental_predicate('day') }}
-  group by 1, 2, 3
+  where day = (
+    select max(day) from {{ this }}
+    where not {{ incremental_predicate('day') }}
+  )
 ),
 
 {% endif %}
