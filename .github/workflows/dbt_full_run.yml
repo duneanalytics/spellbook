@@ -1,0 +1,92 @@
+name: dbt CI internal
+
+# CI for PRs from duneanalytics/spellbook branches. Runs the code of the PR branch directly
+# (including workflows, scripts and uv.lock), and needs secrets.
+# PRs from forks are handled by the two-part flow instead (dbt_pr_trigger.yml + dbt_pr_run.yml)
+#
+# Both flows report the same dbt-ci/<project> commit statuses for every project on every PR
+# ("skipped" when unaffected), so branch protection can require those regardless of where the
+# PR comes from and without deadlocking.
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    # Internal PRs only: fork PRs don't get secrets here and go through the
+    # "Receive dbt PR" flow instead
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: write
+    outputs:
+      projects: ${{ steps.projects.outputs.projects }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Determine modified dbt projects
+        id: projects
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+            --paginate --jq '.[].filename' > changed_files.txt
+
+          projects=$(ls -d dbt_subprojects/*/ | cut -d/ -f2)
+          modified=""
+          # Changes to shared code or CI machinery affect every project
+          if grep -qE '^(dbt_macros/shared/|sources/|scripts/|\.github/workflows/|uv\.lock|pyproject\.toml)' changed_files.txt; then
+            modified="$projects"
+          else
+            for p in $projects; do
+              if grep -q "^dbt_subprojects/$p/" changed_files.txt; then
+                modified="$modified $p"
+              fi
+            done
+          fi
+          echo "projects=$(echo "$modified" | tr ' ' '\n' | jq -Rnc '[inputs | select(length > 0)]')" >> "$GITHUB_OUTPUT"
+
+      - name: Report initial statuses to PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PROJECTS: ${{ steps.projects.outputs.projects }}
+        run: |
+          # Pending for modified projects; success for the rest so that
+          # per-project required checks don't block PRs that never run them.
+          for p in $(ls -d dbt_subprojects/*/ | cut -d/ -f2); do
+            if echo "$PROJECTS" | jq -e --arg p "$p" 'index($p)' > /dev/null; then
+              state=pending; description="dbt CI queued"
+            else
+              state=success; description="Skipped - no changes"
+            fi
+            gh api "repos/${{ github.repository }}/statuses/$HEAD_SHA" \
+              -f "state=$state" \
+              -f "context=dbt-ci/$p" \
+              -f "description=$description" \
+              -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          done
+
+  dbt-run:
+    needs: plan
+    if: needs.plan.outputs.projects != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJSON(needs.plan.outputs.projects) }}
+    uses: ./.github/workflows/dbt_run.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      actions: read
+      statuses: write
+    with:
+      project: ${{ matrix.project }}
+      pr_number: ${{ github.event.pull_request.number }}
+      head_sha: ${{ github.event.pull_request.head.sha }}
