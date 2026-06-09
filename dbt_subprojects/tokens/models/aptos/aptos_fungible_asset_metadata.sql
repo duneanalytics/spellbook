@@ -70,6 +70,10 @@ WITH mr_fa AS (
     {% else %}
         AND block_date >= DATE('2023-07-27') -- beginning of FA (v2)
     {% endif %}
+    {% if target.name == 'ci' %}
+    -- bound the full-refresh scan in CI so the build completes and the regression test runs; prod is unaffected
+    AND block_date >= current_date - interval '14' day
+    {% endif %}
     GROUP BY tx_version, move_address
     -- only emit assets that have a Metadata resource (matches the old Metadata-driven LEFT JOINs)
     HAVING MAX(CASE WHEN move_resource_module = 'fungible_asset' AND move_resource_name = 'Metadata' THEN 1 ELSE 0 END) = 1
@@ -97,6 +101,10 @@ WITH mr_fa AS (
         AND move_resource_name = 'CoinInfo'
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
+    {% endif %}
+    {% if target.name == 'ci' %}
+    -- bound the full-refresh scan in CI so the build completes and the regression test runs; prod is unaffected
+    AND block_date >= current_date - interval '14' day
     {% endif %}
 )
 
