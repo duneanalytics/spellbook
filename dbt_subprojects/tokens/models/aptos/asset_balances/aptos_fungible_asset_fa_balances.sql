@@ -46,6 +46,10 @@ WITH fa_balance AS (
         {% if is_incremental() -%}
         AND {{ incremental_predicate('block_time') }}
         {% endif -%}
+        {% if target.name == 'ci' %}
+        -- bound the full-refresh scan in CI so the build completes and the regression test runs; prod is unaffected
+        AND block_date >= current_date - interval '14' day
+        {% endif %}
     GROUP BY tx_version, move_address
     HAVING max(case when move_resource_module = 'fungible_asset' and move_resource_name = 'FungibleStore' then 1 else 0 end) = 1
 )
