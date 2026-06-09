@@ -302,3 +302,21 @@ models:
           - not_null
       - name: created_at
 
+  - name: uniswap_v4_aggregator_base_trades
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain,celo,monad,tempo
+      sector: dex_aggregator
+      project: uniswap
+      contributors: thevaizman
+    config:
+      tags: ['dex_aggregator', 'trades', 'uniswap', 'v4', 'cross-chain']
+    description: >
+      Cross-chain union of Uniswap V4 BaseAggregatorHook swaps, feeding dex_aggregator.trades
+      with uniswap v4 as the aggregator.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index

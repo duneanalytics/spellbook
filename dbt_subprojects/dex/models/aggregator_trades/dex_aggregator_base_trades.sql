@@ -16,6 +16,7 @@
     , ref('yield_yak_base_trades')
     , ref('unidex_optimism_base_trades')
     , ref('openocean_base_trades')
+    , ref('uniswap_v4_aggregator_base_trades')
 ] %}
 
 with base_union as (
