@@ -17,7 +17,7 @@
 -- matching the PUSH4-prefixed selectors keeps the check deterministic and
 -- self-maintaining (no static address list).
 
-{% set chains = ['arbitrum','avalanche_c','base','blast','bnb','celo','ethereum','ink','monad','optimism','polygon','tempo','unichain','worldchain','zora'] %}
+{% set chains = uniswap_v4_chains() %}
 
 {% for chain in chains %}
 select

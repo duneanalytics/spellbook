@@ -140,7 +140,7 @@ FROM
 {#- aggregator-hook swaps emit an empty Swap event (amount0=0, amount1=0), so the event-based
     direction always falls through to the ELSE branch; for those rows the direction must come
     from the call swapDelta (same swapper-perspective sign convention) -#}
-{%- set buy_is_currency1 = "CASE WHEN ah.address IS NOT NULL THEN (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0') ELSE (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0') END" %}
+{%- set buy_is_currency1 = "(ah.address IS NOT NULL AND (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0')) OR (ah.address IS NULL AND (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0'))" %}
 {%- else %}
 {%- set buy_is_currency1 = "e.amount0 < INT256 '0' OR e.amount1 > INT256 '0'" %}
 {%- endif %}
