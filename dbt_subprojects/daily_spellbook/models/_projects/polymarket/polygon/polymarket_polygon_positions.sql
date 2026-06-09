@@ -41,10 +41,11 @@ positions_to_emit as (
 
   union all
 
-  -- Lower-bound on market_start_time partition-prunes positions_raw to the
-  -- affected markets' lifespans (no upper bound: positions_raw forward-fills
-  -- non-zero balances past resolved_on_timestamp for unredeemed holders, and
-  -- those post-resolution rows still need the outcome propagated to them).
+  -- Bounded by market_start_time (lower) and current_date (upper) — two-sided
+  -- range so Trino can push both bounds as join dynamic filters. The upper
+  -- bound of current_date covers post-resolution rows (positions_raw forward-
+  -- fills non-zero balances past resolved_on_timestamp for unredeemed holders,
+  -- and those still need outcome propagation).
   select
     p.day,
     p.address,
@@ -53,7 +54,8 @@ positions_to_emit as (
   from {{ ref('polymarket_polygon_positions_raw') }} as p
   inner join changed_markets as cm
     on p.token_id = cm.token_id
-    and p.day >= cast(try_cast(cm.market_start_time as timestamp) as date)
+    and p.day between cast(try_cast(cm.market_start_time as timestamp) as date)
+                  and current_date
   where not ({{ incremental_predicate('p.day') }})
 )
 
