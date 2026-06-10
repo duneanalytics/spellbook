@@ -309,7 +309,7 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'thevaizman']
     config:
       tags: ['oneinch', 'ar', 'trades']
     description: >
@@ -322,6 +322,7 @@ models:
               - tx_hash
               - trace_address
               - evt_index
+      - oneinch_no_cross_chain_placeholder_tokens
     columns:
       - name: blockchain
         data_tests:
@@ -358,7 +359,7 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -370,6 +371,7 @@ models:
               - blockchain
               - tx_hash
               - evt_index
+      - oneinch_no_cross_chain_placeholder_tokens
     columns:
       - name: blockchain
         data_tests:

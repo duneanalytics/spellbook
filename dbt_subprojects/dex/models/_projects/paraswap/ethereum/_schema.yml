@@ -25,7 +25,7 @@ models:
       - check_dex_aggregator_seed:
          arguments:
            blockchain: ethereum
-           project: paraswap
+           project: velora
            version: 4
     columns:
       - &blockchain
@@ -122,7 +122,7 @@ models:
       - check_dex_aggregator_seed:
          arguments:
            blockchain: ethereum
-           project: paraswap
+           project: velora
            version: 5
     columns:
       - *blockchain
@@ -174,7 +174,7 @@ models:
       - check_dex_aggregator_seed:
          arguments:
            blockchain: ethereum
-           project: paraswap
+           project: velora
            version: 6
     columns:
       - *blockchain

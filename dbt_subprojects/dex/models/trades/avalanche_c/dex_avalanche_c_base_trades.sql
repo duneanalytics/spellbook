@@ -30,7 +30,6 @@
     , ref('pharaoh_avalanche_c_base_trades')
     , ref('kyberswap_avalanche_c_base_trades')
     , ref('platypus_finance_avalanche_c_base_trades')
-    , ref('openocean_avalanche_c_base_trades')
     , ref('woofi_avalanche_c_base_trades')
     , ref('curvefi_avalanche_c_base_trades')
     , ref('hashflow_avalanche_c_base_trades')

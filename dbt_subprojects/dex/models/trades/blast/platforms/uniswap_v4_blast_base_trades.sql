@@ -1,24 +1,38 @@
 {{ config(
     schema = 'uniswap_v4_blast'
     , alias = 'base_trades'
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['tx_hash', 'evt_index']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , materialized = 'view'
     , tags=['static']
     , post_hook='{{ hide_spells() }}'
     )
 }}
 
-{{
-    uniswap_compatible_v4_trades(
-        blockchain = 'blast'
-        , project = 'uniswap'
-        , version = '4'
-        , PoolManager_call_Swap = source('uniswap_v4_blast', 'PoolManager_call_Swap') 
-        , PoolManager_evt_Swap = source('uniswap_v4_blast', 'PoolManager_evt_Swap') 
-        , pool_manager_addr = '0x1631559198a9e474033433b2958dabc135ab6446'
-        , start_date = '2025-01-23'
-    )
-}}
+-- venue-side filter: swaps on BaseAggregatorHook pools are routed to an external DEX
+-- and are reclassified into dex_aggregator.trades (see uniswap_v4_blast_aggregator_base_trades);
+-- the heavy swap parsing lives in uniswap_v4_blast_swaps
+select
+        blockchain
+        , project
+        , version
+        , block_month
+        , block_date
+        , block_time
+        , block_number
+        , token_bought_amount_raw
+        , token_sold_amount_raw
+        , token_bought_address
+        , token_sold_address
+        , taker
+        , maker
+        , project_contract_address
+        , tx_hash
+        , evt_index
+        , sender
+        , hooks
+        , fee
+        , liquidity
+        , sqrtPriceX96
+        , tick
+        , call_trace_address
+from {{ ref('uniswap_v4_blast_swaps') }}
+where not is_aggregator_hook_swap
