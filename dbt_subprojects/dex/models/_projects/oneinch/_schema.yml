@@ -430,14 +430,19 @@ models:
           arguments:
             combination_of_columns:
               - blockchain
-              - tx_hash
-              - call_trace_address
+              - block_month
+              - block_date
+              - execution_id
     columns:
       - name: blockchain
         data_tests:
           - not_null
       - name: block_month
+        data_tests:
+          - not_null
       - name: block_date
+        data_tests:
+          - not_null
       - name: block_time
       - name: tx_hash
         data_tests:
