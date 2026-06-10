@@ -1,9 +1,9 @@
 {{ config(
         schema = 'nft_ethereum'
         , alias = 'wallet_metrics_reservoir_floors'
-        , materialized = 'incremental'
+        , materialized = 'table'
         , file_format = 'delta'
-        , incremental_strategy = 'append'
+        , tags = ['static']
         , post_hook = '{{ hide_spells() }}'
         )
 }}
@@ -14,8 +14,8 @@
 -- on every run to extract the ~11.4K rows still valid in the future. We materialize just that candidate
 -- slice once; the consumer re-applies valid_until_dt > current_date (+ row_number/avg) so output is
 -- unchanged over time, including the handful of rows whose validity window later closes.
--- The is_incremental() guard makes every run after the first build a no-op. If reservoir is revived,
--- rebuild with --full-refresh.
+-- Tagged static: builds only on deploy, never on the regular schedule. If reservoir is revived,
+-- trigger a redeploy of this model to refresh the snapshot.
 select
     contract
   , price_decimal
@@ -25,6 +25,3 @@ select
 from {{ source('reservoir', 'collection_floor_ask_events') }}
 where valid_until_dt > current_date
   and valid_until < 100000000000 -- overflow protection
-{% if is_incremental() %}
-  and false
-{% endif %}
