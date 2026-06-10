@@ -17,6 +17,7 @@
     , ref('unidex_optimism_base_trades')
     , ref('openocean_base_trades')
     , ref('uniswap_v4_aggregator_base_trades')
+    , ref('oneinch_lop_aggregator_trades')
 ] %}
 
 with base_union as (
