@@ -32,6 +32,10 @@ with swap_account_activity as (
             {% else %} 
                 account_activity.block_time >= timestamp '{{query_start_date}}'
             {% endif %} 
+            {% if target.name == 'ci' %}
+            -- bound the full-refresh scan in CI so the build completes (account_activity is ~370 GB/day); prod is unaffected
+            and account_activity.block_time >= now() - interval '3' day
+            {% endif %}
             and tx_success
             and (balance_change > 0 or token_balance_change > 0)
             and exists (
@@ -44,6 +48,9 @@ with swap_account_activity as (
                 {% else %} 
                 and trades.block_time >= timestamp '{{query_start_date}}'
                 {% endif %} 
+                {% if target.name == 'ci' %}
+                and trades.block_time >= now() - interval '3' day
+                {% endif %}
             )
     ),
     payment_legs as (
@@ -92,6 +99,9 @@ with swap_account_activity as (
             {% else %} 
                 block_date >= timestamp '{{query_start_date}}'
             {% endif %} 
+            {% if target.name == 'ci' %}
+            and block_date >= current_date - interval '3' day
+            {% endif %}
     ),
     -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
     aggregated_fee_payments_by_token_by_tx as (
