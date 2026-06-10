@@ -132,12 +132,15 @@ FROM
     , pool_manager_addr = '0x'
     , start_date = '2024-12-01'
     , aggregator_hooks = null
-    , native_token_address = none
+    , native_token_address = null
     )
 %}
 {#- native_token_address: v4 PoolKey uses address(0) for the chain's native token; on chains
-    where Dune's canonical native address differs (e.g. polygon → 0x...1010), pass it here so
-    the erc20-metadata, price and token-transfer joins downstream resolve -#}
+    where Dune's canonical native address differs it must be remapped so the erc20-metadata,
+    price and token-transfer joins downstream resolve. Known chains are covered by the override
+    map below; the param is an explicit escape hatch -#}
+{%- set v4_native_token_overrides = {'polygon': '0x0000000000000000000000000000000000001010'} -%}{#- POL genesis contract -#}
+{%- set native_token_address = native_token_address or v4_native_token_overrides.get(blockchain) -%}
 {#- aggregator_hooks: ref to the BaseAggregatorHook registry; when set, rows get an
     is_aggregator_hook_swap flag and hook swaps derive direction from the call swapDelta -#}
 {%- if aggregator_hooks %}
