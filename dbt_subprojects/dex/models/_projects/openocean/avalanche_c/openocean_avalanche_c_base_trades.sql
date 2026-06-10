@@ -16,7 +16,6 @@
         blockchain = 'avalanche_c',
         evt_swapped = source('openocean_v2_avalanche_c', 'OpenOceanExchange_evt_Swapped'),
         burn_addresses = ['0x0000000000000000000000000000000000000000'],
-        w_native = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7',
-        project_start_date = '2021-09-09'
+        w_native = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
     )
 }}

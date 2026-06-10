@@ -16,7 +16,6 @@
         blockchain = 'bnb',
         evt_swapped = source('openocean_v2_bnb', 'OpenOceanExchange_evt_Swapped'),
         burn_addresses = ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
-        w_native = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
-        project_start_date = '2021-09-18'
+        w_native = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
     )
 }}

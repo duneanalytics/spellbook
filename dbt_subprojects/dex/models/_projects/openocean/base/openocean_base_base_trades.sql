@@ -16,7 +16,6 @@
         blockchain = 'base',
         evt_swapped = source('openocean_v2_base', 'OpenOceanExchange_evt_Swapped'),
         burn_addresses = ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
-        w_native = '0x4200000000000000000000000000000000000006',
-        project_start_date = '2023-08-11'
+        w_native = '0x4200000000000000000000000000000000000006'
     )
 }}

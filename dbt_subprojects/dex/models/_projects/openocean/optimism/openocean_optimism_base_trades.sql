@@ -16,7 +16,6 @@
         blockchain = 'optimism',
         evt_swapped = source('openocean_v2_optimism', 'OpenOceanExchangeProxy_evt_Swapped'),
         burn_addresses = ['0x0000000000000000000000000000000000000000'],
-        w_native = '0x4200000000000000000000000000000000000006',
-        project_start_date = '2022-01-20'
+        w_native = '0x4200000000000000000000000000000000000006'
     )
 }}

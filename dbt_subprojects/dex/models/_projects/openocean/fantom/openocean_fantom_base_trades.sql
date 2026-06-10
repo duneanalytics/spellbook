@@ -16,7 +16,6 @@
         blockchain = 'fantom',
         evt_swapped = source('open_ocean_fantom', 'OpenOceanExchange_evt_Swapped'),
         burn_addresses = ['0x0000000000000000000000000000000000000000'],
-        w_native = '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
-        project_start_date = '2021-09-18'
+        w_native = '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
     )
 }}

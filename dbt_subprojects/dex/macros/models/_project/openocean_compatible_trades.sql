@@ -3,13 +3,14 @@
     , evt_swapped = null
     , burn_addresses = []
     , w_native = null
-    , project_start_date = null
     )
 %}
 
 WITH dexs AS (
     SELECT
         t.evt_block_time AS block_time,
+        CAST(date_trunc('day', t.evt_block_time) AS date) AS block_date,
+        t.evt_block_number AS block_number,
         t.dstReceiver AS taker,
         CAST(NULL AS VARBINARY) AS maker,
         t.returnAmount AS token_bought_amount_raw,
@@ -26,33 +27,35 @@ WITH dexs AS (
     {% endif %}
 )
 
+, dexs_with_tx AS (
+    {{
+        add_tx_columns(
+            model_cte = 'dexs'
+            , blockchain = blockchain
+            , columns = ['from', 'to']
+        )
+    }}
+)
+
 SELECT
     '{{ blockchain }}' AS blockchain,
     'openocean' AS project,
     '2' AS version,
-    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
-    CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
-    dexs.block_time,
-    dexs.token_bought_amount_raw,
-    dexs.token_sold_amount_raw,
-    dexs.token_bought_address,
-    dexs.token_sold_address,
-    dexs.taker,
-    dexs.maker,
-    dexs.project_contract_address,
-    dexs.tx_hash,
-    tx."from" AS tx_from,
-    tx.to AS tx_to,
-    dexs.trace_address,
-    dexs.evt_index
-FROM dexs
-INNER JOIN {{ source(blockchain, 'transactions') }} tx
-    ON tx.hash = dexs.tx_hash
-    {% if not is_incremental() %}
-    AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('tx.block_time') }}
-    {% endif %}
+    block_date,
+    CAST(date_trunc('month', block_time) AS date) AS block_month,
+    block_time,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    tx_from,
+    tx_to,
+    trace_address,
+    evt_index
+FROM dexs_with_tx
 
 {% endmacro %}
