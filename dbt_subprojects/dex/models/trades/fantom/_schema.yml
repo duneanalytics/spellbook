@@ -162,26 +162,6 @@ models:
           arguments:
             seed_file: ref('spartacus_exchange_fantom_base_trades_seed')
 
-  - name: openocean_fantom_base_trades
-    meta:
-      blockchain: fantom
-      sector: dex
-      project: openocean
-      contributors: Henrystats, tomfutago
-    config:
-      tags: [ 'fantom', 'dex', 'trades', 'openocean' ]
-    description: "openocean fantom base trades"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - tx_hash
-              - evt_index
-      - check_dex_base_trades_seed:
-          arguments:
-            seed_file: ref('openocean_fantom_base_trades_seed')
-
-
   - name: beethoven_x_fantom_base_trades
     meta:
       blockchain: fantom
