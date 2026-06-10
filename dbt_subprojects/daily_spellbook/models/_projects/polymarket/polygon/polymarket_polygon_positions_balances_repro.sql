@@ -96,14 +96,22 @@ daily_deltas as (
 -- `last_updated` is the underlying change day; using `max(day)` would rewrite
 -- `last_updated` for every inactive pair on every incremental run.
 prior_balances as (
+  -- {{ this }} is a daily forward-filled snapshot, so the latest pre-window `day`
+  -- partition already carries the current balance per (address, token_id) with
+  -- `last_updated` = its last real-change day. Reading just that partition is
+  -- equivalent to max_by(balance_raw, last_updated) over all history: pairs absent
+  -- from it are closed positions (balance_raw = 0) whose forward-fill stops before
+  -- the window, so they emit no output rows. Collapses a full-history self-scan
+  -- (~835 GB, referenced twice) to a single-partition read (~7 GB).
   select
     address,
     token_id,
-    max(last_updated) as day,
-    max_by(balance_raw, last_updated) as balance_raw
+    last_updated as day,
+    balance_raw
   from {{ this }}
-  where not {{ incremental_predicate('day') }}
-  group by 1, 2
+  where day = (
+    select max(day) from {{ this }} where not {{ incremental_predicate('day') }}
+  )
 ),
 
 window_deltas as (
