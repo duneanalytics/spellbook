@@ -375,26 +375,6 @@ models:
             seed_file: ref('openxswap_optimism_base_trades_seed')
 
 
-  - name: openocean_optimism_base_trades
-    meta:
-      blockchain: optimism
-      sector: dex
-      project: openocean
-      contributors: ARDev097, tomfutago
-    config:
-      tags: [ 'optimism', 'dex', 'trades', 'openocean' ]
-    description: "openocean optimism base trades"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - tx_hash
-              - evt_index
-      - check_dex_base_trades_seed:
-          arguments:
-            seed_file: ref('openocean_optimism_base_trades_seed')
-
-
   - name: opx_finance_optimism_base_trades
     meta:
       blockchain: optimism

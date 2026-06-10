@@ -51,7 +51,6 @@
     , ref('oasisswap_base_base_trades')
     , ref('leetswap_v2_base_base_trades')
     , ref('wombat_exchange_base_base_trades')
-    , ref('openocean_base_base_trades')
     , ref('rocketswap_base_base_trades')
     , ref('alienbase_base_base_trades')
     , ref('alienbase_v3_base_base_trades')

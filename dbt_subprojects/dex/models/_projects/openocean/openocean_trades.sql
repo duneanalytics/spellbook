@@ -6,4 +6,6 @@
     )
 }}
 
-{{ dex_project_trades('openocean') }}
+SELECT *
+FROM {{ ref('dex_aggregator_trades') }}
+WHERE project = 'openocean'
