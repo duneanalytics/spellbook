@@ -413,7 +413,7 @@ models:
       blockchain: base
       sector: dex
       project: kyberswap
-      contributors: lldao
+      contributors: [lldao, thevaizman]
     config:
       tags: ["base", "dex", "trades", "kyberswap"]
     description: "kyberswap base  base trades"
@@ -427,7 +427,8 @@ models:
           arguments:
             seed_file: ref('kyberswap_base_base_trades_seed')
             filter:
-              version: 2
+              version:
+                - elastic
 
   - name: woofi_base_base_trades
     meta:
