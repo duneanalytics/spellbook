@@ -1,3 +1,5 @@
+{%- set stream = oneinch_lo_cfg_macro() -%}
+
 {{
     config(
         schema = 'oneinch',
@@ -12,7 +14,10 @@
     )
 }}
 
-{%- set lop_chains = ['arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'fantom', 'gnosis', 'linea', 'optimism', 'polygon', 'sonic', 'unichain', 'zksync'] -%}
+{% set window_guard %}
+        {% if var('dev_dates', false) -%} and block_date > current_date - interval '3' day
+        {%- elif is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+{% endset %}
 
 -- LOP fills that a resolver settled on an underlying DEX in the same tx: the venue's
 -- own row is already in dex_<blockchain>_base_trades, so keeping the '1inch-LOP' row
@@ -29,11 +34,11 @@
 --     within that table; they remain in dex.trades unconditionally
 --
 -- Cross-chain identical (tx_hash, call_trace_address) replays are an accepted
--- ~0-probability residual (the evt_index window downstream is tx_hash-only).
+-- ~0-probability residual (the evt_index window is tx_hash-only).
 
 with
 
-lop_fills as (
+fills as (
     select
         blockchain
         , block_month
@@ -42,14 +47,14 @@ lop_fills as (
         , tx_hash
         , call_trace_address
         , execution_id
+        , flags
+        , {{ oneinch_lop_evt_index() }} as evt_index -- numbered before the exclusions below
     from {{ ref('oneinch_swaps') }}
     where true
         and mode = 'limits'
         and tx_success
         and call_success
-        and not coalesce(element_at(flags, 'direct'), false)
-        {% if var('dev_dates', false) -%} and block_date > current_date - interval '3' day
-        {%- elif is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+        {{ window_guard }}
 )
 
 , parent_calls as (
@@ -63,23 +68,41 @@ lop_fills as (
         and tx_success
         and call_success
         and not coalesce(element_at(flags, 'second_side'), false) -- second-side rows are relabeled LOP fills, not routing calls
-        {% if var('dev_dates', false) -%} and block_date > current_date - interval '3' day
-        {%- elif is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+        {{ window_guard }}
 )
 
-, venue_txs as (
-    {% for chain in lop_chains %}
-    select
-        '{{ chain }}' as blockchain
+, lop_tx_keys as (
+    select distinct
+        blockchain
         , block_month
         , tx_hash
-    from {{ ref('dex_' + chain + '_base_trades') }}
-    where true
-        and block_time >= timestamp '2021-06-01' -- LOP stream start; prunes pre-LOP history on full builds
-        {% if var('dev_dates', false) -%} and block_date > current_date - interval '3' day
-        {%- elif is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
-    {% if not loop.last %} union all {% endif %}
-    {% endfor %}
+    from fills
+)
+
+-- joined to the small LOP tx set (instead of EXISTS with the union as the build side)
+-- so the base trades scans get dynamically filtered on tx_hash
+, venue_txs as (
+    select distinct
+        k.blockchain
+        , k.block_month
+        , k.tx_hash
+    from (
+        {%- for blockchain in oneinch_blockchains_cfg_macro() if blockchain.exposed and stream.name in blockchain.exposed %}
+        select
+            '{{ blockchain.name }}' as blockchain
+            , block_month
+            , tx_hash
+        from {{ ref('dex_' + blockchain.name + '_base_trades') }}
+        where true
+            and block_time >= timestamp '{{ stream.start }}' -- LOP stream start; prunes pre-LOP history on full builds
+            {{ window_guard }}
+        {% if not loop.last %} union all {% endif %}
+        {%- endfor %}
+    ) as b
+    join lop_tx_keys as k
+        on k.blockchain = b.blockchain
+        and k.block_month = b.block_month
+        and k.tx_hash = b.tx_hash
 )
 
 -- output --
@@ -92,8 +115,10 @@ select
     , f.tx_hash
     , f.call_trace_address
     , f.execution_id
-from lop_fills as f
+    , f.evt_index
+from fills as f
 where true
+    and not coalesce(element_at(f.flags, 'direct'), false)
     and not exists ( -- keep-guard: fill is nested under a parent execution of the same tx
         select 1
         from parent_calls as p

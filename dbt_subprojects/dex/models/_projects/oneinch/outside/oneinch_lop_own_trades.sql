@@ -10,6 +10,7 @@
 {% set src_symbol = "coalesce(src_executed_symbol, '')" %}
 {% set dst_symbol = "coalesce(dst_executed_symbol, '')" %}
 {% set placeholder_tokens = oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') %}
+{% set maturity_delay = "interval '6' hour" %}
 
 
 
@@ -18,7 +19,7 @@ with fills as (
     -- kept rows must retain their historical evt_index because dex_<blockchain>_trades
     -- merges can only upsert, never delete
     select *
-        , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
+        , {{ oneinch_lop_evt_index() }} as evt_index
     from {{ ref('oneinch_swaps') }}
     where true
         and mode = 'limits'
@@ -71,4 +72,4 @@ where true
     -- build from decoded events; a fill merged into dex_<blockchain>_trades before its
     -- venue's event decodes would never be removed (merge can't delete), so fills only
     -- pass through once old enough for the venue side to have landed
-    and f.block_time <= now() - interval '6' hour
+    and f.block_time <= now() - {{ maturity_delay }}

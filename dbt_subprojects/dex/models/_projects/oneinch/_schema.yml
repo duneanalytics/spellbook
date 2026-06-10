@@ -448,6 +448,9 @@ models:
       - name: execution_id
         data_tests:
           - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: oneinch_lop_aggregator_trades
     meta:
