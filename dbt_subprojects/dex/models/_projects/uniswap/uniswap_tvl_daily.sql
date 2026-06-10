@@ -219,6 +219,11 @@ daily_events as (
         , amount1
     from 
     {{ ref('uniswap_daily_agg_liquidity_events') }}
+    {% if target.name == 'ci' %}
+    -- bound the CI full-refresh scan so the initial build completes under the 90-min timeout and the
+    -- unique_combination_of_columns test runs on real CI data; prod renders without this.
+    where block_date >= current_date - interval '14' day
+    {% endif %}
 ),
 
 daily_cum as (
