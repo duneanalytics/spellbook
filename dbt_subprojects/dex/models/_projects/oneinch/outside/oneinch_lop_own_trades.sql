@@ -45,3 +45,6 @@ where true
     and mode = 'limits'
     and tx_success
     and call_success
+    -- exclude Fusion+ cross-chain fills: the ERC20True placeholder leg makes these degenerate single-chain rows
+    and (src_token_address is null or src_token_address not in ({{ oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') }}))
+    and (dst_token_address is null or dst_token_address not in ({{ oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') }}))

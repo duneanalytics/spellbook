@@ -309,7 +309,7 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'thevaizman']
     config:
       tags: ['oneinch', 'ar', 'trades']
     description: >
@@ -340,7 +340,15 @@ models:
       - name: token_sold_amount_raw
       - name: amount_usd
       - name: token_bought_address
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "not in (0xda0000d4000015a526378bb6fafc650cea5966f8, 0xd66097c27eb8dee404bac235737932260edc6f3b)"
       - name: token_sold_address
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "not in (0xda0000d4000015a526378bb6fafc650cea5966f8, 0xd66097c27eb8dee404bac235737932260edc6f3b)"
       - name: taker
       - name: maker
       - name: project_contract_address
@@ -358,7 +366,7 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -389,7 +397,15 @@ models:
       - name: token_sold_amount_raw
       - name: amount_usd
       - name: token_bought_address
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "not in (0xda0000d4000015a526378bb6fafc650cea5966f8, 0xd66097c27eb8dee404bac235737932260edc6f3b)"
       - name: token_sold_address
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "not in (0xda0000d4000015a526378bb6fafc650cea5966f8, 0xd66097c27eb8dee404bac235737932260edc6f3b)"
       - name: taker
       - name: maker
       - name: project_contract_address
