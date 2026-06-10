@@ -1,4 +1,5 @@
 {%- set stream = oneinch_lo_cfg_macro() -%}
+{%- set placeholder_tokens = oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') -%}
 
 {{
     config(
@@ -54,6 +55,10 @@ fills as (
         and mode = 'limits'
         and tx_success
         and call_success
+        -- same pre-numbering predicates as oneinch_lop_own_trades (evt_index parity!):
+        -- Fusion+ cross-chain placeholder fills are excluded from both trade views (CUR2-2665)
+        and (src_token_address is null or src_token_address not in ({{ placeholder_tokens }}))
+        and (dst_token_address is null or dst_token_address not in ({{ placeholder_tokens }}))
         {{ window_guard }}
 )
 
