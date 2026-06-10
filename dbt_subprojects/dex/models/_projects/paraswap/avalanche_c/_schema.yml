@@ -25,7 +25,7 @@ models:
       - check_dex_aggregator_seed:
          arguments:
            blockchain: avalanche_c
-           project: paraswap
+           project: velora
            version: 5
     columns:
       - &blockchain
@@ -123,7 +123,7 @@ models:
       - check_dex_aggregator_seed:
          arguments:
            blockchain: avalanche_c
-           project: paraswap
+           project: velora
            version: 6
     columns:
       - *blockchain
