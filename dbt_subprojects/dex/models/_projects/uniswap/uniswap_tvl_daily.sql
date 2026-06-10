@@ -97,6 +97,10 @@ days as (
         timestamp as day 
     from 
     {{ source('utils','days') }}
+    -- bound the calendar to the forward-fill window: the join below only matches days >= the earliest
+    -- anchor (block_date), so earlier days can never join. Without this, ~6.4k days of full history get
+    -- cross-joined against every anchor row, exploding into a nested-loop scan (the model's top cost).
+    where timestamp >= (select min(block_date) from daily_events_final)
 ),
 
 tvl_daily as (
@@ -234,6 +238,9 @@ days as (
         timestamp as day 
     from 
     {{ source('utils','days') }}
+    -- bound the calendar to the forward-fill window (see incremental branch); prunes the same
+    -- full-history cross-join on a full refresh.
+    where timestamp >= (select min(block_date) from daily_events)
 ),
 
 tvl_daily as (
