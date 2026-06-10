@@ -9,6 +9,7 @@
 
 {% set src_symbol = "coalesce(src_executed_symbol, '')" %}
 {% set dst_symbol = "coalesce(dst_executed_symbol, '')" %}
+{% set placeholder_tokens = oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') %}
 
 
 
@@ -45,3 +46,6 @@ where true
     and mode = 'limits'
     and tx_success
     and call_success
+    -- exclude Fusion+ cross-chain fills: the ERC20True placeholder leg makes these degenerate single-chain rows
+    and (src_token_address is null or src_token_address not in ({{ placeholder_tokens }}))
+    and (dst_token_address is null or dst_token_address not in ({{ placeholder_tokens }}))
