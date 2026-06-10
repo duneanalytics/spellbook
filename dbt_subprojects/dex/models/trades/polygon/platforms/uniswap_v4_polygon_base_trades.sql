@@ -9,13 +9,15 @@
     )
 }}
 
+{#- the macro remaps the v4 PoolKey's address(0) native legs to the POL genesis contract
+    (Dune's canonical polygon native address) via its built-in per-chain override map -#}
 {{
     uniswap_compatible_v4_trades(
         blockchain = 'polygon'
         , project = 'uniswap'
         , version = '4'
-        , PoolManager_call_Swap = source('uniswap_v4_polygon', 'PoolManager_call_Swap') 
-        , PoolManager_evt_Swap = source('uniswap_v4_polygon', 'PoolManager_evt_Swap') 
+        , PoolManager_call_Swap = source('uniswap_v4_polygon', 'PoolManager_call_Swap')
+        , PoolManager_evt_Swap = source('uniswap_v4_polygon', 'PoolManager_evt_Swap')
         , pool_manager_addr = '0x67366782805870060151383f4bbff9dab53e5cd6'
         , start_date = '2025-01-22'
     )
