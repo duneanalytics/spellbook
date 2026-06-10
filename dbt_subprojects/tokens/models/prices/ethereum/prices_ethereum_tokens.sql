@@ -2047,7 +2047,22 @@ FROM
     ('vfson-vinfast-auto-tokenized-stock-ondo', 'ethereum', 'VFSon', 0xbfe6e76a2fe099392064fbb3e868558c82beb917, 18),
     ('von-visa-tokenized-stock-ondo', 'ethereum', 'Von', 0xac37c20c1d0e5285035e056101a64e263ff94a41, 18),
     ('vzon-verizon-ondo-tokenized', 'ethereum', 'VZon', 0x0e3d889d5b857c3e6eb361b9c9ae35bb7ddbd254, 18),
-    ('xyzon-block-ondo-tokenized-stock', 'ethereum', 'XYZon', 0x6cc41275ef02b4eeccc04fc4424849a96f3272aa, 18)
+    ('xyzon-block-ondo-tokenized-stock', 'ethereum', 'XYZon', 0x6cc41275ef02b4eeccc04fc4424849a96f3272aa, 18),
+    --Coinpaprika RWA tokens recently activated (was inactive in source mapping)
+    ('exodon-exodus-movement-tokenized-stock-ondo', 'ethereum', 'EXODon', 0x185e5fa1b84f94d46ef2a33052ad39bd5f326fd8, 18),
+    ('grabon-grab-holdings-tokenized-stock-ondo', 'ethereum', 'GRABon', 0x1c174711f3fd63c4165d6f296b3eb19d17fde94a, 18),
+    ('dbcon-invesco-db-commodity-index-tracking-fund-ondo-tokenized-etf', 'ethereum', 'DBCon', 0x20224080ad516769723c9a4a18325fc4e8c9ab5d, 18),
+    ('cifron-cipher-mining-tokenized-stock-ondo', 'ethereum', 'CIFRon', 0x24e5bc45d5b6cef6f38989ac33df587a3fc850cf, 18),
+    ('cmgon-chipotle-tokenized-stock-ondo', 'ethereum', 'CMGon', 0x25018520138bbab60684ad7983d4432e8b8e926b, 18),
+    ('cibron-first-trust-nasdaq-cybersecurity-tokenized-etf-ondo', 'ethereum', 'CIBRon', 0x42d6e274b8631e5289a8f853e8d1a7baeff3c8d1, 18),
+    ('ewzon-ishares-msci-brazil-tokenized-etf-ondo', 'ethereum', 'EWZon', 0x54021fde36b7c4c4f9c35b02fb9a153ed8f5938a, 18),
+    ('amcon-amc-entertainment-ondo-tokenized-stocks', 'ethereum', 'AMCon', 0x592643a667633bca51cb2387c98b6de6ce549a45, 18),
+    ('ethaon-ishares-ethereum-trust-tokenized-stock-ondo', 'ethereum', 'ETHAon', 0x98284fbc11edd7540e29b896a49817bbe52ddcbd, 18),
+    ('soon-southern-tokenized-stock-ondo', 'ethereum', 'SOon', 0x99aa107e55250a9fe52bb4b5541a59239eb6d974, 18),
+    ('gemion-gemini-space-station-tokenized-stock-ondo', 'ethereum', 'GEMIon', 0xb51db25c920c16f2865c37011c3eec91db946b07, 18),
+    ('figron-figure-technology-solutions-tokenized-stock-ondo', 'ethereum', 'FIGRon', 0xc2dbfe026f17e7bbc17a9e41f9b8d69531887d47, 18),
+    ('enlvon-enlivex-therapeutics-tokenized-stock-ondo', 'ethereum', 'ENLVon', 0xc4e6e80295154d3968519851f73f8dc1a227286f, 18),
+    ('schwon-charles-schwab-ondo-tokenized-stock', 'ethereum', 'SCHWon', 0xe737f948bdfe3beae9423292853ec0579173cebb, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
