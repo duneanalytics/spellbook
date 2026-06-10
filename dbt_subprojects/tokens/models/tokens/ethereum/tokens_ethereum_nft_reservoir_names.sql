@@ -4,7 +4,6 @@
         , materialized = 'table'
         , file_format = 'delta'
         , tags = ['static']
-        , post_hook = '{{ hide_spells() }}'
         )
 }}
 
