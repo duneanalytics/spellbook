@@ -129,10 +129,21 @@ FROM
     , taker_column_name = null
     , maker_column_name = null
     , filter_angstrom_addr = null
-    , pool_manager_addr = '0x' 
+    , pool_manager_addr = '0x'
     , start_date = '2024-12-01'
+    , aggregator_hooks = null
     )
 %}
+{#- aggregator_hooks: ref to the BaseAggregatorHook registry; when set, rows get an
+    is_aggregator_hook_swap flag and hook swaps derive direction from the call swapDelta -#}
+{%- if aggregator_hooks %}
+{#- aggregator-hook swaps emit an empty Swap event (amount0=0, amount1=0), so the event-based
+    direction always falls through to the ELSE branch; for those rows the direction must come
+    from the call swapDelta (same swapper-perspective sign convention) -#}
+{%- set buy_is_currency1 = "(ah.address IS NOT NULL AND (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0')) OR (ah.address IS NULL AND (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0'))" %}
+{%- else %}
+{%- set buy_is_currency1 = "e.amount0 < INT256 '0' OR e.amount1 > INT256 '0'" %}
+{%- endif %}
 WITH dexs AS
 (
     WITH clean_swaps AS (
@@ -239,16 +250,23 @@ WITH dexs AS
         {%- endif %}
 
 )
+    {% if aggregator_hooks %}
+    , agg_hooks as (
+        select address
+        from {{ aggregator_hooks }}
+        where blockchain = '{{ blockchain }}'
+    )
+    {% endif %}
 
-    SELECT 
+    SELECT
         e.evt_block_number AS block_number
     , e.evt_block_time AS block_time
     , {% if taker_column_name -%} t.{{ taker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as taker
     , e.id as maker -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
-    , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN ABS(c.amount1) ELSE ABS(c.amount0) END AS token_bought_amount_raw
-    , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN ABS(c.amount0) ELSE ABS(c.amount1) END AS token_sold_amount_raw
-    , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN c.currency1 ELSE c.currency0 END AS token_bought_address
-    , CASE WHEN e.amount0 < INT256 '0' OR e.amount1 > INT256 '0' THEN c.currency0 ELSE c.currency1 END AS token_sold_address
+    , CASE WHEN {{ buy_is_currency1 }} THEN ABS(c.amount1) ELSE ABS(c.amount0) END AS token_bought_amount_raw
+    , CASE WHEN {{ buy_is_currency1 }} THEN ABS(c.amount0) ELSE ABS(c.amount1) END AS token_sold_amount_raw
+    , CASE WHEN {{ buy_is_currency1 }} THEN c.currency1 ELSE c.currency0 END AS token_bought_address
+    , CASE WHEN {{ buy_is_currency1 }} THEN c.currency0 ELSE c.currency1 END AS token_sold_address
     , e.contract_address AS project_contract_address
     , e.evt_tx_hash AS tx_hash
     , e.evt_index
@@ -260,11 +278,17 @@ WITH dexs AS
     , e.sqrtPriceX96
     , e.tick
     , c.call_trace_address
+    {%- if aggregator_hooks %}
+    , (ah.address is not null) as is_aggregator_hook_swap
+    {%- endif %}
 
-    FROM clean_swaps c 
-    JOIN swap_evt e on c.call_block_number = e.evt_block_number 
+    FROM clean_swaps c
+    JOIN swap_evt e on c.call_block_number = e.evt_block_number
         and c.call_tx_hash = e.evt_tx_hash
-        and c.call_rn = e.evt_rn 
+        and c.call_rn = e.evt_rn
+    {% if aggregator_hooks %}
+    LEFT JOIN agg_hooks ah on ah.address = c.hooks
+    {% endif %}
     {% if filter_angstrom_addr %}
     WHERE NOT c.hooks = {{ filter_angstrom_addr }}
     {% endif %}
@@ -350,6 +374,9 @@ SELECT
     , dexs.sqrtPriceX96
     , dexs.tick
     , dexs.call_trace_address
+    {%- if aggregator_hooks %}
+    , dexs.is_aggregator_hook_swap
+    {%- endif %}
 FROM
-    get_taker dexs 
+    get_taker dexs
 {% endmacro %}

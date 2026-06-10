@@ -273,3 +273,32 @@ models:
               - block_month
               - tx_hash
               - evt_index
+
+  - name: uniswap_v4_aggregator_hooks
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain,celo,monad,tempo
+      sector: dex
+      project: uniswap
+      contributors: thevaizman
+    config:
+      tags: ['dex', 'uniswap', 'v4', 'hooks']
+    description: >
+      Registry of Uniswap V4 BaseAggregatorHook contracts across all V4 chains, detected
+      deterministically from deployed bytecode (PUSH4-prefixed selectors of pollTokenJar()
+      and pseudoTotalValueLocked(bytes32)). These hooks route swaps to an external DEX, so
+      their pools' swaps are classified as aggregator trades.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: address
+        data_tests:
+          - not_null
+      - name: created_at
+
