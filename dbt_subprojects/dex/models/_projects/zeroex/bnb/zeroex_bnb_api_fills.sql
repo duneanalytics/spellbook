@@ -13,6 +13,10 @@
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
+{%- if target.name == 'ci' -%}
+{%- set zeroex_v3_start_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d') -%}
+{%- set zeroex_v4_start_date = zeroex_v3_start_date -%}
+{%- endif -%}
 
 -- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (

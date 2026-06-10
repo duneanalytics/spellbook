@@ -14,6 +14,10 @@
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
+{%- if target.name == 'ci' -%}
+{%- set zeroex_v3_start_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d') -%}
+{%- set zeroex_v4_start_date = zeroex_v3_start_date -%}
+{%- endif -%}
 
 -- Shared staging model for the 0x API affiliate/tracker scan on Polygon.
 -- Materializing this once breaks the CTE inlining that previously re-scanned
