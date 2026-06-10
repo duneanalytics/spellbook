@@ -322,6 +322,7 @@ models:
               - tx_hash
               - trace_address
               - evt_index
+      - oneinch_no_cross_chain_placeholder_tokens
     columns:
       - name: blockchain
         data_tests:
@@ -340,15 +341,7 @@ models:
       - name: token_sold_amount_raw
       - name: amount_usd
       - name: token_bought_address
-        data_tests:
-          - dbt_utils.expression_is_true:
-              arguments:
-                expression: "not in (0xda0000d4000015a526378bb6fafc650cea5966f8, 0xd66097c27eb8dee404bac235737932260edc6f3b)"
       - name: token_sold_address
-        data_tests:
-          - dbt_utils.expression_is_true:
-              arguments:
-                expression: "not in (0xda0000d4000015a526378bb6fafc650cea5966f8, 0xd66097c27eb8dee404bac235737932260edc6f3b)"
       - name: taker
       - name: maker
       - name: project_contract_address
@@ -378,6 +371,7 @@ models:
               - blockchain
               - tx_hash
               - evt_index
+      - oneinch_no_cross_chain_placeholder_tokens
     columns:
       - name: blockchain
         data_tests:
@@ -397,15 +391,7 @@ models:
       - name: token_sold_amount_raw
       - name: amount_usd
       - name: token_bought_address
-        data_tests:
-          - dbt_utils.expression_is_true:
-              arguments:
-                expression: "not in (0xda0000d4000015a526378bb6fafc650cea5966f8, 0xd66097c27eb8dee404bac235737932260edc6f3b)"
       - name: token_sold_address
-        data_tests:
-          - dbt_utils.expression_is_true:
-              arguments:
-                expression: "not in (0xda0000d4000015a526378bb6fafc650cea5966f8, 0xd66097c27eb8dee404bac235737932260edc6f3b)"
       - name: taker
       - name: maker
       - name: project_contract_address
