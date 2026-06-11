@@ -68,7 +68,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'base'
     and contract_address in (select distinct token_address from tokens)
 
