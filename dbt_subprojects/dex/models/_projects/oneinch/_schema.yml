@@ -465,10 +465,12 @@ models:
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
-        1inch limit order protocol fills settled on an underlying DEX - base trades for
-        dex_aggregator.trades (the venue's own row stays in dex.trades; the intent-layer
-        fill is recorded here, user perspective like oneinch_ar_trades; symbols/amounts/usd
-        are enriched downstream like every other dex_aggregator base trades model)
+        1inch limit order protocol fills settled on an underlying DEX - special for
+        dex_aggregator.trades, served as-is like oneinch_ar_trades (the venue's own row
+        stays in dex.trades; the intent-layer fill is recorded here, user perspective,
+        carrying 1inch's own amounts and guarded amount_usd - these values are NOT
+        re-derived by generic erc20-decimals enrichment, which is unsafe for this
+        lineage's raw amounts; see CUR2-2693 / the #9747 revert)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -491,8 +493,14 @@ models:
       - name: block_date
       - name: block_month
       - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
       - name: token_bought_amount_raw
       - name: token_sold_amount_raw
+      - name: amount_usd
       - name: token_bought_address
       - name: token_sold_address
       - name: taker
