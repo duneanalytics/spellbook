@@ -1,4 +1,4 @@
-{{  
+{{
     config(
         schema = 'oneinch',
         alias = 'lop_own_trades',
@@ -10,8 +10,25 @@
 {% set src_symbol = "coalesce(src_executed_symbol, '')" %}
 {% set dst_symbol = "coalesce(dst_executed_symbol, '')" %}
 {% set placeholder_tokens = oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') %}
+{% set maturity_delay = "interval '6' hour" %}
 
 
+
+with fills as (
+    -- evt_index is numbered over ALL limits fills, before the venue-settled exclusion:
+    -- kept rows must retain their historical evt_index because dex_<blockchain>_trades
+    -- merges can only upsert, never delete
+    select *
+        , {{ oneinch_lop_evt_index() }} as evt_index
+    from {{ ref('oneinch_swaps') }}
+    where true
+        and mode = 'limits'
+        and tx_success
+        and call_success
+        -- exclude Fusion+ cross-chain fills: the ERC20True placeholder leg makes these degenerate single-chain rows
+        and (src_token_address is null or src_token_address not in ({{ placeholder_tokens }}))
+        and (dst_token_address is null or dst_token_address not in ({{ placeholder_tokens }}))
+)
 
 select
     blockchain
@@ -40,12 +57,19 @@ select
     , tx_hash
     , tx_from
     , tx_to
-    , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
-from {{ ref('oneinch_swaps') }}
+    , evt_index
+from fills as f
 where true
-    and mode = 'limits'
-    and tx_success
-    and call_success
-    -- exclude Fusion+ cross-chain fills: the ERC20True placeholder leg makes these degenerate single-chain rows
-    and (src_token_address is null or src_token_address not in ({{ placeholder_tokens }}))
-    and (dst_token_address is null or dst_token_address not in ({{ placeholder_tokens }}))
+    and not exists ( -- venue-settled fills are reclassified into dex_aggregator.trades (see oneinch_lop_aggregator_trades)
+        select 1
+        from {{ ref('oneinch_lop_venue_settled_fills') }} as v
+        where true
+            and v.blockchain = f.blockchain
+            and v.block_month = f.block_month
+            and v.execution_id = f.execution_id
+    )
+    -- maturity delay: the 1inch lineage builds from raw traces while venue base trades
+    -- build from decoded events; a fill merged into dex_<blockchain>_trades before its
+    -- venue's event decodes would never be removed (merge can't delete), so fills only
+    -- pass through once old enough for the venue side to have landed
+    and f.block_time <= now() - {{ maturity_delay }}
