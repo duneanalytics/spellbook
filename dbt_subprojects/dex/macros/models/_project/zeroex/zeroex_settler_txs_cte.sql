@@ -1,4 +1,9 @@
 {% macro zeroex_settler_txs_cte(blockchain, start_date) %}
+-- In CI, floor the full-refresh window to a recent slice so the non-pushable
+-- traces scan stays cheap; production (target dunesql) keeps the real start_date.
+{%- if target.name == 'ci' -%}
+    {%- set start_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d') -%}
+{%- endif -%}
 -- Macro to process 0x Protocol settler transactions
 -- This macro identifies and extracts transactions related to the 0x Protocol settler contracts
 -- Returns a CTE with transaction details including block information, method IDs, and trader addresses
