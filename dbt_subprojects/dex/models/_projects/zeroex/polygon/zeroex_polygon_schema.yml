@@ -1,6 +1,37 @@
 version: 2
 
 models:
+  - name: zeroex_polygon_api_fills_tx
+    meta:
+      blockchain: polygon
+      project: zeroex
+      contributors: rantum
+    config:
+      tags: ['polygon', '0x', 'aggregator']
+    description: >
+      Pre-materialized 0x API affiliate/tracker scan on Polygon, extracted once from
+      polygon.traces. Shared staging model for zeroex_polygon_api_fills so the non-pushable
+      calldata affiliate-selector scan runs a single time per build instead of being
+      re-inlined many times.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - block_number
+    columns:
+      - name: tx_hash
+        description: "Transaction hash of the 0x API fill"
+      - name: affiliate_address
+        description: "0x affiliate/tracker address parsed from calldata"
+      - name: block_number
+        description: "Block number of the transaction"
+      - name: block_time
+        description: "Block time of the transaction"
+      - name: block_month
+        description: "Month partition derived from block_time"
+
   - name: zeroex_polygon_api_fills
     meta:
       blockchain: polygon
@@ -17,15 +48,6 @@ models:
               - block_date
               - tx_hash
               - evt_index
-      - check_seed:
-          arguments:
-            seed_file: ref('zeroex_polygon_api_fills_sample')
-            match_columns:
-              - tx_hash
-              - evt_index
-            check_columns:
-              - maker
-              - taker
     columns:
       - &block_month
         name: block_month

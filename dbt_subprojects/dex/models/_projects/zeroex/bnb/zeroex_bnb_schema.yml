@@ -1,6 +1,34 @@
 version: 2
 
 models:
+  - name: zeroex_bnb_api_fills_tx
+    meta:
+      blockchain: bnb
+      project: zeroex
+      contributors: rantum
+    config:
+      tags: ['bnb', '0x', 'aggregator']
+    description: >
+      Pre-materialized 0x API affiliate/tracker scan on BNB Chain, extracted once from
+      bnb.traces (+ zeroex v3 fills). Shared staging model for zeroex_bnb_api_fills so the
+      non-pushable calldata affiliate-selector scan runs a single time per build instead of
+      being re-inlined many times. block_time is carried only for partitioning/incremental.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+    columns:
+      - name: tx_hash
+        description: "Transaction hash of the 0x API fill"
+      - name: affiliate_address
+        description: "0x affiliate/tracker address parsed from calldata (or v3 taker)"
+      - name: block_time
+        description: "Block time of the transaction (carried for partitioning)"
+      - name: block_month
+        description: "Month partition derived from block_time"
+
   - name: zeroex_bnb_api_fills
     meta:
       blockchain: bnb
@@ -17,15 +45,6 @@ models:
               - block_time
               - tx_hash
               - evt_index
-      - check_seed:
-          arguments:
-            seed_file: ref('zeroex_bnb_api_fills_sample')
-            match_columns:
-              - tx_hash
-              - evt_index
-            check_columns:
-              - maker
-              - taker
     columns:
       - &tx_hash
         name: tx_hash

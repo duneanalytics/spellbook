@@ -1,8 +1,8 @@
 ---
 name: dbt-prod-ci-regression
 description: >-
-  Designs and runs DuneSQL regression queries comparing CI test_schema tables to production spells after
-  pipeline-only dbt changes; after SQL is tailored to the feature branch and CI table name, uses Dune MCP
+  Designs and runs DuneSQL regression queries comparing CI tables (`dune.<schema>.<table>`)
+  to production spells after pipeline-only dbt changes; after SQL is tailored to the
   to execute queries and validate parity. Use for prod vs CI regression, lineage parity checks, or row/metric
   validation when data should not drift; invoke manually per branch—not on every edit.
 ---
@@ -17,12 +17,16 @@ description: >-
 
 ## Resolve CI table name
 
-1. **From user**: commit SHA or direct `test_schema.git_dunesql_<hash>_<schema>_<alias>`.
-2. **From git (Spellbook)**: Sub-project workflows use **`on: pull_request`** (e.g. `tokens.yml`). For those runs, `${{ github.sha }}` in `dbt_run.yml` is the **merge commit** GitHub builds for `refs/pull/<N>/merge`—**not** the PR branch head shown in the PR commits list. So **`origin/<branch>` tip (e.g. `4ed0409…`) will not match** the CI hash (e.g. `8d61409…`).  
+**Catalog prefix (required):** CI tables live in the **`dune`** catalog. Always qualify as **`dune.<schema>.<table>`** — omitting the catalog (or using `delta_prod`) yields "schema does not exist".
+
+1. **From GitHub Actions logs (preferred):** copy the exact relation from **`dbt run initial model(s)`**, then prefix with `dune.`  
+   Current Spellbook CI schema: `dune_spellbook_ci__tmp_pr<PR>_<run_id>_<attempt>` (set in `dbt_run.yml` via `DBT_CI_SCHEMA`).  
+   Example: `dune.dune_spellbook_ci__tmp_pr9744_27302471352_1.zeroex_bnb_api_fills`
+2. **Legacy format** (older runs): `dune.test_schema.git_dunesql_<hash>_<schema>_<alias>` where suffix is **`{custom_schema}_{alias}`** from model config (`tokens.transfers` → `tokens_transfers`).
+3. **From git (legacy hash only):** Sub-project workflows use **`on: pull_request`**. For those runs, `${{ github.sha }}` is the **merge commit** for `refs/pull/<N>/merge`—**not** the PR branch head.  
    **Derive locally:** `git fetch origin pull/<PR_NUMBER>/merge` then `git rev-parse FETCH_HEAD | tr - _ | cut -c1-7`.  
-   **Or** copy the hash from **Actions** (workflow run / logs). Workflows triggered by **`push`** (if any) would use the pushed commit—then `origin/<branch>` matches.
-3. **Suffix**: **`{custom_schema}_{alias}`** from the model config (`tokens.transfers` → `tokens_transfers`). Confirm in **`dbt run initial model(s)`** when unsure.
-4. **From GitHub Actions**: logs show the exact materialized name if discovery fails.
+   **Or** copy the hash from **Actions** logs.
+4. **Table name:** dbt **model name** (e.g. `zeroex_bnb_api_fills`) for current CI schema; `{schema}_{alias}` suffix for legacy `git_dunesql_*` tables.
 
 Spellbook note: see also [.cursor/skills/debug-ci/SKILL.md](../debug-ci/SKILL.md) for CI context. **Never** embed API keys in the skill.
 
@@ -91,7 +95,7 @@ with ci as (
 		, count(1) as total_rows
 		, sum(<metric_column>) as total_metric
 	from
-		test_schema.git_dunesql_<GIT_HASH>_<schema>_<alias>
+		dune.<ci_schema>.<ci_table>
 	where
 		block_date != current_date
 		and block_date >= date '<MIN_BLOCK_DATE>'
