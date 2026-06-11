@@ -363,12 +363,7 @@ models:
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
-        1inch limit order protocol trades - special for dex.trades.
-        Fills settled by a resolver on an underlying DEX in the same tx are excluded here
-        (the venue's own row already represents the trade in dex.trades) and reclassified
-        into dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
-        with a maturity delay so the venue side's decoded events have landed before
-        dex_<blockchain>_trades merges them.
+        1inch limit order protocol trades - special for dex.trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -377,9 +372,6 @@ models:
               - tx_hash
               - evt_index
       - oneinch_no_cross_chain_placeholder_tokens
-      - check_dex_base_trades_seed:
-          arguments:
-            seed_file: ref('oneinch_lop_own_trades_seed')
     columns:
       - name: blockchain
         data_tests:
@@ -411,102 +403,6 @@ models:
       - name: evt_index
         data_tests:
           - not_null
-
-  - name: oneinch_lop_venue_settled_fills
-    meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
-      sector: oneinch
-      contributors: ['thevaizman']
-    config:
-      tags: ['oneinch', 'lo']
-    description: >
-        1inch limit order protocol fills that a resolver settled on an underlying DEX in
-        the same tx (the venue's own row co-occurs in dex_<blockchain>_base_trades).
-        These fills are excluded from oneinch_lop_own_trades (dex.trades) and emitted
-        into dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
-        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - blockchain
-              - block_month
-              - block_date
-              - execution_id
-    columns:
-      - name: blockchain
-        data_tests:
-          - not_null
-      - name: block_month
-        data_tests:
-          - not_null
-      - name: block_date
-        data_tests:
-          - not_null
-      - name: block_time
-      - name: tx_hash
-        data_tests:
-          - not_null
-      - name: call_trace_address
-        data_tests:
-          - not_null
-      - name: execution_id
-        data_tests:
-          - not_null
-      - name: evt_index
-        data_tests:
-          - not_null
-
-  - name: oneinch_lop_aggregator_trades
-    meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
-      sector: oneinch
-      contributors: ['thevaizman']
-    config:
-      tags: ['oneinch', 'lo', 'trades']
-    description: >
-        1inch limit order protocol fills settled on an underlying DEX - base trades for
-        dex_aggregator.trades (the venue's own row stays in dex.trades; the intent-layer
-        fill is recorded here, user perspective like oneinch_ar_trades; symbols/amounts/usd
-        are enriched downstream like every other dex_aggregator base trades model)
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - blockchain
-              - tx_hash
-              - trace_address
-              - evt_index
-      - check_dex_aggregator_seed:
-          arguments:
-            blockchain: arbitrum
-            project: 1inch-LOP
-            version: '4.0'
-    columns:
-      - name: blockchain
-        data_tests:
-          - not_null
-      - name: project
-      - name: version
-      - name: block_date
-      - name: block_month
-      - name: block_time
-      - name: token_bought_amount_raw
-      - name: token_sold_amount_raw
-      - name: token_bought_address
-      - name: token_sold_address
-      - name: taker
-      - name: maker
-      - name: project_contract_address
-      - name: tx_hash
-        data_tests:
-          - not_null
-      - name: tx_from
-      - name: tx_to
-      - name: trace_address
-        data_tests:
-          - not_null
-      - name: evt_index
 
   - name: oneinch_intent_resolvers
     meta:
