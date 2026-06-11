@@ -12,4 +12,7 @@ dependencies = [
 
 [tool.uv]
 exclude-newer = "3 days"
+no-build = true
+# daff 1.3.46 publishes no wheel (sdist-only on all platforms); allow its build
+no-build-package = { daff = false }
 package = false
