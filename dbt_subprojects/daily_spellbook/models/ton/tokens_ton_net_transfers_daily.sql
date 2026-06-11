@@ -10,14 +10,19 @@
 }}
       
 
-with ton_prices as ( -- get price of TON for each day to estimate USD value
+with ton_native_token as ( -- resolve native token by chain, never by symbol (rename-proof: TON -> GRAM)
     select
-        date_trunc('day', minute) as block_date
-        , avg(price) as price
-    from {{ source('prices', 'usd') }}
-    where true
-        and symbol = 'TON' 
-        and blockchain is null
+        coalesce(token_address, 0x0000000000000000000000000000000000000000) as contract_address
+    from {{ source('dune', 'blockchains') }}
+    where name = 'ton'
+), ton_prices as ( -- get price of native TON for each day to estimate USD value
+    select
+        date_trunc('day', p.minute) as block_date
+        , avg(p.price) as price
+    from {{ source('prices', 'usd') }} p
+    inner join ton_native_token t
+        on p.contract_address = t.contract_address
+    where p.blockchain = 'ton'
         {% if is_incremental() %}
         and {{ incremental_predicate('date_trunc(\'day\', minute)') }}
         {% endif %}
