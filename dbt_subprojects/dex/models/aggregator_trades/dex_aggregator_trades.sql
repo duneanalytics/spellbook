@@ -23,6 +23,7 @@
     ,ref('kyberswap_aggregator_trades')
     ,ref('tokenlon_trades')
     ,ref('oneinch_ar_trades')
+    ,ref('oneinch_lop_aggregator_trades')
     ,ref('odos_trades')
     ,ref('sushiswap_agg_trades')
     ,ref('bitget_dex_aggregator_trades')

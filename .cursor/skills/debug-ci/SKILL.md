@@ -34,7 +34,7 @@ Click into the failed workflow run in the "Actions" tab to expand each step's lo
 ### Test Failures
 - **`unique_combination_of_columns` failing**: The model is producing duplicate rows for the unique key. Check your join logic, filters, and whether NULLs are present in key columns.
 - **`not_null` failing**: A unique key column contains NULLs. Add `coalesce()` or filter out NULL rows.
-- **Seed test mismatch**: Model output doesn't match seed expected values. Either update the seed CSV or fix the model logic. Query the CI test table on Dune to compare: `test_schema.git_dunesql_<hash>_<table>`.
+- **Seed test mismatch**: Model output doesn't match seed expected values. Either update the seed CSV or fix the model logic. Query the CI test table on Dune to compare: `dune.<ci_schema>.<model_name>` (see Step 4).
 
 ### Manifest / Extra Models Running
 - **More models running than expected**: The manifest file on main may be out of date. Check if the `commit manifest` workflow in Actions completed successfully. If it's still running or failed, wait for it to finish, then re-trigger CI.
@@ -45,15 +45,27 @@ Click into the failed workflow run in the "Actions" tab to expand each step's lo
 
 ## Step 4: Query CI Test Tables
 
-CI tables are available on Dune for ~24 hours after the run:
+CI tables are available on Dune for ~24 hours after the run. **Always use the `dune.` catalog prefix.**
+
+**Current format** (from `dbt run initial model(s)` logs):
 
 ```sql
 select *
-from test_schema.git_dunesql_<GIT_HASH>_<schema>_<alias>
+from dune.dune_spellbook_ci__tmp_pr<PR>_<run_id>_<attempt>.<model_name>
 limit 100
 ```
 
-For Spellbook, the suffix matches dbt **`schema`** + **`_`** + **`alias`** (e.g. `tokens.transfers` → `tokens_transfers`). Use the exact name from **`dbt run initial model(s)`** logs.
+Example: `dune.dune_spellbook_ci__tmp_pr9744_27302471352_1.zeroex_bnb_api_fills`
+
+**Legacy format:**
+
+```sql
+select *
+from dune.test_schema.git_dunesql_<GIT_HASH>_<schema>_<alias>
+limit 100
+```
+
+For legacy tables, the suffix matches dbt **`schema`** + **`_`** + **`alias`** (e.g. `tokens.transfers` → `tokens_transfers`). For current CI, use the dbt **model name** from logs.
 
 Use these to:
 - Verify data quality before expanding date ranges
