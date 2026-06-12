@@ -132,3 +132,45 @@ models:
             seed_file: ref('balancer_hyperevm_base_trades_seed')
             filter:
               version: 3
+
+  - name: ramsesxyz_legacy_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: ramsesxyz
+      contributors: discochuck
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'ramsesxyz', 'uniswap', 'v2' ]
+    description: "Ramses legacy (uni v2) HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('ramsesxyz_hyperevm_base_trades_seed')
+            filter:
+              version: legacy
+
+  - name: ramsesxyz_cl_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: ramsesxyz
+      contributors: discochuck
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'ramsesxyz', 'uniswap', 'v3' ]
+    description: "Ramses concentrated liquidity HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('ramsesxyz_hyperevm_base_trades_seed')
+            filter:
+              version: cl
