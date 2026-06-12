@@ -13,3 +13,6 @@ dependencies = [
 [tool.uv]
 exclude-newer = "3 days"
 package = false
+no-build = true
+# binary-only, except allow daff (sdist-only, no wheels) to build from source
+no-binary-package = ["daff"]
