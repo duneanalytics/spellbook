@@ -129,10 +129,12 @@ buys_and_sells_nft_trades_no_wash_w_mints as
 ----- FLOOR PRICES -------
 ----- FIRST SOURCE: Reservoir - includes offchain sources
 reservoir_floors as (
+    -- reads a one-time snapshot of the deprecated reservoir community dataset
+    -- (see nft_ethereum_wallet_metrics_reservoir_floors) instead of re-scanning ~61.6 GB hourly
     select contract,
         price_decimal,
         row_number() over (partition by contract order by created_at desc) rn_desc
-    from {{source('reservoir', 'collection_floor_ask_events')}}
+    from {{ ref('nft_ethereum_wallet_metrics_reservoir_floors') }}
     where 1 = 1
     and valid_until_dt > current_date
     and valid_until < 100000000000 -- overflow protection
