@@ -24,21 +24,32 @@ with market_details as (
     token_outcome,
     neg_risk,
     unique_key,
-    token_outcome_name,
-    market_start_time
+    token_outcome_name
   from {{ ref('polymarket_polygon_market_details') }}
 ),
 
 {% if is_incremental() -%}
 
+-- tokens whose latest already-merged row disagrees with market_details on any
+-- metadata column. Tokens with no rows in {{ this }} have nothing to update;
+-- their trades arrive through the recent-window branch below.
 changed_tokens as (
-  select distinct md.token_id
+  select md.token_id
   from market_details md
-  left join {{ this }} t
-    on md.token_id = t.asset_id
-    and t.block_time >= try_cast(md.market_start_time as timestamp)
-  where t.asset_id is null
-    or coalesce(cast(md.event_market_name as varchar), '') != coalesce(cast(t.event_market_name as varchar), '')
+  inner join (
+    select
+      asset_id,
+      max_by(event_market_name, block_time) as event_market_name,
+      max_by(question, block_time) as question,
+      max_by(polymarket_link, block_time) as polymarket_link,
+      max_by(token_outcome, block_time) as token_outcome,
+      max_by(neg_risk, block_time) as neg_risk,
+      max_by(unique_key, block_time) as unique_key,
+      max_by(token_outcome_name, block_time) as token_outcome_name
+    from {{ this }}
+    group by asset_id
+  ) t on md.token_id = t.asset_id
+  where coalesce(cast(md.event_market_name as varchar), '') != coalesce(cast(t.event_market_name as varchar), '')
     or coalesce(cast(md.question as varchar), '') != coalesce(cast(t.question as varchar), '')
     or coalesce(cast(md.polymarket_link as varchar), '') != coalesce(cast(t.polymarket_link as varchar), '')
     or coalesce(cast(md.token_outcome as varchar), '') != coalesce(cast(t.token_outcome as varchar), '')
