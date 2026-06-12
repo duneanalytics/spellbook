@@ -31,13 +31,12 @@ WITH vrf_request_fulfilled AS (
     {{ ref('chainlink_polygon_vrf_v1_random_request_logs') }} v1_request
     INNER JOIN {{ ref('chainlink_polygon_vrf_v1_random_fulfilled_logs') }} v1_fulfilled ON bytearray_substring(v1_fulfilled.data, 1, 32) = bytearray_substring(v1_request.data, 129, 32)
   {% if is_incremental() %}
-  -- 7-day lookback >> the max request->fulfillment delay ever observed on
-  -- polygon (28.1h over all 6.31M historical pairs). All request logs of a
-  -- group share one tx (one block_time), so every group whose
-  -- MAX(fulfilled.block_time) falls in the incremental window keeps its full
-  -- row set and the aggregates stay exact.
-  WHERE v1_request.block_time >= {{ incremental_lower_bound }} - interval '7' day
-    AND v1_fulfilled.block_time >= {{ incremental_lower_bound }} - interval '7' day
+  -- The request side is a materialized ~6.3M-row table read in full, so no
+  -- request-side lookback (or delay assumption) is needed. The fulfilled-side
+  -- bound is exact: a group passes the post-agg evt_block_time predicate iff
+  -- its MAX(fulfilled.block_time) row is itself in the window, and dropping
+  -- older sibling fulfillments cannot change MAX() or the request-side values.
+  WHERE {{ incremental_predicate('v1_fulfilled.block_time') }}
   {% endif %}
   GROUP BY
     v1_request.tx_hash,
