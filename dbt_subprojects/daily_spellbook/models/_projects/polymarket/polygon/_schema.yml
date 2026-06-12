@@ -531,10 +531,13 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
+              - block_month
               - day
               - address
               - token_id
     columns:
+      - name: block_month
+        description: "UTC month derived from day (date_trunc('month', day)); used for partitioning"
       - name: day
         description: "The date of the position"
         data_tests:
