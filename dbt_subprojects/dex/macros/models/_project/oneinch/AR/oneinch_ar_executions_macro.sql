@@ -6,6 +6,12 @@
 -%}
 
 {%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set wrapper = blockchain.wrapped_native_token_address -%}
+{%- set nsymbol = blockchain.native_token_symbol -%}
+{%- set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
+{%- set nullss = '0x0000000000000000000000000000000000000000' -%}
+{%- set src_calldata_token = 'if(src_token_address in (' ~ nullss ~ ', ' ~ native ~ '), ' ~ wrapper ~ ', src_token_address)' -%}
+{%- set dst_calldata_token = 'if(dst_token_address in (' ~ nullss ~ ', ' ~ native ~ '), ' ~ wrapper ~ ', dst_token_address)' -%}
 
 
 
@@ -28,6 +34,15 @@ calls as (
         and protocol = 'AR'
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+)
+
+, tokens as ( -- token metadata fallback by the calldata token addresses for calls without matched transfers (e.g. internal calls of the router from wallet proxies)
+    select
+        contract_address
+        , symbol as token_symbol
+        , decimals as token_decimals
+    from {{ source('tokens', 'erc20') }}
+    where blockchain = '{{ blockchain.name }}'
 )
 
 {%- set src_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_from) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, sender varbinary))' -%}
@@ -108,17 +123,17 @@ select
     , dst_receiver as receiver
     , src_token_address
     , src_token_amount
-    , coalesce(src_user_data.address, src_data.address) as src_executed_address
-    , coalesce(src_user_data.symbol, src_data.symbol) as src_executed_symbol
-    , coalesce(src_user_data.amount, src_amount) as src_executed_amount -- first from the user, then only with the correct amount
+    , coalesce(src_user_data.address, src_data.address, {{ src_calldata_token }}) as src_executed_address
+    , coalesce(src_user_data.symbol, src_data.symbol, if(src_token_address in ({{ nullss }}, {{ native }}), {{ nsymbol }}, src_token.token_symbol)) as src_executed_symbol
+    , coalesce(src_user_data.amount, src_amount, src_token_amount) as src_executed_amount -- first from the user, then only with the correct amount, then from the decoded call params
     , src_amount_usd as src_executed_amount_usd
 
     , cast(null as varchar) as dst_blockchain
     , dst_token_address
     , dst_token_amount
-    , coalesce(dst_user_data.address, dst_data.address) as dst_executed_address
-    , coalesce(dst_user_data.symbol, dst_data.symbol) as dst_executed_symbol
-    , coalesce(dst_user_data.amount, dst_amount) as dst_executed_amount -- first to the user, then only with the correct amount
+    , coalesce(dst_user_data.address, dst_data.address, {{ dst_calldata_token }}) as dst_executed_address
+    , coalesce(dst_user_data.symbol, dst_data.symbol, if(dst_token_address in ({{ nullss }}, {{ native }}), {{ nsymbol }}, dst_token.token_symbol)) as dst_executed_symbol
+    , coalesce(dst_user_data.amount, dst_amount, dst_token_amount) as dst_executed_amount -- first to the user, then only with the correct amount, then from the decoded call output
     , dst_amount_usd as dst_executed_amount_usd
     
     , cast(null as varbinary) as order_hash
@@ -133,8 +148,8 @@ select
         , ('sources_amount_usd', format('$%,.0f', sources_amount_usd))
         , ('trusted_amount_usd', format('$%,.0f', trusted_amount_usd))
         , ('amount_usd', format('$%,.0f', amount_usd))
-        , ('src_decimals', cast(coalesce(src_user_data.decimals, src_data.decimals) as varchar))
-        , ('dst_decimals', cast(coalesce(dst_user_data.decimals, dst_data.decimals) as varchar))
+        , ('src_decimals', cast(coalesce(src_user_data.decimals, src_data.decimals, src_token.token_decimals) as varchar))
+        , ('dst_decimals', cast(coalesce(dst_user_data.decimals, dst_data.decimals, dst_token.token_decimals) as varchar))
     ]) as complement
 
     , remains
@@ -146,5 +161,7 @@ select
     , native_decimals
 from calls
 join executions using(block_date, block_number, tx_hash, call_trace_address)
+left join tokens as src_token on src_token.contract_address = {{ src_calldata_token }}
+left join tokens as dst_token on dst_token.contract_address = {{ dst_calldata_token }}
 
 {%- endmacro -%}
