@@ -858,6 +858,18 @@ FROM
         ('tqqqx-tqqq-tokenized-etf-xstock','solana','TQQQx','XsjQP3iMAaQ3kQScQKthQpx9ALRbjKAjQtHg6TFomoc',8),
         --Tokenized Commodities (Matrixdock)
         ('xaum-matrixdock-gold','solana','XAUM','4Tfacw1Y2eeVTebcjV59tgCujBjFsonbNm7Q4QRkxEFr',8),
-        ('cash-cash','solana','CASH','CASHx9KJUStyftLFWGvEVf59SGeG9sh5FfcnZMVPCASH',6)
+        ('cash-cash','solana','CASH','CASHx9KJUStyftLFWGvEVf59SGeG9sh5FfcnZMVPCASH',6),
+        --Coinpaprika RWA tokenized stocks & ETFs (xStock)
+        ('orclx-oracle-tokenized-stock-xstock','solana','ORCLx','XsjFwUPiLofddX5cWFHW35GCbXcSu1BCUGfxoQAQjeL',8),
+        ('wmtx-walmart-xstock','solana','WMTx','Xs151QeqTCiuKtinzfRATnUESM2xTU6V9Wy8Vy538ci',8),
+        ('jnjx-johnson-amp-johnson-tokenized-stock-xstock','solana','JNJx','XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn',8),
+        ('hdx-home-depot-tokenized-stock-xstock','solana','HDx','XszjVtyhowGjSC5odCqBpW1CtXXwXjYokymrk7fGKD3',8),
+        ('ibmx-international-business-machines-tokenized-stock-xstock','solana','IBMx','XspwhyYPdWVM8XBHZnpS9hgyag9MKjLRyE3tVfmCbSr',8),
+        ('max-mastercard-tokenized-stock-xstock','solana','MAx','XsApJFV9MAktqnAc6jqzsHVujxkGm9xcSUffaBoYLKC',8),
+        ('xomx-exxon-mobil-tokenized-stock-xstock','solana','XOMx','XsaHND8sHyfMfsWPj6kSdd5VwvCayZvjYgKmmcNL5qh',8),
+        ('pltrx-palantir-tokenized-stock-xstock','solana','PLTRx','XsoBhf2ufR8fTyNSjqfU71DYGaE6Z3SUGAidpzriAA4',8),
+        ('mrvlx-marvell-tokenized-stock-xstock','solana','MRVLx','XsuxRGDzbLjnJ72v74b7p9VY6N66uYgTCyfwwRjVCJA',8),
+        ('pmx-philip-morris-xstock','solana','PMx','Xsba6tUnSjDae2VcopDB6FGGDaxRrewFCDa5hKn5vT3',8),
+        ('jpmx-jpmorgan-chase-tokenized-stock-xstock','solana','JPMx','XsMAqkcKsUewDrzVkait4e5u4y8REgtyS7jWgCpLV2C',8)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
