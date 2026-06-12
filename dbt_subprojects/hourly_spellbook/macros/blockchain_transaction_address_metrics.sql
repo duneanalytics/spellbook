@@ -14,6 +14,9 @@ with tx as (
         1 = 1
         {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
+        {% elif target.name == 'ci' %}
+        -- bound the full-refresh scan in CI so the 18-chain build completes; prod is unaffected
+        and block_time >= current_date - interval '14' day
         {% endif %}
     group by
         1
