@@ -63,7 +63,7 @@ select distinct
       LAST_VALUE(price) OVER (PARTITION BY DATE_TRUNC('day', minute),contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
     FROM {{source('prices','usd')}} p
     WHERE
-      DATE_TRUNC('day', minute) = current_date
+      minute >= current_date and minute < current_date + interval '1' day
       and blockchain = 'linea'
   and contract_address IN (select token from tokens) 
  )
