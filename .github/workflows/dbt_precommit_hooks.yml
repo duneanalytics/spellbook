@@ -22,12 +22,12 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
           python-version: "3.13"
       - name: Set up uv
-        uses: astral-sh/setup-uv@v8.1.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           enable-cache: true
       - name: Sync Python dependencies
@@ -38,7 +38,7 @@ jobs:
         run: |
           mkdir $HOME/.dbt
           echo $DBT_PROFILES_YML_BASE64 | base64 --decode > $HOME/.dbt/profiles.yml
-      - uses: jitterbit/get-changed-files@v1
+      - uses: jitterbit/get-changed-files@b17fbb00bdc0c0f63fcf166580804b4d2cdc2a42 # v1
         id: abc
         with:
           format: space-delimited
@@ -55,7 +55,7 @@ jobs:
         run: |
           test=$(uv run dbt --quiet --no-print ls --select config.schema:no_schema --output path)
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
-      - uses: pre-commit/action@v3.0.0
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507 # v3.0.0
         # Apologies for the hideously long line. Tried to get the Action to respect a multiline if but no dice.
         if: ${{ contains(steps.abc.outputs.added_modified, 'models') || contains(steps.abc.outputs.added_modified, 'test') || contains(steps.abc.outputs.added_modified, 'seeds') || contains(steps.abc.outputs.added_modified, 'macros')}}
         with:
