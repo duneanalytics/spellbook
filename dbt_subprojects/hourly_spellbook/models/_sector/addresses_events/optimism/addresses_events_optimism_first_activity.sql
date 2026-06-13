@@ -59,7 +59,7 @@ FROM (
         gas_used
     FROM
     {{ source('optimism', 'transactions') }}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE block_time >= date_trunc('day', now() - interval '2' day)
     {% endif %}
     ) et
 LEFT JOIN (
