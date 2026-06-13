@@ -1,6 +1,5 @@
 {{ config(
-    tags = ['prod_exclude']
-    ,schema = 'odos_v1_avalanche_c'
+    schema = 'odos_v1_avalanche_c'
     ,alias = 'trades'
     ,materialized = 'incremental'
     ,file_format = 'delta'
