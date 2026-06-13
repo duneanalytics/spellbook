@@ -31,7 +31,7 @@ LEFT JOIN (
 {% if is_incremental() %}
 LEFT JOIN {{this}} ffb ON et."from" = ffb.address
 WHERE ffb.address IS NULL
-AND et.block_time >= date_trunc('day', now() - interval '7' day)
+AND et.block_time >= date_trunc('day', now() - interval '2' day)
 {% endif %}
 
 GROUP BY et."from"
