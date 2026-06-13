@@ -16,6 +16,8 @@
     , ref('hyperswap_v3_hyperevm_base_trades')
     , ref('hybra_v3_hyperevm_base_trades')
     , ref('balancer_v3_hyperevm_base_trades')
+    , ref('ramsesxyz_legacy_hyperevm_base_trades')
+    , ref('ramsesxyz_cl_hyperevm_base_trades')
 ] %}
 {{ dex_base_trades_macro(
     blockchain = 'hyperevm',
