@@ -602,7 +602,14 @@ get_pools as (
 ),
 
 token_tfers as (
-    -- token0 out tfers
+    -- Scan the transfer table once and fan each transfer out into its two
+    -- pool-side legs (the sender address as an 'out' leg, the receiver address
+    -- as an 'in' leg) via UNNEST, then join the pool set a single time on the
+    -- leg address. The previous version read {{ token_transfers }} four times
+    -- (one UNION ALL branch per token/direction), each branch a full scan of
+    -- the same window. event_type / amount0 / amount1 are recovered with CASE
+    -- expressions, reproducing the four original branches exactly (pool id is
+    -- unique and token0 <> token1, so at most one branch matches per leg).
     select 
         gp.id
         , tt.evt_tx_from as tx_from 
@@ -610,92 +617,31 @@ token_tfers as (
         , tt.evt_block_number as block_number 
         , tt.evt_tx_hash as tx_hash 
         , tt.evt_index 
-        , 'token0_out' as event_type 
+        , case 
+            when leg.direction = 'out' and gp.token0 = tt.contract_address then 'token0_out'
+            when leg.direction = 'in'  and gp.token0 = tt.contract_address then 'token0_in'
+            when leg.direction = 'out' and gp.token1 = tt.contract_address then 'token1_out'
+            when leg.direction = 'in'  and gp.token1 = tt.contract_address then 'token1_in'
+          end as event_type 
         , gp.token0 
         , gp.token1 
-        , -1 * cast(tt.value as double) as amount0 
-        , 0 as amount1 
+        , case 
+            when gp.token0 = tt.contract_address and leg.direction = 'out' then -1 * cast(tt.value as double)
+            when gp.token0 = tt.contract_address and leg.direction = 'in'  then cast(tt.value as double)
+            else 0 
+          end as amount0 
+        , case 
+            when gp.token1 = tt.contract_address and leg.direction = 'out' then -1 * cast(tt.value as double)
+            when gp.token1 = tt.contract_address and leg.direction = 'in'  then cast(tt.value as double)
+            else 0 
+          end as amount1 
     from 
     {{ token_transfers }} tt 
+    cross join unnest(array[tt."from", tt.to], array['out', 'in']) as leg (pool_address, direction)
     inner join 
     get_pools gp 
-        on gp.id = tt."from"
-        and gp.token0 = tt.contract_address 
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
-    {%- endif %}
-
-    union all 
-
-    -- token0 in tfers
-    select 
-        gp.id
-        , tt.evt_tx_from as tx_from 
-        , tt.evt_block_time as block_time 
-        , tt.evt_block_number as block_number 
-        , tt.evt_tx_hash as tx_hash 
-        , tt.evt_index 
-        , 'token0_in' as event_type 
-        , gp.token0 
-        , gp.token1 
-        , cast(tt.value as double) as amount0 
-        , 0 as amount1 
-    from 
-    {{ token_transfers }} tt 
-    inner join 
-    get_pools gp 
-        on gp.id = tt.to 
-        and gp.token0 = tt.contract_address 
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
-    {%- endif %}
-
-    union all 
-
-    -- token1 out tfers
-    select 
-        gp.id
-        , tt.evt_tx_from as tx_from 
-        , tt.evt_block_time as block_time 
-        , tt.evt_block_number as block_number 
-        , tt.evt_tx_hash as tx_hash 
-        , tt.evt_index 
-        , 'token1_out' as event_type 
-        , gp.token0 
-        , gp.token1 
-        , 0 as amount0
-        , -1 * cast(tt.value as double) as amount1
-    from 
-    {{ token_transfers }} tt 
-    inner join 
-    get_pools gp 
-        on gp.id = tt."from"
-        and gp.token1 = tt.contract_address 
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
-    {%- endif %}
-
-    union all 
-
-    -- token1 in 
-    select 
-        gp.id
-        , tt.evt_tx_from as tx_from 
-        , tt.evt_block_time as block_time 
-        , tt.evt_block_number as block_number 
-        , tt.evt_tx_hash as tx_hash 
-        , tt.evt_index 
-        , 'token1_in' as event_type 
-        , gp.token0 
-        , gp.token1 
-        , 0 as amount0
-        , cast(tt.value as double) as amount1
-    from 
-    {{ token_transfers }} tt 
-    inner join 
-    get_pools gp 
-        on gp.id = tt.to 
-        and gp.token1 = tt.contract_address 
+        on gp.id = leg.pool_address
+        and (gp.token0 = tt.contract_address or gp.token1 = tt.contract_address)
     {%- if is_incremental() %}
     where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
