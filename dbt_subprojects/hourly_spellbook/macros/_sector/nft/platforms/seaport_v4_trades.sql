@@ -42,6 +42,12 @@ with source_ethereum_transactions as (
       where contract_address in ({% for order_contract in Seaport_order_contracts %}
         {{order_contract}}{%- if not loop.last -%},{%- endif -%}
         {% endfor %})
+        {% if not is_incremental() %}
+        and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
+        {% endif %}
+        {% if is_incremental() %}
+        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     ) group by 1,2,3,4  -- deduplicate order hash re-use in advanced matching
 )
 ,fee_wallet_list as (
