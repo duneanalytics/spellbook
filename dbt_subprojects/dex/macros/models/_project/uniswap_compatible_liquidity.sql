@@ -642,8 +642,17 @@ token_tfers as (
     get_pools gp 
         on gp.id = leg.pool_address
         and (gp.token0 = tt.contract_address or gp.token1 = tt.contract_address)
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
+    {#- in CI the initial build is a full refresh, so bound the scan to a recent
+        window to keep it under the CI timeout and let the uniqueness test run on
+        real data; prod renders without this (full history on full refresh). -#}
+    {%- if is_incremental() or target.name == 'ci' %}
+    where
+        {%- if is_incremental() %}
+        {{ incremental_predicate('tt.evt_block_time') }}
+        {%- endif %}
+        {%- if target.name == 'ci' %}
+        {% if is_incremental() %}and {% endif %}tt.evt_block_time >= current_date - interval '14' day
+        {%- endif %}
     {%- endif %}
 )
 
