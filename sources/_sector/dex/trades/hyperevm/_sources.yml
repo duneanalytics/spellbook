@@ -17,10 +17,3 @@ sources:
     tables:
       - name: uniswapv3pool_evt_swap
       - name: uniswapv3factory_evt_poolcreated
-
-  - name: ramsesxyz_hyperevm
-    tables:
-      - name: pair_evt_swap
-      - name: pairfactory_evt_paircreated
-      - name: ramsesv3pool_evt_swap
-      - name: ramsesv3factory_evt_poolcreated
