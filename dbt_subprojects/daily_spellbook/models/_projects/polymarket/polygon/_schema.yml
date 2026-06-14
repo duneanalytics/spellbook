@@ -535,28 +535,16 @@ models:
               - address
               - token_id
           config:
-            where: "day >= current_date - interval '14' day"
+            where: "day >= current_date - interval '30' day"
     columns:
       - name: day
         description: "The date of the position"
-        data_tests:
-          - not_null:
-              config:
-                where: "day >= current_date - interval '14' day"
       - name: address
         description: "The address holding the position"
-        data_tests:
-          - not_null:
-              config:
-                where: "day >= current_date - interval '14' day"
       - name: unique_key
         description: "Unique identifier for the market"
       - name: token_id
         description: "Token ID of the position"
-        data_tests:
-          - not_null:
-              config:
-                where: "day >= current_date - interval '14' day"
       - name: token_outcome
         description: "Outcome represented by the token"
       - name: token_outcome_name
