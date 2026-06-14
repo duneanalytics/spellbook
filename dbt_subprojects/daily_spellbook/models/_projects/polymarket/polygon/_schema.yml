@@ -589,8 +589,12 @@ models:
         description: "Outcome of the market"
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
+      - name: _position_updated_at
+        description: "Timestamp of the last on-chain balance change for this position snapshot (from positions_raw.last_updated)"
+      - name: _market_updated_at
+        description: "Latest denormalized market metadata change time (greatest of market_details.last_uploaded_at and resolved_on_timestamp). Null when neither timestamp is available."
       - name: _updated_at
-        description: "Timestamp of when this row was last inserted or updated by the dbt pipeline"
+        description: "Row change watermark for incremental sync: greatest of _position_updated_at and _market_updated_at. Existing consumers can keep filtering on this column; use the split columns to distinguish balance vs metadata-driven updates."
 
   - name: polymarket_polygon_ohlcv_hourly
     meta:
