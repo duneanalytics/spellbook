@@ -24,7 +24,7 @@ models:
       blockchain: polygon
       sector: dex
       project: uniswap
-      contributors: agaperste
+      contributors: agaperste, thevaizman
     config:
       tags: [ 'polygon', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap polygon v4 base trades"

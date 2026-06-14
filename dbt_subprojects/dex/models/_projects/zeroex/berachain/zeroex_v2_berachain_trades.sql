@@ -14,12 +14,24 @@
 {% set blockchain = 'berachain' %}
 
 WITH zeroex_tx AS (
-    {{
-        zeroex_settler_txs_cte(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-        )
-    }}
+    -- Read the pre-materialized settler transactions instead of inlining the
+    -- zeroex_settler_txs_cte macro, which Trino re-expanded into ~14 berachain.traces scans.
+    select
+        tx_hash,
+        block_time,
+        block_number,
+        method_id,
+        contract_address,
+        settler_address,
+        zid,
+        tag,
+        rn,
+        cow_rn,
+        taker
+    from {{ ref('zeroex_v2_berachain_settler_txs') }}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('block_time') }}
+    {% endif %}
 ),
 zeroex_v2_trades AS (
     {{
