@@ -28,6 +28,10 @@ with raw_transfers as (
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
+        {% if target.name == 'ci' %}
+        -- bound the full-refresh scan in CI so the build completes within the 90-min cap; prod is unaffected
+        and block_date >= current_date - interval '3' day
+        {% endif %}
     group by
         'solana'
         , block_date
@@ -55,6 +59,10 @@ with raw_transfers as (
         and action != 'wrap'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
+        {% endif %}
+        {% if target.name == 'ci' %}
+        -- bound the full-refresh scan in CI so the build completes within the 90-min cap; prod is unaffected
+        and block_date >= current_date - interval '3' day
         {% endif %}
     group by
         'solana'
