@@ -70,6 +70,13 @@ WITH
       AND et.to = et.contract_address
       AND et.evt_block_number = mps.evt_block_number
       AND et.evt_block_time >= TIMESTAMP '2022-01-17'
+      -- A new metapool's LP-token mint Transfer shares the deployment block, so a newly
+      -- deployed metapool is captured by the run window; already-known metapools persist
+      -- via the merge. This bounds the otherwise full-history scan of optimism.evt_Transfer
+      -- (~2.75B rows, ~99% of this model's IO) to the incremental window.
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('et.evt_block_time') }}
+      {% endif %}
     GROUP BY
       tokenid,
       token,
@@ -210,26 +217,48 @@ WITH
       tokenid,
       token,
       pool --unique
+  ),
+  -- Union the factory-derived pools with the hardcoded custom pools, dropping a custom
+  -- pool whose address is already produced by a factory. Referencing agg_pools a single
+  -- time (and resolving the anti-join with a window over the union) avoids re-expanding
+  -- the decoded scans: the original `NOT IN (SELECT pool FROM agg_pools)` made Trino
+  -- inline agg_pools a second time, doubling every underlying scan.
+  combined AS (
+    SELECT
+      version,
+      CAST(tokenid as INT256) as tokenid,
+      token,
+      pool,
+      true as is_agg
+    FROM
+      agg_pools
+    UNION ALL
+    SELECT
+      version,
+      CAST(tokenid as INT256) as tokenid,
+      token,
+      pool,
+      false as is_agg
+    FROM
+      custom_pools
   )
 SELECT
   version,
-  CAST(tokenid as INT256) as tokenid,
+  tokenid,
   token,
   pool
 FROM
-  agg_pools
-UNION ALL
-SELECT
-  version,
-  CAST(tokenid as INT256) as tokenid,
-  token,
-  pool
-FROM
-  custom_pools
-WHERE
-  pool NOT IN (
+  (
     SELECT
-      pool
+      version,
+      tokenid,
+      token,
+      pool,
+      is_agg,
+      bool_or(is_agg) OVER (PARTITION BY pool) as pool_in_agg
     FROM
-      agg_pools
-  ) --avoid dupes that are caught by factories
+      combined
+  )
+WHERE
+  is_agg
+  OR NOT pool_in_agg --keep custom pools only when no factory produced that pool
