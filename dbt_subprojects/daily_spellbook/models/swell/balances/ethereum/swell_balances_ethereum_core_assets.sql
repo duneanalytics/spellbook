@@ -32,7 +32,8 @@ balances as (
       balances_incremental_subset_daily_legacy(
             blockchain = 'ethereum',
             token_list = 'tokens',
-            start_date = '2023-04-12'
+            start_date = '2023-04-12',
+            apply_ci_floor = false
       )
     }}
 )

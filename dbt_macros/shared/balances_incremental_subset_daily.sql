@@ -21,7 +21,8 @@
         token_list = none,
         address_token_list = none,
         self_seed_relation = none,
-        self_seed_lookback_days = 21
+        self_seed_lookback_days = 21,
+        apply_ci_floor = true
     )
 %}
 
@@ -62,8 +63,9 @@ filtered_daily_agg_balances as (
         AND erc20_tokens.contract_address = b.token_address
         AND b.token_standard = 'erc20'
     where day >= cast('{{start_date}}' as date)
-    {% if target.name == 'ci' %}
-    -- bound the CI full-refresh build so it completes under the 90-min timeout and the regression test runs; inert in prod
+    {% if target.name == 'ci' and apply_ci_floor %}
+    -- bound the CI full-refresh build so it completes under the 90-min timeout and the regression test runs; inert in prod.
+    -- callers with a check_seed test over fixed historical dates (e.g. swell) must set apply_ci_floor=false so the seeded days build.
     and day >= cast(date_trunc('day', current_date - interval '30' day) as date)
     {% endif %}
 
