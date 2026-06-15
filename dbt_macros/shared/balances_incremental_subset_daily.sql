@@ -19,7 +19,9 @@
         start_date,
         address_list = none,
         token_list = none,
-        address_token_list = none
+        address_token_list = none,
+        self_seed_relation = none,
+        self_seed_lookback_days = 21
     )
 %}
 
@@ -96,9 +98,34 @@ filtered_daily_agg_balances as (
             ,token_standard
             ,token_id
             ,max_by(balance, day) as balance
-        from filtered_daily_agg_balances
-        where day >= cast('{{start_date}}' as date)
-        and not {{ incremental_predicate('day') }}
+        from (
+            {% if self_seed_relation is none %}
+            -- legacy: re-derive the prior state from all pre-window source history
+            select
+                blockchain, day, address, token_symbol, token_address, token_standard, token_id, balance
+            from filtered_daily_agg_balances
+            where day >= cast('{{start_date}}' as date)
+            and not {{ incremental_predicate('day') }}
+            {% else %}
+            -- bounded-lookback hybrid: re-read only the recent pre-window source so late-arriving /
+            -- restated balances within the lookback are still self-corrected ...
+            select
+                blockchain, day, address, token_symbol, token_address, token_standard, token_id, balance
+            from filtered_daily_agg_balances
+            where not {{ incremental_predicate('day') }}
+            and day >= cast(date_trunc('day', now() - interval '{{ self_seed_lookback_days }}' day) as date)
+            union all
+            -- ... and carry deep (settled) history forward from the model's own latest pre-lookback
+            -- partition instead of re-scanning the full source history every run
+            select
+                blockchain, last_updated as day, address, token_symbol, token_address, token_standard, token_id, balance
+            from {{ self_seed_relation }}
+            where day = (
+                select max(day) from {{ self_seed_relation }}
+                where day < cast(date_trunc('day', now() - interval '{{ self_seed_lookback_days }}' day) as date)
+            )
+            {% endif %}
+        )
         group by 1,3,4,5,6,7
         )
     {% endif %}
