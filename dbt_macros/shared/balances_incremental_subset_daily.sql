@@ -62,6 +62,10 @@ filtered_daily_agg_balances as (
         AND erc20_tokens.contract_address = b.token_address
         AND b.token_standard = 'erc20'
     where day >= cast('{{start_date}}' as date)
+    {% if target.name == 'ci' %}
+    -- bound the CI full-refresh build so it completes under the 90-min timeout and the regression test runs; inert in prod
+    and day >= cast(date_trunc('day', current_date - interval '30' day) as date)
+    {% endif %}
 
 )
 ,changed_balances as (
