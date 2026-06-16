@@ -106,8 +106,11 @@ settler_txs AS (
                 0x000000000000175a8b9bC6d539B3708EEd92EA6c
             ) 
             THEN varbinary_substring(input, varbinary_length(input) - 19, 20) 
-            ELSE taker 
-        END AS taker 
+            ELSE taker
+        END AS taker,
+        -- Keep raw calldata only for RFQ-bearing settler calls (plain RFQ action 0xd92aadfb);
+        -- consumed by the zeroex_settler_rfq macro. NULL otherwise to avoid bloating the staging table.
+        CASE WHEN varbinary_position(input, 0xd92aadfb) <> 0 THEN input END AS rfq_input
     FROM
         settler_trace_data
     WHERE 

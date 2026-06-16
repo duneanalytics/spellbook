@@ -70,6 +70,7 @@
     , ref('carbon_defi_base_base_trades')
     , ref('elfomofi_base_base_trades')
     , ref('tessera_v_base_base_trades')
+    , ref('zeroex_settler_base_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
