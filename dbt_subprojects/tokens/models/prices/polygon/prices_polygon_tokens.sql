@@ -158,8 +158,15 @@ FROM
     ('om-mantra-dao', 'polygon', 'OM', 0xc3ec80343d2bae2f8e680fdadde7c17e71e114ea, 18),     
     ('glm-golem', 'polygon', 'GLM', 0x0B220b82F3eA3B7F6d9A1D8ab58930C064A2b5Bf, 18),     
     ('super-superfarm', 'polygon', 'SUPER', 0xa1428174f516f527fafdd146b883bb4428682737, 18),
-    ('pkr-polker', 'polygon', 'PKR', 0x140a4e80dd8184536acc45f1c452d7540472e6e1, 18)
+    ('pkr-polker', 'polygon', 'PKR', 0x140a4e80dd8184536acc45f1c452d7540472e6e1, 18),
     
+    ('pusd-polymarket-usd', 'polygon', 'pUSD', 0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB, 6),
+    ('lgns-origin-lgns', 'polygon', 'LGNS', 0xeB51D9A39AD5EEF215dC0Bf39a8821ff804A0F01, 9),
+    ('as-akas-1', 'polygon', 'AS', 0x6A92B1E99De09f71CD96BC91F934826d96B8b26E, 9),
+    ('opx-opex', 'polygon', 'OPX', 0xA3fB72CBF2e07dC1b34AEA569Ed40755fd978BD8, 6),
+    ('bet-betfin-token', 'polygon', 'BET', 0xbF7970D56a150cD0b60BD08388A4A75a27777777, 18),
+    ('aipf-ai-powered-finance', 'polygon', 'AIPF', 0x2c72D25530191EBD244Eb6325E1892480b0e6E28, 18),
+    ('cxo-cargox', 'polygon', 'CXO', 0xf2ae0038696774d65E67892c9D301C5f2CbbDa58, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed

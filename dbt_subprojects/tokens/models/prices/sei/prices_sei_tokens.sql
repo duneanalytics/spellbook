@@ -22,4 +22,5 @@ FROM
     , ('usdc-usd-coin', 'USDC', 0x3894085Ef7Ff0f0aeDf52E2A2704928d1Ec074F1, 6)
     , ('usdt-tether', 'USDT', 0xB75D0B03c06A926e488e2659DF1A861F860bD3d1, 6)
     , ('weth-weth', 'WETH', 0x160345fC359604fC6e70E3c5fAcbdE5F7A9342d8, 18)
+    , ('usdc-usdc', 'USDC', 0xe15fC38F6D8c56aF07bbCBe3BAf5708A2Bf42392, 6)
 ) as temp (token_id, symbol, contract_address, decimals)

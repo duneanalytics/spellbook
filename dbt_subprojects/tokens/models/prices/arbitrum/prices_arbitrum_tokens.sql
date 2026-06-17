@@ -236,5 +236,7 @@ FROM
     ('ftw-black-agnus', 'arbitrum', 'FTW', 0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 18),
     ('hyper-hyperlane', 'arbitrum', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
     ('usdai-usdai', 'arbitrum', 'USDai', 0x0a1a1a107e45b7ced86833863f482bc5f4ed82ef, 18),
-    ('logx-logx-network', 'arbitrum', 'LOGX', 0x59062301fb510f4ea2417b67404cb16d31e604ba, 18)
+    ('logx-logx-network', 'arbitrum', 'LOGX', 0x59062301fb510f4ea2417b67404cb16d31e604ba, 18),
+    ('eval-evervalue', 'arbitrum', 'EVA', 0x45D9831d8751B2325f3DBf48db748723726e1C8c, 18),
+    ('usd24-fiat24-usd', 'arbitrum', 'USD24', 0xbE00f3db78688d9704BCb4e0a827aea3a9Cc0D62, 2)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

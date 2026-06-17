@@ -243,5 +243,14 @@ FROM
     ('superoeth-super-oeth', 'base', 'superOETHb', 0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3, 18),
     ('phnm-phenom', 'base', 'PHNM', 0x3fda9cc61b1fef8b2ffd715f0a9eef7182e48f37, 18),
     ('up-superform', 'base', 'UP', 0x5b2193fDc451C1f847bE09CA9d13A4Bf60f8c86B, 18),
-    ('fun-sportfun', 'base', 'FUN', 0x16EE7ecAc70d1028E7712751E2Ee6BA808a7dd92, 18)
+    ('fun-sportfun', 'base', 'FUN', 0x16EE7ecAc70d1028E7712751E2Ee6BA808a7dd92, 18),
+    ('ctr-citrea', 'base', 'CTR', 0x11030f79109269d796fd0FB956D6244e502757f7, 18),
+    ('play-playsout', 'base', 'PLAY', 0x853a7c99227499DbA9dB8C3A02aA691aFDeBf841, 18),
+    ('velvet-velvet', 'base', 'VELVET', 0xbF927b841994731C573BDF09ceB0c6B0Aa887cDd, 18),
+    ('wusd-worldwide-usd', 'base', 'WUSD', 0xb4bB2032A73A53C0Aa7Dc9ee2d9658a978fA7bC2, 18),
+    ('sol-base-bridged-sol-base', 'base', 'SOL', 0x311935Cd80B76769bF2ecC9D8Ab7635b2139cf82, 9),
+    ('pros-pharos', 'base', 'PROS', 0x8B7DdE054BE9D180c1Be7FaE0874697374A49832, 18),
+    ('ads-adshares', 'base', 'ADS', 0xb20A4Bd059F5914a2F8B9c18881c637f79efb7df, 11),
+    ('vcnt-vicicoin', 'base', 'VCNT', 0xdCf5130274753c8050aB061B1a1DCbf583f5bFd0, 18),
+    ('zen-horizen', 'base', 'ZEN', 0xf43eB8De897Fbc7F2502483B2Bef7Bb9EA179229, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
