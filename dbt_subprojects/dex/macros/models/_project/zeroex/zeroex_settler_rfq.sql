@@ -163,28 +163,42 @@ legs AS (
            OR (t.token = a.taker_token AND t.transfer_to   = a.maker)
         )
     GROUP BY a.tx_hash, a.p, a.block_time, a.block_number, a.settler_address, a.taker, a.maker_asset, a.taker_token, a.maker
-)
+),
 
+-- A false-positive 0xd92aadfb recurrence inside an RFQ action's ABI body can decode the SAME action twice
+-- (identical maker/asset/token) at two byte offsets, both matching the one maker-leg transfer -> same evt_index.
+-- Keep one row per (tx_hash, evt_index): genuine distinct fills always have distinct maker-leg logs, so this
+-- only drops the spurious re-decode (verified: the lone ethereum collision was an identical-tuple recurrence).
+-- (row_number() in a subquery rather than QUALIFY, which has no precedent in this codebase.)
+deduped AS (
+    SELECT
+        '{{ blockchain }}' AS blockchain,
+        '{{ project }}' AS project,
+        '{{ version }}' AS version,
+        CAST(date_trunc('month', block_time) AS date) AS block_month,
+        CAST(date_trunc('day', block_time) AS date)   AS block_date,
+        block_time,
+        block_number,
+        maker_amount AS token_bought_amount_raw,   -- taker receives the maker's asset
+        taker_amount AS token_sold_amount_raw,     -- taker gives the taker token
+        maker_asset  AS token_bought_address,
+        taker_token  AS token_sold_address,
+        taker,
+        CAST(NULL AS varbinary) AS maker,          -- PMM venue: settler-side maker not emitted (matches native/clipper)
+        settler_address AS project_contract_address,
+        tx_hash,
+        maker_evt_index AS evt_index,
+        row_number() OVER (PARTITION BY tx_hash, maker_evt_index ORDER BY p) AS rn
+    FROM legs
+    WHERE maker_n = 1
+      AND taker_n = 1
+      AND maker_asset <> taker_token
+)
 SELECT
-    '{{ blockchain }}' AS blockchain,
-    '{{ project }}' AS project,
-    '{{ version }}' AS version,
-    CAST(date_trunc('month', block_time) AS date) AS block_month,
-    CAST(date_trunc('day', block_time) AS date)   AS block_date,
-    block_time,
-    block_number,
-    maker_amount AS token_bought_amount_raw,   -- taker receives the maker's asset
-    taker_amount AS token_sold_amount_raw,     -- taker gives the taker token
-    maker_asset  AS token_bought_address,
-    taker_token  AS token_sold_address,
-    taker,
-    CAST(NULL AS varbinary) AS maker,          -- PMM venue: settler-side maker not emitted (matches native/clipper)
-    settler_address AS project_contract_address,
-    tx_hash,
-    maker_evt_index AS evt_index
-FROM legs
-WHERE maker_n = 1
-  AND taker_n = 1
-  AND maker_asset <> taker_token
+    blockchain, project, version, block_month, block_date, block_time, block_number,
+    token_bought_amount_raw, token_sold_amount_raw, token_bought_address, token_sold_address,
+    taker, maker, project_contract_address, tx_hash, evt_index
+FROM deduped
+WHERE rn = 1
 
 {% endmacro %}
