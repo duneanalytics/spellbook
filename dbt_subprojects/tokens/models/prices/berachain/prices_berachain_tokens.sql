@@ -35,4 +35,5 @@ FROM
     , ('yeet3-yeet', 'YEET', 0x08a38caa631de329ff2dad1656ce789f31af3142, 18)
     , ('ibgt-infrared-bgt', 'iBGT', 0xac03caba51e17c86c921e1f6cbfbdc91f8bb2e6b, 18)
     , ('usdbr-usdbr', 'USDBr', 0x6d4223dae2a8744a85a6d44e97f3f61679f87ee6, 18)
+    , ('osbgt-openstate-bgt', 'osBGT', 0xD2C41BF4033A83C0FC3A7F58a392Bf37d6dCDb58, 18)
 ) as temp (token_id, symbol, contract_address, decimals) 

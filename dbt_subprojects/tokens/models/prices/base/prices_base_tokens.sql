@@ -243,5 +243,9 @@ FROM
     ('superoeth-super-oeth', 'base', 'superOETHb', 0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3, 18),
     ('phnm-phenom', 'base', 'PHNM', 0x3fda9cc61b1fef8b2ffd715f0a9eef7182e48f37, 18),
     ('up-superform', 'base', 'UP', 0x5b2193fDc451C1f847bE09CA9d13A4Bf60f8c86B, 18),
-    ('fun-sportfun', 'base', 'FUN', 0x16EE7ecAc70d1028E7712751E2Ee6BA808a7dd92, 18)
+    ('fun-sportfun', 'base', 'FUN', 0x16EE7ecAc70d1028E7712751E2Ee6BA808a7dd92, 18),
+    ('ctr-citrea', 'base', 'CTR', 0x11030f79109269d796fd0FB956D6244e502757f7, 18),
+    ('velvet-velvet', 'base', 'VELVET', 0xbF927b841994731C573BDF09ceB0c6B0Aa887cDd, 18),
+    ('wusd-worldwide-usd', 'base', 'WUSD', 0xb4bB2032A73A53C0Aa7Dc9ee2d9658a978fA7bC2, 18),
+    ('sol-base-bridged-sol-base', 'base', 'SOL', 0x311935Cd80B76769bF2ecC9D8Ab7635b2139cf82, 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

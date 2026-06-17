@@ -24,4 +24,5 @@ FROM
     , ('btc-bitcoin', 'UBTC', 0x9fdbda0a5e284c32744d2f17ee5c74b284993463, 8)
     , ('pump-pumpfun', 'UPUMP', 0x27ec642013bcb3d80ca3706599d3cda04f6f4452, 6)
     , ('sol-solana', 'USOL', 0x068f321fa8fb9f0d135f290ef6a3e2813e1c8a29, 9)
+    , ('usdc-usdc', 'USDC', 0xb88339CB7199b77E23DB6E890353E22632Ba630f, 6)
 ) as temp (token_id, symbol, contract_address, decimals)

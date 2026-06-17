@@ -25,4 +25,5 @@ FROM
     , ('sdai-savings-dai', 'sDAI', 0x859DBE24b90C9f2f7742083d3cf59cA41f55Be5d, 18)
     , ('oro-oro', 'ORO', 0xcd1E32B86953D79a6AC58e813D2EA7a1790cAb63, 18)
     , ('usdt-tether', 'USD₮0', 0x102d758f688a4c1c5a80b116bd945d4455460282, 6)
+    , ('sushi-sushi', 'SUSHI', 0xab09A728E53d3d6BC438BE95eeD46Da0Bbe7FB38, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
