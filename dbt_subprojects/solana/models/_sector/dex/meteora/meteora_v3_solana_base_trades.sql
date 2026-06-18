@@ -1,4 +1,5 @@
-{% set project_start_date = var('project_start_date', '2025-04-10') %}
+-- TEMP (CI speed-up): bound full-refresh history to last 14 days. Revert to '2025-04-10' before merge.
+{% set project_start_date = var('project_start_date', (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d')) %}
 
 {{ 
   config(
