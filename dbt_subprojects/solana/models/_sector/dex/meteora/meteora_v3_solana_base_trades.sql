@@ -1,5 +1,4 @@
--- TEMP (CI validation): bound full-refresh to cover the Apr 5-9 VDOR burst window. Revert to '2025-04-10' before merge.
-{% set project_start_date = var('project_start_date', '2026-04-01') %}
+{% set project_start_date = var('project_start_date', '2025-04-10') %}
 
 {{ 
   config(
