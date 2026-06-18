@@ -1,5 +1,5 @@
--- TEMP (CI speed-up): bound full-refresh history to last 14 days. Revert to '2025-04-10' before merge.
-{% set project_start_date = var('project_start_date', (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d')) %}
+-- TEMP (CI validation): bound full-refresh to cover the Apr 5-9 VDOR burst window. Revert to '2025-04-10' before merge.
+{% set project_start_date = var('project_start_date', '2026-04-01') %}
 
 {{ 
   config(
