@@ -124,4 +124,5 @@ sources:
       - name: PairFactory_evt_PairCreated
       - name: RamsesV3Pool_evt_Swap
       - name: RamsesV3Factory_evt_PoolCreated
-
+      - name: dlmmpool_evt_swap
+      - name: dlmmfactory_evt_lbpaircreated
