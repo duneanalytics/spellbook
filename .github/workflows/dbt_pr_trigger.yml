@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
       - name: Determine modified dbt projects
         env:
@@ -49,28 +49,28 @@ jobs:
           echo "$modified" | tr ' ' '\n' | jq -Rnc '[inputs | select(length > 0)]' > pr_metadata/projects.json
           echo "Modified projects: $(cat pr_metadata/projects.json)"
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: pr_metadata
           path: pr_metadata/
           retention-days: 1
           overwrite: true
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: dbt_subprojects
           path: dbt_subprojects/
           retention-days: 1
           overwrite: true
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: sources
           path: sources/
           retention-days: 1
           overwrite: true
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: dbt_macros_shared
           path: dbt_macros/shared/
