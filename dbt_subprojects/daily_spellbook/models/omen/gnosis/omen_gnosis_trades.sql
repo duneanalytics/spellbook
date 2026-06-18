@@ -65,6 +65,10 @@ trades_slot AS (
         ,t1.feeamount
         ,TRANSFORM(SEQUENCE(0, COALESCE(CARDINALITY(t2.partition),CARDINALITY(t3.partition)) - 1 ), x -> IF(x = t1.outcomeindex, t1.outcometokens, 0)) AS outcometokens_amount
         ,t1.action
+        ,ROW_NUMBER() OVER (
+            PARTITION BY t1.block_day, t1.tx_hash, t1.evt_index
+            ORDER BY COALESCE(t2.evt_index, t3.evt_index) DESC
+        ) AS match_rank
     FROM
         trades  t1
     LEFT JOIN 
@@ -97,6 +101,8 @@ final AS (
         ) AS reserves_delta
     FROM    
         trades_slot
+    WHERE
+        match_rank = 1
 )
 
 SELECT  

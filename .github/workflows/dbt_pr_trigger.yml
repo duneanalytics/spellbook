@@ -1,0 +1,78 @@
+name: Receive dbt PR
+
+# First half of the fork-safe CI pipeline. This workflow runs in the unprivileged pull_request
+# context and packages the dbt code + metadata as artefacts. The privileged "dbt CI from fork"
+# workflow then picks them up via workflow_run and runs CI if needed.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build:
+    # Only run if this is a PR from a fork
+    # PRs from duneanalytics/spellbook run directly via dbt_full_run.yml instead
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Determine modified dbt projects
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p pr_metadata
+          echo "${{ github.event.pull_request.number }}" > pr_metadata/pr_number
+
+          gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+            --paginate --jq '.[].filename' > changed_files.txt
+
+          projects=$(ls -d dbt_subprojects/*/ | cut -d/ -f2)
+          modified=""
+          if grep -q '^dbt_macros/shared/' changed_files.txt; then
+            modified="$projects"
+          elif grep -q '^sources/' changed_files.txt; then
+            modified="$projects"
+          elif grep -q '^.github/workflows/' changed_files.txt; then
+            modified="$projects"
+          else
+            for p in $projects; do
+              if grep -q "^dbt_subprojects/$p/" changed_files.txt; then
+                modified="$modified $p"
+              fi
+            done
+          fi
+          echo "$modified" | tr ' ' '\n' | jq -Rnc '[inputs | select(length > 0)]' > pr_metadata/projects.json
+          echo "Modified projects: $(cat pr_metadata/projects.json)"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pr_metadata
+          path: pr_metadata/
+          retention-days: 1
+          overwrite: true
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dbt_subprojects
+          path: dbt_subprojects/
+          retention-days: 1
+          overwrite: true
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: sources
+          path: sources/
+          retention-days: 1
+          overwrite: true
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dbt_macros_shared
+          path: dbt_macros/shared/
+          retention-days: 1
+          overwrite: true

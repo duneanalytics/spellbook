@@ -118,6 +118,10 @@ sources:
     tables:
       - name: StableSwap_evt_TokenExchange
       - name: StableSwap_evt_TokenExchangeUnderlying
+  - name: lista_lending_bnb
+    tables:
+      - name: stableswapfactory_evt_newstableswappair
+      - name: stableswappool_evt_tokenexchange
   - name: onepunch_quick_bnb
     tables:
       - name: QuickLiquidityProvider_evt_QuoteAccepted

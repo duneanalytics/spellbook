@@ -23,6 +23,7 @@ FROM (VALUES
     , ('bancor_network', 'Bancor', 'Direct', 'Bancor') -- To Fix, should be just bancor
     , ('bancor', 'Bancor', 'Direct', 'Bancor')
     , ('ellipsis_finance', 'Ellipsis', 'Direct', 'Ellipsisfi')
+    , ('lista_smartswap', 'Lista SmartSwap', 'Direct', 'lista_dao')
     , ('babyswap', 'BabySwap', 'Direct', 'babyswap_bsc')
     , ('apeswap', 'ApeSwap', 'Direct', 'ape_swap')
     , ('shibaswap', 'ShibaSwap', 'Direct', 'ShibaSwapDEX')
@@ -243,6 +244,7 @@ FROM (VALUES
     , ('mezo_swap', 'Mezo Swap', 'Direct', 'mezoswap')
     , ('kuru', 'Kuru', 'Direct', 'kuru')
     , ('pinot', 'Pinot', 'Direct', 'pinot')
+    , ('nad_fun', 'nad.fun', 'Direct', 'naddotfun')
     , ('potatoswap', 'PotatoSwap', 'Direct', 'potatoswap')
     , ('elfomofi', 'ElfomoFi', 'Direct', 'elfomo_fi')
     , ('kumbaya', 'Kumbaya', 'Direct', 'kumbaya')
@@ -252,4 +254,5 @@ FROM (VALUES
     , ('tempo_exchange', 'Tempo Exchange', 'Direct', 'tempo')
     , ('bitget_dex_aggregator', 'Bitget Wallet Aggregator', 'Aggregator', 'BitgetWalletAggregator')
     , ('tessera_v', 'Tessera-V', 'Direct', 'tessera_v')
+    , ('bulba', 'Bulba', 'Direct', 'bulba')
 ) AS temp_table (project, name, marketplace_type, x_username)

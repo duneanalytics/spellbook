@@ -29,12 +29,13 @@ from (values
      (0x3231cb76718cdef2155fc47b5286d82e6eda273f, 'EUR'), -- EURe
      (0x09fd37d9aa613789c517e76df1c53aece2b60df4, 'USD'), -- ebUSD
      (0x16f93ebc5320c89efc8701577efe49d14a276a06, 'CAD'), -- CADD
-     (0xf3527ef8de265eaa3716fb312c12847bfba66cef, 'USD')  -- USDX
+     (0xf3527ef8de265eaa3716fb312c12847bfba66cef, 'USD'), -- USDX
+     (0x7712c34205737192402172409a8f7ccef8aa2aec, 'USD'), -- BUIDL (BlackRock USD Institutional Digital Liquidity Fund — peg held at $1, daily yield paid as USDC dividends, not via rebase)
+     (0x2a8e1e676ec238d8a992307b495b45b3feaa5e86, 'USD')  -- OUSD (Origin Dollar)
 
      /* yield-bearing / rebasing tokens
      (0x96f6ef951840721adbf46ac996b59e0235cb985c, 'USD'), -- USDY
      (0xd46ba6d942050d489dbd938a2c909a5d5039a161, 'USD'), -- AMPL
-     (0x7712c34205737192402172409a8f7ccef8aa2aec, 'USD'), -- BUIDL
      (0xa774ffb4af6b0a91331c084e1aebae6ad535e6f3, 'USD'), -- FLEXUSD (list: flexUSD)
      (0x15700b564ca08d9439c58ca5053166e8317aa138, 'USD'), -- deUSD
      (0x79c58f70905f734641735bc61e45c19dd9ad60bc, 'USD'), -- usdc-dai-usdt (list: USDC-DAI-USDT)

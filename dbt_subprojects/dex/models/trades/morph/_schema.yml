@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: dex_morph_trades
+    data_tests:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_morph_base_trades
+
+  - name: bulba_v3_morph_base_trades
+    meta:
+      blockchain: morph
+      sector: dex
+      project: bulba
+      contributors: jeff-dude
+    config:
+      tags: ["morph", "dex", "trades", "bulba", "v3"]
+    description: "bulba morph v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('bulba_v3_morph_base_trades_seed')
+            filter:
+              version: 3
+
+  - name: dex_morph_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date

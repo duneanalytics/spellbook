@@ -3,13 +3,13 @@ version: 2
 models:
   - name: safe_safes_all
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, goerli, linea, , mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, , mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync
       project: safe
       short_description: "All Safe (formerly Gnosis Safe) multisig wallet addresses across supported chains, with creation version and creation time."
       contributors: tschubotz, danielpartida, kryptaki
       docs_slug: /curated/labels/safe-safes-all
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync']
     description: >
         Lists all Safes across chains.
     columns:
@@ -34,11 +34,11 @@ models:
 
   - name: safe_transactions_all
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, goerli, linea, mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync
       project: safe
       contributors: kryptaki, danielpartida
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync']
     description: "Safe transactions"
     columns:
       - *blockchain
@@ -93,11 +93,11 @@ models:
 
   - name: safe_native_transfers_all
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, gnosis, goerli, linea, mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, gnosis, linea, mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync
       project: safe
       contributors: kryptaki, tschubotz, danielpartida
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'gnosis', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync']
     description: "Native gas token transfers into or out of Safes"
     data_tests:
       - dbt_utils.unique_combination_of_columns:

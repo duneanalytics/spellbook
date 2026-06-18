@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: nad_fun_monad
+    description: monad decoded tables related to nad.fun
+    tables:
+      - name: swap_evt_dexrouterbuy
+        description: "DexRouterBuy event emitted by the nad.fun swap router (0x003989CD92C31A51D8B20bDBd0c51E444f88d081) — trader spends WMON (amountIn) and receives `token` (amountOut)."
+      - name: swap_evt_dexroutersell
+        description: "DexRouterSell event emitted by the nad.fun swap router — trader spends `token` (amountIn) and receives WMON (amountOut)."
+      - name: dexrouter_evt_dexrouterbuy
+        description: "DexRouterBuy event emitted by the nad.fun dex router (0x0B79d71AE99528D1dB24A4148b5f4F865cc2b137) — same event shape as the swap router; handles the high-volume small-ticket path."
+      - name: dexrouter_evt_dexroutersell
+        description: "DexRouterSell event emitted by the nad.fun dex router — same shape as the swap router's sell event."

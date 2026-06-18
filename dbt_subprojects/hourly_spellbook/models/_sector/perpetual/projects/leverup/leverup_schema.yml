@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: leverup_perpetual_trades
+    meta:
+      blockchain: monad
+      sector: perpetual
+      project: leverup
+      contributors: kkqzhou
+    config:
+      tags: ['monad', 'perpetual', 'leverup', 'perps']
+    description: >
+      Cross-chain rollup of LeverUp perpetual fills (currently Monad only).

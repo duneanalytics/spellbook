@@ -79,22 +79,6 @@ models:
       - *token_balance_owner
       - *updated_at
 
-  - name: solana_utils_total_rewards
-    meta:
-      blockchain: solana
-      contributors: [ilemi]
-    config:
-      tags: ['solana','rewards']
-    description: >
-        get the total rewards paid out to each address
-    columns:
-      - &recipient 
-        name: recipient
-      - &reward_type 
-        name: reward_type
-      - &rewards
-        name: rewards
-
   - name: solana_utils_sns_domains
     meta:
       blockchain: solana

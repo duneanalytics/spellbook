@@ -1,0 +1,23 @@
+{{ config(
+    schema = 'uniswap_v4_celo'
+    , alias = 'swaps'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+
+{{
+    uniswap_compatible_v4_trades(
+        blockchain = 'celo'
+        , project = 'uniswap'
+        , version = '4'
+        , PoolManager_call_Swap = source('uniswap_v4_celo', 'PoolManager_call_Swap') 
+        , PoolManager_evt_Swap = source('uniswap_v4_celo', 'PoolManager_evt_Swap')
+        , pool_manager_addr = '0x288dc841a52fca2707c6947b3a777c5e56cd87bc'
+        , start_date = '2025-10-22'
+        , aggregator_hooks = ref('uniswap_v4_aggregator_hooks')
+    )
+}}

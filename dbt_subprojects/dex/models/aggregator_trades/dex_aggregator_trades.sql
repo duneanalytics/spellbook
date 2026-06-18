@@ -7,7 +7,7 @@
         unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
         incremental_predicates = ['DBT_INTERNAL_DEST.block_date >= date_trunc(\'day\', now() - interval \'7\' day)'],
         merge_skip_unchanged = true,
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum", "base", "linea", "scroll", "polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum", "base", "linea", "scroll", "polygon", "celo", "blast", "ink", "monad", "tempo", "unichain", "worldchain", "zora"]\',
                                 "sector",
                                 "dex_aggregator",
                                 \'["bh2smith", "Henrystats", "jeff-dude", "rantum", "hosuke"]\') }}'
@@ -23,6 +23,7 @@
     ,ref('kyberswap_aggregator_trades')
     ,ref('tokenlon_trades')
     ,ref('oneinch_ar_trades')
+    ,ref('oneinch_lop_aggregator_trades')
     ,ref('odos_trades')
     ,ref('sushiswap_agg_trades')
     ,ref('bitget_dex_aggregator_trades')
