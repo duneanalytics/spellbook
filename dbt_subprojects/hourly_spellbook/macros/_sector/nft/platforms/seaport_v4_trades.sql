@@ -460,7 +460,13 @@ select
         ,tx_data_marker
 
         -- seaport etc
-        , row_number() over (partition by tx_hash order by evt_index) as sub_tx_trade_id
+        -- evt_index repeats within a tx for bundle trades, so order by the leg-identity columns too:
+        -- sub_tx_trade_id is part of the incremental unique_key (block_number, tx_hash, sub_tx_trade_id)
+        -- and must be stable across runs regardless of plan/row order.
+        , row_number() over (
+            partition by tx_hash
+            order by evt_index, sub_type, sub_idx, nft_contract_address, nft_token_id, nft_token_amount, seller, buyer
+          ) as sub_tx_trade_id
 
         ,right_hash
         ,fee_wallet_name
