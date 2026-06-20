@@ -70,10 +70,20 @@ WITH
       AND et.to = et.contract_address
       AND et.evt_block_number = mps.evt_block_number
       AND et.evt_block_time >= TIMESTAMP '2022-01-17'
-      -- A new metapool's LP-token mint Transfer shares the deployment block, so a newly
-      -- deployed metapool is captured by the run window; already-known metapools persist
-      -- via the merge. This bounds the otherwise full-history scan of optimism.evt_Transfer
-      -- (~2.75B rows, ~99% of this model's IO) to the incremental window.
+      -- Bound the otherwise full-history scan of optimism.evt_Transfer (~2.75B rows,
+      -- ~99% of this model's IO) to the incremental window. A metapool's LP-token mint
+      -- Transfer shares its deployment block, so a metapool deployed within the window is
+      -- still captured; MetaPoolDeployed and the Base/Basic pool scans stay full-history,
+      -- so the actively-deploying pool types are never at risk.
+      --
+      -- ACCEPTED TRADEOFF (PR #9792 review): if a metapool's MetaPoolDeployed event or its
+      -- LP-mint Transfer is decoded/backfilled more than the window late, that one metapool
+      -- is missed until a `dbt --full-refresh` (which rebuilds the full registry unwindowed
+      -- and recovers it). Intentionally accepted for Optimism Curve metapools: the factory is
+      -- dormant (42 deployments, last 2023-11). A self-healing gate keyed on un-resolved
+      -- metapools is not viable here -- the 42 deploys share only 19 distinct coins, so there
+      -- is no clean per-metapool key in the output to detect a missed one without re-scanning
+      -- all history (which is the cost this change removes).
       {% if is_incremental() %}
       AND {{ incremental_predicate('et.evt_block_time') }}
       {% endif %}
