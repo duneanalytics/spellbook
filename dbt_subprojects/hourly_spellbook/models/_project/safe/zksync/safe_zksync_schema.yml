@@ -73,21 +73,6 @@ models:
         description: "USD amount of transferred ETH"
 
 
-  - name: safe_zksync_singletons
-    meta:
-      blockchain: zksync
-      project: safe
-      contributors: ['danielpartida' , 'kryptaki']
-    config:
-      tags: ['safe', 'singletons', 'zksync']
-    description: "Singletons addresses used with Safes"
-    columns:
-      - name: address
-        description: "Safe contract address"
-        data_tests:
-          - unique
-          - not_null
-
   - name: safe_zksync_transactions
     meta:
       blockchain: zksync
