@@ -42,28 +42,22 @@ models:
       - &amount_usd
         name: amount_usd
         description: "claimed amount in USD"
-      - &amount_raw
-        name: amount_raw
+      - name: amount_raw
         description: "claimed amount raw"
         data_tests:
           - not_null
-      - &gas_price
-        name: gas_price
+      - name: gas_price
         description: "gas price at the time of claim"
-      - &gas_used
-        name: gas_used
+      - name: gas_used
         description: "gas used"
-      - &tx_fee
-        name: tx_fee
+      - name: tx_fee
         description: "tx fee amount"
       - &tx_fee_usd
         name: tx_fee_usd
         description: "tx fee amount in USD"
-      - &tx_fee_currency_symbol
-        name: tx_fee_currency_symbol
+      - name: tx_fee_currency_symbol
         description: "tx fee currency symbol"
-      - &tx_fee_currency
-        name: tx_fee_currency
+      - name: tx_fee_currency
         description: "tx fee currency contract address"
       - &project_contract_address
         name: project_contract_address
@@ -75,41 +69,6 @@ models:
         description: "unique transaction hash value"
         data_tests:
           - not_null
-
-  - name: gooddollar_celo_ubi_claims_daily_agg
-    meta:
-      blockchain: celo
-      project: gooddollar
-      contributors: tomfutago
-    config:
-      tags: ["celo", "gooddollar", "ubi"]
-    description: "GoodDollar daily UBI claims aggregates"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - block_date
-    columns:
-      - *block_date
-      - name: unique_claimers
-        description: "unique claimers"
-      - &claim_count
-        name: claim_count
-        description: "daily claim count"
-      - *amount
-      - name: avg_amount
-        description: "avg daily UBI amount"
-      - *amount_usd
-      - name: avg_amount_usd
-        description: "avg daily UBI amount in USD"
-      - name: day_oridinal
-        description: "incremental day ordinal"
-      - name: daily_ubi
-        description: "daily UBI amount (changes at approx 12:00)"
-      - name: daily_ubi_raw
-        description: "daily UBI amount raw (changes at approx 12:00)"
-      - name: fee_to_claim_ratio
-        description: "fee to claim ratio (based on USD amounts)"
 
   - name: gooddollar_celo_ubi_claimers_agg
     meta:
@@ -126,7 +85,8 @@ models:
               - claimer
     columns:
       - *claimer
-      - *claim_count
+      - name: claim_count
+        description: "daily claim count"
       - *amount
       - *amount_usd
       - *tx_fee_usd
@@ -190,41 +150,30 @@ models:
       - *block_time
       - *block_date
       - *block_number
-      - &movement_type
-        name: movement_type
+      - name: movement_type
         description: "movement type (funding/inflow/outflow)"
-      - &token_in_symbol
-        name: token_in_symbol
+      - name: token_in_symbol
         description: "inflow token symbol"
-      - &token_out_symbol
-        name: token_out_symbol  
+      - name: token_out_symbol
         description: "outflow token symbol"
-      - &token_in_amount
-        name: token_in_amount
+      - name: token_in_amount
         description: "inflow token amount"
-      - &token_out_amount
-        name: token_out_amount
+      - name: token_out_amount
         description: "outflow token amount"
       - name: amount_usd
         description: "amount in USD"
-      - &token_in_address
-        name: token_in_address
+      - name: token_in_address
         description: "inflow token address"
-      - &token_out_address
-        name: token_out_address
+      - name: token_out_address
         description: "outflow token address"
-      - &taker
-        name: taker
+      - name: taker
         description: "taker address"
-      - &tx_from
-        name: tx_from
+      - name: tx_from
         description: "tx from address"
-      - &tx_to
-        name: tx_to
+      - name: tx_to
         description: "tx to address"
       - *project_contract_address
-      - &evt_index
-        name: evt_index
+      - name: evt_index
         description: "event index"
       - *tx_hash
 
@@ -243,27 +192,19 @@ models:
               - block_date
     columns:
       - *block_date
-      - &cusd_in
-        name: cusd_in 
+      - name: cusd_in
         description: "cUSD inflow/funding"
-      - &cusd_out
-        name: cusd_out
+      - name: cusd_out
         description: "cUSD outflow"
-      - &gd_in
-        name: gd_in
+      - name: gd_in
         description: "G$ inflow (G$ swapped in for cUSD)"
-      - &gd_out
-        name: gd_out
+      - name: gd_out
         description: "G$ outflow (G$ minted from the reserve / swapped out for cUSD)"
-      - &cusd_net
-        name: cusd_net
+      - name: cusd_net
         description: "cUSD net (inflow - outflow)"
-      - &gd_net
-        name: gd_net
+      - name: gd_net
         description: "G$ net (inflow - outflow)"
-      - &cusd_balance
-        name: cusd_balance
+      - name: cusd_balance
         description: "cUSD balance (cumulative inflow - cumulative outflow)"
-      - &gd_balance
-        name: gd_balance
+      - name: gd_balance
         description: "G$ balance (cumulative inflow - cumulative outflow)"
