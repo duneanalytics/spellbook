@@ -26,6 +26,8 @@ models:
         description: "Block time of the transaction"
       - name: tx_hash
         description: "Transaction hash of the Angstrom bundle (execute) call"
+        data_tests:
+          - not_null
       - name: tx_index
         description: "Index of the transaction within its block"
       - name: angstrom_address
@@ -34,6 +36,8 @@ models:
         description: "Raw calldata of the bundle transaction, decoded downstream"
       - name: block_month
         description: "Month partition derived from block_time"
+        data_tests:
+          - not_null
 
   - name: angstrom_ethereum_trades
     meta:
