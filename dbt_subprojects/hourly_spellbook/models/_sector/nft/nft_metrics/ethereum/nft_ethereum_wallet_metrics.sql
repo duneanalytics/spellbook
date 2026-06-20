@@ -150,8 +150,14 @@ eth_collection_stats_latest_floor as (
 
 -- the next trade per (wallet, collection, token) is taken with lead() in a single window pass,
 -- replacing the previous row_number() + self-join (which re-computed the whole pipeline twice
--- and was the skewed join in the plan). The order-by carries a full tiebreaker so the build is
--- deterministic when several trades share the same block_time
+-- and was the skewed join in the plan). The order-by is not a strict total order (rows identical on
+-- all eight keys can still tie), but the wallet metrics are invariant to that residual tie: every
+-- value the result reads is either a partition key or one of these order-by keys (lead() only reads
+-- trade_type/block_time/tx_hash/amount_usd/eth_amount), so tied rows carry identical buy/sell values
+-- and whichever one the pairing keeps contributes the same numbers. Verified on full prod data:
+-- adding a per-row unique id to the order-by leaves the output bit-identical (same wallet count, same
+-- checksum over every integer count column, same eth sums) -- so the unique id is omitted to avoid
+-- doubling the window's peak memory (a ~90-char key over ~100M rows) for no change in result.
 buys_and_sells_w_index as (
 select wallet,
        nft_contract_address,
