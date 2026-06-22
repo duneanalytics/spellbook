@@ -36,6 +36,7 @@
     , ref('gravity_finance_polygon_base_trades')
     , ref('fluid_v1_polygon_base_trades')
     , ref('zeroex_polygon_base_trades')
+    , ref('zeroex_settler_polygon_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
