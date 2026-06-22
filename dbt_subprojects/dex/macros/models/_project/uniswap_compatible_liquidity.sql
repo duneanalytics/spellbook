@@ -457,6 +457,9 @@ swap_fees_paid as (
 ),
 
 liquidity_change_base as (
+    -- scan modify_liquidity_events once and fan out the modify_liquidity and
+    -- fees_accrued rows via UNNEST; referencing the CTE twice inlines into a
+    -- second full pass over sqrtpricex96/traces_decoded/logs_decoded
     select 
         ml.id
         , ml.tx_from 
@@ -464,11 +467,11 @@ liquidity_change_base as (
         , ml.block_number 
         , ml.tx_hash 
         , ml.evt_index 
-        , ml.event_type 
+        , u.event_type 
         , ml.token0 
         , ml.token1 
-        , ml.amount0
-        , ml.amount1
+        , u.amount0
+        , u.amount1
         , ml.liquidityDelta
         , ml.sqrtPriceX96
         , ml.tickLower
@@ -476,29 +479,11 @@ liquidity_change_base as (
         , ml.salt
     from 
     modify_liquidity_events ml 
-
-    union all 
-
-    select 
-        ml.id
-        , ml.tx_from 
-        , ml.block_time
-        , ml.block_number 
-        , ml.tx_hash 
-        , ml.evt_index 
-        , 'fees_accrued' as event_type
-        , ml.token0 
-        , ml.token1 
-        , ml.fee_amount0 
-        , ml.fee_amount1 
-        , ml.liquidityDelta
-        , ml.sqrtPriceX96
-        , ml.tickLower
-        , ml.tickUpper
-        , ml.salt
-    from 
-    modify_liquidity_events ml 
-    where not (fee_amount0 = 0 and fee_amount1 = 0) -- remove events with zero fees 
+    cross join unnest(array[
+        row(cast(ml.event_type as varchar), ml.amount0, ml.amount1)
+        , row(cast('fees_accrued' as varchar), ml.fee_amount0, ml.fee_amount1)
+    ]) as u(event_type, amount0, amount1)
+    where not (u.event_type = 'fees_accrued' and ml.fee_amount0 = 0 and ml.fee_amount1 = 0) -- remove fees_accrued events with zero fees 
 
     union all 
 
