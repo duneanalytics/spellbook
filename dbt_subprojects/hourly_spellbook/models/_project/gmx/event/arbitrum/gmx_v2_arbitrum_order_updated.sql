@@ -201,6 +201,14 @@ WITH evt_data_1 AS (
             AND ED.block_date = EDP.block_date
 )
 
+, order_created AS (
+    SELECT
+        key,
+        MAX(market) AS market
+    FROM {{ ref('gmx_v2_arbitrum_order_created') }}
+    GROUP BY key
+)
+
 -- full data 
 , full_data AS (
     SELECT 
@@ -240,7 +248,7 @@ WITH evt_data_1 AS (
         ED.tx_to
 
     FROM event_data AS ED
-    LEFT JOIN {{ ref('gmx_v2_arbitrum_order_created') }} AS OC
+    LEFT JOIN order_created AS OC
         ON ED.key = OC.key
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
         ON OC.market = MD.market
