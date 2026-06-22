@@ -201,12 +201,26 @@ WITH evt_data_1 AS (
             AND ED.block_date = EDP.block_date
 )
 
-, order_created AS (
+, order_created_for_update AS (
     SELECT
-        key,
-        MAX(market) AS market
-    FROM {{ ref('gmx_v2_arbitrum_order_created') }}
-    GROUP BY key
+        ED.block_date,
+        ED.tx_hash,
+        ED.index,
+        ARRAY_AGG(
+            OC.market
+            ORDER BY OC.block_number DESC, OC.block_time DESC, OC.index DESC, OC.market DESC
+        )[1] AS market
+    FROM event_data AS ED
+    LEFT JOIN {{ ref('gmx_v2_arbitrum_order_created') }} AS OC
+        ON ED.key = OC.key
+            AND (
+                OC.block_number < ED.block_number
+                OR (
+                    OC.block_number = ED.block_number
+                    AND OC.index <= ED.index
+                )
+            )
+    GROUP BY ED.block_date, ED.tx_hash, ED.index
 )
 
 -- full data 
@@ -248,8 +262,10 @@ WITH evt_data_1 AS (
         ED.tx_to
 
     FROM event_data AS ED
-    LEFT JOIN order_created AS OC
-        ON ED.key = OC.key
+    LEFT JOIN order_created_for_update AS OC
+        ON ED.block_date = OC.block_date
+            AND ED.tx_hash = OC.tx_hash
+            AND ED.index = OC.index
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
         ON OC.market = MD.market
         
