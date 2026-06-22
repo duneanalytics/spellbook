@@ -87,7 +87,7 @@ cross join unnest(day) as days(day)
       ) AS price
     FROM {{source('prices','usd')}} p
     WHERE
-      DATE_TRUNC('day', minute) = current_date
+      minute >= current_date and minute < current_date + interval '1' day
       AND blockchain = 'ethereum'
       AND contract_address IN (SELECT address  FROM tokens      )
   )

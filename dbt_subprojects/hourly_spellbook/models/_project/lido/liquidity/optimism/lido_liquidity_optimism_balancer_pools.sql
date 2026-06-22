@@ -84,7 +84,7 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'optimism'
     and contract_address in (select distinct token_address from tokens)
     union all
@@ -113,7 +113,7 @@ union all
         18,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices','usd')}} p
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'optimism'
     and contract_address = 0x7F5c764cBc14f9669B88837ca1490cCa17c31607
 union all
@@ -142,7 +142,7 @@ union all
         18,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'optimism'
     and contract_address = 0x68f180fcCe6836688e9084f035309E29Bf0A2095
 union all
@@ -171,7 +171,7 @@ union all
         18,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'optimism'
     and contract_address = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
 

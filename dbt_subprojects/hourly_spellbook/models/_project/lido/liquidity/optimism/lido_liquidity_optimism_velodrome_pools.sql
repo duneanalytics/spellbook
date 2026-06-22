@@ -72,7 +72,7 @@ select distinct
     FROM
       {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = current_date
+      minute >= current_date and minute < current_date + interval '1' day
       and blockchain = 'optimism'
   and contract_address IN (select token from tokens) 
  )
