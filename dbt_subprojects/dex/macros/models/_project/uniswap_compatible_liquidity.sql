@@ -1,6 +1,9 @@
-{% macro uniswap_compatible_v4_block_index_sum(block_number, tx_index, evt_index) -%}
-cast({{ block_number }} as decimal(38, 0)) * decimal '1000000000000'
-    + cast({{ tx_index }} as decimal(38, 0)) * decimal '1000000'
+{% macro uniswap_compatible_v4_block_index_sum(block_number, tx_index, tx_hash, evt_index) -%}
+cast({{ block_number }} as decimal(38, 0)) * decimal '10000000000000000000000000'
+    + coalesce(
+        cast({{ tx_index }} as decimal(38, 0))
+        , cast(bitwise_and(varbinary_to_bigint(varbinary_substring({{ tx_hash }}, 1, 8)), 9223372036854775807) as decimal(38, 0))
+    ) * decimal '1000000'
     + cast({{ evt_index }} as decimal(38, 0))
 {%- endmacro %}
 
@@ -26,7 +29,7 @@ base_events as (
         , evt_block_time as block_time
         , evt_block_number as block_number
         , evt_index
-        , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_index') }} as block_index_sum
+        , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum
         , sqrtpricex96
     from 
     {{ PoolManager_evt_Initialize }}
@@ -41,7 +44,7 @@ base_events as (
         , evt_block_time as block_time
         , evt_block_number as block_number
         , evt_index
-        , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_index') }} as block_index_sum 
+        , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum 
         , sqrtpricex96
     from 
     {{ PoolManager_evt_Swap }}
@@ -132,7 +135,7 @@ sort_table as (
             , evt_block_time as block_time
             , evt_block_number as block_number
             , evt_index 
-            , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_index') }} as block_index_sum 
+            , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum 
             , sqrtpricex96
         from 
         {{ PoolManager_evt_Initialize }}
@@ -145,7 +148,7 @@ sort_table as (
             , evt_block_time as block_time
             , evt_block_number as block_number
             , evt_index 
-            , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_index') }} as block_index_sum
+            , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum
             , sqrtpricex96 
         from 
         {{ PoolManager_evt_Swap }}
@@ -199,7 +202,7 @@ get_pools as (
 get_events as (
     select 
         *,
-        {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_index') }} as block_index_sum
+        {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum
 
     from 
     {{ PoolManager_evt_ModifyLiquidity }}
