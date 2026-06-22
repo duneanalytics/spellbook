@@ -7,6 +7,7 @@
     , PoolManager_call_ModifyLiquidity = null
     , liquidity_pools = null
     , liquidity_sqrtpricex96 = null
+    , transactions = null
     )
 %}
 
@@ -24,13 +25,19 @@ get_pools as (
 
 get_events as (
     select 
-        *,
-        {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum
+        e.*,
+        {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
 
     from 
-    {{ PoolManager_evt_ModifyLiquidity }}
+    {{ PoolManager_evt_ModifyLiquidity }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
     {%- if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
+        and {{ incremental_predicate('tx.block_time') }}
+    where {{ incremental_predicate('e.evt_block_time') }}
     {%- endif %}
 ),
 

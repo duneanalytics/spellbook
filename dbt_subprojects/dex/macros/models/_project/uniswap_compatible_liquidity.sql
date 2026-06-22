@@ -1,9 +1,6 @@
-{% macro uniswap_compatible_v4_block_index_sum(block_number, tx_index, tx_hash, evt_index) -%}
-cast({{ block_number }} as decimal(38, 0)) * decimal '10000000000000000000000000'
-    + coalesce(
-        cast({{ tx_index }} as decimal(38, 0))
-        , cast(bitwise_and(varbinary_to_bigint(varbinary_substring({{ tx_hash }}, 1, 8)), 9223372036854775807) as decimal(38, 0))
-    ) * decimal '1000000'
+{% macro uniswap_compatible_v4_block_index_sum(block_number, tx_index, evt_index) -%}
+cast({{ block_number }} as decimal(38, 0)) * decimal '1000000000000'
+    + cast({{ tx_index }} as decimal(38, 0)) * decimal '1000000'
     + cast({{ evt_index }} as decimal(38, 0))
 {%- endmacro %}
 
@@ -13,6 +10,7 @@ cast({{ block_number }} as decimal(38, 0)) * decimal '10000000000000000000000000
     , version = '4'
     , PoolManager_evt_Initialize = null
     , PoolManager_evt_Swap = null 
+    , transactions = null
     )
 %}
 
@@ -24,32 +22,44 @@ with
 
 base_events as (
     select 
-        id
+        e.id
         , 'include' as check_filter
-        , evt_block_time as block_time
-        , evt_block_number as block_number
-        , evt_index
-        , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum
-        , sqrtpricex96
+        , e.evt_block_time as block_time
+        , e.evt_block_number as block_number
+        , e.evt_index
+        , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
+        , e.sqrtpricex96
     from 
-    {{ PoolManager_evt_Initialize }}
-    where sqrtPriceX96 is not null 
-    and {{ incremental_predicate('evt_block_time') }}
+    {{ PoolManager_evt_Initialize }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
+        and {{ incremental_predicate('tx.block_time') }}
+    where e.sqrtPriceX96 is not null 
+    and {{ incremental_predicate('e.evt_block_time') }}
 
     union all 
 
     select 
-        id
+        e.id
         , 'include' as check_filter
-        , evt_block_time as block_time
-        , evt_block_number as block_number
-        , evt_index
-        , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum 
-        , sqrtpricex96
+        , e.evt_block_time as block_time
+        , e.evt_block_number as block_number
+        , e.evt_index
+        , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum 
+        , e.sqrtpricex96
     from 
-    {{ PoolManager_evt_Swap }}
-    where sqrtPriceX96 is not null 
-    and {{ incremental_predicate('evt_block_time') }}
+    {{ PoolManager_evt_Swap }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
+        and {{ incremental_predicate('tx.block_time') }}
+    where e.sqrtPriceX96 is not null 
+    and {{ incremental_predicate('e.evt_block_time') }}
 ),
 
 get_active_pools as ( -- get only the pools that were active on incremental run
@@ -131,28 +141,38 @@ sort_table as (
 
     get_events as (
         select 
-            id
-            , evt_block_time as block_time
-            , evt_block_number as block_number
-            , evt_index 
-            , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum 
-            , sqrtpricex96
+            e.id
+            , e.evt_block_time as block_time
+            , e.evt_block_number as block_number
+            , e.evt_index 
+            , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum 
+            , e.sqrtpricex96
         from 
-        {{ PoolManager_evt_Initialize }}
-        where sqrtPriceX96 is not null 
+        {{ PoolManager_evt_Initialize }} e
+        left join {{ transactions }} tx
+            on e.evt_tx_index is null
+            and e.evt_tx_hash = tx.hash
+            and e.evt_block_number = tx.block_number
+            and e.evt_block_date = tx.block_date
+        where e.sqrtPriceX96 is not null 
 
         union all 
 
         select 
-            id
-            , evt_block_time as block_time
-            , evt_block_number as block_number
-            , evt_index 
-            , {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum
-            , sqrtpricex96 
+            e.id
+            , e.evt_block_time as block_time
+            , e.evt_block_number as block_number
+            , e.evt_index 
+            , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
+            , e.sqrtpricex96 
         from 
-        {{ PoolManager_evt_Swap }}
-        where sqrtPriceX96 is not null 
+        {{ PoolManager_evt_Swap }} e
+        left join {{ transactions }} tx
+            on e.evt_tx_index is null
+            and e.evt_tx_hash = tx.hash
+            and e.evt_block_number = tx.block_number
+            and e.evt_block_date = tx.block_date
+        where e.sqrtPriceX96 is not null 
     )
     
 
@@ -183,6 +203,7 @@ sort_table as (
     , PoolManager_call_ModifyLiquidity = null
     , liquidity_pools = null
     , liquidity_sqrtpricex96 = null
+    , transactions = null
     )
 %}
 
@@ -201,13 +222,19 @@ get_pools as (
 
 get_events as (
     select 
-        *,
-        {{ uniswap_compatible_v4_block_index_sum('evt_block_number', 'evt_tx_index', 'evt_tx_hash', 'evt_index') }} as block_index_sum
+        e.*,
+        {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
 
     from 
-    {{ PoolManager_evt_ModifyLiquidity }}
+    {{ PoolManager_evt_ModifyLiquidity }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
     {%- if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
+        and {{ incremental_predicate('tx.block_time') }}
+    where {{ incremental_predicate('e.evt_block_time') }}
     {%- endif %}
 ),
 
