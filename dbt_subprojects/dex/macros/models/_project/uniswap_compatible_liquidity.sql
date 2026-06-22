@@ -366,6 +366,7 @@ modify_liquidity_events as (
             evt_block_number,
             evt_block_date,
             evt_index,
+            block_index_sum,
             id,                -- pool id lives here
             sender,            -- caller/sender (useful metadata)
             tickLower,
@@ -385,7 +386,7 @@ modify_liquidity_events as (
             , e.evt_block_number as block_number 
             , e.evt_tx_hash as tx_hash
             , e.evt_index
-            , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'e.evt_tx_index', 'e.evt_index') }} as block_index_sum
+            , e.block_index_sum
             , 'modify_liquidity' as event_type 
             , cd.currency0 as token0 
             , cd.currency1 as token1
