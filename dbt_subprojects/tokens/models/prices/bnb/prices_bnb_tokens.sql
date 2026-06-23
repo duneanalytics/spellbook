@@ -418,12 +418,9 @@ FROM
     ('vtion-vanguard-total-stock-market-tokenized-etf-ondo', 'bnb', 'VTIon', 0x158734153f354cb326ee690c3d55f810dcb0fc90, 18),
     ('wfcon-wells-fargo-tokenized-stock-ondo', 'bnb', 'WFCon', 0x629520dee1620def11596f84e85de9f1ff653012, 18),
     --Coinpaprika RWA tokens recently activated (was inactive in source mapping)
-    ('vnqon-vanguard-real-estate-tokenized-etf-ondo', 'bnb', 'VNQon', 0x10b58a3d9dcec59bb1c3bf6b9c9414eafce711c9, 18),
     ('nteson-netease-tokenized-stock-ondo', 'bnb', 'NTESon', 0x282973969118f9fe39bf2ff3d8dd1efee82ccb11, 18),
-    ('openon-opendoor-technologies-tokenized-stock-ondo', 'bnb', 'OPENon', 0xa09699fc0cbb1f85128450a0ff6a3c4d3a7e7b9b, 18),
     ('wulfon-terawulf-ondo-tokenized', 'bnb', 'WULFon', 0xad56701d9e57957e28e546db7db508a16d4f86cc, 18),
-    ('vtvon-vanguard-value-tokenized-etf-ondo', 'bnb', 'VTVon', 0xc2dd31b1b3a2f515ce0d48de712c6744c3475170, 18),
-    ('niklon-sprott-nickel-miners-etf-ondo-tokenized', 'bnb', 'NIKLon', 0xe23f03d2907cdc38a10f6ccdc1a157bf1afe51de, 18)
+    ('vtvon-vanguard-value-tokenized-etf-ondo', 'bnb', 'VTVon', 0xc2dd31b1b3a2f515ce0d48de712c6744c3475170, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
