@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: robinhood
+    description: "Raw EVM tables for the Robinhood chain. This source provides access to fundamental blockchain data like blocks, transactions, logs, and traces."
+    tables:
+      - name: blocks
+      - name: transactions
+      - name: traces
+      - name: traces_decoded
+      - name: logs
+      - name: logs_decoded
+      - name: contracts
+      - name: creation_traces
+
+  - name: erc20_robinhood
+    description: "Standard ERC20 fungible token event tables for Robinhood."
+    tables:
+      - name: evt_Transfer
+      - name: evt_Approval
