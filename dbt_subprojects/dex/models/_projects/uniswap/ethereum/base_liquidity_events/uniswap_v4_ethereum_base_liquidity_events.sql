@@ -19,5 +19,6 @@
         , liquidity_pools = ref('uniswap_v4_ethereum_pools')
         , liquidity_sqrtpricex96 = ref('uniswap_v4_ethereum_sqrtpricex96')
         , PoolManager_call_ModifyLiquidity = source ('uniswap_v4_ethereum', 'PoolManager_call_ModifyLiquidity')
+        , transactions = source('ethereum', 'transactions')
     )
 }}
