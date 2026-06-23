@@ -206,10 +206,7 @@ WITH evt_data_1 AS (
         ED.block_date,
         ED.tx_hash,
         ED.index,
-        ARRAY_AGG(
-            OC.market
-            ORDER BY OC.block_number DESC, OC.block_time DESC, OC.index DESC, OC.market DESC
-        )[1] AS market
+        MAX_BY(OC.market, (OC.block_number, OC.index)) AS market
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_order_created') }} AS OC
         ON ED.key = OC.key
