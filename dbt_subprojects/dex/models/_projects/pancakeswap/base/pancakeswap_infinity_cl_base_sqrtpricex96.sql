@@ -16,5 +16,6 @@
         , version = 'infinity_cl'
         , PoolManager_evt_Initialize = source('pancakeswap_infinity_base', 'clpoolmanager_evt_initialize')
         , PoolManager_evt_Swap = source('pancakeswap_infinity_base', 'ClPoolManager_evt_Swap') 
+        , transactions = source('base', 'transactions')
     )
 }}

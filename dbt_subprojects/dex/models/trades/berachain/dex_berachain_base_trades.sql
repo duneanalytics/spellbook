@@ -14,6 +14,7 @@
     ref('kodiak_v3_berachain_base_trades')
     , ref('burrbear_berachain_base_trades')
     , ref('beraswap_berachain_base_trades')
+    , ref('zeroex_settler_berachain_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

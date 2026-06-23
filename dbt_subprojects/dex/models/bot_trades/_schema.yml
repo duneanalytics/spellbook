@@ -197,6 +197,16 @@ models:
       - check_bot_trades_seed:
           arguments:
             seed_file: ref('flokibot_ethereum_trades_seed')
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: flokibot_base_bot_trades
     meta:
@@ -218,6 +228,16 @@ models:
       - check_bot_trades_seed:
           arguments:
             seed_file: ref('flokibot_base_trades_seed')
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: flokibot_bnb_bot_trades
     meta:

@@ -2,8 +2,9 @@
         schema='lido_accounting_ethereum',
         alias = 'steth_referral_payment',
 
-        materialized = 'table',
-        file_format = 'delta'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'append'
         , post_hook='{{ hide_spells() }}'
         )
 }}
@@ -58,6 +59,9 @@ referral_payment_txns AS (
     )
     AND evt_block_time >= CAST('2023-08-01 00:00' AS TIMESTAMP)
     AND contract_address in (select address from tokens)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
 
     UNION ALL
 
@@ -72,6 +76,9 @@ referral_payment_txns AS (
     )
     AND evt_block_time >= CAST('2023-08-01 00:00' AS TIMESTAMP)
     AND contract_address in (select address from tokens)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
     ORDER BY evt_block_time
 )
 
@@ -80,4 +87,17 @@ referral_payment_txns AS (
             evt_tx_hash,
             contract_address AS token,
             value AS amount_token
-    FROM referral_payment_txns
+    FROM referral_payment_txns r
+    {% if is_incremental() %}
+    -- append-only dedup: drop rows already inserted by a previous run inside the
+    -- incremental window (no event index in the output, so a merge unique_key would
+    -- collapse legitimately duplicated transfers within one tx)
+    WHERE not exists (
+        select 1
+        from {{ this }} t
+        where t.period = r.evt_block_time
+          and t.evt_tx_hash = r.evt_tx_hash
+          and t.token = r.contract_address
+          and t.amount_token = r.value
+    )
+    {% endif %}

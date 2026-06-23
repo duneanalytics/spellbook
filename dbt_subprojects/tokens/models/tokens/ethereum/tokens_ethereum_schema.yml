@@ -67,6 +67,25 @@ models:
             to be compatible with the common standards. Accepted values are presently standards represented.
             If you are adding a token with a new standard, remember to add it the accepted values list.
 
+  - name: tokens_ethereum_nft_reservoir_names
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: dot2dotseurat, hildobby
+    config:
+      tags: ['tokens', 'ethereum', 'nft', 'erc721']
+    description: >
+        One-time snapshot of earliest-name-per-contract from the deprecated reservoir community
+        dataset (reservoir.collections, frozen 2025-05-28). Materialized so tokens_ethereum_nft
+        does not re-scan the frozen source on every run.
+    columns:
+      - name: contract_address
+        description: "The NFT contract address (as stored in reservoir.collections)."
+        data_tests:
+          - unique
+      - name: name
+        description: "Earliest reservoir collection name for the contract."
+
   - name: tokens_ethereum_nft_standards
     meta:
       blockchain: ethereum

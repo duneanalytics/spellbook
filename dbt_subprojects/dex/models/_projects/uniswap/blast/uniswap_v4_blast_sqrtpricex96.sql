@@ -18,5 +18,6 @@
         , version = '4'
         , PoolManager_evt_Initialize = source('uniswap_v4_blast', 'PoolManager_evt_Initialize')
         , PoolManager_evt_Swap = source('uniswap_v4_blast', 'PoolManager_evt_Swap') 
+        , transactions = source('blast', 'transactions')
     )
 }}

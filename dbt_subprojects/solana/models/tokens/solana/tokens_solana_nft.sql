@@ -238,6 +238,13 @@ with
             WHERE NOT EXISTS (
                 SELECT 1 FROM {{ this }} t
                 WHERE t.version = 'cNFT'
+                  -- Prune this idempotency self-scan to the incremental window's
+                  -- partitions. A duplicate of a windowed `src` mint shares the same
+                  -- mint identity, hence the same call_block_time (>= the window floor),
+                  -- hence the same block_date (>= the window floor day) — so a
+                  -- window-bounded block_date can never drop a true collision. Without
+                  -- this the anti-join re-scans all ~924M cNFT rows (~53 GB) every run.
+                  AND {{ incremental_predicate('t.block_date') }}
                   AND t.account_merkle_tree = src.account_merkleTree
                   AND t.call_tx_id = src.call_tx_id
                   AND coalesce(t.call_outer_instruction_index, -1) = coalesce(src.call_outer_instruction_index, -1)

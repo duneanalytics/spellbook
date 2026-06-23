@@ -1,0 +1,23 @@
+{{ config(
+    schema = 'uniswap_v4_optimism'
+    , alias = 'swaps'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+
+{{
+    uniswap_compatible_v4_trades(
+        blockchain = 'optimism'
+        , project = 'uniswap'
+        , version = '4'
+        , PoolManager_call_Swap = source('uniswap_v4_optimism', 'PoolManager_call_Swap') 
+        , PoolManager_evt_Swap = source('uniswap_v4_optimism', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0x9a13f98cb987694c9f086b1f5eb990eea8264ec3'
+        , start_date = '2025-01-23'
+        , aggregator_hooks = ref('uniswap_v4_aggregator_hooks')
+    )
+}}

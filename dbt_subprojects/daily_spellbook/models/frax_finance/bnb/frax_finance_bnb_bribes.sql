@@ -331,6 +331,9 @@ bribe_base as (
     where
         topic0 = 0x6a6f77044107a33658235d41bedbbaf2fe9ccdceb313143c947a5e76e1ec8474
         and bytearray_substring(data, 1, 32) = 0x000000000000000000000000e48a3d7d0bc88d552f730b62c006bc925eadb9ee
+        -- bribe contracts were first deployed 2023-01-06, so no qualifying event predates this floor;
+        -- it prunes pre-2023 bsc.logs files (the other two logs scans already carry the same bound)
+        and block_time > cast('2023-01-02' as date)
         and contract_address in (
             select
                 bribe_address

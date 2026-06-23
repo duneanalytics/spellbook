@@ -84,6 +84,22 @@ models:
           arguments:
             combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
 
+  - name: meteora_v3_solana_excluded_mints
+    meta:
+      blockchain: solana
+      contributors: [ 0xsandeshk ]
+    config:
+      tags: [ 'static' ]
+    description: >
+        synthetic VDOR/Vanguard mint cohort excluded from meteora_v3_solana_base_trades
+        due to same-tx WSOL round-trip volume
+    columns:
+      - name: token_mint_address
+        description: mint address excluded from meteora v3 base trades
+        tests:
+          - not_null
+          - unique
+
   - name: meteora_version_amm_base_trades
     meta:
       blockchain: solana

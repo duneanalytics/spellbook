@@ -10,37 +10,8 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )}}
 
-{% set zeroex_settler_start_date = '2024-07-15' %}
-{% set blockchain = 'polygon' %}
-
-WITH zeroex_tx AS (
-    {{
-        zeroex_settler_txs_cte(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-        )
-    }}
-),
-zeroex_v2_trades AS (
-    {{
-        zeroex_v2_trades(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-            
-        )
-    }}
-),
-
-trade_details as (
-    {{
-        zeroex_v2_trades_detail(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-            
-        )
-    }}
-
-)
-select 
-    *
- from trade_details 
+{{
+    zeroex_settler_agg(
+        blockchain = 'polygon'
+    )
+}}
