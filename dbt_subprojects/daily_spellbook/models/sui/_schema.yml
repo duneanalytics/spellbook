@@ -36,3 +36,26 @@ models:
     config:
       tags: ['sui','walrus']
     description: "Walrus decentralized storage blob registrations and certifications on Sui, including blob hash, size, epoch range, and sender."
+
+  - name: dex_sui_pool_map
+    meta:
+      blockchain: sui
+      project: dex
+      short_description: "Mapping of Sui DEX pool ids to their two coin types, resolved from the on-chain object type of each traded pool."
+    config:
+      tags: ['sui','dex']
+    description: "Mapping of Sui DEX pool ids to their two coin types, resolved from the on-chain object type of each traded pool."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - pool_id
+    columns:
+      - name: pool_id
+        description: "Normalized ('0x' + 64 hex) Sui object id of the DEX pool; merge key of this incremental model."
+        data_tests:
+          - not_null
+      - name: coin_type_a
+        description: "Fully-qualified Sui coin type of the pool's first asset."
+      - name: coin_type_b
+        description: "Fully-qualified Sui coin type of the pool's second asset."

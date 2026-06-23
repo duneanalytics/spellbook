@@ -100,17 +100,6 @@ WITH
       {% else %}
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
-  ),
-  highest_inner_instruction_index_for_each_trade AS (
-    SELECT
-      tx_id,
-      outer_instruction_index,
-      MAX(inner_instruction_index) AS highestInnerInstructionIndex
-    FROM
-      bot_trades
-    GROUP BY
-      tx_id,
-      outer_instruction_index
   )
 SELECT
   block_time,
@@ -140,16 +129,12 @@ SELECT
   bot_trades.outer_instruction_index,
   COALESCE(inner_instruction_index, 0) AS inner_instruction_index,
   IF(
-    inner_instruction_index = highestInnerInstructionIndex,
+    inner_instruction_index = MAX(inner_instruction_index) OVER (PARTITION BY tx_id, outer_instruction_index),
     true,
     false
   ) AS is_last_trade_in_transaction
 FROM
   bot_trades
-  JOIN highest_inner_instruction_index_for_each_trade ON (
-    bot_trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
-    AND bot_trades.outer_instruction_index = highest_inner_instruction_index_for_each_trade.outer_instruction_index
-  )
 ORDER BY
   block_time DESC,
   tx_index DESC,

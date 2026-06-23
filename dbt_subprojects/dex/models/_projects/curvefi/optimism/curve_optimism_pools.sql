@@ -70,6 +70,23 @@ WITH
       AND et.to = et.contract_address
       AND et.evt_block_number = mps.evt_block_number
       AND et.evt_block_time >= TIMESTAMP '2022-01-17'
+      -- Bound the otherwise full-history scan of optimism.evt_Transfer (~2.75B rows,
+      -- ~99% of this model's IO) to the incremental window. A metapool's LP-token mint
+      -- Transfer shares its deployment block, so a metapool deployed within the window is
+      -- still captured; MetaPoolDeployed and the Base/Basic pool scans stay full-history,
+      -- so the actively-deploying pool types are never at risk.
+      --
+      -- ACCEPTED TRADEOFF (PR #9792 review): if a metapool's MetaPoolDeployed event or its
+      -- LP-mint Transfer is decoded/backfilled more than the window late, that one metapool
+      -- is missed until a `dbt --full-refresh` (which rebuilds the full registry unwindowed
+      -- and recovers it). Intentionally accepted for Optimism Curve metapools: the factory is
+      -- dormant (42 deployments, last 2023-11). A self-healing gate keyed on un-resolved
+      -- metapools is not viable here -- the 42 deploys share only 19 distinct coins, so there
+      -- is no clean per-metapool key in the output to detect a missed one without re-scanning
+      -- all history (which is the cost this change removes).
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('et.evt_block_time') }}
+      {% endif %}
     GROUP BY
       tokenid,
       token,
@@ -210,26 +227,48 @@ WITH
       tokenid,
       token,
       pool --unique
+  ),
+  -- Union the factory-derived pools with the hardcoded custom pools, dropping a custom
+  -- pool whose address is already produced by a factory. Referencing agg_pools a single
+  -- time (and resolving the anti-join with a window over the union) avoids re-expanding
+  -- the decoded scans: the original `NOT IN (SELECT pool FROM agg_pools)` made Trino
+  -- inline agg_pools a second time, doubling every underlying scan.
+  combined AS (
+    SELECT
+      version,
+      CAST(tokenid as INT256) as tokenid,
+      token,
+      pool,
+      true as is_agg
+    FROM
+      agg_pools
+    UNION ALL
+    SELECT
+      version,
+      CAST(tokenid as INT256) as tokenid,
+      token,
+      pool,
+      false as is_agg
+    FROM
+      custom_pools
   )
 SELECT
   version,
-  CAST(tokenid as INT256) as tokenid,
+  tokenid,
   token,
   pool
 FROM
-  agg_pools
-UNION ALL
-SELECT
-  version,
-  CAST(tokenid as INT256) as tokenid,
-  token,
-  pool
-FROM
-  custom_pools
-WHERE
-  pool NOT IN (
+  (
     SELECT
-      pool
+      version,
+      tokenid,
+      token,
+      pool,
+      is_agg,
+      bool_or(is_agg) OVER (PARTITION BY pool) as pool_in_agg
     FROM
-      agg_pools
-  ) --avoid dupes that are caught by factories
+      combined
+  )
+WHERE
+  is_agg
+  OR NOT pool_in_agg --keep custom pools only when no factory produced that pool

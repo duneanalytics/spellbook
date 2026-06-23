@@ -41,3 +41,16 @@ models:
               - block_hour
               - from_address
               - to_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_hour
+        data_tests:
+          - not_null
+      - name: from_address
+        data_tests:
+          - not_null
+      - name: to_address
+        data_tests:
+          - not_null

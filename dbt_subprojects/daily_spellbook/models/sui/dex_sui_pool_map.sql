@@ -21,19 +21,33 @@ with used_pools as (
 )
 
 -- 2) Latest object row per pool_id
+-- Join on the raw varbinary object_id (not a per-row hex-string expression) so the
+-- planner can build a dynamic filter from the small used_pools side and push it
+-- into the objects scan. try() keeps the old behavior for malformed pool_ids:
+-- they simply never match.
 , latest as (
   select
       ('0x' || lower(to_hex(o.object_id))) as object_id_hex
       , cast(o.type_ as varchar)             as type_str
       , o.checkpoint
       , row_number() over (
-        partition by ('0x' || lower(to_hex(o.object_id)))
+        partition by o.object_id
         order by o.checkpoint desc
       ) as rn
   from {{ source('sui','objects') }} o
   join used_pools u
-    on ('0x' || lower(to_hex(o.object_id))) = u.pool_id
+    on o.object_id = try(from_hex(substr(u.pool_id, 3)))
   where strpos(cast(o.type_ as varchar), '<') > 0
+  {% if is_incremental() %}
+    -- Pools traded inside the incremental window were mutated at those trade
+    -- checkpoints, so each has at least one object version in the window
+    -- (objects.date is the checkpoint date, same midnight floor as block_time).
+    -- Sui object types are immutable, so any version parses to the same coin
+    -- types as the all-time latest. This prunes the 30B-row objects scan to the
+    -- last few date partitions. Full refresh keeps the unbounded scan because
+    -- historic pools' latest versions can be arbitrarily old.
+    and o.date >= date(date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}))
+  {% endif %}
 )
 
 -- 3) Extract generic type parameters

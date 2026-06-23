@@ -37,6 +37,8 @@ models:
       - &token_id
         name: token_id
         description: "NFT Token ID"
+        data_tests:
+          - not_null
       - &collection
         name: collection
         description: "NFT collection name"
@@ -56,6 +58,8 @@ models:
       - &number_of_items
         name: number_of_items
         description:  "Number of items traded"
+        data_tests:
+          - not_null
       - &trade_category
         name: trade_category
         description:  "How was this NFT traded ? (Direct buy, auction, etc...)"
@@ -95,6 +99,8 @@ models:
       - &tx_hash
         name: tx_hash
         description:  "Transaction hash"
+        data_tests:
+          - not_null
       - &block_number
         name: block_number
         description: "Block number in which the transaction was executed "
@@ -136,6 +142,8 @@ models:
         description:  "Royalty fee in % of the amount paid for a given trade"
       - name: evt_index
         description: "Event index"
+        data_tests:
+          - not_null
       - name: block_date
         description: "UTC event block date"
       - name: block_month

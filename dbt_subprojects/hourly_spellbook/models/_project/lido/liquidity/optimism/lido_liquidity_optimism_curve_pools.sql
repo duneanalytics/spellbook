@@ -43,7 +43,7 @@ with
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'optimism'
     and contract_address = 0x4200000000000000000000000000000000000006
 
@@ -98,7 +98,7 @@ with
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = date_trunc('day', now())
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'ethereum'
     and contract_address = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0
 
