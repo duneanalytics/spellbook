@@ -25,11 +25,18 @@
 
 WITH settler AS (
     SELECT
-        tx_hash, block_time, block_number, method_id, settler_address, zid, tag, rn, cow_rn,
+        tx_hash, block_time, block_number, method_id, settler_address, zid, tag, rn,
         buy_token, min_amount_out, settler_msgsender
     FROM {{ ref('zeroex_v2_' ~ blockchain ~ '_settler_txs') }}
     -- exclude the sentinel zid (non-trade fills), matching the zeroex_v2 pipeline this replaces
     WHERE zid != 0xa00000000000000000000000
+      -- Drop 0x Settler fills that execute *inside* a CoW Protocol settlement (cow_rn is set in the
+      -- settler-txs staging when the GPv2Settlement address appears in the Settler call's input). There
+      -- the user's trade is the CoW order — already captured by the cow_protocol model — and the Settler
+      -- call is only the solver's internal routing leg. Emitting it double-counts the same swap and
+      -- collides with the cow_protocol row on the dex_aggregator key (blockchain, tx_hash, evt_index,
+      -- trace_address). (Underlying-venue volume from such fills is still captured in dex.trades.)
+      AND cow_rn IS NULL
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
@@ -60,7 +67,7 @@ txs AS (
 
 calls AS (
     SELECT
-        s.tx_hash, s.block_time, s.block_number, s.settler_address, s.zid, s.tag, s.rn, s.cow_rn,
+        s.tx_hash, s.block_time, s.block_number, s.settler_address, s.zid, s.tag, s.rn,
         -- guard the floor against "no minimum" sentinels (minAmountOut >= 2^128): null them so the
         -- fallback yields null volume rather than an absurd amount. real amounts are far below 2^128.
         CASE WHEN s.min_amount_out < UINT256 '{{ max_plausible_amount }}' THEN s.min_amount_out END AS min_amount_out,
@@ -132,15 +139,13 @@ trades AS (
         c.block_time, c.block_number, c.tx_hash, c.tx_from, c.tx_to, c.zid, c.tag,
         c.rn AS evt_index, c.settler_address AS contract_address, c.receiver AS taker,
         c.buy_token AS token_bought_address,
-        -- CoW-batched settler fills (cow_rn set): tx-level receiver is the CoW solver/settlement, not the user,
-        -- so the receiver-pivot transfer match is unreliable amid the whole batch's transfers. Fall back to the
-        -- deterministic minAmountOut floor for the bought leg and leave the sell leg null rather than risk
-        -- mis-assigning another order's transfer. buyToken itself is still the deterministic calldata value.
-        CASE WHEN c.cow_rn IS NOT NULL THEN c.min_amount_out
-             WHEN l.buy_n = 1 THEN l.buy_amount
+        -- bought leg = the unique Transfer(buyToken, to=receiver); fall back to the deterministic
+        -- minAmountOut floor when the receiver-pivot match isn't unique. (CoW-nested settler fills are
+        -- excluded upstream in the `settler` CTE, so the receiver pivot is reliable for the rows kept here.)
+        CASE WHEN l.buy_n = 1 THEN l.buy_amount
              ELSE c.min_amount_out END AS token_bought_amount_raw,
-        CASE WHEN c.cow_rn IS NULL AND l.sell_n = 1 THEN l.sell_token END AS token_sold_address,
-        CASE WHEN c.cow_rn IS NULL AND l.sell_n = 1 THEN l.sell_amount END AS token_sold_amount_raw
+        CASE WHEN l.sell_n = 1 THEN l.sell_token  END AS token_sold_address,
+        CASE WHEN l.sell_n = 1 THEN l.sell_amount END AS token_sold_amount_raw
     FROM calls c
     LEFT JOIN legs l ON l.tx_hash = c.tx_hash AND l.rn = c.rn
 ),
