@@ -1,9 +1,16 @@
+{% macro uniswap_compatible_v4_block_index_sum(block_number, tx_index, evt_index) -%}
+cast({{ block_number }} as decimal(38, 0)) * decimal '1000000000000'
+    + cast({{ tx_index }} as decimal(38, 0)) * decimal '1000000'
+    + cast({{ evt_index }} as decimal(38, 0))
+{%- endmacro %}
+
 {% macro uniswap_compatible_v4_liquidity_sqrtpricex96(
     blockchain = null
     , project = 'uniswap'
     , version = '4'
     , PoolManager_evt_Initialize = null
     , PoolManager_evt_Swap = null 
+    , transactions = null
     )
 %}
 
@@ -15,32 +22,44 @@ with
 
 base_events as (
     select 
-        id
+        e.id
         , 'include' as check_filter
-        , evt_block_time as block_time
-        , evt_block_number as block_number
-        , evt_index
-        , evt_block_number + evt_index/1e6 as block_index_sum
-        , sqrtpricex96
+        , e.evt_block_time as block_time
+        , e.evt_block_number as block_number
+        , e.evt_index
+        , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
+        , e.sqrtpricex96
     from 
-    {{ PoolManager_evt_Initialize }}
-    where sqrtPriceX96 is not null 
-    and {{ incremental_predicate('evt_block_time') }}
+    {{ PoolManager_evt_Initialize }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
+        and {{ incremental_predicate('tx.block_time') }}
+    where e.sqrtPriceX96 is not null 
+    and {{ incremental_predicate('e.evt_block_time') }}
 
     union all 
 
     select 
-        id
+        e.id
         , 'include' as check_filter
-        , evt_block_time as block_time
-        , evt_block_number as block_number
-        , evt_index
-        , evt_block_number + evt_index/1e6 as block_index_sum 
-        , sqrtpricex96
+        , e.evt_block_time as block_time
+        , e.evt_block_number as block_number
+        , e.evt_index
+        , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum 
+        , e.sqrtpricex96
     from 
-    {{ PoolManager_evt_Swap }}
-    where sqrtPriceX96 is not null 
-    and {{ incremental_predicate('evt_block_time') }}
+    {{ PoolManager_evt_Swap }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
+        and {{ incremental_predicate('tx.block_time') }}
+    where e.sqrtPriceX96 is not null 
+    and {{ incremental_predicate('e.evt_block_time') }}
 ),
 
 get_active_pools as ( -- get only the pools that were active on incremental run
@@ -93,7 +112,7 @@ get_latest_active_pools as (
 sort_table as (
     select 
         *
-        , lag(block_index_sum, 1, 0) over (partition by id order by block_index_sum) as previous_block_index_sum
+        , lag(block_index_sum, 1, decimal '0') over (partition by id order by block_index_sum) as previous_block_index_sum
     from 
     get_latest_active_pools
 )
@@ -122,28 +141,38 @@ sort_table as (
 
     get_events as (
         select 
-            id
-            , evt_block_time as block_time
-            , evt_block_number as block_number
-            , evt_index 
-            , evt_block_number + evt_index/1e6 as block_index_sum 
-            , sqrtpricex96
+            e.id
+            , e.evt_block_time as block_time
+            , e.evt_block_number as block_number
+            , e.evt_index 
+            , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum 
+            , e.sqrtpricex96
         from 
-        {{ PoolManager_evt_Initialize }}
-        where sqrtPriceX96 is not null 
+        {{ PoolManager_evt_Initialize }} e
+        left join {{ transactions }} tx
+            on e.evt_tx_index is null
+            and e.evt_tx_hash = tx.hash
+            and e.evt_block_number = tx.block_number
+            and e.evt_block_date = tx.block_date
+        where e.sqrtPriceX96 is not null 
 
         union all 
 
         select 
-            id
-            , evt_block_time as block_time
-            , evt_block_number as block_number
-            , evt_index 
-            , evt_block_number + evt_index/1e6 as block_index_sum
-            , sqrtpricex96 
+            e.id
+            , e.evt_block_time as block_time
+            , e.evt_block_number as block_number
+            , e.evt_index 
+            , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
+            , e.sqrtpricex96 
         from 
-        {{ PoolManager_evt_Swap }}
-        where sqrtPriceX96 is not null 
+        {{ PoolManager_evt_Swap }} e
+        left join {{ transactions }} tx
+            on e.evt_tx_index is null
+            and e.evt_tx_hash = tx.hash
+            and e.evt_block_number = tx.block_number
+            and e.evt_block_date = tx.block_date
+        where e.sqrtPriceX96 is not null 
     )
     
 
@@ -156,7 +185,7 @@ sort_table as (
         , block_number
         , evt_index 
         , block_index_sum 
-        , lag(block_index_sum, 1, 0) over (partition by id order by block_index_sum) as previous_block_index_sum
+        , lag(block_index_sum, 1, decimal '0') over (partition by id order by block_index_sum) as previous_block_index_sum
         , sqrtpricex96
     from 
     get_events 
@@ -174,6 +203,7 @@ sort_table as (
     , PoolManager_call_ModifyLiquidity = null
     , liquidity_pools = null
     , liquidity_sqrtpricex96 = null
+    , transactions = null
     )
 %}
 
@@ -192,13 +222,19 @@ get_pools as (
 
 get_events as (
     select 
-        *,
-        evt_block_number + evt_index/1e6 as block_index_sum
+        e.*,
+        {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
 
     from 
-    {{ PoolManager_evt_ModifyLiquidity }}
+    {{ PoolManager_evt_ModifyLiquidity }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
     {%- if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
+        and {{ incremental_predicate('tx.block_time') }}
+    where {{ incremental_predicate('e.evt_block_time') }}
     {%- endif %}
 ),
 
@@ -360,6 +396,7 @@ modify_liquidity_events as (
             evt_block_number,
             evt_block_date,
             evt_index,
+            block_index_sum,
             id,                -- pool id lives here
             sender,            -- caller/sender (useful metadata)
             tickLower,
@@ -379,7 +416,7 @@ modify_liquidity_events as (
             , e.evt_block_number as block_number 
             , e.evt_tx_hash as tx_hash
             , e.evt_index
-            , e.evt_block_number + e.evt_index/1e6 as block_index_sum
+            , e.block_index_sum
             , 'modify_liquidity' as event_type 
             , cd.currency0 as token0 
             , cd.currency1 as token1
@@ -457,6 +494,9 @@ swap_fees_paid as (
 ),
 
 liquidity_change_base as (
+    -- scan modify_liquidity_events once and fan out the modify_liquidity and
+    -- fees_accrued rows via UNNEST; referencing the CTE twice inlines into a
+    -- second full pass over sqrtpricex96/traces_decoded/logs_decoded
     select 
         ml.id
         , ml.tx_from 
@@ -464,11 +504,11 @@ liquidity_change_base as (
         , ml.block_number 
         , ml.tx_hash 
         , ml.evt_index 
-        , ml.event_type 
+        , u.event_type 
         , ml.token0 
         , ml.token1 
-        , ml.amount0
-        , ml.amount1
+        , u.amount0
+        , u.amount1
         , ml.liquidityDelta
         , ml.sqrtPriceX96
         , ml.tickLower
@@ -476,29 +516,11 @@ liquidity_change_base as (
         , ml.salt
     from 
     modify_liquidity_events ml 
-
-    union all 
-
-    select 
-        ml.id
-        , ml.tx_from 
-        , ml.block_time
-        , ml.block_number 
-        , ml.tx_hash 
-        , ml.evt_index 
-        , 'fees_accrued' as event_type
-        , ml.token0 
-        , ml.token1 
-        , ml.fee_amount0 
-        , ml.fee_amount1 
-        , ml.liquidityDelta
-        , ml.sqrtPriceX96
-        , ml.tickLower
-        , ml.tickUpper
-        , ml.salt
-    from 
-    modify_liquidity_events ml 
-    where not (fee_amount0 = 0 and fee_amount1 = 0) -- remove events with zero fees 
+    cross join unnest(array[
+        row(cast(ml.event_type as varchar), ml.amount0, ml.amount1)
+        , row(cast('fees_accrued' as varchar), ml.fee_amount0, ml.fee_amount1)
+    ]) as u(event_type, amount0, amount1)
+    where not (u.event_type = 'fees_accrued' and ml.fee_amount0 = 0 and ml.fee_amount1 = 0) -- remove fees_accrued events with zero fees 
 
     union all 
 
@@ -602,7 +624,14 @@ get_pools as (
 ),
 
 token_tfers as (
-    -- token0 out tfers
+    -- Scan the transfer table once and fan each transfer out into its two
+    -- pool-side legs (the sender address as an 'out' leg, the receiver address
+    -- as an 'in' leg) via UNNEST, then join the pool set a single time on the
+    -- leg address. The previous version read {{ token_transfers }} four times
+    -- (one UNION ALL branch per token/direction), each branch a full scan of
+    -- the same window. event_type / amount0 / amount1 are recovered with CASE
+    -- expressions, reproducing the four original branches exactly (pool id is
+    -- unique and token0 <> token1, so at most one branch matches per leg).
     select 
         gp.id
         , tt.evt_tx_from as tx_from 
@@ -610,94 +639,42 @@ token_tfers as (
         , tt.evt_block_number as block_number 
         , tt.evt_tx_hash as tx_hash 
         , tt.evt_index 
-        , 'token0_out' as event_type 
+        , case 
+            when leg.direction = 'out' and gp.token0 = tt.contract_address then 'token0_out'
+            when leg.direction = 'in'  and gp.token0 = tt.contract_address then 'token0_in'
+            when leg.direction = 'out' and gp.token1 = tt.contract_address then 'token1_out'
+            when leg.direction = 'in'  and gp.token1 = tt.contract_address then 'token1_in'
+          end as event_type 
         , gp.token0 
         , gp.token1 
-        , -1 * cast(tt.value as double) as amount0 
-        , 0 as amount1 
+        , case 
+            when gp.token0 = tt.contract_address and leg.direction = 'out' then -1 * cast(tt.value as double)
+            when gp.token0 = tt.contract_address and leg.direction = 'in'  then cast(tt.value as double)
+            else 0 
+          end as amount0 
+        , case 
+            when gp.token1 = tt.contract_address and leg.direction = 'out' then -1 * cast(tt.value as double)
+            when gp.token1 = tt.contract_address and leg.direction = 'in'  then cast(tt.value as double)
+            else 0 
+          end as amount1 
     from 
     {{ token_transfers }} tt 
+    cross join unnest(array[tt."from", tt.to], array['out', 'in']) as leg (pool_address, direction)
     inner join 
     get_pools gp 
-        on gp.id = tt."from"
-        and gp.token0 = tt.contract_address 
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
-    {%- endif %}
-
-    union all 
-
-    -- token0 in tfers
-    select 
-        gp.id
-        , tt.evt_tx_from as tx_from 
-        , tt.evt_block_time as block_time 
-        , tt.evt_block_number as block_number 
-        , tt.evt_tx_hash as tx_hash 
-        , tt.evt_index 
-        , 'token0_in' as event_type 
-        , gp.token0 
-        , gp.token1 
-        , cast(tt.value as double) as amount0 
-        , 0 as amount1 
-    from 
-    {{ token_transfers }} tt 
-    inner join 
-    get_pools gp 
-        on gp.id = tt.to 
-        and gp.token0 = tt.contract_address 
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
-    {%- endif %}
-
-    union all 
-
-    -- token1 out tfers
-    select 
-        gp.id
-        , tt.evt_tx_from as tx_from 
-        , tt.evt_block_time as block_time 
-        , tt.evt_block_number as block_number 
-        , tt.evt_tx_hash as tx_hash 
-        , tt.evt_index 
-        , 'token1_out' as event_type 
-        , gp.token0 
-        , gp.token1 
-        , 0 as amount0
-        , -1 * cast(tt.value as double) as amount1
-    from 
-    {{ token_transfers }} tt 
-    inner join 
-    get_pools gp 
-        on gp.id = tt."from"
-        and gp.token1 = tt.contract_address 
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
-    {%- endif %}
-
-    union all 
-
-    -- token1 in 
-    select 
-        gp.id
-        , tt.evt_tx_from as tx_from 
-        , tt.evt_block_time as block_time 
-        , tt.evt_block_number as block_number 
-        , tt.evt_tx_hash as tx_hash 
-        , tt.evt_index 
-        , 'token1_in' as event_type 
-        , gp.token0 
-        , gp.token1 
-        , 0 as amount0
-        , cast(tt.value as double) as amount1
-    from 
-    {{ token_transfers }} tt 
-    inner join 
-    get_pools gp 
-        on gp.id = tt.to 
-        and gp.token1 = tt.contract_address 
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
+        on gp.id = leg.pool_address
+        and (gp.token0 = tt.contract_address or gp.token1 = tt.contract_address)
+    {#- in CI the initial build is a full refresh, so bound the scan to a recent
+        window to keep it under the CI timeout and let the uniqueness test run on
+        real data; prod renders without this (full history on full refresh). -#}
+    {%- if is_incremental() or target.name == 'ci' %}
+    where
+        {%- if is_incremental() %}
+        {{ incremental_predicate('tt.evt_block_time') }}
+        {%- endif %}
+        {%- if target.name == 'ci' %}
+        {% if is_incremental() %}and {% endif %}tt.evt_block_time >= current_date - interval '14' day
+        {%- endif %}
     {%- endif %}
 )
 

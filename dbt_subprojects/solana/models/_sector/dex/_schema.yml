@@ -76,6 +76,11 @@ models:
           - dbt_utils.accepted_range:
               arguments:
                 max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+              config:
+                # Bound the scan to recent trades: the test flags outlier amount_usd as data lands,
+                # so re-scanning all history (17.2B rows / 236 GB) every run adds no value over a
+                # recent window. Cuts the test's IO ~17x and CPU ~16x.
+                where: "block_time >= now() - interval '7' day"
       - &fee_tier
         name: fee_tier
         description: "Whirlpool fee tier (fee %)"

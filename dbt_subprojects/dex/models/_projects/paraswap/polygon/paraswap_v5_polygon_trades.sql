@@ -62,6 +62,7 @@ price_missed_previous AS (
     SELECT minute, contract_address, decimals, symbol, price
     FROM {{ source('prices', 'usd') }}
     WHERE contract_address = 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270 -- WMATIC
+        AND minute <= TIMESTAMP '2020-01-01' -- first record is 2019-05-13; bound so the prices fact table file-skips
     ORDER BY minute
     LIMIT 1
 ),
@@ -71,6 +72,7 @@ price_missed_next AS (
     SELECT minute, contract_address, decimals, symbol, price
     FROM {{ source('prices', 'usd') }}
     WHERE contract_address = 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270 -- WMATIC
+        AND minute >= now() - interval '7' day -- bound so the prices fact table file-skips
     ORDER BY minute desc
     LIMIT 1
 )

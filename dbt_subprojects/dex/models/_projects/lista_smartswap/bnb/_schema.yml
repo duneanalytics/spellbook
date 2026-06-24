@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: lista_smartswap_bnb_view_pools
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: lista_smartswap
+      contributors: knight_in_kight
+    config:
+      tags: ["bnb", "lista_smartswap", "dex"]
+    description: >
+      Pool registry for Lista SmartSwap on BNB Chain, sourced from the StableSwapFactory
+      NewStableSwapPair event. Native BNB placeholders are normalized to WBNB for
+      compatibility with dex.trades token metadata enrichment.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - pool_address
+              - token_id
+    columns:
+      - name: version
+        description: "Lista SmartSwap version identifier"
+      - name: pool_address
+        description: "StableSwap pool contract address"
+      - name: lp_token
+        description: "StableSwap LP token contract address"
+      - name: token_id
+        description: "Pool token index used by TokenExchange bought_id and sold_id"
+      - name: token_address
+        description: "ERC20 token address for the pool token index"

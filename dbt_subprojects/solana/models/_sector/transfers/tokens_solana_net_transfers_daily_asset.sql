@@ -28,6 +28,10 @@ with raw_transfers as (
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
+        {% if target.name == 'ci' %}
+        -- bound the full-refresh scan in CI so the build completes within the 90-min cap; prod is unaffected
+        and block_date >= current_date - interval '3' day
+        {% endif %}
     group by
         'solana'
         , block_date
@@ -56,6 +60,10 @@ with raw_transfers as (
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
+        {% if target.name == 'ci' %}
+        -- bound the full-refresh scan in CI so the build completes within the 90-min cap; prod is unaffected
+        and block_date >= current_date - interval '3' day
+        {% endif %}
     group by
         'solana'
         , block_date
@@ -82,37 +90,20 @@ with raw_transfers as (
         , t.contract_address
         , t.symbol
         , t.address
-), net_transfers as (
-    select
-        blockchain
-        , block_date
-        , contract_address
-        , symbol
-        , address
-        , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
-        , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
-        , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
-        , sum(transfer_count) as transfer_count
-        , max(max_block_time) as max_block_time  -- Preserve max block_time
-    from
-        transfers_amount
-    group by
-        blockchain
-        , block_date
-        , contract_address
-        , symbol
-        , address
 )
+-- transfers_amount is already at the (contract_address, address) grain, so the
+-- per-address net (received + sent) can be aggregated straight to the asset level
+-- without a redundant intermediate group-by over the same keys.
 select
     blockchain
     , block_date
     , contract_address
     , max_by(symbol, max_block_time) as symbol
-    , sum(net_transfer_amount_usd) as net_transfer_amount_usd
+    , sum(coalesce(transfer_amount_usd_received, 0) + coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
 from
-    net_transfers
+    transfers_amount
 where
-    net_transfer_amount_usd > 0
+    (coalesce(transfer_amount_usd_received, 0) + coalesce(transfer_amount_usd_sent, 0)) > 0
 group by
     blockchain
     , block_date

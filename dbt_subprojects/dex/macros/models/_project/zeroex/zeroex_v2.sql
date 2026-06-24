@@ -1,4 +1,7 @@
 {% macro zeroex_v2_trades(blockchain, start_date) %}
+{%- if target.name == 'ci' -%}
+    {%- set start_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d') -%}
+{%- endif -%}
 -- Create a CTE to read the logs table and apply incremental filtering
 WITH base_filtered_logs AS (
     SELECT
@@ -352,6 +355,9 @@ select * from tbl_trades
 {% endmacro %}
 
 {% macro zeroex_v2_trades_detail(blockchain, start_date) %}
+{%- if target.name == 'ci' -%}
+    {%- set start_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d') -%}
+{%- endif -%}
 WITH token_metadata AS (
     SELECT 
         blockchain, 

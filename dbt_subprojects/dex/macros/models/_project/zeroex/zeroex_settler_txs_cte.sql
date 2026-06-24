@@ -1,4 +1,9 @@
 {% macro zeroex_settler_txs_cte(blockchain, start_date) %}
+-- In CI, floor the full-refresh window to a recent slice so the non-pushable
+-- traces scan stays cheap; production (target dunesql) keeps the real start_date.
+{%- if target.name == 'ci' -%}
+    {%- set start_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d') -%}
+{%- endif -%}
 -- Macro to process 0x Protocol settler transactions
 -- This macro identifies and extracts transactions related to the 0x Protocol settler contracts
 -- Returns a CTE with transaction details including block information, method IDs, and trader addresses
@@ -27,6 +32,11 @@ filtered_traces AS (
     WHERE
         -- Filter for specific method signatures used by 0x Protocol
         (varbinary_position(input,0x1fff991f) <> 0 OR varbinary_position(input,0xfd3ad6d4) <> 0)
+        -- Exclude reverted settler calls (verified: failed ERC-4337 UserOp-wrapped settler calls that execute
+        -- no swap and emit no transfers — genuine non-trades). Without this, a reverted call carrying a sentinel
+        -- minAmountOut reaches the aggregator's floor fallback and emits absurd volume; the RFQ path already
+        -- drops them via its maker-pivot transfer gate, so this only removes non-trades.
+        AND success
         -- Apply time-based filtering for incremental loads
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
@@ -101,8 +111,17 @@ settler_txs AS (
                 0x000000000000175a8b9bC6d539B3708EEd92EA6c
             ) 
             THEN varbinary_substring(input, varbinary_length(input) - 19, 20) 
-            ELSE taker 
-        END AS taker 
+            ELSE taker
+        END AS taker,
+        -- Keep raw calldata only for RFQ-bearing settler calls (plain RFQ action 0xd92aadfb);
+        -- consumed by the zeroex_settler_rfq macro. NULL otherwise to avoid bloating the staging table.
+        CASE WHEN varbinary_position(input, 0xd92aadfb) <> 0 THEN input END AS rfq_input,
+        -- AllowedSlippage fields (present in every execute/executeMetaTxn call, fixed offsets) — used by
+        -- the deterministic aggregator decode (zeroex_settler_agg): buyToken, minAmountOut, and the
+        -- executeMetaTxn msgSender (the order signer / fund owner; tx-level from is the relayer there).
+        varbinary_substring(input, 49, 20) AS buy_token,
+        bytearray_to_uint256(varbinary_substring(input, 69, 32)) AS min_amount_out,
+        CASE WHEN method_id = 0xfd3ad6d4 THEN varbinary_substring(input, 177, 20) END AS settler_msgsender
     FROM
         settler_trace_data
     WHERE 

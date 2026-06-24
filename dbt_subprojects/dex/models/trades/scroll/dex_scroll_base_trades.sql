@@ -24,6 +24,7 @@
     , ref('leetswap_scroll_base_trades')
     , ref('spacefi_scroll_base_trades')
     , ref('punkswap_scroll_base_trades')
+    , ref('zeroex_settler_scroll_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

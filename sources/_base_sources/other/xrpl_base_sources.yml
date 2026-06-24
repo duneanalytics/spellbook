@@ -5,8 +5,555 @@ sources:
   - name: xrpl
     description: "XRPL blockchain data"
     tables:
+      - name: accounts
+        description: "Contains all XRPL accounts observed on the ledger, including their creation and deletion history, current XRP balance, and identity labels where available. Use this table to profile accounts, track lifecycle events, and filter activity by named entities."
+        meta:
+          docs_slug: /xrpl/accounts
+          short_description: The 'xrpl.accounts' table contains all XRPL accounts observed on the ledger, including creation/deletion history, current XRP balance, and identity labels.
+        columns:
+          - name: account_id
+            description: "Unique surrogate primary key for the account"
+          - name: annotation_id
+            description: "Reference to a human-readable label for this account, if known (→ annotations)"
+          - name: account_address
+            description: "The account's XRPL classic address (r-address); unique and not null"
+          - name: created_ledger_index
+            description: "Ledger index at which this account was first funded and activated on-chain"
+          - name: created_timestamp
+            description: "Timestamp when the account was created on the ledger"
+          - name: created_transaction_hash
+            description: "Hash of the transaction that created this account"
+          - name: deleted_ledger_index
+            description: "Ledger index at which this account was deleted, if applicable (null for active accounts)"
+          - name: deleted_transaction_index
+            description: "Transaction index within the deletion ledger for ordering purposes"
+          - name: deleted_timestamp
+            description: "Timestamp when the account was deleted from the ledger"
+          - name: deleted_transaction_hash
+            description: "Hash of the transaction that deleted this account"
+          - name: last_updated_ledger_index
+            description: "Ledger index of the most recent transaction that modified this account's state"
+          - name: last_updated_timestamp
+            description: "Timestamp of the most recent state change for this account"
+          - name: last_updated_transaction_hash
+            description: "Hash of the transaction that last modified this account"
+          - name: current_xrp_balance
+            description: "Current XRP balance held by the account, in XRP"
+
+      - name: aggregated_metrics_daily
+        description: "Aggregated daily metrics for XRP Ledger activity, including transaction volumes, DEX activity, and AMM statistics."
+        meta:
+          docs_slug: /xrpl/aggregated_metrics_daily
+          short_description: The 'xrpl.aggregated_metrics_daily' table contains aggregated daily metrics for XRP Ledger activity, including transaction volumes, DEX activity, and AMM statistics.
+        columns:
+          - name: date
+            description: "The date for which the metrics are aggregated (YYYY-MM-DD)."
+          - name: issuers_count_daily
+            description: "Number of unique issuers of tokens on the XRP Ledger for the given day."
+          - name: tokens_count_daily
+            description: "Number of unique tokens (currency.issuer) on the XRP Ledger for the given day."
+          - name: xrp_txn_volume_xrp
+            description: "Total volume of all transactions involving XRP, denominated in XRP."
+          - name: xrp_payment_volume_xrp
+            description: "Total volume of single-currency (XRP-only) payments, denominated in XRP."
+          - name: dex_traded_tokens_count_daily
+            description: "Number of unique tokens (currency.issuer) traded on the DEX."
+          - name: dex_traders_count_daily
+            description: "Number of unique addresses that executed trades on the DEX."
+          - name: dex_pairs_count_daily
+            description: "Number of unique trading pairs on the DEX."
+          - name: dex_xrp_pairs_count_daily
+            description: "Number of unique trading pairs on the DEX that include XRP as one of the assets."
+          - name: dex_xrp_pair_volume_xrp
+            description: "Total trading volume on the DEX for pairs involving XRP, denominated in XRP."
+          - name: amm_pools_count_daily
+            description: "Number of distinct AMM pools."
+          - name: amm_xrp_pools_count_daily
+            description: "Number of distinct AMM pools where at least one asset is XRP."
+          - name: amm_tvl_xrp
+            description: "Total Value Locked (TVL) in all AMM pools, denominated in XRP."
+          - name: amm_users_count_daily
+            description: "Number of unique addresses that interacted with AMMs (e.g., swaps, deposits, withdrawals)."
+          - name: amm_xrp_volume_xrp
+            description: "Total trading volume through AMMs involving XRP, denominated in XRP."
+
+      - name: amm_events
+        description: "A unified view of all activity in XRP Ledger AMM liquidity pools, combining deposits, withdrawals, fee-setting votes, and auction-slot bids in a single table for cross-event analytics. Each row represents one AMM event with the event category identified by event_type; columns specific to a particular event kind are null for rows of other types. Covers all AMM events recorded on the XRPL mainnet since the AMM amendment was activated."
+        meta:
+          docs_slug: /xrpl/amm_events
+          short_description: The 'xrpl.amm_events' table is a unified view of all activity in XRP Ledger AMM liquidity pools, combining deposits, withdrawals, fee-setting votes, and auction-slot bids.
+        columns:
+          - name: pool_id
+            description: "Surrogate key identifying the AMM liquidity pool in which this event occurred."
+          - name: pool_address
+            description: "On-ledger XRP Ledger account address of the AMM pool (the pool's own account), provided for direct lookup on explorers."
+          - name: transaction_id
+            description: "Internal surrogate key for the on-ledger transaction that triggered this event."
+          - name: transaction_hash
+            description: "Cryptographic hash of the XRP Ledger transaction that triggered this event, usable for direct ledger lookup."
+          - name: account_id
+            description: "Internal surrogate key for the account that submitted the transaction."
+          - name: account_address
+            description: "XRP Ledger account address of the wallet that submitted the transaction."
+          - name: transaction_type
+            description: "XRPL transaction type (e.g. AMMDeposit, AMMWithdraw, AMMBid, AMMVote) as recorded on the ledger."
+          - name: event_type
+            description: "Business category of this AMM event: Deposit or Withdraw for liquidity changes, AMMBid for auction-slot bids, AMMVote for fee-setting votes."
+          - name: timestamp
+            description: "UTC timestamp of the ledger close in which this event was confirmed."
+          - name: date
+            description: "Calendar date (UTC) of the ledger close, used for daily partitioning and time-series analysis."
+          - name: event_id
+            description: "Unique identifier for liquidity events (Deposit or Withdraw); null for bids and votes."
+          - name: token_a_amount
+            description: "Amount of Token A deposited or withdrawn in this liquidity event; null for bids and votes."
+          - name: token_b_amount
+            description: "Amount of Token B deposited or withdrawn in this liquidity event; null for bids and votes."
+          - name: lp_token_amount
+            description: "Amount of LP tokens minted (Deposit), burned (Withdraw), or bid in an auction-slot contest (AMMBid); null for votes."
+          - name: token_a_amount_before
+            description: "Pool balance of Token A immediately before this liquidity event; null for bids and votes."
+          - name: token_a_amount_after
+            description: "Pool balance of Token A immediately after this liquidity event; null for bids and votes."
+          - name: token_b_amount_before
+            description: "Pool balance of Token B immediately before this liquidity event; null for bids and votes."
+          - name: token_b_amount_after
+            description: "Pool balance of Token B immediately after this liquidity event; null for bids and votes."
+          - name: lp_token_amount_before
+            description: "Total LP token supply outstanding immediately before this event; null for votes."
+          - name: lp_token_amount_after
+            description: "Total LP token supply outstanding immediately after this liquidity event; null for bids and votes."
+          - name: bid_id
+            description: "Surrogate key for the auction-slot bid record; populated only for AMMBid events, null otherwise."
+          - name: is_winning_bid
+            description: "True if this bid successfully claimed the AMM auction slot; populated only for AMMBid events."
+          - name: slot_duration
+            description: "Duration in seconds that the bidder holds the auction slot after winning, capped at 86,400 (24 hours); populated only for AMMBid events."
+          - name: replaced_by_bid_id
+            description: "Surrogate key of the subsequent bid that displaced this auction slot; populated only for AMMBid events."
+          - name: replaced_by_bid_transaction_hash
+            description: "Transaction hash of the bid that replaced this auction slot, enabling chain-of-custody tracing; populated only for AMMBid events."
+          - name: vote_id
+            description: "Surrogate key for the fee-vote record; populated only for AMMVote events, null otherwise."
+          - name: vote_trading_fee
+            description: "Trading fee requested by the voting liquidity provider, in units of 1/100,000 (e.g. 1000 = 1%); populated only for AMMVote events."
+          - name: final_trading_fee
+            description: "Effective pool trading fee in units of 1/100,000 after incorporating this vote's LP-weighted influence; populated only for AMMVote events."
+          - name: auction_slot
+            description: "JSON snapshot of the pool's auction-slot state at the time of this vote, showing the current slot holder and expiry time; populated only for AMMVote events."
+
+      - name: amm_pools
+        description: "Contains all Automated Market Maker (AMM) liquidity pools on the XRP Ledger, one row per pool. Each pool pairs two assets and issues LP tokens to liquidity providers in return for their deposit. Use this table to analyze pool composition, trading fees, liquidity depth, and pool lifecycle events."
+        meta:
+          docs_slug: /xrpl/amm_pools
+          short_description: The 'xrpl.amm_pools' table contains all Automated Market Maker (AMM) liquidity pools on the XRP Ledger, one row per pool.
+        columns:
+          - name: pool_id
+            description: "Unique surrogate primary key for the AMM pool record"
+          - name: amm_account_id
+            description: "The on-ledger account that represents this AMM pool (→ accounts)"
+          - name: amm_account_address
+            description: "XRPL address of the AMM pool's on-ledger account"
+          - name: token_a_id
+            description: "Surrogate key for the first asset in the pool (→ tokens)"
+          - name: token_a_currency
+            description: "Currency code of the first pool asset (e.g. XRP, USD, or a hex-encoded custom code)"
+          - name: token_a_issuer_address
+            description: "XRPL address of the account that issued the first pool asset; null if the asset is XRP"
+          - name: token_a_pool_balance
+            description: "Current reserve of the first asset held in the pool; shifts with each swap"
+          - name: token_b_id
+            description: "Surrogate key for the second asset in the pool (→ tokens)"
+          - name: token_b_currency
+            description: "Currency code of the second pool asset (e.g. XRP, USD, or a hex-encoded custom code)"
+          - name: token_b_issuer_address
+            description: "XRPL address of the account that issued the second pool asset; null if the asset is XRP"
+          - name: token_b_pool_balance
+            description: "Current reserve of the second asset held in the pool; shifts with each swap"
+          - name: lp_token_id
+            description: "Surrogate key for the LP token issued to liquidity providers in exchange for their deposit (→ tokens)"
+          - name: lp_token_currency
+            description: "Currency code of the LP token representing a proportional share of this pool"
+          - name: lp_token_balance
+            description: "Total outstanding LP token supply across all liquidity providers; decreases as providers withdraw"
+          - name: trading_fee
+            description: "Percentage fee charged on each swap through this pool; collected and shared among liquidity providers"
+          - name: created_ledger_index
+            description: "Ledger index at which this AMM pool was created"
+          - name: created_timestamp
+            description: "Timestamp when this AMM pool was created"
+          - name: last_updated_ledger_index
+            description: "Ledger index of the most recent swap, deposit, or withdrawal that changed this pool's state"
+          - name: last_updated_timestamp
+            description: "Timestamp of the most recent change to this pool's state"
+          - name: current_xrp_balance
+            description: "Current XRP balance of the AMM pool account, if one of the paired assets is XRP"
+          - name: is_deleted
+            description: "Whether this pool has been dissolved and is no longer active on the ledger"
+          - name: deleted_timestamp
+            description: "Timestamp when this pool was dissolved; null if still active"
+
+      - name: annotations
+        description: "A lookup table of labeled addresses providing human-readable names for known XRPL wallets, exchanges, and entities. Used to enrich account and transaction data with contextual identity information. Referenced by accounts to annotate well-known addresses."
+        meta:
+          docs_slug: /xrpl/annotations
+          short_description: The 'xrpl.annotations' table is a lookup of labeled addresses providing human-readable names for known XRPL wallets, exchanges, and entities.
+        columns:
+          - name: annotation_id
+            description: "Unique surrogate primary key for the annotation record"
+          - name: source
+            description: "Origin of the annotation (e.g. third-party data provider)"
+          - name: name
+            description: "Human-readable label for the address (e.g., exchange name, institution)"
+          - name: address
+            description: "The XRPL account address this annotation describes"
+
+      - name: dex_ohlcv_daily
+        description: "Daily OHLCV (open, high, low, close, volume) price data for all trading pairs on the XRP Ledger decentralized exchange (DEX), combining both the central limit order book (CLOB) and automated market maker (AMM) pools. Each row represents one trading pair per calendar day, with all prices expressed as counter token units per one unit of base token. Pair direction is normalized for consistency so the same pair always appears with the same base/counter assignment regardless of which side initiated the trade. Use this table for price charting, liquidity analysis, and DEX volume reporting."
+        meta:
+          docs_slug: /xrpl/dex_ohlcv_daily
+          short_description: The 'xrpl.dex_ohlcv_daily' table contains daily OHLCV price data for all trading pairs on the XRP Ledger DEX, combining CLOB and AMM activity.
+        columns:
+          - name: ledger_close_date
+            description: "Calendar date of the trading day; all trades for this pair on this date are aggregated into one row"
+          - name: base_token_id
+            description: "Surrogate key for the base token in the trading pair (→ tokens)"
+          - name: base_token_currency
+            description: "Currency code of the base token; 'XRP' for native XRP"
+          - name: base_token_issuer
+            description: "XRPL address of the base token issuer; null for native XRP"
+          - name: counter_token_id
+            description: "Surrogate key for the counter (quote) token in the trading pair (→ tokens)"
+          - name: counter_token_currency
+            description: "Currency code of the counter token; 'XRP' for native XRP"
+          - name: counter_token_issuer
+            description: "XRPL address of the counter token issuer; null for native XRP"
+          - name: open_price
+            description: "Price of the first trade of the day, expressed as counter token units per one base token"
+          - name: high_price
+            description: "Highest trade price recorded during the day, expressed as counter token units per one base token"
+          - name: low_price
+            description: "Lowest trade price recorded during the day, expressed as counter token units per one base token"
+          - name: close_price
+            description: "Price of the last trade of the day, expressed as counter token units per one base token"
+          - name: vwap_price
+            description: "Volume-weighted average price for the day, calculated as the sum of (price × base amount) divided by total base volume"
+          - name: volume
+            description: "Total base token amount traded across all CLOB and AMM activity on this day"
+          - name: clob_trade_count
+            description: "Number of order-book trades (OfferCreate and Payment transactions) included in this day's aggregation"
+          - name: amm_swap_count
+            description: "Number of automated market maker (AMM) pool swaps included in this day's aggregation"
+          - name: total_dex_tx_count
+            description: "Total number of DEX transactions for this pair on this day, combining CLOB trades and AMM swaps"
+
+      - name: dex_swaps
+        description: "A unified view of all token exchanges on the XRP Ledger DEX, combining AMM pool swaps and order-book offer executions into a single table for cross-venue trade analytics. Each row represents one trade execution, with the execution venue identified by fulfilled_by (AMM for pool swaps, OfferCreate or Payment for order-book fills). Token amounts are expressed in human-readable units (XRP in XRP, issued currencies in their native denomination). Columns specific to a venue are null for rows from the other venue."
+        meta:
+          docs_slug: /xrpl/dex_swaps
+          short_description: The 'xrpl.dex_swaps' table is a unified view of all token exchanges on the XRP Ledger DEX, combining AMM pool swaps and order-book offer executions.
+        columns:
+          - name: offer_id
+            description: "Surrogate key for the order-book offer execution record; null for AMM swaps."
+          - name: swap_id
+            description: "Surrogate key for the AMM pool swap record; null for order-book trades."
+          - name: pool_id
+            description: "Surrogate key for the AMM pool that fulfilled the swap; null for order-book trades."
+          - name: pool_address
+            description: "On-ledger account address of the AMM pool that executed the swap; null for order-book trades."
+          - name: transaction_id
+            description: "Internal surrogate key for the on-ledger transaction that triggered this trade."
+          - name: transaction_hash
+            description: "Cryptographic hash of the XRP Ledger transaction, usable for direct ledger lookup."
+          - name: node_index
+            description: "Position of this trade within the transaction's AffectedNodes list, distinguishing multiple fills in a single transaction."
+          - name: transaction_type
+            description: "XRPL transaction type that generated this trade (e.g. OfferCreate, Payment, AMMSwap)."
+          - name: transaction_result
+            description: "XRPL engine result code for the transaction (e.g. tesSUCCESS); only successful trades are included in this view."
+          - name: memo
+            description: "Decoded MemoData from the first memo attached to the transaction, often used by apps to tag orders with routing or platform metadata."
+          - name: transaction_fee
+            description: "Network fee paid by the submitter for this transaction, denominated in XRP."
+          - name: account_id
+            description: "Internal surrogate key for the wallet that submitted the transaction."
+          - name: account_address
+            description: "XRP Ledger account address of the wallet that submitted the transaction."
+          - name: destination_id
+            description: "Internal surrogate key for the destination account specified in the transaction, if any; typically the recipient in a Payment."
+          - name: destination_address
+            description: "XRP Ledger account address of the transaction destination (e.g. payment recipient); null if no destination was specified."
+          - name: base_token_id
+            description: "Surrogate key of the base token in the trading pair; the base token is the one whose currency code comes first alphabetically."
+          - name: base_token
+            description: "Human-readable currency code of the base token (e.g. XRP, USD, BTC)."
+          - name: base_token_issuer
+            description: "XRP Ledger account address of the entity that issued the base token; null for XRP, which has no issuer."
+          - name: counter_token_id
+            description: "Surrogate key of the counter (quote) token in the trading pair."
+          - name: counter_token
+            description: "Human-readable currency code of the counter token (e.g. XRP, USD, EUR)."
+          - name: counter_token_issuer
+            description: "XRP Ledger account address of the entity that issued the counter token; null for XRP."
+          - name: base_token_amount
+            description: "Amount of the base token exchanged in this trade, in human-readable units (XRP in XRP, not drops)."
+          - name: counter_token_amount
+            description: "Amount of the counter token exchanged in this trade, in human-readable units."
+          - name: price
+            description: "Trade price expressed as counter_token_amount divided by base_token_amount."
+          - name: base_receiver_id
+            description: "Internal surrogate key of the account that received the base token in this trade."
+          - name: base_receiver
+            description: "XRP Ledger address of the account that received the base token in this trade."
+          - name: counter_receiver_id
+            description: "Internal surrogate key of the account that received the counter token in this trade."
+          - name: counter_receiver
+            description: "XRP Ledger address of the account that received the counter token in this trade."
+          - name: fulfilled_by
+            description: "Execution venue: AMM for AMM pool swaps, or the triggering transaction type (OfferCreate or Payment) for order-book fills."
+          - name: amm_base_token_balance_before
+            description: "AMM pool balance of the base token immediately before this swap; null for order-book trades."
+          - name: amm_base_token_balance_after
+            description: "AMM pool balance of the base token immediately after this swap; null for order-book trades."
+          - name: amm_base_token_balance_delta
+            description: "Change in the AMM pool's base token balance from this swap; negative when the pool sold base token, null for order-book trades."
+          - name: amm_counter_token_balance_before
+            description: "AMM pool balance of the counter token immediately before this swap; null for order-book trades."
+          - name: amm_counter_token_balance_after
+            description: "AMM pool balance of the counter token immediately after this swap; null for order-book trades."
+          - name: amm_counter_token_balance_delta
+            description: "Change in the AMM pool's counter token balance from this swap; negative when the pool sold counter token, null for order-book trades."
+          - name: timestamp
+            description: "UTC timestamp of the ledger close in which this trade was confirmed."
+          - name: date
+            description: "Calendar date (UTC) of the ledger close, used for daily partitioning and time-series analysis."
+
+      - name: token_holders_daily
+        description: "Daily snapshot of token holder metrics for all IOU and MPT tokens on the XRP Ledger, including AMM LP tokens (which are a type of IOU). Each row represents one token and captures holder count, supply distribution, and concentration metrics as of the current date."
+        meta:
+          docs_slug: /xrpl/token_holders_daily
+          short_description: The 'xrpl.token_holders_daily' table is a daily snapshot of token holder metrics for all IOU and MPT tokens on the XRP Ledger.
+        columns:
+          - name: ledger_close_date
+            description: "Date of the most recent ledger state available in the data, derived from the latest trustline timestamp; may lag the current calendar date"
+          - name: token_id
+            description: "Surrogate key for the token (→ tokens)"
+          - name: token_currency
+            description: "Raw currency code of the token as stored on the ledger"
+          - name: token_issuer
+            description: "XRPL address of the account that issued this token"
+          - name: token_mpt_id
+            description: "Unique issuance identifier for Multi-Purpose Tokens (MPTs); null for traditional IOU trust-line tokens"
+          - name: total_supply
+            description: "Total outstanding supply of the token as reported by the issuer's ledger state"
+          - name: total_issued
+            description: "Sum of all positive holder balances at this snapshot date; may differ from total_supply if supply has been burned or not fully distributed"
+          - name: total_holders
+            description: "Number of distinct accounts holding a non-zero balance of this token"
+          - name: top_10_holders_percent
+            description: "Percentage of total supply held by the 10 largest holders; a measure of concentration risk"
+          - name: whale_accounts_count
+            description: "Number of accounts each holding more than 1% of the total outstanding supply"
+
+      - name: tokens
+        description: "Represents all fungible tokens (IOUs) and Multi-Purpose Tokens (MPTs) issued on the XRP Ledger, one row per token. Tracks token supply, holder counts, compliance flags, and lifecycle metadata for token analytics, issuer monitoring, and market analysis. Links to accounts for issuer identity."
+        meta:
+          docs_slug: /xrpl/tokens
+          short_description: The 'xrpl.tokens' table contains all fungible tokens (IOUs) and Multi-Purpose Tokens (MPTs) issued on the XRP Ledger, one row per token.
+        columns:
+          - name: token_id
+            description: "Unique surrogate primary key for the token record"
+          - name: currency
+            description: "Raw currency code as stored on the ledger"
+          - name: currency_iso
+            description: "ISO 4217 currency code representation, if applicable (e.g., USD, EUR)"
+          - name: currency_hex
+            description: "Hexadecimal representation of the currency code"
+          - name: currency_ascii
+            description: "Human-readable ASCII representation of the currency code"
+          - name: issuer
+            description: "Surrogate key for the account that issued this token (→ accounts)"
+          - name: issuer_address
+            description: "XRPL address of the token issuer"
+          - name: is_active
+            description: "Whether the token currently has active supply or trust lines on the ledger"
+          - name: is_blackholed
+            description: "Whether the issuing account's keys have been disabled, making the supply immutable (a trust signal for token holders)"
+          - name: created_transaction_hash
+            description: "Hash of the transaction that first created this token"
+          - name: created_ledger_index
+            description: "Ledger index when the token was first issued"
+          - name: created_timestamp
+            description: "Timestamp when the token was first issued"
+          - name: last_seen_timestamp
+            description: "Timestamp of the most recent ledger activity involving this token"
+          - name: total_outstanding_supply
+            description: "Total circulating supply of this token across all trust lines or MPT holdings"
+          - name: has_positive_supply
+            description: "Flag indicating whether total outstanding supply is greater than zero"
+          - name: holders_count
+            description: "Number of accounts currently holding a non-zero balance of this token"
+          - name: trustline_count
+            description: "Number of open trust lines established for this token (IOU tokens only)"
+          - name: is_mpt
+            description: "Whether this token is a Multi-Purpose Token (MPT) rather than a traditional IOU trust-line token"
+          - name: mpt_issuance_id
+            description: "Unique issuance identifier for MPT tokens on the ledger"
+          - name: mptoken_count
+            description: "Number of MPToken objects held by accounts for this MPT issuance"
+          - name: maximum_value_mpt
+            description: "Maximum supply cap defined at issuance for MPT tokens"
+          - name: mpt_metadata
+            description: "Arbitrary metadata attached to the MPT issuance at creation"
+          - name: transfer_fee
+            description: "Fee charged on peer-to-peer transfers of this token, expressed as a percentage"
+          - name: clawback_enabled
+            description: "Whether the issuer has enabled the ability to reclaim tokens from holder accounts"
+          - name: burnable
+            description: "Whether token holders or the issuer can permanently destroy (burn) tokens"
+          - name: token_script
+            description: "On-chain script or logic associated with the token, if applicable"
+
       - name: transactions
         description: "XRPL transactions table"
         meta:
           docs_slug: /xrpl/transactions
-          short_description: The 'xrpl.transactions' table contains detailed information about transactions on the XRPL blockchain. 
+          short_description: The 'xrpl.transactions' table contains detailed information about transactions on the XRPL blockchain.
+
+      - name: transactions_base
+        description: "Contains every validated transaction recorded on the XRP Ledger, covering payments, token operations, DEX trades, NFT activity, and more. Use this table to analyze on-chain transaction volume, fees, outcomes, and account behavior over time."
+        meta:
+          docs_slug: /xrpl/transactions_base
+          short_description: The 'xrpl.transactions_base' table contains every validated transaction recorded on the XRP Ledger, covering payments, token operations, DEX trades, NFT activity, and more.
+        columns:
+          - name: transaction_id
+            description: "Unique surrogate primary key for the transaction record"
+          - name: transaction_hash
+            description: "Cryptographic hash uniquely identifying the transaction on the XRP Ledger; used for cross-referencing with on-chain data"
+          - name: transaction_type
+            description: "Transaction category (e.g., Payment, OfferCreate, TrustSet, NFTokenMint); determines applicable fields and behavior"
+          - name: transaction_result
+            description: "Final outcome code (e.g., tesSUCCESS, tecNO_DST), indicating whether the transaction succeeded or the reason for failure"
+          - name: ledger_close_date
+            description: "Calendar date the ledger containing this transaction was closed"
+          - name: ledger_close_time
+            description: "Precise timestamp the ledger was closed and the transaction was confirmed"
+          - name: ledger_index
+            description: "Sequence number of the ledger in which this transaction was included"
+          - name: transaction_index
+            description: "Position of this transaction within its ledger, reflecting execution order"
+          - name: transaction_fee
+            description: "XRP fee consumed by this transaction, expressed in XRP"
+          - name: account_id
+            description: "Surrogate key for the sending account (→ accounts)"
+          - name: account_address
+            description: "XRPL address of the transaction sender"
+          - name: destination_id
+            description: "Surrogate key for the receiving account (→ accounts)"
+          - name: destination_address
+            description: "XRPL address of the transaction recipient"
+          - name: destination_tag
+            description: "Off-ledger routing tag identifying the intended beneficiary at the destination address (e.g., a customer account at an exchange)"
+          - name: account_transaction_id
+            description: "Chained hash linking to the sender's previous transaction, used to enforce transaction ordering"
+          - name: delivered_amount
+            description: "Actual amount delivered to the destination, structured with currency, issuer, value, and MPT issuance ID"
+          - name: flags
+            description: "Bitwise integer encoding transaction-specific behavior modifiers"
+          - name: last_ledger_sequence
+            description: "Maximum ledger index at which the transaction remains valid; used to bound transaction expiry"
+          - name: memos
+            description: "Array of arbitrary key-value memo objects attached to the transaction for off-ledger annotation or metadata"
+          - name: signers
+            description: "Array of signers for multi-signature transactions, each containing account, public key, and signature"
+          - name: signing_pub_key
+            description: "Hex-encoded public key used to authorize a single-signed transaction"
+          - name: source_tag
+            description: "Off-ledger routing tag identifying the originating customer or purpose at the sending address"
+          - name: ticket_sequence
+            description: "Sequence number of the ticket used in place of a standard account sequence, enabling out-of-order transaction submission"
+          - name: transaction_sequence
+            description: "Account sequence number ensuring replay protection and ordering for transactions from the same sender"
+          - name: transaction_signature
+            description: "Cryptographic signature proving the transaction was authorized by the account's private key"
+          - name: uri
+            description: "URI associated with the transaction, typically used in NFT-related transactions to reference off-chain metadata"
+
+      - name: transfers
+        description: "Contains all successful direct, same-asset Payment transactions on the XRP Ledger, one row per transfer. Only includes transfers where the sender and recipient transact in the same currency — cross-currency and DEX-routed payments are excluded."
+        meta:
+          docs_slug: /xrpl/transfers
+          short_description: The 'xrpl.transfers' table contains all successful direct, same-asset Payment transactions on the XRP Ledger, one row per transfer.
+        columns:
+          - name: transfer_id
+            description: "Unique surrogate primary key for this transfer record"
+          - name: ledger_close_date
+            description: "Calendar date the ledger containing this transfer was closed"
+          - name: transaction_id
+            description: "Surrogate key linking to the transaction (→ transactions)"
+          - name: transaction_hash
+            description: "Cryptographic hash uniquely identifying this transaction on the XRP Ledger"
+          - name: transaction_type
+            description: "Type of transaction that generated this transfer (e.g. Payment)"
+          - name: timestamp
+            description: "Precise timestamp when the ledger containing this transfer was closed and confirmed"
+          - name: memo
+            description: "First memo attached to the transaction, decoded from hex; used for off-ledger context such as payment references or identifiers"
+          - name: transaction_fee
+            description: "XRP fee consumed by this transaction, expressed in XRP"
+          - name: account_id
+            description: "Surrogate key for the account that sent this transfer (→ accounts)"
+          - name: account_address
+            description: "XRPL address of the sending account"
+          - name: account_balance_before
+            description: "Sender's asset balance immediately before this transfer was applied"
+          - name: account_balance_after
+            description: "Sender's asset balance immediately after this transfer was applied"
+          - name: destination_id
+            description: "Surrogate key for the account that received this transfer (→ accounts)"
+          - name: destination_address
+            description: "XRPL address of the receiving account"
+          - name: destination_balance_before
+            description: "Recipient's asset balance immediately before this transfer was applied"
+          - name: destination_balance_after
+            description: "Recipient's asset balance immediately after this transfer was applied"
+          - name: amount_token_id
+            description: "Surrogate key for the token specified as the intended transfer amount (→ tokens)"
+          - name: amount_currency
+            description: "Currency code of the intended transfer amount"
+          - name: amount_currency_iso
+            description: "ISO 4217 currency code of the intended transfer amount, if applicable"
+          - name: amount_issuer_address
+            description: "XRPL address of the issuer of the intended transfer currency; null if XRP"
+          - name: amount_value
+            description: "Intended amount to deliver; for partial payments this is a maximum, not a guarantee — use delivered_amount_value for the actual amount received"
+          - name: delivered_amount_token_id
+            description: "Surrogate key for the token actually delivered to the destination (→ tokens)"
+          - name: delivered_amount_currency
+            description: "Currency code of the amount actually received by the destination"
+          - name: delivered_amount_currency_iso
+            description: "ISO 4217 currency code of the delivered amount, if applicable"
+          - name: delivered_amount_issuer_address
+            description: "XRPL address of the issuer of the delivered currency; null if XRP"
+          - name: delivered_amount_value
+            description: "Actual amount received by the destination after fees and exchange rates; always use this field — not amount_value — to measure true transfer value"
+          - name: deliver_min_token_id
+            description: "Surrogate key for the token used to express the minimum delivery threshold (→ tokens); only set on partial payments"
+          - name: deliver_min_currency
+            description: "Currency code of the minimum delivery threshold"
+          - name: deliver_min_currency_iso
+            description: "ISO 4217 currency code of the deliver minimum, if applicable"
+          - name: deliver_min_issuer_address
+            description: "XRPL address of the issuer of the deliver minimum currency; null if XRP"
+          - name: deliver_min_value
+            description: "Minimum amount the sender required to be delivered for the partial payment to succeed; null for non-partial payments"
+          - name: send_max_token_id
+            description: "Surrogate key for the token used to express the sender's spending cap (→ tokens)"
+          - name: send_max_currency
+            description: "Currency code the sender was willing to spend"
+          - name: send_max_currency_iso
+            description: "ISO 4217 currency code of the send maximum, if applicable"
+          - name: send_max_issuer_address
+            description: "XRPL address of the issuer of the send maximum currency; null if XRP"
+          - name: send_max_value
+            description: "Maximum amount the sender was willing to spend, including transfer fees and exchange costs"

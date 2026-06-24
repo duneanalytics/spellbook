@@ -13,28 +13,31 @@
 {% set blockchain = 'solana' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
-with sol_payments as (
+-- Single pass over account_activity: one row can carry both a SOL and a token
+-- payment, so each qualifying row is split into up to two payment legs instead
+-- of scanning account_activity (and re-probing trades) once per leg type.
+with swap_account_activity as (
         select
             account_activity.block_time,
-            cast(date_trunc('month', account_activity.block_time) as date) as block_month,
-            fee_addresses.fee_receiver,
-            account_activity.balance_change / 1e9 as amount,
-            '{{wsol_token}}' token_address,
-            account_activity.tx_id
+            account_activity.tx_id,
+            account_activity.address,
+            account_activity.balance_change,
+            account_activity.token_balance_owner,
+            account_activity.token_balance_change,
+            account_activity.token_mint_address
         from {{ source('solana','account_activity') }} as account_activity
-        join
-            {{ ref("phantom_swapper_solana_fee_addresses") }} as fee_addresses
-            on (
-                fee_addresses.fee_receiver = account_activity.address
-                and balance_change > 0
-            )
         where
             {% if is_incremental() %} 
                 {{ incremental_predicate('account_activity.block_time') }}
             {% else %} 
                 account_activity.block_time >= timestamp '{{query_start_date}}'
             {% endif %} 
+            {% if target.name == 'ci' %}
+            -- bound the full-refresh scan in CI so the build completes (account_activity is ~370 GB/day); prod is unaffected
+            and account_activity.block_time >= now() - interval '3' day
+            {% endif %}
             and tx_success
+            and (balance_change > 0 or token_balance_change > 0)
             and exists (
                 select 1 
                 from {{ source('dex_solana', 'trades') }} as trades
@@ -45,48 +48,44 @@ with sol_payments as (
                 {% else %} 
                 and trades.block_time >= timestamp '{{query_start_date}}'
                 {% endif %} 
+                {% if target.name == 'ci' %}
+                and trades.block_time >= now() - interval '3' day
+                {% endif %}
             )
     ),
-    token_payments as (
+    payment_legs as (
         select
-            account_activity.block_time,
-            cast(date_trunc('month', account_activity.block_time) as date) as block_month,
-            fee_addresses.fee_receiver,
-            account_activity.token_balance_change as amount,
-            account_activity.token_mint_address as token_address,
-            account_activity.tx_id
-        from {{ source('solana','account_activity') }} as account_activity
-        join
-             {{ ref("phantom_swapper_solana_fee_addresses") }} as fee_addresses
-            on (
-                token_balance_owner = fee_addresses.fee_receiver
-                and token_balance_change > 0
-            )
-        where
-            {% if is_incremental() %} 
-                {{ incremental_predicate('account_activity.block_time') }}
-            {% else %} 
-                account_activity.block_time >= timestamp '{{query_start_date}}'
-            {% endif %} 
-            and tx_success
-            and exists (
-                select 1 
-                from {{ source('dex_solana', 'trades') }} as trades
-                where trades.tx_id = account_activity.tx_id
-                and trades.block_time = account_activity.block_time
-                {% if is_incremental() %} 
-                and {{ incremental_predicate('trades.block_time') }}
-                {% else %} 
-                and trades.block_time >= timestamp '{{query_start_date}}'
-                {% endif %} 
-            )
+            activity.block_time,
+            cast(date_trunc('month', activity.block_time) as date) as block_month,
+            l.receiver_address,
+            l.amount,
+            l.token_address,
+            activity.tx_id
+        from swap_account_activity as activity
+        cross join unnest(array[
+            case when activity.balance_change > 0 then
+                cast(row(activity.address, activity.balance_change / 1e9, '{{wsol_token}}')
+                    as row(receiver_address varchar, amount double, token_address varchar))
+            end,
+            case when activity.token_balance_change > 0 then
+                cast(row(activity.token_balance_owner, cast(activity.token_balance_change as double), activity.token_mint_address)
+                    as row(receiver_address varchar, amount double, token_address varchar))
+            end
+        ]) as l(receiver_address, amount, token_address)
+        where l.receiver_address is not null
     ),
     fee_payments as (
-        select *
-        from sol_payments
-        union all
-        select *
-        from token_payments
+        select
+            payment_legs.block_time,
+            payment_legs.block_month,
+            fee_addresses.fee_receiver,
+            payment_legs.amount,
+            payment_legs.token_address,
+            payment_legs.tx_id
+        from payment_legs
+        join
+            {{ ref("phantom_swapper_solana_fee_addresses") }} as fee_addresses
+            on fee_addresses.fee_receiver = payment_legs.receiver_address
     ),
     filtered_transactions as (
         select 
@@ -100,6 +99,9 @@ with sol_payments as (
             {% else %} 
                 block_date >= timestamp '{{query_start_date}}'
             {% endif %} 
+            {% if target.name == 'ci' %}
+            and block_date >= current_date - interval '3' day
+            {% endif %}
     ),
     -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
     aggregated_fee_payments_by_token_by_tx as (

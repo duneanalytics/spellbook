@@ -81,7 +81,7 @@ with pools AS (
     FROM
       {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = current_date
+      minute >= current_date and minute < current_date + interval '1' day
       AND blockchain = 'optimism'
       AND contract_address IN (SELECT address  FROM tokens      )
   ),

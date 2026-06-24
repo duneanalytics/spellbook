@@ -1,0 +1,23 @@
+{{ config(
+    schema = 'uniswap_v4_zora'
+    , alias = 'swaps'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+
+{{
+    uniswap_compatible_v4_trades(
+        blockchain = 'zora'
+        , project = 'uniswap'
+        , version = '4'
+        , PoolManager_call_Swap = source('uniswap_v4_zora', 'PoolManager_call_Swap') 
+        , PoolManager_evt_Swap = source('uniswap_v4_zora', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0x0575338e4c17006ae181b47900a84404247ca30f'
+        , start_date = '2025-01-23'
+        , aggregator_hooks = ref('uniswap_v4_aggregator_hooks')
+    )
+}}
