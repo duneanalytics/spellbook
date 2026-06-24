@@ -121,7 +121,13 @@ settler_txs AS (
         -- executeMetaTxn msgSender (the order signer / fund owner; tx-level from is the relayer there).
         varbinary_substring(input, 49, 20) AS buy_token,
         bytearray_to_uint256(varbinary_substring(input, 69, 32)) AS min_amount_out,
-        CASE WHEN method_id = 0xfd3ad6d4 THEN varbinary_substring(input, 177, 20) END AS settler_msgsender
+        CASE WHEN method_id = 0xfd3ad6d4 THEN varbinary_substring(input, 177, 20) END AS settler_msgsender,
+        -- Real on-chain trace_address of the settler call. Surfaced for the deterministic aggregator
+        -- decode (zeroex_settler_agg), which emits it as the row's trace_address instead of the [-1]
+        -- sentinel: the [-1] sentinel collided with cow_protocol / lifi / bitget_dex_aggregator rows
+        -- (all keyed on [-1]) on the dex_aggregator.trades datashare key
+        -- (blockchain, tx_hash, evt_index, trace_address). A real trace path is never [-1].
+        trace_address
     FROM
         settler_trace_data
     WHERE 
