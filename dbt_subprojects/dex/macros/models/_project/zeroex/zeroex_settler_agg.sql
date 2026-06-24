@@ -26,7 +26,7 @@
 WITH settler AS (
     SELECT
         tx_hash, block_time, block_number, method_id, settler_address, zid, tag, rn, cow_rn,
-        buy_token, min_amount_out, settler_msgsender
+        buy_token, min_amount_out, settler_msgsender, trace_address
     FROM {{ ref('zeroex_v2_' ~ blockchain ~ '_settler_txs') }}
     -- exclude the sentinel zid (non-trade fills), matching the zeroex_v2 pipeline this replaces
     WHERE zid != 0xa00000000000000000000000
@@ -68,7 +68,8 @@ calls AS (
         -- receiver (the user): execute -> tx-level sender; executeMetaTxn -> msgSender (relayer pays gas).
         CASE WHEN s.method_id = 0xfd3ad6d4 THEN s.settler_msgsender ELSE t.tx_from END AS receiver,
         -- native sentinels represented/priced as WETH (see header note)
-        CASE WHEN s.buy_token IN {{ native_tokens }} THEN {{ weth }} ELSE s.buy_token END AS buy_token
+        CASE WHEN s.buy_token IN {{ native_tokens }} THEN {{ weth }} ELSE s.buy_token END AS buy_token,
+        s.trace_address
     FROM settler s
     LEFT JOIN txs t ON t.tx_hash = s.tx_hash
 ),
@@ -140,7 +141,8 @@ trades AS (
              WHEN l.buy_n = 1 THEN l.buy_amount
              ELSE c.min_amount_out END AS token_bought_amount_raw,
         CASE WHEN c.cow_rn IS NULL AND l.sell_n = 1 THEN l.sell_token END AS token_sold_address,
-        CASE WHEN c.cow_rn IS NULL AND l.sell_n = 1 THEN l.sell_amount END AS token_sold_amount_raw
+        CASE WHEN c.cow_rn IS NULL AND l.sell_n = 1 THEN l.sell_amount END AS token_sold_amount_raw,
+        c.trace_address
     FROM calls c
     LEFT JOIN legs l ON l.tx_hash = c.tx_hash AND l.rn = c.rn
 ),
@@ -158,7 +160,8 @@ results AS (
         trades.token_sold_address,
         st.symbol AS sold_symbol,
         trades.token_sold_amount_raw,
-        trades.token_sold_amount_raw / POW(10, st.decimals) AS token_sold_amount
+        trades.token_sold_amount_raw / POW(10, st.decimals) AS token_sold_amount,
+        trades.trace_address
     FROM trades
     LEFT JOIN token_metadata bt ON bt.contract_address = trades.token_bought_address
     LEFT JOIN token_metadata st ON st.contract_address = trades.token_sold_address
@@ -194,7 +197,12 @@ SELECT
     tx_from,
     tx_to,
     evt_index,
-    (ARRAY[-1]) AS trace_address,
+    -- Emit the REAL settler-call trace_address (not the [-1] sentinel). On the dex_aggregator.trades
+    -- datashare merge key (blockchain, tx_hash, evt_index, trace_address) — which omits project/version —
+    -- the old [-1] + evt_index=rn collided with cow_protocol / lifi / bitget_dex_aggregator rows (all
+    -- keyed on [-1]). A real on-chain trace path is never [-1], so this keeps each project's row distinct
+    -- on the datashare key while preserving both rows. Cast to array<bigint> to match the union (per dodo).
+    CAST(trace_address AS array<bigint>) AS trace_address,
     'settler' AS type,
     TRUE AS swap_flag,
     contract_address
