@@ -3,7 +3,7 @@
     alias = 'trades',
     materialized='incremental',
     partition_by = ['block_month'],
-    unique_key = ['block_month', 'block_date', 'tx_hash', 'evt_index'],
+    unique_key = ['block_month', 'block_date', 'tx_hash', 'evt_index', 'trace_address'],
     on_schema_change='sync_all_columns',
     file_format ='delta',
     incremental_strategy='merge',
