@@ -2,9 +2,11 @@
     trades_cte
     , blockchain = null
     , dev_dates = var('dev_dates', false)
+    , untrusted_amount_usd_threshold = 1000000000
 ) %}
 
--- This macro adds the amount_usd column to the trades_cte with chain-level optimizations
+-- This macro adds the amount_usd column to the trades_cte with chain-level optimizations.
+-- Trusted token prices are always used. Untrusted fallback prices are capped to avoid spoofed outlier volumes.
 -- Required columns in trades_cte:
     --  blockchain
     --  , token_bought_address
@@ -47,8 +49,8 @@ SELECT
     , COALESCE(
         CASE WHEN tt_bought.contract_address IS NOT NULL THEN bt.token_bought_amount * pb.price END,
         CASE WHEN tt_sold.contract_address IS NOT NULL THEN bt.token_sold_amount * ps.price END,
-        bt.token_bought_amount * pb.price,
-        bt.token_sold_amount * ps.price
+        CASE WHEN bt.token_bought_amount * pb.price <= {{ untrusted_amount_usd_threshold }} THEN bt.token_bought_amount * pb.price END,
+        CASE WHEN bt.token_sold_amount * ps.price <= {{ untrusted_amount_usd_threshold }} THEN bt.token_sold_amount * ps.price END
     ) AS amount_usd
 FROM
     {{ trades_cte }} bt
@@ -68,4 +70,3 @@ LEFT JOIN trusted_tokens tt_sold
     AND bt.blockchain = tt_sold.blockchain
 
 {% endmacro %}
-
