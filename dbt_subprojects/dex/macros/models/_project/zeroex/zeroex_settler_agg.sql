@@ -131,7 +131,13 @@ token_metadata AS (
 trades AS (
     SELECT
         c.block_time, c.block_number, c.tx_hash, c.tx_from, c.tx_to, c.zid, c.tag,
-        c.rn AS evt_index, c.settler_address AS contract_address, c.receiver AS taker,
+        -- Trace-derived row: no log/event index exists, so emit the -1 sentinel and let the real
+        -- settler-call trace_address (below) be the discriminator on the dex_aggregator merge key
+        -- (blockchain, tx_hash, evt_index, trace_address) — same convention as paraswap_v6. Keying on
+        -- rn (a per-tx counter ordered by zid) was both meaningless and unstable: zid ties tie-break
+        -- non-deterministically, so a re-run could renumber a trade and the upsert-only merge would
+        -- spawn a duplicate (cf. CUR2-1530). rn is still used below only for the calls<->legs join.
+        CAST(-1 AS integer) AS evt_index, c.settler_address AS contract_address, c.receiver AS taker,
         c.buy_token AS token_bought_address,
         -- CoW-batched settler fills (cow_rn set): tx-level receiver is the CoW solver/settlement, not the user,
         -- so the receiver-pivot transfer match is unreliable amid the whole batch's transfers. Fall back to the
