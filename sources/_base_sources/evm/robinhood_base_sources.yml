@@ -18,3 +18,18 @@ sources:
     tables:
       - name: evt_Transfer
       - name: evt_Approval
+
+  - name: erc721_robinhood
+    description: "Standard ERC721 non-fungible token event tables for Robinhood."
+    tables:
+      - name: evt_Transfer
+      - name: evt_Approval
+      - name: evt_ApprovalForAll
+
+  - name: erc1155_robinhood
+    description: "Standard ERC1155 multi-token event tables for Robinhood."
+    tables:
+      - name: evt_TransferSingle
+      - name: evt_TransferBatch
+      - name: evt_ApprovalForAll
+      - name: evt_URI
