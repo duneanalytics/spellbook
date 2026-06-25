@@ -100,5 +100,5 @@ FROM (
         , (4217, 'tempo', 'Tempo', 'Layer 1', NULL, 'USD', 0x20c0000000000000000000000000000000000000, 'https://explorer.tempo.xyz/', timestamp '2026-01-16 20:51', NULL, NULL, NULL, true, NULL)
         , (42793, 'tezos_evm', 'Tezos EVM', 'Layer 2', 'Optimistic Rollup', 'XTZ', 0xc9B53AB2679f573e480d01e0f49e2B5CFB7a3EAb, 'https://explorer.etherlink.com/', timestamp '2024-05-02 13:25:55', 'Tezos Smart Rollup EVM stack', 'Tezos L1', 'Tezos', true, 'Tezos')
         , (2818, 'morph', 'Morph', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x5300000000000000000000000000000000000011, 'https://explorer.morphl2.io/', timestamp '2024-10-21 06:00:00', 'Morph', 'Ethereum Blobs', 'Ethereum', true, NULL)
-        , (4663, 'robinhood', 'Robinhood Chain', 'Layer 2', NULL, 'ETH', NULL, NULL, timestamp '2026-04-30 16:52:11', NULL, NULL, NULL, true, NULL)
+        , (4663, 'robinhood', 'Robinhood Chain', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, NULL, timestamp '2026-04-30 16:52:11', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
