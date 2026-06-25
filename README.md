@@ -35,6 +35,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 ## Table of Contents
 
 - [Enterprise Customers: Use Your Own dbt Project](#-enterprise-customers-use-your-own-dbt-project)
+- [Documentation](#documentation)
 - [Introduction](#introduction)
 - [Sub-projects](#sub-projects)
 - [How to contribute](#how-to-contribute)
@@ -42,7 +43,21 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
   - [Testing your spell](#testing-your-spell)
 - [Setting up your dev environment](#setting-up-your-local-dev-environment)
 - [Using dbt to write spells](#how-to-use-dbt-to-create-spells)
-        
+
+## Documentation
+
+New to Spellbook or using AI tooling to navigate the repo? Start with these docs:
+
+- **[Repository navigation](docs/general/repo_navigation.md)** - GitHub issues, PRs, discussions, and Actions
+- **[Best practices](docs/general/best_practices.md)** - Development workflow, performance, and incremental model guidance
+- **[Model overview](docs/models/model_overview.md)** - Model layout, naming, materialization, and schema YAML expectations
+- **[Model config block](docs/models/model_config_block.md)** - Required dbt model config patterns
+- **[Tests](docs/tests/test_overview.md)** - Required model, seed, and generic test patterns
+- **[CI overview](docs/ci_test/ci_test_overview.md)** - How Spellbook PR CI runs and where to find test tables
+- **[FAQ and common issues](docs/general/faq_and_common_issues.md)** - Common contributor and CI problems
+
+AI agents should also read [`CLAUDE.md`](CLAUDE.md) for repository context and [`.cursor/README.md`](.cursor/README.md) for Cursor-specific rules and skills.
+
 ## Introduction
 
 Spellbook is Dune's interpretation layer, transforming raw blockchain data into clean, usable datasets. It's a [dbt](https://docs.getdbt.com/docs/introduction) project where each model is a SQL query that handles dependencies and builds tables from raw and decoded tables.
