@@ -7,6 +7,7 @@ models:
       contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
+      event_time: block_time
     description: >
       staging model for orca whirlpool swap data from decoded tables
     data_tests:
