@@ -31,3 +31,12 @@ models:
             expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
           config:
             where: "block_time > now() - interval '7' day"
+    columns:
+      - name: block_month
+        description: "Month for block event time in UTC"
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Primary key of the transaction"
+        data_tests:
+          - not_null
