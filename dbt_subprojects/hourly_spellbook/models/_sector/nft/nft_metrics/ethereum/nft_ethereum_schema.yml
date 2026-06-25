@@ -66,6 +66,30 @@ models:
       - name: price_max_eth
         description: "Max NFT trade price Measured in ETH"
 
+  - name: nft_ethereum_wallet_metrics_reservoir_floors
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: NazihKalo
+    config:
+      tags: ['nft','ethereum','reservoir','floor']
+    description: >
+        One-time snapshot of candidate floor-ask events from the deprecated reservoir community dataset
+        (reservoir.collection_floor_ask_events, frozen 2025-05-28). Materialized so nft_ethereum_wallet_metrics
+        does not re-scan the frozen ~61.6 GB source on every run; the consumer re-applies the
+        valid_until_dt > current_date filter for exact behavior over time.
+    columns:
+      - name: contract
+        description: "NFT contract address (as stored in reservoir.collection_floor_ask_events)."
+      - name: price_decimal
+        description: "Floor-ask price (decimal)."
+      - name: created_at
+        description: "Floor-ask event creation timestamp."
+      - name: valid_until_dt
+        description: "Timestamp until which the floor ask is valid."
+      - name: valid_until
+        description: "Raw valid_until value (used with an overflow guard)."
+
   - name: nft_ethereum_wallet_metrics
     meta:
       blockchain: ethereum

@@ -19,5 +19,6 @@
         , liquidity_pools = ref('uniswap_v4_monad_pools')
         , liquidity_sqrtpricex96 = ref('uniswap_v4_monad_sqrtpricex96')
         , PoolManager_call_ModifyLiquidity = source ('uniswap_v4_monad', 'PoolManager_call_ModifyLiquidity')
+        , transactions = source('monad', 'transactions')
     )
 }}

@@ -18,6 +18,30 @@ models:
             max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_ethereum_base_trades
+  - name: zeroex_settler_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: 0x API
+    config:
+      tags: ["ethereum", "dex", "trades", "zeroex", "settler"]
+    description: "0x Settler plain-RFQ (action 0xd92aadfb) PMM base trades on ethereum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('zeroex_settler_ethereum_base_trades_seed')
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
   - name: uniswap_v1_ethereum_base_trades
     meta:
       blockchain: ethereum

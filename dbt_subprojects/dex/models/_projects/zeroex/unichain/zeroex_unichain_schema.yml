@@ -1,6 +1,50 @@
 version: 2
 
 models:
+  - name: zeroex_v2_unichain_settler_txs
+    meta:
+      blockchain: unichain
+      project: zeroex
+      contributors: rantum
+    config:
+      tags: ['unichain', '0x', 'settler']
+    description: >
+      Pre-materialized 0x Settler transactions on Unichain, extracted once from unichain.traces.
+      Shared staging model for zeroex_v2_unichain_trades so the non-pushable settler-trace scan
+      runs a single time per build instead of being re-inlined ~14x.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - rn
+    columns:
+      - name: tx_hash
+        description: "Transaction hash of the 0x Settler call"
+      - name: block_time
+        description: "Block time of the transaction"
+      - name: block_number
+        description: "Block number of the transaction"
+      - name: method_id
+        description: "4-byte method id of the settler call"
+      - name: contract_address
+        description: "Settler contract address called by the transaction"
+      - name: settler_address
+        description: "Resolved 0x Protocol settler address"
+      - name: zid
+        description: "0x interaction id extracted from the tracker calldata"
+      - name: tag
+        description: "Tag extracted from the tracker calldata, keyed off method_id"
+      - name: rn
+        description: "Row number of the settler call within the transaction, ordered by zid"
+      - name: cow_rn
+        description: "Row number for CoW Protocol settler calls within the transaction"
+      - name: taker
+        description: "Resolved taker address for the settler call"
+      - name: block_month
+        description: "Month partition derived from block_time"
+
   - name: zeroex_v2_unichain_trades 
     meta:
       blockchain: unichain
@@ -18,6 +62,7 @@ models:
               - block_date
               - tx_hash
               - evt_index
+              - trace_address
     columns:
       - &blockchain
         name: blockchain

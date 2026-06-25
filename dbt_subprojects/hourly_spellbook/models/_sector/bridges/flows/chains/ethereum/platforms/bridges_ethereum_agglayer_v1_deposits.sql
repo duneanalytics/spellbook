@@ -45,13 +45,18 @@ WITH bridge_events AS (
     , be.evt_index
     , be.contract_address
     , be.bridge_transfer_id
-    , ROW_NUMBER() OVER (PARTITION BY be.tx_hash, be.evt_index ORDER BY be.evt_index) AS duplicate_index
+    -- block_time in the dedup partition keys is redundant for correctness (tx_hash
+    -- determines the block) but lets the planner push the consumer's incremental
+    -- block_time predicate below this window and, via the equi-join below, into the
+    -- tokens_ethereum.transfers scan instead of reading all history every run
+    , ROW_NUMBER() OVER (PARTITION BY be.block_time, be.tx_hash, be.evt_index ORDER BY be.evt_index) AS duplicate_index
     FROM bridge_events be
     LEFT JOIN {{ source('tokens_ethereum', 'transfers') }} t ON t.block_number=be.block_number
         AND t.tx_hash=be.tx_hash
         AND t.to=be.contract_address
         AND t.amount_raw=be.deposit_amount_raw
         AND t.token_standard='erc20'
+        AND t.block_time=be.block_time
     LEFT JOIN {{ ref('bridges_agglayer_chain_indexes') }} i ON i.id=be.withdrawal_chain_id
     )
 

@@ -3,6 +3,8 @@
     , start_date  = null
     , pools_table = null
     , pools_column = 'id'
+    , self_seed_relation = none
+    , self_seed_lookback_days = 21
     )
 %}
 
@@ -19,7 +21,9 @@ filtered_balances AS (
   {{ balances_incremental_subset_daily_legacy(
        blockchain=blockchain,
        start_date=start_date,
-       address_list='pool_addresses'
+       address_list='pool_addresses',
+       self_seed_relation=self_seed_relation,
+       self_seed_lookback_days=self_seed_lookback_days
   ) }}
 )
 

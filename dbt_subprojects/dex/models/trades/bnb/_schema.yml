@@ -566,6 +566,25 @@ models:
           arguments:
             seed_file: ref('ellipsis_finance_bnb_base_trades_seed')
 
+  - name: lista_smartswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: lista_smartswap
+      contributors: knight_in_kight
+    config:
+      tags: ["bnb", "dex", "trades", "lista_smartswap"]
+    description: "Lista SmartSwap BNB base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('lista_smartswap_bnb_base_trades_seed')
+
   - name: onepunchswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -756,3 +775,25 @@ models:
               - blockchain
               - token_address
               - block_date
+
+  - name: zeroex_settler_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: 0x API
+    config:
+      tags: ["bnb", "dex", "trades", "zeroex", "settler"]
+    description: "0x Settler plain-RFQ (action 0xd92aadfb) PMM base trades on bnb"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
