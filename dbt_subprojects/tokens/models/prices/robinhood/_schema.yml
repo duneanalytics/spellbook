@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: prices_robinhood_tokens
+    meta:
+      blockchain: robinhood
+      sector: prices
+      contributors: 0xRob
+    config:
+      tags: ['prices', 'tokens', 'usd', 'robinhood']
+    description: "Draft price token seed for Robinhood EVM chain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - contract_address
+    columns:
+      - name: token_id
+        description: "Unconfirmed CoinPaprika id. Null until Robinhood token metadata is verified."
+      - name: blockchain
+        description: "Native blockchain of the token, if any"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [ "robinhood" ]
+      - name: contract_address
+        description: "Contract address of the token, if any"
+      - name: symbol
+        description: "Token symbol. UNKNOWN until Robinhood token metadata is verified."
+      - name: decimals
+        description: "Number of decimals for the token contract. Null until Robinhood token metadata is verified."
