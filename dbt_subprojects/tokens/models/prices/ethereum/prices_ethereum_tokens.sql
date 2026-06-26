@@ -1904,6 +1904,7 @@ FROM
     ('towns-towns', 'ethereum', 'TOWNS', 0x000000Fa00b200406de700041CFc6b19BbFB4d13, 18),
     ('shu-shutter', 'ethereum', 'SHU', 0xe485e2f1bab389c08721b291f6b59780fec83fd7, 18),
     ('rlusd-ripple-usd', 'ethereum', 'RLUSD', 0x8292bb45bf1ee4d140127049757c2e0ff06317ed, 18),
+    ('usdg-global-dollar', 'ethereum', 'USDG', 0xe343167631d89b6ffc58b88d6b7fb0228795491d, 6),
     --Tokenized Equities & ETFs (Ondo)
     ('aaplon-apple-tokenized-stock-ondo', 'ethereum', 'AAPLon', 0x14c3abf95cb9c93a8b82c1cdcb76d72cb87b2d4c, 18),
     ('amdon-amd-tokenized-stock-ondo', 'ethereum', 'AMDon', 0x0c1f3412a44ff99e40bf14e06e5ea321ae7b3938, 18),
