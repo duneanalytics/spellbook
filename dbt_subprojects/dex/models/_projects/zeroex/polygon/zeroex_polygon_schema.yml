@@ -359,6 +359,7 @@ models:
               - block_date
               - tx_hash
               - evt_index
+              - trace_address
     columns:
       - *blockchain
       - *block_date

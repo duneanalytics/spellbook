@@ -19,5 +19,6 @@
         , liquidity_pools = ref('pancakeswap_infinity_cl_base_pools')
         , liquidity_sqrtpricex96 = ref('pancakeswap_infinity_cl_base_sqrtpricex96')
         , PoolManager_call_ModifyLiquidity = source ('pancakeswap_infinity_base', 'clpoolmanager_call_modifyliquidity')
+        , transactions = source('base', 'transactions')
     )
 }}
