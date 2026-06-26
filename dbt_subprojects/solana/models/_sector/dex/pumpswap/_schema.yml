@@ -8,7 +8,7 @@ models:
     config:
       tags: [ 'solana','dex','pumpswap' ]
     description: >
-      staging model for pumpswap swap data from decoded tables
+      staging model for pumpswap swap data from decoded call and event tables
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:

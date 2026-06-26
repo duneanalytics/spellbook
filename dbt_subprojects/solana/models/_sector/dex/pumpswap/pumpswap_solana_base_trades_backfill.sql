@@ -49,6 +49,7 @@ WITH pools AS (
         , account_pool_quote_token_account
         , account_protocol_fee_recipient_token_account
         , base_amount
+        , quote_amount
         , is_buy
         , surrogate_key
     FROM {{ ref('pumpswap_solana_stg_decoded_swaps') }}
@@ -130,6 +131,17 @@ WITH pools AS (
                     END
             )
         )
+    WHERE sf.quote_amount IS NULL
+
+    UNION ALL
+
+    SELECT
+          sf.*
+        , sf.base_amount AS base_token_amount
+        , sf.quote_amount AS quote_token_amount
+        , 1 AS rn
+    FROM swaps_with_fees sf
+    WHERE sf.quote_amount IS NOT NULL
 )
 
 , trades AS (
