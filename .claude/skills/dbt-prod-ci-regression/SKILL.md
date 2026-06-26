@@ -28,7 +28,7 @@ description: >-
    **Or** copy the hash from **Actions** logs.
 4. **Table name:** dbt **model name** (e.g. `zeroex_bnb_api_fills`) for current CI schema; `{schema}_{alias}` suffix for legacy `git_dunesql_*` tables.
 
-Spellbook note: see also [.cursor/skills/debug-ci/SKILL.md](../debug-ci/SKILL.md) for CI context. **Never** embed API keys in the skill.
+Spellbook note: see also [`debug-ci`](../debug-ci/SKILL.md) for CI context. **Never** embed API keys in the skill.
 
 ## Run and validate (Dune MCP)
 
@@ -133,7 +133,7 @@ order by
 
 ## Cross-repo use
 
-The same workflow applies in **any** dbt + Dune (or Trino) repo: adjust **prod** relation (`catalog.schema.table`), **CI schema/table prefix**, and **column names**. Copy this folder to **`~/.cursor/skills/dbt-prod-ci-regression/`** for a personal default.
+The same workflow applies in **any** dbt + Dune (or Trino) repo: adjust **prod** relation (`catalog.schema.table`), **CI schema/table prefix**, and **column names**. Copy this folder to **`~/.claude/skills/dbt-prod-ci-regression/`** for a personal default.
 
 ## More examples
 

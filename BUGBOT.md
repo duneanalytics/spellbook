@@ -1,1 +1,1 @@
-Review rules are in `.cursor/rules/`.
+Review guidance is in `AGENTS.md` and `.claude/skills/review-spell/SKILL.md`.
