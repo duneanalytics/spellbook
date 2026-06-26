@@ -96,7 +96,9 @@ WITH swaps AS (
         ON i.block_date = e.evt_block_date
         AND i.tx_id = e.evt_tx_id
         AND i.outer_instruction_index = e.evt_outer_instruction_index
+        AND COALESCE(i.inner_instruction_index, 0) = COALESCE(e.evt_inner_instruction_index, 0)
         AND i.executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
+        AND i.executing_account_prefix = 'pA'
         AND bytearray_substring(i.data, 1, 8) = 0xc62e1552b4d9e870
         AND i.tx_success
     LEFT JOIN {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }} c
