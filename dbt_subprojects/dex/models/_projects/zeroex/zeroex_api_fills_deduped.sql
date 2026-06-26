@@ -39,6 +39,8 @@
 ] %}
 
 
+SELECT * FROM (
+
 SELECT *
 FROM (
     {% for model in zeroex_models %}
@@ -67,8 +69,8 @@ FROM (
       ,trace_address
       ,evt_index
       ,affiliate_address
-      ,null as zid 
-      ,type 
+      ,null as zid
+      ,type
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
@@ -76,7 +78,7 @@ FROM (
     {% endfor %}
 )
 
-UNION ALL 
+UNION ALL
 
 SELECT *
 FROM (
@@ -105,7 +107,7 @@ FROM (
       ,tx_to
       ,trace_address
       ,evt_index
-      ,tag as affiliate_address 
+      ,tag as affiliate_address
       ,zid
       ,type
     FROM {{ model }}
@@ -114,3 +116,14 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+
+)
+-- Corruption guard: drop reconstructions whose raw token amount has the high (sign) bit
+-- set (>= 2^255). 0x Settler trades are rebuilt from matched on-chain logs; signed/negative
+-- int256 deltas in AMM swap events (e.g. Uniswap V3 Swap, encoded as 0xfff...) get picked up
+-- by the fixed-offset byte extraction, yielding type(uint256).max-scale amounts and
+-- astronomically large amount_usd (~1e71) that break the dex_aggregator.trades amount_usd
+-- accepted_range test. A real ERC20 amount never approaches 2^255 (~5.8e76), so this is an
+-- unambiguous, lossless guard (removes ~0.02% of settler rows; all confirmed corrupt).
+WHERE (taker_token_amount_raw IS NULL OR taker_token_amount_raw < power(2, 255))
+  AND (maker_token_amount_raw IS NULL OR maker_token_amount_raw < power(2, 255))
