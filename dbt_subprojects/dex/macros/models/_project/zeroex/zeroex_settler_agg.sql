@@ -88,8 +88,13 @@ calls AS (
         CASE WHEN s.buy_token IN {{ native_tokens }} THEN nt.token_address ELSE s.buy_token END AS buy_token,
         nt.token_address AS native_addr,
         s.trace_address,
-        s.sell_token_decoded,
-        s.sell_amount_decoded,
+        -- guard the permit-decoded sell leg against "unlimited permit" sentinels (permitted amount
+        -- >= 2^128, e.g. uint256.max): that word is then a Permit2 allowance cap, not the real fill
+        -- size, so null BOTH the token and the amount and let the sell leg fall through to native/null
+        -- (volume still prices off the buy side). Mirrors the min_amount_out floor guard above; without
+        -- it these emit token_sold_amount_raw = uint256.max and absurd volume (~1e71 USD). (CUR2-2903)
+        CASE WHEN s.sell_amount_decoded < UINT256 '{{ max_plausible_amount }}' THEN s.sell_token_decoded END AS sell_token_decoded,
+        CASE WHEN s.sell_amount_decoded < UINT256 '{{ max_plausible_amount }}' THEN s.sell_amount_decoded END AS sell_amount_decoded,
         -- native sell amount: NATIVE_CHECK.msgValue (calldata; robust to nested/AllowanceHolder/4337 calls
         -- where the top-level tx.value is 0), else the top-level tx.value. NULLIF so a decoded 0 (e.g. a
         -- zero-msgValue NATIVE_CHECK) falls through to tx.value instead of sticking at 0.
