@@ -41,7 +41,7 @@ with orders as (
 )
 
 -- token the taker RECEIVES (offerer gives) -> token_bought
-, offer_side as (
+, offer_tokens as (
     select
         tx_hash
         , evt_index
@@ -53,8 +53,24 @@ with orders as (
     group by tx_hash, evt_index, from_hex(json_extract_scalar(o, '$.token'))
 )
 
+-- CLOB settles one ERC20 per side; keep one deterministic row so a malformed
+-- multi-token order can't break the tx_hash+evt_index unique key / incremental merge.
+, offer_side as (
+    select tx_hash, evt_index, token, amount
+    from (
+        select
+            tx_hash
+            , evt_index
+            , token
+            , amount
+            , row_number() over (partition by tx_hash, evt_index order by amount desc, token) as rn
+        from offer_tokens
+    )
+    where rn = 1
+)
+
 -- token the taker PAYS (offerer receives, incl. fees) -> token_sold
-, consideration_side as (
+, consideration_tokens as (
     select
         tx_hash
         , evt_index
@@ -64,6 +80,22 @@ with orders as (
     cross join unnest(consideration) as t(c)
     where json_extract_scalar(c, '$.itemType') = '1' -- ERC20 only
     group by tx_hash, evt_index, from_hex(json_extract_scalar(c, '$.token'))
+)
+
+-- CLOB settles one ERC20 per side; keep one deterministic row so a malformed
+-- multi-token order can't break the tx_hash+evt_index unique key / incremental merge.
+, consideration_side as (
+    select tx_hash, evt_index, token, amount
+    from (
+        select
+            tx_hash
+            , evt_index
+            , token
+            , amount
+            , row_number() over (partition by tx_hash, evt_index order by amount desc, token) as rn
+        from consideration_tokens
+    )
+    where rn = 1
 )
 
 select
@@ -83,6 +115,9 @@ select
     , o.project_contract_address
     , o.tx_hash
     , o.evt_index
+-- Agra is a CLOB: exactly one ERC20 per side per order (a/b, c/b). A multi-token order
+-- would be a contract failure and is intentionally not modeled; the guards above + the
+-- tx_hash+evt_index unique key keep it from corrupting output.
 from orders o
 inner join offer_side ofr
     on ofr.tx_hash = o.tx_hash
