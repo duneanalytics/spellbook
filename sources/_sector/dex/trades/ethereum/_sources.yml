@@ -163,3 +163,7 @@ sources:
       - name: pair_evt_swap
       - name: algebrafactory_evt_custompool
       - name: algebrapool_evt_swap
+
+  - name: agra_multichain
+    tables:
+      - name: settlement_evt_orderfulfilled
