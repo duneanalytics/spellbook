@@ -1,0 +1,48 @@
+version: 2
+
+macros:
+  - name: source_changes
+    description: >
+      Expand a ref-based Delta spell source into a CDF change-set relation for a
+      delta_cdf incremental model. Bootstraps a full snapshot (FOR VERSION AS OF V)
+      on first build / --full-refresh, otherwise reads table_changes(since_version => W)
+      strictly after the stored watermark. Carries _change_type / _commit_version /
+      _commit_timestamp through for the strategy macro to capture.
+    arguments:
+      - name: base_relation
+        type: relation
+        description: "ref()-resolved physical Delta spell to read changes from (must have change_data_feed_enabled)."
+      - name: change_types
+        type: list
+        description: "_change_type values to keep on the incremental path. Default ['insert','update_postimage']."
+
+  - name: cdf_get_watermark
+    description: >
+      Read dune.cdf.source_version (the exclusive source version W) from a target
+      relation's Delta $properties. Returns an int or none (caller bootstraps).
+    arguments:
+      - name: target_relation
+        type: relation
+        description: "The delta_cdf target whose watermark to read (typically this)."
+
+  - name: cdf_current_source_version
+    description: >
+      Current max committed Delta version of a spell source via its $history table.
+      Spell-only (cheap); used to bootstrap the watermark and pin the bootstrap snapshot.
+    arguments:
+      - name: base_relation
+        type: relation
+        description: "ref()-resolved physical Delta spell source."
+
+  - name: cdf_advance_watermark
+    description: >
+      Emit ALTER TABLE ... SET PROPERTIES that stamps dune.cdf.source_version = version,
+      preserving existing dune.* extra_properties keys. Used by the strategy macro
+      (incremental, captured literal) and the bootstrap post-hook (render-time V).
+    arguments:
+      - name: target_relation
+        type: relation
+        description: "The delta_cdf target to stamp."
+      - name: version
+        type: integer
+        description: "The version literal to store as the new watermark."

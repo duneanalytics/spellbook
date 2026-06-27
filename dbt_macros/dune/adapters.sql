@@ -3,6 +3,11 @@
   {%- if config.get('partition_by', None) != None -%}
     {%- do _properties.update({'partitioned_by': "ARRAY['" + (config.get('partition_by') | join("', '") )  + "']"}) -%}
   {%- endif -%}
+  {#-- [dune] forward change_data_feed_enabled (Delta CDF) from model config; never on the temp
+        relation, since the delta_cdf strategy materializes its temp as a table (incremental.sql:14/17). --#}
+  {%- if not temporary and config.get('change_data_feed_enabled', None) != None -%}
+    {%- do _properties.update({'change_data_feed_enabled': config.get('change_data_feed_enabled') | string | lower}) -%}
+  {%- endif -%}
   create or replace table {{ relation }}
     {{ create_table_properties(_properties, relation) }}
   as (
@@ -46,7 +51,12 @@
 {%- endmacro -%}
 
 {% macro create_table_properties(_properties, relation) %}
-  {%- if not (target.name == 'ci' and target.database == 'dune') -%}
+  {#- CDF tables must use a connector-managed location: an explicit `location` bypasses
+      Dune catalog credential vending (VendedCredentialsHandle.empty) so the S3 write
+      fails, and it also triggers a stats-cache read at getStatisticsCollectionMetadataForWrite
+      that errors on the explicit path. Managed location is vended via schema registration. -#}
+  {%- set cdf_enabled = config.get('change_data_feed_enabled', false) -%}
+  {%- if not (target.name == 'ci' and target.database == 'dune') and not cdf_enabled -%}
     {%- set modified_identifier = relation.identifier | replace("__dbt_tmp", "") -%}
     {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
     {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
