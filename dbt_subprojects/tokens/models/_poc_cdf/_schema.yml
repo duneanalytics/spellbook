@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: tokens_bnb_base_transfers_cdf_poc
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: andre
+    config:
+      tags: ['tokens', 'transfers', 'bnb', 'cdf_poc']
+    description: >
+      Throwaway POC clone of tokens_bnb_base_transfers, bounded to a recent window and
+      with Delta Change Data Feed enabled, used to exercise the delta_cdf incremental
+      strategy (CUR2-2963) without touching the prod base spell. Delete after the A/B.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
+    columns:
+      - name: block_date
+        description: "Block date (partition-aligned day) of the transfer."
+        data_tests:
+          - not_null
+      - name: unique_key
+        description: "Per-transfer surrogate key inherited from tokens_bnb_base_transfers."
+        data_tests:
+          - not_null
+
+  - name: tokens_bnb_transfers_baseline_poc
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: andre
+    config:
+      tags: ['tokens', 'transfers', 'bnb', 'cdf_poc']
+    description: >
+      Throwaway POC baseline (CUR2-2963): transfers_enrich over the bounded clone via the
+      normal incremental merge strategy. The A/B reference for tokens_bnb_transfers_cdf_poc.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
+    columns:
+      - name: block_date
+        description: "Block date (partition-aligned day) of the transfer."
+        data_tests:
+          - not_null
+      - name: unique_key
+        description: "Per-transfer surrogate key."
+        data_tests:
+          - not_null
+
+  - name: tokens_bnb_transfers_cdf_poc
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: andre
+    config:
+      tags: ['tokens', 'transfers', 'bnb', 'cdf_poc']
+    description: >
+      Throwaway POC CDF target (CUR2-2963): transfers_enrich_cdf over the Delta change feed
+      of the bounded clone, applied via the delta_cdf incremental strategy. Compared against
+      tokens_bnb_transfers_baseline_poc for correctness and cost.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
+    columns:
+      - name: block_date
+        description: "Block date (partition-aligned day) of the transfer."
+        data_tests:
+          - not_null
+      - name: unique_key
+        description: "Per-transfer surrogate key."
+        data_tests:
+          - not_null
