@@ -167,3 +167,4 @@ sources:
   - name: agra_multichain
     tables:
       - name: settlement_evt_orderfulfilled
+      - name: settlement_evt_ordersmatched
