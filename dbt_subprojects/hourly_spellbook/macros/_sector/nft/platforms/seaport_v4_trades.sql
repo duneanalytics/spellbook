@@ -22,7 +22,7 @@ with source_ethereum_transactions as (
     where block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc('day', now() - interval '7' day)
+    where {{ incremental_predicate('block_time') }}
     {% endif %}
 )
 ,iv_orders_matched AS (
@@ -46,7 +46,7 @@ with source_ethereum_transactions as (
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
     ) group by 1,2,3,4  -- deduplicate order hash re-use in advanced matching
 )
@@ -119,7 +119,7 @@ with source_ethereum_transactions as (
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
     )
     union all
@@ -187,7 +187,7 @@ with source_ethereum_transactions as (
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
     )
 )
