@@ -11,6 +11,5 @@
 
 {{addresses_events_first_activity(
     blockchain='bnb',
-    native_symbol = 'bnb',
-    lookback_days = 3
+    native_symbol = 'bnb'
 )}}

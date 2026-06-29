@@ -1,4 +1,4 @@
-{% macro addresses_events_first_activity(blockchain, native_symbol, lookback_days=2) %}
+{% macro addresses_events_first_activity(blockchain, native_symbol) %}
 SELECT '{{blockchain}}' AS blockchain
 , et."from" AS address
 , MIN_BY(et."to", et.block_number) AS first_activity_to
@@ -25,7 +25,7 @@ LEFT JOIN (
 {% if is_incremental() %}
 LEFT JOIN {{this}} ffb ON et."from" = ffb.address
 WHERE ffb.address IS NULL
-AND et.block_time >= date_trunc('day', now() - interval '{{ lookback_days }}' day)
+AND {{ incremental_predicate('et.block_time') }}
 {% endif %}
 
 GROUP BY et."from"
