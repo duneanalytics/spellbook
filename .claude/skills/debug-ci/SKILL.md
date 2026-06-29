@@ -1,3 +1,8 @@
+---
+name: debug-ci
+description: Diagnose failed Spellbook PR CI workflows, dbt slim CI steps, missing seeds, stale manifests, cluster issues, and CI test table queries.
+---
+
 # Debug CI Failures
 
 Use this skill when a Spellbook PR's CI tests fail and you need to diagnose the issue.
