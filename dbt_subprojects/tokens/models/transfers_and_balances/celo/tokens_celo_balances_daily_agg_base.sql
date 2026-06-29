@@ -18,6 +18,7 @@
 {{
     balances_daily_agg_from_transfers(
         transfers = ref('tokens_celo_transfers'),
-        gas_fees_source = source('gas_celo', 'fees')
+        gas_fees_source = source('gas_celo', 'fees'),
+        current_balances_identifier = 'balances_current'
     )
 }}

@@ -177,3 +177,34 @@ models:
         description: "The raw token balance"
       - name: unique_key
         description: "Surrogate key for unique identification"
+
+  - name: tokens_celo_balances_current
+    meta:
+      blockchain: celo
+      sector: tokens
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'balances', 'celo']
+    description: >
+      Deep current-balance state for tokens_celo_balances_daily_agg_base: one row per
+      (address, token_address, token_standard) holding its latest balance_raw below the
+      base model's incremental window. Maintained incrementally so the base model can seed
+      prior balances without re-scanning full balances history each run.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - address
+              - token_address
+              - token_standard
+    columns:
+      - name: address
+        description: "The wallet address"
+      - name: token_address
+        description: "The token contract address"
+      - name: token_standard
+        description: "The token standard (erc20, native)"
+      - name: balance_raw
+        description: "The latest raw token balance below the base incremental window"
+      - name: day
+        description: "The date of the latest balance for this key"

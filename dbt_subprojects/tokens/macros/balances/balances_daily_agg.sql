@@ -27,7 +27,8 @@ from (
 {%- macro balances_daily_agg_from_transfers(
     transfers,
     gas_fees_source = none,
-    native_token_address = var('ETH_ERC20_ADDRESS')
+    native_token_address = var('ETH_ERC20_ADDRESS'),
+    current_balances_identifier = none
 ) %}
 
 with transfers_in as (
@@ -117,7 +118,35 @@ daily_aggregated as (
 ),
 
 {% if is_incremental() %}
+{#- Optionally seed prior balances from a deep current-balance state table instead of
+    scanning the full balances history. The state table is read via get_relation (not ref)
+    so the base model does not create a dbt dependency cycle with it. -#}
+{%- set current_balances_rel = none -%}
+{%- if current_balances_identifier is not none -%}
+    {%- set current_balances_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier=current_balances_identifier) -%}
+{%- endif -%}
 prior_balances as (
+{%- if current_balances_rel is not none %}
+    -- fast path: deep latest-per-key state table + a bounded recent gap from own output.
+    -- max_by over (state(< T-5) UNION gap[T-7, T-3)) == max_by over full history < T-3
+    -- (split-at-cutoff identity; the [T-7, T-5) overlap is idempotent under max_by).
+    select
+        address,
+        token_address,
+        token_standard,
+        max_by(balance_raw, day) as prior_balance
+    from (
+        select address, token_address, token_standard, balance_raw, day
+        from {{ current_balances_rel }}
+        union all
+        select address, token_address, token_standard, balance_raw, day
+        from {{ this }}
+        where block_time >= date_trunc('day', now() - interval '7' day)
+            and not {{ incremental_predicate('block_time') }}
+    )
+    group by 1, 2, 3
+{%- else %}
+    -- fallback: full-history self-scan. Used until the state table has been built, and in CI.
     select
         address,
         token_address,
@@ -126,6 +155,7 @@ prior_balances as (
     from {{ this }}
     where not {{ incremental_predicate('block_time') }}
     group by 1, 2, 3
+{%- endif %}
 ),
 {% endif %}
 
