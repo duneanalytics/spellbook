@@ -14,7 +14,44 @@
 {% set project_start_date = '2025-02-20' %}
 {% set event_start_date = '2025-11-01' %}
 
-WITH event_swaps AS (
+WITH event_only_swaps AS (
+    SELECT
+          e.evt_block_time
+        , e.evt_block_slot
+        , e.evt_block_date
+        , e.evt_outer_instruction_index
+        , e.evt_inner_instruction_index
+        , e.evt_tx_id
+        , e.evt_tx_index
+        , e.evt_outer_executing_account
+        , e.pool
+        , e.user
+        , e.user_base_token_account
+        , e.user_quote_token_account
+        , e.protocol_fee_recipient_token_account
+        , e.base_amount_out
+        , e.quote_amount_in
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_evt_buyevent') }} e
+    LEFT JOIN {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }} c
+        ON c.call_block_date = e.evt_block_date
+        AND c.call_tx_id = e.evt_tx_id
+        AND c.call_outer_instruction_index = e.evt_outer_instruction_index
+        AND c.account_pool = e.pool
+        AND c.base_amount_out = e.base_amount_out
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('c.call_block_date') }}
+        {% else %}
+        AND c.call_block_date >= DATE '{{ event_start_date }}'
+        {% endif %}
+    WHERE c.call_tx_id IS NULL
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('e.evt_block_date') }}
+        {% else %}
+        AND e.evt_block_date >= DATE '{{ event_start_date }}'
+        {% endif %}
+)
+
+, event_swaps AS (
     SELECT
           e.evt_block_time AS call_block_time
         , e.evt_block_slot AS call_block_slot
@@ -38,7 +75,7 @@ WITH event_swaps AS (
             PARTITION BY e.evt_block_date, e.evt_tx_id, e.evt_outer_instruction_index, e.evt_inner_instruction_index
             ORDER BY COALESCE(i.inner_instruction_index, -1) DESC
           ) AS rn
-    FROM {{ source('pumpdotfun_solana', 'pump_amm_evt_buyevent') }} e
+    FROM event_only_swaps e
     INNER JOIN {{ source('solana', 'instruction_calls') }} i
         ON i.block_date = e.evt_block_date
         AND i.tx_id = e.evt_tx_id
@@ -48,23 +85,10 @@ WITH event_swaps AS (
         AND i.executing_account_prefix = 'pA'
         AND bytearray_substring(i.data, 1, 8) = 0xc62e1552b4d9e870
         AND i.tx_success
-    LEFT JOIN {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }} c
-        ON c.call_block_date = e.evt_block_date
-        AND c.call_tx_id = e.evt_tx_id
-        AND c.call_outer_instruction_index = e.evt_outer_instruction_index
-        AND c.account_pool = e.pool
-        AND c.base_amount_out = e.base_amount_out
+    WHERE 1=1
         {% if is_incremental() %}
-        AND {{ incremental_predicate('c.call_block_date') }}
-        {% else %}
-        AND c.call_block_date >= DATE '{{ event_start_date }}'
-        {% endif %}
-    WHERE c.call_tx_id IS NULL
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('e.evt_block_date') }}
         AND {{ incremental_predicate('i.block_date') }}
         {% else %}
-        AND e.evt_block_date >= DATE '{{ event_start_date }}'
         AND i.block_date >= DATE '{{ event_start_date }}'
         {% endif %}
 )
