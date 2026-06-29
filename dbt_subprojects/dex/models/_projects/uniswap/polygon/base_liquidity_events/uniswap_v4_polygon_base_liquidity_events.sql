@@ -19,5 +19,6 @@
         , liquidity_pools = ref('uniswap_v4_polygon_pools')
         , liquidity_sqrtpricex96 = ref('uniswap_v4_polygon_sqrtpricex96')
         , PoolManager_call_ModifyLiquidity = source ('uniswap_v4_polygon', 'PoolManager_call_ModifyLiquidity')
+        , transactions = source('polygon', 'transactions')
     )
 }}

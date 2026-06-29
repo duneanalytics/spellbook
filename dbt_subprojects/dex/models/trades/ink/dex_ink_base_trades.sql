@@ -19,6 +19,7 @@
     , ref('inkswap_ink_base_trades')
     , ref('reservoir_swap_ink_base_trades')
     , ref('velodrome_v3_ink_base_trades')
+    , ref('zeroex_settler_ink_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

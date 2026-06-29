@@ -1,6 +1,44 @@
 version: 2
 
 models:
+  - name: angstrom_ethereum_bundle_transactions
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'angstrom', 'trades']
+    description: >
+      Pre-materialized Angstrom bundle transactions on Ethereum, extracted once from
+      ethereum.transactions. Shared staging model for angstrom_ethereum_base_trades so the
+      non-pushable bundle-calldata scan runs a single time per build instead of being
+      re-inlined into ~300 transactions scan operators by the recursive bundle decoder.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+    columns:
+      - name: block_number
+        description: "Block number of the Angstrom bundle transaction"
+      - name: block_time
+        description: "Block time of the transaction"
+      - name: tx_hash
+        description: "Transaction hash of the Angstrom bundle (execute) call"
+        data_tests:
+          - not_null
+      - name: tx_index
+        description: "Index of the transaction within its block"
+      - name: angstrom_address
+        description: "Angstrom contract address called by the transaction"
+      - name: tx_data
+        description: "Raw calldata of the bundle transaction, decoded downstream"
+      - name: block_month
+        description: "Month partition derived from block_time"
+        data_tests:
+          - not_null
+
   - name: angstrom_ethereum_trades
     meta:
       blockchain: ethereum

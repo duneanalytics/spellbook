@@ -8,7 +8,14 @@
 -- This macro identifies and extracts transactions related to the 0x Protocol settler contracts
 -- Returns a CTE with transaction details including block information, method IDs, and trader addresses
 
-WITH 
+{# Sell-side calldata decode (CUR2-2903): permit-class take/VIP actions carry the taker's
+   ISignatureTransfer.PermitTransferFrom at arg word1 (sell token = its last 20 bytes, amount = word2);
+   NATIVE_CHECK carries the native msgValue as word1. Selectors from ISettlerActions (keccak-256). #}
+{% set permit_whitelist = '(0xc1fb425e, 0x0dfeb419, 0x604ba49a, 0x9714f25e, 0x3036d6a6, 0x45d8bb1f, 0x931997d3, 0xd9d94e41, 0x4150c86c, 0x449b52ab, 0xd272fc20, 0xef4df77a, 0x0bcce50f, 0xa04626b4, 0x10cd6343, 0xf67d89e5)' %}
+{% set native_check_selector = '0xbd01c226' %}
+{% set native_sentinels = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+{% set zero_word12 = '0x000000000000000000000000' %}
+WITH
 -- Use the settler addresses from the incremental view
 result_0x_settler_addresses AS (
     SELECT *
@@ -32,6 +39,11 @@ filtered_traces AS (
     WHERE
         -- Filter for specific method signatures used by 0x Protocol
         (varbinary_position(input,0x1fff991f) <> 0 OR varbinary_position(input,0xfd3ad6d4) <> 0)
+        -- Exclude reverted settler calls (verified: failed ERC-4337 UserOp-wrapped settler calls that execute
+        -- no swap and emit no transfers — genuine non-trades). Without this, a reverted call carrying a sentinel
+        -- minAmountOut reaches the aggregator's floor fallback and emits absurd volume; the RFQ path already
+        -- drops them via its maker-pivot transfer gate, so this only removes non-trades.
+        AND success
         -- Apply time-based filtering for incremental loads
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
@@ -77,6 +89,63 @@ settler_trace_data AS (
         ))
 ),
 
+-- Step 5b: Decode the FIRST settler action's byte offset from the execute/executeMetaTxn calldata.
+-- ABI: actions[] offset is head word3 (byte 101); the first element's relative offset is at OA+37;
+-- the action's 4-byte selector starts at B1 = OA + rel0 + 69. Each step is CASE-guarded so malformed
+-- calldata yields NULL rather than an out-of-range read / overflow (mirrors the guard pattern in
+-- zeroex_settler_rfq and the transfers CTE; Trino may evaluate a projection before a WHERE).
+fa_actions_offset AS (
+    SELECT std.*,
+        CASE WHEN std.method_id IN (0x1fff991f, 0xfd3ad6d4)
+                  AND varbinary_length(std.input) >= 132
+             THEN TRY_CAST(bytearray_to_uint256(varbinary_substring(std.input, 101, 32)) AS bigint)
+        END AS off_actions
+    FROM settler_trace_data std
+),
+fa_rel0 AS (
+    SELECT fa_actions_offset.*,
+        CASE WHEN off_actions IS NOT NULL AND off_actions > 0 AND off_actions < 65536
+                  AND varbinary_length(input) >= off_actions + 68
+             THEN TRY_CAST(bytearray_to_uint256(varbinary_substring(input, off_actions + 37, 32)) AS bigint)
+        END AS rel0
+    FROM fa_actions_offset
+),
+fa_b1 AS (
+    SELECT fa_rel0.*,
+        -- B1 must be >= 1 and leave room for the token (B1+48..B1+67) / amount (B1+68..B1+99) reads.
+        CASE WHEN rel0 IS NOT NULL AND rel0 >= 0 AND rel0 < 131072
+                  AND (off_actions + rel0 + 69) >= 1
+                  AND varbinary_length(input) >= (off_actions + rel0 + 69) + 99
+             THEN off_actions + rel0 + 69
+        END AS b1
+    FROM fa_rel0
+),
+fa_decode AS (
+    SELECT fa_b1.*,
+        -- permit-class sell token: word1 last 20 bytes (left-padded address), gated on the take/VIP
+        -- selector whitelist + zero word1 padding + positive permitted amount + non-native token.
+        CASE WHEN b1 IS NOT NULL
+                  AND varbinary_substring(input, b1, 4) IN {{ permit_whitelist }}
+                  AND varbinary_substring(input, b1 + 36, 12) = {{ zero_word12 }}
+                  AND bytearray_to_uint256(varbinary_substring(input, b1 + 68, 32)) > UINT256 '0'
+                  AND varbinary_substring(input, b1 + 48, 20) NOT IN {{ native_sentinels }}
+             THEN varbinary_substring(input, b1 + 48, 20)
+        END AS sell_token_decoded,
+        CASE WHEN b1 IS NOT NULL
+                  AND varbinary_substring(input, b1, 4) IN {{ permit_whitelist }}
+                  AND varbinary_substring(input, b1 + 36, 12) = {{ zero_word12 }}
+                  AND bytearray_to_uint256(varbinary_substring(input, b1 + 68, 32)) > UINT256 '0'
+                  AND varbinary_substring(input, b1 + 48, 20) NOT IN {{ native_sentinels }}
+             THEN bytearray_to_uint256(varbinary_substring(input, b1 + 68, 32))
+        END AS sell_amount_decoded,
+        -- native sell: NATIVE_CHECK(uint256 deadline, uint256 msgValue) -> word1 = msgValue. Robust to
+        -- nested/AllowanceHolder/4337 calls where top-level tx.value is 0 but the native input is here.
+        CASE WHEN b1 IS NOT NULL AND varbinary_substring(input, b1, 4) = {{ native_check_selector }}
+             THEN bytearray_to_uint256(varbinary_substring(input, b1 + 36, 32))
+        END AS native_value_decoded
+    FROM fa_b1
+),
+
 -- Step 6: Final processing to extract and format transaction details
 -- This CTE contains the final dataset with all necessary trade information
 settler_txs AS (
@@ -106,11 +175,31 @@ settler_txs AS (
                 0x000000000000175a8b9bC6d539B3708EEd92EA6c
             ) 
             THEN varbinary_substring(input, varbinary_length(input) - 19, 20) 
-            ELSE taker 
-        END AS taker 
+            ELSE taker
+        END AS taker,
+        -- Keep raw calldata only for RFQ-bearing settler calls (plain RFQ action 0xd92aadfb);
+        -- consumed by the zeroex_settler_rfq macro. NULL otherwise to avoid bloating the staging table.
+        CASE WHEN varbinary_position(input, 0xd92aadfb) <> 0 THEN input END AS rfq_input,
+        -- AllowedSlippage fields (present in every execute/executeMetaTxn call, fixed offsets) — used by
+        -- the deterministic aggregator decode (zeroex_settler_agg): buyToken, minAmountOut, and the
+        -- executeMetaTxn msgSender (the order signer / fund owner; tx-level from is the relayer there).
+        varbinary_substring(input, 49, 20) AS buy_token,
+        bytearray_to_uint256(varbinary_substring(input, 69, 32)) AS min_amount_out,
+        CASE WHEN method_id = 0xfd3ad6d4 THEN varbinary_substring(input, 177, 20) END AS settler_msgsender,
+        -- Real on-chain trace_address of the settler call. Surfaced for the deterministic aggregator
+        -- decode (zeroex_settler_agg), which emits it as the row's trace_address instead of the [-1]
+        -- sentinel: the [-1] sentinel collided with cow_protocol / lifi / bitget_dex_aggregator rows
+        -- (all keyed on [-1]) on the dex_aggregator.trades datashare key
+        -- (blockchain, tx_hash, evt_index, trace_address). A real trace path is never [-1].
+        trace_address,
+        -- Sell-side calldata decode (CUR2-2903), consumed by zeroex_settler_agg: deterministic sell
+        -- token/amount for permit-class take/VIP actions, and the native msgValue for NATIVE_CHECK.
+        sell_token_decoded,
+        sell_amount_decoded,
+        native_value_decoded
     FROM
-        settler_trace_data
-    WHERE 
+        fa_decode
+    WHERE
         -- Filter out transactions with empty ZeroEx IDs
         varbinary_substring(tracker,2,12) != 0x000000000000000000000000
 )
