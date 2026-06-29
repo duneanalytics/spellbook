@@ -1,4 +1,5 @@
 {{  config(
+        tags=['prod_exclude'],
 
         schema = 'zeroex_celo',
         alias = 'api_fills',

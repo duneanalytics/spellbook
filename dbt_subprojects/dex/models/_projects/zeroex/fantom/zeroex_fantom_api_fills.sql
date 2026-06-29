@@ -1,4 +1,5 @@
 {{  config(
+        tags=['prod_exclude'],
         schema = 'zeroex_fantom',
         alias = 'api_fills',
         materialized='incremental',

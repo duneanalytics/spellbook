@@ -1,4 +1,5 @@
 {{  config(
+        tags=['prod_exclude'],
         schema = 'zeroex_avalance_c',
         alias = 'api_fills',
         materialized='incremental',

@@ -1,4 +1,5 @@
 {{  config(
+        tags=['prod_exclude'],
 
     schema = 'zeroex_base',
         alias = 'api_fills',
