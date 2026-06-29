@@ -6,6 +6,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
+    , on_schema_change = 'sync_all_columns'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     , unique_key = ['block_month', 'block_date', 'surrogate_key']
   )
@@ -51,6 +52,16 @@ WITH event_only_swaps AS (
         {% endif %}
 )
 
+, pool_accounts AS (
+    SELECT
+          account_pool AS pool
+        , arbitrary(account_pool_base_token_account) AS pool_base_token_account
+        , arbitrary(account_pool_quote_token_account) AS pool_quote_token_account
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_call_create_pool') }}
+    WHERE call_block_time >= TIMESTAMP '{{ project_start_date }}'
+    GROUP BY 1
+)
+
 , event_swaps AS (
     SELECT
           e.evt_block_time AS call_block_time
@@ -65,32 +76,15 @@ WITH event_only_swaps AS (
         , e.user AS account_user
         , e.user_base_token_account AS account_user_base_token_account
         , e.user_quote_token_account AS account_user_quote_token_account
-        , i.account_arguments[8] AS account_pool_base_token_account
-        , i.account_arguments[9] AS account_pool_quote_token_account
+        , p.pool_base_token_account AS account_pool_base_token_account
+        , p.pool_quote_token_account AS account_pool_quote_token_account
         , e.protocol_fee_recipient_token_account AS account_protocol_fee_recipient_token_account
         , e.base_amount_out AS base_amount
         , e.quote_amount_in AS quote_amount
         , 1 AS is_buy
-        , ROW_NUMBER() OVER (
-            PARTITION BY e.evt_block_date, e.evt_tx_id, e.evt_outer_instruction_index, e.evt_inner_instruction_index
-            ORDER BY COALESCE(i.inner_instruction_index, -1) DESC
-          ) AS rn
     FROM event_only_swaps e
-    INNER JOIN {{ source('solana', 'instruction_calls') }} i
-        ON i.block_date = e.evt_block_date
-        AND i.tx_id = e.evt_tx_id
-        AND i.outer_instruction_index = e.evt_outer_instruction_index
-        AND COALESCE(i.inner_instruction_index, -1) < COALESCE(e.evt_inner_instruction_index, 1000000)
-        AND i.executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
-        AND i.executing_account_prefix = 'pA'
-        AND bytearray_substring(i.data, 1, 8) = 0xc62e1552b4d9e870
-        AND i.tx_success
-    WHERE 1=1
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('i.block_date') }}
-        {% else %}
-        AND i.block_date >= DATE '{{ event_start_date }}'
-        {% endif %}
+    INNER JOIN pool_accounts p
+        ON p.pool = e.pool
 )
 
 , swaps AS (
@@ -172,7 +166,6 @@ WITH event_only_swaps AS (
         , quote_amount
         , 1 AS is_buy
     FROM event_swaps
-    WHERE rn = 1
 )
 
 SELECT
