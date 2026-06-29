@@ -8,7 +8,10 @@
     merge_skip_unchanged = true,
     unique_key = ['block_date','unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-    , post_hook='{{ hide_spells() }}'
+    , post_hook='{{ expose_spells(blockchains = \'["tron"]\',
+                                        spell_type = "sector",
+                                        spell_name = "tokens_tron",
+                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke", "tomfutago"]\') }}'
     )
 }}
 
