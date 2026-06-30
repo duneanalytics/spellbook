@@ -17,12 +17,6 @@
   )
 }}
 
-{% set protocol_begin = '2025-02-20' %}
-{% set begin = '2026-06-01' %}
-{% set buy_exact_quote_in_begin = '2025-11-01' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
-
 WITH pools AS (
     SELECT
           pool
@@ -38,7 +32,7 @@ WITH pools AS (
         , arbitrary(account_pool_base_token_account) AS pool_base_token_account
         , arbitrary(account_pool_quote_token_account) AS pool_quote_token_account
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_create_pool') }}
-    WHERE call_block_time >= TIMESTAMP '{{ protocol_begin }}'
+    WHERE call_block_time >= TIMESTAMP '2025-02-20'
     GROUP BY 1
 )
 
@@ -205,12 +199,10 @@ WITH pools AS (
         AND c.call_outer_instruction_index = e.evt_outer_instruction_index
         AND c.account_pool = e.pool
         AND c.base_amount_out = e.base_amount_out
-        AND c.call_block_date >= DATE '{{ buy_exact_quote_in_begin }}'
+        AND c.call_block_date >= DATE '2025-11-01'
     LEFT JOIN pools p ON p.pool = e.pool
     WHERE c.call_tx_id IS NULL
-        AND e.evt_block_time >= TIMESTAMP '{{ buy_exact_quote_in_begin }}'
-        AND e.evt_block_time >= TIMESTAMP '{{ batch_start }}'
-        AND e.evt_block_time < TIMESTAMP '{{ batch_end }}'
+        AND e.evt_block_time >= TIMESTAMP '2025-11-01'
         AND COALESCE(p.is_valid_pool, false)
 )
 
