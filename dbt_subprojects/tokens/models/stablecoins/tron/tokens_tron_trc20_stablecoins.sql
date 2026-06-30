@@ -2,7 +2,7 @@
 
 {{
   config(
-    tags = ['static'],
+    tags = ['prod_exclude', 'static'],
     schema = 'tokens_' ~ chain,
     alias = 'trc20_stablecoins',
     materialized = 'view',

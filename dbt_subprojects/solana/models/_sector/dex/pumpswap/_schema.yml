@@ -7,6 +7,7 @@ models:
       contributors: [ krishhh ]
     config:
       tags: [ 'solana','dex','pumpswap' ]
+      event_time: block_time
     description: >
       staging model for pumpswap swap data from decoded tables
     data_tests:
