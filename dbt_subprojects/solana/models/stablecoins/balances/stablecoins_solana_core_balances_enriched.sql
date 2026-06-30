@@ -9,6 +9,7 @@
     incremental_strategy = 'merge',
     partition_by = ['day'],
     unique_key = ['day', 'address', 'token_address'],
+    tags = ['prod_exclude'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
