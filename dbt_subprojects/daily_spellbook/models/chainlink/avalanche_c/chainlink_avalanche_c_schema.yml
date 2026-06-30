@@ -305,6 +305,12 @@ models:
         ["chainlink", "ocr", "reward", "transmission", "logs", "avalanche_c"]
     description: >
       Chainlink OCR Reward Transmission Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_hash
