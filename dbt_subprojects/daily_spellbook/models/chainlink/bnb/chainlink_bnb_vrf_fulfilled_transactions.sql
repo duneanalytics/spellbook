@@ -11,6 +11,13 @@
   )
 }}
 
+
+-- CUR2-2973: bound the previously-unbounded side of the logs<->transactions join by its own
+-- block_time so the incremental run prunes it via Delta file-skipping. The added predicate is
+-- logically redundant -- the joined log and transaction are in the same block, so their
+-- block_time is identical, and the other side is already bounded to the incremental window --
+-- so results are unchanged (proven EXCEPT=0); it only stops the full-history scan. Incremental-only.
+
 WITH
   bnb_usd AS (
     SELECT
@@ -47,6 +54,7 @@ WITH
     {% if is_incremental() %}
       WHERE
         {{ incremental_predicate('tx.block_time') }}
+        AND {{ incremental_predicate('vrf_v1_logs.block_time') }}
     {% endif %}
     GROUP BY
       tx.hash,
@@ -76,6 +84,7 @@ WITH
     {% if is_incremental() %}
       WHERE
         {{ incremental_predicate('tx.block_time') }}
+        AND {{ incremental_predicate('vrf_v2_logs.block_time') }}
     {% endif %}
     GROUP BY
       tx.hash,
