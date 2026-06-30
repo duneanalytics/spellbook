@@ -24,6 +24,7 @@
     ,ref('prices_cardano_tokens')
     ,ref('prices_celo_tokens')
     ,ref('prices_corn_tokens')
+    ,ref('prices_cronos_tokens')
     ,ref('prices_degen_tokens')
     ,ref('prices_ethereum_tokens')
     ,ref('prices_fantom_tokens')

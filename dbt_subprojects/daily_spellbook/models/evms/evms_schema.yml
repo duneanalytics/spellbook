@@ -78,7 +78,7 @@ models:
 
   - name: evms_traces
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, cronos, ink
       sector: evms
       contributors: [hildobby, synthquest]
     config:
@@ -155,7 +155,7 @@ models:
 
   - name: evms_logs
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, cronos, ink
       sector: evms
       contributors: [hildobby, synthquest, rantum]
     config:
@@ -211,7 +211,7 @@ models:
 
   - name: evms_blocks
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, cronos, ink
       sector: evms
       contributors: [hildobby, synthquest]
     config:
