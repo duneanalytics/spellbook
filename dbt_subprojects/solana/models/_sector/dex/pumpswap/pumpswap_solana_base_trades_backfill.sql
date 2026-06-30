@@ -9,7 +9,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
     , event_time = 'block_time'
-    , begin = '2026-06-29'
+    , begin = '2026-06-01'
     , batch_size = var('pumpswap_batch_size', 'day')
     , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
