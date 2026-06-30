@@ -1,3 +1,4 @@
+{# TEMP CI scope: revert begin to protocol_begin before merge. #}
 {{
   config(
     schema = 'pumpswap_solana'
@@ -8,13 +9,19 @@
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
     , event_time = 'block_time'
-    , begin = '2025-02-20'
+    , begin = '2026-06-01'
     , batch_size = var('pumpswap_batch_size', 'day')
     , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
+
+{% set protocol_begin = '2025-02-20' %}
+{% set begin = '2026-06-01' %}
+{% set buy_exact_quote_in_begin = '2025-11-01' %}
+{% set batch_start = model.batch.event_time_start if model.batch else begin %}
+{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
 WITH pools AS (
     SELECT
@@ -23,6 +30,16 @@ WITH pools AS (
         , quoteMint
         , is_valid_pool
     FROM {{ ref('pumpswap_solana_pools') }}
+)
+
+, pool_accounts AS (
+    SELECT
+          account_pool AS pool
+        , arbitrary(account_pool_base_token_account) AS pool_base_token_account
+        , arbitrary(account_pool_quote_token_account) AS pool_quote_token_account
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_call_create_pool') }}
+    WHERE call_block_time >= TIMESTAMP '{{ protocol_begin }}'
+    GROUP BY 1
 )
 
 , swaps AS (
@@ -122,7 +139,7 @@ WITH pools AS (
         )
 )
 
-, trades AS (
+, decoded_trades AS (
     SELECT
           sp.block_time
         , sp.block_slot
@@ -149,6 +166,60 @@ WITH pools AS (
     LEFT JOIN pools p ON p.pool = sp.pool
     WHERE sp.rn = 1
       AND COALESCE(p.is_valid_pool, false)
+)
+
+, buy_exact_quote_in_trades AS (
+    SELECT
+          e.evt_block_time AS block_time
+        , e.evt_block_slot AS block_slot
+        , CAST(date_trunc('month', e.evt_block_date) AS DATE) AS block_month
+        , {{ solana_instruction_key(
+              'e.evt_block_slot'
+            , 'e.evt_tx_index'
+            , 'e.evt_outer_instruction_index'
+            , 'COALESCE(e.evt_inner_instruction_index, 0)'
+          ) }} AS surrogate_key
+        , CASE
+            WHEN e.evt_outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN 'direct'
+            ELSE e.evt_outer_executing_account
+          END AS trade_source
+        , p.baseMint AS token_bought_mint_address
+        , e.base_amount_out AS token_bought_amount_raw
+        , p.quoteMint AS token_sold_mint_address
+        , e.quote_amount_in AS token_sold_amount_raw
+        , CAST((e.lp_fee_basis_points + e.protocol_fee_basis_points) AS DOUBLE) / 10000.0 AS fee_tier
+        , e.pool AS pool_id
+        , e.user AS trader_id
+        , e.evt_tx_id AS tx_id
+        , e.evt_outer_instruction_index AS outer_instruction_index
+        , e.evt_inner_instruction_index AS inner_instruction_index
+        , e.evt_tx_index AS tx_index
+        , pa.pool_base_token_account AS token_bought_vault
+        , pa.pool_quote_token_account AS token_sold_vault
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_evt_buyevent') }} e
+    INNER JOIN pool_accounts pa
+        ON pa.pool = e.pool
+    LEFT JOIN {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }} c
+        ON c.call_block_date = e.evt_block_date
+        AND c.call_tx_id = e.evt_tx_id
+        AND c.call_outer_instruction_index = e.evt_outer_instruction_index
+        AND c.account_pool = e.pool
+        AND c.base_amount_out = e.base_amount_out
+        AND c.call_block_date >= DATE '{{ buy_exact_quote_in_begin }}'
+    LEFT JOIN pools p ON p.pool = e.pool
+    WHERE c.call_tx_id IS NULL
+        AND e.evt_block_time >= TIMESTAMP '{{ buy_exact_quote_in_begin }}'
+        AND e.evt_block_time >= TIMESTAMP '{{ batch_start }}'
+        AND e.evt_block_time < TIMESTAMP '{{ batch_end }}'
+        AND COALESCE(p.is_valid_pool, false)
+)
+
+, trades AS (
+    SELECT * FROM decoded_trades
+
+    UNION ALL
+
+    SELECT * FROM buy_exact_quote_in_trades
 )
 
 SELECT
