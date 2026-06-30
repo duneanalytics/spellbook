@@ -1,3 +1,8 @@
+---
+name: review-spell
+description: Review Spellbook spell contributions for config blocks, schema YAML, SQL style, Jinja, performance, seeds, architecture, and compile/test readiness.
+---
+
 # Review Spell PR
 
 Use this skill when reviewing a Spellbook spell contribution (new model or modification). Walk through each section below as a checklist.
@@ -13,7 +18,7 @@ Use this skill when reviewing a Spellbook spell contribution (new model or modif
   - [ ] `unique_key` specified — no columns that could contain NULLs
   - [ ] `incremental_predicates` uses the `incremental_predicate()` macro (unless full-history lookup needed)
   - [ ] If partitioned: partition column(s) included in `unique_key`
-- [ ] Config block formatting follows `sql-style-guide.mdc` (tabs, trailing comma on last param, `{{ config(` on first line)
+- [ ] Config block formatting follows repo SQL conventions (tabs, trailing comma on last param, `{{ config(` on first line)
 
 ## 2. Schema YML (`_schema.yml`)
 
@@ -24,7 +29,7 @@ Use this skill when reviewing a Spellbook spell contribution (new model or modif
 - [ ] Key columns have descriptions
 - [ ] For sector-level spells: seed test is present (e.g., `check_dex_base_trades_seed`)
 
-## 3. SQL Style (per `sql-style-guide.mdc`)
+## 3. SQL Style
 
 - [ ] Leading commas (left comma club)
 - [ ] Tab indentation (no spaces)
