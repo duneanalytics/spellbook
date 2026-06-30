@@ -41,6 +41,10 @@ WITH
             , stake_account
             , vote_account
         FROM {{ ref('staking_solana_validator_stake_account_epochs_raw') }}
+        -- Mirror the upstream _raw model's 10-day window. epoch_time is the epoch START and
+        -- epochs span ~48h, so this must stay >= raw's lookback: we MERGE on (epoch, stake_account),
+        -- and a late-arriving delegation raw re-emits for an epoch outside this window would never
+        -- propagate here. The standard incremental_predicate() macro (1-day default) is too narrow.
         WHERE epoch_time >= now() - interval '10' day
     )
 
