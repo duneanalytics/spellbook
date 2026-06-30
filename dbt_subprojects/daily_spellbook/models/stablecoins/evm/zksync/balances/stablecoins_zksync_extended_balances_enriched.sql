@@ -2,7 +2,7 @@
 
 {{
   config(
-    tags = ['stablecoins'],
+    tags = ['stablecoins', 'prod_exclude'],
     schema = 'stablecoins_' ~ chain,
     alias = 'extended_balances_enriched',
     materialized = 'incremental',
@@ -13,6 +13,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
+-- ci-stamp: 1
 -- extended balances enriched with token metadata and usd prices
 {{
   balances_incremental_subset_daily_enrich(

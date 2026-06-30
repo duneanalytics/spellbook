@@ -13,6 +13,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
+-- ci-stamp: 1
 
 -- core balances: tracks balances (from transfers) for stablecoins in the frozen core list
 

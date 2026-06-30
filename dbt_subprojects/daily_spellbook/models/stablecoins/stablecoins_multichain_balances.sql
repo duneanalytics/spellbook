@@ -41,7 +41,7 @@
 
 {{
   config(
-    tags = ['stablecoins'],
+    tags = ['stablecoins', 'prod_exclude'],
     schema = 'stablecoins_multichain',
     alias = 'balances',
     materialized = 'view',
@@ -51,6 +51,7 @@
         contributors = \'["tomfutago"]\') }}'
   )
 }}
+-- ci-stamp: 1
 
 select
   blockchain,
@@ -65,7 +66,7 @@ select
   balance_usd,
   currency,
   last_updated
-from {{ ref('stablecoins_evm_balances') }}
+from {{ source('stablecoins_evm', 'balances') }}
 union all
 select
   blockchain,
@@ -95,4 +96,4 @@ select
   balance_usd,
   currency,
   last_updated
-from {{ ref('stablecoins_tron_balances') }}
+from {{ source('stablecoins_tron', 'balances') }}
