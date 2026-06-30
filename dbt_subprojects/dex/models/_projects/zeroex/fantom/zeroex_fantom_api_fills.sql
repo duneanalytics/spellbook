@@ -1,5 +1,5 @@
 {{  config(
-        tags=['prod_exclude'],
+        tags=['static'],
         schema = 'zeroex_fantom',
         alias = 'api_fills',
         materialized='incremental',
