@@ -11,6 +11,8 @@ cast({{ block_number }} as decimal(38, 0)) * decimal '1000000000000'
     , PoolManager_evt_Initialize = null
     , PoolManager_evt_Swap = null 
     , transactions = null
+    , latest_relation = none
+    , reread_lookback_days = 14
     )
 %}
 
@@ -83,7 +85,23 @@ get_latest_active_pools as (
             th.*,
             be.block_index_sum as base_block_index_sum
         from 
+        {%- if latest_relation is none %}
         {{this}} th 
+        {%- else %}
+        -- bounded recent self-read UNION the aged deep-tail companion: reproduces the
+        -- full-history max_by-per-pool seed while scanning only the last
+        -- {{ reread_lookback_days }} days of {{this}} plus ~one row per pool.
+        (
+            select id, block_time, block_number, evt_index, block_index_sum, sqrtpricex96
+            from {{this}}
+            where block_time >= current_date - interval '{{ reread_lookback_days }}' day
+
+            union all
+
+            select id, block_time, block_number, evt_index, block_index_sum, sqrtpricex96
+            from {{ latest_relation }}
+        ) th 
+        {%- endif %}
         inner join 
         get_active_pools ga 
             on th.id = ga.id 
@@ -155,6 +173,9 @@ sort_table as (
             and e.evt_block_number = tx.block_number
             and e.evt_block_date = tx.block_date
         where e.sqrtPriceX96 is not null 
+        {%- if target.name == 'ci' %}
+        and e.evt_block_time >= current_date - interval '14' day
+        {%- endif %}
 
         union all 
 
@@ -173,6 +194,9 @@ sort_table as (
             and e.evt_block_number = tx.block_number
             and e.evt_block_date = tx.block_date
         where e.sqrtPriceX96 is not null 
+        {%- if target.name == 'ci' %}
+        and e.evt_block_time >= current_date - interval '14' day
+        {%- endif %}
     )
     
 

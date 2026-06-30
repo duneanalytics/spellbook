@@ -404,3 +404,40 @@ models:
       - name: evt_index
         data_tests:
           - not_null
+
+  - name: uniswap_v4_polygon_sqrtpricex96_latest
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: uniswap
+    config:
+      tags: ['polygon', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
+    description: >
+      Latest sqrtPriceX96 per pool among price-change events older than 7 days.
+      Deep-history seed companion for uniswap_v4_polygon_sqrtpricex96: lets the price builder avoid
+      self-scanning its full history every run to recover each pool's previous price.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - id
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+        data_tests:
+          - not_null
+      - name: id
+        description: "Pool ID"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block time of this pool's latest aged price event"
+      - name: block_number
+        description: "Block number of this pool's latest aged price event"
+      - name: evt_index
+        description: "Event index of this pool's latest aged price event"
+      - name: block_index_sum
+        description: "Monotonic block/tx/evt ordinal of the latest aged price event"
+      - name: sqrtpricex96
+        description: "Pool price (sqrtPriceX96) at the latest aged price event"

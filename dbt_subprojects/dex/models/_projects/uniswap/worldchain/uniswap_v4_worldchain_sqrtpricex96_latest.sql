@@ -1,22 +1,20 @@
 {{ config(
     schema = 'uniswap_v4_worldchain'
-    , alias = 'sqrtpricex96'
+    , alias = 'sqrtpricex96_latest'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['id', 'blockchain', 'block_index_sum']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , unique_key = ['blockchain', 'id']
     )
 }}
 
 {{
-    uniswap_compatible_v4_liquidity_sqrtpricex96(
+    uniswap_compatible_v4_sqrtpricex96_latest(
           blockchain = 'worldchain'
         , project = 'uniswap'
         , version = '4'
         , PoolManager_evt_Initialize = source('uniswap_v4_worldchain', 'PoolManager_evt_Initialize')
-        , PoolManager_evt_Swap = source('uniswap_v4_worldchain', 'PoolManager_evt_Swap') 
+        , PoolManager_evt_Swap = source('uniswap_v4_worldchain', 'PoolManager_evt_Swap')
         , transactions = source('worldchain', 'transactions')
-        , latest_relation = ref('uniswap_v4_worldchain_sqrtpricex96_latest')
     )
 }}
