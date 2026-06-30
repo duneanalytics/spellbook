@@ -17,5 +17,6 @@
         , PoolManager_evt_Initialize = source('uniswap_v4_bnb', 'PoolManager_evt_Initialize')
         , PoolManager_evt_Swap = source('uniswap_v4_bnb', 'PoolManager_evt_Swap') 
         , transactions = source('bnb', 'transactions')
+        , latest_price_relation = ref('uniswap_v4_bnb_sqrtpricex96_latest')
     )
 }}

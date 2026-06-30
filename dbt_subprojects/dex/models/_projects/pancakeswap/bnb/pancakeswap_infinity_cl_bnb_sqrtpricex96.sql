@@ -17,5 +17,6 @@
         , PoolManager_evt_Initialize = source('pancakeswap_infinity_bnb', 'clpoolmanager_evt_initialize')
         , PoolManager_evt_Swap = source('pancakeswap_infinity_bnb', 'ClPoolManager_evt_Swap') 
         , transactions = source('bnb', 'transactions')
+        , latest_price_relation = ref('pancakeswap_infinity_cl_bnb_sqrtpricex96_latest')
     )
 }}

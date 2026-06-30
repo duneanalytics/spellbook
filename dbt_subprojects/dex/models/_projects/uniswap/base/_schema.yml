@@ -171,6 +171,36 @@ models:
         name: sqrtpricex96
         description: "Pool Price"
 
+  - name: uniswap_v4_base_sqrtpricex96_latest
+    meta:
+      blockchain: base
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['base', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
+    description: >
+      Forward-filled latest settled price (sqrtPriceX96) per pool, one row per pool. Companion that
+      seeds the incremental prior-price lookup in uniswap_v4_base_sqrtpricex96 so it no longer re-scans
+      full price history every run.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - id
+    columns:
+      - *blockchain
+      - *id
+      - name: block_time
+        description: "Block time of the latest settled price event"
+      - name: block_number
+        description: "Block number of the latest settled price event"
+      - name: evt_index
+        description: "Event index of the latest settled price event"
+      - *block_index_sum
+      - *sqrtpricex96
+
   - name: uniswap_v4_base_base_liquidity_events
     meta:
       blockchain: base

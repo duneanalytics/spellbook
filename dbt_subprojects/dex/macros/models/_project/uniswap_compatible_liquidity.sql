@@ -11,8 +11,20 @@ cast({{ block_number }} as decimal(38, 0)) * decimal '1000000000000'
     , PoolManager_evt_Initialize = null
     , PoolManager_evt_Swap = null 
     , transactions = null
+    , latest_price_relation = none
     )
 %}
+
+{#
+    latest_price_relation: opt-in perf lever (default none = unchanged, byte-identical output).
+    When set to a ref() of this model's `sqrtpricex96_latest` companion, the incremental seed that
+    recovers each active pool's latest PRIOR price reads that 1-row-per-pool companion instead of
+    re-scanning ALL of {{this}} every run. The companion holds the latest SETTLED price per pool
+    (block_time < the incremental window_start), which is provably equal to the legacy full-history
+    anti-join seed (rows match, EXCEPT=0 both ways). Only worthwhile on high-activity chains where the
+    eliminated self-scan dominates the companion's maintenance cost. See macro
+    uniswap_compatible_v4_liquidity_sqrtpricex96_latest below and CUR2-2835.
+#}
 
 {% if is_incremental() %}
 
@@ -70,6 +82,7 @@ get_active_pools as ( -- get only the pools that were active on incremental run
 ),
 
 get_latest_active_pools as (
+{% if latest_price_relation is none %}
     select 
         th.id
         , 'exclude' as check_filter
@@ -94,6 +107,26 @@ get_latest_active_pools as (
     ) th 
     where base_block_index_sum is null 
     group by 1
+{% else %}
+    -- Perf (CUR2-2835): read each active pool's latest prior price from the forward-filled
+    -- companion (1 row/pool = latest SETTLED price, block_time < window_start) instead of
+    -- re-scanning all of {{this}} every run. The companion is disjoint from base_events
+    -- (settled vs in-window), so the base_events anti-join is unnecessary here. Proven equal
+    -- to the legacy full-history seed (rows match, EXCEPT=0 both ways).
+    select 
+        lp.id
+        , 'exclude' as check_filter
+        , lp.block_time
+        , lp.block_number
+        , lp.evt_index
+        , lp.block_index_sum 
+        , lp.sqrtpricex96
+    from 
+    {{ latest_price_relation }} lp 
+    inner join 
+    get_active_pools ga 
+        on lp.id = ga.id 
+{% endif %}
 
     union all 
 
@@ -189,6 +222,182 @@ sort_table as (
         , sqrtpricex96
     from 
     get_events 
+
+{% endif %}
+
+{% endmacro %}
+
+{% macro uniswap_compatible_v4_liquidity_sqrtpricex96_latest(
+    blockchain = null
+    , project = 'uniswap'
+    , version = '4'
+    , PoolManager_evt_Initialize = null
+    , PoolManager_evt_Swap = null
+    , transactions = null
+    , settled_lookback_days = 7
+    , apply_ci_floor = true
+    )
+%}
+
+{#
+    Forward-filled "latest SETTLED price per pool" companion for the sqrtpricex96 builder
+    (uniswap_compatible_v4_liquidity_sqrtpricex96). Holds exactly one row per (id, blockchain): the
+    price row with the greatest block_index_sum among rows whose block_time is < the builder's
+    incremental window_start (i.e. already SETTLED out of the builder's re-merge window). The builder
+    reads this 1-row-per-pool table to seed each active pool's previous_block_index_sum instead of
+    re-scanning all of {{this}}. CUR2-2835.
+
+    Maintenance (incremental, merge on [id, blockchain]):
+      - self-carry: the companion's own current row per pool, so pools not touched this run are
+        retained -- including pools dormant arbitrarily far back. This is what makes a NARROW source
+        slice safe (the deep history never has to be re-read).
+      - source fold: events that have NEWLY settled since the last run -- a bounded lagged slice
+        [now - settled_lookback_days, window_start). block_index_sum is monotone in block_number, so
+        max_by/max over (self-carry UNION lagged slice) is idempotent under overlap and only needs to
+        catch each settling row once. settled_lookback_days only needs to exceed the longest expected
+        gap between companion runs (outage tolerance); the self-carry covers all older history.
+
+    First build (table absent): latest settled price per pool over ALL source history (full
+    transactions join). This is heavy; in CI it is bounded by the 30-day floor below. In prod, prefer
+    pre-seeding this table ONCE from the existing builder output (it already stores block_index_sum)
+    to skip the full-history transactions join -- see the companion model file's backfill note.
+#}
+
+{%- set time_unit = var('DBT_ENV_INCREMENTAL_TIME_UNIT') -%}
+{%- set window_start = "date_trunc('" ~ time_unit ~ "', now() - interval '" ~ var('DBT_ENV_INCREMENTAL_TIME') ~ "' " ~ time_unit ~ ")" -%}
+{%- set settled_floor = "date_trunc('" ~ time_unit ~ "', now() - interval '" ~ settled_lookback_days ~ "' " ~ time_unit ~ ")" -%}
+
+{% if is_incremental() %}
+
+with
+
+source_settled as ( -- events that newly settled since the last run (bounded lagged slice)
+    select
+        e.id
+        , e.evt_block_time as block_time
+        , e.evt_block_number as block_number
+        , e.evt_index
+        , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
+        , e.sqrtpricex96
+    from
+    {{ PoolManager_evt_Initialize }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
+        and tx.block_time >= {{ settled_floor }}
+        and tx.block_time < {{ window_start }}
+    where e.sqrtPriceX96 is not null
+    and e.evt_block_time >= {{ settled_floor }}
+    and e.evt_block_time < {{ window_start }}
+
+    union all
+
+    select
+        e.id
+        , e.evt_block_time as block_time
+        , e.evt_block_number as block_number
+        , e.evt_index
+        , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
+        , e.sqrtpricex96
+    from
+    {{ PoolManager_evt_Swap }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
+        and tx.block_time >= {{ settled_floor }}
+        and tx.block_time < {{ window_start }}
+    where e.sqrtPriceX96 is not null
+    and e.evt_block_time >= {{ settled_floor }}
+    and e.evt_block_time < {{ window_start }}
+),
+
+self_carry as ( -- retain every pool's current latest, incl. ones not in this run's slice
+    select
+        id
+        , block_time
+        , block_number
+        , evt_index
+        , block_index_sum
+        , sqrtpricex96
+    from
+    {{ this }}
+),
+
+unioned as (
+    select * from source_settled
+    union all
+    select * from self_carry
+)
+
+select
+    '{{ blockchain }}' as blockchain
+    , id
+    , max_by(block_time, block_index_sum) as block_time
+    , max_by(block_number, block_index_sum) as block_number
+    , max_by(evt_index, block_index_sum) as evt_index
+    , max(block_index_sum) as block_index_sum
+    , max_by(sqrtpricex96, block_index_sum) as sqrtpricex96
+from
+unioned
+group by id
+
+{% else %}
+
+with
+
+all_events as ( -- first build: latest settled price per pool over ALL history (CI: last 30d only)
+    select
+        e.id
+        , e.evt_block_time as block_time
+        , e.evt_block_number as block_number
+        , e.evt_index
+        , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
+        , e.sqrtpricex96
+    from
+    {{ PoolManager_evt_Initialize }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
+    where e.sqrtPriceX96 is not null
+    {% if target.name == 'ci' and apply_ci_floor %}and e.evt_block_time >= date_trunc('day', now() - interval '30' day){% endif %}
+
+    union all
+
+    select
+        e.id
+        , e.evt_block_time as block_time
+        , e.evt_block_number as block_number
+        , e.evt_index
+        , {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
+        , e.sqrtpricex96
+    from
+    {{ PoolManager_evt_Swap }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
+    where e.sqrtPriceX96 is not null
+    {% if target.name == 'ci' and apply_ci_floor %}and e.evt_block_time >= date_trunc('day', now() - interval '30' day){% endif %}
+)
+
+select
+    '{{ blockchain }}' as blockchain
+    , id
+    , max_by(block_time, block_index_sum) as block_time
+    , max_by(block_number, block_index_sum) as block_number
+    , max_by(evt_index, block_index_sum) as evt_index
+    , max(block_index_sum) as block_index_sum
+    , max_by(sqrtpricex96, block_index_sum) as sqrtpricex96
+from
+all_events
+group by id
 
 {% endif %}
 
