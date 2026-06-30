@@ -75,8 +75,11 @@ SELECT
   cast(date_trunc('day', evt_block_time) AS date) AS date_start,
   MAX(cast(date_trunc('month', evt_block_time) AS date)) AS date_month,
   SUM(ccip_send_requested.fee_token_amount) as fee_amount,
-  ccip_send_requested.token as token,
-  ccip_send_requested.destination_blockchain AS destination_blockchain,
+  -- coalesce nullable unique_key columns: destination_blockchain is unmapped (always NULL) and
+  -- token is NULL for unmapped fee tokens; a NULL merge key makes the incremental MERGE silently
+  -- double-insert (Trino NULL != NULL), so non-null sentinels keep the key dedup-safe.
+  coalesce(ccip_send_requested.token, 'unknown') as token,
+  coalesce(ccip_send_requested.destination_blockchain, 'unknown') AS destination_blockchain,
   COUNT(ccip_send_requested.destination_blockchain) AS count
 FROM
   ccip_send_requested
