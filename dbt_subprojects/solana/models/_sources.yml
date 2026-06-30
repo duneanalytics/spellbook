@@ -46,11 +46,15 @@ sources:
     schema: pumpdotfun_solana
     tables:
       - name: pump_amm_call_buy
+        config:
+          event_time: call_block_date
       - name: pump_amm_call_sell
       - name: pump_amm_call_create_pool
       - name: pump_amm_call_create_config
       - name: pump_amm_call_update_fee_config
       - name: pump_amm_evt_buyevent
+        config:
+          event_time: evt_block_date
 
   - name: raydium_solana
     description: "Raydium protocol decoded tables"
