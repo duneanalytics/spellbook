@@ -39,6 +39,7 @@
 
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'stablecoins',
     alias = 'transfers',
     materialized = 'view',

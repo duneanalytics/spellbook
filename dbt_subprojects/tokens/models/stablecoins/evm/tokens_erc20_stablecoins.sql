@@ -42,7 +42,7 @@
     schema = 'tokens',
     alias = 'erc20_stablecoins',
     materialized = 'view',
-    tags = ['static'],
+    tags = ['prod_exclude', 'static'],
     post_hook = '{{ hide_spells() }}'
   )
 }}
