@@ -1,22 +1,20 @@
 {{ config(
     schema = 'uniswap_v4_unichain'
-    , alias = 'sqrtpricex96'
+    , alias = 'sqrtpricex96_monthly'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['id', 'blockchain', 'block_index_sum']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , unique_key = ['blockchain', 'id', 'block_month']
     )
 }}
 
 {{
-    uniswap_compatible_v4_liquidity_sqrtpricex96(
+    uniswap_compatible_v4_sqrtpricex96_monthly(
           blockchain = 'unichain'
         , project = 'uniswap'
         , version = '4'
         , PoolManager_evt_Initialize = source('uniswap_v4_unichain', 'PoolManager_evt_Initialize')
-        , PoolManager_evt_Swap = source('uniswap_v4_unichain', 'PoolManager_evt_Swap') 
+        , PoolManager_evt_Swap = source('uniswap_v4_unichain', 'PoolManager_evt_Swap')
         , transactions = source('unichain', 'transactions')
-        , monthly_relation = ref('uniswap_v4_unichain_sqrtpricex96_monthly')
     )
 }}

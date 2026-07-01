@@ -4,6 +4,16 @@ cast({{ block_number }} as decimal(38, 0)) * decimal '1000000000000'
     + cast({{ evt_index }} as decimal(38, 0))
 {%- endmacro %}
 
+{#-
+    Lower bound of this subproject's incremental reload window: the same expression
+    incremental_predicate() compares against, so a model can anchor seed / lookback
+    bounds to the data window rather than to now(). Keeping seed bounds window-relative
+    (not now()-anchored) is what makes arbitrary-window / adhoc builds reproducible.
+-#}
+{% macro uniswap_compatible_v4_window_start() -%}
+date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }})
+{%- endmacro %}
+
 {% macro uniswap_compatible_v4_liquidity_sqrtpricex96(
     blockchain = null
     , project = 'uniswap'
@@ -11,12 +21,15 @@ cast({{ block_number }} as decimal(38, 0)) * decimal '1000000000000'
     , PoolManager_evt_Initialize = null
     , PoolManager_evt_Swap = null 
     , transactions = null
+    , monthly_relation = none
     )
 %}
 
 {% if is_incremental() %}
 
 -- force price reload
+
+{%- set window_start = uniswap_compatible_v4_window_start() %}
 
 with
 
@@ -83,7 +96,33 @@ get_latest_active_pools as (
             th.*,
             be.block_index_sum as base_block_index_sum
         from 
+        {%- if monthly_relation is none %}
         {{this}} th 
+        {%- else %}
+        -- Seed each active pool's previous price from the latest event strictly before
+        -- the reload window, WITHOUT self-scanning full history:
+        --   * complete prior months come from the sparse monthly-latest rollup
+        --     ({{ monthly_relation }}, one row per pool per active month), and
+        --   * the current partial month [month(window_start), window_start) comes from a
+        --     bounded {{this}} re-read.
+        -- window_start is this model's own incremental window lower bound, so the seed
+        -- (< window_start) and base_events (>= window_start) partition the timeline
+        -- disjointly and the max_by-per-pool below collapses to exactly one latest-prior
+        -- row per active pool. Anchoring on the data window (not now()) keeps
+        -- arbitrary-window / adhoc builds reproducible.
+        (
+            select id, block_time, block_number, evt_index, block_index_sum, sqrtpricex96
+            from {{ monthly_relation }}
+            where block_month < cast(date_trunc('month', {{ window_start }}) as date)
+
+            union all
+
+            select id, block_time, block_number, evt_index, block_index_sum, sqrtpricex96
+            from {{this}}
+            where block_time >= date_trunc('month', {{ window_start }})
+            and block_time < {{ window_start }}
+        ) th 
+        {%- endif %}
         inner join 
         get_active_pools ga 
             on th.id = ga.id 
@@ -155,6 +194,9 @@ sort_table as (
             and e.evt_block_number = tx.block_number
             and e.evt_block_date = tx.block_date
         where e.sqrtPriceX96 is not null 
+        {%- if target.name == 'ci' %}
+        and e.evt_block_time >= current_date - interval '14' day
+        {%- endif %}
 
         union all 
 
@@ -173,6 +215,9 @@ sort_table as (
             and e.evt_block_number = tx.block_number
             and e.evt_block_date = tx.block_date
         where e.sqrtPriceX96 is not null 
+        {%- if target.name == 'ci' %}
+        and e.evt_block_time >= current_date - interval '14' day
+        {%- endif %}
     )
     
 
