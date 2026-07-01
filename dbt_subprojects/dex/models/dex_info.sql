@@ -23,6 +23,7 @@ FROM (VALUES
     , ('bancor_network', 'Bancor', 'Direct', 'Bancor') -- To Fix, should be just bancor
     , ('bancor', 'Bancor', 'Direct', 'Bancor')
     , ('ellipsis_finance', 'Ellipsis', 'Direct', 'Ellipsisfi')
+    , ('lista_smartswap', 'Lista SmartSwap', 'Direct', 'lista_dao')
     , ('babyswap', 'BabySwap', 'Direct', 'babyswap_bsc')
     , ('apeswap', 'ApeSwap', 'Direct', 'ape_swap')
     , ('shibaswap', 'ShibaSwap', 'Direct', 'ShibaSwapDEX')
@@ -69,6 +70,7 @@ FROM (VALUES
     , ('1inch-LOP', '1inch Limit Order Protocol', 'Aggregator', '1inch')
     , ('zeroex', '0x', 'Aggregator', '0xProject')
     , ('0x-API', '0x API', 'Aggregator', '0xProject')
+    , ('0x API', '0x API Settler', 'Direct & Aggregator', '0xProject') -- 0x Settler RFQ PMM venue (version 'settler')
     , ('paraswap', 'ParaSwap', 'Aggregator', 'paraswap')
     , ('cow_protocol', 'CoW Swap', 'Aggregator', 'CoWSwap')
     , ('openocean', 'OpenOcean', 'Aggregator', 'OpenOceanGlobal')

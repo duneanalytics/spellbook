@@ -22,6 +22,8 @@
     , ref('pancakeswap_v2_monad_base_trades')
     , ref('pancakeswap_v3_monad_base_trades')
     , ref('balancer_v3_monad_base_trades')
+    , ref('curve_monad_base_trades')
+    , ref('zeroex_settler_monad_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

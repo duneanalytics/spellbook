@@ -7,6 +7,7 @@
     , PoolManager_call_ModifyLiquidity = null
     , liquidity_pools = null
     , liquidity_sqrtpricex96 = null
+    , transactions = null
     )
 %}
 
@@ -24,13 +25,19 @@ get_pools as (
 
 get_events as (
     select 
-        *,
-        evt_block_number + evt_index/1e6 as block_index_sum
+        e.*,
+        {{ uniswap_compatible_v4_block_index_sum('e.evt_block_number', 'coalesce(e.evt_tx_index, tx.index)', 'e.evt_index') }} as block_index_sum
 
     from 
-    {{ PoolManager_evt_ModifyLiquidity }}
+    {{ PoolManager_evt_ModifyLiquidity }} e
+    left join {{ transactions }} tx
+        on e.evt_tx_index is null
+        and e.evt_tx_hash = tx.hash
+        and e.evt_block_number = tx.block_number
+        and e.evt_block_date = tx.block_date
     {%- if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
+        and {{ incremental_predicate('tx.block_time') }}
+    where {{ incremental_predicate('e.evt_block_time') }}
     {%- endif %}
 ),
 
@@ -192,6 +199,7 @@ modify_liquidity_events as (
             evt_block_number,
             evt_block_date,
             evt_index,
+            block_index_sum,
             id,                -- pool id lives here
             sender,            -- caller/sender (useful metadata)
             tickLower,
@@ -211,7 +219,7 @@ modify_liquidity_events as (
             , e.evt_block_number as block_number 
             , e.evt_tx_hash as tx_hash
             , e.evt_index
-            , e.evt_block_number + e.evt_index/1e6 as block_index_sum
+            , e.block_index_sum
             , 'modify_liquidity' as event_type 
             , cd.currency0 as token0 
             , cd.currency1 as token1
@@ -289,6 +297,9 @@ swap_fees_paid as (
 ),
 
 liquidity_change_base as (
+    -- scan modify_liquidity_events once and fan out the modify_liquidity and
+    -- fees_accrued rows via UNNEST; referencing the CTE twice inlines into a
+    -- second full pass over sqrtpricex96 (8x), the ModifyLiquidity event, and the call decode
     select 
         ml.id
         , ml.tx_from 
@@ -296,11 +307,11 @@ liquidity_change_base as (
         , ml.block_number 
         , ml.tx_hash 
         , ml.evt_index 
-        , ml.event_type 
+        , u.event_type 
         , ml.token0 
         , ml.token1 
-        , ml.amount0
-        , ml.amount1
+        , u.amount0
+        , u.amount1
         , ml.liquidityDelta
         , ml.sqrtPriceX96
         , ml.tickLower
@@ -308,29 +319,11 @@ liquidity_change_base as (
         , ml.salt
     from 
     modify_liquidity_events ml 
-
-    union all 
-
-    select 
-        ml.id
-        , ml.tx_from 
-        , ml.block_time
-        , ml.block_number 
-        , ml.tx_hash 
-        , ml.evt_index 
-        , 'fees_accrued' as event_type
-        , ml.token0 
-        , ml.token1 
-        , ml.fee_amount0 
-        , ml.fee_amount1 
-        , ml.liquidityDelta
-        , ml.sqrtPriceX96
-        , ml.tickLower
-        , ml.tickUpper
-        , ml.salt
-    from 
-    modify_liquidity_events ml 
-    where not (fee_amount0 = 0 and fee_amount1 = 0) -- remove events with zero fees 
+    cross join unnest(array[
+        row(cast(ml.event_type as varchar), ml.amount0, ml.amount1)
+        , row(cast('fees_accrued' as varchar), ml.fee_amount0, ml.fee_amount1)
+    ]) as u(event_type, amount0, amount1)
+    where not (u.event_type = 'fees_accrued' and ml.fee_amount0 = 0 and ml.fee_amount1 = 0) -- remove fees_accrued events with zero fees 
 
     union all 
 

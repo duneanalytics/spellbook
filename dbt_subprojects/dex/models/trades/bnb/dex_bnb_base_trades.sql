@@ -40,6 +40,7 @@
     , ref('xchange_bnb_base_trades')
     , ref('thena_bnb_base_trades')
     , ref('ellipsis_finance_bnb_base_trades')
+    , ref('lista_smartswap_bnb_base_trades')
     , ref('onepunchswap_bnb_base_trades')
     , ref('woofi_bnb_base_trades')
     , ref('hashflow_bnb_base_trades')
@@ -49,6 +50,7 @@
     , ref('eulerswap_bnb_base_trades')
     , ref('zeroex_bnb_base_trades')
     , ref('tessera_v_bnb_base_trades')
+    , ref('zeroex_settler_bnb_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

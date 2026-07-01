@@ -69,3 +69,25 @@ models:
               - blockchain
               - token_address
               - block_date
+
+  - name: zeroex_settler_worldchain_base_trades
+    meta:
+      blockchain: worldchain
+      sector: dex
+      project: 0x API
+    config:
+      tags: ["worldchain", "dex", "trades", "zeroex", "settler"]
+    description: "0x Settler plain-RFQ (action 0xd92aadfb) PMM base trades on worldchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null

@@ -20,6 +20,7 @@
     , ref('uniswap_v3_mantle_base_trades')
     , ref('tropicalswap_mantle_base_trades')
     , ref('carbon_defi_mantle_base_trades')
+    , ref('zeroex_settler_mantle_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

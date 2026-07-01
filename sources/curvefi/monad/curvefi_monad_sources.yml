@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: curvefi_monad
+    description: "decoded events and function calls for curve.fi on Monad"
+    tables:
+      - name: stableswapfactory_evt_plainpooldeployed

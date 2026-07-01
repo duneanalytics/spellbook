@@ -84,7 +84,7 @@ with
     FROM
       {{source('prices','usd')}} p
     WHERE
-      DATE_TRUNC('day', minute) = current_date
+      minute >= current_date and minute < current_date + interval '1' day
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens      )
   ),

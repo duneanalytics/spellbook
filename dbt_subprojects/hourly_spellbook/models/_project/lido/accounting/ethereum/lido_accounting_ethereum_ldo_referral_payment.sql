@@ -2,8 +2,9 @@
         schema='lido_accounting_ethereum',
         alias = 'ldo_referral_payment',
 
-        materialized = 'table',
-        file_format = 'delta'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'append'
         , post_hook='{{ hide_spells() }}'
         )
 }}
@@ -62,6 +63,9 @@ ldo_referral_payment_txns AS ( --only LDO referral program, need to add DAI refe
     AND _to IN (
         SELECT address FROM ldo_referral_payments_addr
     )
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
     ORDER BY evt_block_time
 
 )
@@ -70,6 +74,19 @@ ldo_referral_payment_txns AS ( --only LDO referral program, need to add DAI refe
             evt_tx_hash,
             contract_address AS token,
             amnt AS amount_token
-    FROM ldo_referral_payment_txns
+    FROM ldo_referral_payment_txns l
     WHERE amnt != 0
+    {% if is_incremental() %}
+    -- append-only dedup: drop rows already inserted by a previous run inside the
+    -- incremental window (no event index in the output, so a merge unique_key would
+    -- collapse legitimately duplicated transfers within one tx)
+    AND not exists (
+        select 1
+        from {{ this }} t
+        where t.period = l.evt_block_time
+          and t.evt_tx_hash = l.evt_tx_hash
+          and t.token = l.contract_address
+          and t.amount_token = l.amnt
+    )
+    {% endif %}
 

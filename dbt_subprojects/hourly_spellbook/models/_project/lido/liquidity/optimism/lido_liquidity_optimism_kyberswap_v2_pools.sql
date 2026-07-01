@@ -62,7 +62,7 @@ select 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }} p
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'optimism'
     and contract_address in (select address from tokens where address not in (0x9cfb13e6c11054ac9fcb92ba89644f30775436e4))
 
@@ -92,7 +92,7 @@ select 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{ source('prices', 'usd') }} p
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'optimism'
     and contract_address in (0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb)
 

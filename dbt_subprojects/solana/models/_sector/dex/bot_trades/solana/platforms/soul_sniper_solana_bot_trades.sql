@@ -70,14 +70,6 @@ with
         where
             trades.trader_id != '{{fee_receiver}}'  -- Exclude trades signed by FeeWallet
             and transactions.signer != '{{fee_receiver}}'  -- Exclude trades signed by FeeWallet
-    ),
-    highest_inner_instruction_index_for_each_trade as (
-        select
-            tx_id,
-            outer_instruction_index,
-            max(inner_instruction_index) as highest_inner_instruction_index
-        from bot_trades
-        group by tx_id, outer_instruction_index
     )
 select
     block_time,
@@ -107,16 +99,9 @@ select
     bot_trades.outer_instruction_index,
     coalesce(inner_instruction_index, 0) as inner_instruction_index,
     if(
-        inner_instruction_index = highest_inner_instruction_index, true, false
+        inner_instruction_index = max(inner_instruction_index) over (partition by tx_id, outer_instruction_index), true, false
     ) as is_last_trade_in_transaction
 from bot_trades
-join
-    highest_inner_instruction_index_for_each_trade
-    on (
-        bot_trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
-        and bot_trades.outer_instruction_index
-        = highest_inner_instruction_index_for_each_trade.outer_instruction_index
-    )
 order by
     block_time desc,
     tx_index desc,

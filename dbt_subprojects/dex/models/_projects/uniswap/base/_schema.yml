@@ -375,3 +375,62 @@ models:
               - block_month
               - tx_hash
               - evt_index
+
+  - name: uniswap_v4_base_swaps
+    meta:
+      blockchain: base
+      sector: dex
+      project: uniswap
+      contributors: thevaizman
+    config:
+      tags: ['base', 'dex', 'trades', 'uniswap', 'v4']
+    description: >
+      All Uniswap V4 swaps on base, decoded from the PoolManager swap calls. Swaps on
+      BaseAggregatorHook pools (which route the swap to an external DEX) are flagged via
+      is_aggregator_hook_swap. Feeds the venue-side uniswap_v4_base.base_trades view
+      (dex.trades) and uniswap_v4_base_aggregator_base_trades (dex_aggregator.trades).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: uniswap_v4_base_aggregator_base_trades
+    meta:
+      blockchain: base
+      sector: dex_aggregator
+      project: uniswap
+      contributors: thevaizman
+    config:
+      tags: ['base', 'dex_aggregator', 'trades', 'uniswap', 'v4']
+    description: >
+      Uniswap V4 swaps on base executed on BaseAggregatorHook pools. The hook holds no V4
+      liquidity and routes the entire swap to an external DEX, so these rows are recorded as
+      aggregator trades (project uniswap, version 4) in dex_aggregator.trades instead of
+      dex.trades, where they would double-count the backing venue's row.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_aggregator_seed:
+          arguments:
+            blockchain: base
+            project: uniswap
+            version: 4
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null

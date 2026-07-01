@@ -19,5 +19,6 @@
         , liquidity_pools = ref('pancakeswap_infinity_cl_bnb_pools')
         , liquidity_sqrtpricex96 = ref('pancakeswap_infinity_cl_bnb_sqrtpricex96')
         , PoolManager_call_ModifyLiquidity = source ('pancakeswap_infinity_bnb', 'clpoolmanager_call_modifyliquidity')
+        , transactions = source('bnb', 'transactions')
     )
 }}

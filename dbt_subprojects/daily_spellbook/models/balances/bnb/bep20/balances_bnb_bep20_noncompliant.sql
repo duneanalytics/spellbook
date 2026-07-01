@@ -6,8 +6,9 @@
         )
 }}
 
-SELECT  
-    DISTINCT token_address
-FROM 
-{{ ref('transfers_bnb_bep20_rolling_day') }}
-WHERE round(amount/power(10, 18), 6) < -0.001
+{{
+    balances_fungible_noncompliant(
+        transfers_agg_day = ref('transfers_bnb_bep20_agg_day'),
+        day_column = 'day'
+    )
+}}

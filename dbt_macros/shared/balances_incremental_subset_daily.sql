@@ -19,7 +19,10 @@
         start_date,
         address_list = none,
         token_list = none,
-        address_token_list = none
+        address_token_list = none,
+        self_seed_relation = none,
+        self_seed_lookback_days = 21,
+        apply_ci_floor = true
     )
 %}
 
@@ -60,6 +63,11 @@ filtered_daily_agg_balances as (
         AND erc20_tokens.contract_address = b.token_address
         AND b.token_standard = 'erc20'
     where day >= cast('{{start_date}}' as date)
+    {% if target.name == 'ci' and apply_ci_floor %}
+    -- bound the CI full-refresh build so it completes under the 90-min timeout and the regression test runs; inert in prod.
+    -- callers with a check_seed test over fixed historical dates (e.g. swell) must set apply_ci_floor=false so the seeded days build.
+    and day >= cast(date_trunc('day', current_date - interval '30' day) as date)
+    {% endif %}
 
 )
 ,changed_balances as (
@@ -96,9 +104,42 @@ filtered_daily_agg_balances as (
             ,token_standard
             ,token_id
             ,max_by(balance, day) as balance
-        from filtered_daily_agg_balances
-        where day >= cast('{{start_date}}' as date)
-        and not {{ incremental_predicate('day') }}
+        from (
+            {% if self_seed_relation is none %}
+            -- legacy: re-derive the prior state from all pre-window source history
+            select
+                blockchain, day, address, token_symbol, token_address, token_standard, token_id, balance
+            from filtered_daily_agg_balances
+            where day >= cast('{{start_date}}' as date)
+            and not {{ incremental_predicate('day') }}
+            {% else %}
+            -- bounded-lookback hybrid: re-read only the recent pre-window source so late-arriving /
+            -- restated balances within the lookback are still self-corrected (these rows carry the
+            -- CURRENT token metadata via filtered_daily_agg_balances) ...
+            select
+                blockchain, day, address, token_symbol, token_address, token_standard, token_id, balance
+            from filtered_daily_agg_balances
+            where not {{ incremental_predicate('day') }}
+            and day >= cast(date_trunc('day', now() - interval '{{ self_seed_lookback_days }}' day) as date)
+            union all
+            -- ... and carry deep (settled) history forward from the model's own latest pre-window
+            -- partition instead of re-scanning the full source history every run. The partition is
+            -- anchored strictly before the incremental window (`not incremental_predicate(day)` in
+            -- addition to the lookback floor) so a wider repair/backfill where the incremental window
+            -- exceeds the lookback can never overlap the in-window source branch above (which would
+            -- duplicate a key/day). NB: these carried rows reuse the balance/token_symbol stored when
+            -- they were last written; a token-metadata/decimals correction for a position untouched
+            -- for >lookback days is only reflected after it next changes or a --full-refresh.
+            select
+                blockchain, last_updated as day, address, token_symbol, token_address, token_standard, token_id, balance
+            from {{ self_seed_relation }}
+            where day = (
+                select max(day) from {{ self_seed_relation }}
+                where day < cast(date_trunc('day', now() - interval '{{ self_seed_lookback_days }}' day) as date)
+                and not {{ incremental_predicate('day') }}
+            )
+            {% endif %}
+        )
         group by 1,3,4,5,6,7
         )
     {% endif %}

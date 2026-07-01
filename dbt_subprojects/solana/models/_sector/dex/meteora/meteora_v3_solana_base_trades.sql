@@ -13,7 +13,11 @@
   ) 
 }}
 
-with swap_calls_raw as
+with excluded_mints as (
+  select token_mint_address
+  from {{ ref('meteora_v3_solana_excluded_mints') }}
+),
+swap_calls_raw as
 (
   select 
       call_block_time as block_time
@@ -191,4 +195,14 @@ swaps_data as (
       and sd.rn=evt.rn
   )
 )
-select * from swaps_data 
+select
+  *
+from swaps_data
+where not exists (
+  select 1
+  from excluded_mints
+  where token_mint_address in (
+    swaps_data.token_bought_mint_address
+    , swaps_data.token_sold_mint_address
+  )
+)

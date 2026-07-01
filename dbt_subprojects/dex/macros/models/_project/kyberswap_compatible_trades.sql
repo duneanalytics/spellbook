@@ -14,10 +14,10 @@ WITH dexs AS
             t.evt_block_time AS block_time,
             t.sender AS taker,
             t.recipient AS maker,
-            cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty1), abs(t.deltaQty0)) as uint256) AS token_bought_amount_raw,
-            cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), abs(t.deltaQty1)) as uint256) AS token_sold_amount_raw,
-            if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0) AS token_bought_address,
-            if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1) AS token_sold_address,
+            cast(CASE WHEN t.deltaQty0 < INT256 '0' THEN abs(t.deltaQty0) ELSE abs(t.deltaQty1) END as uint256) AS token_bought_amount_raw, -- when deltaQty0 is negative it means the taker is buying token0 from the pool
+            cast(CASE WHEN t.deltaQty0 < INT256 '0' THEN abs(t.deltaQty1) ELSE abs(t.deltaQty0) END as uint256) AS token_sold_amount_raw,
+            CASE WHEN t.deltaQty0 < INT256 '0' THEN p.token0 ELSE p.token1 END AS token_bought_address,
+            CASE WHEN t.deltaQty0 < INT256 '0' THEN p.token1 ELSE p.token0 END AS token_sold_address,
             t.contract_address AS project_contract_address,
             t.evt_tx_hash AS tx_hash,
             t.evt_index

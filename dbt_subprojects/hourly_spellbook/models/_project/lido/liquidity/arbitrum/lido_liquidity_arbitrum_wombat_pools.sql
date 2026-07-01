@@ -43,7 +43,7 @@ tokens_prices_daily AS (
       LAST_VALUE(price) OVER (PARTITION BY  DATE_TRUNC('day', minute), contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
     FROM {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = DATE_TRUNC('day', now())
+      minute >= current_date and minute < current_date + interval '1' day
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
   )
