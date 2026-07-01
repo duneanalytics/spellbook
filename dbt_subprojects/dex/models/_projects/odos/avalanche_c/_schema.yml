@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: odos_avalanche_c_trades
+  - name: odos_v2_avalanche_c_trades
     meta:
       blockchain: avalanche_c
       sector: dex
       project: odos
       contributors: Henrystats
     config:
-      tags: ['avalanche_c','trades', 'dfx','dex']
+      tags: ['avalanche_c','trades', 'odos','dex']
     description: >
-        odos aggregator trades on avalanche_c
+        A table containing all trades of odos v2 on avalanche_c
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -26,17 +26,20 @@ models:
           arguments:
             blockchain: avalanche_c
             project: odos
-            version: 1
+            version: 2
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -91,9 +94,92 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: ""
+      - &trace_address
+        name: trace_address
+        description: ""
+
+  - name: odos_v1_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: odos
+      contributors: Henrystats
+    config:
+      tags: ['avalanche_c','trades', 'odos','dex']
+    description: >
+        A table containing all trades of odos v1 on avalanche_c
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *trace_address
+
+  - name: odos_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: odos
+      contributors: Henrystats
+    config:
+      tags: ['avalanche_c','trades', 'odos','dex']
+    description: >
+        A table containing all trades of odos on avalanche_c.
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *trace_address

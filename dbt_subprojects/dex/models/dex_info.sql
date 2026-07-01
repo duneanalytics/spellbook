@@ -101,6 +101,8 @@ FROM (VALUES
     , ('solidlizard', 'SolidLizard', 'Direct', 'solidlizardfi')
     , ('pharaoh', 'Pharaoh', 'Direct', 'PharaohExchange')
     , ('ramses', 'Ramses', 'Direct', 'ramses')
+    , ('ramsesxyz', 'Ramses', 'Direct', 'ramses')
+    , ('nest', 'Nest', 'Direct', 'NestExchange')
     , ('scale', 'Scale', 'Direct', 'scale')
     , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
     , ('oasisswap', 'OasisSwap', 'Direct', 'OasisSwapDEX')
