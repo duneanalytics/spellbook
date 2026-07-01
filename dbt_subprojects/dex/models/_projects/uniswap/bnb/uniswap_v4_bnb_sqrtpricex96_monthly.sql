@@ -1,15 +1,15 @@
 {{ config(
     schema = 'uniswap_v4_bnb'
-    , alias = 'sqrtpricex96_latest'
+    , alias = 'sqrtpricex96_monthly'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'id']
+    , unique_key = ['blockchain', 'id', 'block_month']
     )
 }}
 
 {{
-    uniswap_compatible_v4_sqrtpricex96_latest(
+    uniswap_compatible_v4_sqrtpricex96_monthly(
           blockchain = 'bnb'
         , project = 'uniswap'
         , version = '4'

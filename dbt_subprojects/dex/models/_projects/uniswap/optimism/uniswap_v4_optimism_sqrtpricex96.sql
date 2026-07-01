@@ -17,6 +17,6 @@
         , PoolManager_evt_Initialize = source('uniswap_v4_optimism', 'PoolManager_evt_Initialize')
         , PoolManager_evt_Swap = source('uniswap_v4_optimism', 'PoolManager_evt_Swap') 
         , transactions = source('optimism', 'transactions')
-        , latest_relation = ref('uniswap_v4_optimism_sqrtpricex96_latest')
+        , monthly_relation = ref('uniswap_v4_optimism_sqrtpricex96_monthly')
     )
 }}

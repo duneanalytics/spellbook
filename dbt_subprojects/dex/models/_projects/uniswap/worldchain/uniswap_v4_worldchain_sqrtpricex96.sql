@@ -17,6 +17,6 @@
         , PoolManager_evt_Initialize = source('uniswap_v4_worldchain', 'PoolManager_evt_Initialize')
         , PoolManager_evt_Swap = source('uniswap_v4_worldchain', 'PoolManager_evt_Swap') 
         , transactions = source('worldchain', 'transactions')
-        , latest_relation = ref('uniswap_v4_worldchain_sqrtpricex96_latest')
+        , monthly_relation = ref('uniswap_v4_worldchain_sqrtpricex96_monthly')
     )
 }}

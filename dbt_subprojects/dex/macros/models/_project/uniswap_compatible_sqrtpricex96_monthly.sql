@@ -1,35 +1,39 @@
 {#
-    Deep-history seed companion for uniswap_compatible_v4_liquidity_sqrtpricex96.
+    Sparse monthly-latest rollup companion for uniswap_compatible_v4_liquidity_sqrtpricex96.
 
-    Maintains, per pool id, the latest sqrtPriceX96 price-change row among events
-    that are OLDER than `aged_days` (the "deep tail"). The price builder reads this
-    tiny table (~one row per pool) instead of self-scanning all of its own history
-    to recover each active pool's previous price.
+    Emits, per (pool id, calendar month), the latest sqrtPriceX96 price-change event in
+    that month (max_by over block_index_sum). One row per pool per ACTIVE month -- sparse
+    and event-grain, NOT forward-filled: a pool appears only for months in which it had at
+    least one price event.
 
-    Why aged-only: the builder seeds previous_block_index_sum from the latest price
-    strictly BEFORE its reload window. A pool active now can have its previous price
-    arbitrarily far back (sqrtpricex96 is sparse/event-grain, not a forward-filled
-    snapshot), so a bounded {{this}} re-read alone would drop the seed for
-    dormant-then-active pools. This companion holds that deep tail; the builder
-    unions it with a bounded recent {{this}} re-read. The companion never holds a
-    reload-window row (aged_days > the model's reload window), so it composes with
-    the builder's anti-join without double-counting.
+    The price builder reads this instead of self-scanning all of its own history to recover
+    each active pool's previous price. For an incremental window it seeds each active pool
+    from the latest month strictly before the window (this rollup) unioned with the current
+    partial month (a bounded self-read). See uniswap_compatible_v4_liquidity_sqrtpricex96.
+
+    Idempotency: the merge key is (blockchain, id, block_month) and the incremental reload
+    window is the most-recent slice of time, so a pool's window-latest event IS its
+    month-latest event. A forward-moving window converges each month's row to that month's
+    true latest and then leaves it frozen, so arbitrary-window / adhoc builds are
+    reproducible -- unlike a now()-anchored full-history "latest per pool" snapshot, which
+    silently drops seeds for pools last active before the reload window.
+
+    Built from the raw event sources (not from the price builder's own output) so the two
+    models do not form a dbt ref cycle.
 #}
-{% macro uniswap_compatible_v4_sqrtpricex96_latest(
+{% macro uniswap_compatible_v4_sqrtpricex96_monthly(
     blockchain = null
     , project = 'uniswap'
     , version = '4'
     , PoolManager_evt_Initialize = null
     , PoolManager_evt_Swap = null
     , transactions = null
-    , aged_days = 7
-    , ingest_lookback_days = 10
     )
 %}
 
 with
 
-aged_events as (
+month_events as (
     select
         e.id
         , e.evt_block_time as block_time
@@ -43,14 +47,12 @@ aged_events as (
         and e.evt_tx_hash = tx.hash
         and e.evt_block_number = tx.block_number
         and e.evt_block_date = tx.block_date
-        and tx.block_time < current_date - interval '{{ aged_days }}' day
         {%- if is_incremental() %}
-        and tx.block_time >= current_date - interval '{{ ingest_lookback_days }}' day
+        and {{ incremental_predicate('tx.block_time') }}
         {%- endif %}
     where e.sqrtPriceX96 is not null
-        and e.evt_block_time < current_date - interval '{{ aged_days }}' day
         {%- if is_incremental() %}
-        and e.evt_block_time >= current_date - interval '{{ ingest_lookback_days }}' day
+        and {{ incremental_predicate('e.evt_block_time') }}
         {%- elif target.name == 'ci' %}
         and e.evt_block_time >= current_date - interval '14' day
         {%- endif %}
@@ -70,41 +72,28 @@ aged_events as (
         and e.evt_tx_hash = tx.hash
         and e.evt_block_number = tx.block_number
         and e.evt_block_date = tx.block_date
-        and tx.block_time < current_date - interval '{{ aged_days }}' day
         {%- if is_incremental() %}
-        and tx.block_time >= current_date - interval '{{ ingest_lookback_days }}' day
+        and {{ incremental_predicate('tx.block_time') }}
         {%- endif %}
     where e.sqrtPriceX96 is not null
-        and e.evt_block_time < current_date - interval '{{ aged_days }}' day
         {%- if is_incremental() %}
-        and e.evt_block_time >= current_date - interval '{{ ingest_lookback_days }}' day
+        and {{ incremental_predicate('e.evt_block_time') }}
         {%- elif target.name == 'ci' %}
         and e.evt_block_time >= current_date - interval '14' day
         {%- endif %}
-),
-
-candidates as (
-    select id, block_time, block_number, evt_index, block_index_sum, sqrtpricex96
-    from aged_events
-    {%- if is_incremental() %}
-
-    union all
-
-    select id, block_time, block_number, evt_index, block_index_sum, sqrtpricex96
-    from {{ this }}
-    {%- endif %}
 )
 
 select
     '{{ blockchain }}' as blockchain
     , id
+    , cast(date_trunc('month', block_time) as date) as block_month
     , max_by(block_time, block_index_sum) as block_time
     , max_by(block_number, block_index_sum) as block_number
     , max_by(evt_index, block_index_sum) as evt_index
     , max(block_index_sum) as block_index_sum
     , max_by(sqrtpricex96, block_index_sum) as sqrtpricex96
-from candidates
+from month_events
 where block_index_sum is not null
-group by id
+group by id, cast(date_trunc('month', block_time) as date)
 
 {% endmacro %}

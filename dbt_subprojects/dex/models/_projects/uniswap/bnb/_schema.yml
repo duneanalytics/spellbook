@@ -405,7 +405,7 @@ models:
         data_tests:
           - not_null
 
-  - name: uniswap_v4_bnb_sqrtpricex96_latest
+  - name: uniswap_v4_bnb_sqrtpricex96_monthly
     meta:
       blockchain: bnb
       sector: dex
@@ -413,8 +413,8 @@ models:
     config:
       tags: ['bnb', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
     description: >
-      Latest sqrtPriceX96 per pool among price-change events older than 7 days.
-      Deep-history seed companion for uniswap_v4_bnb_sqrtpricex96: lets the price builder avoid
+      Sparse monthly-latest sqrtPriceX96 rollup: one row per pool per active month (that month's latest price).
+      Seed companion for uniswap_v4_bnb_sqrtpricex96: lets the price builder avoid
       self-scanning its full history every run to recover each pool's previous price.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -422,6 +422,7 @@ models:
             combination_of_columns:
               - blockchain
               - id
+              - block_month
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -431,13 +432,17 @@ models:
         description: "Pool ID"
         data_tests:
           - not_null
+      - name: block_month
+        description: "Calendar month (date-truncated) of the price event; merge/partition key"
+        data_tests:
+          - not_null
       - name: block_time
-        description: "Block time of this pool's latest aged price event"
+        description: "Block time of this pool's latest price event in the month"
       - name: block_number
-        description: "Block number of this pool's latest aged price event"
+        description: "Block number of this pool's latest price event in the month"
       - name: evt_index
-        description: "Event index of this pool's latest aged price event"
+        description: "Event index of this pool's latest price event in the month"
       - name: block_index_sum
-        description: "Monotonic block/tx/evt ordinal of the latest aged price event"
+        description: "Monotonic block/tx/evt ordinal of the month's latest price event"
       - name: sqrtpricex96
-        description: "Pool price (sqrtPriceX96) at the latest aged price event"
+        description: "Pool price (sqrtPriceX96) at the month's latest price event"
