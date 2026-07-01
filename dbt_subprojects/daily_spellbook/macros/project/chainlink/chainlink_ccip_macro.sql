@@ -23,7 +23,41 @@ SELECT DISTINCT
     ), 0) AS token_price
 FROM
     {{ref('chainlink_' ~ blockchain ~ '_ccip_tokens_transferred_logs')}} le
-    INNER JOIN {{ref('chainlink_' ~ blockchain ~ '_ccip_send_requested')}} sr ON le.tx_hash = sr.tx_hash
+    -- CUR2-2973: inline chainlink_<chain>_ccip_send_requested instead of ref-ing the view. The view
+    -- groups its source logs by tx_hash and exposes evt_block_time = MAX(block_time), so the post-agg
+    -- incremental_predicate('sr.evt_block_time') (kept below as authoritative) cannot reach the
+    -- <chain>.logs scan and every incremental run full-scans all history (~100B rows) to merge a few
+    -- rows. Pushing incremental_predicate('block_time') into each UNION arm prunes the Delta logs scan
+    -- via block_time file-skipping; sound because one tx = one block, so MAX(block_time) = block_time
+    -- per tx_hash group and the same tx_hash groups are selected.
+    INNER JOIN (
+        SELECT
+            MAX(block_time) AS evt_block_time,
+            MAX(destination_blockchain) AS destination_blockchain,
+            tx_hash
+        FROM (
+            SELECT
+                ccip_logs_v1.block_time,
+                ccip_logs_v1.destination_blockchain,
+                ccip_logs_v1.tx_hash
+            FROM {{ ref('chainlink_' ~ blockchain ~ '_ccip_send_requested_logs_v1') }} ccip_logs_v1
+            {% if is_incremental() %}
+            WHERE {{ incremental_predicate('ccip_logs_v1.block_time') }}
+            {% endif %}
+
+            UNION ALL
+
+            SELECT
+                ccip_logs_v1_2.block_time,
+                ccip_logs_v1_2.destination_blockchain,
+                ccip_logs_v1_2.tx_hash
+            FROM {{ ref('chainlink_' ~ blockchain ~ '_ccip_send_requested_logs_v1_2') }} ccip_logs_v1_2
+            {% if is_incremental() %}
+            WHERE {{ incremental_predicate('ccip_logs_v1_2.block_time') }}
+            {% endif %}
+        ) combined_logs
+        GROUP BY tx_hash
+    ) sr ON le.tx_hash = sr.tx_hash
     AND le.block_time = sr.evt_block_time
     {% if is_incremental() %}
         AND {{ incremental_predicate('sr.evt_block_time') }}

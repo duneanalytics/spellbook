@@ -17,5 +17,6 @@
         , PoolManager_evt_Initialize = source('uniswap_v4_monad', 'PoolManager_evt_Initialize')
         , PoolManager_evt_Swap = source('uniswap_v4_monad', 'PoolManager_evt_Swap') 
         , transactions = source('monad', 'transactions')
+        , monthly_relation = ref('uniswap_v4_monad_sqrtpricex96_monthly')
     )
 }}
