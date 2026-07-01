@@ -2,6 +2,7 @@ version: 2
 
 models: 
   - name: aerodrome_trades
+  - name: agra_trades
   - name: airswap_trades
   - name: apeswap_trades
   - name: arbswap_trades
