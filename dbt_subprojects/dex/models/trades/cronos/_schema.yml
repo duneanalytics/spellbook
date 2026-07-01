@@ -1,0 +1,132 @@
+version: 2
+
+models:
+  - name: dex_cronos_trades
+    data_tests:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - dbt_utils.accepted_range:
+          arguments:
+            column_name: amount_usd
+            max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_cronos_base_trades
+
+  - name: vvs_finance_cronos_v2_base_trades
+    meta:
+      blockchain: cronos
+      sector: dex
+      project: vvs_finance
+      contributors: jeff-dude
+    config:
+      tags: ["cronos", "dex", "trades", "vvs_finance", "v2"]
+    description: "VVS Finance cronos v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('vvs_finance_cronos_base_trades_seed')
+            filter:
+              version: 2
+
+  - name: vvs_finance_cronos_v3_base_trades
+    meta:
+      blockchain: cronos
+      sector: dex
+      project: vvs_finance
+      contributors: jeff-dude
+    config:
+      tags: ["cronos", "dex", "trades", "vvs_finance", "v3"]
+    description: "VVS Finance cronos v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('vvs_finance_cronos_base_trades_seed')
+            filter:
+              version: 3
+
+  - name: cronaswap_cronos_v1_base_trades
+    meta:
+      blockchain: cronos
+      sector: dex
+      project: cronaswap
+      contributors: jeff-dude
+    config:
+      tags: ["cronos", "dex", "trades", "cronaswap", "v1"]
+    description: "Cronaswap cronos v1 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('cronaswap_cronos_base_trades_seed')
+            filter:
+              version: 1
+
+  - name: cronaswap_cronos_v2_base_trades
+    meta:
+      blockchain: cronos
+      sector: dex
+      project: cronaswap
+      contributors: jeff-dude
+    config:
+      tags: ["cronos", "dex", "trades", "cronaswap", "v2"]
+    description: "Cronaswap cronos v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('cronaswap_cronos_base_trades_seed')
+            filter:
+              version: 2
+
+  - name: ferro_cronos_base_trades
+    meta:
+      blockchain: cronos
+      sector: dex
+      project: ferro
+      contributors: jeff-dude
+    config:
+      tags: ["cronos", "dex", "trades", "ferro"]
+    description: "Ferro cronos base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('ferro_cronos_base_trades_seed')
+
+  - name: dex_cronos_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - token_address
+              - block_date
