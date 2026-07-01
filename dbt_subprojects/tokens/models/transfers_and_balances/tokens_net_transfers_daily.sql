@@ -49,6 +49,7 @@
     , 'apechain'
     , 'berachain'
     , 'corn'
+    , 'cronos'
     , 'degen'
     , 'flare'
     , 'henesys'
