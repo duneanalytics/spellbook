@@ -12,4 +12,4 @@
     )
 }}
 
-{{ evm_l1_gas_fees(blockchain) }}
+{{ op_stack_gas_fees(blockchain) }}
