@@ -50,7 +50,6 @@
     ,'taiko'
     ,'tempo'
     ,'tezos_evm'
-    ,'tron'
     ,'unichain'
     ,'viction'
     ,'worldchain'
@@ -74,3 +73,4 @@
 
 SELECT *
 FROM {{ ref('tokens_transfers') }}
+WHERE blockchain != 'tron' --added as a seperate model to tokens_multichain.transfers to handle correct address conversions
