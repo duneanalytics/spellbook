@@ -54,6 +54,7 @@
     , 'apechain'
     , 'berachain'
     , 'corn'
+    , 'cronos'
     , 'degen'
     , 'flare'
     , 'ink'
