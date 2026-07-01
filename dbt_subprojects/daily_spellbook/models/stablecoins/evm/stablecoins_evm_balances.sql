@@ -39,7 +39,7 @@
 
 {{
   config(
-    tags = ['stablecoins'],
+    tags = ['stablecoins', 'prod_exclude'],
     schema = 'stablecoins_evm',
     alias = 'balances',
     materialized = 'view',
@@ -49,6 +49,7 @@
         contributors = \'["tomfutago"]\') }}'
   )
 }}
+-- ci-stamp: 1
 
 select *
 from (

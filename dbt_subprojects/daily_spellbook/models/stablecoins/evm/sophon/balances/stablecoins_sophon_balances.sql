@@ -9,6 +9,7 @@
     post_hook = '{{ hide_spells() }}'
   )
 }}
+-- ci-stamp: 1
 
 select
   blockchain,
