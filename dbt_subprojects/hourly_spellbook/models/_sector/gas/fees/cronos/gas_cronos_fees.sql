@@ -52,6 +52,9 @@ WITH native_token_prices as (
             WHEN txns.gas_limit = 0 THEN NULL
             WHEN txns.gas_limit != 0 THEN cast(txns.gas_used as double) / cast(txns.gas_limit as double)
         END AS gas_limit_usage
+        -- early cronos raw data (2021-11 to 2023-12) has the same tx hash recorded at
+        -- multiple block_number/index. dedup to one row per hash so (block_month, tx_hash) stays unique.
+        ,row_number() over (partition by txns.hash order by txns.block_number, txns."index") as tx_hash_rn
     FROM {{ source(blockchain, 'transactions') }} txns
     INNER JOIN {{ source(blockchain, 'blocks') }} blocks
         ON txns.block_number = blocks.number
@@ -99,3 +102,4 @@ SELECT
 FROM base_model as b
 LEFT JOIN native_token_prices as p
     ON p.timestamp = date_trunc('day', b.block_time)
+WHERE b.tx_hash_rn = 1
