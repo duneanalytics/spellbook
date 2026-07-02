@@ -6,7 +6,8 @@
   config(
     schema = 'stablecoins_svm',
     alias = 'transfers',
-    materialized = 'view'
+    materialized = 'view',
+    tags = ['prod_exclude']
     , post_hook='{{ hide_spells() }}'
   )
 }}

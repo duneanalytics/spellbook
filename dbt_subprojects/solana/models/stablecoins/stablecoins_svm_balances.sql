@@ -6,7 +6,8 @@
   config(
     schema = 'stablecoins_svm',
     alias = 'balances',
-    materialized = 'view'
+    materialized = 'view',
+    tags = ['prod_exclude']
   )
 }}
 

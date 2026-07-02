@@ -7,7 +7,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['token_mint_address', 'token_account']
+    unique_key = ['token_mint_address', 'token_account'],
+    tags = ['prod_exclude']
   )
 }}
 

@@ -2,7 +2,7 @@
 
 {{
   config(
-    tags = ['stablecoins'],
+    tags = ['stablecoins', 'prod_exclude'],
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
     materialized = 'view',
@@ -12,6 +12,7 @@
         \'["tomfutago"]\') }}'
   )
 }}
+-- ci-stamp: 1
 
 select
   blockchain,

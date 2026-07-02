@@ -1,12 +1,13 @@
 {{
   config(
-    tags = ['stablecoins'],
+    tags = ['stablecoins', 'prod_exclude'],
     schema = 'stablecoins',
     alias = 'balances',
     materialized = 'view',
     post_hook = '{{ hide_spells() }}'
   )
 }}
+-- ci-stamp: 1
 
 select
   blockchain,
@@ -21,4 +22,4 @@ select
   balance_usd,
   currency,
   last_updated
-from {{ ref('stablecoins_evm_balances') }}
+from {{ source('stablecoins_evm', 'balances') }}

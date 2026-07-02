@@ -5,7 +5,7 @@
     schema = 'tokens_' ~ chain,
     alias = 'spl_stablecoins',
     materialized = 'view',
-    tags = ['static'],
+    tags = ['static', 'prod_exclude'],
     unique_key = ['token_mint_address']
   )
 }}

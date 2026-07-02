@@ -3,7 +3,7 @@
     schema = 'tokens',
     alias = 'erc20_stablecoins_metadata',
     materialized = 'table',
-    tags = ['static'],
+    tags = ['prod_exclude', 'static'],
     post_hook = '{{ hide_spells() }}'
   )
 }}
