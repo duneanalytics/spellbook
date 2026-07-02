@@ -10,6 +10,7 @@
     on_schema_change = 'sync_all_columns',
     partition_by = ['block_month'],
     unique_key = ['block_month', 'block_date', 'unique_key'],
+    tags = ['prod_exclude'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
   )
 }}
