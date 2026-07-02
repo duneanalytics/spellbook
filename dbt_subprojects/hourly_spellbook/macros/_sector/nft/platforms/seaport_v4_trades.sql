@@ -22,7 +22,7 @@ with source_ethereum_transactions as (
     where block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc('day', now() - interval '7' day)
+    where {{ incremental_predicate('block_time') }}
     {% endif %}
 )
 ,iv_orders_matched AS (
@@ -42,6 +42,12 @@ with source_ethereum_transactions as (
       where contract_address in ({% for order_contract in Seaport_order_contracts %}
         {{order_contract}}{%- if not loop.last -%},{%- endif -%}
         {% endfor %})
+        {% if not is_incremental() %}
+        and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
+        {% endif %}
+        {% if is_incremental() %}
+        and {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
     ) group by 1,2,3,4  -- deduplicate order hash re-use in advanced matching
 )
 ,fee_wallet_list as (
@@ -113,7 +119,7 @@ with source_ethereum_transactions as (
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
     )
     union all
@@ -181,7 +187,7 @@ with source_ethereum_transactions as (
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
     )
 )
@@ -297,34 +303,39 @@ with source_ethereum_transactions as (
           ) a
     where not is_self_trans
 )
-,iv_volume as (
-  select block_time
-        ,tx_hash
-        ,evt_index
-        ,max(token_contract_address) as token_contract_address
-        ,CAST(sum(case when is_price then original_amount end) AS DOUBLE) as price_amount_raw
-        ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
-        ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
-        ,sum(case when is_creator_fee then original_amount end) as creator_fee_amount_raw
-        ,sum(case when is_creator_fee and creator_fee_idx = 1 then original_amount end) as creator_fee_amount_raw_1
-        ,sum(case when is_creator_fee and creator_fee_idx = 2 then original_amount end) as creator_fee_amount_raw_2
-        ,sum(case when is_creator_fee and creator_fee_idx = 3 then original_amount end) as creator_fee_amount_raw_3
-        ,sum(case when is_creator_fee and creator_fee_idx = 4 then original_amount end) as creator_fee_amount_raw_4
-        ,sum(case when is_creator_fee and creator_fee_idx = 5 then original_amount end) as creator_fee_amount_raw_5
-        ,max(case when is_creator_fee and creator_fee_idx = 1 then receiver end) as creator_fee_receiver_1
-        ,max(case when is_creator_fee and creator_fee_idx = 2 then receiver end) as creator_fee_receiver_2
-        ,max(case when is_creator_fee and creator_fee_idx = 3 then receiver end) as creator_fee_receiver_3
-        ,max(case when is_creator_fee and creator_fee_idx = 4 then receiver end) as creator_fee_receiver_4
-        ,max(case when is_creator_fee and creator_fee_idx = 5 then receiver end) as creator_fee_receiver_5
-        ,max(a.fee_wallet_name) as fee_wallet_name
-
-   from iv_base_pairs a
-  where 1=1
-    and eth_erc_idx > 0
-  group by 1,2,3
-  having count(distinct token_contract_address) = 1  -- some private sale trade has more that one currencies
+-- Single-pass: compute the per-(block_time,tx_hash,evt_index) volume/fee aggregates that iv_volume
+-- produced as window functions, so iv_base_pairs is scanned ONCE instead of twice (it was referenced
+-- by iv_volume and again by iv_nfts; Trino inlines CTEs, doubling the OrderFulfilled JSON parse and the
+-- OrdersMatched scan). Aggregates are gated to currency legs (eth_erc_idx > 0) exactly as iv_volume's
+-- WHERE did; iv_volume's HAVING count(distinct token_contract_address) = 1 is replicated by the
+-- min()over = max()over equivalence (true iff exactly one distinct non-null currency in the group).
+,iv_priced as (
+  select a.*
+        ,max(case when eth_erc_idx > 0 then token_contract_address end)
+            over (partition by block_time, tx_hash, evt_index) as vol_token_contract_address
+        ,(min(case when eth_erc_idx > 0 then token_contract_address end) over (partition by block_time, tx_hash, evt_index)
+          = max(case when eth_erc_idx > 0 then token_contract_address end) over (partition by block_time, tx_hash, evt_index)) as vol_token_match
+        ,CAST(sum(case when eth_erc_idx > 0 and is_price then original_amount end) over (partition by block_time, tx_hash, evt_index) AS DOUBLE) as price_amount_raw
+        ,sum(case when eth_erc_idx > 0 and is_platform_fee then original_amount end) over (partition by block_time, tx_hash, evt_index) as platform_fee_amount_raw
+        ,max(case when eth_erc_idx > 0 and is_platform_fee then receiver end) over (partition by block_time, tx_hash, evt_index) as platform_fee_receiver
+        ,sum(case when eth_erc_idx > 0 and is_creator_fee then original_amount end) over (partition by block_time, tx_hash, evt_index) as creator_fee_amount_raw
+        ,sum(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 1 then original_amount end) over (partition by block_time, tx_hash, evt_index) as creator_fee_amount_raw_1
+        ,sum(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 2 then original_amount end) over (partition by block_time, tx_hash, evt_index) as creator_fee_amount_raw_2
+        ,sum(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 3 then original_amount end) over (partition by block_time, tx_hash, evt_index) as creator_fee_amount_raw_3
+        ,sum(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 4 then original_amount end) over (partition by block_time, tx_hash, evt_index) as creator_fee_amount_raw_4
+        ,sum(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 5 then original_amount end) over (partition by block_time, tx_hash, evt_index) as creator_fee_amount_raw_5
+        ,max(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 1 then receiver end) over (partition by block_time, tx_hash, evt_index) as creator_fee_receiver_1
+        ,max(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 2 then receiver end) over (partition by block_time, tx_hash, evt_index) as creator_fee_receiver_2
+        ,max(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 3 then receiver end) over (partition by block_time, tx_hash, evt_index) as creator_fee_receiver_3
+        ,max(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 4 then receiver end) over (partition by block_time, tx_hash, evt_index) as creator_fee_receiver_4
+        ,max(case when eth_erc_idx > 0 and is_creator_fee and creator_fee_idx = 5 then receiver end) over (partition by block_time, tx_hash, evt_index) as creator_fee_receiver_5
+        ,max(case when eth_erc_idx > 0 then fee_wallet_name end) over (partition by block_time, tx_hash, evt_index) as vol_fee_wallet_name
+  from iv_base_pairs a
 )
 ,iv_nfts as (
+  -- iv_priced carries the windowed aggregates on every leg row; vol_token_match gates them so a group
+  -- failing iv_volume's WHERE/HAVING (no currency leg, or >1 distinct currency) yields NULLs, exactly
+  -- reproducing the old LEFT JOIN miss.
   select a.block_time
         ,a.tx_hash
         ,a.evt_index
@@ -339,21 +350,21 @@ with source_ethereum_transactions as (
         ,a.item_type as nft_token_standard
         ,a.zone
         ,a.platform_contract_address
-        ,b.token_contract_address
-        ,CAST(round(price_amount_raw / nft_cnt) as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
-        ,cast(platform_fee_amount_raw / nft_cnt as uint256) as platform_fee_amount_raw
-        ,platform_fee_receiver
-        ,cast(creator_fee_amount_raw / nft_cnt as uint256) as creator_fee_amount_raw
-        ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
-        ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
-        ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
-        ,creator_fee_amount_raw_4 / nft_cnt as creator_fee_amount_raw_4
-        ,creator_fee_amount_raw_5 / nft_cnt as creator_fee_amount_raw_5
-        ,creator_fee_receiver_1
-        ,creator_fee_receiver_2
-        ,creator_fee_receiver_3
-        ,creator_fee_receiver_4
-        ,creator_fee_receiver_5
+        ,case when a.vol_token_match then a.vol_token_contract_address end as token_contract_address
+        ,CAST(round((case when a.vol_token_match then a.price_amount_raw end) / nft_cnt) as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
+        ,cast((case when a.vol_token_match then a.platform_fee_amount_raw end) / nft_cnt as uint256) as platform_fee_amount_raw
+        ,case when a.vol_token_match then a.platform_fee_receiver end as platform_fee_receiver
+        ,cast((case when a.vol_token_match then a.creator_fee_amount_raw end) / nft_cnt as uint256) as creator_fee_amount_raw
+        ,(case when a.vol_token_match then a.creator_fee_amount_raw_1 end) / nft_cnt as creator_fee_amount_raw_1
+        ,(case when a.vol_token_match then a.creator_fee_amount_raw_2 end) / nft_cnt as creator_fee_amount_raw_2
+        ,(case when a.vol_token_match then a.creator_fee_amount_raw_3 end) / nft_cnt as creator_fee_amount_raw_3
+        ,(case when a.vol_token_match then a.creator_fee_amount_raw_4 end) / nft_cnt as creator_fee_amount_raw_4
+        ,(case when a.vol_token_match then a.creator_fee_amount_raw_5 end) / nft_cnt as creator_fee_amount_raw_5
+        ,case when a.vol_token_match then a.creator_fee_receiver_1 end as creator_fee_receiver_1
+        ,case when a.vol_token_match then a.creator_fee_receiver_2 end as creator_fee_receiver_2
+        ,case when a.vol_token_match then a.creator_fee_receiver_3 end as creator_fee_receiver_3
+        ,case when a.vol_token_match then a.creator_fee_receiver_4 end as creator_fee_receiver_4
+        ,case when a.vol_token_match then a.creator_fee_receiver_5 end as creator_fee_receiver_5
         ,case when nft_cnt > 1 then true
               else false
           end as estimated_price
@@ -361,11 +372,8 @@ with source_ethereum_transactions as (
         ,sub_type
         ,sub_idx
         ,order_hash
-        ,b.fee_wallet_name
-  from iv_base_pairs a
-        left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
-                              and b.tx_hash = a.tx_hash
-                              and b.evt_index = a.evt_index
+        ,case when a.vol_token_match then a.vol_fee_wallet_name end as fee_wallet_name
+  from iv_priced a
   where 1=1
     and a.is_traded_nft
 )
@@ -458,7 +466,13 @@ select
         ,tx_data_marker
 
         -- seaport etc
-        , row_number() over (partition by tx_hash order by evt_index) as sub_tx_trade_id
+        -- evt_index repeats within a tx for bundle trades, so order by the leg-identity columns too:
+        -- sub_tx_trade_id is part of the incremental unique_key (block_number, tx_hash, sub_tx_trade_id)
+        -- and must be stable across runs regardless of plan/row order.
+        , row_number() over (
+            partition by tx_hash
+            order by evt_index, sub_type, sub_idx, nft_contract_address, nft_token_id, nft_token_amount, seller, buyer
+          ) as sub_tx_trade_id
 
         ,right_hash
         ,fee_wallet_name

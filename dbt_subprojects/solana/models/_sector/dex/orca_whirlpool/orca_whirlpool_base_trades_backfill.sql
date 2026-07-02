@@ -16,10 +16,6 @@
   )
 }}
 
-{% set begin = '2022-04-06' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
-
 WITH swaps AS (
     SELECT
           sp.block_slot
@@ -36,9 +32,6 @@ WITH swaps AS (
         , sp.fee_rate
         , sp.surrogate_key
     FROM {{ ref('orca_whirlpool_stg_swaps') }} sp
-    WHERE
-        sp.block_time >= timestamp '{{ batch_start }}'
-        AND sp.block_time < timestamp '{{ batch_end }}'
 )
 
 , transfers AS (
@@ -54,9 +47,7 @@ WITH swaps AS (
         , tf.to_token_account
     FROM {{ source('tokens_solana', 'transfers') }} tf
     WHERE
-        tf.block_time >= timestamp '{{ batch_start }}'
-        AND tf.block_time < timestamp '{{ batch_end }}'
-        AND tf.token_version = 'spl_token'
+        tf.token_version = 'spl_token'
 )
 
 , all_swaps AS (
