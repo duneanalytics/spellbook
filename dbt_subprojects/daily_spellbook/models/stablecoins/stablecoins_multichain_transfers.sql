@@ -41,7 +41,7 @@
 
 {{
   config(
-    tags = ['stablecoins'],
+    tags = ['stablecoins', 'prod_exclude'],
     schema = 'stablecoins_multichain',
     alias = 'transfers',
     materialized = 'view',
@@ -51,6 +51,7 @@
         contributors = \'["tomfutago"]\') }}'
   )
 }}
+-- ci-stamp: 1
 
 select
   blockchain,

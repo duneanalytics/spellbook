@@ -33,6 +33,7 @@
     , 'peaq'
     , 'plasma'
     , 'polygon'
+    , 'robinhood'
     , 'ronin'
     , 'rise'
     , 'scroll'

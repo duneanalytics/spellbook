@@ -13,6 +13,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
+-- ci-stamp: 1
 
 {{
   balances_incremental_subset_daily_enrich(

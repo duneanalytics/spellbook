@@ -2,13 +2,14 @@
 
 {{
   config(
-    tags = ['stablecoins'],
+    tags = ['stablecoins', 'prod_exclude'],
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
     materialized = 'view'
     , post_hook='{{ hide_spells() }}'
   )
 }}
+-- ci-stamp: 1
 -- union of seed and latest enriched balances
 select
   blockchain,
