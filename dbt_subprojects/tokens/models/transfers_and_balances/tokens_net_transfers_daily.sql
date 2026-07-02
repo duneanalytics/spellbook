@@ -30,6 +30,7 @@
     , 'optimism'
     , 'plasma'
     , 'polygon'
+    , 'robinhood'
     , 'ronin'
     , 'rise'
     , 'scroll'
@@ -82,4 +83,3 @@ FROM (
         {% endif %}
         {% endfor %}
 )
-
