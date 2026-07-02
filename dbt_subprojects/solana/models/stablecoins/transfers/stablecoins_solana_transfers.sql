@@ -4,7 +4,8 @@
   config(
     schema = 'stablecoins_' ~ chain,
     alias = 'transfers',
-    materialized = 'view'
+    materialized = 'view',
+    tags = ['prod_exclude']
     , post_hook='{{ expose_spells(\'["solana"]\',
         "sector",
         "stablecoins_solana",
