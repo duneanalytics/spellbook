@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: uniswap_v4_robinhood_swaps
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude
+    config:
+      tags: ['robinhood', 'dex', 'trades', 'uniswap', 'v4']
+    description: >
+      All Uniswap V4 swaps on robinhood, decoded from the PoolManager swap calls.
+      Feeds the uniswap_v4_robinhood.base_trades view (dex.trades).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index

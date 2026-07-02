@@ -33,6 +33,7 @@
     , 'plasma'
     , 'plume'
     , 'polygon'
+    , 'robinhood'
     , 'ronin'
     , 'scroll'
     , 'sei'
