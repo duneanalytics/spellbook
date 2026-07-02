@@ -203,6 +203,7 @@ sources:
           - name: decimals
             data_type: integer
       - name: nft
+      - name: stablecoins
       - name: rebase
         columns:
           - name: contract_address
