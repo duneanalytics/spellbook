@@ -19,10 +19,14 @@ models:
     columns:
       - name: unique_key
         description: "Surrogate key to identify unique row"
+        data_tests:
+          - not_null
       - name: blockchain
         description: "The blockchain of the transfers"
       - name: block_date
         description: "The date of the block"
+        data_tests:
+          - not_null
       - name: block_time
         description: "The time of the block"
       - name: block_number
@@ -70,10 +74,14 @@ models:
     columns:
       - name: unique_key
         description: "Surrogate key to identify unique row"
+        data_tests:
+          - not_null
       - name: blockchain
         description: "The blockchain of the transfers"
       - name: block_date
         description: "The date of the block"
+        data_tests:
+          - not_null
       - name: block_time
         description: "The time of the block"
       - name: block_number
@@ -125,6 +133,15 @@ models:
             combination_of_columns:
               - blockchain
               - block_date
+    columns:
+      - name: blockchain
+        description: "The blockchain of the transfers"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "The date of the block"
+        data_tests:
+          - not_null
 
   - name: tokens_cronos_net_transfers_daily_asset
     meta:
@@ -141,48 +158,16 @@ models:
               - blockchain
               - block_date
               - contract_address
-
-  - name: tokens_cronos_transfers_from_traces
-    meta:
-      blockchain: cronos
-      sector: tokens
-      contributors: jeff-dude
-    config:
-      tags: ['tokens', 'transfers', 'cronos']
-    description: "Token transfers from traces"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - block_date
-              - unique_key
-
-  - name: tokens_cronos_transfers_from_traces_base
-    meta:
-      blockchain: cronos
-      sector: tokens
-      contributors: jeff-dude
-    config:
-      tags: ['tokens', 'transfers', 'cronos']
-    description: "Token transfers from traces base"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - block_date
-              - unique_key
-
-  - name: tokens_cronos_transfers_from_traces_base_wrapper_deposits
-    meta:
-      blockchain: cronos
-      sector: tokens
-      contributors: jeff-dude
-    config:
-      tags: ['tokens', 'transfers', 'cronos']
-    description: "Token transfers from traces base wrapper deposits"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - block_date
-              - unique_key
+    columns:
+      - name: blockchain
+        description: "The blockchain of the transfers"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "The date of the block"
+        data_tests:
+          - not_null
+      - name: contract_address
+        description: "The contract address of the transfer"
+        data_tests:
+          - not_null
