@@ -11,26 +11,3 @@ sources:
       - name: prices
         meta:
           docs_slug: /curated/prices/dex_solana_price_hour
-  - name: stablecoins_svm
-    tables:
-      - name: balances
-      - name: transfers
-  - name: stablecoins_solana
-    tables:
-      - name: balances
-      - name: core_balances
-      - name: core_balances_enriched
-      - name: core_transfers
-      - name: core_transfers_enriched
-        config:
-          event_time: block_date
-      - name: extended_balances
-      - name: extended_balances_enriched
-      - name: extended_transfers
-      - name: extended_transfers_enriched
-        config:
-          event_time: block_date
-      - name: non_circulating_inventory_accounts
-      - name: transfers
-        config:
-          event_time: block_date
