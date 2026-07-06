@@ -1,0 +1,23 @@
+{{ config(
+    schema = 'uniswap_v4_worldchain'
+    , alias = 'swaps'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+
+{{
+    uniswap_compatible_v4_trades(
+        blockchain = 'worldchain'
+        , project = 'uniswap'
+        , version = '4'
+        , PoolManager_call_Swap = source('uniswap_v4_worldchain', 'PoolManager_call_Swap') 
+        , PoolManager_evt_Swap = source('uniswap_v4_worldchain', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0xb1860d529182ac3bc1f51fa2abd56662b7d13f33'
+        , start_date = '2025-01-23'
+        , aggregator_hooks = ref('uniswap_v4_aggregator_hooks')
+    )
+}}

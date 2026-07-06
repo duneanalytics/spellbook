@@ -18,6 +18,14 @@
     ]) }}
 {% endmacro %}
 
+-- ERC20True placeholder used as the counter-leg of Fusion+ cross-chain orders: https://github.com/1inch/cross-chain-swap/blob/master/contracts/mocks/ERC20True.sol
+{% macro oneinch_cross_chain_placeholder_tokens_cfg_macro() %}
+    {{ return([
+        '0xda0000d4000015a526378bb6fafc650cea5966f8',
+        '0xd66097c27eb8dee404bac235737932260edc6f3b',
+    ]) }}
+{% endmacro %}
+
 -- SUBSTREAMS CONFIGURATIONS --
 {% macro oneinch_ar_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2019-06-01")) }} {% endmacro %}
 {% macro oneinch_ar_transfers_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2019-06-01")) }} {% endmacro %}

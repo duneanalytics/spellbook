@@ -16,5 +16,6 @@
         , start_date = '2022-06-01'
         , pools_table = ref('curve_ethereum_view_pools')
         , pools_column = 'pool_address'
+        , self_seed_relation = this
     )
 }}
