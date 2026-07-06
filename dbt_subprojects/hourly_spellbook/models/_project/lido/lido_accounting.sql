@@ -2,8 +2,10 @@
         schema = 'lido',
         alias = 'accounting',
 
-        materialized = 'table',
-        file_format = 'delta'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['period','hash','primary_label','secondary_label','account','category','base_token_address']
         , post_hook='{{ hide_spells() }}'
         )
 }}
@@ -22,6 +24,15 @@ with tokens AS (
                 (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)   --wstETH
         ) as tokens(address)
 ),
+{% if is_incremental() -%}
+-- Trailing-restatement lookback: covers today's provisional-price rollover
+-- (tokens_prices copies yesterday's 23:59 close into today until the day closes)
+-- plus a conservative buffer for late-arriving feeder tx.
+lookback AS (
+        SELECT CAST(max(period) - interval '10' day AS timestamp) AS since
+        FROM {{ this }}
+),
+{% endif -%}
 -- Single pass over prices.usd (previously scanned 7x: eth_prices self-join inlined across 3 UNION branches).
 -- weth_close is the WETH daily-close per day via a window, replacing the eth_prices join.
 daily_close_prices as (
@@ -38,7 +49,12 @@ daily_close_prices as (
                 (blockchain = 'ethereum' AND contract_address IN (SELECT address FROM tokens)) AS is_eth_token,
                 (symbol = 'stSOL') AS is_stsol
         FROM {{source('prices','usd')}}
-        WHERE minute >= timestamp '2020-12-01'
+        WHERE minute >=
+        {% if is_incremental() -%}
+                (SELECT since FROM lookback)
+        {%- else -%}
+                timestamp '2020-12-01'
+        {%- endif %}
         AND EXTRACT(hour FROM minute) = 23
         AND EXTRACT(minute FROM minute) = 59
         AND (
@@ -823,5 +839,8 @@ AND (
         )
 )
 LEFT JOIN {{source('prices','tokens')}} pt ON accounts.token = pt.contract_address
+{% if is_incremental() -%}
+WHERE accounts.period >= (SELECT since FROM lookback)
+{% endif -%}
 GROUP BY 1,2,3,4,5,6,8,9, tokens_prices.decimals, pt.decimals, tokens_prices.price, tokens_prices.token_eth_price
 ORDER BY period DESC
