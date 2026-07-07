@@ -52,9 +52,13 @@ WITH native_token_prices as (
         ON txns.block_number = blocks.number
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
+        {% elif target.name == 'ci' %}
+        AND blocks.time >= current_date - interval '7' day
         {% endif %}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
+    {% elif target.name == 'ci' %}
+    WHERE txns.block_time >= current_date - interval '7' day
     {% endif %}
     )
 

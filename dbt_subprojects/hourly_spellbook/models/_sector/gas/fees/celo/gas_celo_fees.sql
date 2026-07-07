@@ -57,6 +57,8 @@ WITH fee_currency_wrapper_map (fee_currency_wrapper_contract, wrapped_token_cont
         ON txns.block_number = blocks.number
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
+        {% elif target.name == 'ci' %}
+        AND blocks.time >= current_date - interval '7' day
         {% endif %}
     LEFT JOIN fee_currency_wrapper_map as fcwp
         ON txns.fee_currency = fcwp.fee_currency_wrapper_contract
@@ -65,6 +67,8 @@ WITH fee_currency_wrapper_map (fee_currency_wrapper_contract, wrapped_token_cont
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
+    {% elif target.name == 'ci' %}
+    WHERE txns.block_time >= current_date - interval '7' day
     {% endif %}
 )
 SELECT

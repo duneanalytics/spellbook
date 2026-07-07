@@ -64,9 +64,13 @@ base_model as (
     on txns.block_number = blocks.number
     {% if is_incremental() -%}
     and {{ incremental_predicate('blocks.time') }}
+    {% elif target.name == 'ci' -%}
+    and blocks.time >= current_date - interval '7' day
     {% endif %}
   {% if is_incremental() -%}
   where {{ incremental_predicate('txns.block_time') }}
+  {% elif target.name == 'ci' -%}
+  where txns.block_time >= current_date - interval '7' day
   {% endif %}
 )
 
