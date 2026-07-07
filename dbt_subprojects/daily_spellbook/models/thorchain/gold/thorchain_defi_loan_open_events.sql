@@ -6,7 +6,6 @@
     incremental_strategy = 'merge',
     unique_key = ['block_month', 'fact_loan_open_events_id'],
     partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'loan_open_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
@@ -30,7 +29,7 @@ WITH base AS (
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_loan_open_events') }}
     {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
+        WHERE {{ incremental_predicate('_inserted_timestamp') }}
     {% endif %}
 )
 

@@ -6,7 +6,6 @@
     incremental_strategy = 'merge',
     unique_key = ['block_month', 'event_id'],
     partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'liquidity', 'pending']
 ) }}
 
@@ -43,11 +42,12 @@ with base as (
         CASE 
             WHEN pool LIKE 'THOR.%' THEN cast(null as varbinary)
             ELSE cast(pool as varbinary)
-        END as contract_address
+        END as contract_address,
+        current_timestamp AS _inserted_timestamp
 
     FROM {{ source('thorchain', 'pending_liquidity_events') }}
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
+    WHERE {{ incremental_predicate('_ingested_at') }}
     {% endif %}
 )
 
