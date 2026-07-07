@@ -30,6 +30,9 @@ WITH clones AS (
         AND (varbinary_position(input, 0x9c4d535b) = 1 OR varbinary_position(input, 0x3cda3351) = 1)
         AND length(input) > 104
         AND length(output) = 32
+        -- vvvvvvvvvvvvvvvv TODO REMOVE BEFORE MERGE (CUR2-2717) vvvvvvvvvvvvvvvv
+        AND block_time >= NOW() - INTERVAL '3' day -- TODO REMOVE BEFORE MERGE — CI-only time filter (CUR2-2717); limitbreak impl scan is full-history by design and this makes output INCORRECT/partial. Do not merge with this present.
+        -- ^^^^^^^^^^^^^^^^ TODO REMOVE BEFORE MERGE (CUR2-2717) ^^^^^^^^^^^^^^^^
         {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
         {% endif %}
@@ -93,6 +96,9 @@ WITH clones AS (
         WHERE
             to = 0x000000000000000000000000000000000000800e
             AND varbinary_position(input, 0xf5e69a47) = 1
+            -- vvvvvvvvvvvvvvvv TODO REMOVE BEFORE MERGE (CUR2-2717) vvvvvvvvvvvvvvvv
+            AND block_time >= NOW() - INTERVAL '3' day -- TODO REMOVE BEFORE MERGE — CI-only time filter (CUR2-2717); limitbreak impl scan is full-history by design and this makes output INCORRECT/partial. Do not merge with this present.
+            -- ^^^^^^^^^^^^^^^^ TODO REMOVE BEFORE MERGE (CUR2-2717) ^^^^^^^^^^^^^^^^
             AND (
                 (varbinary_position(input, 0x0000000000000000000000000000000000000000000000000000000023b872dd) > 0
                  AND varbinary_position(input, 0x0000000000000000000000000000000000000000000000000000000042842e0e) > 0
