@@ -1,3 +1,5 @@
+-- ci-stamp: 1 (forces state:modified.body so CI rebuilds this in the isolated PR schema
+-- instead of deferring to prod, letting downstream models see the new Kraken credentials)
 {{ config(
     schema = 'staking_ethereum',
     alias = 'entities',
