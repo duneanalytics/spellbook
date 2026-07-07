@@ -6,7 +6,6 @@
     incremental_strategy = 'merge',
     unique_key = ['block_month', 'fact_pending_liquidity_events_id'],
     partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'pending_liquidity_events', 'fact', 'liquidity'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
@@ -35,7 +34,7 @@ WITH base AS (
         pool_asset
     FROM {{ ref('thorchain_silver_pending_liquidity_events') }}
     {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
+        WHERE {{ incremental_predicate('_ingested_at') }}
     {% endif %}
 )
 

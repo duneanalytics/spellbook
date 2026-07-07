@@ -6,7 +6,6 @@
     incremental_strategy = 'merge',
     unique_key = ['day', 'fact_stake_events_id'],
     partition_by = ['day'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'defi', 'stake_events', 'fact', 'staking'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
@@ -28,7 +27,8 @@ WITH base AS (
         _ASSET_IN_RUNE_E8,
         event_id,
         block_timestamp,
-        _INSERTED_TIMESTAMP
+        _INSERTED_TIMESTAMP,
+        _ingested_at
     FROM
         {{ ref('thorchain_silver_stake_events') }}
 )
@@ -60,5 +60,5 @@ FROM
 JOIN {{ ref('thorchain_core_block') }} as b
     ON A.block_timestamp = b.timestamp
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('b.block_timestamp') }}
+WHERE {{ incremental_predicate('a._ingested_at') }}
 {% endif %}
