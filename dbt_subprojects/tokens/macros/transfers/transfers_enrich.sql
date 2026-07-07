@@ -24,6 +24,11 @@ with base_transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('block_date') }}
+	{% elif target.name == 'ci' -%}
+	-- bound the CI initial-build scan to recent history so it completes against real data instead of
+	-- scanning the full source range; prod and manual runs still use transfers_start_date for backfills.
+	where
+		block_date >= current_date - interval '7' day
 	{% elif transfers_start_date is not none and transfers_start_date | trim != '' -%}
 	where
 		block_date >= date '{{ transfers_start_date }}'
@@ -42,6 +47,9 @@ with base_transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('minute') }}
+	{% elif target.name == 'ci' -%}
+	where
+		minute >= current_date - interval '7' day
 	{% elif transfers_start_date is not none and transfers_start_date | trim != '' -%}
 	where
 		minute >= timestamp '{{ transfers_start_date }}'

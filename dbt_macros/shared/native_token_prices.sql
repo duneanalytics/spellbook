@@ -25,6 +25,10 @@ WHERE
     b.name = '{{blockchain}}'
     {% if is_incremental() -%}
     AND {{ incremental_predicate("date_trunc('" ~ time_unit ~ "', p.minute)") }}
+    {%- elif target.name == 'ci' -%}
+    -- bound the CI initial-build scan to recent history so it completes against real data instead of
+    -- scanning the full source range; prod and manual runs still get full native price history.
+    AND p.minute >= current_date - interval '7' day
     {%- endif %}
 GROUP BY
     1, 2, 3, 4, date_trunc('{{ time_unit }}', p.minute)
