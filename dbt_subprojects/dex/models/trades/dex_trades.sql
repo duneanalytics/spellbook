@@ -100,12 +100,9 @@ SELECT
     , _updated_at
 FROM
     {{ ref('dex_'~chain~'_trades') }}
-{% if var('dev_dates', false) -%}
-WHERE block_date > current_date - interval '3' day
-{%- elif target.name == 'ci' -%}
--- newly-onboarded chains often only have a short decoded history; bound the CI full-refresh scan to
--- the last 7 days so it completes against real data instead of scanning a mostly-empty source range.
--- prod renders without this.
+{% if target.name == 'ci' -%}
+-- dex_trades only ever unions in already-built chain models, so a full-history CI build adds no
+-- coverage over 7 days; use target.name instead of dev_dates so this also bounds CI, not just local dev.
 WHERE block_date > current_date - interval '7' day
 {%- else -%}
 {% if is_incremental() %}
