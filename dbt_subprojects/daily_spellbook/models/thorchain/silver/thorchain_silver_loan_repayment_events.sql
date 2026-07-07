@@ -6,7 +6,6 @@
     incremental_strategy = 'merge',
     unique_key = ['block_month', 'event_id'],
     partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'loan_repayment_events', 'silver']
 ) }}
 
@@ -26,7 +25,7 @@ WITH deduplicated AS (
         ) AS rn
     FROM {{ source('thorchain', 'loan_repayment_events') }}
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
+    WHERE {{ incremental_predicate('_ingested_at') }}
     {% endif %}
 ),
 
