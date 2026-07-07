@@ -42,7 +42,8 @@ with base as (
         CASE 
             WHEN pool LIKE 'THOR.%' THEN cast(null as varbinary)
             ELSE cast(pool as varbinary)
-        END as contract_address
+        END as contract_address,
+        current_timestamp AS _inserted_timestamp
 
     FROM {{ source('thorchain', 'pending_liquidity_events') }}
     {% if is_incremental() %}
