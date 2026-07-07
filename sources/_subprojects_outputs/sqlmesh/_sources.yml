@@ -193,7 +193,7 @@ sources:
         meta:
           docs_slug: /curated/token-transfers/solana/solana-token-transfers
         config:
-          event_time: block_date
+          event_time: block_time
         columns:
           - name: block_time
           - name: block_date

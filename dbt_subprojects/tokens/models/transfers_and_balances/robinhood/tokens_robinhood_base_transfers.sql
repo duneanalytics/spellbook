@@ -1,0 +1,18 @@
+{{ config(
+    schema='tokens_robinhood',
+    alias='base_transfers',
+    partition_by=['block_month'],
+    materialized='incremental',
+    file_format='delta',
+    incremental_strategy='merge',
+    incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key=['block_date', 'unique_key'],
+    merge_skip_unchanged=true,
+) }}
+
+{{ transfers_base(
+    blockchain='robinhood',
+    traces=source('robinhood', 'traces'),
+    transactions=source('robinhood', 'transactions'),
+    erc20_transfers=source('erc20_robinhood', 'evt_Transfer'),
+) }}

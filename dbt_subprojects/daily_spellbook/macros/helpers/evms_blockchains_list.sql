@@ -42,6 +42,7 @@
         "polygon",
         "zkevm",
         "ronin",
+        "robinhood",
         "rise",
         "scroll",
         "sei",
