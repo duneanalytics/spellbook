@@ -34,7 +34,7 @@ WITH base AS (
         pool_asset
     FROM {{ ref('thorchain_silver_pending_liquidity_events') }}
     {% if is_incremental() %}
-        WHERE {{ incremental_predicate('_ingested_at') }}
+        WHERE {{ incremental_predicate('_inserted_timestamp') }}
     {% endif %}
 )
 

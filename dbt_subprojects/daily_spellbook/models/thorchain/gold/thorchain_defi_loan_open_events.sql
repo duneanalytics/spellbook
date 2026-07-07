@@ -29,7 +29,7 @@ WITH base AS (
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_loan_open_events') }}
     {% if is_incremental() %}
-        WHERE {{ incremental_predicate('_ingested_at') }}
+        WHERE {{ incremental_predicate('_inserted_timestamp') }}
     {% endif %}
 )
 

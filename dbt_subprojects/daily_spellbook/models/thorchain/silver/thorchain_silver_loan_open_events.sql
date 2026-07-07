@@ -20,7 +20,6 @@ WITH deduplicated AS (
         debt_issued,
         tx_id,
         block_timestamp,
-        _ingested_at,
         _updated_at,
         ROW_NUMBER() OVER (
             PARTITION BY event_id
@@ -47,7 +46,6 @@ base AS (
         DATE(cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
         date_trunc('month', cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS block_month,
         date_trunc('hour', cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS block_hour,
-        _ingested_at,
         current_timestamp AS _inserted_timestamp
     FROM deduplicated
     WHERE rn = 1

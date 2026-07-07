@@ -27,8 +27,7 @@ WITH base AS (
         _ASSET_IN_RUNE_E8,
         event_id,
         block_timestamp,
-        _INSERTED_TIMESTAMP,
-        _ingested_at
+        _INSERTED_TIMESTAMP
     FROM
         {{ ref('thorchain_silver_stake_events') }}
 )
@@ -60,5 +59,5 @@ FROM
 JOIN {{ ref('thorchain_core_block') }} as b
     ON A.block_timestamp = b.timestamp
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('a._ingested_at') }}
+WHERE {{ incremental_predicate('a._inserted_timestamp') }}
 {% endif %}
