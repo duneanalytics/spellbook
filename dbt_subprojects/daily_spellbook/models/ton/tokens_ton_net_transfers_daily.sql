@@ -10,18 +10,13 @@
 }}
       
 
-with ton_prices as ( -- get price of TON for each day to estimate USD value
+with ton_prices as ( -- get price of native TON for each day (rename-proof: resolved via dune.blockchains, not a hardcoded symbol)
     select
-        date_trunc('day', minute) as block_date
-        , avg(price) as price
-    from {{ source('prices', 'usd') }}
-    where true
-        and symbol = 'TON' 
-        and blockchain is null
-        {% if is_incremental() %}
-        and {{ incremental_predicate('date_trunc(\'day\', minute)') }}
-        {% endif %}
-        group by 1
+        date(timestamp) as block_date
+        , price
+    from (
+        {{ native_token_prices('ton', time_unit='day') }}
+    )
 ), jetton_prices as (
    select jp.token_address as jetton_master,
    case
