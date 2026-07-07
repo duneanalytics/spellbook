@@ -3,7 +3,7 @@
 	, blockchain = null
 	, transfers_start_date = null
 	, tokens_erc20_model = source('tokens', 'erc20')
-	, prices_interval = 'hour'
+	, prices_model = source('prices', 'usd_with_native')
 	, trusted_tokens_model = source('prices', 'trusted_tokens')
 	, usd_amount_threshold = 1000000000
 	)
@@ -31,20 +31,20 @@ with base_transfers as (
 )
 , prices as (
 	select
-		timestamp
+		minute
 		, blockchain
 		, contract_address
 		, decimals
 		, symbol
 		, price
 	from
-		{{ source('prices_external', prices_interval) }}
+		{{ prices_model }}
 	{% if is_incremental() -%}
 	where
-		{{ incremental_predicate('timestamp') }}
+		{{ incremental_predicate('minute') }}
 	{% elif transfers_start_date is not none and transfers_start_date | trim != '' -%}
 	where
-		timestamp >= timestamp '{{ transfers_start_date }}'
+		minute >= timestamp '{{ transfers_start_date }}'
 	{% endif -%}
 )
 , trusted_tokens as (
@@ -88,7 +88,7 @@ with base_transfers as (
 		on trusted_tokens.blockchain = t.blockchain
 		and trusted_tokens.contract_address = t.contract_address
 	left join prices
-		on date_trunc('{{ prices_interval }}', t.block_time) = prices.timestamp
+		on date_trunc('minute', t.block_time) = prices.minute
 		and t.blockchain = prices.blockchain
 		and t.contract_address = prices.contract_address
 )
