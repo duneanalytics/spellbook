@@ -51,6 +51,7 @@
     ,ref('prices_plasma_tokens')
     ,ref('prices_plume_tokens')
     ,ref('prices_polygon_tokens')
+    ,ref('prices_robinhood_tokens')
     ,ref('prices_ronin_tokens')
     ,ref('prices_rise_tokens')
     ,ref('prices_scroll_tokens')

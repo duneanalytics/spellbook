@@ -30,6 +30,7 @@ with prices_native_tokens as (
         , ('boba', 'eth-ethereum')
         , ('celo', 'celo-celo')
         , ('corn', 'corn-corn2')
+        , ('cronos', 'cro-cryptocom-chain')
         , ('degen', 'degen-degen-base')
         , ('ethereum', 'eth-ethereum')
         , ('fantom', 'ftm-fantom')
