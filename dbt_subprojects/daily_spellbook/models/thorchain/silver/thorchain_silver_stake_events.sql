@@ -54,6 +54,7 @@ SELECT
     block_date,
     block_month,
     block_hour,
-    _inserted_timestamp
+    _inserted_timestamp,
+    _ingested_at
 FROM base
 WHERE rn = 1
