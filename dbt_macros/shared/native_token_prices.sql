@@ -24,7 +24,7 @@ INNER JOIN
 WHERE
     b.name = '{{blockchain}}'
     {% if is_incremental() -%}
-    AND {{ incremental_predicate("date_trunc('" ~ time_unit ~ "', p.minute)") }}
+    AND {{ incremental_predicate('p.minute') }}
     {%- elif target.name == 'ci' -%}
     -- bound the CI initial-build scan to recent history so it completes against real data instead of
     -- scanning the full source range; prod and manual runs still get full native price history.
