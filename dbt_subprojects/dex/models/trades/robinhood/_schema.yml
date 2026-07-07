@@ -34,6 +34,13 @@ models:
             combination_of_columns:
               - tx_hash
               - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: uniswap_v3_robinhood_base_trades
     meta:
@@ -50,6 +57,13 @@ models:
             combination_of_columns:
               - tx_hash
               - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: uniswap_v4_robinhood_base_trades
     meta:
@@ -66,6 +80,13 @@ models:
             combination_of_columns:
               - tx_hash
               - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: dex_robinhood_token_volumes_daily
     data_tests:

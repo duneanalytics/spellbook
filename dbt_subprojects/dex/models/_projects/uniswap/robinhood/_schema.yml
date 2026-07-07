@@ -18,3 +18,10 @@ models:
             combination_of_columns:
               - tx_hash
               - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
