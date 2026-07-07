@@ -42,5 +42,5 @@ FROM
 JOIN {{ ref('thorchain_core_block') }} as b
   ON a.block_timestamp = b.timestamp
 {% if is_incremental() %}
-WHERE {{ incremental_predicate_self_heal('b.block_timestamp', 'block_timestamp') }}
+WHERE {{ incremental_predicate('a._inserted_timestamp') }}
 {% endif -%}

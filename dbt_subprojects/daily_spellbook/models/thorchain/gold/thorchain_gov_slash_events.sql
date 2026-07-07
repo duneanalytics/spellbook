@@ -27,7 +27,7 @@ WITH deduplicated AS (
         ) AS rn
     FROM {{ source('thorchain', 'slash_events') }}
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate_self_heal('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)', 'block_time') }}
+    WHERE {{ incremental_predicate('_ingested_at') }}
     {% endif %}
 ),
 
