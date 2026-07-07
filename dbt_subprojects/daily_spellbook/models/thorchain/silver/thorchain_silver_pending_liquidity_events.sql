@@ -6,6 +6,7 @@
     incremental_strategy = 'merge',
     unique_key = ['block_month', 'event_id'],
     partition_by = ['block_month'],
+    on_schema_change = 'append_new_columns',
     tags = ['thorchain', 'liquidity', 'pending']
 ) }}
 
