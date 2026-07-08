@@ -46,7 +46,7 @@ base_model as (
     and {{ incremental_predicate('txns.block_time') }}
     {% elif target.name == 'ci' %}
     and (
-        txns.block_time >= current_date - interval '7' day
+        txns.block_time >= current_date - interval '1' day
         or txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     )
     {% endif %}
