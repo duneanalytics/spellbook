@@ -13,6 +13,11 @@
 	merge_skip_unchanged=true,
 ) }}
 
+-- CI-only scan bound (target=ci); prod/full-refresh unaffected.
+{% if target.name == 'ci' -%}
+select * from (
+{%- endif %}
+
 {{ transfers_base(
 	blockchain='bnb',
 	traces=source('bnb', 'traces'),
@@ -47,3 +52,8 @@ from
 			erc4626_withdraw=source('erc4626_bnb', 'evt_withdraw'),
 		) }}
 	)
+
+{% if target.name == 'ci' -%}
+) as _ci_bounded
+where block_time >= now() - interval '3' day
+{%- endif %}

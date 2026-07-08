@@ -16,4 +16,14 @@
     )
 }}
 
+-- CI-only scan bound (target=ci); prod/full-refresh unaffected.
+{% if target.name == 'ci' -%}
+select * from (
+{%- endif %}
+
 {{ transfers_from_traces_base_macro(blockchain=blockchain) }}
+
+{% if target.name == 'ci' -%}
+) as _ci_bounded
+where block_time >= now() - interval '3' day
+{%- endif %}

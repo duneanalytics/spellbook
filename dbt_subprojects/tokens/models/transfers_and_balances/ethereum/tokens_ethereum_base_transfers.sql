@@ -13,6 +13,11 @@
 	merge_skip_unchanged=true,
 ) }}
 
+-- CI-only scan bound (target=ci); prod/full-refresh unaffected.
+{% if target.name == 'ci' -%}
+select * from (
+{%- endif %}
+
 {{ transfers_base(
 	blockchain='ethereum',
 	traces=source('ethereum', 'traces'),
@@ -150,3 +155,8 @@ where
 {% if is_incremental() -%}
 	and {{ incremental_predicate('b.time') }}
 {% endif -%}
+
+{% if target.name == 'ci' -%}
+) as _ci_bounded
+where block_time >= now() - interval '3' day
+{%- endif %}
