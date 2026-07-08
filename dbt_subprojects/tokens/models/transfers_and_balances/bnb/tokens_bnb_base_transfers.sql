@@ -15,6 +15,7 @@
 	traces=source('bnb', 'traces'),
 	transactions=source('bnb', 'transactions'),
 	erc20_transfers=source('erc20_bnb', 'evt_Transfer'),
+	native_source=ref('tokens_bnb_transfers_from_traces_base'),
 ) }}
 
 union all

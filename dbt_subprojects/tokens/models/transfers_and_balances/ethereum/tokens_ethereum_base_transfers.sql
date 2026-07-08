@@ -15,6 +15,7 @@
 	traces=source('ethereum', 'traces'),
 	transactions=source('ethereum', 'transactions'),
 	erc20_transfers=source('erc20_ethereum', 'evt_Transfer'),
+	native_source=ref('tokens_ethereum_transfers_from_traces_base'),
 ) }}
 
 union all

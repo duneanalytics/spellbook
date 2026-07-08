@@ -1,8 +1,52 @@
-{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, include_traces=true) %}
+{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, include_traces=true, native_source=none) %}
 {% set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' %}
 
 with transfers as (
 {% if include_traces -%}
+{%- if native_source is not none -%}
+	select
+		block_date
+		, block_time
+		, block_number
+		, tx_hash
+		, cast(null as bigint) as evt_index
+		, trace_address
+		, contract_address
+		, 'native' as token_standard
+		, "from"
+		, "to" as to
+		, amount_raw
+	from
+		{{ native_source }}
+	where
+		token_standard = 'native'
+	{% if is_incremental() -%}
+		and {{ incremental_predicate('block_time') }}
+	{% endif -%}
+	{% if blockchain == 'polygon' -%}
+		and case
+			when
+				"to" = (
+					select
+						token_address
+					from
+						{{ source('dune', 'blockchains') }}
+					where
+						name = '{{ blockchain }}'
+				)
+				or "from" = (
+					select
+						token_address
+					from
+						{{ source('dune', 'blockchains') }}
+					where
+						name = '{{ blockchain }}'
+				)
+			then false
+			else true
+		end
+	{% endif -%}
+{%- else -%}
 	select
 		block_date
 		, block_time
@@ -60,6 +104,7 @@ with transfers as (
 			else true
 		end
 	{% endif -%}
+{%- endif -%}
 
 	union all
 {% endif -%}
