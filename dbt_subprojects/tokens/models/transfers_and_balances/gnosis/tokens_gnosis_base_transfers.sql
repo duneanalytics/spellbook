@@ -15,7 +15,6 @@
 	traces=source('gnosis', 'traces'),
 	transactions=source('gnosis', 'transactions'),
 	erc20_transfers=source('erc20_gnosis', 'evt_Transfer'),
-	native_source=ref('tokens_gnosis_transfers_from_traces_base'),
 ) }}
 
 union all

@@ -23,6 +23,10 @@ with transfers as (
 	{% if is_incremental() -%}
 		and {{ incremental_predicate('block_time') }}
 	{% endif -%}
+	{% if target.name == 'ci' -%}
+		-- CI-only scan bound (target=ci); prod/full-refresh unaffected.
+		and block_time >= now() - interval '3' day
+	{% endif -%}
 	{% if blockchain == 'polygon' -%}
 		and case
 			when

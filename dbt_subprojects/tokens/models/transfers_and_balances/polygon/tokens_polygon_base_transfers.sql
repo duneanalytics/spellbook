@@ -15,7 +15,6 @@
 	traces=source('polygon', 'traces'),
 	transactions=source('polygon', 'transactions'),
 	erc20_transfers=source('erc20_polygon', 'evt_Transfer'),
-	native_source=ref('tokens_polygon_transfers_from_traces_base'),
 ) }}
 
 union all
@@ -49,11 +48,14 @@ select
 	, tx."to" as tx_to
 	, tx."index" as tx_index
 	, tr."from"
-	, tr."to" as to
-	, tr.contract_address
-	, tr.amount_raw
+	, case
+		when tr.type = 'suicide' and tr.refund_address is not null then tr.refund_address
+		else coalesce(tr.to, tr.address)
+	end as to
+	, (select token_address from {{ source('dune', 'blockchains') }} where name = 'polygon') as contract_address
+	, tr.value as amount_raw
 	, current_timestamp as _updated_at
-from {{ ref('tokens_polygon_transfers_from_traces_base') }} as tr
+from {{ source('polygon', 'traces') }} as tr
 inner join {{ source('polygon', 'transactions') }} as tx
 	on tx.block_date = tr.block_date
 	and tx.block_number = tr.block_number
@@ -61,12 +63,11 @@ inner join {{ source('polygon', 'transactions') }} as tx
 	{% if is_incremental() %}
 	and {{ incremental_predicate('tx.block_time') }}
 	{% endif %}
-	{% if target.name == 'ci' %}
-	and tx.block_time >= now() - interval '3' day
-	{% endif %}
-where tr.token_standard = 'native'
+where tr.success
+	and (tr.call_type not in ('delegatecall', 'callcode', 'staticcall') or tr.call_type is null)
+	and tr.value > uint256 '0'
 	and (
-		tr."to" = (select token_address from {{ source('dune', 'blockchains') }} where name = 'polygon')
+		tr.to = (select token_address from {{ source('dune', 'blockchains') }} where name = 'polygon')
 		or tr."from" = (select token_address from {{ source('dune', 'blockchains') }} where name = 'polygon')
 	)
 	and not exists (
@@ -78,15 +79,9 @@ where tr.token_standard = 'native'
 			{% if is_incremental() %}
 			and {{ incremental_predicate('et.evt_block_time') }}
 			{% endif %}
-			{% if target.name == 'ci' %}
-			and et.evt_block_time >= now() - interval '3' day
-			{% endif %}
 	)
 	{% if is_incremental() %}
 	and {{ incremental_predicate('tr.block_time') }}
-	{% endif %}
-	{% if target.name == 'ci' %}
-	and tr.block_time >= now() - interval '3' day
 	{% endif %}
 union all
 
