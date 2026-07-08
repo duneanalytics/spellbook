@@ -88,7 +88,9 @@ where
     {%- elif blockchain == 'megaeth' %}
     and block_time >= timestamp '2025-11-01'
     {%- endif %}
-
-
+    -- CI-only scan bound (target=ci); prod/full-refresh unaffected.
+    {% if target.name == 'ci' %}
+    and block_time >= now() - interval '3' day
+    {% endif %}
 
 {%- endmacro -%}
