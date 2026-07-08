@@ -93,6 +93,7 @@ where
     and success
     {% if target.name == 'ci' -%}
     -- CI-only scan bound (target=ci); prod/full-refresh unaffected.
+    and block_date >= date(now() - interval '3' day)
     and block_time >= now() - interval '3' day
     {%- endif %}
     {% if is_incremental() -%}
