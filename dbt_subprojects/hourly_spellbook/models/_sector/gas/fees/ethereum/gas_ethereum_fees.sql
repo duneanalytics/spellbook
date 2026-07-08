@@ -69,7 +69,14 @@ WITH native_token_prices as (
         {% if is_incremental() %}
         AND {{ incremental_predicate('blob.block_time') }}
         {% elif target.name == 'ci' %}
-        AND blob.block_time >= current_date - interval '7' day
+        AND (
+            blob.block_time >= current_date - interval '7' day
+            OR blob.tx_hash in (
+                select tx_hash
+                from {{ ref('evm_gas_fees') }}
+                where blockchain = '{{ blockchain }}'
+            )
+        )
         {% endif %}
     {% if test_short_ci %}
     WHERE {{ incremental_predicate('txns.block_time') }}
