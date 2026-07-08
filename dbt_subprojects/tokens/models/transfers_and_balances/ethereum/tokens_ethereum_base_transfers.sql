@@ -106,15 +106,23 @@ inner join {{ source('ethereum', 'transactions') }} as tx
 
 union all
 
+{#- CI-only scan bound (target=ci); wraps whole-chain sources so macro-leg scans prune. Prod SQL renders bare subqueries; behavior unchanged. -#}
+{%- set eth_tx -%}(select * from {{ source('ethereum', 'transactions') }}{% if target.name == 'ci' %} where block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set weth9_dep -%}(select * from {{ source('zeroex_ethereum', 'weth9_evt_deposit') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set weth9_wit -%}(select * from {{ source('zeroex_ethereum', 'weth9_evt_withdrawal') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set erc20_eth_ci -%}(select * from {{ source('erc20_ethereum', 'evt_Transfer') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set erc4626_dep_eth -%}(select * from {{ source('erc4626_ethereum', 'evt_deposit') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set erc4626_wit_eth -%}(select * from {{ source('erc4626_ethereum', 'evt_withdraw') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+
 select
 	*
 from
 	(
 		{{ transfers_base_wrapped_token(
 			blockchain='ethereum',
-			transactions=source('ethereum', 'transactions'),
-			wrapped_token_deposit=source('zeroex_ethereum', 'weth9_evt_deposit'),
-			wrapped_token_withdrawal=source('zeroex_ethereum', 'weth9_evt_withdrawal'),
+			transactions=eth_tx,
+			wrapped_token_deposit=weth9_dep,
+			wrapped_token_withdrawal=weth9_wit,
 		) }}
 	)
 
@@ -126,10 +134,10 @@ from
 	(
 		{{ transfers_base_erc4626(
 			blockchain='ethereum',
-			transactions=source('ethereum', 'transactions'),
-			erc20_transfers=source('erc20_ethereum', 'evt_Transfer'),
-			erc4626_deposit=source('erc4626_ethereum', 'evt_deposit'),
-			erc4626_withdraw=source('erc4626_ethereum', 'evt_withdraw'),
+			transactions=eth_tx,
+			erc20_transfers=erc20_eth_ci,
+			erc4626_deposit=erc4626_dep_eth,
+			erc4626_withdraw=erc4626_wit_eth,
 		) }}
 	)
 
@@ -171,6 +179,9 @@ from
 			, amount
 		from
 			{{ source('ethereum', 'withdrawals') }}
+		{% if target.name == 'ci' -%}
+		where block_date >= date(now() - interval '3' day)
+		{% endif -%}
 	) as w
 where
 	w.address is not null

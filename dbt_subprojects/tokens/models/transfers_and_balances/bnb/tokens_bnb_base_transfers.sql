@@ -106,15 +106,23 @@ inner join {{ source('bnb', 'transactions') }} as tx
 
 union all
 
+{#- CI-only scan bound (target=ci); wraps whole-chain sources so macro-leg scans prune. Prod SQL renders bare subqueries; behavior unchanged. -#}
+{%- set bnb_tx -%}(select * from {{ source('bnb', 'transactions') }}{% if target.name == 'ci' %} where block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set wbnb_dep -%}(select * from {{ source('bnb_bnb', 'WBNB_evt_Deposit') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set wbnb_wit -%}(select * from {{ source('bnb_bnb', 'WBNB_evt_Withdrawal') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set erc20_bnb_ci -%}(select * from {{ source('erc20_bnb', 'evt_Transfer') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set erc4626_dep_bnb -%}(select * from {{ source('erc4626_bnb', 'evt_deposit') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{%- set erc4626_wit_bnb -%}(select * from {{ source('erc4626_bnb', 'evt_withdraw') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+
 select
 	*
 from
 	(
 		{{ transfers_base_wrapped_token(
 			blockchain='bnb',
-			transactions=source('bnb', 'transactions'),
-			wrapped_token_deposit=source('bnb_bnb', 'WBNB_evt_Deposit'),
-			wrapped_token_withdrawal=source('bnb_bnb', 'WBNB_evt_Withdrawal'),
+			transactions=bnb_tx,
+			wrapped_token_deposit=wbnb_dep,
+			wrapped_token_withdrawal=wbnb_wit,
 		) }}
 	)
 union all
@@ -125,9 +133,9 @@ from
 	(
 		{{ transfers_base_erc4626(
 			blockchain='bnb',
-			transactions=source('bnb', 'transactions'),
-			erc20_transfers=source('erc20_bnb', 'evt_Transfer'),
-			erc4626_deposit=source('erc4626_bnb', 'evt_deposit'),
-			erc4626_withdraw=source('erc4626_bnb', 'evt_withdraw'),
+			transactions=bnb_tx,
+			erc20_transfers=erc20_bnb_ci,
+			erc4626_deposit=erc4626_dep_bnb,
+			erc4626_withdraw=erc4626_wit_bnb,
 		) }}
 	)
