@@ -106,13 +106,13 @@ inner join {{ source('bnb', 'transactions') }} as tx
 
 union all
 
-{#- CI-only scan bound (target=ci); wraps whole-chain sources so macro-leg scans prune. Prod SQL renders bare subqueries; behavior unchanged. -#}
-{%- set bnb_tx -%}(select * from {{ source('bnb', 'transactions') }}{% if target.name == 'ci' %} where block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
-{%- set wbnb_dep -%}(select * from {{ source('bnb_bnb', 'WBNB_evt_Deposit') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
-{%- set wbnb_wit -%}(select * from {{ source('bnb_bnb', 'WBNB_evt_Withdrawal') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
-{%- set erc20_bnb_ci -%}(select * from {{ source('erc20_bnb', 'evt_Transfer') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
-{%- set erc4626_dep_bnb -%}(select * from {{ source('erc4626_bnb', 'evt_deposit') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
-{%- set erc4626_wit_bnb -%}(select * from {{ source('erc4626_bnb', 'evt_withdraw') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){%- endset -%}
+{# CI-only scan bound (target=ci); wraps whole-chain sources so macro-leg scans prune. Prod SQL renders bare subqueries; behavior unchanged. #}
+{% set bnb_tx %}(select * from {{ source('bnb', 'transactions') }}{% if target.name == 'ci' %} where block_date >= date(now() - interval '3' day){% endif %}){% endset %}
+{% set wbnb_dep %}(select * from {{ source('bnb_bnb', 'WBNB_evt_Deposit') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){% endset %}
+{% set wbnb_wit %}(select * from {{ source('bnb_bnb', 'WBNB_evt_Withdrawal') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){% endset %}
+{% set erc20_bnb_ci %}(select * from {{ source('erc20_bnb', 'evt_Transfer') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){% endset %}
+{% set erc4626_dep_bnb %}(select * from {{ source('erc4626_bnb', 'evt_deposit') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){% endset %}
+{% set erc4626_wit_bnb %}(select * from {{ source('erc4626_bnb', 'evt_withdraw') }}{% if target.name == 'ci' %} where evt_block_date >= date(now() - interval '3' day){% endif %}){% endset %}
 
 select
 	*
