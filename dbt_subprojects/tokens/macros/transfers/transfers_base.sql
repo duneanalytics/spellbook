@@ -1,56 +1,8 @@
-{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, include_traces=true, native_source=none) %}
+{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, include_traces=true) %}
 {% set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' %}
 
 with transfers as (
 {% if include_traces -%}
-{%- if native_source is not none -%}
-	select
-		block_date
-		, block_time
-		, block_number
-		, tx_hash
-		, cast(null as bigint) as evt_index
-		, trace_address
-		, contract_address
-		, 'native' as token_standard
-		, "from"
-		, "to" as to
-		, amount_raw
-	from
-		{{ native_source }}
-	where
-		token_standard = 'native'
-	{% if is_incremental() -%}
-		and {{ incremental_predicate('block_time') }}
-	{% endif -%}
-	{% if target.name == 'ci' -%}
-		-- CI-only scan bound (target=ci); prod/full-refresh unaffected.
-		and block_time >= now() - interval '3' day
-	{% endif -%}
-	{% if blockchain == 'polygon' -%}
-		and case
-			when
-				"to" = (
-					select
-						token_address
-					from
-						{{ source('dune', 'blockchains') }}
-					where
-						name = '{{ blockchain }}'
-				)
-				or "from" = (
-					select
-						token_address
-					from
-						{{ source('dune', 'blockchains') }}
-					where
-						name = '{{ blockchain }}'
-				)
-			then false
-			else true
-		end
-	{% endif -%}
-{%- else -%}
 	select
 		block_date
 		, block_time
@@ -85,9 +37,6 @@ with transfers as (
 	{% if is_incremental() -%}
 		and {{ incremental_predicate('block_time') }}
 	{% endif -%}
-	{% if target.name == 'ci' -%}
-		and block_time >= now() - interval '3' day
-	{% endif -%}
 	{% if blockchain == 'polygon' -%}
 		and case
 			when
@@ -111,7 +60,6 @@ with transfers as (
 			else true
 		end
 	{% endif -%}
-{%- endif -%}
 
 	union all
 {% endif -%}
@@ -142,9 +90,6 @@ with transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('evt_block_time') }}
-	{% elif target.name == 'ci' -%}
-	where
-		evt_block_time >= now() - interval '3' day
 	{% endif -%}
 )
 
@@ -180,8 +125,5 @@ inner join {{ transactions }} as tx
 	and tx.hash = t.tx_hash
 	{% if is_incremental() -%}
 	and {{ incremental_predicate('tx.block_time') }}
-	{% endif -%}
-	{% if target.name == 'ci' -%}
-	and tx.block_time >= now() - interval '3' day
 	{% endif -%}
 {% endmacro -%}
