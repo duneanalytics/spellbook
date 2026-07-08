@@ -11,29 +11,20 @@ WITH base_model AS (
         t.signer,
         t.fee AS tx_fee_raw,
         5000*required_signatures as base_fee_raw, -- each signature is 5000 lamports
-        (COALESCE(cl.compute_limit, 200000) * COALESCE(up.compute_unit_price/ 1e6, 0)) AS prioritization_fee_raw,
-        COALESCE(up.compute_unit_price/ 1e6, 0) AS compute_unit_price,
-        COALESCE(cl.compute_limit, 200000) AS compute_limit,
+        (COALESCE(cb.compute_limit, 200000) * COALESCE(cb.compute_unit_price/ 1e6, 0)) AS prioritization_fee_raw,
+        COALESCE(cb.compute_unit_price/ 1e6, 0) AS compute_unit_price,
+        COALESCE(cb.compute_limit, 200000) AS compute_limit,
         'So11111111111111111111111111111111111111112' AS tx_fee_currency,
         b.leader
     FROM {{ source('solana', 'transactions') }} t
-    LEFT JOIN {{ ref('gas_solana_compute_limit') }} cl
-        ON t.id = cl.tx_id
-        AND t.block_date = cl.block_date
+    LEFT JOIN {{ ref('gas_solana_compute_budget') }} cb
+        ON t.id = cb.tx_id
+        AND t.block_date = cb.block_date
         {% if is_incremental() %}
-        AND {{ incremental_predicate('cl.block_date') }}
+        AND {{ incremental_predicate('cb.block_date') }}
         {% else %}
-        AND cl.block_date >= {{ start_date }}
-        AND cl.block_date < {{ end_date }}
-        {% endif %}
-    LEFT JOIN {{ ref('gas_solana_compute_unit_price') }} up
-        ON t.id = up.tx_id
-        AND t.block_date = up.block_date
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('up.block_date') }}
-        {% else %}
-        AND up.block_date >= {{ start_date }}
-        AND up.block_date < {{ end_date }}
+        AND cb.block_date >= {{ start_date }}
+        AND cb.block_date < {{ end_date }}
         {% endif %}
     LEFT JOIN {{ ref('solana_utils_block_leaders') }} b
         ON t.block_slot = b.slot
