@@ -32,6 +32,7 @@ with transfers as (
 	{% endif -%}
 	{% if target.name == 'ci' -%}
 		-- CI-only scan bound (target=ci); prod/full-refresh unaffected.
+		and block_date >= date(now() - interval '3' day)
 		and block_time >= now() - interval '3' day
 	{% endif -%}
 
@@ -65,7 +66,8 @@ with transfers as (
 		{{ incremental_predicate('evt_block_time') }}
 	{% elif target.name == 'ci' -%}
 	where
-		evt_block_time >= now() - interval '3' day
+		evt_block_date >= date(now() - interval '3' day)
+		and evt_block_time >= now() - interval '3' day
 	{% endif -%}
 )
 
@@ -98,6 +100,7 @@ inner join {{ source('bnb', 'transactions') }} as tx
 	and {{ incremental_predicate('tx.block_time') }}
 	{% endif -%}
 	{% if target.name == 'ci' -%}
+	and tx.block_date >= date(now() - interval '3' day)
 	and tx.block_time >= now() - interval '3' day
 	{% endif -%}
 
