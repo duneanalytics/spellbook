@@ -61,6 +61,9 @@ inner join {{ source('polygon', 'transactions') }} as tx
 	{% if is_incremental() %}
 	and {{ incremental_predicate('tx.block_time') }}
 	{% endif %}
+	{% if target.name == 'ci' %}
+	and tx.block_time >= now() - interval '3' day
+	{% endif %}
 where tr.token_standard = 'native'
 	and (
 		tr."to" = (select token_address from {{ source('dune', 'blockchains') }} where name = 'polygon')
@@ -75,9 +78,15 @@ where tr.token_standard = 'native'
 			{% if is_incremental() %}
 			and {{ incremental_predicate('et.evt_block_time') }}
 			{% endif %}
+			{% if target.name == 'ci' %}
+			and et.evt_block_time >= now() - interval '3' day
+			{% endif %}
 	)
 	{% if is_incremental() %}
 	and {{ incremental_predicate('tr.block_time') }}
+	{% endif %}
+	{% if target.name == 'ci' %}
+	and tr.block_time >= now() - interval '3' day
 	{% endif %}
 union all
 

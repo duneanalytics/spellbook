@@ -81,6 +81,9 @@ with transfers as (
 	{% if is_incremental() -%}
 		and {{ incremental_predicate('block_time') }}
 	{% endif -%}
+	{% if target.name == 'ci' -%}
+		and block_time >= now() - interval '3' day
+	{% endif -%}
 	{% if blockchain == 'polygon' -%}
 		and case
 			when
@@ -135,6 +138,9 @@ with transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('evt_block_time') }}
+	{% elif target.name == 'ci' -%}
+	where
+		evt_block_time >= now() - interval '3' day
 	{% endif -%}
 )
 
@@ -170,5 +176,8 @@ inner join {{ transactions }} as tx
 	and tx.hash = t.tx_hash
 	{% if is_incremental() -%}
 	and {{ incremental_predicate('tx.block_time') }}
+	{% endif -%}
+	{% if target.name == 'ci' -%}
+	and tx.block_time >= now() - interval '3' day
 	{% endif -%}
 {% endmacro -%}
