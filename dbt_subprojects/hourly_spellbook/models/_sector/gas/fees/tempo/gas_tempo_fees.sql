@@ -13,6 +13,7 @@
     ,incremental_strategy='merge'
     ,unique_key = ['block_month', 'tx_hash']
     ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    ,tags = ['gas_fees']
     )
 }}
 
