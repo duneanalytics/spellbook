@@ -33,6 +33,7 @@
     , 'plasma'
     , 'plume'
     , 'polygon'
+    , 'robinhood'
     , 'ronin'
     , 'scroll'
     , 'sei'
@@ -99,8 +100,10 @@ SELECT
     , _updated_at
 FROM
     {{ ref('dex_'~chain~'_trades') }}
-{% if var('dev_dates', false) -%}
-WHERE block_date > current_date - interval '3' day
+{% if target.name == 'ci' -%}
+-- dex_trades only ever unions in already-built chain models, so a full-history CI build adds no
+-- coverage over 7 days; use target.name instead of dev_dates so this also bounds CI, not just local dev.
+WHERE block_date > current_date - interval '7' day
 {%- else -%}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}

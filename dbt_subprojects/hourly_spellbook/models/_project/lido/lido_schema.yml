@@ -10,25 +10,48 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Granular-level general ledger of LidoDAO with all accounting entries. Currently Work In Progress"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - period
+              - hash
+              - primary_label
+              - secondary_label
+              - account
+              - category
+              - base_token_address
     columns:
       - &period
         name: period
         description: "Timestamp of the accounting entry"
+        data_tests:
+          - not_null
       - &hash
         name: hash
         description: "Transaction hash of the accounting entry"
+        data_tests:
+          - not_null
       - &primary_label
         name: primary_label
         description: "Primary label account of the accounting entry"
+        data_tests:
+          - not_null
       - &secondary_label
         name: secondary_label
         description: "Secondary label account of the accounting entry"
+        data_tests:
+          - not_null
       - &account
         name: account
         description: "Main label of the accounting entry"
+        data_tests:
+          - not_null
       - &category
         name: category
         description: "Category of the accounting entry"
+        data_tests:
+          - not_null
       - &value_base_token
         name: value_base_token
         description: "Value of the accounting entry in base token"
@@ -38,6 +61,8 @@ models:
       - &base_token_address
         name: base_token_address
         description: "Base token's address of the accounting entry in base token"
+        data_tests:
+          - not_null
       - &value_usd
         name: value_usd
         description: "USD Value of the accounting entry"
