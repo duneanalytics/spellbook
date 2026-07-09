@@ -1,7 +1,6 @@
 {{ config(
         schema = 'odos_avalanche_c',
         alias = 'trades'
-        , post_hook='{{ hide_spells() }}'
         )
 }}
 

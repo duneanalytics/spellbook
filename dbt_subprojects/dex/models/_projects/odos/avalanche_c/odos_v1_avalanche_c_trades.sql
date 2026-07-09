@@ -76,7 +76,7 @@ select
     ) as amount_usd
     , from_hex(substr(dexs.token_bought_address, 3)) as token_bought_address
     , dexs.token_sold_address
-    , from_hex(substr(coalesce(dexs.taker, cast(tx."from" as varchar)), 3)) as taker
+    , coalesce(cast(dexs.taker as varbinary), tx."from") as taker
     , dexs.maker
     , dexs.project_contract_address
     , dexs.tx_hash
