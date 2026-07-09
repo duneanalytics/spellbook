@@ -36,6 +36,10 @@ WITH raw AS (
     {% if is_incremental() %}
       AND {{ incremental_predicate('block_date') }}
     {% endif %}
+    {% if target.name == 'ci' %}
+      -- bound the full-refresh scan in CI so the build completes within the 90-min cap; prod is unaffected
+      AND block_date >= current_date - interval '3' day
+    {% endif %}
 )
 
 SELECT

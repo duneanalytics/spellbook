@@ -26,6 +26,9 @@ WITH base_model AS (
         AND cb.block_date >= {{ start_date }}
         AND cb.block_date < {{ end_date }}
         {% endif %}
+        {% if target.name == 'ci' %}
+        AND cb.block_date >= current_date - interval '3' day
+        {% endif %}
     LEFT JOIN {{ ref('solana_utils_block_leaders') }} b
         ON t.block_slot = b.slot
         AND t.block_date = b.date
@@ -35,12 +38,19 @@ WITH base_model AS (
         AND b.date >= {{ start_date }}
         AND b.date < {{ end_date }}
         {% endif %}
+        {% if target.name == 'ci' %}
+        AND b.date >= current_date - interval '3' day
+        {% endif %}
     WHERE 1=1
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.block_date') }}
         {% else %}
         AND t.block_date >= {{ start_date }}
         AND t.block_date < {{ end_date }}
+        {% endif %}
+        {% if target.name == 'ci' %}
+        -- bound the full-refresh scan in CI so the build completes within the 90-min cap; prod is unaffected
+        AND t.block_date >= current_date - interval '3' day
         {% endif %}
 )
 
@@ -83,5 +93,8 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     {% else %}
     AND p.minute >= {{ start_date }}
     AND p.minute < {{ end_date }}
+    {% endif %}
+    {% if target.name == 'ci' %}
+    AND p.minute >= current_date - interval '3' day
     {% endif %}
 {% endmacro %}
