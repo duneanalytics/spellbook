@@ -280,3 +280,113 @@ sources:
             description: "Address being granted permission to spend tokens"
           - name: value
             description: "Amount of ERC20 tokens approved for spending, in the token's native decimal representation (raw value)"
+
+  # ===========================================
+  # ERC721 Source
+  # ===========================================
+  - name: erc721_cronos
+    description: "Standard ERC721 NFT event tables for cronos"
+    tables:
+      - name: evt_Transfer
+        description: "ERC721 Transfer events emitted on cronos"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - name: tokenId
+            description: "Unique identifier of the specific ERC721 token (NFT) being transferred"
+
+      - name: evt_Approval
+        description: "ERC721 Approval events emitted on cronos"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved
+            name: approved
+            description: "Address approved to manage the specific tokenId"
+          - &owner
+            name: owner
+            description: "Address of the token owner"
+          - name: tokenId
+            description: "Unique identifier of the specific ERC721 token (NFT) for which approval is granted/revoked"
+
+      - name: evt_ApprovalForAll
+        description: "ERC721 ApprovalForAll events emitted on cronos"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved_flag
+            name: approved
+            description: "Boolean indicating whether the operator is approved for all tokens (true) or revoked (false)"
+          - *owner
+          - name: operator
+            description: "Address granted or revoked permission to manage all of the owner's tokens"
+
+  # ===========================================
+  # ERC1155 Source
+  # ===========================================
+  - name: erc1155_cronos
+    description: "Standard ERC1155 multi-token standard event tables for cronos"
+    tables:
+      - name: evt_TransferSingle
+        description: "ERC1155 TransferSingle events emitted on cronos"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Address that initiated the transfer (may be owner or approved operator)"
+          - *from
+          - *to
+          - name: id
+            description: "Identifier of the specific ERC1155 token type being transferred"
+          - name: value
+            description: "Quantity of the specific ERC1155 token type transferred"
+
+      - name: evt_TransferBatch
+        description: "ERC1155 TransferBatch events emitted on cronos"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Address that initiated the batch transfer"
+          - *from
+          - *to
+          - name: ids
+            description: "Array of identifiers for the ERC1155 token types transferred in the batch"
+          - name: values
+            description: "Array of quantities for each ERC1155 token type transferred, corresponding to the ids array"
+
+      - name: evt_ApprovalForAll
+        description: "ERC1155 ApprovalForAll events emitted on cronos"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved_flag
+          - *owner
+          - name: operator
+            description: "Address granted or revoked permission to manage all of the owner's tokens"
