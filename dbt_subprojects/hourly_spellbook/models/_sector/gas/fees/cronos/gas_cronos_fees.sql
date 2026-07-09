@@ -1,4 +1,4 @@
-{% set blockchain = 'abstract' %}
+{% set blockchain = 'cronos' %}
 
 {{ config(
     schema = 'gas_' + blockchain
@@ -11,6 +11,10 @@
     ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
+
+-- cronos is an EIP-1559 L1 (native token CRO). Unlike morph it has no l1_fee,
+-- so this mirrors the standard L1 pattern (fantom / gnosis): tx_fee_raw is
+-- gas_price * gas_used with a base_fee / priority_fee breakdown.
 
 {% set test_short_ci=false %}
 
@@ -30,7 +34,13 @@ WITH native_token_prices as (
         ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
         ,map_concat(
             map()
-            ,map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256))])
+            ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+            end
         ) as tx_fee_breakdown_raw
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
@@ -42,29 +52,23 @@ WITH native_token_prices as (
             WHEN txns.gas_limit = 0 THEN NULL
             WHEN txns.gas_limit != 0 THEN cast(txns.gas_used as double) / cast(txns.gas_limit as double)
         END AS gas_limit_usage
+        -- early cronos raw data (2021-11 to 2023-12) has the same tx hash recorded at
+        -- multiple block_number/index. dedup to one row per hash so (block_month, tx_hash) stays unique.
+        ,row_number() over (partition by txns.hash order by txns.block_number, txns."index") as tx_hash_rn
     FROM {{ source(blockchain, 'transactions') }} txns
     INNER JOIN {{ source(blockchain, 'blocks') }} blocks
         ON txns.block_number = blocks.number
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
-        {% elif target.name == 'ci' %}
-        AND (
-            blocks.time >= current_date - interval '1' day
-            OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
-        )
         {% endif %}
     {% if test_short_ci %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
-    {% elif target.name == 'ci' %}
-    WHERE (
-        txns.block_time >= current_date - interval '1' day
-        OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
-    )
     {% endif %}
-)
+    )
+
 SELECT
     '{{blockchain}}' as blockchain
     ,CAST(date_trunc('month', b.block_time) AS DATE) AS block_month
@@ -98,3 +102,4 @@ SELECT
 FROM base_model as b
 LEFT JOIN native_token_prices as p
     ON p.timestamp = date_trunc('day', b.block_time)
+WHERE b.tx_hash_rn = 1
