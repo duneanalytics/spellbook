@@ -919,6 +919,25 @@ models:
             filter:
               version: 3
 
+  - name: agra_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: agra
+      contributors: cxheng315
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'agra' ]
+    description: "Agra ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('agra_ethereum_base_trades_seed')
+
 
   - name: dex_ethereum_token_volumes_daily
     data_tests:
