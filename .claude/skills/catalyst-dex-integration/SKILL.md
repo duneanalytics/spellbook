@@ -93,16 +93,15 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
    from base_trades where rn <= 3
    ```
 
-8. **commit, push, and open draft PR**
+8. **commit, push, and open PR ready for review**
    - stage all integration files (sources, models, schema, seeds, `dex_trades` / `dex_token_volumes_daily` / `dex_info` updates as applicable).
    - commit with a Conventional Commit message, type prefix only (no scope), e.g. `feat: add <project> to dex.trades on <chain>`.
    - push the branch: `git push -u origin HEAD`.
-   - create a **draft** PR with `gh pr create --draft`:
+   - create a PR ready for review with `gh pr create` (do **not** pass `--draft`):
      - title: `feat: add <project> to dex.trades on <chain>` (adjust for multi-project / new-chain wording).
      - body via HEREDOC, using the Spellbook PR template shape:
        ```
        ## Thank you for contributing to Spellbook 🪄
-       Please open the PR in **draft** and mark as ready when you want to request a review.
 
        ### Description:
        - Integrate **<project>** into `dex.trades` on **<chain>** (<issue_id>).
@@ -111,11 +110,11 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
        - Includes platform base trades, chain-level models (if new chain), schema tests, and seed rows.
 
        ### Checklist
-       - [ ] `dbt compile` succeeds for `<project>_<chain>_base_trades`
-       - [ ] seed CSV populated with 2–3 recent trades
-       - [ ] CI green before marking ready for review
+       - [x] `dbt compile` succeeds for `<project>_<chain>_base_trades`
+       - [x] seed CSV populated with 2–3 recent trades
+       - [ ] CI green
        ```
-   - return the PR URL when done. leave the PR in draft; do not mark ready unless the user asks.
+   - return the PR URL when done. final expected state is **ready for review** (not draft).
 
 ## reference examples
 - custom DEX: `dbt_subprojects/dex/models/trades/<chain>/platforms/kuru_monad_base_trades.sql`
