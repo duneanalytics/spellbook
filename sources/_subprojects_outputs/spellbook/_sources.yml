@@ -24,9 +24,11 @@ sources:
   - name: addresses_events_base
     tables:
       - name: first_funded_by
+      - name: first_token_received
   - name: addresses_events_celo
     tables:
       - name: first_funded_by
+      - name: first_token_received
   - name: addresses_events_ethereum
     tables:
       - name: first_funded_by
@@ -38,9 +40,11 @@ sources:
   - name: addresses_events_polygon
     tables:
       - name: first_funded_by
+      - name: first_token_received
   - name: addresses_events_scroll
     tables:
       - name: first_funded_by
+      - name: first_token_received
   - name: addresses_events_zksync
     tables:
       - name: first_funded_by
@@ -113,6 +117,14 @@ sources:
       - name: first_funded_by
       - name: first_token_received
   - name: addresses_events_monad
+    tables:
+      - name: first_funded_by
+      - name: first_token_received
+  - name: addresses_events_opbnb
+    tables:
+      - name: first_funded_by
+      - name: first_token_received
+  - name: addresses_events_unichain
     tables:
       - name: first_funded_by
       - name: first_token_received

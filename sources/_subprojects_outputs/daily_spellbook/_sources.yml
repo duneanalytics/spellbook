@@ -47,6 +47,59 @@ sources:
   - name: ethereum
     tables:
       - name: blobs_submissions
+      - name: address_metrics
+
+  - name: arbitrum
+    tables:
+      - name: address_metrics
+  - name: avalanche_c
+    tables:
+      - name: address_metrics
+  - name: base
+    tables:
+      - name: address_metrics
+  - name: blast
+    tables:
+      - name: address_metrics
+  - name: bnb
+    tables:
+      - name: address_metrics
+  - name: celo
+    tables:
+      - name: address_metrics
+  - name: fantom
+    tables:
+      - name: address_metrics
+  - name: gnosis
+    tables:
+      - name: address_metrics
+  - name: linea
+    tables:
+      - name: address_metrics
+  - name: mantle
+    tables:
+      - name: address_metrics
+  - name: optimism
+    tables:
+      - name: address_metrics
+  - name: polygon
+    tables:
+      - name: address_metrics
+  - name: scroll
+    tables:
+      - name: address_metrics
+  - name: sei
+    tables:
+      - name: address_metrics
+  - name: zkevm
+    tables:
+      - name: address_metrics
+  - name: zksync
+    tables:
+      - name: address_metrics
+  - name: zora
+    tables:
+      - name: address_metrics
 
   - name: beets
     tables:

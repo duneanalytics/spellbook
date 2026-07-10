@@ -37,7 +37,7 @@ group by 1,2
     '{{blockchain}}' as blockchain
     ,date_trunc('hour',min_block_time) as block_hour
     ,count(distinct address) as new_addresses
-from {{ref(blockchain ~ '_address_metrics')}}
+from {{source(blockchain, 'address_metrics')}}
 {% if is_incremental() %}
 where {{ incremental_predicate('min_block_time') }}
 {% endif %}

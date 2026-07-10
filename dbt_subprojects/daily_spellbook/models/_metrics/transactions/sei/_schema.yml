@@ -1,0 +1,10 @@
+version: 2
+models:
+- name: sei_address_metrics
+  columns:
+  - name: blockchain
+  - name: address
+    data_tests:
+    - unique
+  - name: min_block_time
+    description: block_time of the first transaction initiated by the address

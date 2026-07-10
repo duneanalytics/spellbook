@@ -17,7 +17,7 @@ WITH unique_inflows_raw AS (
     , MIN(cf.block_number) AS block_number
     , MIN_BY(cf.unique_key, cf.block_number) AS unique_key
     FROM {{cex_local_flows}} cf
-    INNER JOIN {{ ref('addresses_events_'~blockchain~'_first_token_received') }} f ON f.address=cf."from"
+    INNER JOIN {{ source('addresses_events_'~blockchain, 'first_token_received') }} f ON f.address=cf."from"
         AND cf.block_time BETWEEN f.block_time AND f.block_time + interval '1' day
     {% if is_incremental() %}
         AND {{ incremental_predicate("f.block_time - interval '1' day") }}
