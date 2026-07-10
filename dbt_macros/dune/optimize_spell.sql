@@ -1,7 +1,7 @@
 {#-
   optimize_spell: post-hook that runs Delta-Lake OPTIMIZE on a materialized
-  model, conditional on the most recent main statement having affected enough
-  rows to make compaction worthwhile.
+  model, conditional on frequency and on the most recent main statement having
+  affected enough rows to make compaction worthwhile.
 
   Background: prior versions ran `ALTER TABLE ... EXECUTE optimize` on every
   prod incremental model regardless of whether the MERGE wrote any rows. About
@@ -11,20 +11,27 @@
   the OPTIMIZE post-hook accounts for an estimated ~30% of total dbt execute
   time, and ~12% is burned on zero-row models alone.
 
-  This macro now skips OPTIMIZE when `rows_affected < OPTIMIZE_MIN_ROWS`
-  (default 1000) for incremental models. The threshold is overridable
-  per-invocation via `--vars '{OPTIMIZE_MIN_ROWS: N}'` or per-model via the
-  `optimize_min_rows` config.
+  Two independent controls decide whether OPTIMIZE runs:
 
-  Frequency throttle: on the ~hourly cadence subprojects each hot table was
-  being re-compacted on every run (~26x/day), which is redundant since each
-  OPTIMIZE rewrites files that the next run's small writes immediately re-
-  fragment. For those subprojects (dex, tokens, hourly_spellbook) each model now
-  OPTIMIZEs at most once per UTC day, on the single cadence run whose hour
-  matches a stable per-model slot derived from a hash of the relation name. This
-  mirrors the throttle already used in spellbook-sqlmesh. See optimize_due_today
-  below for the slot logic and for why the subproject scope is hardcoded here
-  rather than opted into via each dbt_project.yml.
+  1. Frequency throttle (see optimize_due_today). On the ~hourly cadence
+     subprojects each hot table was being re-compacted on every run (~26x/day),
+     which is redundant. For those subprojects (dex, tokens, hourly_spellbook)
+     each model now OPTIMIZEs at most once per UTC day, on the single cadence
+     run whose hour matches a stable per-model slot. This mirrors the throttle
+     already used in spellbook-sqlmesh.
+
+  2. Row gate (incremental only, unthrottled subprojects). When a subproject is
+     not throttled (daily_spellbook, solana) OPTIMIZE runs on every cadence run,
+     so we still skip it when `rows_affected < OPTIMIZE_MIN_ROWS` (default 1000)
+     to avoid compacting on zero/low-row runs. Overridable per-invocation via
+     `--vars '{OPTIMIZE_MIN_ROWS: N}'` or per-model via `optimize_min_rows`.
+
+  Throttled subprojects deliberately do NOT apply the row gate: their model
+  reaches this hook only on its once-daily slot run, so gating that single run
+  on its own row count would let a low-volume slot hour starve the table of
+  compaction for the whole day -- fragmentation written by the ~25 throttle-
+  skipped runs would never be compacted. On the daily slot we compact
+  unconditionally.
 
   `table` materialization always OPTIMIZEs on its slot run: CTAS replaces the
   table wholesale, so the compaction keeps file counts low for downstream reads.
@@ -35,6 +42,7 @@
 -#}
 {% macro optimize_spell(this, materialization) %}
 {%- set is_optimize_target = (target.name == 'prod') or var('OPTIMIZE_SPELL_FORCE', false) -%}
+{%- set should_optimize = false -%}
 {%- if not is_optimize_target -%}
   {#- non-prod (and OPTIMIZE_SPELL_FORCE not set): no-op (unchanged) -#}
 {%- elif materialization not in ('table', 'incremental') -%}
@@ -42,14 +50,14 @@
 {%- elif not optimize_due_today(this) -%}
   {#- frequency throttle: not this model's daily OPTIMIZE slot -#}
 {%- elif materialization == 'table' -%}
-  {#- full refresh table: keep existing always-optimize behavior -#}
-  {%- if target.type == 'trino' -%}
-    ALTER TABLE {{ this }} EXECUTE optimize
-  {%- else -%}
-    OPTIMIZE {{ this }};
-  {%- endif -%}
+  {#- full refresh table: CTAS replaces the relation, always compact -#}
+  {%- set should_optimize = true -%}
+{%- elif optimize_throttled_project() -%}
+  {#- incremental on its once-daily slot run: compact unconditionally so a
+      low-volume slot hour cannot starve the table of compaction -#}
+  {%- set should_optimize = true -%}
 {%- else -%}
-  {#- incremental: gate on rows actually written by the main statement -#}
+  {#- incremental on an unthrottled subproject: gate on rows actually written -#}
   {%- set main_result = load_result('main') -%}
   {%- set rows_affected = 0 -%}
   {%- if main_result is not none and main_result.response is not none and main_result.response.rows_affected is not none -%}
@@ -57,13 +65,28 @@
   {%- endif -%}
   {%- set min_rows = config.get('optimize_min_rows', var('OPTIMIZE_MIN_ROWS', 1000)) | int -%}
   {%- if rows_affected >= min_rows -%}
-    {%- if target.type == 'trino' -%}
-      ALTER TABLE {{ this }} EXECUTE optimize
-    {%- else -%}
-      OPTIMIZE {{ this }};
-    {%- endif -%}
+    {%- set should_optimize = true -%}
   {%- endif -%}
 {%- endif -%}
+{%- if should_optimize -%}
+  {%- if target.type == 'trino' -%}
+    ALTER TABLE {{ this }} EXECUTE optimize
+  {%- else -%}
+    OPTIMIZE {{ this }};
+  {%- endif -%}
+{%- endif -%}
+{%- endmacro -%}
+
+{#-
+  optimize_throttled_project: true when the running subproject uses the ~1/day
+  OPTIMIZE slot throttle. These are the ~hourly cadence subprojects (~26 runs/
+  day). daily_spellbook (1 run/day) and solana (~5 runs/day) are excluded: an
+  hourly slot would rarely be hit, so they keep the every-run row-gated behavior.
+  Kept as a single source of truth shared by optimize_spell and optimize_due_today.
+-#}
+{% macro optimize_throttled_project() %}
+{%- set throttled_projects = ['dex', 'tokens', 'hourly_spellbook'] -%}
+{{ return(project_name is defined and project_name in throttled_projects) }}
 {%- endmacro -%}
 
 {#-
@@ -86,15 +109,13 @@
   throttled ~hourly subproject, in which case it returns true only on the
   cadence run whose UTC hour equals the model's stable slot -- the first 8 hex
   chars of md5(relation) mod 24 -- spreading models across the 24 hourly runs so
-  the load is smeared rather than spiked. daily_spellbook (1 run/day) and solana
-  (~5 runs/day) are excluded: an hourly slot would rarely be hit.
+  the load is smeared rather than spiked.
   `OPTIMIZE_SLOT_BYPASS=true` forces true for one invocation (tests). Fail-safe:
   if project_name is unresolved, defaults to true so compaction is never
   silently disabled.
 -#}
 {% macro optimize_due_today(this) %}
-{%- set throttled_projects = ['dex', 'tokens', 'hourly_spellbook'] -%}
-{%- if project_name is not defined or project_name not in throttled_projects or var('OPTIMIZE_SLOT_BYPASS', false) -%}
+{%- if not optimize_throttled_project() or var('OPTIMIZE_SLOT_BYPASS', false) -%}
   {{ return(true) }}
 {%- endif -%}
 {%- set slot = (local_md5(this | string)[:8] | int(0, 16)) % 24 -%}
