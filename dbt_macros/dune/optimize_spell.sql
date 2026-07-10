@@ -16,12 +16,18 @@
   per-invocation via `--vars '{OPTIMIZE_MIN_ROWS: N}'` or per-model via the
   `optimize_min_rows` config.
 
-  `table` materialization is unchanged: CTAS replaces the table wholesale,
-  so we keep the conservative always-optimize behavior there for now.
+  Frequency throttle: on the ~hourly cadence subprojects each hot table was
+  being re-compacted on every run (~26x/day), which is redundant since each
+  OPTIMIZE rewrites files that the next run's small writes immediately re-
+  fragment. For those subprojects (dex, tokens, hourly_spellbook) each model now
+  OPTIMIZEs at most once per UTC day, on the single cadence run whose hour
+  matches a stable per-model slot derived from a hash of the relation name. This
+  mirrors the throttle already used in spellbook-sqlmesh. See optimize_due_today
+  below for the slot logic and for why the subproject scope is hardcoded here
+  rather than opted into via each dbt_project.yml.
 
-  Small-file accumulation on rarely-touched tables is mitigated by Delta's
-  internal compaction and can be addressed by a separate, scheduled OPTIMIZE
-  pass (out of scope for this PR).
+  `table` materialization always OPTIMIZEs on its slot run: CTAS replaces the
+  table wholesale, so the compaction keeps file counts low for downstream reads.
 
   Testing affordance: setting `OPTIMIZE_SPELL_FORCE=true` enables the macro
   on non-prod targets so the conditional logic can be exercised against a
@@ -33,6 +39,8 @@
   {#- non-prod (and OPTIMIZE_SPELL_FORCE not set): no-op (unchanged) -#}
 {%- elif materialization not in ('table', 'incremental') -%}
   {#- views and other materializations: nothing to compact -#}
+{%- elif not optimize_due_today(this) -%}
+  {#- frequency throttle: not this model's daily OPTIMIZE slot -#}
 {%- elif materialization == 'table' -%}
   {#- full refresh table: keep existing always-optimize behavior -#}
   {%- if target.type == 'trino' -%}
@@ -56,4 +64,39 @@
     {%- endif -%}
   {%- endif -%}
 {%- endif -%}
+{%- endmacro -%}
+
+{#-
+  optimize_due_today: stateless ~1/day OPTIMIZE throttle for one relation.
+
+  WHY THE SUBPROJECT SCOPE IS HARDCODED HERE (not a dbt_project.yml var):
+  optimize_spell is a project-level post-hook, so it sits in every model's macro
+  dependency set. Spellbook CI builds `state:modified.macros`
+  (.github/workflows/dbt_run.yml), and CI only selects a subproject when a file
+  under dbt_subprojects/<p>/ changes. So adding an opt-in var to each
+  dbt_project.yml would select those subprojects and then flag 100% of their
+  models as modified -> a full-subproject rebuild in CI for a change that only
+  alters OPTIMIZE timing, never model output. Changes confined to
+  dbt_macros/dune/** are CI-build-exempt by design (see project selection in
+  dbt_full_run.yml / dbt_pr_trigger.yml), so keeping the scope here ships this
+  as a macro-only change with no wasteful cascade. It takes effect on the next
+  prod cadence run after merge; no rebuild needed.
+
+  Slot logic: returns true (OPTIMIZE proceeds) unless the running project is a
+  throttled ~hourly subproject, in which case it returns true only on the
+  cadence run whose UTC hour equals the model's stable slot -- the first 8 hex
+  chars of md5(relation) mod 24 -- spreading models across the 24 hourly runs so
+  the load is smeared rather than spiked. daily_spellbook (1 run/day) and solana
+  (~5 runs/day) are excluded: an hourly slot would rarely be hit.
+  `OPTIMIZE_SLOT_BYPASS=true` forces true for one invocation (tests). Fail-safe:
+  if project_name is unresolved, defaults to true so compaction is never
+  silently disabled.
+-#}
+{% macro optimize_due_today(this) %}
+{%- set throttled_projects = ['dex', 'tokens', 'hourly_spellbook'] -%}
+{%- if project_name is not defined or project_name not in throttled_projects or var('OPTIMIZE_SLOT_BYPASS', false) -%}
+  {{ return(true) }}
+{%- endif -%}
+{%- set slot = (local_md5(this | string)[:8] | int(0, 16)) % 24 -%}
+{{ return(run_started_at.hour == slot) }}
 {%- endmacro -%}
