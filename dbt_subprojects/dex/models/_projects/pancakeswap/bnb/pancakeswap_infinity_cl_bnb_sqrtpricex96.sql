@@ -16,5 +16,7 @@
         , version = 'infinity_cl'
         , PoolManager_evt_Initialize = source('pancakeswap_infinity_bnb', 'clpoolmanager_evt_initialize')
         , PoolManager_evt_Swap = source('pancakeswap_infinity_bnb', 'ClPoolManager_evt_Swap') 
+        , transactions = source('bnb', 'transactions')
+        , monthly_relation = ref('pancakeswap_infinity_cl_bnb_sqrtpricex96_monthly')
     )
 }}

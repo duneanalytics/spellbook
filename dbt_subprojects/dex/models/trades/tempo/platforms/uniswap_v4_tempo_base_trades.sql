@@ -1,22 +1,36 @@
 {{ config(
     schema = 'uniswap_v4_tempo'
     , alias = 'base_trades'
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['tx_hash', 'evt_index']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , materialized = 'view'
     )
 }}
 
-{{
-    uniswap_compatible_v4_trades(
-        blockchain = 'tempo'
-        , project = 'uniswap'
-        , version = '4'
-        , PoolManager_call_Swap = source('uniswap_v4_tempo', 'PoolManager_call_Swap')
-        , PoolManager_evt_Swap = source('uniswap_v4_tempo', 'PoolManager_evt_Swap')
-        , pool_manager_addr = '0x33620f62c5b9b2086dd6b62f4a297a9f30347029'
-        , start_date = '2026-02-26'
-    )
-}}
+-- venue-side filter: swaps on BaseAggregatorHook pools are routed to an external DEX
+-- and are reclassified into dex_aggregator.trades (see uniswap_v4_tempo_aggregator_base_trades);
+-- the heavy swap parsing lives in uniswap_v4_tempo_swaps
+select
+        blockchain
+        , project
+        , version
+        , block_month
+        , block_date
+        , block_time
+        , block_number
+        , token_bought_amount_raw
+        , token_sold_amount_raw
+        , token_bought_address
+        , token_sold_address
+        , taker
+        , maker
+        , project_contract_address
+        , tx_hash
+        , evt_index
+        , sender
+        , hooks
+        , fee
+        , liquidity
+        , sqrtPriceX96
+        , tick
+        , call_trace_address
+from {{ ref('uniswap_v4_tempo_swaps') }}
+where not is_aggregator_hook_swap

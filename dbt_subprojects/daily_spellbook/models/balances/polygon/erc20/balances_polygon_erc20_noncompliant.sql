@@ -10,6 +10,6 @@
 
 {{
     balances_fungible_noncompliant(
-        transfers_rolling_day = ref('transfers_polygon_erc20_rolling_day')
+        transfers_agg_day = ref('transfers_polygon_erc20_agg_day')
     )
 }}

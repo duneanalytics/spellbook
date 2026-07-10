@@ -71,29 +71,91 @@ with
         select evt_block_time as block_time, evt_tx_hash as tx_hash
         from {{ source('openocean_v2_ethereum', 'OpenOceanExchangeProxy_evt_Swapped') }}
         where
-            referrer = {{ treasury_fee_wallet_1 }}
-            or referrer = {{ treasury_fee_wallet_2 }}
-            or referrer = {{ aggregator_fee_wallet_1 }}
-            or referrer = {{ buyback_fee_wallet_1 }}
+            (
+                referrer = {{ treasury_fee_wallet_1 }}
+                or referrer = {{ treasury_fee_wallet_2 }}
+                or referrer = {{ aggregator_fee_wallet_1 }}
+                or referrer = {{ buyback_fee_wallet_1 }}
+            )
             {% if is_incremental() %}
                 and {{ incremental_predicate('evt_block_time') }}
             {% else %} and evt_block_time >= timestamp '{{project_start_date}}'
             {% endif %}
     ),
-    trade_transactions as (
-        select block_time, address, null as tx_hash
-        from bot_contracts
-        union all
-        select block_time, null as address, tx_hash
+    aggregator_trades as (
+        select block_time, tx_hash
         from oneinch_aggregator_trades
         union all
-        select block_time, null as address, tx_hash
+        select block_time, tx_hash
         from openocean_aggregator_trades
     ),
-    bot_trades as (
+    -- Two equi-join branches instead of one OR-join: the OR forces a nested-loop
+    -- join (trades x every trade transaction), exploding 10M rows into billions.
+    -- trade_transactions rows have address XOR tx_hash non-null, so splitting per
+    -- side preserves the exact match multiplicity.
+    matched_trades as (
         select
             trades.block_time,
             trades.block_number,
+            trades.amount_usd,
+            trades.token_bought_amount,
+            trades.token_bought_symbol,
+            trades.token_bought_address,
+            trades.token_sold_amount,
+            trades.token_sold_symbol,
+            trades.token_sold_address,
+            trades.project,
+            trades.version,
+            trades.token_pair,
+            trades.project_contract_address,
+            trades.tx_from,
+            trades.tx_to,
+            trades.tx_hash,
+            trades.evt_index
+        from {{ source('dex', 'trades') }} as trades
+        join bot_contracts
+            on trades.tx_to = bot_contracts.address
+            and trades.block_time >= bot_contracts.block_time
+        where
+            trades.blockchain = '{{blockchain}}'
+            {% if is_incremental() %}
+                and {{ incremental_predicate('trades.block_time') }}
+            {% else %} and trades.block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+        union all
+        select
+            trades.block_time,
+            trades.block_number,
+            trades.amount_usd,
+            trades.token_bought_amount,
+            trades.token_bought_symbol,
+            trades.token_bought_address,
+            trades.token_sold_amount,
+            trades.token_sold_symbol,
+            trades.token_sold_address,
+            trades.project,
+            trades.version,
+            trades.token_pair,
+            trades.project_contract_address,
+            trades.tx_from,
+            trades.tx_to,
+            trades.tx_hash,
+            trades.evt_index
+        from {{ source('dex', 'trades') }} as trades
+        join aggregator_trades
+            on trades.tx_hash = aggregator_trades.tx_hash
+            and trades.block_time >= aggregator_trades.block_time
+        where
+            trades.blockchain = '{{blockchain}}'
+            {% if is_incremental() %}
+                and {{ incremental_predicate('trades.block_time') }}
+            {% else %} and trades.block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+    ),
+    bot_trades as (
+        select
+            matched_trades.block_time,
+            matched_trades.block_number,
             amount_usd,
             if(token_sold_address = {{ weth }}, 'Buy', 'Sell') as type,
             token_bought_amount,
@@ -111,28 +173,10 @@ with
             project_contract_address,
             tx_from as user,
             tx_to as bot,
-            trades.tx_hash,
+            matched_trades.tx_hash,
             evt_index
-        from {{ source('dex', 'trades') }} as trades
-        join trade_transactions ON (
-          (
-            trades.tx_to = trade_transactions.address
-            OR trades.tx_hash = trade_transactions.tx_hash
-          )
-          AND trades.block_time >= trade_transactions.block_time
-        )
-        left join fees on fees.tx_hash = trades.tx_hash
-        where
-            trades.blockchain = '{{blockchain}}'
-            {% if is_incremental() %}
-                and {{ incremental_predicate('trades.block_time') }}
-            {% else %} and trades.block_time >= timestamp '{{project_start_date}}'
-            {% endif %}
-    ),
-    highest_event_index_for_each_trade as (
-        select tx_hash, max(evt_index) as highest_event_index
-        from bot_trades
-        group by tx_hash
+        from matched_trades
+        left join fees on fees.tx_hash = matched_trades.tx_hash
     )
 select
     block_time,
@@ -168,11 +212,10 @@ select
     user as user,
     bot_trades.tx_hash,
     evt_index,
-    if(evt_index = highest_event_index, true, false) as is_last_trade_in_transaction
+    -- Window instead of a self-join on a grouped copy of bot_trades: referencing
+    -- the CTE twice inlines the whole upstream scan tree twice.
+    if(evt_index = max(evt_index) over (partition by bot_trades.tx_hash), true, false) as is_last_trade_in_transaction
 from bot_trades
-join
-    highest_event_index_for_each_trade
-    on bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
 left join
     {{ source('prices', 'usd') }}
     on (

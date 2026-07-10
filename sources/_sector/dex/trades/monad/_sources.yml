@@ -3,7 +3,8 @@ version: 2
 sources:
   - name: kuru_monad
     tables:
-      - name: router_evt_kururouterswap
+      - name: orderbook_evt_trade
+      - name: router_evt_marketregistered
   - name: pinot_monad
     tables:
       - name: uniswapv2factory_evt_paircreated

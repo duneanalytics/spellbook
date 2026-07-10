@@ -36,6 +36,12 @@ models:
     config:
       tags: ['table', 'metadata', 'fungible', 'solana']
     description: "NFTs minted using the Metaplex standard, with a master edition or cNFT tree"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - unique_key
+              - block_date
     columns:
       - name: account_mint_authority
         description: "mint authority for the account. this is set so that the account cannot mint more tokens"
@@ -68,6 +74,19 @@ models:
       - name: call_block_time
       - name: call_block_slot
       - name: call_tx_signer
+      - name: call_outer_instruction_index
+        description: "only applies to cNFTs — outer instruction index of the mint call. NULL for Token Metadata rows."
+      - name: call_inner_instruction_index
+        description: "only applies to cNFTs — inner instruction index of the mint call. NULL for Token Metadata rows."
+      - name: block_date
+        description: "date(call_block_time). Stable per row; used as the partition column and as part of the merge unique key."
+        data_tests:
+          - not_null
+      - name: unique_key
+        description: "merge identifier; surrogate hash of (version, account_metadata) for Token Metadata rows and (version, account_merkle_tree, call_tx_id, call_outer_instruction_index, call_inner_instruction_index) for cNFT rows."
+        data_tests:
+          - unique
+          - not_null
 
   - name: tokens_solana_stablecoins
     meta:

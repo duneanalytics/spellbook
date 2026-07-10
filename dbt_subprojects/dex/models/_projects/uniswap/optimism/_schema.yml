@@ -353,3 +353,99 @@ models:
               - block_month
               - tx_hash
               - evt_index
+
+  - name: uniswap_v4_optimism_swaps
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: uniswap
+      contributors: thevaizman
+    config:
+      tags: ['optimism', 'dex', 'trades', 'uniswap', 'v4']
+    description: >
+      All Uniswap V4 swaps on optimism, decoded from the PoolManager swap calls. Swaps on
+      BaseAggregatorHook pools (which route the swap to an external DEX) are flagged via
+      is_aggregator_hook_swap. Feeds the venue-side uniswap_v4_optimism.base_trades view
+      (dex.trades) and uniswap_v4_optimism_aggregator_base_trades (dex_aggregator.trades).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: uniswap_v4_optimism_aggregator_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex_aggregator
+      project: uniswap
+      contributors: thevaizman
+    config:
+      tags: ['optimism', 'dex_aggregator', 'trades', 'uniswap', 'v4']
+    description: >
+      Uniswap V4 swaps on optimism executed on BaseAggregatorHook pools. The hook holds no V4
+      liquidity and routes the entire swap to an external DEX, so these rows are recorded as
+      aggregator trades (project uniswap, version 4) in dex_aggregator.trades instead of
+      dex.trades, where they would double-count the backing venue's row.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: uniswap_v4_optimism_sqrtpricex96_monthly
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: uniswap
+    config:
+      tags: ['optimism', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
+    description: >
+      Sparse monthly-latest sqrtPriceX96 rollup: one row per pool per active month (that month's latest price).
+      Seed companion for uniswap_v4_optimism_sqrtpricex96: lets the price builder avoid
+      self-scanning its full history every run to recover each pool's previous price.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - id
+              - block_month
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+        data_tests:
+          - not_null
+      - name: id
+        description: "Pool ID"
+        data_tests:
+          - not_null
+      - name: block_month
+        description: "Calendar month (date-truncated) of the price event; merge/partition key"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block time of this pool's latest price event in the month"
+      - name: block_number
+        description: "Block number of this pool's latest price event in the month"
+      - name: evt_index
+        description: "Event index of this pool's latest price event in the month"
+      - name: block_index_sum
+        description: "Monotonic block/tx/evt ordinal of the month's latest price event"
+      - name: sqrtpricex96
+        description: "Pool price (sqrtPriceX96) at the month's latest price event"

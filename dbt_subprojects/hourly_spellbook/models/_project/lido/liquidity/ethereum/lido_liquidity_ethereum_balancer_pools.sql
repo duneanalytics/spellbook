@@ -63,7 +63,7 @@ group by 1
         DATE_TRUNC('day', minute),
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'ethereum'
     and contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
 
@@ -180,7 +180,7 @@ from (
         decimals,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'ethereum'
     and contract_address in (select distinct token_address from tokens)
     union all
@@ -209,7 +209,7 @@ union all
         18,
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
+    WHERE minute >= current_date and minute < current_date + interval '1' day
     and blockchain = 'ethereum'
     and contract_address = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 union all

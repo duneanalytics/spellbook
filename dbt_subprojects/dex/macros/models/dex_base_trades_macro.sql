@@ -36,6 +36,11 @@ with base_union as (
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
         {% if var('dev_dates', false) -%}
             AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+        {%- elif target.name == 'ci' -%}
+            -- CI: bound the full-refresh window so slim-CI rebuilds of this huge per-chain union do not exceed
+            -- the per-node memory limit (the duplicates_rank window over full history OOMs on big chains, e.g. bnb)
+            -- or the CI job timeout. Prod (target dunesql) is unaffected and keeps the incremental_predicate below.
+            AND block_date > current_date - interval '7' day
         {%- else -%}
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}

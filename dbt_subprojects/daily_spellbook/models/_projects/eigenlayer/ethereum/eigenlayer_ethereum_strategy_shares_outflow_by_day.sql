@@ -1,4 +1,5 @@
-{{ 
+-- ci stamp: 1
+{{
     config(
         schema = 'eigenlayer_ethereum',
         alias = 'strategy_shares_outflow_by_day'

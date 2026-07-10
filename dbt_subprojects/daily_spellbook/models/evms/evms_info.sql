@@ -99,4 +99,7 @@ FROM (
         , (4153, 'rise', 'Rise', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.risechain.com/', timestamp '2026-01-05 09:36:00', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (4217, 'tempo', 'Tempo', 'Layer 1', NULL, 'USD', 0x20c0000000000000000000000000000000000000, 'https://explorer.tempo.xyz/', timestamp '2026-01-16 20:51', NULL, NULL, NULL, true, NULL)
         , (42793, 'tezos_evm', 'Tezos EVM', 'Layer 2', 'Optimistic Rollup', 'XTZ', 0xc9B53AB2679f573e480d01e0f49e2B5CFB7a3EAb, 'https://explorer.etherlink.com/', timestamp '2024-05-02 13:25:55', 'Tezos Smart Rollup EVM stack', 'Tezos L1', 'Tezos', true, 'Tezos')
+        , (2818, 'morph', 'Morph', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x5300000000000000000000000000000000000011, 'https://explorer.morphl2.io/', timestamp '2024-10-21 06:00:00', 'Morph', 'Ethereum Blobs', 'Ethereum', true, NULL)
+        , (4663, 'robinhood', 'Robinhood Chain', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, NULL, timestamp '2026-04-30 16:52:11', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
+        , (25, 'cronos', 'Cronos', 'Layer 1', NULL, 'CRO', 0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23, 'https://cronoscan.com/', timestamp '2021-11-08 00:00', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)

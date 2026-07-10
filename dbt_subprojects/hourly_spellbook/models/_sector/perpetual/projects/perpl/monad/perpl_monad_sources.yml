@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: perpl_monad
+    description: monad decoded tables related to Perpl
+    tables:
+      - name: v1_evt_makerorderfilled
+        description: "MakerOrderFilled event — one row per maker leg of a fill"
+      - name: v1_evt_accountcreated
+        description: "AccountCreated event — binds an account_id to its owning wallet (one row per account)"
+      - name: v1_call_addcontract
+        description: "addContract function call — per-market config including priceDecimals, lotDecimals, symbol, name"
+      - name: v1_evt_positionopened
+        description: "PositionOpened event — emitted when a new position is opened (carries accountId + perpId, used to recover the taker's accountId in fill txs)"
+      - name: v1_evt_positionincreased
+        description: "PositionIncreased event — emitted when an existing position is added to in the same direction"
+      - name: v1_evt_positiondecreased
+        description: "PositionDecreased event — emitted when an existing position is partially closed"
+      - name: v1_evt_positionclosed
+        description: "PositionClosed event — emitted when an existing position is fully closed"
+      - name: v1_evt_positioninverted
+        description: "PositionInverted event — emitted when a position flips sign (e.g. closing a long and opening a short in one fill)"

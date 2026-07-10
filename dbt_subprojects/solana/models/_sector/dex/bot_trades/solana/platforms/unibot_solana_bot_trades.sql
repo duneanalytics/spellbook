@@ -36,6 +36,7 @@ WITH
         address = '{{fee_receiver_1}}'
         OR address = '{{fee_receiver_2}}'
       )
+      AND address_prefix IN ('{{ fee_receiver_1[:2] }}', '{{ fee_receiver_2[:2] }}')
   ),
   botTrades AS (
     SELECT
@@ -100,17 +101,6 @@ WITH
       {% else %}
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
-  ),
-  highestInnerInstructionIndexForEachTrade AS (
-    SELECT
-      tx_id,
-      outer_instruction_index,
-      MAX(inner_instruction_index) AS highestInnerInstructionIndex
-    FROM
-      botTrades
-    GROUP BY
-      tx_id,
-      outer_instruction_index
   )
 SELECT
   block_time,
@@ -139,16 +129,12 @@ SELECT
   botTrades.outer_instruction_index,
   COALESCE(inner_instruction_index, 0) AS inner_instruction_index,
   IF(
-    inner_instruction_index = highestInnerInstructionIndex,
+    inner_instruction_index = MAX(inner_instruction_index) OVER (PARTITION BY tx_id, outer_instruction_index),
     true,
     false
   ) AS is_last_trade_in_transaction
 FROM
   botTrades
-  JOIN highestInnerInstructionIndexForEachTrade ON (
-    botTrades.tx_id = highestInnerInstructionIndexForEachTrade.tx_id
-    AND botTrades.outer_instruction_index = highestInnerInstructionIndexForEachTrade.outer_instruction_index
-  )
 ORDER BY
   block_time DESC,
   tx_index DESC,

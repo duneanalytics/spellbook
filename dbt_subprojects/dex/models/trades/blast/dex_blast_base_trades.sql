@@ -25,6 +25,7 @@
     , ref('swapblast_blast_base_trades')
     , ref('dyorswap_blast_base_trades')
     , ref('icecreamswap_v2_blast_base_trades')
+    , ref('zeroex_settler_blast_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

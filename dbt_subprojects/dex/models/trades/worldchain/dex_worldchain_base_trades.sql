@@ -13,6 +13,7 @@
 {% set base_models = [
     ref('uniswap_v3_worldchain_base_trades')
     , ref('uniswap_v4_worldchain_base_trades')
+    , ref('zeroex_settler_worldchain_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

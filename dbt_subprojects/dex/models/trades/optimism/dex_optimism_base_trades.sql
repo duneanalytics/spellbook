@@ -29,7 +29,6 @@
     , ref('velodrome_optimism_base_trades')
     , ref('synthetix_optimism_base_trades')
     , ref('openxswap_optimism_base_trades')
-    , ref('openocean_optimism_base_trades')
     , ref('chainhop_optimism_base_trades')
     , ref('curve_optimism_base_trades')
     , ref('rubicon_optimism_base_trades')
@@ -45,6 +44,7 @@
     , ref('bridgers_optimism_base_trades')
     , ref('saddle_finance_optimism_base_trades')
     , ref('zeroex_optimism_base_trades')
+    , ref('zeroex_settler_optimism_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

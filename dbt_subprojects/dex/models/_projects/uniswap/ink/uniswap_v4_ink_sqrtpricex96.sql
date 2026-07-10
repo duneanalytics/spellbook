@@ -16,5 +16,7 @@
         , version = '4'
         , PoolManager_evt_Initialize = source('uniswap_v4_ink', 'PoolManager_evt_Initialize')
         , PoolManager_evt_Swap = source('uniswap_v4_ink', 'PoolManager_evt_Swap') 
+        , transactions = source('ink', 'transactions')
+        , monthly_relation = ref('uniswap_v4_ink_sqrtpricex96_monthly')
     )
 }}

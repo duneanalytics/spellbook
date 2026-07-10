@@ -27,4 +27,5 @@ FROM
     , ('usdce-usd-coine', 'USDC.e', 0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035, 6)
     , ('wbtc-wrapped-bitcoin', 'WBTC', 0xea034fb02eb1808c2cc3adbc15f447b93cbe08e1, 8)
     , ('dai-dai', 'DAI', 0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4, 18)
+    , ('usdg-global-dollar', 'USDG', 0x4ae46a509f6b1d9056937ba4500cb143933d2dc8, 6)
 ) as temp (token_id, symbol, contract_address, decimals)

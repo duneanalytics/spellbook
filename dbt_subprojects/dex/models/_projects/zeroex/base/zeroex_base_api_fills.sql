@@ -1,4 +1,5 @@
 {{  config(
+        tags=['static'],
 
     schema = 'zeroex_base',
         alias = 'api_fills',

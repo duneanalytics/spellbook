@@ -2,8 +2,11 @@
         schema = 'lido',
         alias = 'accounting',
 
-        materialized = 'table',
-        file_format = 'delta'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['period','hash','primary_label','secondary_label','account','category','base_token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.period')]
         , post_hook='{{ hide_spells() }}'
         )
 }}
@@ -22,88 +25,60 @@ with tokens AS (
                 (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)   --wstETH
         ) as tokens(address)
 ),
-eth_prices as (
+-- Single pass over prices.usd (previously scanned 7x: eth_prices self-join inlined across 3 UNION branches).
+-- weth_close is the WETH daily-close per day via a window, replacing the eth_prices join.
+daily_close_prices as (
         SELECT
                 CAST(DATE_TRUNC('day', minute) as date) AS period,
                 contract_address AS token,
                 symbol,
                 decimals,
-                price
+                price,
+                MAX(CASE WHEN blockchain = 'ethereum'
+                          AND contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                         THEN price END)
+                    OVER (PARTITION BY CAST(DATE_TRUNC('day', minute) as date)) AS weth_close,
+                (blockchain = 'ethereum' AND contract_address IN (SELECT address FROM tokens)) AS is_eth_token,
+                (symbol = 'stSOL') AS is_stsol
         FROM {{source('prices','usd')}}
-        WHERE blockchain = 'ethereum'
-        AND contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        AND DATE_TRUNC('day', minute) >= date '2020-12-01'
-        AND DATE_TRUNC('day', minute) <= DATE_TRUNC('day', NOW() - INTERVAL '1' DAY)
+        WHERE
+        {% if is_incremental() -%}
+                {{ incremental_predicate('minute') }}
+        {%- else -%}
+                minute >= timestamp '2020-12-01'
+        {%- endif %}
         AND EXTRACT(hour FROM minute) = 23
         AND EXTRACT(minute FROM minute) = 59
-
-        union all
-
-        SELECT
-                CAST(DATE_TRUNC('day', NOW()) as date) AS period,
-                contract_address AS token,
-                symbol,
-                decimals,
-                price
-        FROM {{source('prices','usd')}}
-        WHERE blockchain = 'ethereum'
-        AND contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        AND DATE_TRUNC('day', minute) = DATE_TRUNC('day', NOW() - INTERVAL '1' DAY)
-        AND EXTRACT(hour FROM minute) = 23
-        AND EXTRACT(minute FROM minute) = 59
+        AND (
+                (blockchain = 'ethereum' AND contract_address IN (SELECT address FROM tokens))
+                OR symbol = 'stSOL'
+        )
 ),
 tokens_prices AS (
+        -- Fan each base row out to its output period(s): the historical day, plus -- for the
+        -- ethereum tokens only -- a copy of yesterday relabelled to today (stSOL keeps its own day).
         SELECT
-                CAST(DATE_TRUNC('day', prices.usd.minute) as date) AS period,
-                prices.usd.contract_address AS token,
-                prices.usd.symbol,
-                prices.usd.decimals,
-                prices.usd.price,
-                eth_prices.price as eth_usd_price,
-                prices.usd.price/eth_prices.price as token_eth_price
-        FROM {{source('prices','usd')}}
-        left join eth_prices on DATE_TRUNC('day', prices.usd.minute) =  eth_prices.period
-        WHERE prices.usd.blockchain = 'ethereum'
-        AND prices.usd.contract_address IN (SELECT address FROM tokens)
-        AND DATE_TRUNC('day', minute) >= date '2020-12-01'
-        AND DATE_TRUNC('day', minute) <= DATE_TRUNC('day', NOW() - INTERVAL '1' DAY)
-        AND EXTRACT(hour FROM prices.usd.minute) = 23
-        AND EXTRACT(minute FROM prices.usd.minute) = 59
-
-        union all
-
-        SELECT
-                CAST(date_trunc('minute',now()) as date) AS period,
-                p.contract_address AS token,
-                p.symbol,
-                p.decimals,
-                p.price,
-                eth_prices.price as eth_usd_price,
-                p.price/eth_prices.price as token_eth_price
-        FROM {{source('prices','usd')}} p
-        left join eth_prices on DATE_TRUNC('day', p.minute) =  eth_prices.period
-        WHERE p.blockchain = 'ethereum'
-        AND p.contract_address IN (SELECT address FROM tokens)
-        AND DATE_TRUNC('day', minute) = DATE_TRUNC('day', NOW() - INTERVAL '1' DAY)
-        AND EXTRACT(hour FROM p.minute) = 23
-        AND EXTRACT(minute FROM p.minute) = 59
-
-        union all
-
-        SELECT
-                CAST(DATE_TRUNC('day', prices.usd.minute) as date) AS period,
-                0xedd1db59799c8b7753f141585986707812d783272eed8de22fab6b2a7d58ec0463,
-                'stSOL',
-                0,
-                prices.usd.price,
-                prices.usd.price as eth_usd_price,
-                prices.usd.price/eth_prices.price as token_eth_price
-        FROM {{source('prices','usd')}}
-        left join eth_prices on DATE_TRUNC('day', prices.usd.minute) =  eth_prices.period
-        WHERE prices.usd.symbol = 'stSOL'
-        AND DATE_TRUNC('day', minute) >= date '2020-12-01'
-        AND EXTRACT(hour FROM prices.usd.minute) = 23
-        AND EXTRACT(minute FROM prices.usd.minute) = 59
+                u.out_period AS period,
+                CASE WHEN is_stsol
+                     THEN 0xedd1db59799c8b7753f141585986707812d783272eed8de22fab6b2a7d58ec0463
+                     ELSE token END AS token,
+                CASE WHEN is_stsol THEN 'stSOL' ELSE symbol END AS symbol,
+                CASE WHEN is_stsol THEN 0 ELSE decimals END AS decimals,
+                price,
+                CASE WHEN is_stsol THEN price ELSE weth_close END AS eth_usd_price,
+                price / weth_close AS token_eth_price
+        FROM daily_close_prices
+        CROSS JOIN UNNEST(
+                CASE
+                        WHEN is_eth_token AND period < CAST(DATE_TRUNC('day', NOW() - INTERVAL '1' DAY) as date)
+                                THEN ARRAY[period]
+                        WHEN is_eth_token AND period = CAST(DATE_TRUNC('day', NOW() - INTERVAL '1' DAY) as date)
+                                THEN ARRAY[period, CAST(DATE_TRUNC('day', NOW()) as date)]
+                        WHEN is_eth_token THEN CAST(ARRAY[] as array(date))
+                        WHEN is_stsol THEN ARRAY[period]
+                        ELSE CAST(ARRAY[] as array(date))
+                END
+        ) AS u(out_period)
 )
 SELECT  CAST(date_trunc('day', accounts.period) as date) as period, --partition columns cannot be timestamp
         accounts.evt_tx_hash as hash,
@@ -856,5 +831,8 @@ AND (
         )
 )
 LEFT JOIN {{source('prices','tokens')}} pt ON accounts.token = pt.contract_address
+{% if is_incremental() -%}
+WHERE {{ incremental_predicate('accounts.period') }}
+{% endif -%}
 GROUP BY 1,2,3,4,5,6,8,9, tokens_prices.decimals, pt.decimals, tokens_prices.price, tokens_prices.token_eth_price
 ORDER BY period DESC

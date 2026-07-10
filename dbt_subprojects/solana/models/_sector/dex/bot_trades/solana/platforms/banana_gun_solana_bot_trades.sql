@@ -48,6 +48,7 @@ WITH
         OR address = '{{fee_receiver_7}}'
         OR address = '{{fee_receiver_8}}'
       )
+      AND address_prefix IN ('{{ fee_receiver_1[:2] }}', '{{ fee_receiver_2[:2] }}', '{{ fee_receiver_3[:2] }}', '{{ fee_receiver_4[:2] }}', '{{ fee_receiver_5[:2] }}', '{{ fee_receiver_6[:2] }}', '{{ fee_receiver_7[:2] }}', '{{ fee_receiver_8[:2] }}')
       AND tx_id != 'AT915GhHaLdGsdFkywx2uE6jqSXeyTauveYH2BQqWMyptGhUtjE6dcdr74ErELg79VY9apZ9Egiyc1VtA6Ddykb' -- Edge case that sent fees to multiple fee wallets
   ),
   botTrades AS (
@@ -124,17 +125,6 @@ WITH
       {% else %}
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
-  ),
-  highestInnerInstructionIndexForEachTrade AS (
-    SELECT
-      tx_id,
-      outer_instruction_index,
-      MAX(inner_instruction_index) AS highestInnerInstructionIndex
-    FROM
-      botTrades
-    GROUP BY
-      tx_id,
-      outer_instruction_index
   )
 SELECT
   block_time,
@@ -164,16 +154,12 @@ SELECT
   botTrades.outer_instruction_index,
   COALESCE(inner_instruction_index, 0) AS inner_instruction_index,
   IF(
-    inner_instruction_index = highestInnerInstructionIndex,
+    inner_instruction_index = MAX(inner_instruction_index) OVER (PARTITION BY tx_id, outer_instruction_index),
     true,
     false
   ) AS is_last_trade_in_transaction
 FROM
   botTrades
-  JOIN highestInnerInstructionIndexForEachTrade ON (
-    botTrades.tx_id = highestInnerInstructionIndexForEachTrade.tx_id
-    AND botTrades.outer_instruction_index = highestInnerInstructionIndexForEachTrade.outer_instruction_index
-  )
 ORDER BY
   block_time DESC,
   tx_index DESC,

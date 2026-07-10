@@ -16,10 +16,6 @@
   )
 }}
 
-{% set begin = '2025-02-20' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
-
 WITH pools AS (
     SELECT
           pool
@@ -52,9 +48,6 @@ WITH pools AS (
         , is_buy
         , surrogate_key
     FROM {{ ref('pumpswap_solana_stg_decoded_swaps') }}
-    WHERE
-        block_time >= TIMESTAMP '{{ batch_start }}'
-        AND block_time < TIMESTAMP '{{ batch_end }}'
 )
 
 , fee_configs_with_time_ranges AS (
@@ -83,9 +76,6 @@ WITH pools AS (
         , from_token_account
         , to_token_account
     FROM {{ source('tokens_solana', 'transfers') }}
-    WHERE
-        block_time >= TIMESTAMP '{{ batch_start }}'
-        AND block_time < TIMESTAMP '{{ batch_end }}'
 )
 
 , swaps_with_fees AS (

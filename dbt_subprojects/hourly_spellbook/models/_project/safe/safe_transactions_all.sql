@@ -15,7 +15,6 @@
 ,ref('safe_ethereum_transactions')
 ,ref('safe_fantom_transactions')
 ,ref('safe_gnosis_transactions')
-,ref('safe_goerli_transactions')
 ,ref('safe_linea_transactions')
 ,ref('safe_mantle_transactions')
 ,ref('safe_optimism_transactions')

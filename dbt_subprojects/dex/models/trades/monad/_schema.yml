@@ -38,6 +38,25 @@ models:
           arguments:
             seed_file: ref('kuru_monad_base_trades_seed')
 
+  - name: curve_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: curve
+      contributors: kkqzhou
+    config:
+      tags: ["monad", "dex", "trades", "curve"]
+    description: "curve monad base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('curvefi_monad_base_trades_seed')
+
   - name: pinot_v2_monad_base_trades
     meta:
       blockchain: monad
@@ -121,6 +140,25 @@ models:
             seed_file: ref('uniswap_monad_base_trades_seed')
             filter:
               version: 3
+
+  - name: nad_fun_v3_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: nad_fun
+      contributors: kkqzhou
+    config:
+      tags: ["monad", "dex", "trades", "nad_fun", "v3"]
+    description: "nad.fun monad v3 base trades — Uniswap V3-style pools graduated from the nad.fun bonding curve"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('nad_fun_monad_base_trades_seed')
 
   - name: trader_joe_v2_2_monad_base_trades
     meta:
@@ -230,3 +268,25 @@ models:
               - blockchain
               - token_address
               - block_date
+
+  - name: zeroex_settler_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: 0x API
+    config:
+      tags: ["monad", "dex", "trades", "zeroex", "settler"]
+    description: "0x Settler plain-RFQ (action 0xd92aadfb) PMM base trades on monad"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null

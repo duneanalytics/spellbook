@@ -19,7 +19,10 @@
         start_date,
         address_list = none,
         token_list = none,
-        address_token_list = none
+        address_token_list = none,
+        self_seed_relation = none,
+        self_seed_lookback_days = 21,
+        apply_ci_floor = true
     )
 %}
 
@@ -60,6 +63,11 @@ filtered_daily_agg_balances as (
         AND erc20_tokens.contract_address = b.token_address
         AND b.token_standard = 'erc20'
     where day >= cast('{{start_date}}' as date)
+    {% if target.name == 'ci' and apply_ci_floor %}
+    -- bound the CI full-refresh build so it completes under the 90-min timeout and the regression test runs; inert in prod.
+    -- callers with a check_seed test over fixed historical dates (e.g. swell) must set apply_ci_floor=false so the seeded days build.
+    and day >= cast(date_trunc('day', current_date - interval '30' day) as date)
+    {% endif %}
 
 )
 ,changed_balances as (
@@ -96,9 +104,42 @@ filtered_daily_agg_balances as (
             ,token_standard
             ,token_id
             ,max_by(balance, day) as balance
-        from filtered_daily_agg_balances
-        where day >= cast('{{start_date}}' as date)
-        and not {{ incremental_predicate('day') }}
+        from (
+            {% if self_seed_relation is none %}
+            -- legacy: re-derive the prior state from all pre-window source history
+            select
+                blockchain, day, address, token_symbol, token_address, token_standard, token_id, balance
+            from filtered_daily_agg_balances
+            where day >= cast('{{start_date}}' as date)
+            and not {{ incremental_predicate('day') }}
+            {% else %}
+            -- bounded-lookback hybrid: re-read only the recent pre-window source so late-arriving /
+            -- restated balances within the lookback are still self-corrected (these rows carry the
+            -- CURRENT token metadata via filtered_daily_agg_balances) ...
+            select
+                blockchain, day, address, token_symbol, token_address, token_standard, token_id, balance
+            from filtered_daily_agg_balances
+            where not {{ incremental_predicate('day') }}
+            and day >= cast(date_trunc('day', now() - interval '{{ self_seed_lookback_days }}' day) as date)
+            union all
+            -- ... and carry deep (settled) history forward from the model's own latest pre-window
+            -- partition instead of re-scanning the full source history every run. The partition is
+            -- anchored strictly before the incremental window (`not incremental_predicate(day)` in
+            -- addition to the lookback floor) so a wider repair/backfill where the incremental window
+            -- exceeds the lookback can never overlap the in-window source branch above (which would
+            -- duplicate a key/day). NB: these carried rows reuse the balance/token_symbol stored when
+            -- they were last written; a token-metadata/decimals correction for a position untouched
+            -- for >lookback days is only reflected after it next changes or a --full-refresh.
+            select
+                blockchain, last_updated as day, address, token_symbol, token_address, token_standard, token_id, balance
+            from {{ self_seed_relation }}
+            where day = (
+                select max(day) from {{ self_seed_relation }}
+                where day < cast(date_trunc('day', now() - interval '{{ self_seed_lookback_days }}' day) as date)
+                and not {{ incremental_predicate('day') }}
+            )
+            {% endif %}
+        )
         group by 1,3,4,5,6,7
         )
     {% endif %}
@@ -308,101 +349,3 @@ from (
 {% endmacro %}
 
 
-{#  @DEV here
-
-    @NOTICE this macro enriches the base balances output with token metadata (symbol, decimals) and prices
-    @NOTICE it should be used downstream of balances_incremental_subset_daily macro
-    @NOTICE calculates balance from balance_raw and balance_usd from balance * price
-    @NOTICE for stablecoins with missing prices, falls back to FX exchange rates based on the token's pegged currency
-    @NOTICE supports multi-chain base_balances (unioned across blockchains)
-
-    @PARAM base_balances            -- reference to the base balances table/model (output from balances_incremental_subset_daily)
-    @PARAM chain                    -- chain name (e.g. 'abstract', 'ethereum'); used for source tokens_<chain>.erc20_stablecoins_<token_list>
-    @PARAM token_list               -- 'core' or 'extended'; used for source tokens_<chain>.erc20_stablecoins_<token_list>
-
-#}
-
-{%- macro balances_incremental_subset_daily_enrich(
-        base_balances,
-        chain,
-        token_list
-    )
-%}
-
-with
-
-base as (
-    select *
-    from {{ base_balances }}
-    {% if is_incremental() %}
-    where {{ incremental_predicate('day') }}
-    {% endif %}
-),
-
-tokens_metadata as (
-    select
-        blockchain,
-        contract_address,
-        symbol,
-        decimals
-    from {{ source('tokens', 'erc20') }}
-),
-
-stablecoin_tokens as (
-    select blockchain, contract_address, currency
-    from {{ source('tokens_' ~ chain, 'erc20_stablecoins_' ~ token_list) }}
-),
-
-enriched_with_tokens as (
-    select
-        b.blockchain,
-        b.day,
-        b.address,
-        b.token_address,
-        b.token_standard,
-        b.token_id,
-        b.balance_raw,
-        b.last_updated,
-        case
-            when b.token_standard = 'erc20' then t.symbol
-            else null
-        end as token_symbol,
-        case
-            when b.token_standard = 'erc20' then b.balance_raw / power(10, t.decimals)
-            when b.token_standard = 'native' then b.balance_raw / power(10, 18)
-            else b.balance_raw
-        end as balance,
-        s.currency
-    from base b
-    left join tokens_metadata t
-        on t.blockchain = b.blockchain
-        and t.contract_address = b.token_address
-        and b.token_standard = 'erc20'
-    left join stablecoin_tokens s
-        on s.blockchain = b.blockchain
-        and s.contract_address = b.token_address
-)
-
-select
-    e.blockchain,
-    e.day,
-    e.address,
-    e.token_symbol,
-    e.token_address,
-    e.token_standard,
-    e.token_id,
-    e.balance_raw,
-    e.balance,
-    e.balance * fx.exchange_rate as balance_usd,
-    e.currency,
-    e.last_updated
-from enriched_with_tokens e
-left join {{ source('prices', 'fx_exchange_rates') }} fx
-    on e.currency = fx.base_currency
-    and fx.target_currency = 'USD'
-    and e.day = fx.date
-    {% if is_incremental() %}
-    and {{ incremental_predicate('fx.date') }}
-    {% endif %}
-
-{% endmacro %}

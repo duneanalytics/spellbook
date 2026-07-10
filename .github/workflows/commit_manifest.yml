@@ -12,27 +12,37 @@ concurrency:
 
 jobs:
   commit_manifest:
-    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     strategy:
       matrix:
         project: [ 'tokens', 'daily_spellbook', 'dex', 'solana', 'hourly_spellbook']
       max-parallel: 1
 
     steps:
-    - uses: actions/setup-python@v6
+    - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
       with:
         python-version: "3.13"
     - name: Set up uv
-      uses: astral-sh/setup-uv@v8.1.0
+      uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
       with:
         enable-cache: true
     - name: Checkout main branch
-      uses: actions/checkout@v6
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       with:
         ref: main
 
     - name: Sync Python dependencies
       run: uv sync --locked
+
+    - name: Configure dbt
+      env:
+        DBT_PROFILES_YML_BASE64: ${{ secrets.DBT_PROFILES_YML_BASE64 }}
+      run: |
+        mkdir $HOME/.dbt
+        echo $DBT_PROFILES_YML_BASE64 | base64 --decode > $HOME/.dbt/profiles.yml
 
     - name: Setup variables
       run: |
@@ -41,6 +51,12 @@ jobs:
         echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{matrix.project}}" >> $GITHUB_ENV
         PROJECT_DIR=dbt_subprojects/${{ matrix.project }}
         echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6
+      with:
+        role-to-assume: ${{ secrets.SPELLBOOK_CI_IAM_ROLE }}
+        aws-region: eu-west-1
 
     - name: dbt dependencies
       working-directory: ${{env.PROJECT_DIR}}

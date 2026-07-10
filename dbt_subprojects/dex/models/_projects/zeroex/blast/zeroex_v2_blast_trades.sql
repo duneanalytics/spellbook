@@ -3,7 +3,7 @@
     alias = 'trades',
     materialized='incremental',
     partition_by = ['block_month'],
-    unique_key = ['block_month', 'block_date', 'tx_hash', 'evt_index'],
+    unique_key = ['block_month', 'block_date', 'tx_hash', 'evt_index', 'trace_address'],
     on_schema_change='sync_all_columns',
     file_format ='delta',
     incremental_strategy='merge',
@@ -12,37 +12,8 @@
     post_hook='{{ hide_spells() }}'
 )}}
 
-{% set zeroex_settler_start_date = '2024-07-15' %}
-{% set blockchain = 'blast' %}
-
-WITH zeroex_tx AS (
-    {{
-        zeroex_settler_txs_cte(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-        )
-    }}
-),
-zeroex_v2_trades AS (
-    {{
-        zeroex_v2_trades(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-            
-        )
-    }}
-),
-
-trade_details as (
-    {{
-        zeroex_v2_trades_detail(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-            
-        )
-    }}
-
-)
-select 
-    *
- from trade_details 
+{{
+    zeroex_settler_agg(
+        blockchain = 'blast'
+    )
+}}

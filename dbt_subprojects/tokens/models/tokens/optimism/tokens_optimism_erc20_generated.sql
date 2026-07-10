@@ -12,15 +12,6 @@ SELECT contract_address, symbol, MIN(decimals) AS decimals, token_type, token_ma
 FROM (
 
     SELECT
-    l2_token AS contract_address, l1_symbol AS symbol, l1_decimals as decimals
-    , 'underlying' as token_type, 'l2 bridge mapping' AS token_mapping_source
-    FROM {{ ref('tokens_optimism_erc20_bridged_mapping') }}
-    WHERE l1_symbol IS NOT NULL
-    GROUP BY 1,2,3
-
-    UNION ALL
-
-    SELECT
     atoken_address AS contract_address, atoken_symbol AS symbol, atoken_decimals as decimals
     , 'receipt' as token_type, 'aave factory' AS token_mapping_source
     FROM {{ ref('aave_v3_tokens') }}

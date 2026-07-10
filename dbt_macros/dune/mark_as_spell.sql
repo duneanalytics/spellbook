@@ -1,9 +1,20 @@
 {% macro mark_as_spell(this, materialization) %}
   {%- if target.name == 'prod' -%}
     {%- if model.config.materialized == "view" -%}
-      {%- set properties = { 'dune.data_explorer.category': 'abstraction' } -%}
+      {%- set properties = {
+              'dune.created_by': 'dbt_spellbook',
+              'dune.public': 'true',
+              'dune.visible': 'false',
+              'dune.data_explorer.category': 'abstraction'
+            } -%}
     {%- else -%}
-      {%- set properties = { 'dune.data_explorer.category': 'abstraction', 'dune.vacuum': '{"enabled":true}' } -%}
+      {%- set properties = {
+              'dune.created_by': 'dbt_spellbook',
+              'dune.public': 'true',
+              'dune.visible': 'false',
+              'dune.data_explorer.category': 'abstraction',
+              'dune.vacuum': '{"enabled":true}'
+            } -%}
     {%- endif -%}
     {%- set deprecated_at = model.config.get('deprecated_at', none) -%}
     {%- if deprecated_at -%}

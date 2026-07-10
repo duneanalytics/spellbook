@@ -72,7 +72,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
     FROM
       {{source('prices','usd')}}
     WHERE
-      DATE_TRUNC('day', minute) = current_date
+      minute >= current_date and minute < current_date + interval '1' day
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens where address NOT IN  (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 0x9cfb13e6c11054ac9fcb92ba89644f30775436e4 ))
 
