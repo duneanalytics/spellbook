@@ -23,6 +23,6 @@ FROM
     , ('usdt0-usdt0', 'USDT0', 0x20c00000000000000000000014f22ca97301eb73, 6)
     , ('frxusd-frax-usd', 'frxUSD', 0x20c0000000000000000000003554d28269e0f3c2, 6)
     , ('cusd-cap-usd', 'cUSD', 0x20c0000000000000000000000520792dcccccccc, 6)
-    , ('pathusd-pathusd', 'pathUSD', 0x20c0000000000000000000000000000000000000, 6)
+    , ('usdc-usd-coin', 'pathUSD', 0x20c0000000000000000000000000000000000000, 6) -- use USDC price proxy
     -- , ('stcusd-staked-cap-usd', 'stcUSD', 0x20c0000000000000000000008ee4fcff88888888, 6) --inactive on Coinpaprika
 ) as temp (token_id, symbol, contract_address, decimals)
