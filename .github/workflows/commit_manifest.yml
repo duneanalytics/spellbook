@@ -62,11 +62,32 @@ jobs:
       working-directory: ${{env.PROJECT_DIR}}
       run: "uv run dbt deps"
 
-    - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
-      run: "uv run bash ./scripts/ensure_cluster.sh"
+    # Restore the previous run's partial-parse state so dbt only re-parses
+    # files that changed since the last main commit. A cache miss (first run,
+    # or after dbt invalidates the state) is fine — dbt just does a full parse.
+    # dbt writes partial_parse.msgpack next to manifest.json in the target path
+    # (--target-path . resolves to the project dir).
+    - name: Restore dbt partial-parse cache
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: dbt_subprojects/${{ matrix.project }}/partial_parse.msgpack
+        # Key is unique per commit so each run saves fresh state; restore-keys
+        # falls back to the newest prior cache for this project (rolling cache).
+        key: partial-parse-${{ matrix.project }}-${{ github.sha }}
+        restore-keys: |
+          partial-parse-${{ matrix.project }}-
 
-    - name: dbt compile to create prod manifest from main
-      run: "uv run dbt compile --target-path . $PROFILE --project-dir ${PROJECT_DIR}"
+    - name: dbt parse to create prod manifest from main
+      run: "uv run dbt parse --target-path . $PROFILE --project-dir ${PROJECT_DIR}"
+
+    # Persist the refreshed state for the next run. Placed right after parse so
+    # a good parse is always cached, independent of the S3 upload steps below;
+    # it only runs when parse succeeded, so we never cache a half-written file.
+    - name: Save dbt partial-parse cache
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: dbt_subprojects/${{ matrix.project }}/partial_parse.msgpack
+        key: partial-parse-${{ matrix.project }}-${{ github.sha }}
 
     - name: copy old manifest locally
       run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/previous_manifest.json"
