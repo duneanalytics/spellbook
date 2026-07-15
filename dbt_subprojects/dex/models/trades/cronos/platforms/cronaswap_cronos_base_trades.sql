@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'cronaswap_v1_cronos'
+    schema = 'cronaswap_cronos'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -15,6 +15,6 @@
         , project = 'cronaswap'
         , version = '1'
         , Pair_evt_Swap = source('cronaswap_cronos', 'CronaSwapPair_evt_Swap')
-        , Factory_evt_PairCreated = source('cronaswap_cronos', 'CronaSwapFactoryV1_evt_PairCreated')
+        , Factory_evt_PairCreated = source('cronaswap_cronos', 'CronaSwapFactory_evt_PairCreated')
     )
 }}

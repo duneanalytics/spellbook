@@ -13,8 +13,7 @@
 {% set base_models = [
     ref('vvs_finance_cronos_v2_base_trades'),
     ref('vvs_finance_cronos_v3_base_trades'),
-    ref('cronaswap_cronos_v1_base_trades'),
-    ref('cronaswap_cronos_v2_base_trades'),
+    ref('cronaswap_cronos_base_trades'),
     ref('ferro_cronos_base_trades'),
 ] %}
 

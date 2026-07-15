@@ -14,7 +14,7 @@
         blockchain = 'cronos'
         , project = 'vvs_finance'
         , version = '3'
-        , Pair_evt_Swap = source('vvs_finance_cronos', 'Pool_evt_Swap')
-        , Factory_evt_PoolCreated = source('vvs_finance_cronos', 'FactoryV3_evt_PoolCreated')
+        , Pair_evt_Swap = source('vvsfinance_cronos', 'VVSV3Pool_evt_Swap')
+        , Factory_evt_PoolCreated = source('vvsfinance_cronos', 'VVSV3Factory_evt_PoolCreated')
     )
 }}

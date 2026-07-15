@@ -2,17 +2,17 @@ version: 2
 
 sources:
   # VVS Finance - Uniswap V2 + V3 style AMM
-  - name: vvs_finance_cronos
+  - name: vvsfinance_cronos
     description: "Decoded VVS Finance contracts on cronos (V2 and V3 AMM)"
     tables:
-      - name: FactoryV2_evt_PairCreated
+      - name: VVSFactory_evt_PairCreated
         description: "VVS Finance V2 factory PairCreated events, mapping each pair to its token0/token1"
-      - name: Pair_evt_Swap
+      - name: VVSPair_evt_Swap
         description: "VVS Finance V2 pair Swap events"
-      - name: FactoryV3_evt_PoolCreated
+      - name: VVSV3Factory_evt_PoolCreated
         description: "VVS Finance V3 factory PoolCreated events, mapping each pool to its token0/token1/fee"
-      - name: Pool_evt_Swap
-        description: "VVS Finance V3 pool Swap events"
+      - name: VVSV3Pool_evt_Swap
+        description: "VVS Finance V3 pool Swap events (PancakeSwap-V3 variant, 9-field Swap)"
 
   # Ferro - Saddle/StableSwap style AMM
   - name: ferro_cronos
@@ -23,13 +23,11 @@ sources:
       - name: Swap_evt_TokenSwap
         description: "Ferro Swap TokenSwap events"
 
-  # Cronaswap - Uniswap V2 style AMM (V1 + V2 factories)
+  # Cronaswap - Uniswap V2 style AMM (single factory; no v2 - "V2" is MasterChefV2 farming)
   - name: cronaswap_cronos
-    description: "Decoded Cronaswap contracts on cronos (V1 and V2 AMM)"
+    description: "Decoded Cronaswap contracts on cronos (V2-style AMM)"
     tables:
-      - name: CronaSwapFactoryV1_evt_PairCreated
-        description: "Cronaswap V1 factory PairCreated events, mapping each pair to its token0/token1"
-      - name: CronaSwapFactoryV2_evt_PairCreated
-        description: "Cronaswap V2 factory PairCreated events, mapping each pair to its token0/token1"
+      - name: CronaSwapFactory_evt_PairCreated
+        description: "Cronaswap factory PairCreated events, mapping each pair to its token0/token1"
       - name: CronaSwapPair_evt_Swap
-        description: "Cronaswap pair Swap events (shared pair contract across V1 and V2 factories)"
+        description: "Cronaswap pair Swap events"

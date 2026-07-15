@@ -61,15 +61,15 @@ models:
             filter:
               version: 3
 
-  - name: cronaswap_cronos_v1_base_trades
+  - name: cronaswap_cronos_base_trades
     meta:
       blockchain: cronos
       sector: dex
       project: cronaswap
       contributors: jeff-dude
     config:
-      tags: ["cronos", "dex", "trades", "cronaswap", "v1"]
-    description: "Cronaswap cronos v1 base trades"
+      tags: ["cronos", "dex", "trades", "cronaswap"]
+    description: "Cronaswap cronos base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -81,27 +81,6 @@ models:
             seed_file: ref('cronaswap_cronos_base_trades_seed')
             filter:
               version: 1
-
-  - name: cronaswap_cronos_v2_base_trades
-    meta:
-      blockchain: cronos
-      sector: dex
-      project: cronaswap
-      contributors: jeff-dude
-    config:
-      tags: ["cronos", "dex", "trades", "cronaswap", "v2"]
-    description: "Cronaswap cronos v2 base trades"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - tx_hash
-              - evt_index
-      - check_dex_base_trades_seed:
-          arguments:
-            seed_file: ref('cronaswap_cronos_base_trades_seed')
-            filter:
-              version: 2
 
   - name: ferro_cronos_base_trades
     meta:
