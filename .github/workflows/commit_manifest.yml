@@ -19,7 +19,10 @@ jobs:
     strategy:
       matrix:
         project: [ 'tokens', 'daily_spellbook', 'dex', 'solana', 'hourly_spellbook']
-      max-parallel: 1
+      # Projects are fully independent (own runner VM, own S3 prefix, own
+      # cache key) and dbt parse never touches the cluster, so run them in
+      # parallel. One project failing must not cancel the others' uploads.
+      fail-fast: false
 
     steps:
     - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
