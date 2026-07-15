@@ -12,6 +12,7 @@
     ,'boba'
     ,'celo'
     ,'corn'
+    ,'cronos'
     ,'degen'
     ,'ethereum'
     ,'fantom'
