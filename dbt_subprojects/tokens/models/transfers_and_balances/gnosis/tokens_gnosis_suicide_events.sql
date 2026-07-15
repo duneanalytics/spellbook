@@ -29,11 +29,11 @@ SELECT
     , refund_address
     , ROW_NUMBER() OVER (
           PARTITION BY address
-          ORDER BY block_time, block_number, tx_index, array_join(trace_address, ',')
+          ORDER BY block_time, block_number, tx_index, trace_address
       ) AS event_sequence
     , LAG(block_time) OVER (
           PARTITION BY address
-          ORDER BY block_time, block_number, tx_index, array_join(trace_address, ',')
+          ORDER BY block_time, block_number, tx_index, trace_address
       ) AS previous_block_time
 FROM
     {{ source('gnosis', 'traces') }}
