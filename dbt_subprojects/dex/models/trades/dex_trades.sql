@@ -46,6 +46,7 @@
     , 'tac'
     , 'taiko'
     , 'tempo'
+    , 'tezos_evm'
     , 'unichain'
     , 'worldchain'
     , 'xlayer'
