@@ -19,7 +19,7 @@ models:
 
   - name: dex_cronos_base_trades
 
-  - name: vvs_finance_cronos_v2_base_trades
+  - name: vvs_finance_v2_cronos_base_trades
     meta:
       blockchain: cronos
       sector: dex
@@ -27,7 +27,7 @@ models:
       contributors: jeff-dude
     config:
       tags: ["cronos", "dex", "trades", "vvs_finance", "v2"]
-    description: "VVS Finance cronos v2 base trades"
+    description: "VVS Finance v2 Cronos base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -40,7 +40,7 @@ models:
             filter:
               version: 2
 
-  - name: vvs_finance_cronos_v3_base_trades
+  - name: vvs_finance_v3_cronos_base_trades
     meta:
       blockchain: cronos
       sector: dex
@@ -48,7 +48,7 @@ models:
       contributors: jeff-dude
     config:
       tags: ["cronos", "dex", "trades", "vvs_finance", "v3"]
-    description: "VVS Finance cronos v3 base trades"
+    description: "VVS Finance v3 Cronos base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
