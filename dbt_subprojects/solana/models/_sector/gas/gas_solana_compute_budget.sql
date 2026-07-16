@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'delete+insert',
-    unique_key = ['block_date', 'block_slot', 'tx_id']
+    unique_key = ['block_date', 'block_hour', 'block_slot', 'tx_id']
 ) }}
 
 -- Merges the two Solana ComputeBudget decodings into a single (block_date, tx_id)-keyed

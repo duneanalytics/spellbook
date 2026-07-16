@@ -20,6 +20,7 @@ models:
           arguments:
             combination_of_columns:
               - block_date
+              - block_hour
               - block_slot
               - tx_id
     columns:
@@ -32,6 +33,8 @@ models:
           - not_null
       - name: block_hour
         description: Truncated to hour, used as partition column
+        data_tests:
+          - not_null
       - name: block_time
         data_tests:
           - not_null
