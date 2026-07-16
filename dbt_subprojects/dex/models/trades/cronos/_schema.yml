@@ -39,6 +39,13 @@ models:
             seed_file: ref('vvs_finance_cronos_base_trades_seed')
             filter:
               version: 2
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: vvs_finance_v3_cronos_base_trades
     meta:
@@ -60,6 +67,13 @@ models:
             seed_file: ref('vvs_finance_cronos_base_trades_seed')
             filter:
               version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: cronaswap_cronos_base_trades
     meta:
@@ -81,6 +95,13 @@ models:
             seed_file: ref('cronaswap_cronos_base_trades_seed')
             filter:
               version: 1
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: ferro_cronos_base_trades
     meta:
@@ -100,6 +121,13 @@ models:
       - check_dex_base_trades_seed:
           arguments:
             seed_file: ref('ferro_cronos_base_trades_seed')
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
 
   - name: dex_cronos_token_volumes_daily
     data_tests:
