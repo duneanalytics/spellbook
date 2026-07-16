@@ -4,7 +4,7 @@
     {%- do _properties.update({'partitioned_by': "ARRAY['" + (config.get('partition_by') | join("', '") )  + "']"}) -%}
   {%- endif -%}
   create or replace table {{ relation }}
-    {{ create_table_properties(_properties, relation) }}
+    {{ create_table_properties(_properties, relation, temporary) }}
   as (
     {{ sql }}
   );
@@ -45,14 +45,16 @@
   {%- endif -%}
 {%- endmacro -%}
 
-{% macro create_table_properties(_properties, relation) %}
+{% macro create_table_properties(_properties, relation, temporary=false) %}
   {%- if not (target.name == 'ci' and target.database == 'dune') -%}
     {%- set modified_identifier = relation.identifier | replace("__dbt_tmp", "") -%}
     {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
     {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
     {%- do _properties.update({'location': "'" + location + "'"}) -%}
   {%- endif -%}
-  {%- do _properties.update({'delta.enableChangeDataFeed': 'true'}) -%}
+  {%- if not temporary -%}
+    {%- do _properties.update({'delta.enableChangeDataFeed': 'true'}) -%}
+  {%- endif -%}
   {%- if target.name == 'ci' -%}
     {%- do _properties.update({'extra_properties': "map_from_entries(ARRAY[ROW('dune.public', 'true')])"}) -%}
   {%- endif -%}
