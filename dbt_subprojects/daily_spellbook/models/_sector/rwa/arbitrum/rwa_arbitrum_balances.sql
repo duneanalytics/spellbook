@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'rwa_arbitrum',
     alias = 'balances',
     materialized = 'incremental',
