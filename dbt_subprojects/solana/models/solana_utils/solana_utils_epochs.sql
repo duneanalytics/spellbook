@@ -5,15 +5,16 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        incremental_predicates = ['DBT_INTERNAL_DEST.block_time >= now() - interval \'7\' day'],
+        incremental_predicates = ['DBT_INTERNAL_DEST.block_time >= now() - interval \'10\' day'],
         unique_key = ['block_slot']
         , post_hook='{{ hide_spells() }}'
 )
 }}
 
--- Solana epoch = 432000 slots (~2 days). Epoch boundaries are immutable once the
--- epoch ends. On incremental runs we only re-emit the last ~2 epochs so the
--- in-progress epoch's `epoch_next_start_slot` fills in once epoch+1 begins.
+-- Solana epoch = 432000 slots (~2 days). The staking epoch models document a
+-- 57-hour p99 and ~60-hour maximum epoch, so the shared 10-day lookback safely
+-- contains three complete epochs. Re-emitting them hydrates the in-progress
+-- epoch's `epoch_next_start_slot` once epoch+1 begins and recovers missed runs.
 
 with
     base_raw as (
@@ -24,16 +25,16 @@ with
             , slot % 432000 as epoch_progress --blocks into epoch. might not always start at 0 because of skipped block slots. remember "height" shows actual non-skipped blocks but epoch follows total blocks.
         FROM {{ source('solana','blocks') }}
         {% if is_incremental() -%}
-        WHERE time >= now() - interval '7' day
+        WHERE time >= now() - interval '10' day
         {%- endif %}
     )
     {%- if is_incremental() %}
-    -- Keep only the last 2 epochs fully. Drops any partially-observed older
-    -- epoch caught by the 7-day tail so `first_block_epoch` and the `start`
+    -- Keep only the last 3 epochs fully. Drops any partially-observed older
+    -- epoch caught by the 10-day tail so `first_block_epoch` and the `start`
     -- self-join stay correct within the window.
     , base_filtered as (
         SELECT * FROM base_raw
-        WHERE epoch >= (SELECT max(epoch) - 1 FROM base_raw)
+        WHERE epoch >= (SELECT max(epoch) - 2 FROM base_raw)
     )
     {%- else %}
     , base_filtered as (
