@@ -36,6 +36,7 @@ FROM (VALUES
     , ('aerodrome', 'Aerodrome', 'Direct', 'aerodromefi')
     , ('quickswap', 'QuickSwap', 'Direct', 'QuickswapDEX')
     , ('mstable', 'mStable', 'Direct', 'mstable_')
+    , ('origin_arm', 'Origin ARM', 'Direct', 'OriginProtocol')
     , ('airswap', 'AirSwap', 'Direct', 'airswap')
     , ('wombat', 'Wombat Exchange', 'Direct', 'WombatExchange')
     , ('wombat_exchange', 'Wombat Exchange', 'Direct', 'WombatExchange')
