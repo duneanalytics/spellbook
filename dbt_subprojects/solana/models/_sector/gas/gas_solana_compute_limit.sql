@@ -1,20 +1,32 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'compute_limit',
-    materialized = 'view'
+    partition_by = ['block_date', 'block_hour'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'delete+insert',
+    unique_key = ['block_date', 'block_slot', 'tx_id']
 ) }}
 
--- Backward-compat view. Physical decoding lives in gas_solana_compute_budget which
--- also holds compute_unit_price. Filter compute_limit IS NOT NULL to preserve the
--- historical row set (only txs that emitted the SetComputeUnitLimit opcode 0x02).
+-- this is just decoding program data, could be moved into decoding pipeline
 
 SELECT
     tx_id,
     block_date,
-    block_hour,
+    date_trunc('hour', block_time) AS block_hour,
     block_time,
     block_slot,
     tx_index,
-    compute_limit
-FROM {{ ref('gas_solana_compute_budget') }}
-WHERE compute_limit IS NOT NULL
+    bytearray_to_bigint(
+        bytearray_reverse(
+            bytearray_substring(data, 2, 8)
+        )
+    ) as compute_limit
+FROM {{ source('solana', 'instruction_calls') }}
+WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
+AND executing_account_prefix = 'Co'
+AND bytearray_substring(data,1,1) = 0x02
+AND inner_instruction_index is null
+{% if is_incremental() %}
+    AND {{ incremental_predicate('block_date') }}
+{% endif %}
