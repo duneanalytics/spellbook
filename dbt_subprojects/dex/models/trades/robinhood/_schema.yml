@@ -88,6 +88,62 @@ models:
         data_tests:
           - not_null
 
+  - name: swaphood_v2_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: swaphood
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'swaphood', 'v2' ]
+    description: "SwapHood V2 trades on Robinhood, decoded from canonical pair swap logs."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('swaphood_robinhood_base_trades_seed')
+            filter:
+              version: 2
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: swaphood_v3_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: swaphood
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'swaphood', 'v3' ]
+    description: "SwapHood V3 trades on Robinhood, decoded from Pancake V3-compatible pool swap logs."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('swaphood_robinhood_base_trades_seed')
+            filter:
+              version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
   - name: dex_robinhood_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
