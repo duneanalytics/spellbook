@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: swaphood_robinhood
+    tables:
+      - name: SwapHoodFactory_evt_PairCreated
+      - name: PancakeV3Factory_evt_PoolCreated

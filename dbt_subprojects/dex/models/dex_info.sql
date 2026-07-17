@@ -9,6 +9,7 @@
 SELECT project, name, marketplace_type, x_username
 FROM (VALUES
     ('uniswap', 'Uniswap', 'Direct', 'Uniswap')
+    , ('swaphood', 'SwapHood', 'Direct', 'SwapHoodFi')
     , ('pancakeswap', 'PancakeSwap', 'Direct', 'PancakeSwap')
     , ('curve', 'Curve', 'Direct', 'CurveFinance')
     , ('sushiswap', 'SushiSwap', 'Direct', 'SushiSwap')
