@@ -259,4 +259,7 @@ FROM (VALUES
     , ('bitget_dex_aggregator', 'Bitget Wallet Aggregator', 'Aggregator', 'BitgetWalletAggregator')
     , ('tessera_v', 'Tessera-V', 'Direct', 'tessera_v')
     , ('bulba', 'Bulba', 'Direct', 'bulba')
+    , ('vvs_finance', 'VVS Finance', 'Direct', 'VVS_finance')
+    , ('cronaswap', 'CronaSwap', 'Direct', 'CronaSwap_org')
+    , ('ferro', 'Ferro', 'Direct', 'FerroProtocol')
 ) AS temp_table (project, name, marketplace_type, x_username)
