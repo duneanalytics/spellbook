@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'up_v3_robinhood',
+        schema = 'uponrh_v3_robinhood',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,7 +12,7 @@
 
 {{
     robinhood_raw_v3_compatible_trades(
-        project = 'up',
+        project = 'uponrh',
         version = '3',
         factory_address = '0x1ac9db4a2608ba45d6127b1737949b51bb54b7f3',
         factory_topic = '0xab0d57f0df537bb25e80245ef7748fa62353808c54d6e528a9dd20887aed9ac2',

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'apex_cl_v3_robinhood',
+        schema = 'gigadex_v3_robinhood',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,7 +12,7 @@
 
 {{
     robinhood_raw_v3_compatible_trades(
-        project = 'apex_cl',
+        project = 'gigadex',
         version = '3',
         factory_address = '0xece6ecd61177336ea6fb9b17937ac439d85ee20b',
         factory_topic = '0x783cca1c0412dd0d695e784568c96da2e9c22ff989357a2e8b1d9b2b4e6b7118',
