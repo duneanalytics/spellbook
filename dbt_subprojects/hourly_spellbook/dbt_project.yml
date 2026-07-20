@@ -72,13 +72,6 @@ models:
     +schema: no_schema    # this should be overriden in model specific configs
     +view_security: invoker
 
-    _sector:
-      gas:
-        fees:
-          xrpl:
-            gas_xrpl_fees:
-              +post-hook: "{{ expose_spells('[\"xrpl\"]', \"sector\", \"gas\", '[\"krishhh\", \"tomfutago\"]') }}"
-
     _project:
       safe:
         +schema: safe
