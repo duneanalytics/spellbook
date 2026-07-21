@@ -26,11 +26,6 @@
     , ref('aeon_protocol_v1_robinhood_base_trades')
     , ref('catnip_v1_robinhood_base_trades')
     , ref('uponrh_v3_robinhood_base_trades')
-    , ref('frothswap_v1_robinhood_base_trades')
-    , ref('thor_v3_robinhood_base_trades')
-    , ref('factory_b4ec911f_v1_robinhood_base_trades')
-    , ref('factory_c4c1d1d9_v1_robinhood_base_trades')
-    , ref('factory_46c695d1_v3_robinhood_base_trades')
     , ref('gigadex_v2_robinhood_base_trades')
     , ref('gigadex_v3_robinhood_base_trades')
 ] %}

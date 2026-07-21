@@ -4,4 +4,6 @@ sources:
   - name: swaphood_robinhood
     tables:
       - name: SwapHoodFactory_evt_PairCreated
+      - name: SwapHoodPair_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+      - name: PancakeV3Pool_evt_Swap

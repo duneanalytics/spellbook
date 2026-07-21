@@ -11,13 +11,12 @@
 }}
 
 {{
-    robinhood_raw_v3_compatible_trades(
+    uniswap_compatible_v3_trades(
+        blockchain = 'robinhood',
         project = 'sushiswap',
         version = '3',
-        factory_address = '0xe51960f1b45f1c9fb6d166e6a884f866fc70433b',
-        factory_topic = '0x783cca1c0412dd0d695e784568c96da2e9c22ff989357a2e8b1d9b2b4e6b7118',
-        pool_data_word = 2,
-        swap_topic = '0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67',
-        start_date = '2026-07-10'
+        Pair_evt_Swap = source('sushiswap_v3_robinhood', 'UniswapV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('sushiswap_v3_robinhood', 'UniswapV3Factory_evt_PoolCreated'),
+        optional_columns = []
     )
 }}
