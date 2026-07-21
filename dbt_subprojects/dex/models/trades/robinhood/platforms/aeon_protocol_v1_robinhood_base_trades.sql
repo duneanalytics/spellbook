@@ -11,12 +11,12 @@
 }}
 
 {{
-    robinhood_raw_v2_compatible_trades(
+    uniswap_compatible_v3_trades(
+        blockchain = 'robinhood',
         project = 'aeon_protocol',
         version = '1',
-        factory_address = '0xe27ea15df9e69ce06ab8ee5a2029bd699f9cf9fc',
-        factory_topic = '0x97d23878912fda7f82bd5a8502f2c6e9086f5a4728f9054627788b3162f86ced',
-        pool_data_word = 2,
-        start_date = '2026-07-09'
+        Pair_evt_Swap = source('aeon_robinhood', 'AeonPoolRH_evt_Swap'),
+        Factory_evt_PoolCreated = source('aeon_robinhood', 'AeonFactoryRH_evt_PoolCreated'),
+        optional_columns = []
     )
 }}

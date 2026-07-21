@@ -11,13 +11,12 @@
 }}
 
 {{
-    robinhood_raw_v3_compatible_trades(
+    uniswap_compatible_v3_trades(
+        blockchain = 'robinhood',
         project = 'sheriff',
         version = '4',
-        factory_address = '0x21fd9ab06cc927e66013e89b045c26b3ede7bb20',
-        factory_topic = '0x91ccaa7a278130b65168c3a0c8d3bcae84cf5e43704342bd3ec0b59e59c036db',
-        pool_data_word = 1,
-        swap_topic = '0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67',
-        start_date = '2026-07-03'
+        Pair_evt_Swap = source('sheriff_robinhood', 'AlgebraPool_evt_Swap'),
+        Factory_evt_PoolCreated = source('sheriff_robinhood', 'AlgebraFactory_evt_Pool'),
+        optional_columns = []
     )
 }}

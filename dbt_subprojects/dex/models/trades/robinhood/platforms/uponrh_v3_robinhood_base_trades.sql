@@ -11,13 +11,12 @@
 }}
 
 {{
-    robinhood_raw_v3_compatible_trades(
+    uniswap_compatible_v3_trades(
+        blockchain = 'robinhood',
         project = 'uponrh',
         version = '3',
-        factory_address = '0x1ac9db4a2608ba45d6127b1737949b51bb54b7f3',
-        factory_topic = '0xab0d57f0df537bb25e80245ef7748fa62353808c54d6e528a9dd20887aed9ac2',
-        pool_data_word = 1,
-        swap_topic = '0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67',
-        start_date = '2026-07-10'
+        Pair_evt_Swap = source('uponrh_robinhood', 'CLPool_evt_Swap'),
+        Factory_evt_PoolCreated = source('uponrh_robinhood', 'CLFactory_evt_PoolCreated'),
+        optional_columns = []
     )
 }}
