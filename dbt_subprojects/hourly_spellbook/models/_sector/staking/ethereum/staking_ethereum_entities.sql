@@ -4,10 +4,7 @@
     schema = 'staking_ethereum',
     alias = 'entities',
     unique_key = ['depositor_address', 'tx_from', 'pubkey'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "staking",
-                                \'["hildobby", "sankinyue", "nerolation"]\') }}')
+    post_hook = '{{ hide_spells() }}')
 }}
 
 {% set entities_identifiers_models = [
