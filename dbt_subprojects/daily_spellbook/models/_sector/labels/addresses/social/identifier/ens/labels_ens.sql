@@ -3,10 +3,7 @@
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['blockchain','address'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["0xRob"]\') }}')
+        post_hook = '{{ hide_spells() }}')
 }}
 
 

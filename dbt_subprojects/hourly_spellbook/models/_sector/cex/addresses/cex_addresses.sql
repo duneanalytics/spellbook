@@ -1,10 +1,7 @@
 {{ config(
         schema = 'cex',
         alias = 'addresses',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "polygon", "bitcoin", "fantom", "aptos", "celo", "zora", "zksync", "zkevm", "linea", "solana", "scroll", "tron", "base", "mantle", "worldchain", "sei", "berachain", "ink", "katana", "kaia", "nova", "opbnb", "unichain", "sui"]\',
-                                    "sector",
-                                    "cex",
-                                    \'["hildobby"]\') }}')
+        post_hook = '{{ hide_spells() }}')
 }}
 
 {% set chains = [
