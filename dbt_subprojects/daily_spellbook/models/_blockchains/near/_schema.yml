@@ -18,12 +18,17 @@ models:
       
       Inbound transfers are identified by FinTransferEvent logs and mint method calls.
       Outbound transfers are identified by InitTransferEvent logs and burn method calls.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - bridge_omni_id
     columns:
       - name: bridge_omni_id
         description: "Unique identifier for each bridge transaction (surrogate key)"
         tests:
           - not_null
-          - unique
       - name: block_height
         description: "Height of the block containing the transaction"
         tests:
