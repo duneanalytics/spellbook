@@ -310,7 +310,7 @@ SELECT
     has_burn,
     'omni' AS platform,
     {{ dbt_utils.generate_surrogate_key(
-        ['tx_hash', 'source_chain_id', 'destination_address', 'token_address', 'amount_raw']
+        ['tx_hash', 'source_chain_id', 'destination_address', 'token_address', 'amount_raw', 'receipt_id', 'log_index']
     ) }} AS bridge_omni_id,
     _partition_by_block_number
 FROM 
