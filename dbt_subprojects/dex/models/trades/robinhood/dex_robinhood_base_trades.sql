@@ -23,7 +23,6 @@
     , ref('sushiswap_v2_robinhood_base_trades')
     , ref('sushiswap_v3_robinhood_base_trades')
     , ref('robinswap_v3_robinhood_base_trades')
-    , ref('aeon_protocol_v1_robinhood_base_trades')
     , ref('catnip_v1_robinhood_base_trades')
     , ref('uponrh_v3_robinhood_base_trades')
     , ref('gigadex_v2_robinhood_base_trades')

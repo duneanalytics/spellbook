@@ -12,7 +12,6 @@ FROM (VALUES
     , ('swaphood', 'SwapHood', 'Direct', 'SwapHoodFi')
     , ('sheriff', 'Sheriff', 'Direct', 'sheriffexchange')
     , ('robinswap', 'RobinSwap', 'Direct', 'RobinSwap_')
-    , ('aeon_protocol', 'Aeon Protocol', 'Direct', 'AeonProtocolX')
     , ('catnip', 'CatNIP', 'Direct', 'catnipexchange')
     , ('uponrh', 'UP', 'Direct', 'uponrh')
     , ('gigadex', 'GigaDEX', 'Direct', '')

@@ -1,11 +1,6 @@
 version: 2
 
 sources:
-  - name: aeon_robinhood
-    tables:
-      - name: AeonFactoryRH_evt_PoolCreated
-      - name: AeonPoolRH_evt_Swap
-
   - name: catnip_robinhood
     tables:
       - name: AlleyFactory_evt_PairCreated
