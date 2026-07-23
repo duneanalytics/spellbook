@@ -88,6 +88,381 @@ models:
         data_tests:
           - not_null
 
+  - name: swaphood_v2_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: swaphood
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'swaphood', 'v2' ]
+    description: "SwapHood V2 trades on Robinhood, decoded from canonical pair swap logs."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('swaphood_robinhood_base_trades_seed')
+            filter:
+              version: 2
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: swaphood_v3_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: swaphood
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'swaphood', 'v3' ]
+    description: "SwapHood V3 trades on Robinhood, decoded from Pancake V3-compatible pool swap logs."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('swaphood_robinhood_base_trades_seed')
+            filter:
+              version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: pancakeswap_v2_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: pancakeswap
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'pancakeswap', 'v2' ]
+    description: "PancakeSwap V2 trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: pancakeswap
+              version: 2
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: pancakeswap_v3_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: pancakeswap
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'pancakeswap', 'v3' ]
+    description: "PancakeSwap V3 trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: pancakeswap
+              version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: sheriff_v2_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: sheriff
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'sheriff', 'v2' ]
+    description: "Sheriff V2 trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: sheriff
+              version: 2
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: sheriff_v4_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: sheriff
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'sheriff', 'v4' ]
+    description: "Sheriff V4 concentrated-liquidity trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: sheriff
+              version: 4
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: sushiswap_v2_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: sushiswap
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'sushiswap', 'v2' ]
+    description: "SushiSwap V2 trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: sushiswap
+              version: 2
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: sushiswap_v3_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: sushiswap
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'sushiswap', 'v3' ]
+    description: "SushiSwap V3 trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: sushiswap
+              version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: robinswap_v3_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: robinswap
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'robinswap', 'v3' ]
+    description: "RobinSwap V3 trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: robinswap
+              version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: catnip_v1_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: catnip
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'catnip', 'v1' ]
+    description: "CatNIP constant-product trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: catnip
+              version: 1
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: uponrh_v3_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: uponrh
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'uponrh', 'v3' ]
+    description: "UP concentrated-liquidity trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: uponrh
+              version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: gigadex_v2_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: gigadex
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'gigadex', 'v2' ]
+    description: "GigaDEX Classic trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: gigadex
+              version: 2
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: gigadex_v3_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: gigadex
+      contributors: couchdicks
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'gigadex', 'v3' ]
+    description: "GigaDEX concentrated-liquidity trades on Robinhood."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            filter:
+              project: gigadex
+              version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
   - name: dex_robinhood_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:

@@ -14,6 +14,19 @@
     ref('uniswap_v2_robinhood_base_trades')
     , ref('uniswap_v3_robinhood_base_trades')
     , ref('uniswap_v4_robinhood_base_trades')
+    , ref('swaphood_v2_robinhood_base_trades')
+    , ref('swaphood_v3_robinhood_base_trades')
+    , ref('pancakeswap_v2_robinhood_base_trades')
+    , ref('pancakeswap_v3_robinhood_base_trades')
+    , ref('sheriff_v2_robinhood_base_trades')
+    , ref('sheriff_v4_robinhood_base_trades')
+    , ref('sushiswap_v2_robinhood_base_trades')
+    , ref('sushiswap_v3_robinhood_base_trades')
+    , ref('robinswap_v3_robinhood_base_trades')
+    , ref('catnip_v1_robinhood_base_trades')
+    , ref('uponrh_v3_robinhood_base_trades')
+    , ref('gigadex_v2_robinhood_base_trades')
+    , ref('gigadex_v3_robinhood_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
