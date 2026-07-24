@@ -116,15 +116,15 @@ WITH swap_exact_in AS (
     SELECT * FROM swap_exact_out
 )
 
--- Older ARM implementations return no ABI-encoded amounts array. Recover only the
--- missing leg from the exact ERC-20 transfer call nested beneath each swap trace.
+-- Some ARM implementations return no ABI-encoded amounts array. Recover only the
+-- missing leg when exactly one matching ERC-20 transfer exists beneath the swap trace.
 , missing_amounts AS (
     SELECT
         swaps.tx_hash
         , swaps.trace_address
         , swaps.trade_source
         , swaps.project_contract_address
-        , SUM(
+        , MAX(
             CASE
                 WHEN swaps.trade_source = 'exact_in' AND VARBINARY_SUBSTRING(traces.input, 1, 4) = 0xa9059cbb
                     THEN VARBINARY_TO_UINT256(VARBINARY_SUBSTRING(traces.input, 37, 32))
@@ -140,7 +140,7 @@ WITH swap_exact_in AS (
         AND traces.call_type = 'call'
         AND traces."from" = swaps.project_contract_address
         AND traces."to" = CASE WHEN swaps.trade_source = 'exact_in' THEN swaps.token_bought_address ELSE swaps.token_sold_address END
-        AND CARDINALITY(traces.trace_address) = CARDINALITY(swaps.trace_address) + 1
+        AND CARDINALITY(traces.trace_address) > CARDINALITY(swaps.trace_address)
         AND SLICE(traces.trace_address, 1, CARDINALITY(swaps.trace_address)) = swaps.trace_address
         AND (
             (swaps.trade_source = 'exact_in' AND VARBINARY_SUBSTRING(traces.input, 1, 4) = 0xa9059cbb)
@@ -153,6 +153,7 @@ WITH swap_exact_in AS (
         AND {{ incremental_predicate('traces.block_time') }}
         {% endif -%}
     GROUP BY 1, 2, 3, 4
+    HAVING COUNT(*) = 1
 )
 
 , trades AS (
