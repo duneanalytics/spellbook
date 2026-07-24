@@ -138,7 +138,7 @@ WITH swap_exact_in AS (
         AND traces.tx_hash = swaps.tx_hash
         AND traces."from" = swaps.project_contract_address
         AND traces."to" = CASE WHEN swaps.trade_source = 'exact_in' THEN swaps.token_bought_address ELSE swaps.token_sold_address END
-        AND CARDINALITY(traces.trace_address) > CARDINALITY(swaps.trace_address)
+        AND CARDINALITY(traces.trace_address) = CARDINALITY(swaps.trace_address) + 1
         AND SLICE(traces.trace_address, 1, CARDINALITY(swaps.trace_address)) = swaps.trace_address
         AND (
             (swaps.trade_source = 'exact_in' AND VARBINARY_SUBSTRING(traces.input, 1, 4) = 0xa9059cbb)
