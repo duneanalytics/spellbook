@@ -135,7 +135,9 @@ WITH swap_exact_in AS (
     FROM decoded_swaps AS swaps
     INNER JOIN {{ source('ethereum', 'traces') }} AS traces
         ON traces.block_number = swaps.block_number
+        AND traces.block_date = swaps.block_date
         AND traces.tx_hash = swaps.tx_hash
+        AND traces.call_type = 'call'
         AND traces."from" = swaps.project_contract_address
         AND traces."to" = CASE WHEN swaps.trade_source = 'exact_in' THEN swaps.token_bought_address ELSE swaps.token_sold_address END
         AND CARDINALITY(traces.trace_address) = CARDINALITY(swaps.trace_address) + 1
