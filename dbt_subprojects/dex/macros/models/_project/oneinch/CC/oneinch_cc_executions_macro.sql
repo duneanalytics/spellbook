@@ -5,7 +5,7 @@
     )
 -%}
 
-{%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set date_from = [blockchain.start, stream.start, oneinch_easy_date()] | max -%}
 
 {#- chains without transfers_from_traces (e.g. robinhood) have event-based transfers with no trace_address, so the nested flag can't attribute them to sibling calls; CC transfers always touch the escrow address, which gives exact attribution instead -#}
 {%- set transfers_from_traces = blockchain.get('transfers_from_traces', true) -%}

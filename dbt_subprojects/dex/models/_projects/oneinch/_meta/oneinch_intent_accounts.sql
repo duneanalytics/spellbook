@@ -9,7 +9,7 @@
     )
 -}}
 
-{%- set date_from = oneinch_lo_fusion_cfg_macro().start -%}
+{%- set date_from = [oneinch_lo_fusion_cfg_macro().start, oneinch_easy_date()] | max -%}
 
 
 

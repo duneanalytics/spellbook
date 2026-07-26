@@ -13,7 +13,7 @@
     )
 -}}
 
-{%- set date_from = stream.start -%}
+{%- set date_from = [stream.start, oneinch_easy_date()] | max -%}
 
 
 
