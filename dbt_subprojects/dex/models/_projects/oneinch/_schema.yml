@@ -3,9 +3,9 @@ version: 2
 models:
   - name: oneinch_ar
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'ar', 'calls']
     description: >
@@ -69,9 +69,9 @@ models:
 
   - name: oneinch_lo
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'calls']
     description: >
@@ -135,9 +135,9 @@ models:
 
   - name: oneinch_cc
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'cc', 'calls']
     description: >
@@ -206,9 +206,9 @@ models:
 
   - name: oneinch_evms_transfers
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'transfers']
     description: >
@@ -263,9 +263,9 @@ models:
 
   - name: oneinch_blockchains
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'blockchain']
     description: >
@@ -285,9 +285,9 @@ models:
 
   - name: oneinch_evms_ptfc
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'internal']
     description: >
@@ -307,9 +307,9 @@ models:
 
   - name: oneinch_ar_trades
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'thevaizman']
+      contributors: ['max-morrow', 'grkhr', 'thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'ar', 'trades']
     description: >
@@ -357,9 +357,9 @@ models:
 
   - name: oneinch_lop_own_trades
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'thevaizman']
+      contributors: ['max-morrow', 'grkhr', 'thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -414,9 +414,9 @@ models:
 
   - name: oneinch_lop_venue_settled_fills
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['thevaizman']
+      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -459,9 +459,9 @@ models:
 
   - name: oneinch_lop_aggregator_trades
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['thevaizman']
+      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -518,9 +518,9 @@ models:
 
   - name: oneinch_intent_resolvers
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow']
+      contributors: ['max-morrow', 'dodgervl']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -545,9 +545,9 @@ models:
 
   - name: oneinch_intent_executors
     meta:
-      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow']
+      contributors: ['max-morrow', 'dodgervl']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -580,9 +580,9 @@ models:
 
   - name: oneinch_intent_accounts
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
       sector: oneinch
-      contributors: ['max-morrow']
+      contributors: ['max-morrow', 'dodgervl']
     config:
       tags: ['oneinch', 'metadata']
     description: >
