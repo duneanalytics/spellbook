@@ -920,6 +920,36 @@ models:
               version: 3
 
 
+  - name: origin_arm_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: origin_arm
+      contributors: nicholasaddison
+    config:
+      tags: ["ethereum", "dex", "trades", "origin", "arm"]
+    description: "Origin ARM swaps on Ethereum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('origin_arm_ethereum_base_trades_seed')
+            filter:
+              version: 1
+    columns:
+      - name: tx_hash
+        description: "Transaction hash containing the ARM swap"
+        data_tests:
+          - not_null
+      - name: evt_index
+        description: "Deterministic swap index within the transaction"
+        data_tests:
+          - not_null
+
   - name: dex_ethereum_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
