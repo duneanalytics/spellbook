@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: ramsesxyz_robinhood
+    tables:
+      - name: pair_evt_swap
+      - name: pairfactory_evt_paircreated
+      - name: ramsesv3pool_evt_swap
+      - name: ramsesv3factory_evt_poolcreated
+      - name: dlmmpool_evt_swap
+      - name: dlmmfactory_evt_lbpaircreated
