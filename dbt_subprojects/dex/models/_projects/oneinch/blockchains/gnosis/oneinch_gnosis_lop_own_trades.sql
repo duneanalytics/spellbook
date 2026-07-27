@@ -5,7 +5,6 @@
         schema = 'oneinch_' + blockchain.name,
         alias = 'lop_own_trades',
         materialized = 'view',
-        post_hook = '{{ hide_spells() }}'
     )
 -}}
 
