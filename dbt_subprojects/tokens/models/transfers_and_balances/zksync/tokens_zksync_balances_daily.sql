@@ -2,7 +2,7 @@
     schema = 'tokens_zksync',
     alias = 'balances_daily',
     materialized = 'view',
-    post_hook = '{{ hide_spells() }}'
+    post_hook = '{{ deprecate_spells() }}'
 ) }}
 
 {{

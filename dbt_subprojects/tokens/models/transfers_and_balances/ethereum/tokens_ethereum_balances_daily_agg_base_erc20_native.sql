@@ -1,7 +1,8 @@
 {{ config(
         schema = 'tokens_ethereum',
         alias = 'balances_daily_agg_base_erc20_native',
-        materialized='view'        
+        materialized='view',
+        post_hook = '{{ deprecate_spells() }}'
         )
 }}
 

@@ -31,6 +31,12 @@ macros:
     description: >
       Catch all macro to mark all models as spells even if they are not exposed in the data explorer
 
+  - name: deprecate_spells
+    description: >
+      Prod post-hook: set dune.public false and dune.visible false. For deprecated relations that should
+      be removed from the data explorer and made unqueryable ahead of being deleted from the repo.
+      Stronger than hide_spells, which leaves dune.public true so the relation stays queryable.
+
   - name: private_data_explorer
     description: >
       Prod post-hook: set dune.public false and dune.visible true with data explorer abstraction metadata

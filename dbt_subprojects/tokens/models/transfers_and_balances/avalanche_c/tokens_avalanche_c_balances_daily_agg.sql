@@ -1,7 +1,8 @@
 {{ config(
         schema = 'tokens_avalanche_c',
         alias = 'balances_daily_agg',
-        materialized = 'view'
+        materialized = 'view',
+        post_hook = '{{ deprecate_spells() }}'
         )
 }}
 
