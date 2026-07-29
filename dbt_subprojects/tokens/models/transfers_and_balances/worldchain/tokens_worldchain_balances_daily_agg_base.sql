@@ -6,7 +6,8 @@
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['day', 'unique_key'],
-        partition_by = ['day']
+        partition_by = ['day'],
+        post_hook = '{{ deprecate_spells() }}'
         )
 }}
 

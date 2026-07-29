@@ -2,7 +2,7 @@
         schema = 'tokens_scroll',
         alias = 'balances',
         materialized = 'view',
-        post_hook = '{{ hide_spells() }}'
+        post_hook = '{{ deprecate_spells() }}'
         )
 }}
 

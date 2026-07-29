@@ -2,7 +2,7 @@
     schema = 'tokens_zksync',
     alias = 'balances',
     materialized = 'view',
-    post_hook = '{{ hide_spells() }}'
+    post_hook = '{{ deprecate_spells() }}'
 ) }}
 
 with balances_raw as (
