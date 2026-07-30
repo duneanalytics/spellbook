@@ -1,19 +1,9 @@
-{%- set stream = oneinch_lo_cfg_macro() -%}
-{%- set placeholder_tokens = oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') -%}
+{% macro oneinch_lop_venue_settled_fills_macro(
+    blockchain
+    , stream
+) %}
 
-{{
-    config(
-        schema = 'oneinch',
-        alias = 'lop_venue_settled_fills',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        partition_by = ['blockchain', 'block_month'],
-        unique_key = ['blockchain', 'block_month', 'block_date', 'execution_id'],
-        post_hook = '{{ hide_spells() }}'
-    )
-}}
+{%- set placeholder_tokens = oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') -%}
 
 {% set window_guard %}
         {% if var('dev_dates', false) -%} and block_date > current_date - interval '3' day
@@ -21,7 +11,7 @@
 {% endset %}
 
 -- LOP fills that a resolver settled on an underlying DEX in the same tx: the venue's
--- own row is already in dex_<blockchain>_base_trades, so keeping the '1inch-LOP' row
+-- own row is already in dex_{{ blockchain.name }}_base_trades, so keeping the '1inch-LOP' row
 -- in dex.trades double-counts the same fill. Fills settled via private liquidity
 -- (no co-occurring venue row) stay in dex.trades; fills listed here are reclassified
 -- into dex_aggregator.trades (see oneinch_lop_aggregator_trades).
@@ -33,9 +23,6 @@
 --   * direct fills (flags['direct']): their synthesized second-side row already
 --     feeds dex_aggregator.trades as '1inch', so reclassifying them would duplicate
 --     within that table; they remain in dex.trades unconditionally
---
--- Cross-chain identical (tx_hash, call_trace_address) replays are an accepted
--- ~0-probability residual (the evt_index window is tx_hash-only).
 
 with
 
@@ -52,10 +39,11 @@ fills as (
         , {{ oneinch_lop_evt_index() }} as evt_index -- numbered before the exclusions below
     from {{ ref('oneinch_swaps') }}
     where true
+        and blockchain = '{{ blockchain.name }}'
         and mode = 'limits'
         and tx_success
         and call_success
-        -- same pre-numbering predicates as oneinch_lop_own_trades (evt_index parity!):
+        -- same pre-numbering predicates as oneinch_{{ blockchain.name }}_lop_own_trades (evt_index parity!):
         -- Fusion+ cross-chain placeholder fills are excluded from both trade views (CUR2-2665)
         and (src_token_address is null or src_token_address not in ({{ placeholder_tokens }}))
         and (dst_token_address is null or dst_token_address not in ({{ placeholder_tokens }}))
@@ -64,11 +52,11 @@ fills as (
 
 , parent_calls as (
     select
-        blockchain
-        , tx_hash
+        tx_hash
         , call_trace_address
     from {{ ref('oneinch_swaps') }}
     where true
+        and blockchain = '{{ blockchain.name }}'
         and mode in ('classic', 'fusion', 'cross-chain')
         and tx_success
         and call_success
@@ -78,35 +66,28 @@ fills as (
 
 , lop_tx_keys as (
     select distinct
-        blockchain
-        , block_month
+        block_month
         , tx_hash
     from fills
 )
 
--- joined to the small LOP tx set (instead of EXISTS with the union as the build side)
--- so the base trades scans get dynamically filtered on tx_hash
+-- joined to the small LOP tx set (instead of EXISTS with the base trades as the build side)
+-- so the base trades scan gets dynamically filtered on tx_hash
 , venue_txs as (
     select distinct
-        k.blockchain
-        , k.block_month
+        k.block_month
         , k.tx_hash
     from (
-        {%- for blockchain in oneinch_blockchains_cfg_macro() if blockchain.exposed and stream.name in blockchain.exposed %}
         select
-            '{{ blockchain.name }}' as blockchain
-            , block_month
+            block_month
             , tx_hash
         from {{ ref('dex_' + blockchain.name + '_base_trades') }}
         where true
             and block_time >= timestamp '{{ stream.start }}' -- LOP stream start; prunes pre-LOP history on full builds
             {{ window_guard }}
-        {% if not loop.last %} union all {% endif %}
-        {%- endfor %}
     ) as b
     join lop_tx_keys as k
-        on k.blockchain = b.blockchain
-        and k.block_month = b.block_month
+        on k.block_month = b.block_month
         and k.tx_hash = b.tx_hash
 )
 
@@ -128,7 +109,6 @@ where true
         select 1
         from parent_calls as p
         where true
-            and p.blockchain = f.blockchain
             and p.tx_hash = f.tx_hash
             and cardinality(f.call_trace_address) > cardinality(p.call_trace_address) -- strict: a direct fill's second-side row shares its call_trace_address
             and slice(f.call_trace_address, 1, cardinality(p.call_trace_address)) = p.call_trace_address
@@ -137,7 +117,8 @@ where true
         select 1
         from venue_txs as v
         where true
-            and v.blockchain = f.blockchain
             and v.block_month = f.block_month
             and v.tx_hash = f.tx_hash
     )
+
+{% endmacro %}

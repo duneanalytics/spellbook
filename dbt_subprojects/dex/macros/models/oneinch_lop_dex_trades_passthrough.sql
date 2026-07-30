@@ -34,7 +34,7 @@ SELECT
 	, o.tx_from
 	, o.tx_to
 	, o.evt_index
-FROM {{ ref('oneinch_lop_own_trades') }} AS o
+FROM {{ ref('oneinch_' + blockchain + '_lop_own_trades') }} AS o
 LEFT JOIN {{ source('tokens', 'erc20') }} AS tb
 	ON tb.blockchain = '{{ blockchain }}'
 	AND tb.contract_address = o.token_bought_address

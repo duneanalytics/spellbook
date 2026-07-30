@@ -412,24 +412,24 @@ models:
         data_tests:
           - not_null
 
-  - name: oneinch_lop_venue_settled_fills
+  - name: oneinch_ethereum_lop_venue_settled_fills
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      blockchain: ['ethereum']
       sector: oneinch
       contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
-        1inch limit order protocol fills that a resolver settled on an underlying DEX in
-        the same tx (the venue's own row co-occurs in dex_<blockchain>_base_trades).
-        These fills are excluded from oneinch_lop_own_trades (dex.trades) and emitted
-        into dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        1inch limit order protocol fills on ethereum that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_ethereum_base_trades). These fills are excluded from
+        oneinch_ethereum_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
         a classic/fusion/cross-chain execution and direct fills are kept out of this set.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
-              - blockchain
               - block_month
               - block_date
               - execution_id
@@ -456,6 +456,741 @@ models:
       - name: evt_index
         data_tests:
           - not_null
+
+  - name: oneinch_ethereum_lop_own_trades
+    meta:
+      blockchain: ['ethereum']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on ethereum - per-chain input for
+        dex_ethereum_trades. Venue-settled fills are excluded here (see
+        oneinch_ethereum_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_ethereum_trades merges them.
+
+  - name: oneinch_bnb_lop_venue_settled_fills
+    meta:
+      blockchain: ['bnb']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on bnb that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_bnb_base_trades). These fills are excluded from
+        oneinch_bnb_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_bnb_lop_own_trades
+    meta:
+      blockchain: ['bnb']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on bnb - per-chain input for
+        dex_bnb_trades. Venue-settled fills are excluded here (see
+        oneinch_bnb_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_bnb_trades merges them.
+
+  - name: oneinch_polygon_lop_venue_settled_fills
+    meta:
+      blockchain: ['polygon']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on polygon that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_polygon_base_trades). These fills are excluded from
+        oneinch_polygon_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_polygon_lop_own_trades
+    meta:
+      blockchain: ['polygon']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on polygon - per-chain input for
+        dex_polygon_trades. Venue-settled fills are excluded here (see
+        oneinch_polygon_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_polygon_trades merges them.
+
+  - name: oneinch_arbitrum_lop_venue_settled_fills
+    meta:
+      blockchain: ['arbitrum']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on arbitrum that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_arbitrum_base_trades). These fills are excluded from
+        oneinch_arbitrum_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_arbitrum_lop_own_trades
+    meta:
+      blockchain: ['arbitrum']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on arbitrum - per-chain input for
+        dex_arbitrum_trades. Venue-settled fills are excluded here (see
+        oneinch_arbitrum_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_arbitrum_trades merges them.
+
+  - name: oneinch_optimism_lop_venue_settled_fills
+    meta:
+      blockchain: ['optimism']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on optimism that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_optimism_base_trades). These fills are excluded from
+        oneinch_optimism_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_optimism_lop_own_trades
+    meta:
+      blockchain: ['optimism']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on optimism - per-chain input for
+        dex_optimism_trades. Venue-settled fills are excluded here (see
+        oneinch_optimism_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_optimism_trades merges them.
+
+  - name: oneinch_avalanche_c_lop_venue_settled_fills
+    meta:
+      blockchain: ['avalanche_c']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on avalanche_c that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_avalanche_c_base_trades). These fills are excluded from
+        oneinch_avalanche_c_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_avalanche_c_lop_own_trades
+    meta:
+      blockchain: ['avalanche_c']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on avalanche_c - per-chain input for
+        dex_avalanche_c_trades. Venue-settled fills are excluded here (see
+        oneinch_avalanche_c_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_avalanche_c_trades merges them.
+
+  - name: oneinch_gnosis_lop_venue_settled_fills
+    meta:
+      blockchain: ['gnosis']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on gnosis that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_gnosis_base_trades). These fills are excluded from
+        oneinch_gnosis_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_gnosis_lop_own_trades
+    meta:
+      blockchain: ['gnosis']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on gnosis - per-chain input for
+        dex_gnosis_trades. Venue-settled fills are excluded here (see
+        oneinch_gnosis_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_gnosis_trades merges them.
+
+  - name: oneinch_base_lop_venue_settled_fills
+    meta:
+      blockchain: ['base']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on base that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_base_base_trades). These fills are excluded from
+        oneinch_base_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_base_lop_own_trades
+    meta:
+      blockchain: ['base']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on base - per-chain input for
+        dex_base_trades. Venue-settled fills are excluded here (see
+        oneinch_base_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_base_trades merges them.
+
+  - name: oneinch_fantom_lop_venue_settled_fills
+    meta:
+      blockchain: ['fantom']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on fantom that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_fantom_base_trades). These fills are excluded from
+        oneinch_fantom_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_fantom_lop_own_trades
+    meta:
+      blockchain: ['fantom']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on fantom - per-chain input for
+        dex_fantom_trades. Venue-settled fills are excluded here (see
+        oneinch_fantom_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_fantom_trades merges them.
+
+  - name: oneinch_zksync_lop_venue_settled_fills
+    meta:
+      blockchain: ['zksync']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on zksync that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_zksync_base_trades). These fills are excluded from
+        oneinch_zksync_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_zksync_lop_own_trades
+    meta:
+      blockchain: ['zksync']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on zksync - per-chain input for
+        dex_zksync_trades. Venue-settled fills are excluded here (see
+        oneinch_zksync_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_zksync_trades merges them.
+
+  - name: oneinch_linea_lop_venue_settled_fills
+    meta:
+      blockchain: ['linea']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on linea that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_linea_base_trades). These fills are excluded from
+        oneinch_linea_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_linea_lop_own_trades
+    meta:
+      blockchain: ['linea']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on linea - per-chain input for
+        dex_linea_trades. Venue-settled fills are excluded here (see
+        oneinch_linea_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_linea_trades merges them.
+
+  - name: oneinch_sonic_lop_venue_settled_fills
+    meta:
+      blockchain: ['sonic']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on sonic that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_sonic_base_trades). These fills are excluded from
+        oneinch_sonic_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_sonic_lop_own_trades
+    meta:
+      blockchain: ['sonic']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on sonic - per-chain input for
+        dex_sonic_trades. Venue-settled fills are excluded here (see
+        oneinch_sonic_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_sonic_trades merges them.
+
+  - name: oneinch_unichain_lop_venue_settled_fills
+    meta:
+      blockchain: ['unichain']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on unichain that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_unichain_base_trades). These fills are excluded from
+        oneinch_unichain_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_unichain_lop_own_trades
+    meta:
+      blockchain: ['unichain']
+      sector: oneinch
+      contributors: ['thevaizman']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on unichain - per-chain input for
+        dex_unichain_trades. Venue-settled fills are excluded here (see
+        oneinch_unichain_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_unichain_trades merges them.
 
   - name: oneinch_lop_aggregator_trades
     meta:

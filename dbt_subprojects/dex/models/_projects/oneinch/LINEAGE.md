@@ -26,6 +26,12 @@
     - `oneinch.cc_executions` - _materialized view_ - unioned view of all exposed blockchains with a matched sources and destinations
 5. **swaps** - aggregate `executions` - _materialized view_ - a top-level data mart containing aggregated data on user exchanges
   accessing: `oneinch.swaps` - _materialized view_ - combining and allocating modes & limits second side
+6. **lop trades split** - LOP fills routed into dex.trades vs dex_aggregator.trades; kept per-chain so one chain's base-trades changes don't fan out to every chain's trades lineage
+  accessing:
+    - `oneinch_{blockchain}.lop_venue_settled_fills` - _materialized viewes_ - fills a resolver settled on an underlying DEX in the same tx (venue row co-occurs in `dex_{blockchain}_base_trades`)
+    - `oneinch_{blockchain}.lop_own_trades` - _viewes_ - LOP fills for `dex_{blockchain}_trades` (venue-settled fills excluded); consumed per-chain via `oneinch_lop_dex_trades_passthrough`
+    - `oneinch.lop_own_trades` - _view_ - unioned view of all exposed blockchains
+    - `oneinch.lop_aggregator_trades` - _view_ - venue-settled fills served to `dex_aggregator.trades`
 
 ## Configs:
 - **meta_cfg** - a config that aggregated meta data and settings of streams, blockchains etc.
