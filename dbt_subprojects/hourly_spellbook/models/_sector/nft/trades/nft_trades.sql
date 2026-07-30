@@ -2,6 +2,7 @@
     schema = 'nft',
     alias = 'trades',
     materialized = 'view',
+    filtering_columns = ['block_month', 'blockchain', 'project'],
     post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon","zksync", "blast", "ronin", "nova", "abstract", "apechain"]\',
                     "sector",
                     "nft",

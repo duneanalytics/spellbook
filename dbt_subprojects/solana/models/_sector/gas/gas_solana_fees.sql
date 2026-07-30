@@ -2,6 +2,7 @@
     schema = 'gas_solana',
     alias = 'fees',
     materialized = 'view',
+    filtering_columns = ['block_date'],
     post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "gas",
