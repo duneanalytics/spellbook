@@ -111,25 +111,6 @@ models:
       - name: _updated_at
         description: "Timestamp when this row was last written"
 
-  - name: tokens_bnb_balances
-    meta:
-      blockchain: bnb
-      sector: tokens
-      contributors: aalan3
-    config:
-      tags: ['tokens','balances', 'bnb']
-    description: "Token balances enriched"
-    columns:
-      - name: block_number
-      - name: block_time
-      - name: address
-      - name: token_address
-      - name: token_standard
-      - name: balance_raw
-      - name: balance
-      - name: token_symbol
-      - name: token_id
-      - name: collection_name
   - name: tokens_bnb_net_transfers_daily
     meta:
       blockchain: bnb
@@ -160,4 +141,3 @@ models:
               - blockchain
               - block_date
               - contract_address
-          

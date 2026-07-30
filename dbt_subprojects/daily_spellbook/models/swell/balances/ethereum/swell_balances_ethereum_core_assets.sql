@@ -8,6 +8,7 @@
         unique_key = ['day', 'wallet_address', 'token_address'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
         , post_hook='{{ hide_spells() }}'
+        , tags = ['prod_exclude']
   )
 }}
 
