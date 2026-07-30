@@ -31,6 +31,18 @@ macros:
     description: >
       Catch all macro to mark all models as spells even if they are not exposed in the data explorer
 
+  - name: apply_filtering_columns
+    description: >
+      Adds the optional filtering_columns model config to a property map as
+      dune.data_explorer.filtering_columns. Applied by every macro that emits table properties,
+      because the table path replaces the whole data explorer metadata struct on each ALTER.
+      The catalog service falls back to the partition columns when the property is absent, so only
+      views and unpartitioned tables need it.
+    arguments:
+      - name: properties
+        type: dict
+        description: "Property map to update in place"
+
   - name: deprecate_spells
     description: >
       Prod post-hook: set dune.public false and dune.visible false. For deprecated relations that should

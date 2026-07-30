@@ -20,6 +20,7 @@
     {%- if deprecated_at -%}
       {%- do properties.update({'dune.data_explorer.deprecated_at': deprecated_at}) -%}
     {%- endif -%}
+    {%- do apply_filtering_columns(properties) -%}
     {%- if model.config.materialized == "view" -%}
       CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
         {{ trino_properties(properties) }}

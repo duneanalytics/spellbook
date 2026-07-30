@@ -75,3 +75,9 @@ Each model within Spellbook contains a config block with various properties. Dep
    - Overrides existing behavior for how a table is rebuilt on full refresh.
    - **Example**: `drop` to overcome dbt-trino bugs when changing a spell from view to table.
    - **Note**: This property is rare and usually applied by the Dune team.
+
+4. **filtering_columns**
+   - List of columns the Data Explorer suggests filtering on, ordered from most to least discriminating. Emitted as the `dune.data_explorer.filtering_columns` table property by the post-hook macros on prod runs.
+   - Only set columns that actually reduce the data scanned: partition columns of the underlying tables, or a column that is constant per file (such as `blockchain` in a cross-chain union).
+   - Partitioned tables do not need it — the catalog service defaults filtering columns to the partition columns when the property is absent. Set it for views and unpartitioned tables, which otherwise get no hint at all.
+   - **Example**: `filtering_columns=['block_month', 'blockchain']` on a cross-chain view whose upstream tables are partitioned by `block_month`.

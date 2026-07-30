@@ -101,6 +101,8 @@ Additional materialization requirements:
 - Use `incremental_predicate()` for `incremental_predicates`; do not hardcode equivalent predicates.
 - Use `incremental_predicate()` only for time-series data. Omit it when full-history lookups are required, such as pool creation events.
 
+Set `filtering_columns` on Data Explorer-visible views and unpartitioned tables, whatever the materialization. The catalog service defaults a spell's filtering columns to its partition columns, so partitioned tables need nothing, while views and unpartitioned tables get no filtering hint unless the config declares one. List only columns that reduce data scanned, most discriminating first, for example `filtering_columns=['block_month', 'blockchain']`.
+
 Config-only changes that affect physical tables may not trigger CI because CI selects with `state:modified.body` and `state:modified.macros`. If the SQL body otherwise does not change, add or bump a body stamp comment for changes to `materialized`, `partition_by`, `incremental_strategy`, `file_format`, `schema`, or `alias`:
 
 ```sql
