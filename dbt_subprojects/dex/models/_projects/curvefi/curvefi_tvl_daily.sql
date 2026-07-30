@@ -2,6 +2,7 @@
         schema = 'curvefi',
         alias = 'tvl_daily'
         , post_hook='{{ hide_spells() }}'
+        , tags = ['prod_exclude']
         )
 }}
 
