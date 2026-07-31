@@ -12,12 +12,15 @@
   and unpartitioned tables get no Data Explorer filtering hint unless the spell sets one. Every
   macro that emits properties has to apply this: on the table path, ALTER TABLE SET PROPERTIES
   replaces the whole data explorer metadata struct, so the last statement of a run must carry it.
+
+  An explicit empty list is emitted rather than skipped. View property updates only upsert the
+  keys they send, so `[]` is the only way to withdraw a hint that is already published.
 #}
 {%- macro apply_filtering_columns(properties) -%}
   {%- set columns = model.config.get('filtering_columns', none) -%}
-  {%- if columns -%}
+  {%- if columns is not none -%}
     {%- if columns is not sequence or columns is mapping or columns is string or columns | reject('string') | list | length > 0 -%}
-      {%- do exceptions.raise_compiler_error("Invalid filtering_columns '%s'. Must be a list of column names." % columns) -%}
+      {%- do exceptions.raise_compiler_error("Invalid filtering_columns '" ~ columns ~ "'. Must be a list of column names.") -%}
     {%- endif -%}
     {%- do properties.update({'dune.data_explorer.filtering_columns': tojson(columns)}) -%}
   {%- endif -%}

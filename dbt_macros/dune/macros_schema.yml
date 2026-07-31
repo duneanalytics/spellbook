@@ -37,7 +37,8 @@ macros:
       dune.data_explorer.filtering_columns. Applied by every macro that emits table properties,
       because the table path replaces the whole data explorer metadata struct on each ALTER.
       The catalog service falls back to the partition columns when the property is absent, so only
-      views and unpartitioned tables need it.
+      views and unpartitioned tables need it. An empty list is emitted rather than skipped, since
+      that is the only way to withdraw a hint already published on a view.
     arguments:
       - name: properties
         type: dict

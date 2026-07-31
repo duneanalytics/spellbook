@@ -81,3 +81,4 @@ Each model within Spellbook contains a config block with various properties. Dep
    - Only set columns that actually reduce the data scanned: partition columns of the underlying tables, or a column that is constant per file (such as `blockchain` in a cross-chain union).
    - Partitioned tables do not need it — the catalog service defaults filtering columns to the partition columns when the property is absent. Set it for views and unpartitioned tables, which otherwise get no hint at all.
    - **Example**: `filtering_columns=['block_month', 'blockchain']` on a cross-chain view whose upstream tables are partitioned by `block_month`.
+   - Set `filtering_columns=[]` to withdraw a hint that has already been published. Deleting the config line is not enough: view property updates only upsert the keys they send, so the last published value stays in place. On a table an empty list falls back to the partition-derived default.
