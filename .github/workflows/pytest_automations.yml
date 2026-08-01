@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'scripts/**'
+      - 'dbt_macros/**'
 
 permissions:
   contents: read
@@ -27,4 +28,4 @@ jobs:
       run: uv sync --locked
 
     - name: Run pytest
-      run: uv run pytest scripts/test_token_checker.py
+      run: uv run pytest scripts/test_token_checker.py dbt_macros/tests
