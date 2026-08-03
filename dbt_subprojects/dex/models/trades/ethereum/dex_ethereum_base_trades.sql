@@ -56,6 +56,7 @@
     , ref('supernova_v3_ethereum_base_trades')
     , ref('zeroex_ethereum_base_trades')
     , ref('zeroex_settler_ethereum_base_trades')
+    , ref('origin_arm_ethereum_base_trades')
 ] %}
 WITH base AS (
     {{ dex_base_trades_macro(
