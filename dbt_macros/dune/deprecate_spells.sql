@@ -7,6 +7,7 @@
             'dune.data_explorer.category': 'abstraction',
             'dune.vacuum': '{"enabled":true}'
           } -%}
+    {%- do apply_filtering_columns(properties) -%}
     {%- if model.config.materialized == "view" -%}
       CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
         {{ trino_properties(properties) }}
