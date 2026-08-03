@@ -140,9 +140,13 @@ WITH amms AS (
         , evt_tx_id AS tx_id
         , evt_tx_signer AS tx_signer
         , evt_outer_instruction_index AS outer_instruction_index
+        -- a single outer instruction can carry multiple SwapsEvent emissions when
+        -- jupiter routes are nested, and `ord` restarts at 1 for each of them.
+        -- order by the emitting instruction first so the sort is total, otherwise
+        -- tied `ord` values pair swaps with the wrong amm non-deterministically.
         , ROW_NUMBER() OVER (
             PARTITION BY evt_block_slot, evt_tx_index, evt_outer_instruction_index
-            ORDER BY ord ASC
+            ORDER BY evt_inner_instruction_index ASC, ord ASC
           ) AS swap_order
         , REPLACE(REPLACE(json_extract_scalar(CAST(evt AS VARCHAR), '$.SwapEventV2.input_mint'), 'PublicKey(', ''), ')', '') AS input_mint
         , CAST(json_extract_scalar(CAST(evt AS VARCHAR), '$.SwapEventV2.input_amount') AS UINT256) AS input_amount
