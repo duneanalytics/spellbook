@@ -10,3 +10,30 @@ spellbook-local:
       database: hive
       schema: wizard
       threads: 1
+
+# Production profile, selected explicitly by the orchestrator; local dev keeps spellbook-local
+# above. The profile and target names are load-bearing in dbt_macros/dune/ — do not rename.
+spellbook_tokens:
+  target: prod
+  outputs:
+    prod:
+      type: trino
+      user: "{{ env_var('TRINO_USER', 'spellbook') }}"
+      password: "{{ env_var('TRINO_PASSWORD', '') }}"
+      host: "{{ env_var('TRINO_HOST') }}"
+      port: 443
+      method: ldap
+      database: hive
+      schema: prod
+      threads: 16
+      http_scheme: https
+      cert: true
+      http_headers:
+        X-Trino-Routing-Group: "{{ env_var('TRINO_ROUTING_GROUP') }}"
+        X-Trino-Client-Tags: "{{ env_var('TRINO_CLIENT_TAGS', 'dbt-tokens') }}"
+        X-Forwarded-Proto: https
+        X-Trino-Extra-Credential: "dune={{ env_var('TRINO_DUNE_CREDENTIALS') }}"
+      session_properties:
+        delta_prod.dynamic_filtering_wait_timeout: 30s
+        hive.dynamic_filtering_wait_timeout: 30s
+      timezone: UTC
