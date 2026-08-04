@@ -4,6 +4,7 @@
 	schema = 'gas_evm'
 	, alias = 'fees'
 	, materialized = 'view'
+	, filtering_columns = ['block_month', 'blockchain']
 	, post_hook = '{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
 									spell_type = "sector",
 									spell_name = "gas_evm",

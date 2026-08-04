@@ -3,6 +3,7 @@
 {{ config(
     schema = 'gas',
     alias = 'fees',
+    filtering_columns = ['block_month', 'blockchain'],
     post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                 spell_type = "sector",
                                 spell_name = "gas",
