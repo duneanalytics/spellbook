@@ -2,6 +2,7 @@
     schema = 'bitget_dex_aggregator',
     alias = 'trades',
     materialized = 'view',
+    filtering_columns = ['block_month', 'blockchain'],
     post_hook='{{ expose_spells(
         blockchains = \'["bnb", "ethereum", "arbitrum", "polygon", "base"]\',
         spell_type = "project",
