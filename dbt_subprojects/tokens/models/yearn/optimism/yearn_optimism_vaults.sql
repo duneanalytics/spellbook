@@ -1,4 +1,3 @@
--- ci-stamp: 1
 {{ config(
         
         schema = 'yearn'
