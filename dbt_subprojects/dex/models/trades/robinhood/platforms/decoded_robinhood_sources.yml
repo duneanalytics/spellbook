@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: catnip_robinhood
+    tables:
+      - name: AlleyFactory_evt_PairCreated
+      - name: AlleyPair_evt_Swap
+
+  - name: gigadex_robinhood
+    tables:
+      - name: ClassicFactory_evt_PairCreated
+      - name: ClassicPool_evt_Swap
+      - name: CLFactory_evt_PoolCreated
+      - name: CLPool_evt_Swap
+
+  - name: pancakeswap_v2_robinhood
+    tables:
+      - name: PancakeFactory_evt_PairCreated
+      - name: PancakePair_evt_Swap
+
+  - name: pancakeswap_v3_robinhood
+    tables:
+      - name: PancakeV3Factory_evt_PoolCreated
+      - name: PancakeV3Pool_evt_Swap
+
+  - name: robinswap_robinhood
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+
+  - name: sheriff_robinhood
+    tables:
+      - name: SheriffFactory_evt_PairCreated
+      - name: SheriffPool_evt_Swap
+      - name: AlgebraFactory_evt_Pool
+      - name: AlgebraPool_evt_Swap
+
+  - name: sushiswap_v2_robinhood
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+
+  - name: sushiswap_v3_robinhood
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+
+  - name: uponrh_robinhood
+    tables:
+      - name: CLFactory_evt_PoolCreated
+      - name: CLPool_evt_Swap
