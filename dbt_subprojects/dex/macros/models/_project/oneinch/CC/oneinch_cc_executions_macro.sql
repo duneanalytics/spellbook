@@ -7,6 +7,9 @@
 
 {%- set date_from = [blockchain.start, stream.start] | max -%}
 
+{#- chains without transfers_from_traces (e.g. robinhood) have event-based transfers with no trace_address, so the nested flag can't attribute them to sibling calls; CC transfers always touch the escrow address, which gives exact attribution instead -#}
+{%- set transfers_from_traces = blockchain.get('transfers_from_traces', true) -%}
+
 
 
 with
@@ -23,13 +26,14 @@ calls as (
     select *
     from {{ ref('oneinch_' + blockchain.name + '_transfers') }}
     where true
-        and nested
+        {% if transfers_from_traces -%} and nested {%- endif %}
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 {%- set data = 'cast(row(transfer_to, transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals, trusted) as row(receiver varbinary, address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint, trusted boolean))' -%}
-{%- set condition = 'array_position(same, token) > 0' %}
+{%- set escrow_filter = '' if transfers_from_traces else ' and (transfer_from = escrow or transfer_to = escrow)' -%}
+{%- set condition = 'array_position(same, token) > 0' + escrow_filter %}
 
 , amounts as (
     select
