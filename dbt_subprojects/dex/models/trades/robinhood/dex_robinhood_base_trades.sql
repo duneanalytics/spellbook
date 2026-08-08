@@ -14,6 +14,7 @@
     ref('uniswap_v2_robinhood_base_trades')
     , ref('uniswap_v3_robinhood_base_trades')
     , ref('uniswap_v4_robinhood_base_trades')
+    , ref('ekubo_v3_robinhood_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(
