@@ -88,6 +88,34 @@ models:
         data_tests:
           - not_null
 
+  - name: ekubo_v3_robinhood_base_trades
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: ekubo
+      contributors: moodysalem
+    config:
+      tags: [ 'robinhood', 'dex', 'trades', 'ekubo', 'v3' ]
+    description: "ekubo robinhood v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('ekubo_v3_robinhood_base_trades_seed')
+            filter:
+              version: 3
+    columns:
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
   - name: dex_robinhood_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
