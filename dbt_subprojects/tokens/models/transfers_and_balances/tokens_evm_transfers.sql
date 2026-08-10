@@ -12,6 +12,7 @@
     ,'boba'
     ,'celo'
     ,'corn'
+    ,'cronos'
     ,'degen'
     ,'ethereum'
     ,'fantom'
@@ -50,7 +51,6 @@
     ,'taiko'
     ,'tempo'
     ,'tezos_evm'
-    ,'tron'
     ,'unichain'
     ,'viction'
     ,'worldchain'
@@ -65,6 +65,7 @@
         schema = 'tokens_evm'
         , alias = 'transfers'
         , materialized = 'view'
+        , filtering_columns = ['block_month', 'blockchain']
         , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                         spell_type = "sector",
                                         spell_name = "tokens_evm",
@@ -74,3 +75,4 @@
 
 SELECT *
 FROM {{ ref('tokens_transfers') }}
+WHERE blockchain != 'tron' --added as a seperate model to tokens_multichain.transfers to handle correct address conversions

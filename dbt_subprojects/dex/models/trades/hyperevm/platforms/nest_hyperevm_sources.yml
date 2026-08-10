@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: nest_hyperevm
+    tables:
+      - name: pair_evt_swap
+      - name: pairfactory_evt_paircreated
+      - name: algebrapool_evt_swap
+      - name: algebrafactoryupgradeable_v3_evt_pool

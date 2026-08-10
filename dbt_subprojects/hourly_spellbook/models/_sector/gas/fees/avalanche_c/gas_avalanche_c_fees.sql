@@ -53,12 +53,22 @@ WITH native_token_prices as (
         ON txns.block_number = blocks.number
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
+        {% elif target.name == 'ci' %}
+        AND (
+            blocks.time >= current_date - interval '1' day
+            OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
+        )
         {% endif %}
     {% if test_short_ci %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
+    {% elif target.name == 'ci' %}
+    WHERE (
+        txns.block_time >= current_date - interval '1' day
+        OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
+    )
     {% endif %}
     )
 

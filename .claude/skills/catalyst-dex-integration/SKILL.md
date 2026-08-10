@@ -38,7 +38,7 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
 
 ## git workflow
 1. **verify `main` is up to date:** fetch latest, pull if behind, exit if diverged.
-2. **create branch:** name `<issue_id>-<chain>-dex-integration`, create off `main`, checkout, warn if exists. don't commit/push anything.
+2. **create branch:** name `<issue_id>-<chain>-dex-integration`, create off `main`, checkout, warn if exists.
 
 ## additional prep
 - verify decoded dex tables exist: use dune mcp **executeQueryById** with `query_id: 6318398`, `query_parameters: [{"key":"chain","value":"<chain>","type":"text"},{"key":"namespace","value":"<namespace>","type":"text"}]` (substitute `<chain>` and `<namespace>`). retrieve from query results: `namespace`, `name`, and `abi`.
@@ -92,6 +92,29 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
      token_bought_amount_raw, token_sold_amount_raw
    from base_trades where rn <= 3
    ```
+
+8. **commit, push, and open PR ready for review**
+   - stage all integration files (sources, models, schema, seeds, `dex_trades` / `dex_token_volumes_daily` / `dex_info` updates as applicable).
+   - commit with a Conventional Commit message, type prefix only (no scope), e.g. `feat: add <project> to dex.trades on <chain>`.
+   - push the branch: `git push -u origin HEAD`.
+   - create a PR ready for review with `gh pr create` (do **not** pass `--draft`):
+     - title: `feat: add <project> to dex.trades on <chain>` (adjust for multi-project / new-chain wording).
+     - body via HEREDOC, using the Spellbook PR template shape:
+       ```
+       ## Thank you for contributing to Spellbook 🪄
+
+       ### Description:
+       - Integrate **<project>** into `dex.trades` on **<chain>** (<issue_id>).
+       - DEX type: <uniswap v2 fork | uniswap v3 fork | custom>.
+       - Sources: `<namespace>_<chain>` event tables used by the platform model.
+       - Includes platform base trades, chain-level models (if new chain), schema tests, and seed rows.
+
+       ### Checklist
+       - [x] `dbt compile` succeeds for `<project>_<chain>_base_trades`
+       - [x] seed CSV populated with 2–3 recent trades
+       - [ ] CI green
+       ```
+   - return the PR URL when done. final expected state is **ready for review** (not draft).
 
 ## reference examples
 - custom DEX: `dbt_subprojects/dex/models/trades/<chain>/platforms/kuru_monad_base_trades.sql`

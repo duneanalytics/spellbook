@@ -9,6 +9,7 @@
   ref('odos_ethereum_trades'),
   ref('odos_optimism_trades'),
   ref('odos_arbitrum_trades'),
+  ref('odos_avalanche_c_trades'),
   ref('odos_base_trades')
 ] %}
 

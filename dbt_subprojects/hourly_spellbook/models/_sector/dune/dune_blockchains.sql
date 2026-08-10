@@ -2,10 +2,7 @@
         schema='dune',
         alias = 'blockchains',
         materialized = 'view',
-        post_hook='{{ expose_spells(\'["dune"]\',
-                                    "sector",
-                                    "dune",
-                                    \'["0xRob","tomfutago"]\') }}')
+        post_hook = '{{ hide_spells() }}')
 }}
 
 

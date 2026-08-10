@@ -16,4 +16,4 @@ sources:
   - name: hybra_hyperevm
     tables:
       - name: uniswapv3pool_evt_swap
-      - name: uniswapv3factory_evt_poolcreated 
+      - name: uniswapv3factory_evt_poolcreated

@@ -1,0 +1,70 @@
+version: 2
+
+sources:
+  - name: uniswap_v2_robinhood
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: uniswap_v3_robinhood
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: uniswap_v4_robinhood
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
+      - name: PoolManager_call_Swap
+  - name: catnip_robinhood
+    tables:
+      - name: AlleyPair_evt_Swap
+      - name: AlleyFactory_evt_PairCreated
+  - name: gigadex_robinhood
+    tables:
+      - name: ClassicPool_evt_Swap
+      - name: ClassicFactory_evt_PairCreated
+      - name: CLPool_evt_Swap
+      - name: CLFactory_evt_PoolCreated
+  - name: pancakeswap_v2_robinhood
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_robinhood
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: ramsesxyz_robinhood
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+      - name: RamsesV3Pool_evt_Swap
+      - name: RamsesV3Factory_evt_PoolCreated
+      - name: DLMMPool_evt_Swap
+      - name: DLMMFactory_evt_LBPairCreated
+  - name: robinswap_robinhood
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: sheriff_robinhood
+    tables:
+      - name: SheriffPool_evt_Swap
+      - name: SheriffFactory_evt_PairCreated
+      - name: AlgebraPool_evt_Swap
+      - name: AlgebraFactory_evt_Pool
+  - name: sushiswap_v2_robinhood
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: sushiswap_v3_robinhood
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: swaphood_robinhood
+    tables:
+      - name: SwapHoodPair_evt_Swap
+      - name: SwapHoodFactory_evt_PairCreated
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: uponrh_robinhood
+    tables:
+      - name: CLPool_evt_Swap
+      - name: CLFactory_evt_PoolCreated

@@ -17,5 +17,6 @@
         , PoolManager_evt_Initialize = source('uniswap_v4_arbitrum', 'PoolManager_evt_Initialize')
         , PoolManager_evt_Swap = source('uniswap_v4_arbitrum', 'PoolManager_evt_Swap') 
         , transactions = source('arbitrum', 'transactions')
+        , monthly_relation = ref('uniswap_v4_arbitrum_sqrtpricex96_monthly')
     )
 }}

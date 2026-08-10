@@ -57,18 +57,37 @@ WITH native_token_prices as (
         ON txns.block_number = blocks.number
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
+        {% elif target.name == 'ci' %}
+        AND (
+            blocks.time >= current_date - interval '1' day
+            OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
+        )
         {% endif %}
     LEFT JOIN {{ source(blockchain, 'blobs_submissions') }} blob
         ON txns.hash = blob.tx_hash
         AND txns.block_number = blob.block_number
         {% if is_incremental() %}
         AND {{ incremental_predicate('blob.block_time') }}
+        {% elif target.name == 'ci' %}
+        AND (
+            blob.block_time >= current_date - interval '1' day
+            OR blob.tx_hash in (
+                select tx_hash
+                from {{ ref('evm_gas_fees') }}
+                where blockchain = '{{ blockchain }}'
+            )
+        )
         {% endif %}
     {% if test_short_ci %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
+    {% elif target.name == 'ci' %}
+    WHERE (
+        txns.block_time >= current_date - interval '1' day
+        OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
+    )
     {% endif %}
     )
 

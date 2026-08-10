@@ -11,7 +11,3 @@ sources:
       - name: prices
         meta:
           docs_slug: /curated/prices/dex_solana_price_hour
-  - name: stablecoins_svm
-    tables:
-      - name: balances
-      - name: transfers

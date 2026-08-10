@@ -30,6 +30,7 @@
     , 'optimism'
     , 'plasma'
     , 'polygon'
+    , 'robinhood'
     , 'ronin'
     , 'rise'
     , 'scroll'
@@ -49,6 +50,7 @@
     , 'apechain'
     , 'berachain'
     , 'corn'
+    , 'cronos'
     , 'degen'
     , 'flare'
     , 'henesys'
@@ -82,4 +84,3 @@ FROM (
         {% endif %}
         {% endfor %}
 )
-

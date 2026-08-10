@@ -11,21 +11,22 @@
       
 
 with
-    ton_prices as ( -- get price of TON for each day to estimate USD value
+    ton_native_token as ( -- resolve native token by chain, never by symbol (rename-proof: TON -> GRAM)
         select
-            date_trunc('day', minute) as block_date
-            , avg(price) as price
+            coalesce(token_address, 0x0000000000000000000000000000000000000000) as contract_address
+            , token_symbol as symbol
         from
-            {{ source('prices', 'usd') }}
+            {{ source('dune', 'blockchains') }}
         where
-            true
-            and symbol = 'TON'
-            and blockchain is null
-            {% if is_incremental() %}
-            and {{ incremental_predicate('date_trunc(\'day\', minute)') }}
-            {% endif %}
-        group by
-            1
+            name = 'ton'
+    ),
+    ton_prices as ( -- get price of native TON for each day (rename-proof: resolved via dune.blockchains, not a hardcoded symbol)
+        select
+            date(timestamp) as block_date
+            , price
+        from (
+            {{ native_token_prices('ton', time_unit='day') }}
+        )
     ),
     jetton_prices as (
         select
@@ -54,9 +55,10 @@ with
             , source as address
             , -1 * value as ton_flow
             , '0:0000000000000000000000000000000000000000000000000000000000000000' as token_address -- Native TON token address
-            , 'TON' as symbol
+            , t.symbol as symbol -- native symbol resolved from dune.blockchains (rename-proof)
         from
             {{ source('ton', 'messages') }}
+            cross join ton_native_token t
         where
             direction = 'in'
             {% if is_incremental() %}
@@ -68,9 +70,10 @@ with
             , destination as address
             , value as ton_flow
             , '0:0000000000000000000000000000000000000000000000000000000000000000' as token_address -- Native TON token address
-            , 'TON' as symbol
+            , t.symbol as symbol -- native symbol resolved from dune.blockchains (rename-proof)
         from
             {{ source('ton', 'messages') }}
+            cross join ton_native_token t
         where
             direction = 'in'
             {% if is_incremental() %}

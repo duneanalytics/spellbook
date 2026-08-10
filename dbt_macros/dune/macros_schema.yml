@@ -5,20 +5,20 @@ macros:
     description: "This overrides the dbt-core function for setting schemas. For PR tests, the schema is set to test_schema"
     arguments:
       - name: custom_schema_name
-        type: column name or expression
+        type: optional[string]
         description: "Custom schema name"
       - name: node
-        type: column name or expression
+        type: any
         description: "Node"
 
   - name: generate_alias_name
     description: "This overrides the dbt-core function for setting aliases. For PR test, the alias is set to the user schema and file name. "
     arguments:
       - name: custom_alias_name
-        type: column name or expression
+        type: optional[string]
         description: "Custom alias name"
       - name: node
-        type: column name or expression
+        type: any
         description: "Node"
 
   - name: is_incremental
@@ -30,6 +30,25 @@ macros:
   - name: mark_as_spell
     description: >
       Catch all macro to mark all models as spells even if they are not exposed in the data explorer
+
+  - name: apply_filtering_columns
+    description: >
+      Adds the optional filtering_columns model config to a property map as
+      dune.data_explorer.filtering_columns. Applied by every macro that emits table properties,
+      because the table path replaces the whole data explorer metadata struct on each ALTER.
+      The catalog service falls back to the partition columns when the property is absent, so only
+      views and unpartitioned tables need it. An empty list is emitted rather than skipped, since
+      that is the only way to withdraw a hint already published on a view.
+    arguments:
+      - name: properties
+        type: dict[string, any]
+        description: "Property map to update in place"
+
+  - name: deprecate_spells
+    description: >
+      Prod post-hook: set dune.public false and dune.visible false. For deprecated relations that should
+      be removed from the data explorer and made unqueryable ahead of being deleted from the repo.
+      Stronger than hide_spells, which leaves dune.public true so the relation stays queryable.
 
   - name: private_data_explorer
     description: >

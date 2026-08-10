@@ -39,6 +39,48 @@ models:
         data_tests:
           - not_null
 
+  - name: angstrom_ethereum_fee_events
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'angstrom', 'trades']
+    description: >
+      Pre-materialized Angstrom pool fee-configuration (ConfigurePool) events on Ethereum,
+      extracted once from ethereum.logs. Shared staging model for angstrom_pool_info so the
+      non-pushable controller log scan runs a single time per build instead of being re-inlined
+      into 18 ethereum.logs scan operators across the angstrom_ethereum_base_trades lineage.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_number
+              - pool_id
+    columns:
+      - name: block_number
+        description: "Block number of the ConfigurePool event"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block time of the ConfigurePool event"
+      - name: tick_spacing
+        description: "Pool tick spacing decoded from the log data"
+      - name: bundle_fee
+        description: "Bundle fee decoded from the log data"
+      - name: unlocked_fee
+        description: "Unlocked (LP) fee decoded from the log data"
+      - name: protocol_unlocked_fee
+        description: "Protocol unlocked fee decoded from the log data"
+      - name: topic1
+        description: "First indexed token of the pool pair (log topic1)"
+      - name: topic2
+        description: "Second indexed token of the pool pair (log topic2)"
+      - name: pool_id
+        description: "Derived Angstrom pool id (keccak of token0, token1, tick_spacing, angstrom address)"
+        data_tests:
+          - not_null
+
   - name: angstrom_ethereum_trades
     meta:
       blockchain: ethereum

@@ -8,6 +8,7 @@
             'dune.data_explorer.category': 'third_party_data',
             'dune.data_explorer.contributors': contributors | as_text,
           } -%}
+    {%- do apply_filtering_columns(properties) -%}
     {%- if model.config.materialized == "view" -%}
       CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
         {{ trino_properties(properties) }}

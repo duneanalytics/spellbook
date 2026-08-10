@@ -2,8 +2,11 @@
         schema = 'lido',
         alias = 'accounting',
 
-        materialized = 'table',
-        file_format = 'delta'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['period','hash','primary_label','secondary_label','account','category','base_token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.period')]
         , post_hook='{{ hide_spells() }}'
         )
 }}
@@ -38,7 +41,12 @@ daily_close_prices as (
                 (blockchain = 'ethereum' AND contract_address IN (SELECT address FROM tokens)) AS is_eth_token,
                 (symbol = 'stSOL') AS is_stsol
         FROM {{source('prices','usd')}}
-        WHERE minute >= timestamp '2020-12-01'
+        WHERE
+        {% if is_incremental() -%}
+                {{ incremental_predicate('minute') }}
+        {%- else -%}
+                minute >= timestamp '2020-12-01'
+        {%- endif %}
         AND EXTRACT(hour FROM minute) = 23
         AND EXTRACT(minute FROM minute) = 59
         AND (
@@ -823,5 +831,8 @@ AND (
         )
 )
 LEFT JOIN {{source('prices','tokens')}} pt ON accounts.token = pt.contract_address
+{% if is_incremental() -%}
+WHERE {{ incremental_predicate('accounts.period') }}
+{% endif -%}
 GROUP BY 1,2,3,4,5,6,8,9, tokens_prices.decimals, pt.decimals, tokens_prices.price, tokens_prices.token_eth_price
 ORDER BY period DESC

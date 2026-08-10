@@ -163,3 +163,11 @@ sources:
       - name: pair_evt_swap
       - name: algebrafactory_evt_custompool
       - name: algebrapool_evt_swap
+  - name: origin_protocol_ethereum
+    tables:
+      - name: oswapwethsteth_call_swapexacttokensfortokens
+      - name: oswapwethsteth_call_swaptokensforexacttokens
+      - name: etherfiarm_call_swapexacttokensfortokens
+      - name: etherfiarm_call_swaptokensforexacttokens
+      - name: ethenaarm_call_swapexacttokensfortokens
+      - name: ethenaarm_call_swaptokensforexacttokens

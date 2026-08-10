@@ -5,7 +5,6 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['fact_withdraw_events_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'defi', 'withdraw_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
@@ -69,5 +68,5 @@ FROM
 JOIN {{ ref('thorchain_core_block') }} as b
   ON A.block_timestamp = b.timestamp
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('b.block_timestamp') }}
+WHERE {{ incremental_predicate('a._inserted_timestamp') }}
 {% endif %}

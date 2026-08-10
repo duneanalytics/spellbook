@@ -13,6 +13,13 @@
 }}
 
 
+
+-- CUR2-2973: bound the previously-unbounded side of the logs<->transactions join by its own
+-- block_time so the incremental run prunes it via Delta file-skipping. The added predicate is
+-- logically redundant -- the joined log and transaction are in the same block, so their
+-- block_time is identical, and the other side is already bounded to the incremental window --
+-- so results are unchanged (proven EXCEPT=0); it only stops the full-history scan. Incremental-only.
+
 WITH
   optimism_usd AS (
     SELECT
@@ -43,6 +50,7 @@ WITH
       LEFT JOIN optimism_usd ON date_trunc('minute', tx.block_time) = optimism_usd.block_time
     {% if is_incremental() %}
       WHERE {{ incremental_predicate('tx.block_time') }}
+        AND {{ incremental_predicate('ocr_gas_transmission_logs.block_time') }}
     {% endif %}
     GROUP BY
       tx.hash,

@@ -304,6 +304,12 @@ models:
       tags: ["chainlink", "ocr", "reward", "transmission", "logs", "ethereum"]
     description: >
       Chainlink OCR Reward Transmission Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - index
     columns:
       - *blockchain
       - *block_hash
@@ -313,10 +319,16 @@ models:
       - *topic1
       - *topic2
       - *topic3
-      - *tx_hash
+      - name: tx_hash
+        description: "Transaction Hash"
+        data_tests:
+          - not_null
       - *block_number
       - *block_time
-      - *index
+      - name: index
+        description: "Index"
+        data_tests:
+          - not_null
       - *tx_index
 
   - name: chainlink_ethereum_ocr_reward_evt_transfer
@@ -912,8 +924,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
-              - blockchain
-              - block_number
               - tx_hash
               - index
     columns:
@@ -925,10 +935,16 @@ models:
       - *topic1
       - *topic2
       - *topic3
-      - *tx_hash
+      - name: tx_hash
+        description: "Transaction Hash"
+        data_tests:
+          - not_null
       - *block_number
       - *block_time
-      - *index
+      - name: index
+        description: "Index"
+        data_tests:
+          - not_null
       - *tx_index
 
   - name: chainlink_ethereum_vrf_v2_random_fulfilled_logs

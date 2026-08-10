@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: oku_tezos_evm
+    tables:
+      - name: uniswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap
