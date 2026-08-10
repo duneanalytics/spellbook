@@ -14,7 +14,7 @@ FROM (VALUES
     , ('robinswap', 'RobinSwap', 'Direct', 'RobinSwap_')
     , ('catnip', 'CatNIP', 'Direct', 'catnipexchange')
     , ('uponrh', 'UP', 'Direct', 'uponrh')
-    , ('gigadex', 'GigaDEX', 'Direct', '')
+    , ('gigadex', 'GigaDEX', 'Direct', 'giga_dex')
     , ('pancakeswap', 'PancakeSwap', 'Direct', 'PancakeSwap')
     , ('curve', 'Curve', 'Direct', 'CurveFinance')
     , ('sushiswap', 'SushiSwap', 'Direct', 'SushiSwap')

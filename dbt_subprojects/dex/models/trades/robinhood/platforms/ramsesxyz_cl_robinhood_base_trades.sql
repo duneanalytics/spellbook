@@ -15,7 +15,8 @@
         blockchain = 'robinhood',
         project = 'ramsesxyz',
         version = 'cl',
-        Pair_evt_Swap = source('ramsesxyz_robinhood', 'ramsesv3pool_evt_swap'),
-        Factory_evt_PoolCreated = source('ramsesxyz_robinhood', 'ramsesv3factory_evt_poolcreated')
+        Pair_evt_Swap = source('ramsesxyz_robinhood', 'RamsesV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('ramsesxyz_robinhood', 'RamsesV3Factory_evt_PoolCreated'),
+        optional_columns = []
     )
 }}

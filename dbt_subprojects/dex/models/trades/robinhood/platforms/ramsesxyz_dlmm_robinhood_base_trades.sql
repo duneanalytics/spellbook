@@ -15,8 +15,8 @@
         blockchain = 'robinhood',
         project = 'ramsesxyz',
         version = 'dlmm',
-        Pair_evt_Swap = source('ramsesxyz_robinhood', 'dlmmpool_evt_swap'),
-        Factory_evt_PoolCreated = source('ramsesxyz_robinhood', 'dlmmfactory_evt_lbpaircreated'),
+        Pair_evt_Swap = source('ramsesxyz_robinhood', 'DLMMPool_evt_Swap'),
+        Factory_evt_PoolCreated = source('ramsesxyz_robinhood', 'DLMMFactory_evt_LBPairCreated'),
         pair_column_name = 'lbpair'
     )
 }}

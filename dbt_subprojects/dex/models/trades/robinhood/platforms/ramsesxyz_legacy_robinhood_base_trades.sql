@@ -15,7 +15,7 @@
         blockchain = 'robinhood',
         project = 'ramsesxyz',
         version = 'legacy',
-        Pair_evt_Swap = source('ramsesxyz_robinhood', 'pair_evt_swap'),
-        Factory_evt_PairCreated = source('ramsesxyz_robinhood', 'pairfactory_evt_paircreated')
+        Pair_evt_Swap = source('ramsesxyz_robinhood', 'Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('ramsesxyz_robinhood', 'PairFactory_evt_PairCreated')
     )
 }}

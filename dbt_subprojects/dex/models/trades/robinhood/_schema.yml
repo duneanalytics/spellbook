@@ -245,9 +245,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('pancakeswap_robinhood_base_trades_seed')
             filter:
-              project: pancakeswap
               version: 2
     columns:
       - name: tx_hash
@@ -274,9 +273,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('pancakeswap_robinhood_base_trades_seed')
             filter:
-              project: pancakeswap
               version: 3
     columns:
       - name: tx_hash
@@ -303,9 +301,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('sheriff_robinhood_base_trades_seed')
             filter:
-              project: sheriff
               version: 2
     columns:
       - name: tx_hash
@@ -332,9 +329,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('sheriff_robinhood_base_trades_seed')
             filter:
-              project: sheriff
               version: 4
     columns:
       - name: tx_hash
@@ -361,9 +357,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('sushiswap_robinhood_base_trades_seed')
             filter:
-              project: sushiswap
               version: 2
     columns:
       - name: tx_hash
@@ -390,9 +385,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('sushiswap_robinhood_base_trades_seed')
             filter:
-              project: sushiswap
               version: 3
     columns:
       - name: tx_hash
@@ -419,9 +413,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('robinswap_robinhood_base_trades_seed')
             filter:
-              project: robinswap
               version: 3
     columns:
       - name: tx_hash
@@ -448,9 +441,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('catnip_robinhood_base_trades_seed')
             filter:
-              project: catnip
               version: 1
     columns:
       - name: tx_hash
@@ -477,9 +469,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('uponrh_robinhood_base_trades_seed')
             filter:
-              project: uponrh
               version: 3
     columns:
       - name: tx_hash
@@ -506,9 +497,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('gigadex_robinhood_base_trades_seed')
             filter:
-              project: gigadex
               version: 2
     columns:
       - name: tx_hash
@@ -535,9 +525,8 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('robinhood_dexscreener_base_trades_seed')
+            seed_file: ref('gigadex_robinhood_base_trades_seed')
             filter:
-              project: gigadex
               version: 3
     columns:
       - name: tx_hash
