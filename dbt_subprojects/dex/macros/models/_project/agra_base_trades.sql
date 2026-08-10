@@ -53,8 +53,9 @@ with orders as (
     group by tx_hash, evt_index, from_hex(json_extract_scalar(o, '$.token'))
 )
 
--- CLOB settles one ERC20 per side; keep one deterministic row so a malformed
--- multi-token order can't break the tx_hash+evt_index unique key / incremental merge.
+-- Offer items carry no recipient, so a multi-token offer cannot be disambiguated the way the
+-- consideration can; keep one deterministic row so it can't break the tx_hash+evt_index unique
+-- key / incremental merge.
 , offer_side as (
     select tx_hash, evt_index, token, amount
     from (
@@ -69,21 +70,26 @@ with orders as (
     where rn = 1
 )
 
--- token the taker PAYS (offerer receives, incl. fees) -> token_sold
+-- token the taker PAYS -> token_sold. Consideration carries the payment to the offerer plus
+-- optional fee items routed to fee collectors, so the items are not interchangeable: only the
+-- item whose recipient IS the offerer is the payment. Selecting by amount instead would compare
+-- raw integers across differing token decimals and can pick a fee over the payment.
 , consideration_tokens as (
     select
-        tx_hash
-        , evt_index
+        o.tx_hash
+        , o.evt_index
         , from_hex(json_extract_scalar(c, '$.token')) as token
         , cast(sum(cast(json_extract_scalar(c, '$.amount') as uint256)) as uint256) as amount
-    from orders
-    cross join unnest(consideration) as t(c)
+    from orders o
+    cross join unnest(o.consideration) as t(c)
     where json_extract_scalar(c, '$.itemType') = '1' -- ERC20 only
-    group by tx_hash, evt_index, from_hex(json_extract_scalar(c, '$.token'))
+      and from_hex(json_extract_scalar(c, '$.recipient')) = o.offerer -- payment leg, not a fee leg
+    group by o.tx_hash, o.evt_index, from_hex(json_extract_scalar(c, '$.token'))
 )
 
--- CLOB settles one ERC20 per side; keep one deterministic row so a malformed
--- multi-token order can't break the tx_hash+evt_index unique key / incremental merge.
+-- The payment leg above is unique per order, so this is only a determinism net: it stops a
+-- malformed order paying the offerer in two tokens from breaking the tx_hash+evt_index unique
+-- key / incremental merge.
 , consideration_side as (
     select tx_hash, evt_index, token, amount
     from (
@@ -115,9 +121,8 @@ select
     , o.project_contract_address
     , o.tx_hash
     , o.evt_index
--- Agra is a CLOB: exactly one ERC20 per side per order (a/b, c/b). A multi-token order
--- would be a contract failure and is intentionally not modeled; the guards above + the
--- tx_hash+evt_index unique key keep it from corrupting output.
+-- token_bought_amount_raw is the gross offered amount: where a fee is rebated in the offered
+-- token the taker nets slightly less, which is the usual gross convention for dex.trades.
 from orders o
 inner join offer_side ofr
     on ofr.tx_hash = o.tx_hash
