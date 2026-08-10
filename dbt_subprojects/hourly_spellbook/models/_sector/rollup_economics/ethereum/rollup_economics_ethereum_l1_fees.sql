@@ -5,10 +5,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['name', 'day']
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "rollup_economics",
-                                    \'["niftytable"]\') }}'
+    , post_hook = '{{ hide_spells() }}'
 )}}
 
 WITH l1_data AS (

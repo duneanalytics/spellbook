@@ -13,36 +13,6 @@
 
 WITH 
 
-suicide AS (
-    SELECT 
-         cast(date_trunc('month', block_time) as date) AS block_month
-        , cast(date_trunc('day', block_time) as date) AS block_date
-        , block_time
-        , block_number
-        , tx_hash
-        , tx_index
-        , trace_address
-        , tx_from
-        , tx_to
-        , address 
-        , refund_address 
-    FROM 
-        {{ source('gnosis', 'traces') }}
-    WHERE
-        type = 'suicide'
-        AND
-        success
-),
-
-suicide_events AS (
-    SELECT
-        *
-        ,ROW_NUMBER() OVER (PARTITION BY address ORDER BY block_time) AS event_sequence
-        ,LAG(block_time) OVER (PARTITION BY address ORDER BY block_time) AS previous_block_time
-    FROM
-        suicide
-),
-
 tokens_gnosis_base_without_suicide_transfers AS (
     SELECT
         address
@@ -56,7 +26,7 @@ tokens_gnosis_base_without_suicide_transfers AS (
         FROM    
             {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
         INNER JOIN
-            suicide_events t2
+            {{ ref('tokens_gnosis_suicide_events') }} t2
             ON 
             t2.address = t1."from"
         WHERE  
@@ -75,7 +45,7 @@ tokens_gnosis_base_without_suicide_transfers AS (
         FROM    
             {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
         INNER JOIN
-            suicide_events t2
+            {{ ref('tokens_gnosis_suicide_events') }} t2
             ON 
             t2.address = t1."to"
         WHERE  
@@ -122,7 +92,7 @@ SELECT
 FROM 
     suicide_balances t1
 INNER JOIN
-    suicide_events t2
+    {{ ref('tokens_gnosis_suicide_events') }} t2
     ON 
     t2.address = t1.address
     AND 

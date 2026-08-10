@@ -2,10 +2,7 @@
     schema = 'bridges_evms'
     , alias = 'flows'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "tron", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "boba", "mantle", "abstract", "apechain", "bob", "celo", "kaia", "katana", "plume", "ronin", "sonic", "sophon", "story", "taiko", "zkevm"]\',
-                                "sector",
-                                "bridges",
-                                \'["hildobby", "tomfutago"]\') }}'
+    , post_hook = '{{ hide_spells() }}'
     )
 }}
 

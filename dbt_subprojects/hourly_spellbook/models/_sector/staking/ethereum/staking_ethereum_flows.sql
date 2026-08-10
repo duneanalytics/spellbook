@@ -2,10 +2,7 @@
     
     schema = 'staking_ethereum',
     alias = 'flows',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "staking",
-                                \'["hildobby", "0xBoxer"]\') }}')
+    post_hook = '{{ hide_spells() }}')
 }}
 
 WITH indexes AS (

@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['bridge_omni_id'],
+    unique_key = ['block_date', 'bridge_omni_id'],
     partition_by = ['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook='{{ expose_spells(\'["near"]\',
@@ -310,7 +310,7 @@ SELECT
     has_burn,
     'omni' AS platform,
     {{ dbt_utils.generate_surrogate_key(
-        ['tx_hash', 'source_chain_id', 'destination_address', 'token_address', 'amount_raw']
+        ['tx_hash', 'source_chain_id', 'destination_address', 'token_address', 'amount_raw', 'receipt_id', 'log_index']
     ) }} AS bridge_omni_id,
     _partition_by_block_number
 FROM 

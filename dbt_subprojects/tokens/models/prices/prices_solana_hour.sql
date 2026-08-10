@@ -1,7 +1,8 @@
 {{ config(
         schema = 'prices_solana',
         alias = 'hour',
-        materialized = 'view'
+        materialized = 'view',
+        tags = ['prod_exclude']
     )
 }}
 

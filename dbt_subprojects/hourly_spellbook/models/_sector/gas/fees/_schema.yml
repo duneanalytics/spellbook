@@ -79,3 +79,59 @@ models:
       - &type
         name: type
         description: "Transaction type"
+
+  - name: gas_evm_fees
+    meta:
+      sector: gas_evm
+      short_description: "Transaction gas fees across EVM-compatible chains under the explicit gas_evm namespace."
+      contributors: soispoke, ilemi, 0xRob, jeff-dude, hosuke, tomfutago
+    config:
+      tags: ['gas', 'fees', 'evm']
+    description: >
+      Compatibility view over gas.fees that excludes the non-EVM Tron rows and exposes the
+      aggregate's EVM-compatible chain coverage under gas_evm.fees.
+    columns:
+      - name: blockchain
+        description: "Blockchain on which the transaction occurred"
+      - name: block_month
+        description: "UTC month of the transaction block"
+      - name: block_date
+        description: "UTC date of the transaction block"
+      - name: block_time
+        description: "UTC timestamp of the transaction block"
+      - name: block_number
+        description: "Number of the block containing the transaction"
+      - name: tx_hash
+        description: "Hash of the transaction"
+      - name: tx_index
+        description: "Index position of the transaction within its block"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: tx_to
+        description: "Address called by the transaction"
+      - name: gas_price
+        description: "Gas price paid per unit of gas"
+      - name: gas_used
+        description: "Amount of gas consumed by the transaction"
+      - name: currency_symbol
+        description: "Symbol of the blockchain's native fee currency"
+      - name: tx_fee
+        description: "Total transaction fee denominated in the native fee currency"
+      - name: tx_fee_usd
+        description: "Total transaction fee denominated in USD"
+      - name: tx_fee_raw
+        description: "Total transaction fee in the native currency's base unit"
+      - name: tx_fee_breakdown
+        description: "Transaction fee components denominated in the native fee currency"
+      - name: tx_fee_breakdown_usd
+        description: "Transaction fee components denominated in USD"
+      - name: tx_fee_breakdown_raw
+        description: "Transaction fee components in the native currency's base unit"
+      - name: tx_fee_currency
+        description: "Token address or identifier of the currency used to pay transaction fees"
+      - name: block_proposer
+        description: "Address of the validator or proposer for the transaction's block"
+      - name: gas_limit
+        description: "Maximum amount of gas available to the transaction"
+      - name: gas_limit_usage
+        description: "Share of the transaction gas limit that was consumed"

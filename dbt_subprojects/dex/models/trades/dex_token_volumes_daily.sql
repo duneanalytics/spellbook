@@ -10,6 +10,7 @@
     , 'boba'
     , 'celo'
     , 'corn'
+    , 'cronos'
     , 'ethereum'
     , 'fantom'
     , 'flare'
