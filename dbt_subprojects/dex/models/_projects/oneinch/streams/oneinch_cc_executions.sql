@@ -1,9 +1,5 @@
 {%- set stream = oneinch_cc_executions_cfg_macro() -%}
 
--- No incremental_predicate on the merge target: the source below re-emits a trade's full history
--- by hashlock, so a time-bounded target leaves the older rows of a late-settled trade unmatchable
--- and the merge inserts duplicates of them instead of updating them.
-
 {{-
     config(
         schema = 'oneinch',
