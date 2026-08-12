@@ -13,7 +13,6 @@ with orders as (
         , contract_address as project_contract_address
         , offerer
         , recipient
-        , orderHash        as order_hash
         , offer
         , consideration
     from {{ source('agra_multichain', 'settlement_evt_orderfulfilled') }}
@@ -23,21 +22,6 @@ with orders as (
     {% else %}
     and evt_block_time >= timestamp '{{ start_date }}'
     {% endif %}
-)
-
--- Order hashes settled via matchOrders. Such orders emit one OrderFulfilled per side, so the
--- taker's order leg (offerer = recipient) is the aggregate of the maker legs and is a duplicate.
-, matched_hashes as (
-    select evt_tx_hash as tx_hash, oh as order_hash
-    from {{ source('agra_multichain', 'settlement_evt_ordersmatched') }}
-    cross join unnest(orderHashes) as t(oh)
-    where chain = '{{ blockchain }}'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('evt_block_time') }}
-    {% else %}
-    and evt_block_time >= timestamp '{{ start_date }}'
-    {% endif %}
-    group by 1, 2
 )
 
 -- token the taker RECEIVES (offerer gives) -> token_bought
@@ -130,10 +114,9 @@ inner join offer_side ofr
 inner join consideration_side con
     on con.tx_hash = o.tx_hash
     and con.evt_index = o.evt_index
-left join matched_hashes m
-    on m.tx_hash = o.tx_hash
-    and m.order_hash = o.order_hash
--- drop the duplicated taker aggregate leg of matched orders; keep everything else
-where m.order_hash is null or o.offerer <> o.recipient
+-- Drops self-match fills (Agra team: self-matching is allowed and used for testing) and, with
+-- them, the duplicated taker aggregate leg of matchOrders settlements, which always has
+-- offerer = recipient.
+where o.offerer <> o.recipient
 
 {% endmacro %}
