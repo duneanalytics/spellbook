@@ -7,6 +7,7 @@
     unique_key = ['day', 'asset'],
     partition_by = ['day'],
     incremental_predicates = ['DBT_INTERNAL_DEST.day = DBT_INTERNAL_SOURCE.day'],
+    pre_hook = "{{ set_trino_session_property(true, 'distinct_aggregations_strategy', 'single_step') }}",
     tags = ['thorchain', 'pool_statistics', 'silver']
 ) }}
 
