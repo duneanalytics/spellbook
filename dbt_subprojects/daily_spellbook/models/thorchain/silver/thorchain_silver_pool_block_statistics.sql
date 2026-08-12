@@ -1,13 +1,66 @@
 {{ config(
     schema = 'thorchain_silver',
     alias = 'pool_block_statistics',
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['day', 'asset'],
     partition_by = ['day'],
+    incremental_predicates = ['DBT_INTERNAL_DEST.day = DBT_INTERNAL_SOURCE.day'],
     tags = ['thorchain', 'pool_statistics', 'silver']
 ) }}
 
-WITH pool_depth AS (
+-- ci-stamp: 1
+WITH
+{% if is_incremental() -%}
+target_watermark AS (
+    SELECT
+        cast(MAX(day) AS timestamp) - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }} AS processed_after
+    FROM {{ this }}
+),
+changed_withdrawals AS (
+    SELECT
+        date(from_unixtime(cast(w.block_timestamp / 1e9 AS bigint))) AS day,
+        w.pool_name,
+        w.from_address AS address
+    FROM {{ ref("thorchain_silver_withdraw_events") }} AS w
+    CROSS JOIN target_watermark AS tw
+    WHERE w._inserted_timestamp >= tw.processed_after
+),
+changed_liquidity_days AS (
+    SELECT
+        s.block_date AS day
+    FROM {{ ref("thorchain_silver_stake_events") }} AS s
+    CROSS JOIN target_watermark AS tw
+    WHERE s._ingested_timestamp >= tw.processed_after
+    UNION ALL
+    SELECT
+        day
+    FROM changed_withdrawals
+    UNION ALL
+    SELECT
+        MIN(s.block_date) AS day
+    FROM {{ ref("thorchain_silver_stake_events") }} AS s
+    INNER JOIN changed_withdrawals AS w
+        ON s.pool_name = w.pool_name
+        AND COALESCE(s.rune_address, s.asset_address) = w.address
+),
+{% endif -%}
+incremental_bounds AS (
+    SELECT
+        {% if is_incremental() -%}
+        LEAST(
+            cast(date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}) AS date),
+            COALESCE(
+                (SELECT MIN(day) FROM changed_liquidity_days),
+                cast(date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}) AS date)
+            )
+        ) AS rebuild_start
+        {% else -%}
+        date '2021-04-11' AS rebuild_start
+        {% endif -%}
+),
+pool_depth AS (
     SELECT
         day,
         pool_name,
@@ -29,8 +82,10 @@ WITH pool_depth AS (
             {{ ref("thorchain_silver_block_pool_depths") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
+        CROSS JOIN incremental_bounds AS ib
         WHERE
             asset_e8 > 0
+            AND b.block_date >= ib.rebuild_start
     )
     WHERE
         block_id = max_block_id
@@ -54,6 +109,8 @@ pool_status AS (
             {{ ref("thorchain_silver_pool_events") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
+        CROSS JOIN incremental_bounds AS ib
+        WHERE b.block_date >= ib.rebuild_start
     )
     WHERE
         rn = 1
@@ -70,6 +127,8 @@ add_liquidity_tbl AS (
         {{ ref("thorchain_silver_stake_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    CROSS JOIN incremental_bounds AS ib
+    WHERE b.block_date >= ib.rebuild_start
     GROUP BY
         cast(date_trunc('day', b.block_timestamp) AS date),
         pool_name
@@ -87,6 +146,8 @@ withdraw_tbl AS (
         {{ ref("thorchain_silver_withdraw_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    CROSS JOIN incremental_bounds AS ib
+    WHERE b.block_date >= ib.rebuild_start
     GROUP BY
         cast(date_trunc('day', b.block_timestamp) AS date),
         pool_name
@@ -109,6 +170,8 @@ swap_total_tbl AS (
             {{ ref("thorchain_silver_swap_events") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
+        CROSS JOIN incremental_bounds AS ib
+        WHERE b.block_date >= ib.rebuild_start
     )
     GROUP BY
         day,
@@ -142,6 +205,8 @@ swap_to_asset_tbl AS (
             {{ ref("thorchain_silver_swap_events") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
+        CROSS JOIN incremental_bounds AS ib
+        WHERE b.block_date >= ib.rebuild_start
     )
     GROUP BY
         to_tune_asset,
@@ -178,6 +243,8 @@ swap_to_rune_tbl AS (
             {{ ref("thorchain_silver_swap_events") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
+        CROSS JOIN incremental_bounds AS ib
+        WHERE b.block_date >= ib.rebuild_start
     )
     GROUP BY
         to_tune_asset,
@@ -195,6 +262,8 @@ average_slip_tbl AS (
     {{ ref("thorchain_silver_swap_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    CROSS JOIN incremental_bounds AS ib
+    WHERE b.block_date >= ib.rebuild_start
     GROUP BY
         pool_name,
         cast(date_trunc('day', b.block_timestamp) AS date)
@@ -208,6 +277,8 @@ unique_swapper_tbl AS (
         {{ ref("thorchain_silver_swap_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    CROSS JOIN incremental_bounds AS ib
+    WHERE b.block_date >= ib.rebuild_start
     GROUP BY
         pool_name,
         cast(date_trunc('day', b.block_timestamp) AS date)
@@ -221,6 +292,8 @@ stake_amount AS (
         {{ ref("thorchain_silver_stake_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    CROSS JOIN incremental_bounds AS ib
+    WHERE b.block_date >= ib.rebuild_start
     GROUP BY
         pool_name,
         cast(date_trunc('day', b.block_timestamp) AS date)
@@ -250,8 +323,10 @@ stake_umc AS (
         {{ ref("thorchain_silver_stake_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    CROSS JOIN incremental_bounds AS ib
     WHERE
         rune_address IS NOT NULL
+        AND b.block_date >= ib.rebuild_start
     GROUP BY
         rune_address,
         pool_name,
@@ -266,9 +341,11 @@ stake_umc AS (
         {{ ref("thorchain_silver_stake_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    CROSS JOIN incremental_bounds AS ib
     WHERE
         asset_address IS NOT NULL
         AND rune_address IS NULL
+        AND b.block_date >= ib.rebuild_start
     GROUP BY
         asset_address,
         pool_name,
@@ -317,6 +394,8 @@ asset_price_usd_tbl AS (
             asset_usd
         FROM
             {{ ref("thorchain_silver_prices") }}
+        CROSS JOIN incremental_bounds AS ib
+        WHERE block_date >= ib.rebuild_start
     )
     WHERE
         block_id = max_block_id
@@ -472,83 +551,131 @@ joined AS (
     LEFT JOIN asset_price_usd_tbl
         ON pool_depth.pool_name = asset_price_usd_tbl.pool_name
         AND pool_depth.day = asset_price_usd_tbl.day
-)
-, total_stake AS (
-    select
+),
+joined_deduplicated AS (
+    SELECT DISTINCT
         *
-        , SUM(COALESCE(added_stake, 0) - COALESCE(withdrawn_stake, 0)) over (
-            PARTITION BY asset
-            ORDER BY  day ASC
-        ) AS total_stake
-        , CAST(asset_depth AS double) * CAST(COALESCE(
-            rune_depth,
+    FROM joined
+)
+{% if is_incremental() -%}
+, prior_state AS (
+    SELECT
+        t.asset,
+        MAX_BY(t.total_stake, t.day) AS total_stake,
+        MAX_BY(t.liquidity_unit_value_index, t.day) AS liquidity_unit_value_index,
+        MAX(t.day) AS day
+    FROM {{ this }} AS t
+    CROSS JOIN incremental_bounds AS ib
+    WHERE t.day < ib.rebuild_start
+    GROUP BY t.asset
+)
+{% endif -%}
+, total_stake AS (
+    SELECT
+        j.*,
+        {% if is_incremental() -%}
+        COALESCE(p.total_stake, 0) +
+        {% endif -%}
+        SUM(COALESCE(j.added_stake, 0) - COALESCE(j.withdrawn_stake, 0)) OVER (
+            PARTITION BY j.asset
+            ORDER BY j.day ASC
+        ) AS total_stake,
+        CAST(j.asset_depth AS double) * CAST(COALESCE(
+            j.rune_depth,
             0
         ) AS double) AS depth_product
-    from
-        joined
-)
-, synth_units AS (
-    select
-        *
-        , CAST(total_stake AS double) * CAST(synth_depth AS double) / ((CAST(asset_depth AS double) * CAST(2 AS double)) - CAST(synth_depth AS double)) AS synth_units
-    from
-        total_stake
-)
-, final AS (
-    select
-        *
-        , CASE
+    FROM joined_deduplicated AS j
+    {% if is_incremental() -%}
+    LEFT JOIN prior_state AS p ON j.asset = p.asset
+    {% endif -%}
+),
+synth_units AS (
+    SELECT
+        *,
+        CAST(total_stake AS double) * CAST(synth_depth AS double) / ((CAST(asset_depth AS double) * CAST(2 AS double)) - CAST(synth_depth AS double)) AS synth_units
+    FROM total_stake
+),
+final AS (
+    SELECT
+        *,
+        CASE
             WHEN total_stake = 0 THEN 0
             WHEN depth_product < 0 THEN 0
             ELSE SQRT(CAST(depth_product AS double)) / (
                 CAST(total_stake AS double) + CAST(synth_units AS double)
-                )
+            )
         END AS liquidity_unit_value_index
-    from
-        synth_units
+    FROM synth_units
+),
+index_history AS (
+    {% if is_incremental() -%}
+    SELECT
+        p.day,
+        p.asset,
+        p.liquidity_unit_value_index
+    FROM prior_state AS p
+    UNION ALL
+    {% endif -%}
+    SELECT
+        f.day,
+        f.asset,
+        f.liquidity_unit_value_index
+    FROM final AS f
+),
+lagged_indexes AS (
+    SELECT
+        day,
+        asset,
+        LAG(liquidity_unit_value_index, 1) OVER (
+            PARTITION BY asset
+            ORDER BY day ASC
+        ) AS prev_liquidity_unit_value_index
+    FROM index_history
 )
-SELECT DISTINCT
-    day,
-    add_asset_liquidity_volume,
-    add_liquidity_count,
-    add_liquidity_volume,
-    add_rune_liquidity_volume,
-    asset,
-    asset_depth,
-    asset_price,
-    asset_price_usd,
-    average_slip,
-    impermanent_loss_protection_paid,
-    rune_depth,
-    status,
-    swap_count,
-    swap_volume,
-    to_asset_average_slip,
-    to_asset_count,
-    to_asset_fees,
-    to_asset_volume,
-    to_rune_average_slip,
-    to_rune_count,
-    to_rune_fees,
-    to_rune_volume,
-    totalFees,
-    unique_member_count,
-    unique_swapper_count,
-    units,
-    withdraw_asset_volume,
-    withdraw_count,
-    withdraw_rune_volume,
-    withdraw_volume,
-    total_stake,
-    depth_product,
-    synth_units,
-    total_stake + synth_units AS pool_units,
-    liquidity_unit_value_index,
-    LAG(liquidity_unit_value_index,1) over (PARTITION BY asset ORDER BY DAY ASC) AS prev_liquidity_unit_value_index,
+SELECT
+    f.day,
+    f.add_asset_liquidity_volume,
+    f.add_liquidity_count,
+    f.add_liquidity_volume,
+    f.add_rune_liquidity_volume,
+    f.asset,
+    f.asset_depth,
+    f.asset_price,
+    f.asset_price_usd,
+    f.average_slip,
+    f.impermanent_loss_protection_paid,
+    f.rune_depth,
+    f.status,
+    f.swap_count,
+    f.swap_volume,
+    f.to_asset_average_slip,
+    f.to_asset_count,
+    f.to_asset_fees,
+    f.to_asset_volume,
+    f.to_rune_average_slip,
+    f.to_rune_count,
+    f.to_rune_fees,
+    f.to_rune_volume,
+    f.totalFees,
+    f.unique_member_count,
+    f.unique_swapper_count,
+    f.units,
+    f.withdraw_asset_volume,
+    f.withdraw_count,
+    f.withdraw_rune_volume,
+    f.withdraw_volume,
+    f.total_stake,
+    f.depth_product,
+    f.synth_units,
+    f.total_stake + f.synth_units AS pool_units,
+    f.liquidity_unit_value_index,
+    i.prev_liquidity_unit_value_index,
     concat_ws(
         '-',
-        cast(day as varchar),
-        asset
+        cast(f.day AS varchar),
+        f.asset
     ) AS _unique_key
-FROM
-    final
+FROM final AS f
+INNER JOIN lagged_indexes AS i
+    ON f.day = i.day
+    AND f.asset = i.asset

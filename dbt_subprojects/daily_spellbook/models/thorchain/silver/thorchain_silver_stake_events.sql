@@ -26,6 +26,7 @@ with base as (
         date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
         
         _updated_at AS _inserted_timestamp,
+        _ingested_at AS _ingested_timestamp,
         _ingested_at,
         _updated_at,
         
@@ -54,6 +55,7 @@ SELECT
     block_date,
     block_month,
     block_hour,
-    _inserted_timestamp
+    _inserted_timestamp,
+    _ingested_timestamp
 FROM base
 WHERE rn = 1

@@ -115,6 +115,24 @@ models:
               - _unique_key
 
   - name: thorchain_silver_pool_block_statistics
+    description: Daily THORChain pool statistics at one row per day and asset.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+              - asset
+    columns:
+      - name: day
+        description: UTC day of the pool statistics snapshot.
+        data_tests:
+          - not_null
+      - name: asset
+        description: THORChain pool asset identifier.
+        data_tests:
+          - not_null
+      - name: _unique_key
+        description: Legacy deterministic identifier composed from day and asset.
 
   - name: thorchain_silver_pool_events
 
