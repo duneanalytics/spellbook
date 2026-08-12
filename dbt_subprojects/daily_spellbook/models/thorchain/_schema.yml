@@ -8,6 +8,31 @@ models:
   - name: thorchain_silver_block_pool_depths
 
   - name: thorchain_silver_block_rewards
+    description: "Daily THORChain rewards, earnings, liquidity fees, and average active node count."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+    columns:
+      - name: day
+        description: "UTC calendar day for the reward totals."
+        data_tests:
+          - not_null
+      - name: liquidity_fee
+        description: "Total liquidity fees denominated in RUNE."
+      - name: block_rewards
+        description: "Total pool and bond rewards denominated in RUNE."
+      - name: earnings
+        description: "Total rewards and liquidity fees denominated in RUNE."
+      - name: bonding_earnings
+        description: "Total bond rewards denominated in RUNE."
+      - name: liquidity_earnings
+        description: "Total pool rewards and liquidity fees denominated in RUNE."
+      - name: avg_node_count
+        description: "Average active node count during the day."
+      - name: _inserted_timestamp
+        description: "Latest source ingestion timestamp represented by the day."
 
   - name: thorchain_silver_bond_events
 
