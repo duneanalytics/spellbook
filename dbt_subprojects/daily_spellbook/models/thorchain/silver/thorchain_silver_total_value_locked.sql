@@ -1,13 +1,28 @@
 {{ config(
     schema = 'thorchain_silver',
     alias = 'total_value_locked',
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['day'],
     partition_by = ['day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     tags = ['thorchain', 'total_value_locked', 'silver']
 ) }}
 
-WITH bond_type_day AS (
+-- ci-stamp: 1
+
+WITH prior_total_value_bonded AS (
+    {% if is_incremental() -%}
+    SELECT
+        COALESCE(MAX_BY(total_value_bonded, day), 0) AS total_value_bonded
+    FROM {{ this }}
+    WHERE NOT {{ incremental_predicate('day') }}
+    {% else -%}
+    SELECT 0 AS total_value_bonded
+    {% endif -%}
+),
+bond_type_day AS (
     SELECT
         cast(date_trunc('day', b.block_timestamp) AS date) AS day,
         bond_type,
@@ -17,6 +32,17 @@ WITH bond_type_day AS (
         {{ ref('thorchain_silver_bond_events') }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    {% if is_incremental() -%}
+        AND a.block_timestamp >= cast(
+            to_unixtime(
+                date_trunc(
+                    '{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}',
+                    now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}
+                )
+            ) * 1e9 AS bigint
+        )
+        AND {{ incremental_predicate('b.block_date') }}
+    {% endif -%}
     GROUP BY
         cast(date_trunc('day', b.block_timestamp) AS date),
         bond_type
@@ -69,6 +95,17 @@ total_pool_depth AS (
         {{ ref('thorchain_silver_block_pool_depths') }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
+    {% if is_incremental() -%}
+        AND a.block_timestamp >= cast(
+            to_unixtime(
+                date_trunc(
+                    '{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}',
+                    now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}
+                )
+            ) * 1e9 AS bigint
+        )
+        AND {{ incremental_predicate('b.block_date') }}
+    {% endif -%}
     WHERE LOWER(pool_name) NOT LIKE 'thor.%'
 ),
 total_pool_depth_max AS (
@@ -104,19 +141,20 @@ SELECT
         total_value_pooled,
         0
     ) AS total_value_pooled,
-    COALESCE(SUM(total_value_bonded) over (ORDER BY COALESCE(total_value_bonded_tbl.day, total_value_pooled_tbl.day) ASC), 0) AS total_value_bonded,
+    prior_total_value_bonded.total_value_bonded
+        + SUM(COALESCE(total_value_bonded_tbl.total_value_bonded, 0)) over (
+            ORDER BY COALESCE(total_value_bonded_tbl.day, total_value_pooled_tbl.day) ASC
+        ) AS total_value_bonded,
     COALESCE(
         total_value_pooled,
         0
-    ) + SUM(COALESCE(total_value_bonded, 0)) over (
-        ORDER BY
-            COALESCE(
-            total_value_bonded_tbl.day,
-            total_value_pooled_tbl.day
-            ) ASC
-    ) AS total_value_locked,
+    ) + prior_total_value_bonded.total_value_bonded
+        + SUM(COALESCE(total_value_bonded_tbl.total_value_bonded, 0)) over (
+            ORDER BY COALESCE(total_value_bonded_tbl.day, total_value_pooled_tbl.day) ASC
+        ) AS total_value_locked,
     total_value_bonded_tbl._inserted_timestamp
 FROM
   total_value_bonded_tbl full
 JOIN total_value_pooled_tbl
   ON total_value_bonded_tbl.day = total_value_pooled_tbl.day
+CROSS JOIN prior_total_value_bonded

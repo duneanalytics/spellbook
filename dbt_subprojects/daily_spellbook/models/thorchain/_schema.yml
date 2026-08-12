@@ -179,6 +179,25 @@ models:
               - _unique_key
 
   - name: thorchain_silver_total_value_locked
+    description: "Daily THORChain pooled, bonded, and combined total value locked amounts denominated in RUNE."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+    columns:
+      - name: day
+        description: "UTC calendar day for the total value locked snapshot."
+        data_tests:
+          - not_null
+      - name: total_value_pooled
+        description: "Total RUNE value pooled across THORChain liquidity pools at the end of the day."
+      - name: total_value_bonded
+        description: "Cumulative total RUNE bonded by THORChain nodes through the day."
+      - name: total_value_locked
+        description: "Combined total RUNE value pooled and bonded through the day."
+      - name: _inserted_timestamp
+        description: "Latest ingestion timestamp among bond events included for the day."
 
   - name: thorchain_silver_transfer_events
 
