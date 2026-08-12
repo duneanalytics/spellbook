@@ -11,60 +11,73 @@
 
 -- ci-stamp: 2
 
-WITH
 {% if is_incremental() -%}
-rolling_floor AS (
-    SELECT cast(
-        date_trunc(
-            '{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}',
-            now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}
-        ) AS date
-    ) AS day
-)
-, newly_ingested_event_days AS (
-    SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
-    FROM {{ ref('thorchain_silver_block_pool_depths') }}
-    WHERE {{ incremental_predicate('_inserted_timestamp') }}
+    {%- set rolling_floor = "cast(date_trunc('" ~ var("DBT_ENV_INCREMENTAL_TIME_UNIT") ~ "', now() - interval '" ~ var("DBT_ENV_INCREMENTAL_TIME") ~ "' " ~ var("DBT_ENV_INCREMENTAL_TIME_UNIT") ~ ") AS date)" -%}
+    {%- set rebuild_start = rolling_floor -%}
+    {%- set rebuild_start_query -%}
+        WITH newly_ingested_event_days AS (
+            SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
+            FROM {{ ref('thorchain_silver_block_pool_depths') }}
+            WHERE {{ incremental_predicate('_inserted_timestamp') }}
 
-    UNION ALL
+            UNION ALL
 
-    SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
-    FROM {{ ref('thorchain_silver_update_node_account_status_events') }}
-    WHERE {{ incremental_predicate('_inserted_timestamp') }}
+            SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
+            FROM {{ ref('thorchain_silver_update_node_account_status_events') }}
+            WHERE {{ incremental_predicate('_inserted_timestamp') }}
 
-    UNION ALL
+            UNION ALL
 
-    SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
-    FROM {{ ref('thorchain_silver_swap_events') }}
-    WHERE {{ incremental_predicate('_inserted_timestamp') }}
+            SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
+            FROM {{ ref('thorchain_silver_swap_events') }}
+            WHERE {{ incremental_predicate('_inserted_timestamp') }}
 
-    UNION ALL
+            UNION ALL
 
-    SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
-    FROM {{ ref('thorchain_silver_rewards_events') }}
-    WHERE {{ incremental_predicate('_inserted_timestamp') }}
+            SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
+            FROM {{ ref('thorchain_silver_rewards_events') }}
+            WHERE {{ incremental_predicate('_inserted_timestamp') }}
 
-    UNION ALL
+            UNION ALL
 
-    SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
-    FROM {{ ref('thorchain_silver_rewards_event_entries') }}
-    WHERE {{ incremental_predicate('_inserted_timestamp') }}
-)
-, rebuild_start AS (
-    SELECT LEAST(rf.day, COALESCE(MIN(nied.day), rf.day)) AS day
-    FROM rolling_floor AS rf
-    CROSS JOIN newly_ingested_event_days AS nied
-    GROUP BY rf.day
-)
-,
+            SELECT MIN(cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date)) AS day
+            FROM {{ ref('thorchain_silver_rewards_event_entries') }}
+            WHERE {{ incremental_predicate('_inserted_timestamp') }}
+        )
+        SELECT LEAST(
+            cast(
+                date_trunc(
+                    '{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}',
+                    now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}
+                ) AS date
+            ),
+            COALESCE(
+                MIN(day),
+                cast(
+                    date_trunc(
+                        '{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}',
+                        now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}
+                    ) AS date
+                )
+            )
+        ) AS day
+        FROM newly_ingested_event_days
+    {%- endset -%}
+    {%- if execute and not var('force-incremental', False) -%}
+        {%- set rebuild_start_result = run_query(rebuild_start_query) -%}
+        {%- if rebuild_start_result is not none -%}
+            {%- set rebuild_start = "DATE '" ~ rebuild_start_result.columns[0].values()[0] ~ "'" -%}
+        {%- endif -%}
+    {%- endif -%}
 {% endif -%}
+WITH
 all_block_id AS (
     SELECT
         block_timestamp,
         MAX(_inserted_timestamp) AS _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }}
     {% if is_incremental() -%}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date) >= (SELECT day FROM rebuild_start)
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date) >= {{ rebuild_start }}
     {% endif -%}
     GROUP BY block_timestamp
 )
@@ -80,7 +93,7 @@ all_block_id AS (
         ) AS delta
     FROM {{ ref('thorchain_silver_update_node_account_status_events') }}
     {% if is_incremental() -%}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date) >= (SELECT day FROM rebuild_start)
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date) >= {{ rebuild_start }}
     {% endif -%}
     GROUP BY block_timestamp
 )
@@ -99,7 +112,7 @@ all_block_id AS (
             0
         ) AS active_nodes
         FROM {{ ref('thorchain_silver_update_node_account_status_events') }}
-        WHERE cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date) < (SELECT day FROM rebuild_start)
+        WHERE cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date) < {{ rebuild_start }}
         {% else -%}
         0 AS active_nodes
         {% endif -%}
@@ -132,7 +145,7 @@ all_block_id AS (
     JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON abwn.block_timestamp = b.timestamp
     {% if is_incremental() -%}
-    WHERE b.block_date >= (SELECT day FROM rebuild_start)
+    WHERE b.block_date >= {{ rebuild_start }}
     {% endif -%}
     GROUP BY cast(date_trunc('day', b.block_timestamp) AS date)
 )
@@ -144,8 +157,8 @@ all_block_id AS (
     JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
     {% if is_incremental() -%}
-        AND b.block_date >= (SELECT day FROM rebuild_start)
-    WHERE cast(from_unixtime(cast(a.block_timestamp / 1e9 AS bigint)) AS date) >= (SELECT day FROM rebuild_start)
+        AND b.block_date >= {{ rebuild_start }}
+    WHERE cast(from_unixtime(cast(a.block_timestamp / 1e9 AS bigint)) AS date) >= {{ rebuild_start }}
     {% endif -%}
     GROUP BY cast(date_trunc('day', b.block_timestamp) AS date)
 )
@@ -158,8 +171,8 @@ all_block_id AS (
         JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
         {% if is_incremental() -%}
-            AND b.block_date >= (SELECT day FROM rebuild_start)
-        WHERE cast(from_unixtime(cast(a.block_timestamp / 1e9 AS bigint)) AS date) >= (SELECT day FROM rebuild_start)
+            AND b.block_date >= {{ rebuild_start }}
+        WHERE cast(from_unixtime(cast(a.block_timestamp / 1e9 AS bigint)) AS date) >= {{ rebuild_start }}
         {% endif -%}
     GROUP BY
         cast(date_trunc('day', b.block_timestamp) AS date)
@@ -173,8 +186,8 @@ all_block_id AS (
         JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
         {% if is_incremental() -%}
-            AND b.block_date >= (SELECT day FROM rebuild_start)
-        WHERE cast(from_unixtime(cast(a.block_timestamp / 1e9 AS bigint)) AS date) >= (SELECT day FROM rebuild_start)
+            AND b.block_date >= {{ rebuild_start }}
+        WHERE cast(from_unixtime(cast(a.block_timestamp / 1e9 AS bigint)) AS date) >= {{ rebuild_start }}
         {% endif -%}
     GROUP BY
         cast(date_trunc('day', b.block_timestamp) AS date)
