@@ -7,7 +7,6 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['blockchain', 'block_month'],
         unique_key = ['blockchain', 'block_month', 'tx_hash', 'call_trace_address'],
     )

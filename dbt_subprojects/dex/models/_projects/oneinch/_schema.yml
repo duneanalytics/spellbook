@@ -204,6 +204,88 @@ models:
       - name: native_price
       - name: native_decimals
 
+  - name: oneinch_cc_executions
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'cc', 'executions']
+    description: >
+        1inch cross-chain executions: one row per source-chain escrow creation, enriched with
+        every action of the trade collected across chains by order hash and hashlock
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - block_month
+              - tx_hash
+              - call_trace_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: chain_id
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: tx_success
+      - name: tx_from
+      - name: tx_to
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: tx_index
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: call_success
+      - name: call_gas_used
+      - name: call_selector
+      - name: call_method
+      - name: call_from
+      - name: call_to
+      - name: call_output
+      - name: call_error
+      - name: call_type
+      - name: protocol
+      - name: protocol_version
+      - name: contract_name
+      - name: amount_usd
+      - name: execution_cost
+      - name: user
+      - name: receiver
+      - name: src_token_address
+      - name: src_token_amount
+      - name: src_executed_address
+      - name: src_executed_symbol
+      - name: src_executed_amount
+      - name: src_executed_amount_usd
+      - name: dst_blockchain
+      - name: dst_token_address
+      - name: dst_token_amount
+      - name: dst_executed_address
+      - name: dst_executed_symbol
+      - name: dst_executed_amount
+      - name: dst_executed_amount_usd
+      - name: order_hash
+      - name: hashlock
+      - name: actions
+      - name: complement
+      - name: remains
+      - name: flags
+      - name: minute
+      - name: block_date
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: native_price
+      - name: native_decimals
+
   - name: oneinch_evms_transfers
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
