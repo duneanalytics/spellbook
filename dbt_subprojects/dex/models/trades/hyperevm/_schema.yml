@@ -235,3 +235,12 @@ models:
       - check_dex_base_trades_seed:
           arguments:
             seed_file: ref('agra_hyperevm_base_trades_seed')
+    columns:
+      - name: tx_hash
+        description: "Transaction hash of the Agra order fulfillment"
+        data_tests:
+          - not_null
+      - name: evt_index
+        description: "Log index of the OrderFulfilled event within the transaction"
+        data_tests:
+          - not_null
