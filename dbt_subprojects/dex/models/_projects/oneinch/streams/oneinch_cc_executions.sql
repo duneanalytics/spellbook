@@ -1,5 +1,9 @@
 {%- set stream = oneinch_cc_executions_cfg_macro() -%}
 
+-- No incremental_predicate on the merge target: the source below re-emits a trade's full history
+-- by hashlock, so a time-bounded target leaves the older rows of a late-settled trade unmatchable
+-- and the merge inserts duplicates of them instead of updating them.
+
 {{-
     config(
         schema = 'oneinch',
@@ -7,7 +11,6 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['blockchain', 'block_month'],
         unique_key = ['blockchain', 'block_month', 'tx_hash', 'call_trace_address'],
     )
