@@ -30,6 +30,8 @@ models:
       - &id
         name: id
         description: "DEX pool id, keccak256 hash of the abi encoded pool key"
+        data_tests:
+          - not_null
       - &token0
         name: token0
         description: "First token in pool"
@@ -82,15 +84,21 @@ models:
       - &tx_hash
         name: tx_hash
         description: "The hash of the transaction"
+        data_tests:
+          - not_null
       - &tx_from
         name: tx_from
         description: "Address that initiated the txn"
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of events within a transaction"
+        data_tests:
+          - not_null
       - &event_type
         name: event_type
         description: "Transaction event type"
+        data_tests:
+          - not_null
       - *token0
       - *token1
       - &amount0_raw
