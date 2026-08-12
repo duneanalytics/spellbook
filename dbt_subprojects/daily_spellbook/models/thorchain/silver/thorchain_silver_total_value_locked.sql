@@ -6,18 +6,41 @@
     incremental_strategy = 'merge',
     unique_key = ['day'],
     partition_by = ['day'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     tags = ['thorchain', 'total_value_locked', 'silver']
 ) }}
 
 -- ci-stamp: 1
 
-WITH prior_total_value_bonded AS (
+WITH
+{% if is_incremental() -%}
+incremental_rebuild_bounds AS (
+    SELECT
+        MIN(day) AS rebuild_start,
+        cast(to_unixtime(cast(MIN(day) AS timestamp)) * 1e9 AS bigint) AS rebuild_start_timestamp
+    FROM (
+        SELECT cast(
+            date_trunc(
+                '{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}',
+                now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}
+            ) AS date
+        ) AS day
+        UNION ALL
+        SELECT cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date) AS day
+        FROM {{ ref('thorchain_silver_bond_events') }}
+        WHERE {{ incremental_predicate('_inserted_timestamp') }}
+        UNION ALL
+        SELECT cast(from_unixtime(cast(block_timestamp / 1e9 AS bigint)) AS date) AS day
+        FROM {{ ref('thorchain_silver_block_pool_depths') }}
+        WHERE {{ incremental_predicate('_inserted_timestamp') }}
+    )
+),
+{% endif -%}
+prior_total_value_bonded AS (
     {% if is_incremental() -%}
     SELECT
         COALESCE(MAX_BY(total_value_bonded, day), 0) AS total_value_bonded
     FROM {{ this }}
-    WHERE NOT {{ incremental_predicate('day') }}
+    WHERE day < (SELECT rebuild_start FROM incremental_rebuild_bounds)
     {% else -%}
     SELECT 0 AS total_value_bonded
     {% endif -%}
@@ -33,15 +56,8 @@ bond_type_day AS (
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
     {% if is_incremental() -%}
-        AND a.block_timestamp >= cast(
-            to_unixtime(
-                date_trunc(
-                    '{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}',
-                    now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}
-                )
-            ) * 1e9 AS bigint
-        )
-        AND {{ incremental_predicate('b.block_date') }}
+        AND a.block_timestamp >= (SELECT rebuild_start_timestamp FROM incremental_rebuild_bounds)
+        AND b.block_date >= (SELECT rebuild_start FROM incremental_rebuild_bounds)
     {% endif -%}
     GROUP BY
         cast(date_trunc('day', b.block_timestamp) AS date),
@@ -96,15 +112,8 @@ total_pool_depth AS (
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
     {% if is_incremental() -%}
-        AND a.block_timestamp >= cast(
-            to_unixtime(
-                date_trunc(
-                    '{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}',
-                    now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}
-                )
-            ) * 1e9 AS bigint
-        )
-        AND {{ incremental_predicate('b.block_date') }}
+        AND a.block_timestamp >= (SELECT rebuild_start_timestamp FROM incremental_rebuild_bounds)
+        AND b.block_date >= (SELECT rebuild_start FROM incremental_rebuild_bounds)
     {% endif -%}
     WHERE LOWER(pool_name) NOT LIKE 'thor.%'
 ),
