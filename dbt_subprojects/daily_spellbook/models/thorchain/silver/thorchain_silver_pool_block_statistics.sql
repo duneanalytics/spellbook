@@ -7,60 +7,61 @@
     unique_key = ['day', 'asset'],
     partition_by = ['day'],
     incremental_predicates = ['DBT_INTERNAL_DEST.day = DBT_INTERNAL_SOURCE.day'],
-    pre_hook = "{{ set_trino_session_property(true, 'distinct_aggregations_strategy', 'single_step') }}",
     tags = ['thorchain', 'pool_statistics', 'silver']
 ) }}
 
 -- ci-stamp: 1
-WITH
+{% set rebuild_start = '2021-04-11' -%}
 {% if is_incremental() -%}
-target_watermark AS (
-    SELECT
-        cast(MAX(day) AS timestamp) - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }} AS processed_after
-    FROM {{ this }}
-),
-changed_withdrawals AS (
-    SELECT
-        date(from_unixtime(cast(w.block_timestamp / 1e9 AS bigint))) AS day,
-        w.pool_name,
-        w.from_address AS address
-    FROM {{ ref("thorchain_silver_withdraw_events") }} AS w
-    CROSS JOIN target_watermark AS tw
-    WHERE w._inserted_timestamp >= tw.processed_after
-),
-changed_liquidity_days AS (
-    SELECT
-        s.block_date AS day
-    FROM {{ ref("thorchain_silver_stake_events") }} AS s
-    CROSS JOIN target_watermark AS tw
-    WHERE s._ingested_timestamp >= tw.processed_after
-    UNION ALL
-    SELECT
-        day
-    FROM changed_withdrawals
-    UNION ALL
-    SELECT
-        MIN(s.block_date) AS day
-    FROM {{ ref("thorchain_silver_stake_events") }} AS s
-    INNER JOIN changed_withdrawals AS w
-        ON s.pool_name = w.pool_name
-        AND COALESCE(s.rune_address, s.asset_address) = w.address
-),
-{% endif -%}
-incremental_bounds AS (
-    SELECT
-        {% if is_incremental() -%}
-        LEAST(
-            cast(date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}) AS date),
-            COALESCE(
-                (SELECT MIN(day) FROM changed_liquidity_days),
-                cast(date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}) AS date)
+    {% if var('force-incremental', false) -%}
+        {% set rebuild_start = var('force-incremental-start-date', '2022-12-31') -%}
+    {% else -%}
+        {% set rebuild_start_query -%}
+            WITH target_watermark AS (
+                SELECT
+                    cast(MAX(day) AS timestamp) - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }} AS processed_after
+                FROM {{ this }}
+            ),
+            changed_withdrawals AS (
+                SELECT
+                    date(from_unixtime(cast(w.block_timestamp / 1e9 AS bigint))) AS day,
+                    w.pool_name,
+                    w.from_address AS address
+                FROM {{ ref("thorchain_silver_withdraw_events") }} AS w
+                CROSS JOIN target_watermark AS tw
+                WHERE w._inserted_timestamp >= tw.processed_after
+            ),
+            changed_liquidity_days AS (
+                SELECT
+                    s.block_date AS day
+                FROM {{ ref("thorchain_silver_stake_events") }} AS s
+                CROSS JOIN target_watermark AS tw
+                WHERE s._ingested_timestamp >= tw.processed_after
+                UNION ALL
+                SELECT
+                    day
+                FROM changed_withdrawals
+                UNION ALL
+                SELECT
+                    MIN(s.block_date) AS day
+                FROM {{ ref("thorchain_silver_stake_events") }} AS s
+                INNER JOIN changed_withdrawals AS w
+                    ON s.pool_name = w.pool_name
+                    AND COALESCE(s.rune_address, s.asset_address) = w.address
             )
-        ) AS rebuild_start
-        {% else -%}
-        date '2021-04-11' AS rebuild_start
-        {% endif -%}
-),
+            SELECT cast(LEAST(
+                cast(date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}) AS date),
+                COALESCE(
+                    (SELECT MIN(day) FROM changed_liquidity_days),
+                    cast(date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}) AS date)
+                )
+            ) AS varchar) AS rebuild_start
+        {% endset -%}
+        {% set rebuild_start_result = run_query(rebuild_start_query) -%}
+        {% set rebuild_start = rebuild_start_result.columns[0].values()[0] -%}
+    {% endif -%}
+{% endif -%}
+WITH
 pool_depth AS (
     SELECT
         day,
@@ -83,10 +84,9 @@ pool_depth AS (
             {{ ref("thorchain_silver_block_pool_depths") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
-        CROSS JOIN incremental_bounds AS ib
         WHERE
             asset_e8 > 0
-            AND b.block_date >= ib.rebuild_start
+            AND b.block_date >= date '{{ rebuild_start }}'
     )
     WHERE
         block_id = max_block_id
@@ -110,8 +110,7 @@ pool_status AS (
             {{ ref("thorchain_silver_pool_events") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
-        CROSS JOIN incremental_bounds AS ib
-        WHERE b.block_date >= ib.rebuild_start
+        WHERE b.block_date >= date '{{ rebuild_start }}'
     )
     WHERE
         rn = 1
@@ -128,8 +127,7 @@ add_liquidity_tbl AS (
         {{ ref("thorchain_silver_stake_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
-    CROSS JOIN incremental_bounds AS ib
-    WHERE b.block_date >= ib.rebuild_start
+    WHERE b.block_date >= date '{{ rebuild_start }}'
     GROUP BY
         cast(date_trunc('day', b.block_timestamp) AS date),
         pool_name
@@ -147,8 +145,7 @@ withdraw_tbl AS (
         {{ ref("thorchain_silver_withdraw_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
-    CROSS JOIN incremental_bounds AS ib
-    WHERE b.block_date >= ib.rebuild_start
+    WHERE b.block_date >= date '{{ rebuild_start }}'
     GROUP BY
         cast(date_trunc('day', b.block_timestamp) AS date),
         pool_name
@@ -171,8 +168,7 @@ swap_total_tbl AS (
             {{ ref("thorchain_silver_swap_events") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
-        CROSS JOIN incremental_bounds AS ib
-        WHERE b.block_date >= ib.rebuild_start
+        WHERE b.block_date >= date '{{ rebuild_start }}'
     )
     GROUP BY
         day,
@@ -206,8 +202,7 @@ swap_to_asset_tbl AS (
             {{ ref("thorchain_silver_swap_events") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
-        CROSS JOIN incremental_bounds AS ib
-        WHERE b.block_date >= ib.rebuild_start
+        WHERE b.block_date >= date '{{ rebuild_start }}'
     )
     GROUP BY
         to_tune_asset,
@@ -244,8 +239,7 @@ swap_to_rune_tbl AS (
             {{ ref("thorchain_silver_swap_events") }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} AS b
             ON a.block_timestamp = b.timestamp
-        CROSS JOIN incremental_bounds AS ib
-        WHERE b.block_date >= ib.rebuild_start
+        WHERE b.block_date >= date '{{ rebuild_start }}'
     )
     GROUP BY
         to_tune_asset,
@@ -263,8 +257,7 @@ average_slip_tbl AS (
     {{ ref("thorchain_silver_swap_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
-    CROSS JOIN incremental_bounds AS ib
-    WHERE b.block_date >= ib.rebuild_start
+    WHERE b.block_date >= date '{{ rebuild_start }}'
     GROUP BY
         pool_name,
         cast(date_trunc('day', b.block_timestamp) AS date)
@@ -278,8 +271,7 @@ unique_swapper_tbl AS (
         {{ ref("thorchain_silver_swap_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
-    CROSS JOIN incremental_bounds AS ib
-    WHERE b.block_date >= ib.rebuild_start
+    WHERE b.block_date >= date '{{ rebuild_start }}'
     GROUP BY
         pool_name,
         cast(date_trunc('day', b.block_timestamp) AS date)
@@ -293,8 +285,7 @@ stake_amount AS (
         {{ ref("thorchain_silver_stake_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
-    CROSS JOIN incremental_bounds AS ib
-    WHERE b.block_date >= ib.rebuild_start
+    WHERE b.block_date >= date '{{ rebuild_start }}'
     GROUP BY
         pool_name,
         cast(date_trunc('day', b.block_timestamp) AS date)
@@ -324,10 +315,9 @@ stake_umc AS (
         {{ ref("thorchain_silver_stake_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
-    CROSS JOIN incremental_bounds AS ib
     WHERE
         rune_address IS NOT NULL
-        AND b.block_date >= ib.rebuild_start
+        AND b.block_date >= date '{{ rebuild_start }}'
     GROUP BY
         rune_address,
         pool_name,
@@ -342,11 +332,10 @@ stake_umc AS (
         {{ ref("thorchain_silver_stake_events") }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} AS b
         ON a.block_timestamp = b.timestamp
-    CROSS JOIN incremental_bounds AS ib
     WHERE
         asset_address IS NOT NULL
         AND rune_address IS NULL
-        AND b.block_date >= ib.rebuild_start
+        AND b.block_date >= date '{{ rebuild_start }}'
     GROUP BY
         asset_address,
         pool_name,
@@ -395,8 +384,7 @@ asset_price_usd_tbl AS (
             asset_usd
         FROM
             {{ ref("thorchain_silver_prices") }}
-        CROSS JOIN incremental_bounds AS ib
-        WHERE block_date >= ib.rebuild_start
+        WHERE block_date >= date '{{ rebuild_start }}'
     )
     WHERE
         block_id = max_block_id
@@ -566,8 +554,7 @@ joined_deduplicated AS (
         MAX_BY(t.liquidity_unit_value_index, t.day) AS liquidity_unit_value_index,
         MAX(t.day) AS day
     FROM {{ this }} AS t
-    CROSS JOIN incremental_bounds AS ib
-    WHERE t.day < ib.rebuild_start
+    WHERE t.day < date '{{ rebuild_start }}'
     GROUP BY t.asset
 )
 {% endif -%}
