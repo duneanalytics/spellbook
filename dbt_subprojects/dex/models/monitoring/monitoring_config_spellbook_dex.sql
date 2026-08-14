@@ -28,34 +28,4 @@
     model failed, and it still emits a row for a table that was declared but never built.
 */
 
-{%- set rows = monitoring_config_rows() %}
-
-{%- if rows | length == 0 %}
-
-{#- No model declares monitoring (also the parse-time shape, when graph.nodes is empty). -#}
-select
-    cast(null as varchar) as table_name,
-    cast(null as varchar) as event_time_column,
-    cast(null as varchar) as partition_column,
-    cast(null as integer) as warn_seconds,
-    cast(null as integer) as critical_seconds,
-    cast(null as boolean) as oncall
-where false
-
-{%- else %}
-
-select
-    table_name,
-    event_time_column,
-    partition_column,
-    warn_seconds,
-    critical_seconds,
-    oncall
-from (
-    values
-    {%- for r in rows %}
-        ('{{ r.table_name }}', '{{ r.event_time_column }}', {{ "'" ~ r.partition_column ~ "'" if r.partition_column else 'cast(null as varchar)' }}, {{ r.warn_seconds }}, {{ r.critical_seconds }}, {{ 'true' if r.oncall else 'false' }}){{ ',' if not loop.last }}
-    {%- endfor %}
-) as t (table_name, event_time_column, partition_column, warn_seconds, critical_seconds, oncall)
-
-{%- endif %}
+{{ monitoring_config_select() }}
