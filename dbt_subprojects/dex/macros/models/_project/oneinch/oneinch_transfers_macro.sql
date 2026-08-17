@@ -22,7 +22,7 @@ calls as (
     from (
         {%- for stream in streams %}
         -- STREAM: {{ stream }} --
-            {% set date_from = stream.start %}
+            {% set date_from = [stream.start, oneinch_easy_date()] | max %}
             select
                 block_number
                 , block_month

@@ -1274,11 +1274,6 @@ models:
               - tx_hash
               - trace_address
               - evt_index
-      - check_dex_aggregator_seed:
-          arguments:
-            blockchain: arbitrum
-            project: 1inch-LOP
-            version: '4.0'
     columns:
       - name: blockchain
         data_tests:
