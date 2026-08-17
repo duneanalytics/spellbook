@@ -8,6 +8,9 @@
 {%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set nsymbol = blockchain.native_token_symbol -%}
 {%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
+{#- chains onboarded to the legacy tokens schema expose transfers_from_traces; newer chains (e.g. robinhood) expose base_transfers instead -#}
+{%- set transfers_from_traces = blockchain.get('transfers_from_traces', true) -%}
+{%- set transfers_table = 'transfers_from_traces' if transfers_from_traces else 'base_transfers' -%}
 
 
 
@@ -19,7 +22,7 @@ calls as (
     from (
         {%- for stream in streams %}
         -- STREAM: {{ stream }} --
-            {% set date_from = stream.start %}
+            {% set date_from = [stream.start, oneinch_easy_date()] | max %}
             select
                 block_number
                 , block_month
@@ -64,7 +67,11 @@ calls as (
         , contract_name
         , call_method
         , call_selector
+        {%- if transfers_from_traces %}
         , trace_address as transfer_trace_address
+        {%- else %}
+        , coalesce(trace_address, array[-1, evt_index]) as transfer_trace_address -- event-based transfers in base_transfers have no trace_address; build a unique non-null pseudo trace from evt_index (real traces never contain negative elements)
+        {%- endif %}
         , contract_address as transfer_contract_address -- original
         , if(token_standard = 'native', {{ wrapper }}, {% if blockchain.atokens %}coalesce(underlying_address, contract_address){% else %}contract_address{% endif %}) as contract_address
         , if(token_standard = 'native', {{ nsymbol }}{% if blockchain.atokens %}, atoken_symbol{% endif %}) as _symbol
@@ -74,10 +81,22 @@ calls as (
         , "to" as transfer_to
         , date_trunc('minute', block_time) as minute
         , block_date
+        {%- if transfers_from_traces %}
         , slice(trace_address, 1, cardinality(call_trace_address)) = call_trace_address as nested -- nested transfers only
         , reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address as related -- transfers related to the call only, i.e. without transfers in nested calls
+        {%- else %}
+        {#- event-based transfers can't be placed in the call subtree; attribute them to the call only when all tracked calls of the tx are within this call's subtree (i.e. the call is the outermost one), so sibling calls in batched txs are never cross-attributed -#}
+        , coalesce(
+            slice(trace_address, 1, cardinality(call_trace_address)) = call_trace_address
+            , all_match(call_trace_addresses, x -> slice(x, 1, cardinality(call_trace_address)) = call_trace_address)
+        ) as nested -- nested transfers only
+        , if(trace_address is not null
+            , reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address
+            , all_match(call_trace_addresses, x -> slice(x, 1, cardinality(call_trace_address)) = call_trace_address)
+        ) as related -- transfers related to the call only, i.e. without transfers in nested calls
+        {%- endif %}
     from calls
-    join {{ source('tokens_' + blockchain.name, 'transfers_from_traces') }} using(block_month, block_date, block_number, tx_hash)
+    join {{ source('tokens_' + blockchain.name, transfers_table) }} using(block_month, block_date, block_number, tx_hash)
     {% if blockchain.atokens %}left join atokens using(contract_address){% endif %}
 )
 

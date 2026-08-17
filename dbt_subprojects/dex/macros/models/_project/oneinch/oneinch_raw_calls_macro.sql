@@ -7,7 +7,7 @@
     )
 -%}
 
-{%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set date_from = [blockchain.start, stream.start, oneinch_easy_date()] | max -%}
 
 
 
@@ -16,7 +16,8 @@ with
 {% if type == "raw" -%} creations as (
     select
         distinct address as contract_address
-        , substr(code, 13, 20) as parent
+        {#- the escrow implementation address position in the clone creation code differs by chain: standard EVM EIP-1167 clones hold it at byte 21, zksync bytecode differs (byte 13) -#}
+        , substr(code, {{ blockchain.get('creations_parent_code_offset', 13) }}, 20) as parent
     from {{ source(blockchain.name, 'creation_traces') }}
     where true
         and "from" in ({{ blockchain.escrow_factory_addresses | join(', ') }})
