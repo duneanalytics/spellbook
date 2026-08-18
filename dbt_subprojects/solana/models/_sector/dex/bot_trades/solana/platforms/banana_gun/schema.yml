@@ -32,6 +32,10 @@ models:
       - name: fee_receiver
         data_tests:
           - not_null
+      - name: fee_receiver_signed
+        description: "Whether the Banana Gun fee receiver signed the transaction"
+        data_tests:
+          - not_null
       - name: tx_id
         data_tests:
           - not_null
@@ -100,6 +104,10 @@ models:
         data_tests:
           - not_null
       - name: fee_receiver
+        data_tests:
+          - not_null
+      - name: fee_receiver_signed
+        description: "Whether the Banana Gun fee receiver signed the transaction"
         data_tests:
           - not_null
       - name: tx_id

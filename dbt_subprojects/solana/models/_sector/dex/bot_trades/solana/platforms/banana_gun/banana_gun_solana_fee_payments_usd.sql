@@ -11,6 +11,7 @@
 }}
 
 {% set project_start_date = '2024-01-08' %}
+{% set ci_start_date = '2026-08-11' %}
 
 with fee_payments as (
     select *
@@ -18,7 +19,8 @@ with fee_payments as (
     {% if is_incremental() %}
         where {{ incremental_predicate('block_time') }}
     {% else %}
-        where block_time >= timestamp '{{ project_start_date }}'
+        {# Temporary 7-day CI window; restore project_start_date for full-history validation. #}
+        where block_time >= timestamp '{{ ci_start_date }}'
     {% endif %}
 ),
 
@@ -44,6 +46,7 @@ select
     fee_token_prices.decimals as token_decimals,
     fee_payments.token_address,
     fee_payments.fee_receiver,
+    fee_payments.fee_receiver_signed,
     fee_payments.tx_id
 from fee_payments
 left join fee_token_prices

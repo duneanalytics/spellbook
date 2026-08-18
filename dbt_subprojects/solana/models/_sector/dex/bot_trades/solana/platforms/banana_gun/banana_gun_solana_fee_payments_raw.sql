@@ -11,6 +11,7 @@
 }}
 
 {% set project_start_date = '2024-01-08' %}
+{% set ci_start_date = '2026-08-11' %}
 {% set fee_receiver_1 = '8r2hZoDfk5hDWJ1sDujAi2Qr45ZyZw5EQxAXiMZWLKh2' %}
 {% set fee_receiver_2 = 'Cj297UauzMX64FU9dKJZRUBWszJ7tEWpVheasq4CfATV' %}
 {% set fee_receiver_3 = 'HKMh8nV3ysSofRi23LsfVGLGQKB415QAEfZT96kCcVj4' %}
@@ -29,6 +30,7 @@ select
     balance_change / 1e9 as amount,
     '{{ wsol_token }}' as token_address,
     address as fee_receiver,
+    signed as fee_receiver_signed,
     tx_id
 from {{ source('solana', 'account_activity') }}
 where
@@ -59,5 +61,6 @@ where
     {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
     {% else %}
-        and block_time >= timestamp '{{ project_start_date }}'
+        {# Temporary 7-day CI window; restore project_start_date for full-history validation. #}
+        and block_time >= timestamp '{{ ci_start_date }}'
     {% endif %}

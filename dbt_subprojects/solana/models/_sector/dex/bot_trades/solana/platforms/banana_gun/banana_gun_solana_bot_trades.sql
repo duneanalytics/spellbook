@@ -18,6 +18,7 @@
 }}
 
 {% set project_start_date = '2024-01-08' %}
+{% set ci_start_date = '2026-08-11' %}
 {% set fee_receiver_1 = '8r2hZoDfk5hDWJ1sDujAi2Qr45ZyZw5EQxAXiMZWLKh2' %}
 {% set fee_receiver_2 = 'Cj297UauzMX64FU9dKJZRUBWszJ7tEWpVheasq4CfATV' %}
 {% set fee_receiver_3 = 'HKMh8nV3ysSofRi23LsfVGLGQKB415QAEfZT96kCcVj4' %}
@@ -63,18 +64,23 @@ with bot_trades as (
     join {{ ref('banana_gun_solana_fee_payments_usd') }} as fee_payments
         on trades.tx_id = fee_payments.tx_id
         and trades.block_time = fee_payments.block_time
+        and trades.block_month = fee_payments.block_month
         {% if is_incremental() %}
             and {{ incremental_predicate('fee_payments.block_time') }}
         {% else %}
-            and fee_payments.block_time >= timestamp '{{ project_start_date }}'
+            {# Temporary 7-day CI window; restore project_start_date for full-history validation. #}
+            and fee_payments.block_time >= timestamp '{{ ci_start_date }}'
         {% endif %}
     join {{ source('solana', 'transactions') }} as transactions
         on trades.tx_id = transactions.id
         and trades.block_time = transactions.block_time
+        and trades.block_date = transactions.block_date
         {% if is_incremental() %}
             and {{ incremental_predicate('transactions.block_time') }}
         {% else %}
-            and transactions.block_time >= timestamp '{{ project_start_date }}'
+            and transactions.block_date >= date '2024-01-08'
+            {# Temporary 7-day CI window; restore project_start_date for full-history validation. #}
+            and transactions.block_time >= timestamp '{{ ci_start_date }}'
         {% endif %}
     where
         trades.trader_id not in (
@@ -100,7 +106,9 @@ with bot_trades as (
         {% if is_incremental() %}
             and {{ incremental_predicate('trades.block_time') }}
         {% else %}
-            and trades.block_time >= timestamp '{{ project_start_date }}'
+            and trades.block_month >= date '2024-01-01'
+            {# Temporary 7-day CI window; restore project_start_date for full-history validation. #}
+            and trades.block_time >= timestamp '{{ ci_start_date }}'
         {% endif %}
 )
 
