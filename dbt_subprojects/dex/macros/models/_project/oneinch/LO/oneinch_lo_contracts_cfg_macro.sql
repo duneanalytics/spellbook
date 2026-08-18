@@ -270,3 +270,18 @@
     {% set contracts = oneinch_lo_contracts_cfg_macro() %}
     {{ return({ "AggregationRouterV6"   : dict(contracts.AggregationRouterV6) }) }}
 {% endmacro %}
+
+-- ROBINHOOD LO CONFIG MACRO --
+{% macro oneinch_robinhood_lo_contracts_cfg_macro() %}
+    {% set contracts = oneinch_lo_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6"   : dict(contracts.AggregationRouterV6) }) }}
+{% endmacro %}
+
+-- ROBINHOOD LO RAW CALLS CONFIG MACRO (both AggregationRouterV6 deployments on chain) --
+{% macro oneinch_robinhood_lo_raw_contracts_cfg_macro() %}
+    {% set contracts = oneinch_lo_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV6"        : dict(contracts.AggregationRouterV6, address="0x111111125421ca6dc452d289314280a0f8842a65"),
+        "AggregationRouterV6Robinhood" : dict(contracts.AggregationRouterV6, address="0x5a705de8982235a7fa45bb83dcacf03a211389c7"),
+    }) }}
+{% endmacro %}

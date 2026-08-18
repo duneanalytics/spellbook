@@ -199,7 +199,7 @@
         },
         "AggregationRouterV6": {
             "version": "6",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "robinhood"],
             "address": "0x111111125421ca6dc452d289314280a0f8842a65",
             "start": "2024-02-12",
             "methods": {
@@ -467,4 +467,51 @@
             "unoswapTo3"    : contracts.AggregationRouterV6.methods.unoswapTo3,
             "permitAndCall" : contracts.AggregationRouterV6.methods.permitAndCall,
     }) }) }}
+{% endmacro %}
+
+-- ROBINHOOD AR CONFIG MACRO --
+{% macro oneinch_robinhood_ar_contracts_cfg_macro() %}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {% set methods = {
+        "swap"          : contracts.AggregationRouterV6.methods.swap,
+        "ethUnoswap"    : contracts.AggregationRouterV6.methods.ethUnoswap,
+        "ethUnoswap2"   : contracts.AggregationRouterV6.methods.ethUnoswap2,
+        "ethUnoswap3"   : contracts.AggregationRouterV6.methods.ethUnoswap3,
+        "ethUnoswapTo"  : contracts.AggregationRouterV6.methods.ethUnoswapTo,
+        "ethUnoswapTo2" : contracts.AggregationRouterV6.methods.ethUnoswapTo2,
+        "ethUnoswapTo3" : contracts.AggregationRouterV6.methods.ethUnoswapTo3,
+        "unoswap"       : contracts.AggregationRouterV6.methods.unoswap,
+        "unoswap2"      : contracts.AggregationRouterV6.methods.unoswap2,
+        "unoswap3"      : contracts.AggregationRouterV6.methods.unoswap3,
+        "unoswapTo"     : contracts.AggregationRouterV6.methods.unoswapTo,
+        "unoswapTo2"    : contracts.AggregationRouterV6.methods.unoswapTo2,
+        "unoswapTo3"    : contracts.AggregationRouterV6.methods.unoswapTo3,
+        "permitAndCall" : contracts.AggregationRouterV6.methods.permitAndCall,
+    } %}
+    {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6, methods=methods) }) }}
+{% endmacro %}
+
+-- ROBINHOOD AR RAW CALLS CONFIG MACRO (both AggregationRouterV6 deployments on chain) --
+{% macro oneinch_robinhood_ar_raw_contracts_cfg_macro() %}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {% set methods = {
+        "swap"          : contracts.AggregationRouterV6.methods.swap,
+        "ethUnoswap"    : contracts.AggregationRouterV6.methods.ethUnoswap,
+        "ethUnoswap2"   : contracts.AggregationRouterV6.methods.ethUnoswap2,
+        "ethUnoswap3"   : contracts.AggregationRouterV6.methods.ethUnoswap3,
+        "ethUnoswapTo"  : contracts.AggregationRouterV6.methods.ethUnoswapTo,
+        "ethUnoswapTo2" : contracts.AggregationRouterV6.methods.ethUnoswapTo2,
+        "ethUnoswapTo3" : contracts.AggregationRouterV6.methods.ethUnoswapTo3,
+        "unoswap"       : contracts.AggregationRouterV6.methods.unoswap,
+        "unoswap2"      : contracts.AggregationRouterV6.methods.unoswap2,
+        "unoswap3"      : contracts.AggregationRouterV6.methods.unoswap3,
+        "unoswapTo"     : contracts.AggregationRouterV6.methods.unoswapTo,
+        "unoswapTo2"    : contracts.AggregationRouterV6.methods.unoswapTo2,
+        "unoswapTo3"    : contracts.AggregationRouterV6.methods.unoswapTo3,
+        "permitAndCall" : contracts.AggregationRouterV6.methods.permitAndCall,
+    } %}
+    {{ return({
+        "AggregationRouterV6"         : dict(contracts.AggregationRouterV6, address="0x111111125421ca6dc452d289314280a0f8842a65", methods=methods),
+        "AggregationRouterV6Robinhood"  : dict(contracts.AggregationRouterV6, address="0x5a705de8982235a7fa45bb83dcacf03a211389c7", methods=methods),
+    }) }}
 {% endmacro %}

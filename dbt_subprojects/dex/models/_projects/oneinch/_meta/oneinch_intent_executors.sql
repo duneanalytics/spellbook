@@ -76,8 +76,18 @@ promotions as (
         , first_access_transfer_at
         , last_access_transfer_at
         , coalesce(last_promoted_at, last_access_transfer_at) as last_time
-    from promotions
-    left join {{ ref('oneinch_blockchains') }} as meta using(chain_id)
+    from (
+        -- promotions can target chain ids missing from the blockchains cfg (e.g. a promotion to chain id 38): label them '#<chain_id>' to keep blockchain non-null --
+        select
+            coalesce(meta.blockchain, '#' || cast(chain_id as varchar)) as blockchain
+            , resolver_address
+            , executor_address
+            , promotion_mode
+            , first_promoted_at
+            , last_promoted_at
+        from promotions
+        left join {{ ref('oneinch_blockchains') }} as meta using(chain_id)
+    )
     full join accesses using(blockchain, executor_address)
 )
 
