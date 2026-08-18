@@ -116,6 +116,8 @@
 {% macro oneinch_base_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
 
 -- ZKSYNC CC CONFIG MACRO --
+-- zkSync Era is not EVM-equivalent, so Dune cannot decode the minimal-proxy EscrowSrc/Dst clones.
+-- Their calldata is parsed from raw `call_input` (type="raw").
 {% macro oneinch_zksync_cc_contracts_cfg_macro() %}
     {% set contracts = oneinch_cc_contracts_cfg_macro() %}
     {% set methodsV1 = oneinch_cc_methods_cfg_macro(type="raw").v1 %}
@@ -146,3 +148,31 @@
 
 -- UNICHAIN CC CONFIG MACRO --
 {% macro oneinch_unichain_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+
+-- ROBINHOOD CC CONFIG MACRO --
+-- Robinhood has its own escrow factory + implementation deployments.
+-- The Dune decoded EscrowSrcV1/EscrowDstV1 mappings on robinhood are contaminated: all escrow clones and both
+-- implementations appear under both contract names, which mislabels src/dst flows and duplicates rows.
+-- So escrow clones are resolved from creation traces and their calldata is parsed from raw `call_input`
+-- (type="raw"), like on zksync. The factory (single healthy address) stays on decoded tables.
+{% macro oneinch_robinhood_cc_contracts_cfg_macro() %}
+    {% set contracts = oneinch_cc_contracts_cfg_macro() %}
+    {% set methodsV1 = oneinch_cc_methods_cfg_macro(type="raw").v1 %}
+    {{ return({
+        "EscrowFactoryV1": dict(contracts.EscrowFactoryV1, address="0xa02b9cc95094bb27d1d041b9fbf09f65a366f7b3"),
+        "EscrowSrcV1": dict(contracts.EscrowSrcV1, initial_address="0xb077a4326f1e875c21d74028a1499eafcee43bf3", methods={
+            "withdraw"      : dict(methodsV1.withdraw       , flow="'src_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)"),
+            "withdrawTo"    : dict(methodsV1.withdrawTo     , flow="'src_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)", receiver="substr(call_input, 4 + 32*1 + 12 + 1, 20)"),
+            "publicWithdraw": dict(methodsV1.publicWithdraw , flow="'src_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)"),
+            "cancel"        : dict(methodsV1.cancel         , flow="'src_cancel'"),
+            "publicCancel"  : dict(methodsV1.publicCancel   , flow="'src_cancel'"),
+            "rescueFunds"   : dict(methodsV1.rescueFunds    , flow="'src_rescue'"),
+        }),
+        "EscrowDstV1": dict(contracts.EscrowDstV1, initial_address="0x104f09ea1f9c09662635ad581d0bef8b15d16f4f", methods={
+            "withdraw"      : dict(methodsV1.withdraw       , flow="'dst_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)"),
+            "publicWithdraw": dict(methodsV1.publicWithdraw , flow="'dst_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)"),
+            "cancel"        : dict(methodsV1.cancel         , flow="'dst_cancel'"),
+            "rescueFunds"   : dict(methodsV1.rescueFunds    , flow="'dst_rescue'"),
+        }),
+    }) }}
+{% endmacro %}
