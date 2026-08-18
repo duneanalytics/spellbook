@@ -285,6 +285,7 @@
 
 {% macro oneinch_robinhood_cfg_macro() %}
     {# transfers_from_traces = false: robinhood tokens uses the newer base_transfers schema, no transfers_from_traces table #}
+    {# fusion_settlement_addresses: robinhood-specific settlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
     {{ return({
         "name"                          : "robinhood",
         "start"                         : "2026-06-01",
@@ -292,7 +293,7 @@
         "native_token_symbol"           : "'ETH'",
         "wrapped_native_token_address"  : "0x0bd7d308f8e1639fab988df18a8011f41eacad73",
         "explorer_link"                 : "'https://robinhoodchain.blockscout.com'",
-        "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e'],
+        "fusion_settlement_addresses"   : ['0xb55ba9617dafae1236313c3cb7806439ceefbd13'],
         "escrow_factory_addresses"      : ['0xa02b9cc95094bb27d1d041b9fbf09f65a366f7b3'],
         "atokens"                       : false,
         "transfers_from_traces"         : false,
