@@ -62,6 +62,7 @@ with bot_trades as (
     from {{ source('dex_solana', 'trades') }} as trades
     join {{ ref('banana_gun_solana_fee_payments_usd') }} as fee_payments
         on trades.tx_id = fee_payments.tx_id
+        and trades.block_time = fee_payments.block_time
         {% if is_incremental() %}
             and {{ incremental_predicate('fee_payments.block_time') }}
         {% else %}
@@ -69,6 +70,7 @@ with bot_trades as (
         {% endif %}
     join {{ source('solana', 'transactions') }} as transactions
         on trades.tx_id = transactions.id
+        and trades.block_time = transactions.block_time
         {% if is_incremental() %}
             and {{ incremental_predicate('transactions.block_time') }}
         {% else %}

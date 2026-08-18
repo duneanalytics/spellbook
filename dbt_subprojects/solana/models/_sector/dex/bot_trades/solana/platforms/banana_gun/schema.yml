@@ -111,7 +111,7 @@ models:
       blockchain: solana
       sector: dex
       project: banana_gun
-      contributors: whale_hunter
+      contributors: [whale_hunter, dumbjack]
     config:
       tags: ["solana", "dex", "banana_gun", "trades"]
     description: "Trades executed through Banana Gun on Solana, enriched with Banana Gun fee information"
