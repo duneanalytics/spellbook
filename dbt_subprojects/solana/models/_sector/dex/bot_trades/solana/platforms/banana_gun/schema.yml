@@ -1,0 +1,162 @@
+version: 2
+
+models:
+  - name: banana_gun_solana_fee_payments_raw
+    description: "Raw SOL fee payments collected by Banana Gun fee receivers on Solana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - fee_receiver
+    columns:
+      - name: block_time
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: bot
+        data_tests:
+          - not_null
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: amount
+        data_tests:
+          - not_null
+      - name: token_address
+        data_tests:
+          - not_null
+      - name: fee_receiver
+        data_tests:
+          - not_null
+      - name: tx_id
+        data_tests:
+          - not_null
+
+  - name: banana_gun_solana_fee_token_prices
+    description: "Historical USD prices for tokens used to pay Banana Gun fees on Solana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - minute
+              - contract_address_varbinary
+    columns:
+      - name: minute
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: symbol
+        data_tests:
+          - not_null
+      - name: price
+        data_tests:
+          - not_null
+      - name: decimals
+        data_tests:
+          - not_null
+      - name: contract_address_varbinary
+        data_tests:
+          - not_null
+      - name: contract_address_base58
+        data_tests:
+          - not_null
+
+  - name: banana_gun_solana_fee_payments_usd
+    description: "Banana Gun fee payments enriched with historical USD prices"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - fee_receiver
+    columns:
+      - name: block_time
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: bot
+        data_tests:
+          - not_null
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: amount
+        data_tests:
+          - not_null
+      - name: token_address
+        data_tests:
+          - not_null
+      - name: fee_receiver
+        data_tests:
+          - not_null
+      - name: tx_id
+        data_tests:
+          - not_null
+
+  - name: banana_gun_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: banana_gun
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "banana_gun", "trades"]
+    description: "Trades executed through Banana Gun on Solana, enriched with Banana Gun fee information"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - blockchain
+              - tx_id
+              - tx_index
+              - outer_instruction_index
+              - inner_instruction_index
+      - check_bot_trades_seed:
+          arguments:
+            seed_file: ref('banana_gun_solana_trades_seed')
+            blockchain: solana
+    columns:
+      - name: block_time
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: bot
+        data_tests:
+          - not_null
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: type
+        data_tests:
+          - not_null
+      - name: tx_id
+        data_tests:
+          - not_null
+      - name: tx_index
+        data_tests:
+          - not_null
+      - name: outer_instruction_index
+        data_tests:
+          - not_null
+      - name: inner_instruction_index
+        data_tests:
+          - not_null

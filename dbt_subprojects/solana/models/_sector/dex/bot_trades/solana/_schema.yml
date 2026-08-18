@@ -117,30 +117,6 @@ models:
             seed_file: ref('trojan_solana_trades_seed')
             blockchain: solana
 
-  - name: banana_gun_solana_bot_trades
-    meta:
-      blockchain: solana
-      sector: dex
-      project: banana_gun
-      contributors: whale_hunter
-    config:
-      tags: ["solana", "dex", "banana_gun", "trades"]
-    description: >
-      Banana Gun trades on Solana
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - blockchain
-              - tx_id
-              - tx_index
-              - outer_instruction_index
-              - inner_instruction_index
-      - check_bot_trades_seed:
-          arguments:
-            seed_file: ref('banana_gun_solana_trades_seed')
-            blockchain: solana
-
   - name: sol_trading_bot_solana_bot_trades
     meta:
       blockchain: solana
