@@ -21,3 +21,7 @@ sources:
       - name: v2pair_evt_swap
       - name: v3factory_evt_poolcreated
       - name: v3pool_evt_swap
+  - name: uniswap_v4_xlayer
+    tables:
+      - name: PoolManager_call_Swap
+      - name: PoolManager_evt_Swap
