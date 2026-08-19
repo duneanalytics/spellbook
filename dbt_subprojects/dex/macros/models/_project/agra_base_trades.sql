@@ -1,0 +1,122 @@
+{% macro agra_base_trades(
+    blockchain,
+    start_date = '2026-03-01'
+    )
+%}
+
+with orders as (
+    select
+        evt_block_time     as block_time
+        , evt_block_number as block_number
+        , evt_tx_hash      as tx_hash
+        , evt_index
+        , contract_address as project_contract_address
+        , offerer
+        , recipient
+        , offer
+        , consideration
+    from {{ source('agra_multichain', 'settlement_evt_orderfulfilled') }}
+    where chain = '{{ blockchain }}'
+    {% if is_incremental() %}
+    and {{ incremental_predicate('evt_block_time') }}
+    {% else %}
+    and evt_block_time >= timestamp '{{ start_date }}'
+    {% endif %}
+)
+
+-- token the taker RECEIVES (offerer gives) -> token_bought
+, offer_tokens as (
+    select
+        tx_hash
+        , evt_index
+        , from_hex(json_extract_scalar(o, '$.token')) as token
+        , cast(sum(cast(json_extract_scalar(o, '$.amount') as uint256)) as uint256) as amount
+    from orders
+    cross join unnest(offer) as t(o)
+    where json_extract_scalar(o, '$.itemType') = '1' -- ERC20 only
+    group by tx_hash, evt_index, from_hex(json_extract_scalar(o, '$.token'))
+)
+
+-- Offer items carry no recipient, so a multi-token offer cannot be disambiguated the way the
+-- consideration can; keep one deterministic row so it can't break the tx_hash+evt_index unique
+-- key / incremental merge.
+, offer_side as (
+    select tx_hash, evt_index, token, amount
+    from (
+        select
+            tx_hash
+            , evt_index
+            , token
+            , amount
+            , row_number() over (partition by tx_hash, evt_index order by amount desc, token) as rn
+        from offer_tokens
+    )
+    where rn = 1
+)
+
+-- token the taker PAYS -> token_sold. Consideration carries the payment to the offerer plus
+-- optional fee items routed to fee collectors, so the items are not interchangeable: only the
+-- item whose recipient IS the offerer is the payment. Selecting by amount instead would compare
+-- raw integers across differing token decimals and can pick a fee over the payment.
+, consideration_tokens as (
+    select
+        o.tx_hash
+        , o.evt_index
+        , from_hex(json_extract_scalar(c, '$.token')) as token
+        , cast(sum(cast(json_extract_scalar(c, '$.amount') as uint256)) as uint256) as amount
+    from orders o
+    cross join unnest(o.consideration) as t(c)
+    where json_extract_scalar(c, '$.itemType') = '1' -- ERC20 only
+      and from_hex(json_extract_scalar(c, '$.recipient')) = o.offerer -- payment leg, not a fee leg
+    group by o.tx_hash, o.evt_index, from_hex(json_extract_scalar(c, '$.token'))
+)
+
+-- The payment leg above is unique per order, so this is only a determinism net: it stops a
+-- malformed order paying the offerer in two tokens from breaking the tx_hash+evt_index unique
+-- key / incremental merge.
+, consideration_side as (
+    select tx_hash, evt_index, token, amount
+    from (
+        select
+            tx_hash
+            , evt_index
+            , token
+            , amount
+            , row_number() over (partition by tx_hash, evt_index order by amount desc, token) as rn
+        from consideration_tokens
+    )
+    where rn = 1
+)
+
+select
+    '{{ blockchain }}' as blockchain
+    , 'agra' as project
+    , '1' as version
+    , cast(date_trunc('month', o.block_time) as date) as block_month
+    , cast(date_trunc('day', o.block_time) as date) as block_date
+    , o.block_time
+    , o.block_number
+    , ofr.amount as token_bought_amount_raw
+    , con.amount as token_sold_amount_raw
+    , ofr.token as token_bought_address
+    , con.token as token_sold_address
+    , o.recipient as taker
+    , o.offerer as maker
+    , o.project_contract_address
+    , o.tx_hash
+    , o.evt_index
+-- token_bought_amount_raw is the gross offered amount: where a fee is rebated in the offered
+-- token the taker nets slightly less, which is the usual gross convention for dex.trades.
+from orders o
+inner join offer_side ofr
+    on ofr.tx_hash = o.tx_hash
+    and ofr.evt_index = o.evt_index
+inner join consideration_side con
+    on con.tx_hash = o.tx_hash
+    and con.evt_index = o.evt_index
+-- Drops self-match fills (Agra team: self-matching is allowed and used for testing) and, with
+-- them, the duplicated taker aggregate leg of matchOrders settlements, which always has
+-- offerer = recipient.
+where o.offerer <> o.recipient
+
+{% endmacro %}
