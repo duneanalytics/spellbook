@@ -21,8 +21,6 @@ sources:
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
       - name: AggregationRouterV6_call_permitAndCall
-      - name: EscrowFactoryV1_2_call_addressOfEscrowSrc
-      - name: EscrowFactoryV1_2_call_createDstEscrow
       - name: AccessTokenFusionV1_evt_transfer
       - name: AccessTokenLimitsV1_evt_transfer
       - name: AccessTokenCrossChainV1_evt_transfer
