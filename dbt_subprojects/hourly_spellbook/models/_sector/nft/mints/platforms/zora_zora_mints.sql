@@ -1,7 +1,8 @@
 {{ config(
         schema = 'zora_zora',
         alias = 'mints',
-        materialized='incremental',
+        materialized='table',
+        tags=['static'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['tx_hash', 'token_id', 'evt_index']

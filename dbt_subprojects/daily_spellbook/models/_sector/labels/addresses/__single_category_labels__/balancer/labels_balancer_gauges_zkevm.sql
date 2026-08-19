@@ -1,5 +1,6 @@
 {{config(
         alias = 'balancer_gauges_zkevm'
+        , tags = ['static']
         , post_hook='{{ hide_spells() }}'
     )
 }}
