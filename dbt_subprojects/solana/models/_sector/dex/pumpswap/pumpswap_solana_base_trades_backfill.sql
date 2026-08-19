@@ -122,6 +122,117 @@ WITH pools AS (
         )
 )
 
+, decoded_swap_calls AS (
+    SELECT
+          call_tx_id AS tx_id
+        , call_block_slot AS block_slot
+        , call_outer_instruction_index AS outer_instruction_index
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
+    GROUP BY 1, 2, 3
+
+    UNION ALL
+
+    SELECT
+          call_tx_id AS tx_id
+        , call_block_slot AS block_slot
+        , call_outer_instruction_index AS outer_instruction_index
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
+    GROUP BY 1, 2, 3
+)
+
+, pool_vaults AS (
+    SELECT
+          account_pool AS pool
+        , MIN(account_pool_base_token_account) AS pool_base_token_account
+        , MIN(account_pool_quote_token_account) AS pool_quote_token_account
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_call_create_pool') }}
+    GROUP BY 1
+)
+
+, evt_swaps AS (
+    SELECT
+          e.evt_block_slot AS block_slot
+        , e.evt_block_date AS block_date
+        , CAST(date_trunc('month', e.evt_block_date) AS DATE) AS block_month
+        , e.evt_block_time AS block_time
+        , e.evt_inner_instruction_index AS inner_instruction_index
+        , e.evt_outer_instruction_index AS outer_instruction_index
+        , e.evt_outer_executing_account AS outer_executing_account
+        , e.evt_tx_id AS tx_id
+        , e.evt_tx_index AS tx_index
+        , e.pool
+        , e."user" AS user_account
+        , e.base_amount_out AS base_token_amount
+        , e.quote_amount_in_with_lp_fee AS quote_token_amount
+        , (e.lp_fee_basis_points + e.protocol_fee_basis_points) / 10000.0 AS total_fee_rate
+        , 1 AS is_buy
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_evt_buyevent') }} e
+    LEFT JOIN decoded_swap_calls c
+        ON c.tx_id = e.evt_tx_id
+        AND c.block_slot = e.evt_block_slot
+        AND c.outer_instruction_index = e.evt_outer_instruction_index
+    WHERE c.tx_id IS NULL
+
+    UNION ALL
+
+    SELECT
+          e.evt_block_slot AS block_slot
+        , e.evt_block_date AS block_date
+        , CAST(date_trunc('month', e.evt_block_date) AS DATE) AS block_month
+        , e.evt_block_time AS block_time
+        , e.evt_inner_instruction_index AS inner_instruction_index
+        , e.evt_outer_instruction_index AS outer_instruction_index
+        , e.evt_outer_executing_account AS outer_executing_account
+        , e.evt_tx_id AS tx_id
+        , e.evt_tx_index AS tx_index
+        , e.pool
+        , e."user" AS user_account
+        , e.base_amount_in AS base_token_amount
+        , e.quote_amount_out AS quote_token_amount
+        , (e.lp_fee_basis_points + e.protocol_fee_basis_points) / 10000.0 AS total_fee_rate
+        , 0 AS is_buy
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_evt_sellevent') }} e
+    LEFT JOIN decoded_swap_calls c
+        ON c.tx_id = e.evt_tx_id
+        AND c.block_slot = e.evt_block_slot
+        AND c.outer_instruction_index = e.evt_outer_instruction_index
+    WHERE c.tx_id IS NULL
+)
+
+, evt_trades AS (
+    SELECT
+          es.block_time
+        , es.block_slot
+        , es.block_month
+        , {{ solana_instruction_key(
+              'es.block_slot'
+            , 'es.tx_index'
+            , 'es.outer_instruction_index'
+            , 'COALESCE(es.inner_instruction_index, 0)'
+          ) }} AS surrogate_key
+        , CASE
+            WHEN es.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN 'direct'
+            ELSE es.outer_executing_account
+          END AS trade_source
+        , CASE WHEN es.is_buy = 1 THEN p.baseMint ELSE p.quoteMint END AS token_bought_mint_address
+        , CASE WHEN es.is_buy = 1 THEN es.base_token_amount ELSE es.quote_token_amount END AS token_bought_amount_raw
+        , CASE WHEN es.is_buy = 0 THEN p.baseMint ELSE p.quoteMint END AS token_sold_mint_address
+        , CASE WHEN es.is_buy = 0 THEN es.base_token_amount ELSE es.quote_token_amount END AS token_sold_amount_raw
+        , CAST(es.total_fee_rate AS DOUBLE) AS fee_tier
+        , es.pool AS pool_id
+        , es.user_account AS trader_id
+        , es.tx_id
+        , es.outer_instruction_index
+        , es.inner_instruction_index
+        , es.tx_index
+        , CASE WHEN es.is_buy = 1 THEN pv.pool_base_token_account ELSE pv.pool_quote_token_account END AS token_bought_vault
+        , CASE WHEN es.is_buy = 1 THEN pv.pool_quote_token_account ELSE pv.pool_base_token_account END AS token_sold_vault
+    FROM evt_swaps es
+    LEFT JOIN pools p ON p.pool = es.pool
+    LEFT JOIN pool_vaults pv ON pv.pool = es.pool
+    WHERE COALESCE(p.is_valid_pool, false)
+)
+
 , trades AS (
     SELECT
           sp.block_time
@@ -151,6 +262,12 @@ WITH pools AS (
       AND COALESCE(p.is_valid_pool, false)
 )
 
+, all_trades AS (
+    SELECT * FROM trades
+    UNION ALL
+    SELECT * FROM evt_trades
+)
+
 SELECT
       'solana' AS blockchain
     , 'pumpswap' AS project
@@ -174,4 +291,4 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
     , tb.surrogate_key
-FROM trades tb
+FROM all_trades tb
