@@ -417,7 +417,8 @@ FROM
     --Coinpaprika RWA tokens recently activated (was inactive in source mapping)
     ('nteson-netease-tokenized-stock-ondo', 'bnb', 'NTESon', 0x282973969118f9fe39bf2ff3d8dd1efee82ccb11, 18),
     ('wulfon-terawulf-ondo-tokenized', 'bnb', 'WULFon', 0xad56701d9e57957e28e546db7db508a16d4f86cc, 18),
-    ('vtvon-vanguard-value-tokenized-etf-ondo', 'bnb', 'VTVon', 0xc2dd31b1b3a2f515ce0d48de712c6744c3475170, 18)
+    ('vtvon-vanguard-value-tokenized-etf-ondo', 'bnb', 'VTVon', 0xc2dd31b1b3a2f515ce0d48de712c6744c3475170, 18),
+    ('reusd-re-protocol-reusd', 'bnb', 'reUSD', 0xba9425ec55ee0e72216d18e0ad8bbba2553bfb60, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

@@ -866,6 +866,7 @@ FROM
         ('xomx-exxon-mobil-tokenized-stock-xstock','solana','XOMx','XsaHND8sHyfMfsWPj6kSdd5VwvCayZvjYgKmmcNL5qh',8),
         ('pltrx-palantir-tokenized-stock-xstock','solana','PLTRx','XsoBhf2ufR8fTyNSjqfU71DYGaE6Z3SUGAidpzriAA4',8),
         ('mrvlx-marvell-tokenized-stock-xstock','solana','MRVLx','XsuxRGDzbLjnJ72v74b7p9VY6N66uYgTCyfwwRjVCJA',8),
-        ('pmx-philip-morris-xstock','solana','PMx','Xsba6tUnSjDae2VcopDB6FGGDaxRrewFCDa5hKn5vT3',8)
+        ('pmx-philip-morris-xstock','solana','PMx','Xsba6tUnSjDae2VcopDB6FGGDaxRrewFCDa5hKn5vT3',8),
+        ('reusd-re-protocol-reusd','solana','reUSD','2uxaYT1fVrp6Fg2BrxQcyKSW91hefM6dG9krpbeDiirT',9)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
