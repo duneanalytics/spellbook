@@ -48,6 +48,11 @@ models:
             combination_of_columns:
               - tx_hash
               - evt_index
+      - check_dex_aggregator_seed:
+          arguments:
+            blockchain: xlayer
+            project: uniswap
+            version: 4
     columns:
       - name: tx_hash
         data_tests:
