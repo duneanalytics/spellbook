@@ -3,7 +3,7 @@ version: 2
 models:
   - name: oneinch_ar
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -69,7 +69,7 @@ models:
 
   - name: oneinch_lo
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -135,7 +135,7 @@ models:
 
   - name: oneinch_cc
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -288,7 +288,7 @@ models:
 
   - name: oneinch_evms_transfers
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -345,7 +345,7 @@ models:
 
   - name: oneinch_blockchains
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -367,7 +367,7 @@ models:
 
   - name: oneinch_evms_ptfc
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -389,7 +389,7 @@ models:
 
   - name: oneinch_ar_trades
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'thevaizman', 'dodgervl']
     config:
@@ -439,7 +439,7 @@ models:
 
   - name: oneinch_lop_own_trades
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'thevaizman', 'dodgervl']
     config:
@@ -1334,9 +1334,189 @@ models:
         with a maturity delay so the venue side's decoded events have landed before
         dex_robinhood_trades merges them.
 
+  - name: oneinch_cronos_lop_venue_settled_fills
+    meta:
+      blockchain: ['cronos']
+      sector: oneinch
+      contributors: ['thevaizman', 'dodgervl']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on cronos that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_cronos_base_trades). These fills are excluded from
+        oneinch_cronos_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_cronos_lop_own_trades
+    meta:
+      blockchain: ['cronos']
+      sector: oneinch
+      contributors: ['thevaizman', 'dodgervl']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on cronos - per-chain input for
+        dex_cronos_trades. Venue-settled fills are excluded here (see
+        oneinch_cronos_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_cronos_trades merges them.
+
+  - name: oneinch_monad_lop_venue_settled_fills
+    meta:
+      blockchain: ['monad']
+      sector: oneinch
+      contributors: ['thevaizman', 'dodgervl']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on monad that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_monad_base_trades). These fills are excluded from
+        oneinch_monad_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_monad_lop_own_trades
+    meta:
+      blockchain: ['monad']
+      sector: oneinch
+      contributors: ['thevaizman', 'dodgervl']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on monad - per-chain input for
+        dex_monad_trades. Venue-settled fills are excluded here (see
+        oneinch_monad_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_monad_trades merges them.
+
+  - name: oneinch_hyperevm_lop_venue_settled_fills
+    meta:
+      blockchain: ['hyperevm']
+      sector: oneinch
+      contributors: ['thevaizman', 'dodgervl']
+    config:
+      tags: ['oneinch', 'lo']
+    description: >
+        1inch limit order protocol fills on hyperevm that a resolver settled on an
+        underlying DEX in the same tx (the venue's own row co-occurs in
+        dex_hyperevm_base_trades). These fills are excluded from
+        oneinch_hyperevm_lop_own_trades (dex.trades) and emitted into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills nested under
+        a classic/fusion/cross-chain execution and direct fills are kept out of this set.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - execution_id
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: execution_id
+        data_tests:
+          - not_null
+      - name: evt_index
+        data_tests:
+          - not_null
+
+  - name: oneinch_hyperevm_lop_own_trades
+    meta:
+      blockchain: ['hyperevm']
+      sector: oneinch
+      contributors: ['thevaizman', 'dodgervl']
+    config:
+      tags: ['oneinch', 'lo', 'trades']
+    description: >
+        1inch limit order protocol trades on hyperevm - per-chain input for
+        dex_hyperevm_trades. Venue-settled fills are excluded here (see
+        oneinch_hyperevm_lop_venue_settled_fills) and reclassified into
+        dex_aggregator.trades via oneinch_lop_aggregator_trades. Fills pass through
+        with a maturity delay so the venue side's decoded events have landed before
+        dex_hyperevm_trades merges them.
+
   - name: oneinch_lop_aggregator_trades
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['thevaizman', 'dodgervl']
     config:
@@ -1390,7 +1570,7 @@ models:
 
   - name: oneinch_intent_resolvers
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'dodgervl']
     config:
@@ -1417,7 +1597,7 @@ models:
 
   - name: oneinch_intent_executors
     meta:
-      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'dodgervl']
     config:
@@ -1452,7 +1632,7 @@ models:
 
   - name: oneinch_intent_accounts
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm']
       sector: oneinch
       contributors: ['max-morrow', 'dodgervl']
     config:

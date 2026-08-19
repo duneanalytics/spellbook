@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: oneinch_hyperevm
+    tables:
+      - name: AggregationRouterV6_call_swap
+      - name: AggregationRouterV6_call_unoswap
+      - name: AggregationRouterV6_call_unoswap2
+      - name: AggregationRouterV6_call_unoswap3
+      - name: AggregationRouterV6_call_unoswapTo
+      - name: AggregationRouterV6_call_unoswapTo2
+      - name: AggregationRouterV6_call_unoswapTo3
+      - name: AggregationRouterV6_call_ethUnoswap
+      - name: AggregationRouterV6_call_ethUnoswap2
+      - name: AggregationRouterV6_call_ethUnoswap3
+      - name: AggregationRouterV6_call_ethUnoswapTo
+      - name: AggregationRouterV6_call_ethUnoswapTo2
+      - name: AggregationRouterV6_call_ethUnoswapTo3
+      - name: AggregationRouterV6_call_fillOrder
+      - name: AggregationRouterV6_call_fillOrderArgs
+      - name: AggregationRouterV6_call_fillContractOrder
+      - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: AggregationRouterV6_call_permitAndCall
+      - name: EscrowFactoryV1_2_call_addressOfEscrowSrc
+      - name: EscrowFactoryV1_2_call_createDstEscrow
+      - name: AccessTokenFusionV1_evt_transfer
+      - name: AccessTokenLimitsV1_evt_transfer
+      - name: AccessTokenCrossChainV1_evt_transfer
+      - name: ar
+      - name: lo
+
+
+  - name: tokens_hyperevm
+    tables:
+      - name: transfers_from_traces
