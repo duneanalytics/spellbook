@@ -283,6 +283,23 @@
     }) }}
 {% endmacro %}
 
+{% macro oneinch_robinhood_cfg_macro() %}
+    {# transfers_from_traces = false: robinhood tokens uses the newer base_transfers schema, no transfers_from_traces table #}
+    {{ return({
+        "name"                          : "robinhood",
+        "start"                         : "2026-06-01",
+        "chain_id"                      : "4663",
+        "native_token_symbol"           : "'ETH'",
+        "wrapped_native_token_address"  : "0x0bd7d308f8e1639fab988df18a8011f41eacad73",
+        "explorer_link"                 : "'https://robinhoodchain.blockscout.com'",
+        "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e'],
+        "escrow_factory_addresses"      : ['0xa02b9cc95094bb27d1d041b9fbf09f65a366f7b3'],
+        "atokens"                       : false,
+        "transfers_from_traces"         : false,
+        "creations_parent_code_offset"  : 21,
+    }) }}
+{% endmacro %}
+
 {% macro oneinch_solana_cfg_macro() %}
     {{ return({
         "name"                          : "solana",
@@ -320,6 +337,7 @@
         dict(oneinch_linea_cfg_macro()      , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_sonic_cfg_macro()      , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_unichain_cfg_macro()   , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
+        dict(oneinch_robinhood_cfg_macro()  , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_aurora_cfg_macro()     , evm=true  , fusionV1=false),
         dict(oneinch_klaytn_cfg_macro()     , evm=true  , fusionV1=false),
         dict(oneinch_solana_cfg_macro()     , evm=false , fusionV1=false),
