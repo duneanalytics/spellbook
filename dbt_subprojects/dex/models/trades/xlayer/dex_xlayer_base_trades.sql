@@ -13,6 +13,7 @@
 {% set base_models = [
     ref('uniswap_v2_xlayer_base_trades')
     , ref('uniswap_v3_xlayer_base_trades')
+    , ref('uniswap_v4_xlayer_base_trades')
     , ref('potatoswap_v2_xlayer_base_trades')
     , ref('potatoswap_v3_xlayer_base_trades')
     , ref('dyorswap_v2_xlayer_base_trades')
