@@ -4,6 +4,7 @@
         schema = 'balancer_v2_zkevm',
         alias = 'token_balance_changes',
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}
