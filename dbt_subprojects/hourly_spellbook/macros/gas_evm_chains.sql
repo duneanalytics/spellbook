@@ -22,6 +22,7 @@
         , 'ethereum'
         , 'fantom'
         , 'flare'
+        , 'flow'
         , 'gnosis'
         , 'hemi'
         , 'henesys'
