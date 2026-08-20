@@ -126,18 +126,20 @@ WITH pools AS (
     SELECT
           call_tx_id AS tx_id
         , call_block_slot AS block_slot
+        , call_block_time AS block_time
         , call_outer_instruction_index AS outer_instruction_index
+        , account_pool AS pool
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
-    GROUP BY 1, 2, 3
 
     UNION ALL
 
     SELECT
           call_tx_id AS tx_id
         , call_block_slot AS block_slot
+        , call_block_time AS block_time
         , call_outer_instruction_index AS outer_instruction_index
+        , account_pool AS pool
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
-    GROUP BY 1, 2, 3
 )
 
 , pool_vaults AS (
@@ -149,7 +151,7 @@ WITH pools AS (
     GROUP BY 1
 )
 
-, evt_swaps AS (
+, evt_swaps_all AS (
     SELECT
           e.evt_block_slot AS block_slot
         , e.evt_block_date AS block_date
@@ -167,11 +169,6 @@ WITH pools AS (
         , (e.lp_fee_basis_points + e.protocol_fee_basis_points) / 10000.0 AS total_fee_rate
         , 1 AS is_buy
     FROM {{ source('pumpdotfun_solana', 'pump_amm_evt_buyevent') }} e
-    LEFT JOIN decoded_swap_calls c
-        ON c.tx_id = e.evt_tx_id
-        AND c.block_slot = e.evt_block_slot
-        AND c.outer_instruction_index = e.evt_outer_instruction_index
-    WHERE c.tx_id IS NULL
 
     UNION ALL
 
@@ -192,10 +189,33 @@ WITH pools AS (
         , (e.lp_fee_basis_points + e.protocol_fee_basis_points) / 10000.0 AS total_fee_rate
         , 0 AS is_buy
     FROM {{ source('pumpdotfun_solana', 'pump_amm_evt_sellevent') }} e
+)
+
+
+, evt_swaps AS (
+    SELECT
+          e.block_slot
+        , e.block_date
+        , e.block_month
+        , e.block_time
+        , e.inner_instruction_index
+        , e.outer_instruction_index
+        , e.outer_executing_account
+        , e.tx_id
+        , e.tx_index
+        , e.pool
+        , e.user_account
+        , e.base_token_amount
+        , e.quote_token_amount
+        , e.total_fee_rate
+        , e.is_buy
+    FROM evt_swaps_all e
     LEFT JOIN decoded_swap_calls c
-        ON c.tx_id = e.evt_tx_id
-        AND c.block_slot = e.evt_block_slot
-        AND c.outer_instruction_index = e.evt_outer_instruction_index
+        ON c.tx_id = e.tx_id
+        AND c.block_slot = e.block_slot
+        AND c.outer_instruction_index = e.outer_instruction_index
+        AND c.pool = e.pool
+        AND c.block_time = e.block_time
     WHERE c.tx_id IS NULL
 )
 
