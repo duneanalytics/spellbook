@@ -1,7 +1,8 @@
 {{  config(
         schema = 'cow_protocol_lens',
         alias = 'batches',
-        materialized='incremental',
+        materialized='table',
+        tags=['static'],
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],
         on_schema_change='sync_all_columns',

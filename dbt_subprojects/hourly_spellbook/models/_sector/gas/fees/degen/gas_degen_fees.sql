@@ -4,7 +4,8 @@
     schema = 'gas_' + blockchain
     ,alias = 'fees'
     ,partition_by = ['block_month']
-    ,materialized = 'incremental'
+    ,materialized = 'table'
+    , tags = ['static']
     ,file_format = 'delta'
     ,incremental_strategy='merge'
     ,unique_key = ['block_month', 'tx_hash']

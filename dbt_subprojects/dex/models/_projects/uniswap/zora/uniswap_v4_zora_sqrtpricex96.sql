@@ -1,7 +1,8 @@
 {{ config(
     schema = 'uniswap_v4_zora'
     , alias = 'sqrtpricex96'
-    , materialized = 'incremental'
+    , materialized = 'table'
+    , tags = ['static']
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['id', 'blockchain', 'block_index_sum']
