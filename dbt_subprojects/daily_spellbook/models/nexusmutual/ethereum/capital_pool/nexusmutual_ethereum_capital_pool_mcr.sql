@@ -35,6 +35,13 @@ mcr_events as (
     cast(mcrFloor as double) / 1e18 as mcr_floor,
     cast(mcrETHWithGear as double) / 1e18 as mcr_cover_min
   from {{ source('nexusmutual_ethereum', 'MCR_evt_MCRUpdated') }}
+  union all
+  select
+    date_trunc('day', evt_block_time) as block_date,
+    cast(mcr as double) / 1e18 as mcr_eth,
+    cast(mcrFloor as double) / 1e18 as mcr_floor,
+    cast(mcrETHWithGear as double) / 1e18 as mcr_cover_min
+  from {{ source('nexusmutual_ethereum', 'Pool_evt_MCRUpdated') }}
 ),
 
 mcr_daily_avgs as (
