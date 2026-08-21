@@ -57,6 +57,10 @@ calls as (
         , max(transfer_amount_usd) filter(where {{ user_condition }}) as user_amount_usd
         , max(transfer_amount_usd) filter(where trusted) as trusted_amount_usd
         , max(transfer_amount_usd) as amount_usd
+        -- carries the winning trusted transfer's own amount/decimals alongside its usd value,
+        -- so the amount itself (not its dollar value) can be checked for plausibility below --
+        , max_by({{ data }}, transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_data
+        , max_by({{ data }}, transfer_amount_usd) filter(where {{ user_condition }} and trusted) as user_trusted_data
     from calls
     left join transfers using(blockchain, block_month, block_date, block_number, block_time, tx_hash, call_trace_address, call_selector, call_method, call_to, protocol, contract_name) -- even with missing transfers, as transfers may not have been parsed
     group by 1, 2, 3, 4
@@ -92,14 +96,24 @@ select
     , protocol_version
     , contract_name
 
-    , coalesce(null
-        , user_trusted_amount_usd
-        , sources_trusted_amount_usd
-        , user_amount_usd
-        , sources_amount_usd
-        , trusted_amount_usd
-        , amount_usd
-    ) as amount_usd
+    -- a trusted leg normally wins outright, and MUST keep winning when it legitimately
+    -- has a smaller dollar value than the other leg -- that is exactly the case (an
+    -- untrusted, illiquid token's inflated/unreliable price) trusted-preference exists to
+    -- guard against, confirmed against real DATA/USDC trades where the untrusted leg
+    -- overstates value by 100-1000x and the trusted (smaller) side is correct.
+    -- The only case worth overriding is when the trusted leg's own transferred AMOUNT
+    -- (not its dollar value) is degenerate -- a maker can set a sentinel making_amount
+    -- (seen as literal 1 wei on-chain, confirmed via output_0, not a decode error) while
+    -- genuinely trading real value on the taker side. 1e-9 of a token is far above the
+    -- observed 1-wei (1e-18 for an 18-decimal token) bug pattern and far below any
+    -- plausible real trade, so it should not catch legitimate small trades.
+    , case
+        when coalesce(user_trusted_data, sources_trusted_data) is not null
+         and cast(coalesce(user_trusted_data, sources_trusted_data).amount as double)
+             / pow(10, coalesce(user_trusted_data, sources_trusted_data).decimals) < 0.000000001
+        then coalesce(user_amount_usd, sources_amount_usd, trusted_amount_usd, amount_usd)
+        else coalesce(user_trusted_amount_usd, sources_trusted_amount_usd, user_amount_usd, sources_amount_usd, trusted_amount_usd, amount_usd)
+    end as amount_usd
     , native_price * tx_gas_price * if(element_at(flags, 'direct'), tx_gas_used, call_gas_used) / pow(10, native_decimals) as execution_cost
 
     , maker as user
