@@ -490,7 +490,15 @@ joined AS (
 , synth_units AS (
     select
         *
-        , CAST(total_stake AS double) * CAST(synth_depth AS double) / ((CAST(asset_depth AS double) * CAST(2 AS double)) - CAST(synth_depth AS double)) AS synth_units
+        -- Synth units are (L * S) / (2A - S), matching THORNode's Pool.CalcUnitsV80. THORNode
+        -- computes the denominator with an unsigned SafeSub and then floors it at 1, so a pool
+        -- whose synth supply has reached or passed 2 * asset_depth yields large positive units
+        -- rather than the negative (or divide-by-zero) result an unguarded subtraction gives.
+        , CAST(total_stake AS double) * CAST(synth_depth AS double) / CASE
+            WHEN (CAST(asset_depth AS double) * CAST(2 AS double)) > CAST(synth_depth AS double)
+                THEN (CAST(asset_depth AS double) * CAST(2 AS double)) - CAST(synth_depth AS double)
+            ELSE CAST(1 AS double)
+        END AS synth_units
     from
         total_stake
 )
