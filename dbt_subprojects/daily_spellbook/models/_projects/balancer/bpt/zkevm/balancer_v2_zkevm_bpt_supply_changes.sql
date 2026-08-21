@@ -4,7 +4,8 @@
     config(
         schema = 'balancer_v2_zkevm',
         alias = 'bpt_supply_changes', 
-        materialized = 'incremental',
+        materialized = 'table',
+        tags = ['static'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'evt_tx_hash', 'evt_index', 'label'],

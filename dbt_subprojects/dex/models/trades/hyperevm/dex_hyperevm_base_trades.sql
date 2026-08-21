@@ -20,6 +20,7 @@
     , ref('ramsesxyz_cl_hyperevm_base_trades')
     , ref('nest_legacy_hyperevm_base_trades')
     , ref('nest_cl_hyperevm_base_trades')
+    , ref('agra_hyperevm_base_trades')
 ] %}
 {{ dex_base_trades_macro(
     blockchain = 'hyperevm',

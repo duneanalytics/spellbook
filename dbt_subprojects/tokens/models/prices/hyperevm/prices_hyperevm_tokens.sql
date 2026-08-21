@@ -19,6 +19,7 @@ FROM
 (
     VALUES
     ('usdt-tether', 'USDT0', 0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb, 6)
+    , ('usdc-usd-coin', 'USDC', 0xb88339cb7199b77e23db6e890353e22632ba630f, 6)
     , ('hype-hyperliquid', 'WHYPE', 0x5555555555555555555555555555555555555555, 18)
     , ('eth-ethereum', 'UETH', 0xbe6727b535545c67d5caa73dea54865b92cf7907, 18)
     , ('btc-bitcoin', 'UBTC', 0x9fdbda0a5e284c32744d2f17ee5c74b284993463, 8)
