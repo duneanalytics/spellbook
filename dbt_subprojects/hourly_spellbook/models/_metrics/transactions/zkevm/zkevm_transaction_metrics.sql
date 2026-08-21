@@ -1,7 +1,8 @@
 {{ config(
         schema='zkevm',
         alias = 'transaction_metrics',
-        materialized = 'incremental',
+        materialized = 'table',
+        tags = ['static'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain','block_hour'],

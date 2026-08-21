@@ -1,7 +1,8 @@
 {{ config(
     schema = 'uniswap_v4_zora'
     , alias = 'swaps'
-    , materialized = 'incremental'
+    , materialized = 'table'
+    , tags = ['static']
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['tx_hash', 'evt_index']

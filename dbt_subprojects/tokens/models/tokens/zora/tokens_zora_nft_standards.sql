@@ -1,7 +1,8 @@
 {{ config(
         schema = 'tokens_zora',
         alias = 'nft_standards',
-        materialized='incremental',
+        materialized='table',
+        tags=['static'],
         incremental_strategy = 'merge',
         file_format = 'delta',
         unique_key = ['contract_address']
