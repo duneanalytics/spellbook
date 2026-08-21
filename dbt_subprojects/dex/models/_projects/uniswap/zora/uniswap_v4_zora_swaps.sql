@@ -19,6 +19,6 @@
         , PoolManager_evt_Swap = source('uniswap_v4_zora', 'PoolManager_evt_Swap') 
         , pool_manager_addr = '0x0575338e4c17006ae181b47900a84404247ca30f'
         , start_date = '2025-01-23'
-        , aggregator_hooks = ref('uniswap_v4_aggregator_hooks')
+        , aggregator_hooks = ref('uniswap_v4_zora_aggregator_hooks')
     )
 }}

@@ -18,6 +18,6 @@
         , PoolManager_evt_Swap = source('uniswap_v4_monad', 'PoolManager_evt_Swap') 
         , pool_manager_addr = '0x188d586ddcf52439676ca21a244753fa19f9ea8e'
         , start_date = '2025-10-20'
-        , aggregator_hooks = ref('uniswap_v4_aggregator_hooks')
+        , aggregator_hooks = ref('uniswap_v4_monad_aggregator_hooks')
     )
 }}

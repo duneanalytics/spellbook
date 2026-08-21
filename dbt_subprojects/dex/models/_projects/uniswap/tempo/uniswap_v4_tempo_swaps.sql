@@ -18,6 +18,6 @@
         , PoolManager_evt_Swap = source('uniswap_v4_tempo', 'PoolManager_evt_Swap')
         , pool_manager_addr = '0x33620f62c5b9b2086dd6b62f4a297a9f30347029'
         , start_date = '2026-02-26'
-        , aggregator_hooks = ref('uniswap_v4_aggregator_hooks')
+        , aggregator_hooks = ref('uniswap_v4_tempo_aggregator_hooks')
     )
 }}
