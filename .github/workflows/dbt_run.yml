@@ -126,6 +126,9 @@ jobs:
       - name: dbt compile to create manifest to compare to
         run: "uv run dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
 
+      - name: Validate meta.monitoring declarations
+        run: "uv run python scripts/validate_monitoring.py --manifest ${PROJECT_DIR}/target/manifest.json"
+
       - name: check schemas
         run: "uv run bash ./scripts/check_schema.sh"
 

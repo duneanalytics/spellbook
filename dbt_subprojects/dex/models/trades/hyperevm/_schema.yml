@@ -216,3 +216,31 @@ models:
             seed_file: ref('nest_hyperevm_base_trades_seed')
             filter:
               version: cl
+
+  - name: agra_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: agra
+      contributors: cxheng315
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'agra' ]
+    description: "Agra HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('agra_hyperevm_base_trades_seed')
+    columns:
+      - name: tx_hash
+        description: "Transaction hash of the Agra order fulfillment"
+        data_tests:
+          - not_null
+      - name: evt_index
+        description: "Log index of the OrderFulfilled event within the transaction"
+        data_tests:
+          - not_null

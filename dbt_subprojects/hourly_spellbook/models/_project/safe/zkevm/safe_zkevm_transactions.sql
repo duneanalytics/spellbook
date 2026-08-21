@@ -1,6 +1,7 @@
 {{
     config(
-        materialized='incremental',
+        materialized='table',
+        tags=['static'],
         schema = 'safe_zkevm',
         alias= 'transactions',
         partition_by = ['block_month'],

@@ -11,6 +11,7 @@
 }}
 
 {% set deployment_date = "DATE '2023-12-13'" %}
+{% set multi_asset_deployment_date = "DATE '2026-07-23'" %}
 
 WITH swap_exact_in AS (
     SELECT
@@ -56,6 +57,22 @@ WITH swap_exact_in AS (
     WHERE call_success
         AND contract_address = 0xceda2d856238aa0d12f6329de20b9115f07c366d
         AND call_block_date >= {{ deployment_date }}
+        {% if is_incremental() -%}
+        AND {{ incremental_predicate('call_block_time') }}
+        {% endif -%}
+
+    UNION ALL
+
+    SELECT call_block_time, call_block_number, call_block_date, call_trace_address, 'exact_in'
+        , COALESCE(inToken, ELEMENT_AT(path, 1)), COALESCE(outToken, ELEMENT_AT(path, CARDINALITY(path)))
+        , amountIn, ELEMENT_AT(output_amounts, CARDINALITY(output_amounts)), contract_address, call_tx_hash, call_tx_from
+    FROM {{ source('origin_protocol_ethereum', 'multiassetarm_call_swapexacttokensfortokens') }}
+    WHERE call_success
+        AND contract_address IN (
+            0x9e3a7026e5767f2d7ff5e83b0ed011005f45a170 -- USDC ARM
+            , 0x68025a4615407993a680102b08a23a61d11c657c -- WETH ARM
+        )
+        AND call_block_date >= {{ multi_asset_deployment_date }}
         {% if is_incremental() -%}
         AND {{ incremental_predicate('call_block_time') }}
         {% endif -%}
@@ -105,6 +122,22 @@ WITH swap_exact_in AS (
     WHERE call_success
         AND contract_address = 0xceda2d856238aa0d12f6329de20b9115f07c366d
         AND call_block_date >= {{ deployment_date }}
+        {% if is_incremental() -%}
+        AND {{ incremental_predicate('call_block_time') }}
+        {% endif -%}
+
+    UNION ALL
+
+    SELECT call_block_time, call_block_number, call_block_date, call_trace_address, 'exact_out'
+        , COALESCE(inToken, ELEMENT_AT(path, 1)), COALESCE(outToken, ELEMENT_AT(path, CARDINALITY(path)))
+        , ELEMENT_AT(output_amounts, 1), amountOut, contract_address, call_tx_hash, call_tx_from
+    FROM {{ source('origin_protocol_ethereum', 'multiassetarm_call_swaptokensforexacttokens') }}
+    WHERE call_success
+        AND contract_address IN (
+            0x9e3a7026e5767f2d7ff5e83b0ed011005f45a170 -- USDC ARM
+            , 0x68025a4615407993a680102b08a23a61d11c657c -- WETH ARM
+        )
+        AND call_block_date >= {{ multi_asset_deployment_date }}
         {% if is_incremental() -%}
         AND {{ incremental_predicate('call_block_time') }}
         {% endif -%}
