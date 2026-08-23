@@ -47,6 +47,7 @@
       , ref('byreal_solana_base_trades')
       , ref('scorch_solana_base_trades')
       , ref('jupiterz_solana_base_trades')
+      , ref('jupiter_lend_solana_base_trades')
       ]
 %}
 
