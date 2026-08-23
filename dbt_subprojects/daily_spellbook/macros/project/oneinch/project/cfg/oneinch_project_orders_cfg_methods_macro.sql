@@ -268,6 +268,48 @@
 
 -- Native --
 
+{#
+    Native Router V3 and V4 share this selector, and it is a DIFFERENT tradeRFQT from V1's
+    0xe525b10b — four extra uint256 in the order tuple, so V1's offsets do not transfer:
+      V1     tradeRFQT((address x5, uint256 x5, bytes16, bool, bytes, (address,address,uint256), bytes, bytes, uint256))
+      V3/V4  tradeRFQT((address x5, uint256 x9, bytes16, bool, bytes, (address,uint256), bytes), uint256, uint256)
+    The tuple is dynamic, so the args area opens with an offset word (0x60 observed) and the
+    tuple head starts at word 3 — hence the 32*3 base in the offsets below.
+
+    Verified against real calldata and the ERC20 Transfer logs of the same transaction
+    (0x9c13db5e2c1f59ddc4afe3e8a19c8d4c646e42964eb1f6615b405a567e6b204e, ethereum V4): tuple
+    idx5 = 7,624,635,000 and idx6 = 3,102,840,007,606,819,000 are exactly the USDC and WETH
+    amounts that moved, and idx3/idx4 are those two tokens. Field roles were then confirmed
+    across 32 further calls by joining each call to the transfer carrying its own amount:
+    idx2 is the address receiving maker_asset in 21 of them and never idx0 or idx1.
+
+    `maker` is deliberately unset: the address that actually sends maker_asset is a Native
+    vault that appears nowhere in the tuple head. idx7 is not an amount either — it came out
+    at exactly 1% of idx6.
+
+    The amounts are max amounts, not executed ones, and that is measured rather than assumed:
+    taken as executed they matched a real Transfer of the same token in only 169 of 300 calls
+    (idx6) and 203 of 300 (idx5), the rest showing a transfer at a different value. The
+    executed amount cannot be read from the call either — `output` is NULL on all 300 sampled
+    calls, so the exactInputSingle trick of reading substr(output, ...) has nothing to read.
+    This matches how the V1 tradeRFQT entry below already declares the same fields.
+
+    `event` is null because no event was confirmed for this selector, and a wrong topic
+    silently drops rows.
+#}
+{% set methods = methods + [{
+    "project":          "Native",
+    "selector":         "0x0947c2d9",
+    "name":             "tradeRFQT",
+    "event":            "null",
+    "taker":            "substr(input, 4 + 32*5 + 12 + 1            , 20)",
+    "taker_asset":      "substr(input, 4 + 32*6 + 12 + 1            , 20)",
+    "maker_asset":      "substr(input, 4 + 32*7 + 12 + 1            , 20)",
+    "taker_max_amount": "substr(input, 4 + 32*8 + 1                 , 32)",
+    "maker_max_amount": "substr(input, 4 + 32*9 + 1                 , 32)",
+    "order_hash":       "substr(input, 4 + 32*17 + 1                , 16)",
+}] %}
+
 {% set methods = methods + [{
     "project":          "Native",
     "selector":         "0xe525b10b",
