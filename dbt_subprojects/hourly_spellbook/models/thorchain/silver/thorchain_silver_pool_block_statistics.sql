@@ -321,6 +321,15 @@ asset_price_usd_tbl AS (
     WHERE
         block_id = max_block_id
 ),
+lp_unit_baselines AS (
+    -- This pool received liquidity while THORChain emitted stake_units = 0. Its later 100%
+    -- withdrawal proves the missing balance: tx 29F7510E2406C2938CC01F6E9216E7E9D281C5B07E3421C102E485C1AEBC4DEC
+    -- withdrew exactly 3,383,237,352,182 LP units on 2024-07-30.
+    SELECT
+        'ETH.WSTETH-0X7F39C581F595B53C5CB19BD0B3F8DA6C935E2CA0' AS pool_name,
+        DATE '2024-07-30' AS day,
+        CAST(3383237352182 AS BIGINT) AS baseline_units
+),
 joined AS (
     SELECT
         pool_depth.day AS day,
@@ -423,6 +432,10 @@ joined AS (
             0
         ) AS units,
         COALESCE(
+            lp_unit_baselines.baseline_units,
+            0
+        ) AS baseline_units,
+        COALESCE(
             withdraw_asset_volume,
             0
         ) AS withdraw_asset_volume,
@@ -472,11 +485,14 @@ joined AS (
     LEFT JOIN asset_price_usd_tbl
         ON pool_depth.pool_name = asset_price_usd_tbl.pool_name
         AND pool_depth.day = asset_price_usd_tbl.day
+    LEFT JOIN lp_unit_baselines
+        ON pool_depth.pool_name = lp_unit_baselines.pool_name
+        AND pool_depth.day = lp_unit_baselines.day
 )
 , total_stake AS (
     select
         *
-        , SUM(COALESCE(added_stake, 0) - COALESCE(withdrawn_stake, 0)) over (
+        , SUM(COALESCE(added_stake, 0) - COALESCE(withdrawn_stake, 0) + baseline_units) over (
             PARTITION BY asset
             ORDER BY  day ASC
         ) AS total_stake
