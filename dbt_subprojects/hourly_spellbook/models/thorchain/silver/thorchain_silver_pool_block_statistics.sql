@@ -328,7 +328,7 @@ lp_unit_baselines AS (
     SELECT
         'ETH.WSTETH-0X7F39C581F595B53C5CB19BD0B3F8DA6C935E2CA0' AS pool_name,
         DATE '2024-07-30' AS day,
-        CAST(3383237352182 AS BIGINT) AS units
+        CAST(3383237352182 AS BIGINT) AS baseline_units
 ),
 joined AS (
     SELECT
@@ -432,7 +432,7 @@ joined AS (
             0
         ) AS units,
         COALESCE(
-            lp_unit_baselines.units,
+            lp_unit_baselines.baseline_units,
             0
         ) AS baseline_units,
         COALESCE(
