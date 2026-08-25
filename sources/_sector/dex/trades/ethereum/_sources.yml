@@ -173,3 +173,7 @@ sources:
       - name: ethenaarm_call_swaptokensforexacttokens
       - name: multiassetarm_call_swapexacttokensfortokens
       - name: multiassetarm_call_swaptokensforexacttokens
+
+  - name: agra_multichain
+    tables:
+      - name: settlement_evt_orderfulfilled

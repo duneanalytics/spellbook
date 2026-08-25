@@ -2,7 +2,8 @@
     config(
         schema='boost_zora',
         alias='claimed',
-        materialized='incremental',
+        materialized='table',
+        tags=['static'],
         file_format='delta',
         incremental_strategy='merge',
         unique_key=['boost_address', 'claim_tx_hash', 'action_tx_hash'],

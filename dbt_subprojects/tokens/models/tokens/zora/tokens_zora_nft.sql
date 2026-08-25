@@ -2,6 +2,7 @@
         schema = 'tokens_zora'
         , alias = 'nft'
         , materialized = 'table'
+        , tags = ['static']
         , post_hook='{{ hide_spells() }}'
         )
 }}
