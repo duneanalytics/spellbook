@@ -199,7 +199,7 @@
         },
         "AggregationRouterV6": {
             "version": "6",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "robinhood"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "robinhood", "cronos", "monad", "hyperevm"],
             "address": "0x111111125421ca6dc452d289314280a0f8842a65",
             "start": "2024-02-12",
             "methods": {
@@ -514,4 +514,67 @@
         "AggregationRouterV6"         : dict(contracts.AggregationRouterV6, address="0x111111125421ca6dc452d289314280a0f8842a65", methods=methods),
         "AggregationRouterV6Robinhood"  : dict(contracts.AggregationRouterV6, address="0x5a705de8982235a7fa45bb83dcacf03a211389c7", methods=methods),
     }) }}
+{% endmacro %}
+
+-- CRONOS AR CONFIG MACRO --
+{% macro oneinch_cronos_ar_contracts_cfg_macro() %}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6, methods={
+            "swap"          : contracts.AggregationRouterV6.methods.swap,
+            "ethUnoswap"    : contracts.AggregationRouterV6.methods.ethUnoswap,
+            "ethUnoswap2"   : contracts.AggregationRouterV6.methods.ethUnoswap2,
+            "ethUnoswap3"   : contracts.AggregationRouterV6.methods.ethUnoswap3,
+            "ethUnoswapTo"  : contracts.AggregationRouterV6.methods.ethUnoswapTo,
+            "ethUnoswapTo2" : contracts.AggregationRouterV6.methods.ethUnoswapTo2,
+            "ethUnoswapTo3" : contracts.AggregationRouterV6.methods.ethUnoswapTo3,
+            "unoswap"       : contracts.AggregationRouterV6.methods.unoswap,
+            "unoswap2"      : contracts.AggregationRouterV6.methods.unoswap2,
+            "unoswap3"      : contracts.AggregationRouterV6.methods.unoswap3,
+            "unoswapTo"     : contracts.AggregationRouterV6.methods.unoswapTo,
+            "unoswapTo2"    : contracts.AggregationRouterV6.methods.unoswapTo2,
+            "unoswapTo3"    : contracts.AggregationRouterV6.methods.unoswapTo3,
+            "permitAndCall" : contracts.AggregationRouterV6.methods.permitAndCall,
+    }) }) }}
+{% endmacro %}
+
+-- MONAD AR CONFIG MACRO --
+{% macro oneinch_monad_ar_contracts_cfg_macro() %}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6, methods={
+            "swap"          : contracts.AggregationRouterV6.methods.swap,
+            "ethUnoswap"    : contracts.AggregationRouterV6.methods.ethUnoswap,
+            "ethUnoswap2"   : contracts.AggregationRouterV6.methods.ethUnoswap2,
+            "ethUnoswap3"   : contracts.AggregationRouterV6.methods.ethUnoswap3,
+            "ethUnoswapTo"  : contracts.AggregationRouterV6.methods.ethUnoswapTo,
+            "ethUnoswapTo2" : contracts.AggregationRouterV6.methods.ethUnoswapTo2,
+            "ethUnoswapTo3" : contracts.AggregationRouterV6.methods.ethUnoswapTo3,
+            "unoswap"       : contracts.AggregationRouterV6.methods.unoswap,
+            "unoswap2"      : contracts.AggregationRouterV6.methods.unoswap2,
+            "unoswap3"      : contracts.AggregationRouterV6.methods.unoswap3,
+            "unoswapTo"     : contracts.AggregationRouterV6.methods.unoswapTo,
+            "unoswapTo2"    : contracts.AggregationRouterV6.methods.unoswapTo2,
+            "unoswapTo3"    : contracts.AggregationRouterV6.methods.unoswapTo3,
+            "permitAndCall" : contracts.AggregationRouterV6.methods.permitAndCall,
+    }) }) }}
+{% endmacro %}
+
+-- HYPEREVM AR CONFIG MACRO (chain-specific AggregationRouterV6 deployment address) --
+{% macro oneinch_hyperevm_ar_contracts_cfg_macro() %}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6, address="0x5281602adc446a94eb48d055f514a6d8d5bee176", methods={
+            "swap"          : contracts.AggregationRouterV6.methods.swap,
+            "ethUnoswap"    : contracts.AggregationRouterV6.methods.ethUnoswap,
+            "ethUnoswap2"   : contracts.AggregationRouterV6.methods.ethUnoswap2,
+            "ethUnoswap3"   : contracts.AggregationRouterV6.methods.ethUnoswap3,
+            "ethUnoswapTo"  : contracts.AggregationRouterV6.methods.ethUnoswapTo,
+            "ethUnoswapTo2" : contracts.AggregationRouterV6.methods.ethUnoswapTo2,
+            "ethUnoswapTo3" : contracts.AggregationRouterV6.methods.ethUnoswapTo3,
+            "unoswap"       : contracts.AggregationRouterV6.methods.unoswap,
+            "unoswap2"      : contracts.AggregationRouterV6.methods.unoswap2,
+            "unoswap3"      : contracts.AggregationRouterV6.methods.unoswap3,
+            "unoswapTo"     : contracts.AggregationRouterV6.methods.unoswapTo,
+            "unoswapTo2"    : contracts.AggregationRouterV6.methods.unoswapTo2,
+            "unoswapTo3"    : contracts.AggregationRouterV6.methods.unoswapTo3,
+            "permitAndCall" : contracts.AggregationRouterV6.methods.permitAndCall,
+    }) }) }}
 {% endmacro %}
