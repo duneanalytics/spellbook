@@ -5,6 +5,7 @@
         schema = 'balancer_v2_zkevm',
         alias = 'protocol_fee', 
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}
