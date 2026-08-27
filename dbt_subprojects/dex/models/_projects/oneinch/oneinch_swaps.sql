@@ -18,9 +18,6 @@
 
 with
 
--- AR v6 calls with synthetic decoded params (srcToken = dstToken = marker address, e.g. swaps routed
--- by external proxies like the Binance wallet) arrive here with token addresses and executed details
--- already recovered from nested transfers by the executions macro
 executions as (
     {% for stream in oneinch_streams_cfg_macro() %}
         select *
