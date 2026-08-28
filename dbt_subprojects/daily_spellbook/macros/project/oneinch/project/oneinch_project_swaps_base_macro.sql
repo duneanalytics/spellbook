@@ -182,31 +182,48 @@ meta as (
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
-, joined as (
+, call_transfers as (
+    -- Every transfer nested under a swap call, before any sizing decision -- shared by
+    -- the token/sender/receiver labels below (unchanged) and the net-flow sizing that
+    -- replaces the old max-single-transfer approach (see net_legs).
     select
-        blockchain
-        , swaps.block_month
+        swaps.block_month
         , swaps.block_number
         , swaps.tx_hash
         , swaps.call_trace_address
         , swaps.call_trade_id
+        , swaps.call_from
+        , swaps.call_to
+        , contract_address
+        , native
+        , symbol
+        , native_symbol
+        , contract_address_raw
+        , transfer_from
+        , transfer_to
+        , amount
+        , block_time
+        , minute
+    from swaps
+    join transfers on true
+        and swaps.block_month = transfers.block_month
+        and swaps.block_number = transfers.block_number
+        and swaps.tx_hash = transfers.tx_hash
+        and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
+        and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
+        and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only
+)
+
+, labels as (
+    -- Token/sender/receiver labels, unchanged from before this fix -- these are display
+    -- lists, not sizing, so they stay keyed off individual transfers.
+    select
+        block_month
+        , block_number
+        , tx_hash
+        , call_trace_address
+        , call_trade_id
         , any_value(block_time) as block_time
-        , any_value(tx_from) as tx_from
-        , any_value(tx_to) as tx_to
-        , any_value(project) as project
-        , any_value(tag) as tag
-        , any_value(flags) as flags
-        , any_value(call_from) as call_from
-        , any_value(call_to) as call_to
-        , any_value(call_selector) as call_selector
-        , any_value(method) as method
-        , any_value(order_hash) as order_hash
-        , any_value(maker) as maker
-        , any_value(maker_asset) as maker_asset
-        , any_value(making_amount) as making_amount
-        , any_value(taker_asset) as taker_asset
-        , any_value(taking_amount) as taking_amount
-        , any_value(order_flags) as order_flags
         , array_agg(distinct
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
                 as row(symbol varchar, contract_address_raw varbinary))
@@ -219,29 +236,111 @@ meta as (
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
                 as row(symbol varchar, contract_address_raw varbinary))
         ) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
-        , max(amount * price / pow(10, decimals)) as call_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (creations_from.block_number is null or creations_to.block_number is null) and trusted) as user_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_from or transfer_to = call_from) and trusted) as caller_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_to or transfer_to = call_to) as contract_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_to or transfer_to = call_to) and trusted) as contract_amount_usd_trusted
         , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
         , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
-    from swaps
-    join transfers on true
-        and swaps.block_month = transfers.block_month
-        and swaps.block_number = transfers.block_number
-        and swaps.tx_hash = transfers.tx_hash
-        and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
-        and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
-        and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only
+    from call_transfers
+    left join creations as creations_from on creations_from.address = call_transfers.transfer_from
+    left join creations as creations_to on creations_to.address = call_transfers.transfer_to
+    group by 1, 2, 3, 4, 5
+)
+
+, net_legs as (
+    -- Size by NET flow per (token, address) within the call, not the single biggest
+    -- transfer -- a flash loan borrowed and repaid in the same call is two transfers of
+    -- the same token through the same address that net close to zero; the old
+    -- max-single-transfer approach counted the loan itself as the swap. Verified against
+    -- A1-2035: a Morpho Vault flash-loan call recorded as $134.8m sized down to the
+    -- transaction's real ~$0.33 swap under this approach, and 300 ordinary Uniswap calls
+    -- (no flash loan involved) were unchanged, because a single transfer's net flow
+    -- equals that transfer's amount. Known, accepted cost: an address that swaps a
+    -- token out and back into itself within one call (round-trip arbitrage) nets to
+    -- ~zero here too, understating that genuine volume -- same mechanism, so there is no
+    -- way to keep one and not the other from net flow alone.
+    select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
+        , contract_address, transfer_from as address, -amount as signed_amount, minute
+    from call_transfers
+    union all
+    select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
+        , contract_address, transfer_to as address, amount as signed_amount, minute
+    from call_transfers
+)
+
+, net_flows as (
+    select
+        block_month, block_number, tx_hash, call_trace_address, call_trade_id
+        , any_value(call_from) as call_from
+        , any_value(call_to) as call_to
+        , contract_address
+        , address
+        , sum(signed_amount) as net_amount
+        , max(minute) as minute -- one call, one tx -- transfers of the same token share a minute in practice
+    from net_legs
+    group by block_month, block_number, tx_hash, call_trace_address, call_trade_id, contract_address, address
+)
+
+, net_amounts as (
+    select
+        net_flows.block_month
+        , net_flows.block_number
+        , net_flows.tx_hash
+        , net_flows.call_trace_address
+        , net_flows.call_trade_id
+        , max(abs(net_amount) * price / pow(10, decimals)) as call_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where creations.block_number is null) as user_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where creations.block_number is null and trusted) as user_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_from) as caller_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_from and trusted) as caller_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_to) as contract_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_to and trusted) as contract_amount_usd_trusted
+    from net_flows
     left join prices using(contract_address, minute)
     left join trusted_tokens using(contract_address)
-    left join creations as creations_from on creations_from.address = transfers.transfer_from
-    left join creations as creations_to on creations_to.address = transfers.transfer_to
-    group by 1, 2, 3, 4, 5, 6
+    left join creations on creations.address = net_flows.address
+    group by net_flows.block_month, net_flows.block_number, net_flows.tx_hash, net_flows.call_trace_address, net_flows.call_trade_id
+)
+
+, joined as (
+    select
+        blockchain
+        , swaps.block_month
+        , swaps.block_number
+        , swaps.tx_hash
+        , swaps.call_trace_address
+        , swaps.call_trade_id
+        , block_time
+        , tx_from
+        , tx_to
+        , project
+        , tag
+        , flags
+        , call_from
+        , call_to
+        , call_selector
+        , method
+        , order_hash
+        , maker
+        , maker_asset
+        , making_amount
+        , taker_asset
+        , taking_amount
+        , order_flags
+        , tokens
+        , user_tokens
+        , caller_tokens
+        , senders
+        , receivers
+        , call_amount_usd
+        , call_amount_usd_trusted
+        , user_amount_usd
+        , user_amount_usd_trusted
+        , caller_amount_usd
+        , caller_amount_usd_trusted
+        , contract_amount_usd
+        , contract_amount_usd_trusted
+    from swaps
+    join labels using(block_month, block_number, tx_hash, call_trace_address, call_trade_id)
+    left join net_amounts using(block_month, block_number, tx_hash, call_trace_address, call_trade_id)
 )
 
 , processing as (
