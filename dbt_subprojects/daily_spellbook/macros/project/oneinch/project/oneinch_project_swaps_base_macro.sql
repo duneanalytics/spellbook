@@ -204,6 +204,7 @@ meta as (
         , amount
         , block_time
         , minute
+        , transfer_trace_address
     from swaps
     join transfers on true
         and swaps.block_month = transfers.block_month
@@ -217,12 +218,18 @@ meta as (
 , labels as (
     -- Token/sender/receiver labels, unchanged from before this fix -- these are display
     -- lists, not sizing, so they stay keyed off individual transfers.
+    -- Keys qualified with call_transfers: this CTE joins `creations` twice and `creations`
+    -- has a block_number of its own, so an unqualified block_number is ambiguous and Trino
+    -- rejects the statement:
+    --   Column 'block_number' is ambiguous
+    -- The pre-change code did not hit this because the CTE these lines came from selected
+    -- swaps.block_number explicitly.
     select
-        block_month
-        , block_number
-        , tx_hash
-        , call_trace_address
-        , call_trade_id
+        call_transfers.block_month
+        , call_transfers.block_number
+        , call_transfers.tx_hash
+        , call_transfers.call_trace_address
+        , call_transfers.call_trade_id
         , any_value(block_time) as block_time
         , array_agg(distinct
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
@@ -244,6 +251,43 @@ meta as (
     group by 1, 2, 3, 4, 5
 )
 
+, net_transfers as (
+    -- Collapse the native/wrapped pair before netting.
+    --
+    -- transfers_from_traces emits a wrap as TWO rows sharing one trace_address: the native
+    -- leg and a wrapped-token leg, same amount, same direction. The `transfers` CTE above
+    -- then maps native onto wrapped_native_token_address so it can be priced, so both rows
+    -- arrive here under the same contract_address and ADD instead of cancelling.
+    --
+    -- Under the old max() this was invisible: the duplicate equalled the real leg, so the
+    -- maximum did not move. Under net flow it doubles that leg. Measured on ethereum
+    -- 2026-08-19: 67564 such pairs in the day, 100% identical in amount and 100% in
+    -- direction; of 30029 swaps whose size grew, 20581 grew by exactly 2x, carrying $62.4m
+    -- of the $82.7m the day gained. Day totals against production's max() figures:
+    --
+    --     max (production)     $1,176,198,549.89
+    --     net, with the pair   $1,258,527,698.07   +7.000%
+    --     net, collapsed       $1,164,698,389.61   -0.978%
+    --
+    -- so collapsing the pair is what makes this change move volume DOWN, as intended,
+    -- rather than up. Control: one Tokenlon swap reads $1,143,565.00 under max,
+    -- $2,287,130.00 with the pair, and $1,143,565.00 again once collapsed, to the cent.
+    --
+    -- Netting path only. `labels` keeps both rows: dropping one there would drop a symbol
+    -- from the token lists, and those are display lists, not sizing.
+    select block_month, block_number, tx_hash, call_trace_address, call_trade_id
+         , call_from, call_to, contract_address, transfer_from, transfer_to, amount, minute
+    from (
+        select *, row_number() over (
+            partition by tx_hash, transfer_trace_address, contract_address,
+                         transfer_from, transfer_to, amount
+            order by native
+        ) as _rn
+        from call_transfers
+    )
+    where _rn = 1
+)
+
 , net_legs as (
     -- Size by NET flow per (token, address) within the call, not the single biggest
     -- transfer -- a flash loan borrowed and repaid in the same call is two transfers of
@@ -258,11 +302,11 @@ meta as (
     -- way to keep one and not the other from net flow alone.
     select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
         , contract_address, transfer_from as address, -amount as signed_amount, minute
-    from call_transfers
+    from net_transfers
     union all
     select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
         , contract_address, transfer_to as address, amount as signed_amount, minute
-    from call_transfers
+    from net_transfers
 )
 
 , net_flows as (
@@ -301,13 +345,17 @@ meta as (
 )
 
 , joined as (
+    -- Keys NOT qualified with swaps., although the CTE this replaced did qualify them:
+    -- both joins below are JOIN ... USING, which merges the joined column into a single
+    -- unqualified one, and swaps.block_month then does not resolve at all:
+    --   Column 'swaps.block_month' cannot be resolved
     select
         blockchain
-        , swaps.block_month
-        , swaps.block_number
-        , swaps.tx_hash
-        , swaps.call_trace_address
-        , swaps.call_trade_id
+        , block_month
+        , block_number
+        , tx_hash
+        , call_trace_address
+        , call_trade_id
         , block_time
         , tx_from
         , tx_to
