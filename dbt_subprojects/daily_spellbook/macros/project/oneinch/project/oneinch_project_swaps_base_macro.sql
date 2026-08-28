@@ -182,6 +182,31 @@ meta as (
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
+, swaps_unique as (
+    -- One row per merge key, which `swaps` does not guarantee: measured on ethereum
+    -- 2026-08-01..08, `swaps` yields 794943 rows for 794941 distinct
+    -- (block_month, block_number, tx_hash, call_trace_address, call_trade_id).
+    --
+    -- Two rows in 795k, and they are fatal here: the model merges on those keys and Trino
+    -- refuses the statement outright --
+    --   "One MERGE target table row matched more than one source row"
+    --
+    -- The pre-change code never saw this. Its `joined` CTE aggregated the swaps-to-transfers
+    -- join with group by and any_value(), which collapsed such pairs on the way through.
+    -- Selecting from `swaps` without aggregating lets them survive -- and `call_transfers`
+    -- reads `swaps` too, so a duplicated swap would double every transfer nested under it
+    -- and double that call's net flow, which is a wrong number rather than a failed run.
+    --
+    -- Which of the pair survives is arbitrary, exactly as any_value() made it arbitrary
+    -- before.
+    select * from (
+        select *, row_number() over (
+            partition by block_month, block_number, tx_hash, call_trace_address, call_trade_id
+            order by call_selector
+        ) as _swap_rn
+        from swaps
+    ) where _swap_rn = 1
+)
 , call_transfers as (
     -- Every transfer nested under a swap call, before any sizing decision -- shared by
     -- the token/sender/receiver labels below (unchanged) and the net-flow sizing that
@@ -205,7 +230,7 @@ meta as (
         , block_time
         , minute
         , transfer_trace_address
-    from swaps
+    from swaps_unique swaps
     join transfers on true
         and swaps.block_month = transfers.block_month
         and swaps.block_number = transfers.block_number
@@ -386,7 +411,7 @@ meta as (
         , caller_amount_usd_trusted
         , contract_amount_usd
         , contract_amount_usd_trusted
-    from swaps
+    from swaps_unique swaps
     join labels using(block_month, block_number, tx_hash, call_trace_address, call_trade_id)
     left join net_amounts using(block_month, block_number, tx_hash, call_trace_address, call_trade_id)
 )
