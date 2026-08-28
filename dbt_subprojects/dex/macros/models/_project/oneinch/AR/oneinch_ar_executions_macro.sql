@@ -6,6 +6,13 @@
 -%}
 
 {%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set wrapper = blockchain.wrapped_native_token_address -%}
+{%- set nsymbol = blockchain.native_token_symbol -%}
+{%- set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
+{%- set nullss = '0x0000000000000000000000000000000000000000' -%}
+{%- set src_calldata_token = 'if(src_token_address in (' ~ nullss ~ ', ' ~ native ~ '), ' ~ wrapper ~ ', src_token_address)' -%}
+{%- set dst_calldata_token = 'if(dst_token_address in (' ~ nullss ~ ', ' ~ native ~ '), ' ~ wrapper ~ ', dst_token_address)' -%}
+{%- set settlement_vaults = oneinch_ar_settlement_vaults_cfg_macro().get(blockchain.name, []) -%}
 
 
 
@@ -13,6 +20,10 @@ with
 
 calls as (
     select *
+        -- v6 swaps built by external routing proxies (e.g. the Binance wallet) carry a synthetic marker in the decoded desc
+        -- (srcToken = dstToken = srcReceiver = dstReceiver = marker address, amounts = 1) with the real route packed only in
+        -- the opaque executor data, so the token legs of these calls are recovered from the nested transfers instead
+        , coalesce(protocol_version = 6 and src_token_address = dst_token_address, false) as degenerate_params
     from {{ ref('oneinch_' + blockchain.name + '_ar') }}
     where true
         and block_date >= timestamp '{{ date_from }}'
@@ -30,10 +41,61 @@ calls as (
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
+, tokens as ( -- token metadata fallback by the calldata token addresses for calls without matched transfers (e.g. internal calls of the router from wallet proxies)
+    select
+        contract_address
+        , symbol as token_symbol
+        , decimals as token_decimals
+    from {{ source('tokens', 'erc20') }}
+    where blockchain = '{{ blockchain.name }}'
+)
+
+, venues as ( -- venue-side parties for the degenerate netting: registered pools + flash-accounting singletons that hold the pool funds
+    select pool from {{ ref('dex_raw_pools') }} where blockchain = '{{ blockchain.name }}'
+    {%- for vault in settlement_vaults %}
+    union all select {{ vault }}
+    {%- endfor %}
+)
+
+, degenerate_netting as ( -- per-token net flow into the venue side of the nested transfers of degenerate calls
+    select
+        block_date
+        , block_number
+        , tx_hash
+        , call_trace_address
+        , if(cardinality(same) > 1, {{ wrapper }}, transfer_contract_address) as token_address -- the native leg as the wrapped native token
+        , max(transfer_symbol) as token_symbol
+        , max(transfer_decimals) as token_decimals
+        , sum(if(transfer_to in (select pool from venues), cast(transfer_amount as int256), int256 '0'))
+        - sum(if(transfer_from in (select pool from venues), cast(transfer_amount as int256), int256 '0')) as venue_net
+        , max(transfer_amount_usd) as token_amount_usd
+    from calls
+    join transfers using(blockchain, block_month, block_date, block_number, block_time, tx_hash, call_trace_address, call_selector, call_method, call_to, protocol, contract_name)
+    where degenerate_params
+        and transfer_contract_address <> src_token_address -- skip the marker token dust
+    group by 1, 2, 3, 4, 5
+)
+
+{%- set net_row_type = 'row(address varbinary, symbol varchar, amount uint256, decimals bigint)' -%}
+
+, degenerate_executions as ( -- src = the token flowing into the venues, dst = the token flowing out of them; the biggest by USD when several
+    select
+        block_date
+        , block_number
+        , tx_hash
+        , call_trace_address
+        , max_by(cast(row(token_address, token_symbol, cast(if(venue_net > int256 '0', venue_net) as uint256), token_decimals) as {{ net_row_type }}), coalesce(token_amount_usd, 0)) filter(where venue_net > int256 '0') as net_src_data
+        , max_by(cast(row(token_address, token_symbol, cast(if(venue_net < int256 '0', -venue_net) as uint256), token_decimals) as {{ net_row_type }}), coalesce(token_amount_usd, 0)) filter(where venue_net < int256 '0') as net_dst_data
+        , max(token_amount_usd) filter(where venue_net > int256 '0') as net_src_amount_usd
+        , max(token_amount_usd) filter(where venue_net < int256 '0') as net_dst_amount_usd
+    from degenerate_netting
+    group by 1, 2, 3, 4
+)
+
 {%- set src_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_from) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, sender varbinary))' -%}
 {%- set dst_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_to) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, receiver varbinary))' -%}
-{%- set src_condition = 'array_position(same, src_token_address) > 0 and transfer_amount <= src_token_amount' -%}
-{%- set dst_condition = 'array_position(same, dst_token_address) > 0 and transfer_amount <= dst_token_amount' -%}
+{%- set src_condition = 'not degenerate_params and array_position(same, src_token_address) > 0 and transfer_amount <= src_token_amount' -%}
+{%- set dst_condition = 'not degenerate_params and array_position(same, dst_token_address) > 0 and transfer_amount <= dst_token_amount' -%}
 {%- set user_condition = 'cardinality(array_intersect(array[transfer_from, transfer_to], array[tx_from, call_from, dst_receiver])) > 0' %}
 
 , executions as (
@@ -106,20 +168,20 @@ select
 
     , tx_from as user
     , dst_receiver as receiver
-    , src_token_address
+    , if(degenerate_params, net_src_data.address, src_token_address) as src_token_address -- the marker address of degenerate calls is replaced with the netted one
     , src_token_amount
-    , coalesce(src_user_data.address, src_data.address) as src_executed_address
-    , coalesce(src_user_data.symbol, src_data.symbol) as src_executed_symbol
-    , coalesce(src_user_data.amount, src_amount) as src_executed_amount -- first from the user, then only with the correct amount
-    , src_amount_usd as src_executed_amount_usd
+    , coalesce(src_user_data.address, src_data.address, net_src_data.address, if(protocol_version = 6 and not degenerate_params, {{ src_calldata_token }})) as src_executed_address
+    , coalesce(src_user_data.symbol, src_data.symbol, net_src_data.symbol, if(protocol_version = 6 and not degenerate_params, if(src_token_address in ({{ nullss }}, {{ native }}), {{ nsymbol }}, src_token.token_symbol))) as src_executed_symbol
+    , coalesce(src_user_data.amount, src_amount, net_src_data.amount, if(protocol_version = 6 and not degenerate_params, src_token_amount)) as src_executed_amount -- first from the user, then only with the correct amount, then netted from the nested transfers, then from the decoded call params
+    , coalesce(src_amount_usd, net_src_amount_usd) as src_executed_amount_usd
 
     , cast(null as varchar) as dst_blockchain
-    , dst_token_address
+    , if(degenerate_params, net_dst_data.address, dst_token_address) as dst_token_address -- the marker address of degenerate calls is replaced with the netted one
     , dst_token_amount
-    , coalesce(dst_user_data.address, dst_data.address) as dst_executed_address
-    , coalesce(dst_user_data.symbol, dst_data.symbol) as dst_executed_symbol
-    , coalesce(dst_user_data.amount, dst_amount) as dst_executed_amount -- first to the user, then only with the correct amount
-    , dst_amount_usd as dst_executed_amount_usd
+    , coalesce(dst_user_data.address, dst_data.address, net_dst_data.address, if(protocol_version = 6 and not degenerate_params, {{ dst_calldata_token }})) as dst_executed_address
+    , coalesce(dst_user_data.symbol, dst_data.symbol, net_dst_data.symbol, if(protocol_version = 6 and not degenerate_params, if(dst_token_address in ({{ nullss }}, {{ native }}), {{ nsymbol }}, dst_token.token_symbol))) as dst_executed_symbol
+    , coalesce(dst_user_data.amount, dst_amount, net_dst_data.amount, if(protocol_version = 6 and not degenerate_params, dst_token_amount)) as dst_executed_amount -- first to the user, then only with the correct amount, then netted from the nested transfers, then from the decoded call output
+    , coalesce(dst_amount_usd, net_dst_amount_usd) as dst_executed_amount_usd
     
     , cast(null as varbinary) as order_hash
     , cast(null as varbinary) as hashlock
@@ -133,8 +195,8 @@ select
         , ('sources_amount_usd', format('$%,.0f', sources_amount_usd))
         , ('trusted_amount_usd', format('$%,.0f', trusted_amount_usd))
         , ('amount_usd', format('$%,.0f', amount_usd))
-        , ('src_decimals', cast(coalesce(src_user_data.decimals, src_data.decimals) as varchar))
-        , ('dst_decimals', cast(coalesce(dst_user_data.decimals, dst_data.decimals) as varchar))
+        , ('src_decimals', cast(coalesce(src_user_data.decimals, src_data.decimals, net_src_data.decimals, src_token.token_decimals) as varchar))
+        , ('dst_decimals', cast(coalesce(dst_user_data.decimals, dst_data.decimals, net_dst_data.decimals, dst_token.token_decimals) as varchar))
     ]) as complement
 
     , remains
@@ -146,5 +208,8 @@ select
     , native_decimals
 from calls
 join executions using(block_date, block_number, tx_hash, call_trace_address)
+left join degenerate_executions using(block_date, block_number, tx_hash, call_trace_address)
+left join tokens as src_token on src_token.contract_address = {{ src_calldata_token }} and protocol_version = 6 and not degenerate_params
+left join tokens as dst_token on dst_token.contract_address = {{ dst_calldata_token }} and protocol_version = 6 and not degenerate_params
 
 {%- endmacro -%}
