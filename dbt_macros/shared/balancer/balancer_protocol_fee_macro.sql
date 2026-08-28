@@ -63,17 +63,39 @@ WITH pool_labels AS (
         WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
+    filtered_liquidity AS (
+        SELECT
+            day,
+            blockchain,
+            version,
+            pool_address,
+            protocol_liquidity_usd
+        FROM {{ ref(base_spells_namespace + '_liquidity') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
+    ),
+
+    filtered_bpt_supply AS (
+        SELECT
+            day,
+            blockchain,
+            version,
+            token_address,
+            supply
+        FROM {{ ref(base_spells_namespace + '_bpt_supply') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
+    ),
+
     bpt_prices_1 AS ( --special calculation for this spell, in order to achieve completeness without relying on prices.usd
         SELECT 
             l.day,
             s.token_address AS token,
             18 AS decimals,
             SUM(protocol_liquidity_usd / supply) AS price
-        FROM {{ ref(base_spells_namespace + '_liquidity') }} l
-        LEFT JOIN {{ ref(base_spells_namespace + '_bpt_supply') }} s ON s.token_address = l.pool_address 
+        FROM filtered_liquidity l
+        LEFT JOIN filtered_bpt_supply s ON s.token_address = l.pool_address 
         AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 1e-4
-        WHERE l.blockchain = '{{blockchain}}'
-        AND l.version = '{{version}}'
         GROUP BY 1, 2, 3
     ),
 
@@ -258,17 +280,39 @@ WITH pool_labels AS (
         WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
+    filtered_liquidity AS (
+        SELECT
+            day,
+            blockchain,
+            version,
+            pool_address,
+            protocol_liquidity_usd
+        FROM {{ ref(base_spells_namespace + '_liquidity') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
+    ),
+
+    filtered_bpt_supply AS (
+        SELECT
+            day,
+            blockchain,
+            version,
+            token_address,
+            supply
+        FROM {{ ref(base_spells_namespace + '_bpt_supply') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
+    ),
+
     bpt_prices_1 AS ( --special calculation for this spell, in order to achieve completeness without relying on prices.usd
         SELECT 
             l.day,
             s.token_address AS token,
             18 AS decimals,
             SUM(protocol_liquidity_usd / supply) AS price
-        FROM {{ ref(base_spells_namespace + '_liquidity') }} l
-        LEFT JOIN {{ ref(base_spells_namespace + '_bpt_supply') }} s ON s.token_address = l.pool_address 
+        FROM filtered_liquidity l
+        LEFT JOIN filtered_bpt_supply s ON s.token_address = l.pool_address 
         AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 1e-4
-        WHERE l.blockchain = '{{blockchain}}'
-        AND l.version = '{{version}}'
         GROUP BY 1, 2, 3
     ),
 
