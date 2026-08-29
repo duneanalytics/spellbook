@@ -10,6 +10,8 @@
     )
 }}
 
+-- ci-stamp: 1
+
 {% set quickswap_start_date = "2025-08-29" %}
 
 WITH dexs AS (

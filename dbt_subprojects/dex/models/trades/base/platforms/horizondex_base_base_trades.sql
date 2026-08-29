@@ -10,6 +10,8 @@
     )
 }}
 
+-- ci-stamp: 1
+
 WITH dexs AS
 (
     SELECT

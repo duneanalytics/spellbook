@@ -10,6 +10,8 @@
     )
 }}
 
+-- ci-stamp: 1
+
 {{
     maverick_compatible_v2_trades(
         blockchain = 'plume',

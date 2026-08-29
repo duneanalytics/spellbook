@@ -10,6 +10,8 @@
     )
 }}
 
+-- ci-stamp: 1
+
 {% set machinex_start_date = "2025-05-25" %}
 
 WITH pool_tokens AS (
