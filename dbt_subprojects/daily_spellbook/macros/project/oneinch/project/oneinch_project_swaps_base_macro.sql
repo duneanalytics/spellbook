@@ -304,8 +304,15 @@ meta as (
          , call_from, call_to, contract_address, transfer_from, transfer_to, amount, minute
     from (
         select *, row_number() over (
+            -- call_trace_address and call_trade_id belong in this key. A transfer can be
+            -- nested under more than one call of the same transaction -- 58665 of 728590
+            -- rows on ethereum 2026-08-19 -- so partitioning without the call collapses
+            -- copies belonging to DIFFERENT calls and keeps an arbitrary one. That is a
+            -- transfer silently missing from every other call it belongs to, and which one
+            -- survives changes between runs.
             partition by tx_hash, transfer_trace_address, contract_address,
-                         transfer_from, transfer_to, amount
+                         transfer_from, transfer_to, amount,
+                         call_trace_address, call_trade_id
             order by native
         ) as _rn
         from call_transfers
@@ -325,12 +332,19 @@ meta as (
     -- token out and back into itself within one call (round-trip arbitrage) nets to
     -- ~zero here too, understating that genuine volume -- same mechanism, so there is no
     -- way to keep one and not the other from net flow alone.
+    -- A direction flag instead of a sign. Negating a uint256 casts it to int256, whose
+    -- magnitude is one bit smaller, and amounts exist that do not fit -- the run died on
+    --   Overflow in INT256 cast of UINT256: 1000000...0000 (78 digits, ~1e77)
+    -- against an int256 ceiling of ~5.79e76. Summing each side separately keeps every value
+    -- in uint256, and taking smaller-from-larger below cannot go negative, so int256 never
+    -- enters. Casting to double instead was measured and produces identical results to the
+    -- cent; this way needs no argument about precision at all.
     select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
-        , contract_address, transfer_from as address, -amount as signed_amount, minute
+        , contract_address, transfer_from as address, amount, false as inflow, minute
     from net_transfers
     union all
     select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
-        , contract_address, transfer_to as address, amount as signed_amount, minute
+        , contract_address, transfer_to as address, amount, true as inflow, minute
     from net_transfers
 )
 
@@ -341,32 +355,40 @@ meta as (
         , any_value(call_to) as call_to
         , contract_address
         , address
-        , sum(signed_amount) as net_amount
+        , coalesce(sum(amount) filter(where inflow), cast(0 as uint256)) as in_amount
+        , coalesce(sum(amount) filter(where not inflow), cast(0 as uint256)) as out_amount
         , max(minute) as minute -- one call, one tx -- transfers of the same token share a minute in practice
     from net_legs
     group by block_month, block_number, tx_hash, call_trace_address, call_trade_id, contract_address, address
 )
 
+, net_abs as (
+    select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
+        , contract_address, address, minute
+        , if(in_amount > out_amount, in_amount - out_amount, out_amount - in_amount) as net_amount
+    from net_flows
+)
+
 , net_amounts as (
     select
-        net_flows.block_month
-        , net_flows.block_number
-        , net_flows.tx_hash
-        , net_flows.call_trace_address
-        , net_flows.call_trade_id
-        , max(abs(net_amount) * price / pow(10, decimals)) as call_amount_usd
-        , max(abs(net_amount) * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
-        , max(abs(net_amount) * price / pow(10, decimals)) filter(where creations.block_number is null) as user_amount_usd
-        , max(abs(net_amount) * price / pow(10, decimals)) filter(where creations.block_number is null and trusted) as user_amount_usd_trusted
-        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_from) as caller_amount_usd
-        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_from and trusted) as caller_amount_usd_trusted
-        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_to) as contract_amount_usd
-        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_to and trusted) as contract_amount_usd_trusted
-    from net_flows
+        net_abs.block_month
+        , net_abs.block_number
+        , net_abs.tx_hash
+        , net_abs.call_trace_address
+        , net_abs.call_trade_id
+        , max(net_amount * price / pow(10, decimals)) as call_amount_usd
+        , max(net_amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
+        , max(net_amount * price / pow(10, decimals)) filter(where creations.block_number is null) as user_amount_usd
+        , max(net_amount * price / pow(10, decimals)) filter(where creations.block_number is null and trusted) as user_amount_usd_trusted
+        , max(net_amount * price / pow(10, decimals)) filter(where net_abs.address = call_from) as caller_amount_usd
+        , max(net_amount * price / pow(10, decimals)) filter(where net_abs.address = call_from and trusted) as caller_amount_usd_trusted
+        , max(net_amount * price / pow(10, decimals)) filter(where net_abs.address = call_to) as contract_amount_usd
+        , max(net_amount * price / pow(10, decimals)) filter(where net_abs.address = call_to and trusted) as contract_amount_usd_trusted
+    from net_abs
     left join prices using(contract_address, minute)
     left join trusted_tokens using(contract_address)
-    left join creations on creations.address = net_flows.address
-    group by net_flows.block_month, net_flows.block_number, net_flows.tx_hash, net_flows.call_trace_address, net_flows.call_trade_id
+    left join creations on creations.address = net_abs.address
+    group by net_abs.block_month, net_abs.block_number, net_abs.tx_hash, net_abs.call_trace_address, net_abs.call_trade_id
 )
 
 , joined as (
