@@ -42,8 +42,8 @@
 */
 
 {% set blockchain = 'plume' %}
-{% set staking_contract = 0x30c791E4654EdAc575FA1700eD8633CB2FEDE871 %}
-{% set stake_evt_topic0 = 0x521d5961e1d8e7e104af28f00e1f7e11655e7cc7e8d7a9b7a07e959a1598e215 %}
+{% set staking_contract = '0x30c791E4654EdAc575FA1700eD8633CB2FEDE871' %}
+{% set stake_evt_topic0 = '0x521d5961e1d8e7e104af28f00e1f7e11655e7cc7e8d7a9b7a07e959a1598e215' %}
 {% set project_start_date = '2025-05-31' %} -- verified via Dune query against plume.logs (first_seen)
 
 SELECT
