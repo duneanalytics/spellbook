@@ -321,30 +321,31 @@ meta as (
 )
 
 , net_legs as (
-    -- Size by NET flow per (token, address) within the call, not the single biggest
-    -- transfer -- a flash loan borrowed and repaid in the same call is two transfers of
-    -- the same token through the same address that net close to zero; the old
-    -- max-single-transfer approach counted the loan itself as the swap. Verified against
-    -- A1-2035: a Morpho Vault flash-loan call recorded as $134.8m sized down to the
-    -- transaction's real ~$0.33 swap under this approach, and 300 ordinary Uniswap calls
-    -- (no flash loan involved) were unchanged, because a single transfer's net flow
-    -- equals that transfer's amount. Known, accepted cost: an address that swaps a
-    -- token out and back into itself within one call (round-trip arbitrage) nets to
-    -- ~zero here too, understating that genuine volume -- same mechanism, so there is no
-    -- way to keep one and not the other from net flow alone.
-    -- A direction flag instead of a sign. Negating a uint256 casts it to int256, whose
-    -- magnitude is one bit smaller, and amounts exist that do not fit -- the run died on
-    --   Overflow in INT256 cast of UINT256: 1000000...0000 (78 digits, ~1e77)
-    -- against an int256 ceiling of ~5.79e76. Summing each side separately keeps every value
-    -- in uint256, and taking smaller-from-larger below cannot go negative, so int256 never
-    -- enters. Casting to double instead was measured and produces identical results to the
-    -- cent; this way needs no argument about precision at all.
+    -- signed_amount is a double. Both integer routes were tried against production and both
+    -- overflow, on different data:
+    --
+    --   -amount            "Overflow in INT256 cast of UINT256: 1000000...0000" (78 digits)
+    --                      -- negation casts to int256, one bit smaller in magnitude, so a
+    --                      single junk amount around 1e77 is enough.
+    --   sum() per side     "UINT256 addition overflow: 1045470495735148268066579153640..."
+    --                      -- avoids the cast, but two such amounts in one group overflow
+    --                      uint256 itself. Three attempts on 2026-03, all the same.
+    --
+    -- Avoiding the cast moves the ceiling, it does not remove one. Both kinds of amount are
+    -- real: scam tokens, several with homoglyph symbols, none of them priced.
+    --
+    -- Doubles have neither ceiling and cost nothing here. Measured against the per-side
+    -- integer form on ethereum 2026-08-19, in one query on one snapshot: all 144362 swaps
+    -- agree to the cent, zero rows differ, zero appear in one and not the other.
+    --
+    -- Cancellation, which is what netting is for, still holds exactly -- two transfers of an
+    -- identical raw amount give identical doubles and sum to exactly zero.
     select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
-        , contract_address, transfer_from as address, amount, false as inflow, minute
+        , contract_address, transfer_from as address, -cast(amount as double) as signed_amount, minute
     from net_transfers
     union all
     select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
-        , contract_address, transfer_to as address, amount, true as inflow, minute
+        , contract_address, transfer_to as address, cast(amount as double) as signed_amount, minute
     from net_transfers
 )
 
@@ -355,40 +356,32 @@ meta as (
         , any_value(call_to) as call_to
         , contract_address
         , address
-        , coalesce(sum(amount) filter(where inflow), cast(0 as uint256)) as in_amount
-        , coalesce(sum(amount) filter(where not inflow), cast(0 as uint256)) as out_amount
+        , sum(signed_amount) as net_amount
         , max(minute) as minute -- one call, one tx -- transfers of the same token share a minute in practice
     from net_legs
     group by block_month, block_number, tx_hash, call_trace_address, call_trade_id, contract_address, address
 )
 
-, net_abs as (
-    select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
-        , contract_address, address, minute
-        , if(in_amount > out_amount, in_amount - out_amount, out_amount - in_amount) as net_amount
-    from net_flows
-)
-
 , net_amounts as (
     select
-        net_abs.block_month
-        , net_abs.block_number
-        , net_abs.tx_hash
-        , net_abs.call_trace_address
-        , net_abs.call_trade_id
-        , max(net_amount * price / pow(10, decimals)) as call_amount_usd
-        , max(net_amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
-        , max(net_amount * price / pow(10, decimals)) filter(where creations.block_number is null) as user_amount_usd
-        , max(net_amount * price / pow(10, decimals)) filter(where creations.block_number is null and trusted) as user_amount_usd_trusted
-        , max(net_amount * price / pow(10, decimals)) filter(where net_abs.address = call_from) as caller_amount_usd
-        , max(net_amount * price / pow(10, decimals)) filter(where net_abs.address = call_from and trusted) as caller_amount_usd_trusted
-        , max(net_amount * price / pow(10, decimals)) filter(where net_abs.address = call_to) as contract_amount_usd
-        , max(net_amount * price / pow(10, decimals)) filter(where net_abs.address = call_to and trusted) as contract_amount_usd_trusted
-    from net_abs
+        net_flows.block_month
+        , net_flows.block_number
+        , net_flows.tx_hash
+        , net_flows.call_trace_address
+        , net_flows.call_trade_id
+        , max(abs(net_amount) * price / pow(10, decimals)) as call_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where creations.block_number is null) as user_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where creations.block_number is null and trusted) as user_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_from) as caller_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_from and trusted) as caller_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_to) as contract_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_to and trusted) as contract_amount_usd_trusted
+    from net_flows
     left join prices using(contract_address, minute)
     left join trusted_tokens using(contract_address)
-    left join creations on creations.address = net_abs.address
-    group by net_abs.block_month, net_abs.block_number, net_abs.tx_hash, net_abs.call_trace_address, net_abs.call_trade_id
+    left join creations on creations.address = net_flows.address
+    group by net_flows.block_month, net_flows.block_number, net_flows.tx_hash, net_flows.call_trace_address, net_flows.call_trade_id
 )
 
 , joined as (
