@@ -1,5 +1,9 @@
+-- prod_exclude: 15 trades in this model's entire lifetime and none in the last three days,
+-- measured on a full CI build. Kept in the repo rather than deleted so it can be wired into
+-- dex_base.base_trades if Gridex ever sees real use on Base.
 {{
     config(
+        tags=['prod_exclude'],
         schema = 'gridex_base',
         alias = 'base_trades',
         materialized = 'incremental',
@@ -9,8 +13,6 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
-
--- ci-stamp: 1
 
 {{
     uniswap_compatible_v3_trades(

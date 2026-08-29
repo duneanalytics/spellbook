@@ -75,7 +75,6 @@
     , ref('baso_finance_base_base_trades')
     , ref('crescentswap_base_base_trades')
     , ref('energon_base_base_trades')
-    , ref('gridex_base_base_trades')
     , ref('icecreamswap_base_base_trades')
     , ref('synthswap_base_base_trades')
     , ref('voltswap_base_base_trades')
