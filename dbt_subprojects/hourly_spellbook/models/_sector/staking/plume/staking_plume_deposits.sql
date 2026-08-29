@@ -43,8 +43,6 @@
 */
 
 {% set blockchain = 'plume' %}
-{% set staking_contract = 0x30c791E4654EdAc575FA1700eD8633CB2FEDE871 %}
-{% set stake_evt_topic0 = 0x521d5961e1d8e7e104af28f00e1f7e11655e7cc7e8d7a9b7a07e959a1598e215 %}
 {% set project_start_date = '2025-05-31' %} -- verified via Dune query against plume.logs (first_seen)
 
 SELECT
@@ -58,8 +56,8 @@ SELECT
     , bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) AS amount_staked
     , l.contract_address
 FROM {{ source('plume', 'logs') }} l
-WHERE l.contract_address = {{ staking_contract }}
-    AND l.topic0 = {{ stake_evt_topic0 }}
+WHERE l.contract_address = 0x30c791E4654EdAc575FA1700eD8633CB2FEDE871
+    AND l.topic0 = 0x521d5961e1d8e7e104af28f00e1f7e11655e7cc7e8d7a9b7a07e959a1598e215
     {% if is_incremental() %}
     AND {{ incremental_predicate('l.block_time') }}
     {% else %}
