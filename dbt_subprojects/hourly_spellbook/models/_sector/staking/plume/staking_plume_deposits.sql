@@ -20,7 +20,8 @@
     indexed/non-indexed params are decoded manually by topic position -- see
     docs/general/best_practices.md and the precedent in
     dbt_subprojects/daily_spellbook/models/toroperp/sei/toroperp_sei_deposits.sql
-    and .../chainlink/*/chainlink_*_ccip_nop_paid_logs.sql for the same pattern).
+    and the chainlink CCIP nop-paid-logs models under
+    dbt_subprojects/daily_spellbook/models/chainlink for the same pattern).
 
     Staking contract: 0x30c791E4654EdAc575FA1700eD8633CB2FEDE871
     Stake event topic0: 0x521d5961e1d8e7e104af28f00e1f7e11655e7cc7e8d7a9b7a07e959a1598e215
