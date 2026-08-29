@@ -10,8 +10,6 @@
     )
 }}
 
--- ci-stamp: 1
-
 {{
     uniswap_compatible_v2_trades(
         blockchain = 'base',
