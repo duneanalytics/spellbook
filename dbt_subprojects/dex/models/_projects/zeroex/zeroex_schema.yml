@@ -119,9 +119,11 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
+              - blockchain
               - block_date
               - tx_hash
               - evt_index
+              - trace_address
       - check_seed:
           arguments:
             seed_file: ref('zeroex_api_fills_deduped_sample')
@@ -159,6 +161,8 @@ models:
       - *tx_to
       - *evt_index
       - *blockchain
+      - name: trace_address
+        description: "Trace path of the Settler call for Settler-derived rows"
 
   - name: zeroex_trades
     meta:
