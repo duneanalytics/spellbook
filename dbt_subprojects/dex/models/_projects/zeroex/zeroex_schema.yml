@@ -107,12 +107,12 @@ models:
 
   - name: zeroex_api_fills_deduped
     meta: 
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast, mantle, worldchain, berachain, ink, monad
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast, mantle, worldchain, berachain, ink, monad, robinhood
       sector: dex
       project: zeroex
       contributors: rantum, bakabhai993
     config:
-      tags: ['ethereum', 'optimism', 'polygon', 'bnb', 'avalanche', '0x','trades', 'dex', 'jeff-dude','cross-chain']
+      tags: ['ethereum', 'optimism', 'polygon', 'bnb', 'avalanche', 'robinhood', '0x','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
         Zeroex API on all chains across all contracts and versions. This table will load dex trades downstream.
     data_tests:
