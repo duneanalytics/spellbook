@@ -292,7 +292,22 @@ meta as (
     --
     --     max (production)     $1,176,198,549.89
     --     net, with the pair   $1,258,527,698.07   +7.000%
-    --     net, collapsed       $1,164,698,389.61   -0.978%
+    --     net, collapsed       $1,195,401,680.58   +1.63%
+    --
+    -- Those three are ONE DAY of ethereum alone, which is where the wrapped-native pair was
+    -- found and is not a good sample of the change's size: ethereum carries more wrapping
+    -- and more flash-loan activity than the average chain. On a whole month across all 13
+    -- chains, old and new computed against the same data:
+    --
+    --     2025-06, 13 chains
+    --       max()      266,591,088 rows   $327,588,940,515.19
+    --       net flow   266,591,088 rows   $328,303,462,331.25   +0.218%
+    --
+    -- +0.218%, not +1.63%, is the figure to review this change on. The row count is
+    -- identical between them: this re-sizes swaps, it does not add or drop any.
+    --
+    -- A -0.978% stood here before and was wrong in sign as well as magnitude. It came from
+    -- the collapse dropping transfers shared between calls, fixed two commits ago.
     --
     -- so collapsing the pair is what makes this change move volume DOWN, as intended,
     -- rather than up. Control: one Tokenlon swap reads $1,143,565.00 under max,
