@@ -1,11 +1,9 @@
 version: 2
 
 sources:
-  - name: oneinch_robinhood
+  - name: oneinch_hyperevm
     tables:
       - name: AggregationRouterV6_call_swap
-      - name: AggregationRouterV6_call_clipperSwap
-      - name: AggregationRouterV6_call_clipperSwapTo
       - name: AggregationRouterV6_call_unoswap
       - name: AggregationRouterV6_call_unoswap2
       - name: AggregationRouterV6_call_unoswap3
@@ -23,8 +21,6 @@ sources:
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
       - name: AggregationRouterV6_call_permitAndCall
-      - name: EscrowFactoryV1_call_addressOfEscrowSrc
-      - name: EscrowFactoryV1_call_createDstEscrow
       - name: AccessTokenFusionV1_evt_transfer
       - name: AccessTokenLimitsV1_evt_transfer
       - name: AccessTokenCrossChainV1_evt_transfer
@@ -32,6 +28,6 @@ sources:
       - name: lo
 
 
-  - name: tokens_robinhood
+  - name: tokens_hyperevm
     tables:
-      - name: base_transfers
+      - name: transfers_from_traces

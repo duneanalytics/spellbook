@@ -285,3 +285,21 @@
         "AggregationRouterV6Robinhood" : dict(contracts.AggregationRouterV6, address="0x5a705de8982235a7fa45bb83dcacf03a211389c7"),
     }) }}
 {% endmacro %}
+
+-- CRONOS LO CONFIG MACRO --
+{% macro oneinch_cronos_lo_contracts_cfg_macro() %}
+    {% set contracts = oneinch_lo_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6"   : dict(contracts.AggregationRouterV6) }) }}
+{% endmacro %}
+
+-- MONAD LO CONFIG MACRO --
+{% macro oneinch_monad_lo_contracts_cfg_macro() %}
+    {% set contracts = oneinch_lo_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6"   : dict(contracts.AggregationRouterV6) }) }}
+{% endmacro %}
+
+-- HYPEREVM LO CONFIG MACRO (chain-specific AggregationRouterV6 deployment address) --
+{% macro oneinch_hyperevm_lo_contracts_cfg_macro() %}
+    {% set contracts = oneinch_lo_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6"   : dict(contracts.AggregationRouterV6, address="0x5281602adc446a94eb48d055f514a6d8d5bee176") }) }}
+{% endmacro %}
