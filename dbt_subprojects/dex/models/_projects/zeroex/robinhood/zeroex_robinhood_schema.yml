@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: zeroex_robinhood_settler_addresses
+    meta:
+      blockchain: robinhood
+      project: zeroex
+      contributors: bakabhai993
+    config:
+      tags: ['robinhood', '0x', 'settler']
+    description: >
+      0x Settler addresses registered on Robinhood Chain, including their activation periods.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - settler_address
+              - token_id
+    columns:
+      - name: settler_address
+        description: "Address authorised to settle 0x trades"
+        data_tests:
+          - not_null
+      - name: token_id
+        description: "Registry token ID associated with the Settler address"
+        data_tests:
+          - not_null
+      - name: begin_block_time
+        description: "UTC timestamp when the Settler address became active"
+      - name: end_block_time
+        description: "UTC timestamp when the Settler address stopped being active"
+
+  - name: zeroex_v2_robinhood_settler_txs
+    meta:
+      blockchain: robinhood
+      project: zeroex
+      contributors: bakabhai993
+    config:
+      tags: ['robinhood', '0x', 'settler']
+    description: >
+      Staged 0x Settler calls on Robinhood Chain, decoded once from Robinhood traces.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_hash
+              - rn
+    columns:
+      - name: block_month
+        description: "UTC month partition derived from block_time"
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Transaction hash containing the Settler call"
+        data_tests:
+          - not_null
+      - name: rn
+        description: "Settler-call sequence within the transaction"
+        data_tests:
+          - not_null
+      - name: tag
+        description: "Three-byte integrator tag extracted from the tracker calldata"
+
+  - name: zeroex_v2_robinhood_trades
+    meta:
+      blockchain: robinhood
+      project: zeroex
+      contributors: bakabhai993
+    config:
+      tags: ['robinhood', '0x', 'settler', 'dex_aggregator', 'dex', 'aggregator']
+    description: >
+      Deduplicated 0x API trades executed through Settler contracts on Robinhood Chain.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - tx_hash
+              - evt_index
+              - trace_address
+    columns:
+      - name: block_month
+        description: "UTC month partition derived from block_time"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "UTC date of the trade"
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Transaction hash containing the trade"
+        data_tests:
+          - not_null
+      - name: evt_index
+        description: "Synthetic event index used by the aggregator union"
+        data_tests:
+          - not_null
+      - name: trace_address
+        description: "Trace path of the Settler call"
+        data_tests:
+          - not_null
+      - name: tag
+        description: "Three-byte integrator tag exposed as affiliate_address downstream"
