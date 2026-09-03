@@ -13,18 +13,9 @@ models:
       # Declared here rather than in the model's config() block on purpose: a yml config change
       # is state:modified.configs, so neither CI nor the prod deploy (state:modified.body)
       # rebuilds dex.trades over a metadata-only change.
-      #
-      # Thresholds derived from observed lag rather than the CUR2-3537 list (CUR2-3992). Over the
-      # 28 complete UTC days to 2026-09-01 the per-day maximum lag is 4331-21538s, median 4973s,
-      # on a ~1h build cycle. warn = 3 x median(per-day max) = 14920s, rounded to 4h (unchanged);
-      # critical = 2 x warn = 8h, down from 12h, which was 8.7x the typical daily peak and left a
-      # stalled table paging only after most of a working day.
-      #
-      # oncall drops to false: this is the only table that declared it, and
-      # curated_table_lag_seconds - the series the alert actually evaluates - has carried it for
-      # ~1.1 days. The 28-day burn-in is on the alerting series, not on the proxy the thresholds
-      # were derived from, because it also has to prove the collection path stays up. Eligible to
-      # flip back on 2026-09-29 (CUR2-3750).
+      # Thresholds derived from observed lag (CUR2-3992): warn = 3 x the median per-day peak lag
+      # (4973s over the 28 days to 2026-09-01), critical = 2 x warn. oncall stays false until
+      # curated_table_lag_seconds - the series the alert evaluates - has 28 days; it has ~2.
       monitoring:
         enabled: true
         warn_after: {count: 4, period: hour}
