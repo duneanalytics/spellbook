@@ -13,9 +13,6 @@ models:
       # Declared here rather than in the model's config() block on purpose: a yml config change
       # is state:modified.configs, so neither CI nor the prod deploy (state:modified.body)
       # rebuilds dex.trades over a metadata-only change.
-      # Thresholds derived from observed lag (CUR2-3992): warn = 3 x the median per-day peak lag
-      # (4973s over the 28 days to 2026-09-01), critical = 2 x warn. oncall stays false until
-      # curated_table_lag_seconds - the series the alert evaluates - has 28 days; it has ~2.
       monitoring:
         enabled: true
         warn_after: {count: 4, period: hour}
