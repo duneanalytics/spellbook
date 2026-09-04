@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: monitoring_config_spellbook_hourly_spellbook
+    description: >
+      The hourly_spellbook subproject's arm of the freshness monitoring config
+      (`delta_prod.monitoring.config` in curated-data): one row per model in this subproject
+      that declares `meta.monitoring.enabled: true`, read out of the parsed manifest at compile
+      time. Consumers read the curated-data view, never this table. Row shape must stay identical
+      to curated-data's `monitoring_config_curated_data`.
+    columns:
+      - name: table_name
+        description: >
+          Prod-qualified physical relation, `delta_prod.<schema>.<table>` — matching the `table`
+          label on the lag metric. Not the model name.
+        data_tests:
+          - not_null
+          - unique
+      - name: event_time_column
+        description: >
+          Column freshness is measured on, from the model's `event_time` config — an event
+          timestamp such as `block_time`, never a write timestamp.
+        data_tests:
+          - not_null
+      - name: partition_column
+        description: >
+          Column the scan fallback prunes on, from the model's `partition_by` config. Nullable by
+          design — NULL means prune on `event_time_column`.
+      - name: warn_seconds
+        description: Staleness at which the table warns (notification, no page), in seconds.
+        data_tests:
+          - not_null
+      - name: critical_seconds
+        description: >
+          Staleness at which the table is critical, in seconds. Greater than `warn_seconds`,
+          otherwise the warn tier can never fire first.
+        data_tests:
+          - not_null
+      - name: oncall
+        description: Whether breaching `critical_seconds` should page. False means notify only.
+        data_tests:
+          - not_null
