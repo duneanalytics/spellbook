@@ -237,5 +237,6 @@ FROM
     ('hyper-hyperlane', 'arbitrum', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
     ('usdai-usdai', 'arbitrum', 'USDai', 0x0a1a1a107e45b7ced86833863f482bc5f4ed82ef, 18),
     ('logx-logx-network', 'arbitrum', 'LOGX', 0x59062301fb510f4ea2417b67404cb16d31e604ba, 18),
-    ('usdg-global-dollar', 'arbitrum', 'USDG', 0x004B506865409877C9fA29bfb1ebA929984B9bbC, 6)
+    ('usdg-global-dollar', 'arbitrum', 'USDG', 0x004B506865409877C9fA29bfb1ebA929984B9bbC, 6),
+    ('reusd-re-protocol-reusd', 'arbitrum', 'reUSD', 0x76ce01f0ef25aa66cc5f1e546a005e4a63b25609, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
