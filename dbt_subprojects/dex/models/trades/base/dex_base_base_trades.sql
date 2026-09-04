@@ -71,6 +71,13 @@
     , ref('elfomofi_base_base_trades')
     , ref('tessera_v_base_base_trades')
     , ref('zeroex_settler_base_base_trades')
+    , ref('baseswap_basex_base_base_trades')
+    , ref('baso_finance_base_base_trades')
+    , ref('crescentswap_base_base_trades')
+    , ref('energon_base_base_trades')
+    , ref('icecreamswap_base_base_trades')
+    , ref('synthswap_base_base_trades')
+    , ref('voltswap_base_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

@@ -12,7 +12,7 @@
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'base'
-        , project = 'crescent'
+        , project = 'crescentswap'
         , version = '1'
         , Pair_evt_Swap = source('crescent_base', 'pool_evt_Swap')
         , Factory_evt_PoolCreated = source('crescent_base', 'factory_evt_PoolCreated')
