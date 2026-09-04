@@ -1,4 +1,13 @@
 -- this macro helps to optimize the etl in case of adding new contract to a certain chain so it triggers pipeline only for this chain
+{#
+    NATIVE ROUTER V3/V4. Native's V1 router is dead — zero calls in the 30 days before
+    2026-08-23 on ethereum, bnb and base — while V3 and V4 carry the traffic, so Native is
+    currently decoded as nothing at all. Addresses are from
+    docs.native.org/native-dev/resources/addresses and were each confirmed against real
+    traffic in <chain>.traces over that window before being added; bnb V3 alone took
+    7,046,077 calls. Robinhood, Monad, Xlayer and Morph run V3/V4 too but have no
+    mapped_contracts entries here for any protocol.
+#}
 {% macro oneinch_mapped_contracts_macro(blockchain) %}
 
 
@@ -483,6 +492,14 @@
         , ('0x8c42cf13fbea2ac15b0fe5a5f3cf35eec65d7d7d', 'false', 'Native'              , 'NativeRouterV1'          , ['polygon'])
         , ('0x41d7b3abcfecf1f1b4b1b962da8f086114b6cc5a', 'false', 'Native'              , 'NativeRouterV1'          , ['base'])
         , ('0xc6f7a7ba5388bfb5774bfaa87d350b7793fd9ef1', 'false', 'Native'              , 'NativeRouterV1'          , ['mantle'])
+        , ('0xa540ec8C73322200d68E1B86c471A5C850854f22', 'false', 'Native'              , 'NativeRouterV3'          , ['ethereum'])
+        , ('0x0f9f2366C6157F2aCD3C2bFA45Cd9031c152D2Cf', 'false', 'Native'              , 'NativeRouterV3'          , ['bnb'])
+        , ('0x7d1c4889DF6113B3e4581a8c0484374bdeC3341B', 'false', 'Native'              , 'NativeRouterV3'          , ['arbitrum'])
+        , ('0xd547727b926648Af3F31DbB89E3B93E49F78dCb8', 'false', 'Native'              , 'NativeRouterV3'          , ['base'])
+        , ('0x8a2ddc0461Fcf96F81a05529Bed540d4f1eb2a00', 'false', 'Native'              , 'NativeRouterV4'          , ['ethereum'])
+        , ('0xF064b069Ed18Eb5c61159247C55C5af79B28a968', 'false', 'Native'              , 'NativeRouterV4'          , ['bnb'])
+        , ('0x0FC85a171bD0b53BF0bBace74F04B66170Ae3eAb', 'false', 'Native'              , 'NativeRouterV4'          , ['arbitrum'])
+        , ('0xaEC634d949df14Be76dC317504C7b9a6a8A5f576', 'false', 'Native'              , 'NativeRouterV4'          , ['base'])
         , ('0xd315a9c38ec871068fec378e4ce78af528c76293', 'false', 'Swaap'               , 'Vault'                   , ['ethereum','polygon','arbitrum','linea','optimism','avalanche_c','sonic'])
         , ('0x03C01Acae3D0173a93d819efDc832C7C4F153B06', 'false', 'Swaap'               , 'Vault'                   , ['bnb','base'])
         , ('0xa57bd00134b2850b2a1c55860c9e9ea100fdd6cf', 'false', 'MEVBot'              , 'MEVBot'                  , ['ethereum'])
