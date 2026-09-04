@@ -182,31 +182,80 @@ meta as (
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
-, joined as (
+, swaps_unique as (
+    -- One row per merge key, which `swaps` does not guarantee: measured on ethereum
+    -- 2026-08-01..08, `swaps` yields 794943 rows for 794941 distinct
+    -- (block_month, block_number, tx_hash, call_trace_address, call_trade_id).
+    --
+    -- Two rows in 795k, and they are fatal here: the model merges on those keys and Trino
+    -- refuses the statement outright --
+    --   "One MERGE target table row matched more than one source row"
+    --
+    -- The pre-change code never saw this. Its `joined` CTE aggregated the swaps-to-transfers
+    -- join with group by and any_value(), which collapsed such pairs on the way through.
+    -- Selecting from `swaps` without aggregating lets them survive -- and `call_transfers`
+    -- reads `swaps` too, so a duplicated swap would double every transfer nested under it
+    -- and double that call's net flow, which is a wrong number rather than a failed run.
+    --
+    -- Which of the pair survives is arbitrary, exactly as any_value() made it arbitrary
+    -- before.
+    select * from (
+        select *, row_number() over (
+            partition by block_month, block_number, tx_hash, call_trace_address, call_trade_id
+            order by call_selector
+        ) as _swap_rn
+        from swaps
+    ) where _swap_rn = 1
+)
+, call_transfers as (
+    -- Every transfer nested under a swap call, before any sizing decision -- shared by
+    -- the token/sender/receiver labels below (unchanged) and the net-flow sizing that
+    -- replaces the old max-single-transfer approach (see net_legs).
     select
-        blockchain
-        , swaps.block_month
+        swaps.block_month
         , swaps.block_number
         , swaps.tx_hash
         , swaps.call_trace_address
         , swaps.call_trade_id
+        , swaps.call_from
+        , swaps.call_to
+        , contract_address
+        , native
+        , symbol
+        , native_symbol
+        , contract_address_raw
+        , transfer_from
+        , transfer_to
+        , amount
+        , block_time
+        , minute
+        , transfer_trace_address
+    from swaps_unique swaps
+    join transfers on true
+        and swaps.block_month = transfers.block_month
+        and swaps.block_number = transfers.block_number
+        and swaps.tx_hash = transfers.tx_hash
+        and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
+        and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
+        and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only
+)
+
+, labels as (
+    -- Token/sender/receiver labels, unchanged from before this fix -- these are display
+    -- lists, not sizing, so they stay keyed off individual transfers.
+    -- Keys qualified with call_transfers: this CTE joins `creations` twice and `creations`
+    -- has a block_number of its own, so an unqualified block_number is ambiguous and Trino
+    -- rejects the statement:
+    --   Column 'block_number' is ambiguous
+    -- The pre-change code did not hit this because the CTE these lines came from selected
+    -- swaps.block_number explicitly.
+    select
+        call_transfers.block_month
+        , call_transfers.block_number
+        , call_transfers.tx_hash
+        , call_transfers.call_trace_address
+        , call_transfers.call_trade_id
         , any_value(block_time) as block_time
-        , any_value(tx_from) as tx_from
-        , any_value(tx_to) as tx_to
-        , any_value(project) as project
-        , any_value(tag) as tag
-        , any_value(flags) as flags
-        , any_value(call_from) as call_from
-        , any_value(call_to) as call_to
-        , any_value(call_selector) as call_selector
-        , any_value(method) as method
-        , any_value(order_hash) as order_hash
-        , any_value(maker) as maker
-        , any_value(maker_asset) as maker_asset
-        , any_value(making_amount) as making_amount
-        , any_value(taker_asset) as taker_asset
-        , any_value(taking_amount) as taking_amount
-        , any_value(order_flags) as order_flags
         , array_agg(distinct
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
                 as row(symbol varchar, contract_address_raw varbinary))
@@ -219,29 +268,182 @@ meta as (
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
                 as row(symbol varchar, contract_address_raw varbinary))
         ) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
-        , max(amount * price / pow(10, decimals)) as call_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (creations_from.block_number is null or creations_to.block_number is null) and trusted) as user_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_from or transfer_to = call_from) and trusted) as caller_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_to or transfer_to = call_to) as contract_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_to or transfer_to = call_to) and trusted) as contract_amount_usd_trusted
         , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
         , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
-    from swaps
-    join transfers on true
-        and swaps.block_month = transfers.block_month
-        and swaps.block_number = transfers.block_number
-        and swaps.tx_hash = transfers.tx_hash
-        and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
-        and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
-        and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only
+    from call_transfers
+    left join creations as creations_from on creations_from.address = call_transfers.transfer_from
+    left join creations as creations_to on creations_to.address = call_transfers.transfer_to
+    group by 1, 2, 3, 4, 5
+)
+
+, net_transfers as (
+    -- Collapse the native/wrapped pair before netting.
+    --
+    -- transfers_from_traces emits a wrap as TWO rows sharing one trace_address: the native
+    -- leg and a wrapped-token leg, same amount, same direction. The `transfers` CTE above
+    -- then maps native onto wrapped_native_token_address so it can be priced, so both rows
+    -- arrive here under the same contract_address and ADD instead of cancelling.
+    --
+    -- Under the old max() this was invisible: the duplicate equalled the real leg, so the
+    -- maximum did not move. Under net flow it doubles that leg. Measured on ethereum
+    -- 2026-08-19: 67564 such pairs in the day, 100% identical in amount and 100% in
+    -- direction; of 30029 swaps whose size grew, 20581 grew by exactly 2x, carrying $62.4m
+    -- of the $82.7m the day gained. Day totals against production's max() figures:
+    --
+    --     max (production)     $1,176,198,549.89
+    --     net, with the pair   $1,258,527,698.07   +7.000%
+    --     net, collapsed       $1,195,401,680.58   +1.63%
+    --
+    -- Those three are ONE DAY of ethereum alone, which is where the wrapped-native pair was
+    -- found and is not a good sample of the change's size: ethereum carries more wrapping
+    -- and more flash-loan activity than the average chain. On a whole month across all 13
+    -- chains, old and new computed against the same data:
+    --
+    --     2025-06, 13 chains
+    --       max()      266,591,088 rows   $327,588,940,515.19
+    --       net flow   266,591,088 rows   $328,303,462,331.25   +0.218%
+    --
+    -- +0.218%, not +1.63%, is the figure to review this change on. The row count is
+    -- identical between them: this re-sizes swaps, it does not add or drop any.
+    --
+    -- A -0.978% stood here before and was wrong in sign as well as magnitude. It came from
+    -- the collapse dropping transfers shared between calls, fixed two commits ago.
+    --
+    -- so collapsing the pair is what makes this change move volume DOWN, as intended,
+    -- rather than up. Control: one Tokenlon swap reads $1,143,565.00 under max,
+    -- $2,287,130.00 with the pair, and $1,143,565.00 again once collapsed, to the cent.
+    --
+    -- Netting path only. `labels` keeps both rows: dropping one there would drop a symbol
+    -- from the token lists, and those are display lists, not sizing.
+    select block_month, block_number, tx_hash, call_trace_address, call_trade_id
+         , call_from, call_to, contract_address, transfer_from, transfer_to, amount, minute
+    from (
+        select *, row_number() over (
+            -- call_trace_address and call_trade_id belong in this key. A transfer can be
+            -- nested under more than one call of the same transaction -- 58665 of 728590
+            -- rows on ethereum 2026-08-19 -- so partitioning without the call collapses
+            -- copies belonging to DIFFERENT calls and keeps an arbitrary one. That is a
+            -- transfer silently missing from every other call it belongs to, and which one
+            -- survives changes between runs.
+            partition by tx_hash, transfer_trace_address, contract_address,
+                         transfer_from, transfer_to, amount,
+                         call_trace_address, call_trade_id
+            order by native
+        ) as _rn
+        from call_transfers
+    )
+    where _rn = 1
+)
+
+, net_legs as (
+    -- signed_amount is a double. Both integer routes were tried against production and both
+    -- overflow, on different data:
+    --
+    --   -amount            "Overflow in INT256 cast of UINT256: 1000000...0000" (78 digits)
+    --                      -- negation casts to int256, one bit smaller in magnitude, so a
+    --                      single junk amount around 1e77 is enough.
+    --   sum() per side     "UINT256 addition overflow: 1045470495735148268066579153640..."
+    --                      -- avoids the cast, but two such amounts in one group overflow
+    --                      uint256 itself. Three attempts on 2026-03, all the same.
+    --
+    -- Avoiding the cast moves the ceiling, it does not remove one. Both kinds of amount are
+    -- real: scam tokens, several with homoglyph symbols, none of them priced.
+    --
+    -- Doubles have neither ceiling and cost nothing here. Measured against the per-side
+    -- integer form on ethereum 2026-08-19, in one query on one snapshot: all 144362 swaps
+    -- agree to the cent, zero rows differ, zero appear in one and not the other.
+    --
+    -- Cancellation, which is what netting is for, still holds exactly -- two transfers of an
+    -- identical raw amount give identical doubles and sum to exactly zero.
+    select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
+        , contract_address, transfer_from as address, -cast(amount as double) as signed_amount, minute
+    from net_transfers
+    union all
+    select block_month, block_number, tx_hash, call_trace_address, call_trade_id, call_from, call_to
+        , contract_address, transfer_to as address, cast(amount as double) as signed_amount, minute
+    from net_transfers
+)
+
+, net_flows as (
+    select
+        block_month, block_number, tx_hash, call_trace_address, call_trade_id
+        , any_value(call_from) as call_from
+        , any_value(call_to) as call_to
+        , contract_address
+        , address
+        , sum(signed_amount) as net_amount
+        , max(minute) as minute -- one call, one tx -- transfers of the same token share a minute in practice
+    from net_legs
+    group by block_month, block_number, tx_hash, call_trace_address, call_trade_id, contract_address, address
+)
+
+, net_amounts as (
+    select
+        net_flows.block_month
+        , net_flows.block_number
+        , net_flows.tx_hash
+        , net_flows.call_trace_address
+        , net_flows.call_trade_id
+        , max(abs(net_amount) * price / pow(10, decimals)) as call_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where creations.block_number is null) as user_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where creations.block_number is null and trusted) as user_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_from) as caller_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_from and trusted) as caller_amount_usd_trusted
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_to) as contract_amount_usd
+        , max(abs(net_amount) * price / pow(10, decimals)) filter(where net_flows.address = call_to and trusted) as contract_amount_usd_trusted
+    from net_flows
     left join prices using(contract_address, minute)
     left join trusted_tokens using(contract_address)
-    left join creations as creations_from on creations_from.address = transfers.transfer_from
-    left join creations as creations_to on creations_to.address = transfers.transfer_to
-    group by 1, 2, 3, 4, 5, 6
+    left join creations on creations.address = net_flows.address
+    group by net_flows.block_month, net_flows.block_number, net_flows.tx_hash, net_flows.call_trace_address, net_flows.call_trade_id
+)
+
+, joined as (
+    -- Keys NOT qualified with swaps., although the CTE this replaced did qualify them:
+    -- both joins below are JOIN ... USING, which merges the joined column into a single
+    -- unqualified one, and swaps.block_month then does not resolve at all:
+    --   Column 'swaps.block_month' cannot be resolved
+    select
+        blockchain
+        , block_month
+        , block_number
+        , tx_hash
+        , call_trace_address
+        , call_trade_id
+        , block_time
+        , tx_from
+        , tx_to
+        , project
+        , tag
+        , flags
+        , call_from
+        , call_to
+        , call_selector
+        , method
+        , order_hash
+        , maker
+        , maker_asset
+        , making_amount
+        , taker_asset
+        , taking_amount
+        , order_flags
+        , tokens
+        , user_tokens
+        , caller_tokens
+        , senders
+        , receivers
+        , call_amount_usd
+        , call_amount_usd_trusted
+        , user_amount_usd
+        , user_amount_usd_trusted
+        , caller_amount_usd
+        , caller_amount_usd_trusted
+        , contract_amount_usd
+        , contract_amount_usd_trusted
+    from swaps_unique swaps
+    join labels using(block_month, block_number, tx_hash, call_trace_address, call_trade_id)
+    left join net_amounts using(block_month, block_number, tx_hash, call_trace_address, call_trade_id)
 )
 
 , processing as (
