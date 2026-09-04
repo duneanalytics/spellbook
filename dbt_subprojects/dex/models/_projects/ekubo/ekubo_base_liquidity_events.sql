@@ -32,6 +32,10 @@ with base_union as (
                 , token1
                 , amount0_raw
                 , amount1_raw
+                , sqrt_ratio_after
+                , sqrt_ratio_after_fixed
+                , tick_after
+                , liquidity_after
         FROM
             {{ model }}
         {% if not loop.last %}
