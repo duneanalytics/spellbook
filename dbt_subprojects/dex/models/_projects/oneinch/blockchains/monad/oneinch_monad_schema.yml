@@ -174,7 +174,6 @@ models:
       - name: transfer_contract_address
         data_tests:
           - not_null
-      - name: transfer_native
       - name: transfer_from
       - name: transfer_to
       - name: transfer_symbol

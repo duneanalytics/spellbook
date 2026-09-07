@@ -199,7 +199,7 @@
         },
         "AggregationRouterV6": {
             "version": "6",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "robinhood", "cronos", "monad", "hyperevm"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "robinhood", "cronos", "monad"],
             "address": "0x111111125421ca6dc452d289314280a0f8842a65",
             "start": "2024-02-12",
             "methods": {
@@ -558,7 +558,7 @@
     }) }) }}
 {% endmacro %}
 
--- HYPEREVM AR CONFIG MACRO (chain-specific AggregationRouterV6 deployment address) --
+-- HYPEREVM AR CONFIG MACRO (chain-specific AggregationRouterV6 deployment address, so hyperevm is not in the canonical AggregationRouterV6.blockchains list above) --
 {% macro oneinch_hyperevm_ar_contracts_cfg_macro() %}
     {% set contracts = oneinch_ar_contracts_cfg_macro() %}
     {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6, address="0x5281602adc446a94eb48d055f514a6d8d5bee176", methods={

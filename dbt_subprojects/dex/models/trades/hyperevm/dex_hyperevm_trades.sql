@@ -84,4 +84,3 @@ SELECT
     , current_timestamp AS _updated_at
 FROM
     oneinch_lop
-

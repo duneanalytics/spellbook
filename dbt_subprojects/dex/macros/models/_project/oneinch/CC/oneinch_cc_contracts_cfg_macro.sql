@@ -155,6 +155,10 @@
 -- implementations appear under both contract names, which mislabels src/dst flows and duplicates rows.
 -- So escrow clones are resolved from creation traces and their calldata is parsed from raw `call_input`
 -- (type="raw"), like on zksync. The factory (single healthy address) stays on decoded tables.
+-- Only the v1 factory line (0xa02b9cc9...) is covered here. The v1.2 factory (0x50d26ea1..., live since 2026-07-15, now the
+-- dominant line) is listed in escrow_factory_addresses so its fills are cc-flagged on the LO side, but its escrow clones are
+-- filtered out by the `parent = initial_address` check in oneinch_raw_calls_macro: v1.2 uses different selectors and an
+-- immutables layout shifted by the dynamic `parameters` field, so it needs its own methods config, pending the escrow decodings.
 {% macro oneinch_robinhood_cc_contracts_cfg_macro() %}
     {% set contracts = oneinch_cc_contracts_cfg_macro() %}
     {% set methodsV1 = oneinch_cc_methods_cfg_macro(type="raw").v1 %}

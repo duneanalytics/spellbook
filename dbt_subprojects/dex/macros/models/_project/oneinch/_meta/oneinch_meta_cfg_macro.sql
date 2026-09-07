@@ -19,10 +19,12 @@
 {% endmacro %}
 
 -- ERC20True placeholder used as the counter-leg of Fusion+ cross-chain orders: https://github.com/1inch/cross-chain-swap/blob/master/contracts/mocks/ERC20True.sol
+-- 0x175a30f8... is the cronos / monad / hyperevm deployment
 {% macro oneinch_cross_chain_placeholder_tokens_cfg_macro() %}
     {{ return([
         '0xda0000d4000015a526378bb6fafc650cea5966f8',
         '0xd66097c27eb8dee404bac235737932260edc6f3b',
+        '0x175a30f81eade2d75b4d1d5fc750131877355d21',
     ]) }}
 {% endmacro %}
 
@@ -298,7 +300,7 @@
 {% macro oneinch_robinhood_cfg_macro() %}
     {# transfers_from_traces = false: robinhood tokens uses the newer base_transfers schema, no transfers_from_traces table #}
     {# fusion_settlement_addresses: robinhood-specific settlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
-    {# escrow_factory_addresses: the cross-chain v1.2 factory (live since 2026-07-15, dominant line) first, then the v1-ABI factory; both drive LO factory_in_args detection (cross-chain mode) #}
+    {# escrow_factory_addresses: the cross-chain v1.2 factory (live since 2026-07-15, dominant line) and the v1-ABI factory; both drive LO factory_in_args detection (cross-chain mode), order is not significant. CC models cover the v1 factory only until the v1.2 escrow decodings land #}
     {{ return({
         "name"                          : "robinhood",
         "start"                         : "2026-06-01",
@@ -317,7 +319,7 @@
 {% macro oneinch_cronos_cfg_macro() %}
     {# transfers_from_traces = false: cronos tokens uses the newer base_transfers schema, no transfers_from_traces table #}
     {# fusion_settlement_addresses: chain-specific SimpleSettlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
-    {# escrow_factory_addresses: the active cross-chain v1.2 factory first, then the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode); CC models are deferred until escrow decodings land #}
+    {# escrow_factory_addresses: the active cross-chain v1.2 factory and the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred until escrow decodings land #}
     {{ return({
         "name"                          : "cronos",
         "start"                         : "2026-08-01",
@@ -334,7 +336,7 @@
 
 {% macro oneinch_monad_cfg_macro() %}
     {# fusion_settlement_addresses: chain-specific SimpleSettlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
-    {# escrow_factory_addresses: the active cross-chain v1.2 factory first, then the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode); CC models are deferred until escrow decodings land #}
+    {# escrow_factory_addresses: the active cross-chain v1.2 factory and the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred until escrow decodings land #}
     {{ return({
         "name"                          : "monad",
         "start"                         : "2026-08-01",
@@ -350,7 +352,7 @@
 
 {% macro oneinch_hyperevm_cfg_macro() %}
     {# fusion_settlement_addresses: chain-specific SimpleSettlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
-    {# escrow_factory_addresses: the active cross-chain v1.2 factory first, then the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode); CC models are deferred until escrow decodings land #}
+    {# escrow_factory_addresses: the active cross-chain v1.2 factory and the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred until escrow decodings land #}
     {{ return({
         "name"                          : "hyperevm",
         "start"                         : "2026-08-01",
