@@ -9,15 +9,15 @@ models:
       short_description: "Detailed data on trades executed via decentralized exchanges (DEXs), containing one or many trades per transaction across all EVM chains."
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
       # Freshness monitoring declaration, read by monitoring_config_spellbook_dex into
-      # delta_prod.monitoring.config_spellbook_dex (thresholds from the CUR2-3537 alert list).
+      # delta_prod.monitoring.config_spellbook_dex.
       # Declared here rather than in the model's config() block on purpose: a yml config change
       # is state:modified.configs, so neither CI nor the prod deploy (state:modified.body)
       # rebuilds dex.trades over a metadata-only change.
       monitoring:
         enabled: true
         warn_after: {count: 4, period: hour}
-        critical_after: {count: 12, period: hour}
-        oncall: true
+        critical_after: {count: 8, period: hour}
+        oncall: false
     config:
       tags: [ 'dex', 'trades']
       event_time: block_time

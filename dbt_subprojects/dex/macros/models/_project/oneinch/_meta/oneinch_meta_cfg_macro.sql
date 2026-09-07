@@ -26,6 +26,18 @@
     ]) }}
 {% endmacro %}
 
+-- v4-style flash-accounting singletons (vaults / pool managers) that hold the funds of all their pools,
+-- so they are the venue-side counterparties of executor transfer legs instead of the individual pools:
+-- bnb: pancakeswap infinity vault (0x238a...), uniswap v4 pool manager (0x28e2...)
+{% macro oneinch_ar_settlement_vaults_cfg_macro() %}
+    {{ return({
+        "bnb": [
+            '0x238a358808379702088667322f80ac48bad5e6c4',
+            '0x28e2ea090877bf75740558f6bfb36a5ffee9e9df',
+        ],
+    }) }}
+{% endmacro %}
+
 -- SUBSTREAMS CONFIGURATIONS --
 {% macro oneinch_ar_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2019-06-01")) }} {% endmacro %}
 {% macro oneinch_ar_transfers_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2019-06-01")) }} {% endmacro %}
