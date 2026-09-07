@@ -986,3 +986,22 @@ models:
               - blockchain
               - token_address
               - block_date
+
+  - name: metric_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: metric
+      contributors: mathewae
+    config:
+      tags: ["ethereum", "dex", "trades", "metric"]
+    description: "Metric (oracle-based on-chain market maker) ethereum base trades, all factory versions (0, 1, 2)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('metric_ethereum_base_trades_seed')
