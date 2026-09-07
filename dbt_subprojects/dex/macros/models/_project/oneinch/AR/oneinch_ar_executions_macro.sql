@@ -5,7 +5,7 @@
     )
 -%}
 
-{%- set date_from = [blockchain.start, stream.start, oneinch_easy_date()] | max -%}
+{%- set date_from = [blockchain.start, stream.start] | max -%}
 
 
 
