@@ -135,7 +135,7 @@ models:
 
   - name: oneinch_cc
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -206,7 +206,7 @@ models:
 
   - name: oneinch_cc_executions
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:

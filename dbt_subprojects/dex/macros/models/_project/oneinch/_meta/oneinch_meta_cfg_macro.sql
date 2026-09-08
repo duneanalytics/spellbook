@@ -300,7 +300,7 @@
 {% macro oneinch_robinhood_cfg_macro() %}
     {# transfers_from_traces = false: robinhood tokens uses the newer base_transfers schema, no transfers_from_traces table #}
     {# fusion_settlement_addresses: robinhood-specific settlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
-    {# escrow_factory_addresses: the cross-chain v1.2 factory (live since 2026-07-15, dominant line) and the v1-ABI factory; both drive LO factory_in_args detection (cross-chain mode), order is not significant. CC models cover the v1 factory only until the v1.2 escrow decodings land #}
+    {# escrow_factory_addresses: the cross-chain v1.2 factory (live since 2026-07-15, dominant line) and the v1-ABI factory; both drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred until the escrow decodings are cleaned up (both lines, decoded tables) #}
     {{ return({
         "name"                          : "robinhood",
         "start"                         : "2026-06-01",
@@ -312,7 +312,6 @@
         "escrow_factory_addresses"      : ['0x50d26ea1e2460b3a42ff47466b955fc6bd906013', '0xa02b9cc95094bb27d1d041b9fbf09f65a366f7b3'],
         "atokens"                       : false,
         "transfers_from_traces"         : false,
-        "creations_parent_code_offset"  : 21,
     }) }}
 {% endmacro %}
 
@@ -404,7 +403,7 @@
         dict(oneinch_linea_cfg_macro()      , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_sonic_cfg_macro()      , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_unichain_cfg_macro()   , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
-        dict(oneinch_robinhood_cfg_macro()  , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
+        dict(oneinch_robinhood_cfg_macro()  , evm=true  , fusionV1=false, exposed=["ar", "lo"]      , contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_cronos_cfg_macro()     , evm=true  , fusionV1=false, exposed=["ar", "lo"]      , contracts={
             "AccessTokenLimitsV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenLimitsV1       , address="0xaad580f37c74184e64bda5ebbfb46fba1e2871b7"),
             "AccessTokenFusionV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenFusionV1       , address="0x826ff268ee2d9e7e7275b780d0f4a9d7aab0e533"),
