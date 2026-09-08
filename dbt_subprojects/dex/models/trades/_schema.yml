@@ -104,8 +104,14 @@ models:
       sector: dex_evm
       short_description: "DEX trades across EVM-compatible chains, exposed under the explicit dex_evm namespace."
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
+      monitoring:
+        enabled: true
+        warn_after: {count: 24, period: hour}
+        critical_after: {count: 48, period: hour}
+        oncall: false
     config:
       tags: ['dex', 'trades', 'evm']
+      event_time: block_time
     description: >
       Compatibility view over dex.trades. It exposes the same column contract and chain coverage
       under dex_evm.trades for consumers that need an explicitly EVM-scoped namespace.
