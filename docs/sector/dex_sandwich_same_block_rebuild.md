@@ -42,10 +42,20 @@ Chains: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon,
 base, celo, zksync, scroll, zora, unichain, sei, mantle. Solana has separate
 macros/models and is outside this correction.
 
-All 34 outputs use `incremental_strategy='merge'`. The merge implementation
+32 outputs are incremental; the two Zora outputs are full table materializations.
+The incremental outputs use `incremental_strategy='merge'`. The merge implementation
 updates or inserts source rows; it does not delete target rows absent from the
 new source. Neither the normal three-day run nor a wider incremental run will
 remove stale false positives, even inside the run's time window.
+
+The first CI run timed out at the 90-minute job limit while building BNB's
+full attacker history, before reaching the regression test. CI now applies
+`incremental_predicate` to every trade/transaction input in both macros even
+when creating fresh tables. This uses the configured rolling window (three days
+by default) only for `target.name == 'ci'` and incremental runs. Production
+full refresh remains unbounded when `dev_dates` is false. CI success therefore
+validates a recent window, not the full historical rebuild. The Python render
+tests assert this distinction for both macros and every input alias.
 
 The sandbox does not have the production Trino host/routing/credentials. No
 production rebuild, deletion, or deployment was executed. Run these steps with

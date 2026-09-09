@@ -2,6 +2,8 @@
 
 {# Allow fixture relations in regression tests; production callers keep the chain ref. #}
 {% set trades = ref('dex_' ~ blockchain ~ '_trades') if trades is none else trades %}
+{# CI creates fresh tables; bound every large input without limiting production full refresh. #}
+{% set bounded_run = is_incremental() or target.name == 'ci' %}
 
 WITH sandwich_bounds AS (
     SELECT front.block_time
@@ -20,13 +22,13 @@ WITH sandwich_bounds AS (
         AND front.token_sold_address=back.token_bought_address
         AND front.token_bought_address=back.token_sold_address
         AND front.evt_index+1 < back.evt_index
-        {% if is_incremental() %}
+        {% if bounded_run %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
     {% if var('dev_dates', false) -%}
     WHERE front.block_time > current_date - interval '3' day
     {%- else -%}
-    {% if is_incremental() %}
+    {% if bounded_run %}
     WHERE {{ incremental_predicate('front.block_time') }}
     {% endif %}
     {%- endif %}
@@ -66,11 +68,11 @@ INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
     AND dt.evt_index < sb.max_evt_index
 INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
-    {% if is_incremental() %}
+    {% if bounded_run %}
     AND {{ incremental_predicate('txs.block_time') }}
     {% endif %}
 WHERE 1=1
-{% if is_incremental() %}
+{% if bounded_run %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
 

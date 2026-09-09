@@ -2,6 +2,8 @@
 
 {# Allow fixture relations in regression tests; production callers keep the chain ref. #}
 {% set trades = ref('dex_' ~ blockchain ~ '_trades') if trades is none else trades %}
+{# CI creates fresh tables; bound every large input without limiting production full refresh. #}
+{% set bounded_run = is_incremental() or target.name == 'ci' %}
 
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
 WITH indexed_sandwich_trades AS (
@@ -20,7 +22,7 @@ WITH indexed_sandwich_trades AS (
         AND front.token_sold_address=back.token_bought_address
         AND front.token_bought_address=back.token_sold_address
         AND front.evt_index + 1 < back.evt_index
-        {% if is_incremental() %}
+        {% if bounded_run %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
     INNER JOIN {{ trades }} victim ON front.block_time=victim.block_time
@@ -30,14 +32,14 @@ WITH indexed_sandwich_trades AS (
         AND front.token_bought_address=victim.token_bought_address
         AND front.token_sold_address=victim.token_sold_address
         AND victim.evt_index BETWEEN front.evt_index AND back.evt_index
-        {% if is_incremental() %}
+        {% if bounded_run %}
         AND {{ incremental_predicate('victim.block_time') }}
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
     {% if var('dev_dates', false) -%}
     WHERE front.block_time > current_date - interval '3' day
     {%- else -%}
-    {% if is_incremental() %}
+    {% if bounded_run %}
     WHERE {{ incremental_predicate('front.block_time') }}
     {% endif %}
     {%- endif %}
@@ -76,7 +78,7 @@ INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
 -- Adding block_number and tx_index to the mix, can be removed once those are in dex.trades
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND tx.hash=s.tx_hash
-    {% if is_incremental() %}
+    {% if bounded_run %}
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 {% if whitelist is not none %}
@@ -84,7 +86,7 @@ LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
     AND w.tx_hash=tx.hash
 {% endif %}
 WHERE 1=1
-{% if is_incremental() %}
+{% if bounded_run %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
 {% if whitelist is not none %}
