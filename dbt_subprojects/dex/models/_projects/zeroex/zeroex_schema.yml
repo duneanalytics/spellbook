@@ -107,21 +107,23 @@ models:
 
   - name: zeroex_api_fills_deduped
     meta: 
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast, mantle, worldchain, berachain, ink, monad
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast, mantle, worldchain, berachain, ink, monad, robinhood
       sector: dex
       project: zeroex
       contributors: rantum, bakabhai993
     config:
-      tags: ['ethereum', 'optimism', 'polygon', 'bnb', 'avalanche', '0x','trades', 'dex', 'jeff-dude','cross-chain']
+      tags: ['ethereum', 'optimism', 'polygon', 'bnb', 'avalanche', 'robinhood', '0x','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
         Zeroex API on all chains across all contracts and versions. This table will load dex trades downstream.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
+              - blockchain
               - block_date
               - tx_hash
               - evt_index
+              - trace_address
       - check_seed:
           arguments:
             seed_file: ref('zeroex_api_fills_deduped_sample')
@@ -159,6 +161,8 @@ models:
       - *tx_to
       - *evt_index
       - *blockchain
+      - name: trace_address
+        description: "Trace path of the Settler call for Settler-derived rows"
 
   - name: zeroex_trades
     meta:
