@@ -1,4 +1,7 @@
-{% macro dex_sandwiches(blockchain, transactions, whitelist=none) %}
+{% macro dex_sandwiches(blockchain, transactions, whitelist=none, trades=none) %}
+
+{# Allow fixture relations in regression tests; production callers keep the chain ref. #}
+{% set trades = ref('dex_' ~ blockchain ~ '_trades') if trades is none else trades %}
 
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
 WITH indexed_sandwich_trades AS (
@@ -8,8 +11,9 @@ WITH indexed_sandwich_trades AS (
     , front.version
     , front.project_contract_address
     , t.evt_index_all AS evt_index
-    FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} front
-    INNER JOIN {{ ref('dex_' ~ blockchain ~ '_trades') }} back ON front.block_time=back.block_time
+    FROM {{ trades }} front
+    INNER JOIN {{ trades }} back ON front.block_time=back.block_time
+        AND front.block_number=back.block_number
         AND front.project_contract_address=back.project_contract_address
         AND front.tx_from=back.tx_from
         AND front.tx_hash!=back.tx_hash
@@ -19,7 +23,8 @@ WITH indexed_sandwich_trades AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
-    INNER JOIN {{ ref('dex_' ~ blockchain ~ '_trades') }} victim ON front.block_time=victim.block_time
+    INNER JOIN {{ trades }} victim ON front.block_time=victim.block_time
+        AND front.block_number=victim.block_number
         AND front.project_contract_address=victim.project_contract_address
         AND front.tx_from!=victim.tx_from
         AND front.token_bought_address=victim.token_bought_address
@@ -63,7 +68,7 @@ SELECT dt.blockchain
 , dt.token_bought_amount
 , dt.amount_usd
 , dt.evt_index
-FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} dt
+FROM {{ trades }} dt
 INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
     AND dt.tx_hash=s.tx_hash
     AND dt.project_contract_address=s.project_contract_address

@@ -1,7 +1,11 @@
-{% macro dex_sandwiched(blockchain, transactions, sandwiches) %}
+{% macro dex_sandwiched(blockchain, transactions, sandwiches, trades=none) %}
+
+{# Allow fixture relations in regression tests; production callers keep the chain ref. #}
+{% set trades = ref('dex_' ~ blockchain ~ '_trades') if trades is none else trades %}
 
 WITH sandwich_bounds AS (
     SELECT front.block_time
+    , front.block_number
     , front.evt_index AS min_evt_index
     , back.evt_index AS max_evt_index
     , front.project_contract_address    
@@ -9,6 +13,7 @@ WITH sandwich_bounds AS (
     , front.token_sold_address
     FROM {{sandwiches}} front
     INNER JOIN {{sandwiches}} back ON front.block_time=back.block_time
+        AND front.block_number=back.block_number
         AND front.tx_from=back.tx_from
         AND front.tx_hash!=back.tx_hash
         AND front.project_contract_address=back.project_contract_address
@@ -51,8 +56,9 @@ SELECT DISTINCT dt.blockchain
 , dt.amount_usd
 , dt.evt_index
 , txs.index AS tx_index
-FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} dt
+FROM {{ trades }} dt
 INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
+    AND sb.block_number=dt.block_number
     AND sb.project_contract_address=dt.project_contract_address
     AND sb.token_bought_address=dt.token_bought_address
     AND sb.token_sold_address=dt.token_sold_address
