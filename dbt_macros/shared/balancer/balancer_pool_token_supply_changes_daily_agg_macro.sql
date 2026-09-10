@@ -4,6 +4,19 @@
     ) 
 %}
 WITH
+    filtered_bpt_supply_changes AS (
+        SELECT
+            block_date,
+            blockchain,
+            pool_type,
+            pool_symbol,
+            token_address,
+            delta_amount
+        FROM {{ ref(base_spells_namespace + '_bpt_supply_changes') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
+    ),
+
     daily_balance AS (
         SELECT
             block_date,
@@ -13,9 +26,7 @@ WITH
             token_address,
             LEAD(block_date, 1, NOW()) OVER (PARTITION BY token_address ORDER BY block_date) AS day_of_next_change,
             SUM(delta_amount) AS daily_amount
-        FROM {{ ref(base_spells_namespace + '_bpt_supply_changes') }}
-        WHERE blockchain = '{{blockchain}}'
-        AND version = '{{version}}'
+        FROM filtered_bpt_supply_changes
         GROUP BY 1, 2, 3, 4, 5
     ),
 
@@ -46,6 +57,19 @@ WITH
     ) 
 %}
 WITH
+    filtered_bpt_supply_changes AS (
+        SELECT
+            block_date,
+            blockchain,
+            pool_type,
+            pool_symbol,
+            token_address,
+            delta_amount
+        FROM {{ ref(base_spells_namespace + '_bpt_supply_changes') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
+    ),
+
     daily_balance AS (
         SELECT
             block_date,
@@ -55,9 +79,7 @@ WITH
             token_address,
             LEAD(block_date, 1, NOW()) OVER (PARTITION BY token_address ORDER BY block_date) AS day_of_next_change,
             SUM(delta_amount) AS daily_amount
-        FROM {{ ref(base_spells_namespace + '_bpt_supply_changes') }}
-        WHERE blockchain = '{{blockchain}}'
-        AND version = '{{version}}'
+        FROM filtered_bpt_supply_changes
         GROUP BY 1, 2, 3, 4, 5
     ),
 
