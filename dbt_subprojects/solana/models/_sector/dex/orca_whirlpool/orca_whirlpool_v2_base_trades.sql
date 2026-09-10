@@ -34,6 +34,8 @@ WITH swaps AS (
         , tokenBVault
         , fee_rate
         , has_memo
+        , input_transfer_index
+        , output_transfer_index
         , surrogate_key
     FROM {{ ref('orca_whirlpool_v2_stg_swaps') }} sp
     WHERE 1=1
@@ -96,13 +98,16 @@ WITH swaps AS (
         AND trs_1.block_date = sp.block_date
         AND trs_1.block_slot = sp.block_slot
         AND trs_1.outer_instruction_index = sp.outer_instruction_index
-        AND trs_1.inner_instruction_index = CASE WHEN sp.has_memo THEN sp.inner_instruction_index + 2 ELSE sp.inner_instruction_index + 1 END
+        AND trs_1.inner_instruction_index = COALESCE(sp.input_transfer_index,
+            CASE WHEN sp.has_memo THEN sp.inner_instruction_index + 2 ELSE sp.inner_instruction_index + 1 END)
     INNER JOIN transfers trs_2
         ON trs_2.tx_id = sp.tx_id
         AND trs_2.block_date = sp.block_date
         AND trs_2.block_slot = sp.block_slot
         AND trs_2.outer_instruction_index = sp.outer_instruction_index
-        AND trs_2.inner_instruction_index >= CASE WHEN sp.has_memo THEN sp.inner_instruction_index + 3 ELSE sp.inner_instruction_index + 2 END
+        AND ((sp.output_transfer_index IS NOT NULL AND trs_2.inner_instruction_index = sp.output_transfer_index)
+            OR (sp.output_transfer_index IS NULL AND trs_2.inner_instruction_index >=
+                CASE WHEN sp.has_memo THEN sp.inner_instruction_index + 3 ELSE sp.inner_instruction_index + 2 END))
         AND trs_2.token_mint_address = CASE WHEN trs_1.token_mint_address = sp.tokenA THEN sp.tokenB ELSE sp.tokenA END
 )
 

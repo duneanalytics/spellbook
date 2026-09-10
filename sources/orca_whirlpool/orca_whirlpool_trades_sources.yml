@@ -19,6 +19,7 @@ sources:
       - name: whirlpool_call_set_fee_rate
       - name: whirlpool_call_swap_v2
       - name: whirlpool_call_twoHopSwapV2
+      - name: whirlpool_call_two_hop_swap_v2
       - name: whirlpool_call_setFeeRate
       - name: whirlpool_call_initializeFeeTier
       - name: whirlpool_call_setDefaultFeeRate

@@ -6,6 +6,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
+    , on_schema_change = 'append_new_columns'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     , unique_key = ['block_month', 'block_date', 'surrogate_key']
   )
@@ -148,47 +149,7 @@ WITH fee_tiers_defaults AS (
 )
 
 , two_hop AS (
-    -- Keep the legacy source until the three-transfer snake-case two-hop layout
-    -- has dedicated second-leg matching and regression coverage.
-    SELECT
-          account_whirlpoolOne AS account_whirlpool
-        , call_outer_instruction_index
-        , call_inner_instruction_index
-        , call_is_inner
-        , call_tx_signer
-        , call_tx_id
-        , call_tx_index
-        , call_block_time
-        , call_block_slot
-        , call_outer_executing_account
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwapV2') }}
-    WHERE 1=1
-        {% if is_incremental() -%}
-        AND {{ incremental_predicate('call_block_date') }}
-        {% else -%}
-        AND call_block_date >= DATE '{{ project_start_date }}'
-        {% endif -%}
-
-    UNION ALL
-
-    SELECT
-          account_whirlpoolTwo AS account_whirlpool
-        , call_outer_instruction_index
-        , COALESCE(call_inner_instruction_index, 0) + 2 AS call_inner_instruction_index
-        , true AS call_is_inner
-        , call_tx_signer
-        , call_tx_id
-        , call_tx_index
-        , call_block_time
-        , call_block_slot
-        , call_outer_executing_account
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwapV2') }}
-    WHERE 1=1
-        {% if is_incremental() -%}
-        AND {{ incremental_predicate('call_block_date') }}
-        {% else -%}
-        AND call_block_date >= DATE '{{ project_start_date }}'
-        {% endif -%}
+    {{ orca_whirlpool_two_hop_swaps() }}
 )
 
 , decoded_swaps AS (
@@ -208,17 +169,13 @@ WITH fee_tiers_defaults AS (
         , account_tokenVaultA AS swap_tokenAVault
         , account_tokenMintB AS swap_tokenB
         , account_tokenVaultB AS swap_tokenBVault
+        , CAST(NULL AS INTEGER) AS input_transfer_index
+        , CAST(NULL AS INTEGER) AS output_transfer_index
     FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_swapV2', 'whirlpool_call_swap_v2', [["account_whirlpool","account_whirlpool"],["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"]], bounded=true) }}) decoded_swap_v2
 
     UNION ALL
 
-    SELECT
-          two_hop.*
-        , CAST(NULL AS VARCHAR) AS swap_tokenA
-        , CAST(NULL AS VARCHAR) AS swap_tokenAVault
-        , CAST(NULL AS VARCHAR) AS swap_tokenB
-        , CAST(NULL AS VARCHAR) AS swap_tokenBVault
-    FROM two_hop
+    SELECT * FROM two_hop
 )
 
 SELECT
@@ -240,6 +197,8 @@ SELECT
     , fee_rate
     , has_memo
     , surrogate_key
+    , input_transfer_index
+    , output_transfer_index
 FROM (
     SELECT
           sp.call_block_slot AS block_slot
@@ -257,6 +216,8 @@ FROM (
         , COALESCE(sp.swap_tokenAVault, wp.tokenAVault) AS tokenAVault
         , COALESCE(sp.swap_tokenB, wp.tokenB) AS tokenB
         , COALESCE(sp.swap_tokenBVault, wp.tokenBVault) AS tokenBVault
+        , sp.input_transfer_index
+        , sp.output_transfer_index
         , wp.fee_rate
         , CASE WHEN memo.tx_id IS NOT NULL THEN true ELSE false END AS has_memo
         , {{ solana_instruction_key(
@@ -288,7 +249,7 @@ FROM (
         {% else -%}
         AND memo.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
-    -- Preserve the existing decoded two-hop behavior when pool metadata is absent.
+    -- Decoded account fields keep swaps independent of pool initialization coverage.
     WHERE sp.swap_tokenA IS NOT NULL OR wp.whirlpool_id IS NOT NULL
 )
 WHERE fee_rank = 1

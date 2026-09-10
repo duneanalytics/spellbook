@@ -32,7 +32,7 @@ WITH whirlpool_v2_swaps AS (
             , call_block_slot AS block_slot
             , call_tx_index AS tx_index
             , call_outer_instruction_index AS outer_instruction_index
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwapV2') }}
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_twoHopSwapV2', 'whirlpool_call_two_hop_swap_v2', [], bounded=true) }}) decoded_two_hop
         WHERE 1=1
         {% if is_incremental() -%}
             AND {{ incremental_predicate('call_block_date') }}
