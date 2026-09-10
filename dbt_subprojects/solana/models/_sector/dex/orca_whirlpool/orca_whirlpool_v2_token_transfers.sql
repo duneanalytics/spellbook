@@ -14,6 +14,9 @@
 
 {% set project_start_date = '2024-06-05' %}
 
+-- TEMP CI ONLY: use the rolling incremental window for initial builds too.
+-- Revert this comment and the "or true" guards before merge (see PR #9303).
+
 WITH whirlpool_v2_swaps AS (
     SELECT DISTINCT
         block_date, block_slot, tx_index, outer_instruction_index
@@ -32,7 +35,7 @@ WITH whirlpool_v2_swaps AS (
             AND tx_success = true
             AND bytearray_substring(data, 1, 8) = 0x2b04ed0b1ac91e62
             AND cardinality(account_arguments) >= 15
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
             AND {{ incremental_predicate('block_time') }}
         {% else -%}
             AND block_time >= TIMESTAMP '{{ project_start_date }}'
@@ -47,7 +50,7 @@ WITH whirlpool_v2_swaps AS (
             , call_outer_instruction_index AS outer_instruction_index
         FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwapV2') }}
         WHERE 1=1
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
             AND {{ incremental_predicate('call_block_date') }}
         {% else -%}
             AND call_block_date >= DATE '{{ project_start_date }}'
@@ -60,7 +63,7 @@ WITH whirlpool_v2_swaps AS (
     FROM {{ source('tokens_solana', 'transfers') }}
     WHERE 1=1
         AND token_version != 'native'
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '{{ project_start_date }}'
