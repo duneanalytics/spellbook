@@ -190,23 +190,30 @@ WITH fee_tiers_defaults AS (
 )
 
 , raw_swaps AS (
+    -- Read SwapV2 directly: successful calls with remaining accounts can be
+    -- absent from the decoded source. The Whirlpool account is always fifth.
     SELECT
-          account_whirlpool
-        , call_outer_instruction_index
-        , call_inner_instruction_index
-        , call_is_inner
-        , call_tx_signer
-        , call_tx_id
-        , call_tx_index
-        , call_block_time
-        , call_block_slot
-        , call_outer_executing_account
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_swapV2') }}
+          account_arguments[5] AS account_whirlpool
+        , outer_instruction_index AS call_outer_instruction_index
+        , inner_instruction_index AS call_inner_instruction_index
+        , is_inner AS call_is_inner
+        , tx_signer AS call_tx_signer
+        , tx_id AS call_tx_id
+        , tx_index AS call_tx_index
+        , block_time AS call_block_time
+        , block_slot AS call_block_slot
+        , outer_executing_account AS call_outer_executing_account
+    FROM {{ source('solana', 'instruction_calls') }}
     WHERE 1=1
+        AND executing_account_prefix = 'wh'
+        AND executing_account = 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc'
+        AND tx_success = true
+        AND bytearray_substring(data, 1, 8) = 0x2b04ed0b1ac91e62
+        AND cardinality(account_arguments) >= 15
         {% if is_incremental() -%}
-        AND {{ incremental_predicate('call_block_date') }}
+        AND {{ incremental_predicate('block_time') }}
         {% else -%}
-        AND call_block_date >= DATE '{{ project_start_date }}'
+        AND block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
 
     UNION ALL
