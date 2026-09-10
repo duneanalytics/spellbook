@@ -218,7 +218,10 @@ SELECT
     , CAST(NULL AS VARBINARY) AS maker
     , trades.project_contract_address
     , trades.tx_hash
-    , ROW_NUMBER() OVER (
+    -- Trace-derived: the ARM contracts emit no swap event, so this index is synthetic
+    -- and lives in its own band to stay clear of real log indices. See
+    -- dex_synthetic_evt_index.sql.
+    , {{ dex_synthetic_evt_index_offset('origin_arm') }} + ROW_NUMBER() OVER (
         PARTITION BY trades.tx_hash
         ORDER BY trades.trace_address, trades.trade_source, trades.project_contract_address
     ) AS evt_index

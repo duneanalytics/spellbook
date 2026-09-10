@@ -74,7 +74,9 @@ SELECT
     , CAST(NULL AS VARBINARY) AS maker
     , dexs.project_contract_address
     , dexs.tx_hash
-    , ROW_NUMBER() OVER (
+    -- Trace-derived, so this index is synthetic and lives in its own band to stay
+    -- clear of real log indices. See dex_synthetic_evt_index.sql.
+    , {{ dex_synthetic_evt_index_offset('tempo_exchange') }} + ROW_NUMBER() OVER (
         PARTITION BY dexs.tx_hash
         ORDER BY
             dexs.trace_address
