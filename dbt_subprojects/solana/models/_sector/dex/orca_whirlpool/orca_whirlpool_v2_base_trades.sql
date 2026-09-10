@@ -14,9 +14,6 @@
 
 {% set project_start_date = '2024-06-05' %}
 
--- TEMP CI ONLY: use the rolling incremental window for initial builds too.
--- Revert this comment and the "or true" guards before merge (see PR #9303).
-
 -- Rebuild with normalized decoded SwapV2 and pool/fee sources.
 WITH swaps AS (
     SELECT
@@ -40,7 +37,7 @@ WITH swaps AS (
         , surrogate_key
     FROM {{ ref('orca_whirlpool_v2_stg_swaps') }} sp
     WHERE 1=1
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
         AND {{ incremental_predicate('sp.block_date') }}
     {% else -%}
         AND sp.block_date >= DATE '{{ project_start_date }}'
@@ -58,7 +55,7 @@ WITH swaps AS (
         , tf.token_mint_address
     FROM {{ ref('orca_whirlpool_v2_token_transfers') }} tf
     WHERE 1=1
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
         AND {{ incremental_predicate('tf.block_date') }}
     {% else -%}
         AND tf.block_date >= DATE '{{ project_start_date }}'

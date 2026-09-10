@@ -24,8 +24,7 @@ from (
         from {{ source('whirlpool_solana', table) }}
         {% if bounded %}
         where 1=1
-            {# TEMP CI ONLY: revert 'or true' before merge, alongside the model guards. #}
-            {% if is_incremental() or true %}
+            {% if is_incremental() %}
             and {{ incremental_predicate('call_block_time') }}
             {% else %}
             and call_block_time >= timestamp '2024-06-05'
