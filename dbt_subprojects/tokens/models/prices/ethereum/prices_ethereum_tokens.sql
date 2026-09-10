@@ -2050,7 +2050,8 @@ FROM
     ('amcon-amc-entertainment-ondo-tokenized-stocks', 'ethereum', 'AMCon', 0x592643a667633bca51cb2387c98b6de6ce549a45, 18),
     ('ethaon-ishares-ethereum-trust-tokenized-stock-ondo', 'ethereum', 'ETHAon', 0x98284fbc11edd7540e29b896a49817bbe52ddcbd, 18),
     ('enlvon-enlivex-therapeutics-tokenized-stock-ondo', 'ethereum', 'ENLVon', 0xc4e6e80295154d3968519851f73f8dc1a227286f, 18),
-    ('schwon-charles-schwab-ondo-tokenized-stock', 'ethereum', 'SCHWon', 0xe737f948bdfe3beae9423292853ec0579173cebb, 18)
+    ('schwon-charles-schwab-ondo-tokenized-stock', 'ethereum', 'SCHWon', 0xe737f948bdfe3beae9423292853ec0579173cebb, 18),
+    ('reusd-re-protocol-reusd', 'ethereum', 'reUSD', 0x5086bf358635b81d8c47c66d1c8b9e567db70c72, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
