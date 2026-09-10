@@ -206,6 +206,10 @@ WITH fee_tiers_defaults AS (
         , block_time AS call_block_time
         , block_slot AS call_block_slot
         , outer_executing_account AS call_outer_executing_account
+        , account_arguments[6] AS raw_tokenA
+        , account_arguments[9] AS raw_tokenAVault
+        , account_arguments[7] AS raw_tokenB
+        , account_arguments[11] AS raw_tokenBVault
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE 1=1
         AND executing_account_prefix = 'wh'
@@ -221,7 +225,13 @@ WITH fee_tiers_defaults AS (
 
     UNION ALL
 
-    SELECT * FROM two_hop
+    SELECT
+          two_hop.*
+        , CAST(NULL AS VARCHAR) AS raw_tokenA
+        , CAST(NULL AS VARCHAR) AS raw_tokenAVault
+        , CAST(NULL AS VARCHAR) AS raw_tokenB
+        , CAST(NULL AS VARCHAR) AS raw_tokenBVault
+    FROM two_hop
 )
 
 SELECT
@@ -255,11 +265,11 @@ FROM (
         , sp.call_tx_id AS tx_id
         , sp.call_tx_signer AS tx_signer
         , sp.call_tx_index AS tx_index
-        , wp.whirlpool_id
-        , wp.tokenA
-        , wp.tokenAVault
-        , wp.tokenB
-        , wp.tokenBVault
+        , sp.account_whirlpool AS whirlpool_id
+        , COALESCE(sp.raw_tokenA, wp.tokenA) AS tokenA
+        , COALESCE(sp.raw_tokenAVault, wp.tokenAVault) AS tokenAVault
+        , COALESCE(sp.raw_tokenB, wp.tokenB) AS tokenB
+        , COALESCE(sp.raw_tokenBVault, wp.tokenBVault) AS tokenBVault
         , wp.fee_rate
         , CASE WHEN memo.tx_id IS NOT NULL THEN true ELSE false END AS has_memo
         , {{ solana_instruction_key(
@@ -273,7 +283,9 @@ FROM (
             ORDER BY wp.update_time DESC
           ) AS fee_rank
     FROM raw_swaps sp
-    INNER JOIN whirlpools wp
+    -- SwapV2 carries its own pool/mint/vault metadata. Decoded initialization
+    -- is optional fee enrichment, not a requirement for retaining these trades.
+    LEFT JOIN whirlpools wp
         ON sp.account_whirlpool = wp.whirlpool_id
         AND sp.call_block_time >= wp.update_time
     LEFT JOIN {{ source('solana', 'instruction_calls') }} memo
@@ -289,5 +301,7 @@ FROM (
         {% else -%}
         AND memo.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
+    -- Preserve the existing decoded two-hop behavior when pool metadata is absent.
+    WHERE sp.raw_tokenA IS NOT NULL OR wp.whirlpool_id IS NOT NULL
 )
 WHERE fee_rank = 1
