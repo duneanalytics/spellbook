@@ -13,9 +13,6 @@
 
 {% set project_start_date = '2024-06-05' %}
 
--- TEMP CI ONLY: use the rolling incremental window for initial builds too.
--- Revert this comment and the "or true" guards before merge (see PR #9303).
-
 WITH fee_tiers_defaults AS (
     SELECT
           account_feeTier AS fee_tier
@@ -166,7 +163,7 @@ WITH fee_tiers_defaults AS (
         , call_outer_executing_account
     FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwapV2') }}
     WHERE 1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('call_block_date') }}
         {% else -%}
         AND call_block_date >= DATE '{{ project_start_date }}'
@@ -187,7 +184,7 @@ WITH fee_tiers_defaults AS (
         , call_outer_executing_account
     FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwapV2') }}
     WHERE 1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('call_block_date') }}
         {% else -%}
         AND call_block_date >= DATE '{{ project_start_date }}'
@@ -286,7 +283,7 @@ FROM (
             OR (sp.call_is_inner = true AND memo.inner_instruction_index = sp.call_inner_instruction_index + 1))
         AND memo.executing_account = 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'
         AND memo.executing_account_prefix = 'Me'
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('memo.block_time') }}
         {% else -%}
         AND memo.block_time >= TIMESTAMP '{{ project_start_date }}'

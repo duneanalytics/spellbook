@@ -10,13 +10,13 @@ from jinja2 import Environment, StrictUndefined
 
 
 class DecodedCallsTest(unittest.TestCase):
-    def render(self, bounded=False):
+    def render(self, bounded=False, incremental=False):
         root = Path(__file__).resolve().parents[2]
         macro = root / 'dbt_subprojects/solana/macros/_sector/dex/orca_whirlpool_decoded_calls.sql'
         env = Environment(undefined=StrictUndefined)
         env.globals.update(
             source=lambda schema, name: name,
-            is_incremental=lambda: False,
+            is_incremental=lambda: incremental,
             incremental_predicate=lambda column: column + " >= '2026-09-09'",
         )
         module = env.from_string(macro.read_text()).module
@@ -47,7 +47,13 @@ class DecodedCallsTest(unittest.TestCase):
 
     def test_only_time_series_calls_are_bounded(self):
         self.assertNotIn("call_block_time >= '2026-09-09'", self.render())
-        self.assertEqual(self.render(bounded=True).count("call_block_time >= '2026-09-09'"), 2)
+        self.assertNotIn("call_block_time >= '2026-09-09'", self.render(incremental=True))
+        self.assertEqual(self.render(bounded=True, incremental=True).count("call_block_time >= '2026-09-09'"), 2)
+
+    def test_initial_build_uses_full_project_history(self):
+        sql = self.render(bounded=True)
+        self.assertEqual(sql.count("call_block_time >= timestamp '2024-06-05'"), 2)
+        self.assertNotIn("call_block_time >= '2026-09-09'", sql)
 
 
 if __name__ == '__main__':
