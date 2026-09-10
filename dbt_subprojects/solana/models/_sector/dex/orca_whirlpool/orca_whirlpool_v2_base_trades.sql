@@ -17,7 +17,7 @@
 -- TEMP CI ONLY: use the rolling incremental window for initial builds too.
 -- Revert this comment and the "or true" guards before merge (see PR #9303).
 
--- Rebuild with raw SwapV2 staging and transfer selection, including decoder gaps.
+-- Rebuild with raw SwapV2 metadata, including pools absent from decoded initialization.
 WITH swaps AS (
     SELECT
           block_slot
