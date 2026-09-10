@@ -14,6 +14,7 @@
 
 {% set project_start_date = '2024-06-05' %}
 
+-- Rebuild with raw SwapV2 staging and transfer selection, including decoder gaps.
 WITH swaps AS (
     SELECT
           block_slot
