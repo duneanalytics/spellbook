@@ -70,8 +70,7 @@ models:
     config:
       tags: ['gnosis', 'sushiswap', 'pools']
     description: >
-      Sushiswap DEX pools on the Gnosis chain.
-      Since Sushiswap is a Uniswap V2 fork, a fixed fee of 3000 is assumed (0.3 with factor).
+      Sushiswap DEX pools on Gnosis.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
