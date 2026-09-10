@@ -46,8 +46,7 @@ models:
       tags: [ 'solana','dex' ]
     description: >
       pre-materialized token transfers for decoded SwapV2 and twoHopSwapV2 calls on Solana,
-      combining legacy and snake-case SwapV2 decoder names without duplicate instructions;
-      twoHopSwapV2 retains its legacy source
+      combining legacy and snake-case SwapV2 and twoHopSwapV2 decoder names without duplicate instructions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -72,7 +71,12 @@ models:
       staging model for decoded SwapV2 and twoHopSwapV2 calls after fee and memo resolution.
       SwapV2 mint and vault metadata comes directly from decoded account fields;
       missing decoded pool initialization does not exclude SwapV2 trades. Fee metadata is optional.
+      Two-hop legs use mint/vault matching within the instruction call frame;
+      the intermediate transfer is shared by both legs. Ambiguous matches are excluded.
     data_tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "(input_transfer_index is null and output_transfer_index is null) or (input_transfer_index is not null and output_transfer_index is not null and input_transfer_index < output_transfer_index)"
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
