@@ -21,7 +21,7 @@ WITH fee_tiers_defaults AS (
           account_feeTier AS fee_tier
         , defaultfeeRate AS fee_rate
         , call_block_time AS fee_time
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }}
+    FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_initializeFeeTier', 'whirlpool_call_initialize_fee_tier', [["account_feeTier","account_fee_tier"],["defaultfeeRate","default_fee_rate"]]) }}) decoded_initialize_fee_tier
 
     UNION ALL
 
@@ -29,7 +29,7 @@ WITH fee_tiers_defaults AS (
           account_feeTier AS fee_tier
         , defaultfeeRate AS fee_rate
         , call_block_time AS fee_time
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_setDefaultFeeRate') }}
+    FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_setDefaultFeeRate', 'whirlpool_call_set_default_fee_rate', [["account_feeTier","account_fee_tier"],["defaultFeeRate","default_fee_rate"]]) }}) decoded_set_default_fee_rate
 )
 
 -- Adaptive-fee pools (`initializePoolWithAdaptiveFee`) approximate fee_rate via
@@ -41,7 +41,7 @@ WITH fee_tiers_defaults AS (
           account_adaptiveFeeTier AS adaptive_fee_tier
         , defaultBaseFeeRate AS fee_rate
         , call_block_time AS fee_time
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_initializeAdaptiveFeeTier') }}
+    FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_initializeAdaptiveFeeTier', 'whirlpool_call_initialize_adaptive_fee_tier', [["account_adaptiveFeeTier","account_adaptive_fee_tier"],["defaultBaseFeeRate","default_base_fee_rate"]]) }}) decoded_initialize_adaptive_fee_tier
 
     UNION ALL
 
@@ -49,7 +49,7 @@ WITH fee_tiers_defaults AS (
           account_adaptiveFeeTier AS adaptive_fee_tier
         , defaultBaseFeeRate AS fee_rate
         , call_block_time AS fee_time
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_setDefaultBaseFeeRate') }}
+    FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_setDefaultBaseFeeRate', 'whirlpool_call_set_default_base_fee_rate', [["account_adaptiveFeeTier","account_adaptive_fee_tier"],["defaultBaseFeeRate","default_base_fee_rate"]]) }}) decoded_set_default_base_fee_rate
 )
 
 , fee_updates AS (
@@ -60,7 +60,7 @@ WITH fee_tiers_defaults AS (
             , fi.call_block_time AS update_time
             , ftd.fee_rate
             , row_number() OVER (PARTITION BY fi.account_whirlpool ORDER BY ftd.fee_time DESC) AS recent_update
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} fi
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_initializePool', 'whirlpool_call_initialize_pool', [["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"],["account_whirlpool","account_whirlpool"],["account_feeTier","account_fee_tier"]]) }}) fi
         LEFT JOIN fee_tiers_defaults ftd
             ON ftd.fee_tier = fi.account_feeTier
             AND ftd.fee_time <= fi.call_block_time
@@ -76,7 +76,7 @@ WITH fee_tiers_defaults AS (
             , fi.call_block_time AS update_time
             , ftd.fee_rate
             , row_number() OVER (PARTITION BY fi.account_whirlpool ORDER BY ftd.fee_time DESC) AS recent_update
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolV2') }} fi
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_initializePoolV2', 'whirlpool_call_initialize_pool_v2', [["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"],["account_whirlpool","account_whirlpool"],["account_feeTier","account_fee_tier"]]) }}) fi
         LEFT JOIN fee_tiers_defaults ftd
             ON ftd.fee_tier = fi.account_feeTier
             AND ftd.fee_time <= fi.call_block_time
@@ -89,7 +89,7 @@ WITH fee_tiers_defaults AS (
           account_whirlpool AS whirlpool_id
         , call_block_time AS update_time
         , feeRate AS fee_rate
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_setFeeRate') }}
+    FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_setFeeRate', 'whirlpool_call_set_fee_rate', [["account_whirlpool","account_whirlpool"],["feeRate","fee_rate"]]) }}) decoded_set_fee_rate
 
     UNION ALL
 
@@ -100,7 +100,7 @@ WITH fee_tiers_defaults AS (
             , ip.call_block_time AS update_time
             , aft.fee_rate
             , row_number() OVER (PARTITION BY ip.account_whirlpool ORDER BY aft.fee_time DESC) AS recent_update
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolWithAdaptiveFee') }} ip
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_initializePoolWithAdaptiveFee', 'whirlpool_call_initialize_pool_with_adaptive_fee', [["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"],["account_whirlpool","account_whirlpool"],["account_adaptiveFeeTier","account_adaptive_fee_tier"]]) }}) ip
         LEFT JOIN adaptive_fee_tiers aft
             ON aft.adaptive_fee_tier = ip.account_adaptiveFeeTier
             AND aft.fee_time <= ip.call_block_time
@@ -124,7 +124,7 @@ WITH fee_tiers_defaults AS (
             , account_tokenVaultA
             , account_tokenVaultB
             , account_whirlpool
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }}
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_initializePool', 'whirlpool_call_initialize_pool', [["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"],["account_whirlpool","account_whirlpool"],["account_feeTier","account_fee_tier"]]) }}) decoded_initialize_pool
 
         UNION ALL
 
@@ -134,7 +134,7 @@ WITH fee_tiers_defaults AS (
             , account_tokenVaultA
             , account_tokenVaultB
             , account_whirlpool
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolV2') }}
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_initializePoolV2', 'whirlpool_call_initialize_pool_v2', [["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"],["account_whirlpool","account_whirlpool"],["account_feeTier","account_fee_tier"]]) }}) decoded_initialize_pool_v2
 
         UNION ALL
 
@@ -144,13 +144,15 @@ WITH fee_tiers_defaults AS (
             , account_tokenVaultA
             , account_tokenVaultB
             , account_whirlpool
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolWithAdaptiveFee') }}
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_initializePoolWithAdaptiveFee', 'whirlpool_call_initialize_pool_with_adaptive_fee', [["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"],["account_whirlpool","account_whirlpool"],["account_adaptiveFeeTier","account_adaptive_fee_tier"]]) }}) decoded_initialize_pool_with_adaptive_fee
     ) ip
     LEFT JOIN fee_updates fu
         ON fu.whirlpool_id = ip.account_whirlpool
 )
 
 , two_hop AS (
+    -- Keep the legacy source until the three-transfer snake-case two-hop layout
+    -- has dedicated second-leg matching and regression coverage.
     SELECT
           account_whirlpoolOne AS account_whirlpool
         , call_outer_instruction_index
@@ -192,45 +194,33 @@ WITH fee_tiers_defaults AS (
         {% endif -%}
 )
 
-, raw_swaps AS (
-    -- Read SwapV2 directly: successful calls with remaining accounts can be
-    -- absent from the decoded source. The Whirlpool account is always fifth.
+, decoded_swaps AS (
+    -- Both decoded naming conventions; current snake-case rows win on overlap.
     SELECT
-          account_arguments[5] AS account_whirlpool
-        , outer_instruction_index AS call_outer_instruction_index
-        , inner_instruction_index AS call_inner_instruction_index
-        , is_inner AS call_is_inner
-        , tx_signer AS call_tx_signer
-        , tx_id AS call_tx_id
-        , tx_index AS call_tx_index
-        , block_time AS call_block_time
-        , block_slot AS call_block_slot
-        , outer_executing_account AS call_outer_executing_account
-        , account_arguments[6] AS raw_tokenA
-        , account_arguments[9] AS raw_tokenAVault
-        , account_arguments[7] AS raw_tokenB
-        , account_arguments[11] AS raw_tokenBVault
-    FROM {{ source('solana', 'instruction_calls') }}
-    WHERE 1=1
-        AND executing_account_prefix = 'wh'
-        AND executing_account = 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc'
-        AND tx_success = true
-        AND bytearray_substring(data, 1, 8) = 0x2b04ed0b1ac91e62
-        AND cardinality(account_arguments) >= 15
-        {% if is_incremental() or true -%}
-        AND {{ incremental_predicate('block_time') }}
-        {% else -%}
-        AND block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif -%}
+          account_whirlpool
+        , call_outer_instruction_index
+        , call_inner_instruction_index
+        , call_is_inner
+        , call_tx_signer
+        , call_tx_id
+        , call_tx_index
+        , call_block_time
+        , call_block_slot
+        , call_outer_executing_account
+        , account_tokenMintA AS swap_tokenA
+        , account_tokenVaultA AS swap_tokenAVault
+        , account_tokenMintB AS swap_tokenB
+        , account_tokenVaultB AS swap_tokenBVault
+    FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_swapV2', 'whirlpool_call_swap_v2', [["account_whirlpool","account_whirlpool"],["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"]], bounded=true) }}) decoded_swap_v2
 
     UNION ALL
 
     SELECT
           two_hop.*
-        , CAST(NULL AS VARCHAR) AS raw_tokenA
-        , CAST(NULL AS VARCHAR) AS raw_tokenAVault
-        , CAST(NULL AS VARCHAR) AS raw_tokenB
-        , CAST(NULL AS VARCHAR) AS raw_tokenBVault
+        , CAST(NULL AS VARCHAR) AS swap_tokenA
+        , CAST(NULL AS VARCHAR) AS swap_tokenAVault
+        , CAST(NULL AS VARCHAR) AS swap_tokenB
+        , CAST(NULL AS VARCHAR) AS swap_tokenBVault
     FROM two_hop
 )
 
@@ -266,10 +256,10 @@ FROM (
         , sp.call_tx_signer AS tx_signer
         , sp.call_tx_index AS tx_index
         , sp.account_whirlpool AS whirlpool_id
-        , COALESCE(sp.raw_tokenA, wp.tokenA) AS tokenA
-        , COALESCE(sp.raw_tokenAVault, wp.tokenAVault) AS tokenAVault
-        , COALESCE(sp.raw_tokenB, wp.tokenB) AS tokenB
-        , COALESCE(sp.raw_tokenBVault, wp.tokenBVault) AS tokenBVault
+        , COALESCE(sp.swap_tokenA, wp.tokenA) AS tokenA
+        , COALESCE(sp.swap_tokenAVault, wp.tokenAVault) AS tokenAVault
+        , COALESCE(sp.swap_tokenB, wp.tokenB) AS tokenB
+        , COALESCE(sp.swap_tokenBVault, wp.tokenBVault) AS tokenBVault
         , wp.fee_rate
         , CASE WHEN memo.tx_id IS NOT NULL THEN true ELSE false END AS has_memo
         , {{ solana_instruction_key(
@@ -282,8 +272,8 @@ FROM (
             PARTITION BY sp.call_tx_id, sp.call_outer_instruction_index, COALESCE(sp.call_inner_instruction_index, 0), sp.call_tx_index
             ORDER BY wp.update_time DESC
           ) AS fee_rank
-    FROM raw_swaps sp
-    -- SwapV2 carries its own pool/mint/vault metadata. Decoded initialization
+    FROM decoded_swaps sp
+    -- Decoded SwapV2 carries its own pool/mint/vault metadata. Decoded initialization
     -- is optional fee enrichment, not a requirement for retaining these trades.
     LEFT JOIN whirlpools wp
         ON sp.account_whirlpool = wp.whirlpool_id
@@ -302,6 +292,6 @@ FROM (
         AND memo.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
     -- Preserve the existing decoded two-hop behavior when pool metadata is absent.
-    WHERE sp.raw_tokenA IS NOT NULL OR wp.whirlpool_id IS NOT NULL
+    WHERE sp.swap_tokenA IS NOT NULL OR wp.whirlpool_id IS NOT NULL
 )
 WHERE fee_rank = 1

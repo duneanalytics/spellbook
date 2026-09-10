@@ -21,25 +21,12 @@ WITH whirlpool_v2_swaps AS (
     SELECT DISTINCT
         block_date, block_slot, tx_index, outer_instruction_index
     FROM (
-        -- Keep the SwapV2 selector aligned with orca_whirlpool_v2_stg_swaps
-        -- so decoder gaps cannot exclude the corresponding token transfers.
         SELECT
-              block_date
-            , block_slot
-            , tx_index
-            , outer_instruction_index
-        FROM {{ source('solana', 'instruction_calls') }}
-        WHERE 1=1
-            AND executing_account_prefix = 'wh'
-            AND executing_account = 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc'
-            AND tx_success = true
-            AND bytearray_substring(data, 1, 8) = 0x2b04ed0b1ac91e62
-            AND cardinality(account_arguments) >= 15
-        {% if is_incremental() or true -%}
-            AND {{ incremental_predicate('block_time') }}
-        {% else -%}
-            AND block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif -%}
+              call_block_date AS block_date
+            , call_block_slot AS block_slot
+            , call_tx_index AS tx_index
+            , call_outer_instruction_index AS outer_instruction_index
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_swapV2', 'whirlpool_call_swap_v2', [], bounded=true) }}) decoded_swap_v2
 
         UNION ALL
 
