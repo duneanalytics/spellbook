@@ -74,9 +74,12 @@ SELECT
     , CAST(NULL AS VARBINARY) AS maker
     , dexs.project_contract_address
     , dexs.tx_hash
-    -- Trace-derived, so this index is synthetic and lives in its own band to stay
-    -- clear of real log indices. See dex_synthetic_evt_index.sql.
-    , {{ dex_synthetic_evt_index_offset('tempo_exchange') }} + ROW_NUMBER() OVER (
+    -- Synthetic evt_index: this project is decoded from call traces, which carry no log
+    -- index, so the number below is invented. It is offset clear of real log indices --
+    -- consumers merge on (blockchain, tx_hash, evt_index), and numbering from 1 collides
+    -- with the log index an event-based project in the same transaction carries. Bands in
+    -- use are listed in dbt_subprojects/dex/README.md; take an unused one for a new project.
+    , 102000000 + ROW_NUMBER() OVER (
         PARTITION BY dexs.tx_hash
         ORDER BY
             dexs.trace_address

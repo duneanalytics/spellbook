@@ -26,9 +26,9 @@ models:
       # (blockchain, tx_hash, evt_index) has to identify a single trade: consumers merge
       # on it, and the prices pipeline stalled for 15 hours on 2026-09-09 when an
       # origin_arm swap numbered 2 collided with a uniswap v4 swap whose real log index
-      # was 2. Trace-derived projects have no log index and take a banded synthetic one
-      # from dex_synthetic_evt_index.sql; this test is what stops a new project from
-      # numbering from 1 again.
+      # was 2. Trace-derived projects have no log index and hardcode a synthetic one in
+      # their own band (see dex/README.md); with no shared macro to enforce that, this
+      # test is what stops a new project from numbering from 1 again.
       # Scoped to recent blocks to stay cheap on a table this size. Warn-only until the
       # renumbered models have been fully refreshed -- flip to error after that.
       - dbt_utils.unique_combination_of_columns:

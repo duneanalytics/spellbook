@@ -29,7 +29,10 @@ WITH
             p.pool_id AS maker,
             t.angstrom_address AS project_contract_address,
             t.tx_hash AS tx_hash,
-            {{ dex_synthetic_evt_index_offset('angstrom') }} + ROW_NUMBER(*) over (partition by t.tx_hash order by p.pool_id, p.recipient, p.asset_in, p.asset_out, p.quantity_in, p.quantity_out, p.fees_paid_asset_in, p.fees_paid_asset_out) as evt_index
+            -- Synthetic evt_index: angstrom is decoded from call traces, which carry no log
+            -- index. Offset clear of real log indices so it cannot collide with the log index
+            -- an event-based project in the same transaction carries. Bands: dex/README.md.
+            105000000 + ROW_NUMBER(*) over (partition by t.tx_hash order by p.pool_id, p.recipient, p.asset_in, p.asset_out, p.quantity_in, p.quantity_out, p.fees_paid_asset_in, p.fees_paid_asset_out) as evt_index
         FROM tx_data_cte t
         INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }}) AS p
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
@@ -50,7 +53,7 @@ WITH
             p.pool_id AS maker,
             t.angstrom_address AS project_contract_address,
             t.tx_hash AS tx_hash,
-            {{ dex_synthetic_evt_index_offset('angstrom') }} + ROW_NUMBER(*) over (partition by t.tx_hash order by p.pool_id, p.recipient, p.asset_in, p.asset_out, p.token_sold_amt, p.token_bought_amt, p.lp_fees_paid_asset_in, p.lp_fees_paid_asset_out, p.protocol_fees_paid_asset_in, p.protocol_fees_paid_asset_out) as evt_index
+            105000000 + ROW_NUMBER(*) over (partition by t.tx_hash order by p.pool_id, p.recipient, p.asset_in, p.asset_out, p.token_sold_amt, p.token_bought_amt, p.lp_fees_paid_asset_in, p.lp_fees_paid_asset_out, p.protocol_fees_paid_asset_in, p.protocol_fees_paid_asset_out) as evt_index
         FROM tx_data_cte t
         INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }}) AS p 
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number

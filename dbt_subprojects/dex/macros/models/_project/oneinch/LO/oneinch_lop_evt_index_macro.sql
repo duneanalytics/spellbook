@@ -6,5 +6,5 @@
 -- oneinch_lop_venue_settled_fills persists it for oneinch_lop_aggregator_trades.
 
 {% macro oneinch_lop_evt_index() -%}
-{{ dex_synthetic_evt_index_offset('oneinch_lop') }} + row_number() over(partition by tx_hash order by call_trace_address)
+row_number() over(partition by tx_hash order by call_trace_address)
 {%- endmacro %}
