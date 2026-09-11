@@ -1,6 +1,6 @@
 version: 2
 
-sources: 
+sources:
   - name: nexusmutual_ethereum
     tables:
       - name: QuotationData_evt_CoverDetailsEvent
@@ -20,6 +20,7 @@ sources:
       - name: SafeTrackerNXMIS_evt_CoverReInvestmentUSDCUpdated
       - name: MCR_evt_MCREvent
       - name: MCR_evt_MCRUpdated
+      - name: Pool_evt_MCRUpdated
       - name: Cover_evt_ProductTypeSet
       - name: Cover_call_setProductTypes
       - name: Cover_evt_ProductSet
