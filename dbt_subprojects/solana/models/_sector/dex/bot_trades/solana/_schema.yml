@@ -10,88 +10,88 @@ models:
       tags: ["solana", "dex", "bot", "trades"]
       description: >
         Trades by trading bots on Solana
-      columns:
-        - &bot
-          name: bot
-          description: "Trading bot which executed the trade"
-        - &blockchain
-          name: blockchain
-          description: "Blockchain which the DEX is deployed"
-        - &block_time
-          name: block_time
-          description: "UTC event block time of each DEX trade"
-        - &block_date
-          name: block_date
-          description: "UTC event block date of each DEX trade"
-        - &block_month
-          name: block_month
-          description: "UTC event block month of each DEX trade"
-        - &amount_usd
-          name: amount_usd
-          description: "USD value of the trade at time of execution"
-        - &type
-          name: type
-          description: "Wether the trade is a buy or sell"
-        - &token_bought_amount
-          name: token_bought_amount
-          description: "Value of the token bought at time of execution in the original currency"
-        - &token_bought_symbol
-          name: token_bought_symbol
-          description: "Token symbol for token bought in the trade"
-        - &token_bought_address
-          name: token_bought_address
-          description: "Contract address of the token bought"
-        - &token_sold_amount
-          name: token_sold_amount
-          description: "Value of the token sold at time of execution in the original currency"
-        - &token_sold_symbol
-          name: token_sold_symbol
-          description: "Token symbol for token sold in the trade"
-        - &token_sold_address
-          name: token_sold_address
-          description: "Contract address of the token sold"
-        - &fee_usd
-          name: fee_usd
-          description: "USD value of the fee at time of execution"
-        - &fee_token_amount
-          name: fee_token_amount
-          description: "Value of the fee paid at time of execution in the original currency"
-        - &fee_token_symbol
-          name: fee_token_symbol
-          description: "Token symbol for fee token"
-        - &fee_token_address
-          name: fee_token_address
-          description: "Contract address of the fee token"
-        - &project
-          name: project
-          description: "Project name of the DEX"
-        - &version
-          name: version
-          description: "Version of the contract built and deployed by the DEX project"
-        - &token_pair
-          name: token_pair
-          description: "Token symbol pair for each token involved in the trade"
-        - &project_contract_address
-          name: project_contract_address
-          description: "Project contract address which executed the trade on the blockchain"
-        - &user
-          name: user
-          description: "Address which initiated the trade"
-        - &tx_id
-          name: tx_id
-          description: "Unique transaction hash value tied to each transaction on the DEX"
-        - &tx_index
-          name: tx_index
-          description: "Index of the corresponding trade event"
-        - &outer_instruction_index
-          name: outer_instruction_index
-          description: "Index of the outer instruction in the transaction"
-        - &inner_instruction_index
-          name: inner_instruction_index
-          description: "Index of the inner instruction in the transaction"
-        - &is_last_trade_in_transaction
-          name: is_last_trade_in_transaction
-          description: "Wether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
+    columns:
+      - &bot
+        name: bot
+        description: "Trading bot which executed the trade"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &type
+        name: type
+        description: "Wether the trade is a buy or sell"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &fee_usd
+        name: fee_usd
+        description: "USD value of the fee at time of execution"
+      - &fee_token_amount
+        name: fee_token_amount
+        description: "Value of the fee paid at time of execution in the original currency"
+      - &fee_token_symbol
+        name: fee_token_symbol
+        description: "Token symbol for fee token"
+      - &fee_token_address
+        name: fee_token_address
+        description: "Contract address of the fee token"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &user
+        name: user
+        description: "Address which initiated the trade"
+      - &tx_id
+        name: tx_id
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_index
+        name: tx_index
+        description: "Index of the corresponding trade event"
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description: "Index of the outer instruction in the transaction"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Index of the inner instruction in the transaction"
+      - &is_last_trade_in_transaction
+        name: is_last_trade_in_transaction
+        description: "Wether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
 
   - name: trojan_solana_bot_trades
     meta:
@@ -415,9 +415,10 @@ models:
       consortium_key users on Solana
     config:
       tags: ["solana", "dex", "bot_trades"]
-      columns:
-        - name: user
-          data_tests: unique
+    columns:
+      - name: user
+        data_tests:
+          - unique
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -434,9 +435,10 @@ models:
       soul_sniper users on Solana
     config:
       tags: ["solana", "dex", "bot_trades"]
-      columns:
-        - name: user
-          data_tests: unique
+    columns:
+      - name: user
+        data_tests:
+          - unique
 
   - name: tirador_solana_bot_trades
     meta:
@@ -544,9 +546,10 @@ models:
       alpha_dex users on Solana
     config:
       tags: ["solana", "dex", "bot_trades"]
-      columns:
-        - name: user
-          data_tests: unique
+    columns:
+      - name: user
+        data_tests:
+          - unique
 
   - name: jupbot_solana_bot_trades
     meta:
@@ -846,9 +849,10 @@ models:
       padre users on Solana
     config:
       tags: ["solana", "dex", "bot_trades"]
-      columns:
-        - name: user
-          data_tests: unique
+    columns:
+      - name: user
+        data_tests:
+          - unique
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
