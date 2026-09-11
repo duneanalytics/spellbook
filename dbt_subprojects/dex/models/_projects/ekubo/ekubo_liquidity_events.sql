@@ -41,6 +41,10 @@ WITH dexes AS (
                 , amount1
                 , amount0_usd
                 , amount1_usd
+                , sqrt_ratio_after
+                , sqrt_ratio_after_fixed
+                , tick_after
+                , liquidity_after
            FROM
                 dexes
           {% if is_incremental() %}
