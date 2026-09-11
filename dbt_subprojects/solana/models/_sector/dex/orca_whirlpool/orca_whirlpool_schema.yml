@@ -45,11 +45,22 @@ models:
     config:
       tags: [ 'solana','dex' ]
     description: >
-      pre-materialized token transfers for orca whirlpool v2 swaps on Solana
+      pre-materialized token transfers for decoded SwapV2 and twoHopSwapV2 calls on Solana,
+      combining legacy and snake-case SwapV2 decoder names without duplicate instructions;
+      twoHopSwapV2 retains its legacy source
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: ['block_date', 'unique_instruction_key']
+    columns:
+      - name: block_date
+        description: UTC date of the transfer
+        data_tests:
+          - not_null
+      - name: unique_instruction_key
+        description: Unique Solana instruction key for the transfer
+        data_tests:
+          - not_null
 
   - name: orca_whirlpool_v2_stg_swaps
     meta:
@@ -58,7 +69,9 @@ models:
     config:
       tags: [ 'solana','dex' ]
     description: >
-      staging model for orca whirlpool v2 swap data after fee and memo resolution
+      staging model for decoded SwapV2 and twoHopSwapV2 calls after fee and memo resolution.
+      SwapV2 mint and vault metadata comes directly from decoded account fields;
+      missing decoded pool initialization does not exclude SwapV2 trades. Fee metadata is optional.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -87,6 +100,28 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: [ 'block_month', 'surrogate_key' ]
+      - check_seed:
+          arguments:
+            seed_file: ref('orca_whirlpool_v2_base_trades_seed')
+            match_columns: ['block_month', 'surrogate_key']
+            check_columns:
+              - tx_id
+              - outer_instruction_index
+              - inner_instruction_index
+              - token_sold_amount_raw
+              - token_bought_amount_raw
+              - token_sold_mint_address
+              - token_bought_mint_address
+              - project_program_id
+    columns:
+      - name: block_month
+        description: UTC month of the swap
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: Unique Solana instruction key for the swap
+        data_tests:
+          - not_null
 
   - name: orca_whirlpool_trades
     meta:

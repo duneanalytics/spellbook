@@ -9,6 +9,15 @@ sources:
       - name: whirlpool_call_twoHopSwap
       - name: whirlpool_call_initializePoolV2
       - name: whirlpool_call_swapV2
+      - name: whirlpool_call_initialize_pool
+      - name: whirlpool_call_initialize_pool_v2
+      - name: whirlpool_call_initialize_pool_with_adaptive_fee
+      - name: whirlpool_call_initialize_fee_tier
+      - name: whirlpool_call_set_default_fee_rate
+      - name: whirlpool_call_initialize_adaptive_fee_tier
+      - name: whirlpool_call_set_default_base_fee_rate
+      - name: whirlpool_call_set_fee_rate
+      - name: whirlpool_call_swap_v2
       - name: whirlpool_call_twoHopSwapV2
       - name: whirlpool_call_setFeeRate
       - name: whirlpool_call_initializeFeeTier

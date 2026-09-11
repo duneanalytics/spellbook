@@ -14,6 +14,7 @@
 
 {% set project_start_date = '2024-06-05' %}
 
+-- Rebuild with normalized decoded SwapV2 and pool/fee sources.
 WITH swaps AS (
     SELECT
           block_slot
