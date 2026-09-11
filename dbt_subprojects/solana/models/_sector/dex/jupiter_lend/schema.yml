@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: jupiter_lend_solana_stg_decoded_swaps
+    meta:
+      blockchain: solana
+      contributors: [ srijani-raccoons ]
+    config:
+      tags: [ 'solana', 'dex', 'jupiter_lend' ]
+    description: Staging model for Jupiter Lend DEX swaps from decoded call tables.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+
+  - name: jupiter_lend_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ srijani-raccoons ]
+    config:
+      tags: [ 'solana', 'dex', 'jupiter_lend' ]
+    description: Jupiter Lend DEX base trades on Solana.
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+
+  - name: jupiter_lend_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [ srijani-raccoons ]
+    config:
+      tags: [ 'solana', 'dex', 'jupiter_lend' ]
+    description: Jupiter Lend DEX trades on Solana (from dex_solana_trades).
