@@ -1,6 +1,6 @@
 {% macro dex_sandwiches(blockchain, transactions, whitelist=none) %}
 
-{# CI builds these tables from scratch; bound its inputs to the incremental window so a full-history build cannot time out. Production full refresh stays unbounded. #}
+{# See dex_sandwich_time_bound for how CI and incremental runs are bounded. #}
 {% set bounded_run = is_incremental() or target.name == 'ci' %}
 
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
@@ -21,7 +21,7 @@ WITH indexed_sandwich_trades AS (
         AND front.token_bought_address=back.token_sold_address
         AND front.evt_index + 1 < back.evt_index
         {% if bounded_run %}
-        AND {{ incremental_predicate('back.block_time') }}
+        AND {{ dex_sandwich_time_bound('back.block_time') }}
         {% endif %}
     INNER JOIN {{ ref('dex_' ~ blockchain ~ '_trades') }} victim ON front.block_time=victim.block_time
         AND front.block_number=victim.block_number
@@ -31,14 +31,14 @@ WITH indexed_sandwich_trades AS (
         AND front.token_sold_address=victim.token_sold_address
         AND victim.evt_index BETWEEN front.evt_index AND back.evt_index
         {% if bounded_run %}
-        AND {{ incremental_predicate('victim.block_time') }}
+        AND {{ dex_sandwich_time_bound('victim.block_time') }}
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
     {% if var('dev_dates', false) -%}
     WHERE front.block_time > current_date - interval '3' day
     {%- else -%}
     {% if bounded_run %}
-    WHERE {{ incremental_predicate('front.block_time') }}
+    WHERE {{ dex_sandwich_time_bound('front.block_time') }}
     {% endif %}
     {%- endif %}
     )
@@ -77,7 +77,7 @@ INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND tx.hash=s.tx_hash
     {% if bounded_run %}
-    AND {{ incremental_predicate('tx.block_time') }}
+    AND {{ dex_sandwich_time_bound('tx.block_time') }}
     {% endif %}
 {% if whitelist is not none %}
 LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
@@ -85,7 +85,7 @@ LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
 {% endif %}
 WHERE 1=1
 {% if bounded_run %}
-AND {{ incremental_predicate('dt.block_time') }}
+AND {{ dex_sandwich_time_bound('dt.block_time') }}
 {% endif %}
 {% if whitelist is not none %}
 AND w.entity IS NULL

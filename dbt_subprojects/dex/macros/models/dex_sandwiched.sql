@@ -1,6 +1,6 @@
 {% macro dex_sandwiched(blockchain, transactions, sandwiches) %}
 
-{# CI builds these tables from scratch; bound its inputs to the incremental window so a full-history build cannot time out. Production full refresh stays unbounded. #}
+{# See dex_sandwich_time_bound for how CI and incremental runs are bounded. #}
 {% set bounded_run = is_incremental() or target.name == 'ci' %}
 
 WITH sandwich_bounds AS (
@@ -21,13 +21,13 @@ WITH sandwich_bounds AS (
         AND front.token_bought_address=back.token_sold_address
         AND front.evt_index+1 < back.evt_index
         {% if bounded_run %}
-        AND {{ incremental_predicate('back.block_time') }}
+        AND {{ dex_sandwich_time_bound('back.block_time') }}
         {% endif %}
     {% if var('dev_dates', false) -%}
     WHERE front.block_time > current_date - interval '3' day
     {%- else -%}
     {% if bounded_run %}
-    WHERE {{ incremental_predicate('front.block_time') }}
+    WHERE {{ dex_sandwich_time_bound('front.block_time') }}
     {% endif %}
     {%- endif %}
     )
@@ -67,11 +67,11 @@ INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
 INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
     {% if bounded_run %}
-    AND {{ incremental_predicate('txs.block_time') }}
+    AND {{ dex_sandwich_time_bound('txs.block_time') }}
     {% endif %}
 WHERE 1=1
 {% if bounded_run %}
-AND {{ incremental_predicate('dt.block_time') }}
+AND {{ dex_sandwich_time_bound('dt.block_time') }}
 {% endif %}
 
 {% endmacro %}
