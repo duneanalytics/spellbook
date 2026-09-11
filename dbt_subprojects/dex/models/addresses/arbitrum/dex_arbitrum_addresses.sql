@@ -22,6 +22,8 @@ FROM (VALUES
      ('arbitrum', 0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae, 'LiFi', 'LiFiDiamond_v2'),
      ('arbitrum', 0xc873fecbd354f5a56e00e710b90ef4201db2448d, 'Camelot', 'CamelotRouter'),
      ('arbitrum', 0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad, 'Uniswap', 'UniversalRouter'),
+     ('arbitrum', 0xa51afafe0263b40edaef0df8781ea9aa03e381a3, 'Uniswap', 'UniversalRouterV2'),
+     ('arbitrum', 0x8b844f885672f333bc0042cb669255f93a4c1e6b, 'Uniswap', 'UniversalRouterV2_1_1'),
      ('arbitrum', 0xb4315e873dbcf96ffd0acd8ea43f689d8c20fb30, 'Trader Joe', 'LBRouter'),
      ('arbitrum', 0xbee5c10cf6e4f68f831e11c1d9e59b43560b3642, 'Trader Joe', 'V1 Router'),
      ('arbitrum', 0x7bfd7192e76d950832c77bb412aae841049d8d9b, 'Trader Joe', 'V2 Router'),
