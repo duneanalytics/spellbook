@@ -57,6 +57,7 @@
     , ref('zeroex_ethereum_base_trades')
     , ref('zeroex_settler_ethereum_base_trades')
     , ref('origin_arm_ethereum_base_trades')
+    , ref('lista_smartswap_ethereum_base_trades')
     , ref('agra_ethereum_base_trades')
 ] %}
 WITH base AS (
