@@ -797,3 +797,31 @@ models:
       - name: evt_index
         data_tests:
           - not_null
+
+  - name: elfomofi_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: elfomofi
+      contributors: olegggatttor
+    config:
+      tags: ["bnb", "dex", "trades", "elfomofi"]
+    description: "ElfomoFi trades on BNB Chain, decoded from ElfomoTrade logs."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('elfomofi_bnb_base_trades_seed')
+    columns:
+      - name: tx_hash
+        description: "Transaction hash containing the swap."
+        data_tests:
+          - not_null
+      - name: evt_index
+        description: "Index of the ElfomoTrade log within the block."
+        data_tests:
+          - not_null
