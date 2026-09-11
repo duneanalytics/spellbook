@@ -103,9 +103,9 @@ models:
       - name: amount
         description: "The formatted amount of the transfer"
       - name: price_usd
-        description: "The USD price used to calculate the amount_usd"
+        description: "The USD price used to calculate the amount_usd. Only set for trc20 transfers; null for native and trc10 transfers, which Tron's Ethereum JSON-RPC cannot tell apart"
       - name: amount_usd
-        description: "The USD amount of the transfer"
+        description: "The USD amount of the transfer. Only set for trc20 transfers; null for native and trc10 transfers, which Tron's Ethereum JSON-RPC cannot tell apart"
       - name: _updated_at
         description: "Timestamp when this row was last written"
 
