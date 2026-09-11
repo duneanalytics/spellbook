@@ -1,8 +1,6 @@
-{% macro dex_sandwiched(blockchain, transactions, sandwiches, trades=none) %}
+{% macro dex_sandwiched(blockchain, transactions, sandwiches) %}
 
-{# Allow fixture relations in regression tests; production callers keep the chain ref. #}
-{% set trades = ref('dex_' ~ blockchain ~ '_trades') if trades is none else trades %}
-{# CI creates fresh tables; bound every large input without limiting production full refresh. #}
+{# CI builds these tables from scratch; bound its inputs to the incremental window so a full-history build cannot time out. Production full refresh stays unbounded. #}
 {% set bounded_run = is_incremental() or target.name == 'ci' %}
 
 WITH sandwich_bounds AS (
@@ -58,7 +56,7 @@ SELECT DISTINCT dt.blockchain
 , dt.amount_usd
 , dt.evt_index
 , txs.index AS tx_index
-FROM {{ trades }} dt
+FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} dt
 INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
     AND sb.block_number=dt.block_number
     AND sb.project_contract_address=dt.project_contract_address
