@@ -279,7 +279,6 @@ models:
       - *id
       - *token0
       - *token1
-      - *fee
       - name: tick_spacing
         description: "Pool tick spacing from CLFactory PoolCreated"
       - name: tick_lower

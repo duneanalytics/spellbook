@@ -29,7 +29,6 @@ with pools as (
         , token0
         , token1
         , tickSpacing as tick_spacing
-        , fee
     from {{ source('aerodrome_base', 'CLFactory_evt_PoolCreated') }}
 )
 
@@ -46,7 +45,6 @@ with pools as (
         , mint.contract_address as pool
         , pools.token0
         , pools.token1
-        , pools.fee
         , pools.tick_spacing
         , mint.tickLower as tick_lower
         , mint.tickUpper as tick_upper
@@ -79,7 +77,6 @@ with pools as (
         , burn.contract_address as pool
         , pools.token0
         , pools.token1
-        , pools.fee
         , pools.tick_spacing
         , burn.tickLower as tick_lower
         , burn.tickUpper as tick_upper
@@ -128,7 +125,6 @@ select
     , pool as id
     , token0
     , token1
-    , fee
     , tick_spacing
     , tick_lower
     , tick_upper
