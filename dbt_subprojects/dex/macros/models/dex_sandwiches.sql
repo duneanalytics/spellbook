@@ -10,6 +10,7 @@ WITH indexed_sandwich_trades AS (
     , t.evt_index_all AS evt_index
     FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} front
     INNER JOIN {{ ref('dex_' ~ blockchain ~ '_trades') }} back ON front.block_time=back.block_time
+        AND front.block_number=back.block_number
         AND front.project_contract_address=back.project_contract_address
         AND front.tx_from=back.tx_from
         AND front.tx_hash!=back.tx_hash
@@ -20,6 +21,7 @@ WITH indexed_sandwich_trades AS (
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
     INNER JOIN {{ ref('dex_' ~ blockchain ~ '_trades') }} victim ON front.block_time=victim.block_time
+        AND front.block_number=victim.block_number
         AND front.project_contract_address=victim.project_contract_address
         AND front.tx_from!=victim.tx_from
         AND front.token_bought_address=victim.token_bought_address
@@ -29,7 +31,9 @@ WITH indexed_sandwich_trades AS (
         AND {{ incremental_predicate('victim.block_time') }}
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
-    {% if var('dev_dates', false) -%}
+    {# CI builds these from scratch, so the first run is not incremental and would scan full
+       history. Every join is an equijoin on block_time, so bounding front bounds them all. #}
+    {% if var('dev_dates', false) or target.name == 'ci' -%}
     WHERE front.block_time > current_date - interval '3' day
     {%- else -%}
     {% if is_incremental() %}
