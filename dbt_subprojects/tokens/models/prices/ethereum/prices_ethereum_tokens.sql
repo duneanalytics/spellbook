@@ -43,6 +43,7 @@ FROM
     ('auc-auctus', 'ethereum', 'AUC', 0xc12d099be31567add4e4e4d0d45691c3f58f5663, 18),
     ('aud-australian-dollar-token', 'ethereum', 'ibAUD', 0xfafdf0c4c1cb09d430bf88c75d88bb46dae09967, 18),
     ('audio-audius', 'ethereum', 'AUDIO', 0x18aaa7115705e8be94bffebde57af9bfc265b998, 18),
+    ('ausd-agora-dollar', 'ethereum', 'AUSD', 0x00000000efe302beaa2b3e6e1b18d08d69a9012a, 6),
     ('awc-atomic-wallet-coin', 'ethereum', 'AWC', 0xad22f63404f7305e4713ccbd4f296f34770513f4, 8),
     ('axlatom-axelar-wrapped-atom', 'ethereum', 'axlATOM', 0x27292cf0016e5df1d8b37306b2a98588acbd6fca, 6),
     ('axs-axie-infinity', 'ethereum', 'AXS', 0xf5d669627376ebd411e34b98f19c868c8aba5ada, 18),
