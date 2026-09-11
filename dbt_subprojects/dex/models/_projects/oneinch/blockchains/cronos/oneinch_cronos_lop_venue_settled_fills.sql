@@ -1,24 +1,22 @@
-{%- set blockchain = oneinch_robinhood_cfg_macro() -%}
+{%- set blockchain = oneinch_cronos_cfg_macro() -%}
+{%- set stream = oneinch_lo_cfg_macro() -%}
 
 {{-
     config(
         schema = 'oneinch_' + blockchain.name,
-        alias = 'transfers',
+        alias = 'lop_venue_settled_fills',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['block_month', 'tx_hash', 'call_trace_address', 'transfer_trace_address', 'transfer_contract_address'],
+        unique_key = ['block_month', 'block_date', 'execution_id'],
     )
 -}}
 
 {{-
-    oneinch_transfers_macro(
+    oneinch_lop_venue_settled_fills_macro(
         blockchain = blockchain,
-        streams = [
-            oneinch_ar_transfers_cfg_macro(),
-            oneinch_lo_transfers_cfg_macro(),
-        ]
+        stream = stream
     )
 -}}

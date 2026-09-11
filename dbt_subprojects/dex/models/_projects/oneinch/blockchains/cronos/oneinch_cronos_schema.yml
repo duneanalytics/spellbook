@@ -1,9 +1,9 @@
 version: 2
 
 models:
-  - name: oneinch_robinhood_ar
+  - name: oneinch_cronos_ar
     meta:
-      blockchain: ['robinhood']
+      blockchain: ['cronos']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -67,9 +67,9 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_robinhood_lo
+  - name: oneinch_cronos_lo
     meta:
-      blockchain: ['robinhood']
+      blockchain: ['cronos']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
@@ -133,9 +133,9 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_robinhood_transfers
+  - name: oneinch_cronos_transfers
     meta:
-      blockchain: ['robinhood']
+      blockchain: ['cronos']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:

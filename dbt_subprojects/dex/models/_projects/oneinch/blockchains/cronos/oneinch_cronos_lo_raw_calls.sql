@@ -1,10 +1,10 @@
-{%- set blockchain = oneinch_robinhood_cfg_macro() -%}
-{%- set stream = oneinch_cc_cfg_macro() -%}
+{%- set blockchain = oneinch_cronos_cfg_macro() -%}
+{%- set stream = oneinch_lo_raw_calls_cfg_macro() -%}
 
 {{-
     config(
         schema = 'oneinch_' + blockchain.name,
-        alias = stream.name,
+        alias = stream.name + '_raw_calls',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -15,11 +15,9 @@
 -}}
 
 {{-
-    oneinch_cc_macro(
+    oneinch_raw_calls_macro(
         blockchain = blockchain,
         stream = stream,
-        contracts = oneinch_robinhood_cc_contracts_cfg_macro(),
-        initial = oneinch_robinhood_lo_contracts_cfg_macro(),
-        type = "raw",
+        contracts = oneinch_cronos_lo_contracts_cfg_macro()
     )
 -}}

@@ -1,11 +1,9 @@
 version: 2
 
 sources:
-  - name: oneinch_robinhood
+  - name: oneinch_monad
     tables:
       - name: AggregationRouterV6_call_swap
-      - name: AggregationRouterV6_call_clipperSwap
-      - name: AggregationRouterV6_call_clipperSwapTo
       - name: AggregationRouterV6_call_unoswap
       - name: AggregationRouterV6_call_unoswap2
       - name: AggregationRouterV6_call_unoswap3
@@ -30,6 +28,6 @@ sources:
       - name: lo
 
 
-  - name: tokens_robinhood
+  - name: tokens_monad
     tables:
-      - name: base_transfers
+      - name: transfers_from_traces

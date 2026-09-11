@@ -19,10 +19,12 @@
 {% endmacro %}
 
 -- ERC20True placeholder used as the counter-leg of Fusion+ cross-chain orders: https://github.com/1inch/cross-chain-swap/blob/master/contracts/mocks/ERC20True.sol
+-- 0x175a30f8... is the cronos / monad / hyperevm deployment
 {% macro oneinch_cross_chain_placeholder_tokens_cfg_macro() %}
     {{ return([
         '0xda0000d4000015a526378bb6fafc650cea5966f8',
         '0xd66097c27eb8dee404bac235737932260edc6f3b',
+        '0x175a30f81eade2d75b4d1d5fc750131877355d21',
     ]) }}
 {% endmacro %}
 
@@ -297,6 +299,8 @@
 
 {% macro oneinch_robinhood_cfg_macro() %}
     {# transfers_from_traces = false: robinhood tokens uses the newer base_transfers schema, no transfers_from_traces table #}
+    {# fusion_settlement_addresses: robinhood-specific settlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
+    {# escrow_factory_addresses: the cross-chain v1.2 factory (live since 2026-07-15, dominant line) and the v1-ABI factory; both drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred until the escrow decodings are cleaned up (both lines, decoded tables) #}
     {{ return({
         "name"                          : "robinhood",
         "start"                         : "2026-06-01",
@@ -304,11 +308,60 @@
         "native_token_symbol"           : "'ETH'",
         "wrapped_native_token_address"  : "0x0bd7d308f8e1639fab988df18a8011f41eacad73",
         "explorer_link"                 : "'https://robinhoodchain.blockscout.com'",
-        "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e'],
-        "escrow_factory_addresses"      : ['0xa02b9cc95094bb27d1d041b9fbf09f65a366f7b3'],
+        "fusion_settlement_addresses"   : ['0xb55ba9617dafae1236313c3cb7806439ceefbd13'],
+        "escrow_factory_addresses"      : ['0x50d26ea1e2460b3a42ff47466b955fc6bd906013', '0xa02b9cc95094bb27d1d041b9fbf09f65a366f7b3'],
         "atokens"                       : false,
         "transfers_from_traces"         : false,
-        "creations_parent_code_offset"  : 21,
+    }) }}
+{% endmacro %}
+
+{% macro oneinch_cronos_cfg_macro() %}
+    {# transfers_from_traces = false: cronos tokens uses the newer base_transfers schema, no transfers_from_traces table #}
+    {# fusion_settlement_addresses: chain-specific SimpleSettlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
+    {# escrow_factory_addresses: the active cross-chain v1.2 factory and the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred until escrow decodings land #}
+    {{ return({
+        "name"                          : "cronos",
+        "start"                         : "2026-08-01",
+        "chain_id"                      : "25",
+        "native_token_symbol"           : "'CRO'",
+        "wrapped_native_token_address"  : "0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
+        "explorer_link"                 : "'https://cronoscan.com'",
+        "fusion_settlement_addresses"   : ['0x65497e56cf49c51f1c1d54dc9005a7b38b98b30f'],
+        "escrow_factory_addresses"      : ['0x8e6c3c2e2631de0a1d4fd46a15f79a1373486fa4', '0x9e010857ed5aaa4fca6d5404f7c7c54b1bbb8ad2'],
+        "atokens"                       : false,
+        "transfers_from_traces"         : false,
+    }) }}
+{% endmacro %}
+
+{% macro oneinch_monad_cfg_macro() %}
+    {# fusion_settlement_addresses: chain-specific SimpleSettlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
+    {# escrow_factory_addresses: the active cross-chain v1.2 factory and the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred until escrow decodings land #}
+    {{ return({
+        "name"                          : "monad",
+        "start"                         : "2026-08-01",
+        "chain_id"                      : "143",
+        "native_token_symbol"           : "'MON'",
+        "wrapped_native_token_address"  : "0x3bd359c1119da7da1d913d1c4d2b7c461115433a",
+        "explorer_link"                 : "'https://monadscan.com'",
+        "fusion_settlement_addresses"   : ['0x65497e56cf49c51f1c1d54dc9005a7b38b98b30f'],
+        "escrow_factory_addresses"      : ['0x8e6c3c2e2631de0a1d4fd46a15f79a1373486fa4', '0x9e010857ed5aaa4fca6d5404f7c7c54b1bbb8ad2'],
+        "atokens"                       : false,
+    }) }}
+{% endmacro %}
+
+{% macro oneinch_hyperevm_cfg_macro() %}
+    {# fusion_settlement_addresses: chain-specific SimpleSettlement deployment, the canonical multichain settlement addresses are not deployed on this chain #}
+    {# escrow_factory_addresses: the active cross-chain v1.2 factory and the v1-ABI factory (deployed but unused); they drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred until escrow decodings land #}
+    {{ return({
+        "name"                          : "hyperevm",
+        "start"                         : "2026-08-01",
+        "chain_id"                      : "999",
+        "native_token_symbol"           : "'HYPE'",
+        "wrapped_native_token_address"  : "0x5555555555555555555555555555555555555555",
+        "explorer_link"                 : "'https://hyperevmscan.io'",
+        "fusion_settlement_addresses"   : ['0x65497e56cf49c51f1c1d54dc9005a7b38b98b30f'],
+        "escrow_factory_addresses"      : ['0x8e6c3c2e2631de0a1d4fd46a15f79a1373486fa4', '0x9e010857ed5aaa4fca6d5404f7c7c54b1bbb8ad2'],
+        "atokens"                       : false,
     }) }}
 {% endmacro %}
 
@@ -328,6 +381,7 @@
 -- EXPOSED --
 
 {% macro oneinch_blockchains_cfg_macro() %}
+    {# cronos/monad/hyperevm access tokens are deployed at their own addresses, not the canonical 0xacce55... vanity ones #}
     {{ return([
         dict(oneinch_ethereum_cfg_macro()   , evm=true  , fusionV1=true , exposed=["ar", "lo", "cc"] , contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_bnb_cfg_macro()        , evm=true  , fusionV1=true , exposed=["ar", "lo", "cc"] , contracts=oneinch_meta_contracts_cfg_macro()),
@@ -349,7 +403,22 @@
         dict(oneinch_linea_cfg_macro()      , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_sonic_cfg_macro()      , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_unichain_cfg_macro()   , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
-        dict(oneinch_robinhood_cfg_macro()  , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
+        dict(oneinch_robinhood_cfg_macro()  , evm=true  , fusionV1=false, exposed=["ar", "lo"]      , contracts=oneinch_meta_contracts_cfg_macro()),
+        dict(oneinch_cronos_cfg_macro()     , evm=true  , fusionV1=false, exposed=["ar", "lo"]      , contracts={
+            "AccessTokenLimitsV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenLimitsV1       , address="0xaad580f37c74184e64bda5ebbfb46fba1e2871b7"),
+            "AccessTokenFusionV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenFusionV1       , address="0x826ff268ee2d9e7e7275b780d0f4a9d7aab0e533"),
+            "AccessTokenCrossChainV1"   : dict(oneinch_meta_contracts_cfg_macro().AccessTokenCrossChainV1   , address="0x14c635a133e51eb6a98ec98d51b37c7cf67be452"),
+        }),
+        dict(oneinch_monad_cfg_macro()      , evm=true  , fusionV1=false, exposed=["ar", "lo"]      , contracts={
+            "AccessTokenLimitsV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenLimitsV1       , address="0xaad580f37c74184e64bda5ebbfb46fba1e2871b7"),
+            "AccessTokenFusionV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenFusionV1       , address="0x826ff268ee2d9e7e7275b780d0f4a9d7aab0e533"),
+            "AccessTokenCrossChainV1"   : dict(oneinch_meta_contracts_cfg_macro().AccessTokenCrossChainV1   , address="0x14c635a133e51eb6a98ec98d51b37c7cf67be452"),
+        }),
+        dict(oneinch_hyperevm_cfg_macro()   , evm=true  , fusionV1=false, exposed=["ar", "lo"]      , contracts={
+            "AccessTokenLimitsV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenLimitsV1       , address="0xaad580f37c74184e64bda5ebbfb46fba1e2871b7"),
+            "AccessTokenFusionV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenFusionV1       , address="0x826ff268ee2d9e7e7275b780d0f4a9d7aab0e533"),
+            "AccessTokenCrossChainV1"   : dict(oneinch_meta_contracts_cfg_macro().AccessTokenCrossChainV1   , address="0x14c635a133e51eb6a98ec98d51b37c7cf67be452"),
+        }),
         dict(oneinch_aurora_cfg_macro()     , evm=true  , fusionV1=false),
         dict(oneinch_klaytn_cfg_macro()     , evm=true  , fusionV1=false),
         dict(oneinch_solana_cfg_macro()     , evm=false , fusionV1=false),
