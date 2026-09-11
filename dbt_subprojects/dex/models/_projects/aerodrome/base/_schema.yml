@@ -229,3 +229,121 @@ models:
       - *token1
       - *amount0_raw
       - *amount1_raw
+
+  - name: aerodrome_slipstream_base_one_tick_liquidity_events
+    meta:
+      blockchain: base
+      sector: dex
+      project: aerodrome
+      contributors: ryeblocks
+    config:
+      tags: ['base', 'aerodrome', 'slipstream', 'liquidity', 'one_tick']
+    description: >
+      Aerodrome Slipstream mint and burn events whose position width is exactly
+      one tick (abs(tickLower - tickUpper) = factory tickSpacing). Includes every
+      token pair that uses this methodology, not only stablecoins.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - tx_hash
+              - evt_index
+              - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - name: block_date
+        description: "UTC event block date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - *block_time
+      - *block_number
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - *tx_from
+      - name: evt_index
+        description: "Event index within the transaction"
+        data_tests:
+          - not_null
+      - name: event_type
+        description: "mint or burn"
+        data_tests:
+          - not_null
+      - name: pool
+        description: "Slipstream CL pool address"
+      - *id
+      - *token0
+      - *token1
+      - *fee
+      - name: tick_spacing
+        description: "Pool tick spacing from CLFactory PoolCreated"
+      - name: tick_lower
+        description: "Lower tick of the one-tick position"
+      - name: tick_upper
+        description: "Upper tick of the one-tick position"
+      - name: liquidity
+        description: "Liquidity delta from the mint or burn event"
+      - *amount0_raw
+      - *amount1_raw
+      - name: owner
+        description: "Position owner"
+      - name: sender
+        description: "Mint sender, or transaction from-address on burn"
+
+  - name: aerodrome_slipstream_base_one_tick_volume
+    meta:
+      blockchain: base
+      sector: dex
+      project: aerodrome
+      contributors: ryeblocks
+    config:
+      tags: ['base', 'aerodrome', 'slipstream', 'one_tick']
+    description: >
+      Daily token transfer volume on transactions that mint or burn a one-tick
+      Aerodrome Slipstream position. All tokens transferred against the pool are
+      included, not only stablecoins.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - pool
+              - token_contract_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - name: pool
+        description: "Slipstream CL pool address"
+        data_tests:
+          - not_null
+      - *block_number
+      - name: block_date
+        description: "UTC transfer date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - *block_time
+      - name: amount
+        description: "Sum of token transfer amounts (decimal-adjusted)"
+      - name: amount_raw
+        description: "Sum of raw token transfer amounts"
+      - name: amount_usd
+        description: "Sum of USD transfer amounts"
+      - name: unique_addresses
+        description: "Distinct transfer senders"
+      - name: total_transfers
+        description: "Transfer row count"
+      - name: total_transactions
+        description: "Distinct transaction count"
+      - name: median_transfer
+        description: "Approximate median transfer amount"
+      - name: token_contract_address
+        description: "Token transferred against the pool"
+        data_tests:
+          - not_null
