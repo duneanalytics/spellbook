@@ -2,6 +2,7 @@
 
 WITH sandwich_bounds AS (
     SELECT front.block_time
+    , front.block_number
     , front.evt_index AS min_evt_index
     , back.evt_index AS max_evt_index
     , front.project_contract_address    
@@ -9,6 +10,7 @@ WITH sandwich_bounds AS (
     , front.token_sold_address
     FROM {{sandwiches}} front
     INNER JOIN {{sandwiches}} back ON front.block_time=back.block_time
+        AND front.block_number=back.block_number
         AND front.tx_from=back.tx_from
         AND front.tx_hash!=back.tx_hash
         AND front.project_contract_address=back.project_contract_address
@@ -18,7 +20,9 @@ WITH sandwich_bounds AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
-    {% if var('dev_dates', false) -%}
+    {# CI builds these from scratch, so the first run is not incremental and would scan full
+       history. Every join is an equijoin on block_time, so bounding front bounds them all. #}
+    {% if var('dev_dates', false) or target.name == 'ci' -%}
     WHERE front.block_time > current_date - interval '3' day
     {%- else -%}
     {% if is_incremental() %}
@@ -53,6 +57,7 @@ SELECT DISTINCT dt.blockchain
 , txs.index AS tx_index
 FROM {{ ref('dex_' ~ blockchain ~ '_trades') }} dt
 INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
+    AND sb.block_number=dt.block_number
     AND sb.project_contract_address=dt.project_contract_address
     AND sb.token_bought_address=dt.token_bought_address
     AND sb.token_sold_address=dt.token_sold_address
