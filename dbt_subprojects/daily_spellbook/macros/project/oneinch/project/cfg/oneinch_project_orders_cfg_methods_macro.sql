@@ -805,6 +805,55 @@
     "order_hash":       "substr(input, 4 + 32*0 + 1             , 32)",
 }] %}
 
+-- Binance --
+
+{#
+    Binance's `DEXRouter` (mapped_contracts tag `DEXRouter`) is an unverified Diamond
+    proxy (EIP-2535) on every chain checked (ethereum, bnb, base, polygon, arbitrum,
+    avalanche_c, optimism) -- no source on Etherscan/BscScan/Sourcify for the proxy or
+    the facet handling this selector, and the selector itself has no entry in
+    `abi.signatures`, 4byte.directory or openchain.xyz. `name` below is descriptive
+    (what the calldata does), not a verified function name -- there is no ABI to name it
+    from.
+
+    Field map decoded from raw calldata and confirmed against real ERC20 Transfer logs
+    (and native-value traces for the native-asset legs), not guessed: 6 independent bnb
+    transactions checked, covering ERC20->ERC20, native-in and native-out.
+    - offsets 0x04/0x24 are two constant addresses on every sample checked (a fee
+      recipient -- seen receiving a separate small cut of both the input token and, in
+      one sample, native BNB directly -- and a native-token vault the contract routes
+      wrapped/unwrapped BNB through). Neither varies with the swap, so neither is decoded
+      here.
+    - maker_asset (0x44) / taker_asset (0x84): the low 20 bytes of each word are the
+      swap's two assets (0x0 = native, same convention as the rest of this macro). The
+      top byte of each word is a flag that also varies on plain ERC20-to-ERC20 swaps, so
+      it is not native-vs-ERC20 signalling; substr's own 20-byte window already skips it,
+      no masking needed.
+    - making_amount (0x64): matched an incoming transfer's amount EXACTLY in every one of
+      6 samples, including a case where the total splits into a fee transfer to the fee
+      recipient plus a smaller transfer to the router that sum to this value -- this is
+      the gross amount the caller commits, not the router's net intake.
+    - taker_min_amount (0xa4): NEVER matched the real outgoing transfer -- in every
+      sample the executed amount was 0.1% to 25% higher. This is a minimum-out guarantee,
+      the same relationship this project already models as `taker_min_amount` elsewhere,
+      not an executed amount.
+    - `maker`/`taker` are not in the calldata (msg.sender is implicit); left unset, same
+      as Native's `tradeRFQT` entries where the real sender is absent from the tuple.
+    - the trailing dynamic `bytes` argument (offset 0xc4) is the multi-hop route itself,
+      length 932-4996 bytes across samples -- not decoded, not needed for asset/amount.
+#}
+{% set methods = methods + [{
+    "project":          "Binance",
+    "selector":         "0x810c705b",
+    "tag":              "'DEXRouter'",
+    "name":             "swap",
+    "event":            "null",
+    "maker_asset":      "substr(input, 4 + 32*2 + 12 + 1        , 20)",
+    "taker_asset":      "substr(input, 4 + 32*4 + 12 + 1        , 20)",
+    "making_amount":    "substr(input, 4 + 32*3 + 1             , 32)",
+    "taker_min_amount": "substr(input, 4 + 32*5 + 1             , 32)",
+}] %}
+
 {{ return(methods) }}
 
 {% endmacro %}
