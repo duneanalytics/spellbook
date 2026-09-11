@@ -132,6 +132,10 @@ FROM (VALUES
     , ('Eigenpie', 'Eigenpiexyz_io')
     , ('YieldNest', 'YieldNestFi')
     , ('Origin Protocol', 'originprotocol')
+    , ('TheDAO', 'thedaofund')
+    , ('Ethereum Foundation', 'ethereumfndn')
+    , ('Bitmine', 'BitMNR')
+    , ('Unit', 'unitxyz')
 
     -- Unknown Clusters:
     , ('Cluster 0x0f5b', 'etherscan.io/address/0x0f5b2f0d89f66b163e5e8e2ccf4de706c53a5060')
