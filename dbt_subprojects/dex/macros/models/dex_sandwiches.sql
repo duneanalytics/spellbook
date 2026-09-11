@@ -1,8 +1,5 @@
 {% macro dex_sandwiches(blockchain, transactions, whitelist=none) %}
 
-{# See dex_sandwich_time_bound for how CI and incremental runs are bounded. #}
-{% set bounded_run = is_incremental() or target.name == 'ci' %}
-
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
 WITH indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
@@ -20,8 +17,8 @@ WITH indexed_sandwich_trades AS (
         AND front.token_sold_address=back.token_bought_address
         AND front.token_bought_address=back.token_sold_address
         AND front.evt_index + 1 < back.evt_index
-        {% if bounded_run %}
-        AND {{ dex_sandwich_time_bound('back.block_time') }}
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
     INNER JOIN {{ ref('dex_' ~ blockchain ~ '_trades') }} victim ON front.block_time=victim.block_time
         AND front.block_number=victim.block_number
@@ -30,15 +27,17 @@ WITH indexed_sandwich_trades AS (
         AND front.token_bought_address=victim.token_bought_address
         AND front.token_sold_address=victim.token_sold_address
         AND victim.evt_index BETWEEN front.evt_index AND back.evt_index
-        {% if bounded_run %}
-        AND {{ dex_sandwich_time_bound('victim.block_time') }}
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('victim.block_time') }}
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
-    {% if var('dev_dates', false) -%}
+    {# CI builds these from scratch, so the first run is not incremental and would scan full
+       history. Every join is an equijoin on block_time, so bounding front bounds them all. #}
+    {% if var('dev_dates', false) or target.name == 'ci' -%}
     WHERE front.block_time > current_date - interval '3' day
     {%- else -%}
-    {% if bounded_run %}
-    WHERE {{ dex_sandwich_time_bound('front.block_time') }}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('front.block_time') }}
     {% endif %}
     {%- endif %}
     )
@@ -76,16 +75,16 @@ INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
 -- Adding block_number and tx_index to the mix, can be removed once those are in dex.trades
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND tx.hash=s.tx_hash
-    {% if bounded_run %}
-    AND {{ dex_sandwich_time_bound('tx.block_time') }}
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 {% if whitelist is not none %}
 LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
     AND w.tx_hash=tx.hash
 {% endif %}
 WHERE 1=1
-{% if bounded_run %}
-AND {{ dex_sandwich_time_bound('dt.block_time') }}
+{% if is_incremental() %}
+AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
 {% if whitelist is not none %}
 AND w.entity IS NULL
