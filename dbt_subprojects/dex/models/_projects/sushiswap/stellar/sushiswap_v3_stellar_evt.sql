@@ -41,11 +41,9 @@ WITH factory AS (
         AND e.type_string = 'ContractEventTypeContract'
         AND json_extract_scalar(TRY(json_parse(e.topics_decoded)), '$[0].symbol') = 'pool_created'
         {% if is_incremental() -%}
-        AND e.closed_at_date >= date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }})
         AND {{ incremental_predicate('e.closed_at') }}
         {% else -%}
         AND e.closed_at_date >= DATE '{{ project_start_date }}'
-        AND e.closed_at >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
 )
 
@@ -90,11 +88,9 @@ WITH factory AS (
     WHERE e.successful
         AND e.type_string = 'ContractEventTypeContract'
         {% if is_incremental() -%}
-        AND e.closed_at_date >= date_trunc('{{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }}', now() - interval '{{ var("DBT_ENV_INCREMENTAL_TIME") }}' {{ var("DBT_ENV_INCREMENTAL_TIME_UNIT") }})
         AND {{ incremental_predicate('e.closed_at') }}
         {% else -%}
         AND e.closed_at_date >= DATE '{{ project_start_date }}'
-        AND e.closed_at >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
 )
 
