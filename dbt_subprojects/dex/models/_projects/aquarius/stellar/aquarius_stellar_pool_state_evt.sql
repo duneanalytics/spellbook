@@ -11,8 +11,9 @@
 }}
 
 -- Pool reserve / state snapshots decoded from the raw Aquarius event index.
--- Constant-product and stable pools emit update_reserves; concentrated also
--- emits pool_state. Twin source rows are dropped via operation_id IS NOT NULL.
+-- Official event table: update_reserves data is reserve0, reserve1 [, reserve2].
+-- Concentrated pool_state data is sqrt_price_x96, tick, active_liquidity.
+-- Twin source rows are dropped via operation_id IS NOT NULL.
 
 WITH pools AS (
     SELECT
@@ -52,6 +53,7 @@ WITH pools AS (
         , p.token0
         , p.token1
         , p.token2
+        , TRY(json_parse(e.data_decoded)) AS data_json
         , e.updated_at
         , e.ingested_at
     FROM {{ ref('aquarius_stellar_evt') }} e
@@ -94,9 +96,48 @@ SELECT
     , token0
     , token1
     , token2
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[0].i128') AS int256) AS reserve0_raw
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[1].i128') AS int256) AS reserve1_raw
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[2].i128') AS int256) AS reserve2_raw
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'update_reserves' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[0].i128')
+                , json_extract_scalar(data_json, '$.vec[0].u128')
+            )
+        END AS int256
+    ) AS reserve0_raw
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'update_reserves' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[1].i128')
+                , json_extract_scalar(data_json, '$.vec[1].u128')
+            )
+        END AS int256
+    ) AS reserve1_raw
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'update_reserves' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[2].i128')
+                , json_extract_scalar(data_json, '$.vec[2].u128')
+            )
+        END AS int256
+    ) AS reserve2_raw
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'pool_state' THEN json_extract_scalar(data_json, '$.vec[0].u256')
+        END AS uint256
+    ) AS sqrt_price_x96
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'pool_state' THEN json_extract_scalar(data_json, '$.vec[1].i32')
+        END AS integer
+    ) AS tick
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'pool_state' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[2].u128')
+                , json_extract_scalar(data_json, '$.vec[2].i128')
+            )
+        END AS uint256
+    ) AS active_liquidity
     , updated_at
     , ingested_at
 FROM events

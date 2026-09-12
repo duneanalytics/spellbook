@@ -11,9 +11,13 @@
 }}
 
 -- Pool liquidity and position events decoded from the raw Aquarius event index.
--- Covers constant-product / stable deposit_liquidity and withdraw_liquidity plus
--- concentrated position_update, claim_fees, and claim_reward.
--- Twin source rows are dropped via operation_id IS NOT NULL.
+-- Official concentrated-pool event table:
+-- deposit_liquidity / withdraw_liquidity: topics token0, token1; data liquidity, amount0, amount1
+-- position_update: topics user; data tick_lower, tick_upper, liquidity_delta
+-- claim_fees: topics owner, token0, token1; data amount0, amount1
+-- claim_reward: topics reward_token, user; data amount
+-- Classic constant / stable pools use the same deposit/withdraw body:
+-- shares first, then token amounts. Twin rows dropped via operation_id IS NOT NULL.
 
 WITH pools AS (
     SELECT
@@ -53,6 +57,8 @@ WITH pools AS (
         , p.token0
         , p.token1
         , p.token2
+        , TRY(json_parse(e.topics_decoded)) AS topics_json
+        , TRY(json_parse(e.data_decoded)) AS data_json
         , e.updated_at
         , e.ingested_at
     FROM {{ ref('aquarius_stellar_evt') }} e
@@ -98,13 +104,98 @@ SELECT
     , token0
     , token1
     , token2
-    , json_extract_scalar(TRY(json_parse(topics_decoded)), '$[1].address') AS asset0
-    , json_extract_scalar(TRY(json_parse(topics_decoded)), '$[2].address') AS asset1
-    , json_extract_scalar(TRY(json_parse(topics_decoded)), '$[3].address') AS asset2
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[0].i128') AS int256) AS amount0_raw
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[1].i128') AS int256) AS amount1_raw
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[2].i128') AS int256) AS amount2_raw
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[3].i128') AS int256) AS amount3_raw
+    , CASE event_name
+        WHEN 'deposit_liquidity' THEN json_extract_scalar(topics_json, '$[1].address')
+        WHEN 'withdraw_liquidity' THEN json_extract_scalar(topics_json, '$[1].address')
+        WHEN 'claim_fees' THEN json_extract_scalar(topics_json, '$[2].address')
+        WHEN 'claim_reward' THEN json_extract_scalar(topics_json, '$[1].address')
+    END AS asset0
+    , CASE event_name
+        WHEN 'deposit_liquidity' THEN json_extract_scalar(topics_json, '$[2].address')
+        WHEN 'withdraw_liquidity' THEN json_extract_scalar(topics_json, '$[2].address')
+        WHEN 'claim_fees' THEN json_extract_scalar(topics_json, '$[3].address')
+    END AS asset1
+    , CASE
+        WHEN event_name IN ('deposit_liquidity', 'withdraw_liquidity')
+            THEN json_extract_scalar(topics_json, '$[3].address')
+    END AS asset2
+    , CASE event_name
+        WHEN 'position_update' THEN json_extract_scalar(topics_json, '$[1].address')
+        WHEN 'claim_fees' THEN json_extract_scalar(topics_json, '$[1].address')
+        WHEN 'claim_reward' THEN json_extract_scalar(topics_json, '$[2].address')
+    END AS user_address
+    , TRY_CAST(
+        CASE
+            WHEN event_name IN ('deposit_liquidity', 'withdraw_liquidity')
+                THEN COALESCE(
+                    json_extract_scalar(data_json, '$.vec[0].i128')
+                    , json_extract_scalar(data_json, '$.vec[0].u128')
+                )
+        END AS int256
+    ) AS shares_raw
+    , TRY_CAST(
+        CASE event_name
+            WHEN 'deposit_liquidity' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[1].i128')
+                , json_extract_scalar(data_json, '$.vec[1].u128')
+            )
+            WHEN 'withdraw_liquidity' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[1].i128')
+                , json_extract_scalar(data_json, '$.vec[1].u128')
+            )
+            WHEN 'claim_fees' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[0].i128')
+                , json_extract_scalar(data_json, '$.vec[0].u128')
+            )
+            WHEN 'claim_reward' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[0].i128')
+                , json_extract_scalar(data_json, '$.vec[0].u128')
+            )
+        END AS int256
+    ) AS amount0_raw
+    , TRY_CAST(
+        CASE event_name
+            WHEN 'deposit_liquidity' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[2].i128')
+                , json_extract_scalar(data_json, '$.vec[2].u128')
+            )
+            WHEN 'withdraw_liquidity' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[2].i128')
+                , json_extract_scalar(data_json, '$.vec[2].u128')
+            )
+            WHEN 'claim_fees' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[1].i128')
+                , json_extract_scalar(data_json, '$.vec[1].u128')
+            )
+        END AS int256
+    ) AS amount1_raw
+    , TRY_CAST(
+        CASE
+            WHEN event_name IN ('deposit_liquidity', 'withdraw_liquidity')
+                THEN COALESCE(
+                    json_extract_scalar(data_json, '$.vec[3].i128')
+                    , json_extract_scalar(data_json, '$.vec[3].u128')
+                )
+        END AS int256
+    ) AS amount2_raw
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'position_update' THEN json_extract_scalar(data_json, '$.vec[0].i32')
+        END AS integer
+    ) AS tick_lower
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'position_update' THEN json_extract_scalar(data_json, '$.vec[1].i32')
+        END AS integer
+    ) AS tick_upper
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'position_update' THEN COALESCE(
+                json_extract_scalar(data_json, '$.vec[2].i128')
+                , json_extract_scalar(data_json, '$.vec[2].u128')
+            )
+        END AS int256
+    ) AS liquidity_delta
     , updated_at
     , ingested_at
 FROM events

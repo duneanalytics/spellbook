@@ -11,9 +11,14 @@
 }}
 
 -- Router user-flow events decoded from the raw Aquarius event index.
--- Router emits swap / deposit / withdraw / claim in addition to pool-level
--- trade and deposit_liquidity / withdraw_liquidity.
--- Twin source rows are dropped via operation_id IS NOT NULL.
+-- Official router functions use u128 amounts. Observed event bodies:
+-- swap: pool, token_in, token_out, in_amount, out_amount
+-- deposit: pool, [amount0, amount1, ...], shares
+-- withdraw: pool, shares, [amount0, amount1, ...]
+-- claim: pool, reward_token, amount
+-- config_rewards: pool, tps, unix_ts
+-- Token order on topics is the sorted pool pair. Twin rows dropped via
+-- operation_id IS NOT NULL.
 
 WITH factory AS (
     SELECT contract_id
@@ -44,6 +49,8 @@ WITH factory AS (
         , e.data
         , e.data_decoded
         , e.contract_event_xdr
+        , TRY(json_parse(e.topics_decoded)) AS topics_json
+        , TRY(json_parse(e.data_decoded)) AS data_json
         , e.updated_at
         , e.ingested_at
     FROM {{ ref('aquarius_stellar_evt') }} e
@@ -84,23 +91,53 @@ SELECT
     , data
     , data_decoded
     , contract_event_xdr
-    , COALESCE(
-        json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[0].address')
-        , json_extract_scalar(TRY(json_parse(topics_decoded)), '$[1].address')
-    ) AS pool_address
-    , COALESCE(
-        json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[1].address')
-        , json_extract_scalar(TRY(json_parse(topics_decoded)), '$[1].vec[0].address')
-    ) AS token0
-    , COALESCE(
-        json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[2].address')
-        , json_extract_scalar(TRY(json_parse(topics_decoded)), '$[1].vec[1].address')
-    ) AS token1
-    , json_extract_scalar(TRY(json_parse(topics_decoded)), '$[2].address') AS trader
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[3].i128') AS int256) AS amount0_raw
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[4].i128') AS int256) AS amount1_raw
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[1].u128') AS uint256) AS reward_amount_raw
-    , TRY_CAST(json_extract_scalar(TRY(json_parse(data_decoded)), '$.vec[2].u64') AS bigint) AS reward_config_time
+    , json_extract_scalar(data_json, '$.vec[0].address') AS pool_address
+    , json_extract_scalar(topics_json, '$[1].vec[0].address') AS token0
+    , json_extract_scalar(topics_json, '$[1].vec[1].address') AS token1
+    , json_extract_scalar(topics_json, '$[1].vec[2].address') AS token2
+    , json_extract_scalar(topics_json, '$[2].address') AS trader
+    , json_extract_scalar(data_json, '$.vec[1].address') AS token_in
+    , json_extract_scalar(data_json, '$.vec[2].address') AS token_out
+    , TRY_CAST(json_extract_scalar(data_json, '$.vec[3].u128') AS uint256) AS amount_in_raw
+    , TRY_CAST(json_extract_scalar(data_json, '$.vec[4].u128') AS uint256) AS amount_out_raw
+    , TRY_CAST(
+        COALESCE(
+            json_extract_scalar(data_json, '$.vec[1].vec[0].u128')
+            , json_extract_scalar(data_json, '$.vec[2].vec[0].u128')
+        ) AS uint256
+    ) AS amount0_raw
+    , TRY_CAST(
+        COALESCE(
+            json_extract_scalar(data_json, '$.vec[1].vec[1].u128')
+            , json_extract_scalar(data_json, '$.vec[2].vec[1].u128')
+        ) AS uint256
+    ) AS amount1_raw
+    , TRY_CAST(
+        COALESCE(
+            json_extract_scalar(data_json, '$.vec[1].vec[2].u128')
+            , json_extract_scalar(data_json, '$.vec[2].vec[2].u128')
+        ) AS uint256
+    ) AS amount2_raw
+    , TRY_CAST(
+        CASE event_name
+            WHEN 'deposit' THEN json_extract_scalar(data_json, '$.vec[2].u128')
+            WHEN 'withdraw' THEN json_extract_scalar(data_json, '$.vec[1].u128')
+        END AS uint256
+    ) AS shares_raw
+    , CASE
+        WHEN event_name = 'claim' THEN json_extract_scalar(data_json, '$.vec[1].address')
+    END AS reward_token
+    , TRY_CAST(
+        CASE event_name
+            WHEN 'claim' THEN json_extract_scalar(data_json, '$.vec[2].u128')
+            WHEN 'config_rewards' THEN json_extract_scalar(data_json, '$.vec[1].u128')
+        END AS uint256
+    ) AS reward_amount_raw
+    , TRY_CAST(
+        CASE
+            WHEN event_name = 'config_rewards' THEN json_extract_scalar(data_json, '$.vec[2].u64')
+        END AS bigint
+    ) AS reward_config_time
     , updated_at
     , ingested_at
 FROM events

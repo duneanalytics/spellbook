@@ -1,13 +1,15 @@
 {{ config(
     schema = 'aquarius_stellar'
     , alias = 'pools'
-    , materialized = 'view'
+    , materialized = 'table'
+    , file_format = 'delta'
     , filtering_columns = ['pool']
     )
 }}
 
 -- Aquarius Stellar pool registry.
 -- One row per pool from decoded add_pool / init_concentrated_pool events.
+-- ci-stamp: 1
 
 WITH created AS (
     SELECT

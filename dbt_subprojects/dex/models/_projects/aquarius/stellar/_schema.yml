@@ -241,12 +241,22 @@ models:
         description: "Decoded Soroban event name"
       - name: pool
         description: "Pool contract id"
+      - name: shares_raw
+        description: "Minted or burned shares / liquidity units (first body field on deposit_liquidity and withdraw_liquidity)"
       - name: amount0_raw
-        description: "First decoded i128 from the event body"
+        description: "Token0 amount, or claim_fees amount0 / claim_reward amount"
       - name: amount1_raw
-        description: "Second decoded i128 from the event body"
+        description: "Token1 amount, or claim_fees amount1"
       - name: amount2_raw
-        description: "Third decoded i128 from the event body"
+        description: "Optional token2 amount on classic three-asset pools"
+      - name: tick_lower
+        description: "position_update lower tick"
+      - name: tick_upper
+        description: "position_update upper tick"
+      - name: liquidity_delta
+        description: "position_update liquidity delta"
+      - name: user_address
+        description: "Position owner on position_update, claim_fees, and claim_reward"
 
   - name: aquarius_stellar_router_evt
     meta:
@@ -278,10 +288,30 @@ models:
         description: "Decoded Soroban event name: swap, deposit, withdraw, claim, or config_rewards"
       - name: pool_address
         description: "Pool contract id when present on the router event"
+      - name: token0
+        description: "Sorted pool token0 from event topics"
+      - name: token1
+        description: "Sorted pool token1 from event topics"
       - name: trader
         description: "User address on the router event"
+      - name: token_in
+        description: "Swap input token from the event body"
+      - name: token_out
+        description: "Swap output token from the event body"
+      - name: amount_in_raw
+        description: "Swap input amount (u128)"
+      - name: amount_out_raw
+        description: "Swap output amount (u128)"
+      - name: amount0_raw
+        description: "Deposit or withdraw token0 amount (u128)"
+      - name: amount1_raw
+        description: "Deposit or withdraw token1 amount (u128)"
+      - name: shares_raw
+        description: "Shares minted on deposit or burned on withdraw"
+      - name: reward_token
+        description: "Claimed reward token on claim events"
       - name: reward_amount_raw
-        description: "config_rewards tps / reward amount (u128) when present"
+        description: "Claimed AQUA amount, or config_rewards tps"
       - name: reward_config_time
         description: "config_rewards unix timestamp when present"
 
@@ -315,9 +345,17 @@ models:
       - name: pool
         description: "Pool contract id"
       - name: reserve0_raw
-        description: "First decoded reserve / state i128"
+        description: "update_reserves token0 reserve"
       - name: reserve1_raw
-        description: "Second decoded reserve / state i128"
+        description: "update_reserves token1 reserve"
+      - name: reserve2_raw
+        description: "Optional update_reserves token2 reserve"
+      - name: sqrt_price_x96
+        description: "Concentrated pool_state sqrt price in Q64.96"
+      - name: tick
+        description: "Concentrated pool_state current tick"
+      - name: active_liquidity
+        description: "Concentrated pool_state active liquidity"
 
   - name: aquarius_stellar_base_trades
     meta:
@@ -390,9 +428,11 @@ models:
         description: "deposit_liquidity, withdraw_liquidity, position_update, claim_fees, or claim_reward"
       - name: pool
         description: "Pool contract id"
+      - name: shares_raw
+        description: "Shares or liquidity units from the pool event"
       - name: amount0_raw
-        description: "Signed first token / share amount"
+        description: "Signed token0 amount; withdraws are negative"
       - name: amount1_raw
-        description: "Signed second token amount"
+        description: "Signed token1 amount; withdraws are negative"
       - name: tx_hash
         description: "Transaction hash"

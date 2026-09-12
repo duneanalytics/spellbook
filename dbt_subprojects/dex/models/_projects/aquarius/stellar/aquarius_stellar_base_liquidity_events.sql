@@ -38,19 +38,23 @@ SELECT
     , token0
     , token1
     , token2
+    , user_address
+    , shares_raw
     , CASE
         WHEN event_name = 'withdraw_liquidity' THEN -1 * abs(amount0_raw)
-        ELSE abs(amount0_raw)
+        ELSE amount0_raw
     END AS amount0_raw
     , CASE
         WHEN event_name = 'withdraw_liquidity' THEN -1 * abs(amount1_raw)
-        ELSE abs(amount1_raw)
+        ELSE amount1_raw
     END AS amount1_raw
     , CASE
         WHEN event_name = 'withdraw_liquidity' THEN -1 * abs(amount2_raw)
         ELSE amount2_raw
     END AS amount2_raw
-    , amount3_raw
+    , tick_lower
+    , tick_upper
+    , liquidity_delta
     , asset0
     , asset1
     , asset2
