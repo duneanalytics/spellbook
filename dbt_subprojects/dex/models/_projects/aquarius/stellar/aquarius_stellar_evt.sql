@@ -15,6 +15,8 @@
 -- Raw index of Aquarius Stellar contract events.
 -- Follows router and fee-factory contracts plus pool addresses seen on
 -- router add_pool / init_concentrated_pool events. The only decode is event_name.
+-- Keep operation_id IS NOT NULL to drop the Hubble null-TOID twin.
+-- DISTINCT collapses exact source clones (same XDR ingested twice).
 
 WITH factory AS (
     SELECT contract_id
@@ -30,6 +32,7 @@ WITH factory AS (
         ON f.contract_id = e.contract_id
     WHERE e.successful
         AND e.type_string = 'ContractEventTypeContract'
+        AND e.operation_id IS NOT NULL
         AND json_extract_scalar(TRY(json_parse(e.topics_decoded)), '$[0].symbol') IN (
             'add_pool'
             , 'init_concentrated_pool'
@@ -56,7 +59,7 @@ WITH factory AS (
 )
 
 , events AS (
-    SELECT
+    SELECT DISTINCT
         e.closed_at_date AS block_date
         , e.closed_at AS block_time
         , e.ledger_sequence
@@ -81,6 +84,7 @@ WITH factory AS (
         ON c.contract_id = e.contract_id
     WHERE e.successful
         AND e.type_string = 'ContractEventTypeContract'
+        AND e.operation_id IS NOT NULL
         {% if is_incremental() -%}
         AND {{ incremental_predicate('e.closed_at') }}
         {% else -%}
