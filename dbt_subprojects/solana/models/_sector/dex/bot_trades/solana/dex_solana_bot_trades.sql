@@ -34,6 +34,11 @@
     , ref('tradewiz_solana_bot_trades')
     , ref('prophetbots_solana_bot_trades')
     , ref('sanji_solana_bot_trades')
+    , ref('bloom_solana_bot_trades')
+    , ref('cswap_solana_bot_trades')
+    , ref('nova_solana_bot_trades')
+    , ref('padre_solana_bot_trades')
+    , ref('unibot_solana_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}
