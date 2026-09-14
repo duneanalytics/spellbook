@@ -244,6 +244,7 @@ FROM
     ('phnm-phenom', 'base', 'PHNM', 0x3fda9cc61b1fef8b2ffd715f0a9eef7182e48f37, 18),
     ('up-superform', 'base', 'UP', 0x5b2193fDc451C1f847bE09CA9d13A4Bf60f8c86B, 18),
     ('fun-sportfun', 'base', 'FUN', 0x16EE7ecAc70d1028E7712751E2Ee6BA808a7dd92, 18),
+    ('pendle-pendle', 'base', 'PENDLE', 0xa99f6e6785da0f5d6fb42495fe424bce029eeb3e, 18),
     --Coinpaprika RWA tokenized stocks, ETFs & FX
     ('mxne-real-mxn-1', 'base', 'MXNe', 0x269cae7dc59803e5c596c95756faeebb6030e0af, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
