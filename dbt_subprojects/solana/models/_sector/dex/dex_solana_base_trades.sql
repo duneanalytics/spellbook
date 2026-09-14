@@ -32,6 +32,7 @@
       , ref('stabble_version_1_base_trades')
       , ref('solfi_version_1_base_trades') 
       , ref('zerofi_solana_base_trades')
+      , ref('zerofi_v2_solana_base_trades')
       , ref('humidifi_solana_base_trades')  
       , ref('tessera_solana_base_trades')
       , ref('goonfi_solana_base_trades')
