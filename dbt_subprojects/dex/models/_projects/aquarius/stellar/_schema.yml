@@ -1,0 +1,438 @@
+version: 2
+
+models:
+  - name: aquarius_stellar_factories
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'factories']
+    description: >
+      Canonical Aquarius AMM contract ids on Stellar (router, provider fee factory).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - contract_id
+    columns:
+      - name: blockchain
+        description: "Blockchain the contract is deployed on"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "Aquarius AMM version"
+      - name: contract_id
+        description: "Stellar contract id (C... strkey)"
+        data_tests:
+          - not_null
+      - name: contract_name
+        description: "Logical contract role (router, provider_fee_factory)"
+
+  - name: aquarius_stellar_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'events']
+    description: >
+      Raw index of successful Aquarius Stellar contract events from
+      stellar.history_contract_events. Follows router and fee-factory contracts
+      plus pool addresses seen on router add_pool and init_concentrated_pool
+      events. The only decode is event_name from topics_decoded.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Blockchain name"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "Aquarius AMM version"
+      - name: block_time
+        description: "Ledger close timestamp"
+      - name: ledger_sequence
+        description: "Stellar ledger sequence"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: transaction_id
+        description: "Transaction identifier (TOID)"
+      - name: operation_id
+        description: "Operation identifier (TOID); nullable on some source rows"
+      - name: contract_id
+        description: "Emitting contract id"
+      - name: event_name
+        description: "Soroban event name from topics_decoded"
+      - name: topics_decoded
+        description: "Raw decoded topics JSON"
+      - name: data_decoded
+        description: "Raw decoded data JSON"
+
+  - name: aquarius_stellar_pool_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'pools', 'events']
+    description: >
+      Router pool-registration events decoded from aquarius_stellar_evt.
+      Includes add_pool and init_concentrated_pool.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: event_name
+        description: "Decoded Soroban event name"
+      - name: pool_address
+        description: "Pool contract id from the registration event"
+      - name: pool_type
+        description: "Pool type symbol (constant_product, stable, concentrated)"
+      - name: token0
+        description: "First token contract id"
+      - name: token1
+        description: "Second token contract id"
+      - name: token2
+        description: "Optional third token contract id"
+
+  - name: aquarius_stellar_pools
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'pools']
+    description: >
+      Aquarius Stellar pool registry. One row per pool from
+      aquarius_stellar_pool_evt where created_rank = 1.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - pool
+    columns:
+      - name: blockchain
+        description: "Blockchain the DEX is deployed on"
+      - name: project
+        description: "Project name of the DEX"
+      - name: version
+        description: "Aquarius AMM version"
+      - name: pool
+        description: "Pool contract id"
+        data_tests:
+          - not_null
+      - name: pool_type
+        description: "Pool type symbol"
+      - name: token0
+        description: "First token in the pool"
+      - name: token1
+        description: "Second token in the pool"
+      - name: token2
+        description: "Optional third token in the pool"
+      - name: creation_block_time
+        description: "Ledger close time when the pool was created"
+      - name: creation_block_number
+        description: "Ledger sequence when the pool was created"
+      - name: contract_address
+        description: "Router contract that registered the pool"
+      - name: tx_hash
+        description: "Transaction hash of the first registration event"
+
+  - name: aquarius_stellar_trade_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'trades', 'events']
+    description: >
+      Pool trade events decoded from aquarius_stellar_evt. Topics are
+      trade, sold asset, bought asset, trader. Body is sold amount,
+      bought amount, fee.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: event_name
+        description: "Decoded Soroban event name (trade)"
+      - name: pool
+        description: "Pool contract id"
+      - name: token_sold_address
+        description: "Sold asset contract id"
+      - name: token_bought_address
+        description: "Bought asset contract id"
+      - name: trader
+        description: "Trader address"
+      - name: token_sold_amount_raw
+        description: "Raw sold amount"
+      - name: token_bought_amount_raw
+        description: "Raw bought amount"
+      - name: fee_raw
+        description: "Raw swap fee"
+
+  - name: aquarius_stellar_liquidity_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'liquidity', 'events']
+    description: >
+      Pool liquidity and position events decoded from aquarius_stellar_evt:
+      deposit_liquidity, withdraw_liquidity, position_update, claim_fees,
+      and claim_reward.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: event_name
+        description: "Decoded Soroban event name"
+      - name: pool
+        description: "Pool contract id"
+      - name: shares_raw
+        description: "Minted or burned shares / liquidity units (first body field on deposit_liquidity and withdraw_liquidity)"
+      - name: amount0_raw
+        description: "Token0 amount, or claim_fees amount0 / claim_reward amount"
+      - name: amount1_raw
+        description: "Token1 amount, or claim_fees amount1"
+      - name: amount2_raw
+        description: "Optional token2 amount on classic three-asset pools"
+      - name: tick_lower
+        description: "position_update lower tick"
+      - name: tick_upper
+        description: "position_update upper tick"
+      - name: liquidity_delta
+        description: "position_update liquidity delta"
+      - name: user_address
+        description: "Position owner on position_update, claim_fees, and claim_reward"
+
+  - name: aquarius_stellar_router_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'router', 'events']
+    description: >
+      Router swap, deposit, withdraw, claim, and config_rewards events decoded
+      from aquarius_stellar_evt. These sit above pool-level trade and liquidity events.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: event_name
+        description: "Decoded Soroban event name: swap, deposit, withdraw, claim, or config_rewards"
+      - name: pool_address
+        description: "Pool contract id when present on the router event"
+      - name: token0
+        description: "Sorted pool token0 from event topics"
+      - name: token1
+        description: "Sorted pool token1 from event topics"
+      - name: trader
+        description: "User address on the router event"
+      - name: token_in
+        description: "Swap input token from the event body"
+      - name: token_out
+        description: "Swap output token from the event body"
+      - name: amount_in_raw
+        description: "Swap input amount (u128)"
+      - name: amount_out_raw
+        description: "Swap output amount (u128)"
+      - name: amount0_raw
+        description: "Deposit or withdraw token0 amount (u128)"
+      - name: amount1_raw
+        description: "Deposit or withdraw token1 amount (u128)"
+      - name: shares_raw
+        description: "Shares minted on deposit or burned on withdraw"
+      - name: reward_token
+        description: "Claimed reward token on claim events"
+      - name: reward_amount_raw
+        description: "Claimed AQUA amount, or config_rewards tps"
+      - name: reward_config_time
+        description: "config_rewards unix timestamp when present"
+
+  - name: aquarius_stellar_pool_state_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'reserves', 'events']
+    description: >
+      Pool update_reserves and pool_state events decoded from aquarius_stellar_evt.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: event_name
+        description: "Decoded Soroban event name: update_reserves or pool_state"
+      - name: pool
+        description: "Pool contract id"
+      - name: reserve0_raw
+        description: "update_reserves token0 reserve"
+      - name: reserve1_raw
+        description: "update_reserves token1 reserve"
+      - name: reserve2_raw
+        description: "Optional update_reserves token2 reserve"
+      - name: sqrt_price_x96
+        description: "Concentrated pool_state sqrt price in Q64.96"
+      - name: tick
+        description: "Concentrated pool_state current tick"
+      - name: active_liquidity
+        description: "Concentrated pool_state active liquidity"
+
+  - name: aquarius_stellar_base_trades
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'trades']
+    description: >
+      Structured Aquarius Stellar trades from pool trade events. Standalone;
+      not wired into dex.trades.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over the deduplicated trade identity"
+        data_tests:
+          - not_null
+      - name: token_bought_address
+        description: "Bought asset contract id"
+      - name: token_sold_address
+        description: "Sold asset contract id"
+      - name: token_bought_amount_raw
+        description: "Raw bought amount"
+      - name: token_sold_amount_raw
+        description: "Raw sold amount"
+      - name: pool
+        description: "Pool contract id"
+      - name: taker
+        description: "Trader address"
+      - name: tx_hash
+        description: "Transaction hash"
+
+  - name: aquarius_stellar_base_liquidity_events
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: aquarius
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'aquarius', 'liquidity']
+    description: >
+      Structured Aquarius Stellar liquidity events. Deposit amounts are positive;
+      withdraw amounts are signed negative.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over the deduplicated liquidity event identity"
+        data_tests:
+          - not_null
+      - name: event_type
+        description: "deposit_liquidity, withdraw_liquidity, position_update, claim_fees, or claim_reward"
+      - name: pool
+        description: "Pool contract id"
+      - name: shares_raw
+        description: "Shares or liquidity units from the pool event"
+      - name: amount0_raw
+        description: "Signed token0 amount; withdraws are negative"
+      - name: amount1_raw
+        description: "Signed token1 amount; withdraws are negative"
+      - name: tx_hash
+        description: "Transaction hash"
