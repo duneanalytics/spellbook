@@ -128,8 +128,12 @@ WITH base_transfers as (
         , symbol
         , amount_raw
         , amount
-        , price_usd
+        /* Only TRC20 tokens are priced. Tron's Ethereum JSON-RPC puts the amount of every
+           contract type into transactions.value, so native TRX transfers cannot be told apart
+           from TRC10 transfers and pricing both at the TRX price inflates volume. */
+        , CASE WHEN token_standard = 'trc20' THEN price_usd END AS price_usd
         , CASE
+            WHEN token_standard <> 'trc20' THEN CAST(NULL as double)
             WHEN is_trusted_token = true THEN amount_usd
             WHEN (is_trusted_token = false AND amount_usd < 1000000000) THEN amount_usd
             WHEN (is_trusted_token = false AND amount_usd >= 1000000000) THEN CAST(NULL as double) /* ignore inflated outlier prices */

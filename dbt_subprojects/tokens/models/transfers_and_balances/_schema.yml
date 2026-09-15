@@ -11,7 +11,8 @@ models:
       tags: ['tokens','transfers','evm']
     description: >
       Transfers of all kinds of fungible tokens across all EVM-compatible networks on Dune. This model contains
-      EVM-only data.
+      EVM-only data. On Tron, price_usd and amount_usd are only set for trc20 transfers: native and trc10
+      transfers share the same transactions.value field and cannot be told apart, so neither is priced.
     columns:
       - &unique_key
         name: unique_key
