@@ -16,7 +16,7 @@ with base as (
         , project = 'vvs_finance'
         , version = '2'
         , Pair_evt_Swap = source('vvsfinance_cronos', 'VVSPair_evt_Swap')
-        , Factory_evt_PairCreated = source('vvsfinance_cronos', 'VVSFactory_evt_PairCreated')
+        , Factory_evt_PairCreated = '(select * from ' ~ source('vvsfinance_cronos', 'VVSFactory_evt_PairCreated') ~ ' where not (evt_block_number between 90896189 and 90907150))'
     )
 }}
 )
@@ -29,9 +29,8 @@ from base
 -- key double-matches (MERGE_TARGET_ROW_MULTIPLE_MATCHES, 2026-09-01/02). Frozen fence: exclude the
 -- dead-fork block range until raw cronos is re-ingested from the canonical chain, then drop this
 -- filter and full-refresh the cronos dex models.
-where not (block_number between 90896189 and 90907150)
 -- Factory join is 1:n on pair address. Pair 0x4dfd091570af4f6b3da9280c2aa7487e61c7c24e
 -- was created on the discarded fork (90897058) and re-included canonically (94069876,
--- 2026-09-15 13:41 UTC), so each swap on that pool emits two identical merge keys.
--- Drop this QUALIFY with the fence above once raw cronos is re-ingested.
-qualify row_number() over (partition by tx_hash, evt_index order by block_number desc) = 1
+-- 2026-09-15 13:41 UTC). The factory subquery above fences the same discarded range;
+-- DuneSQL has no QUALIFY so we cannot dedupe the join output with row_number().
+where not (block_number between 90896189 and 90907150)
