@@ -23,6 +23,9 @@ select
 from {{ source(blockchain, 'logs') }}
 where true
     and block_time >= timestamp '{{ date_from }}'
+    {% if target.name == 'ci' -%}
+    and block_time >= now() - interval '7' day -- CI full-refreshes this shared macro; bound the scan to a representative week
+    {%- endif %}
     and topic0 in ({{ oneinch_project_orders_cfg_events_macro().keys() | join(', ') }})
     {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 
