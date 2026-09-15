@@ -6,8 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index'],
-    on_schema_change = 'sync_all_columns'
+    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
    )
 }}
 
@@ -107,7 +106,6 @@ SELECT
   block_time,
   block_date,
   block_month,
-  bot,
   blockchain,
   amount_usd,
   type,
