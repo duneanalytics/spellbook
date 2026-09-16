@@ -30,11 +30,11 @@ WITH swaps AS (
         , account_token_1_vault
     FROM {{ source('jupiter_lend_solana', 'dex_call_swap_in') }}
     WHERE 1=1
-        {% if is_incremental() %}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('call_block_date') }}
-        {% else %}
+        {% else -%}
         AND call_block_date >= DATE '{{ project_start_date }}'
-        {% endif %}
+        {% endif -%}
 
     UNION ALL
 
@@ -54,11 +54,11 @@ WITH swaps AS (
         , account_token_1_vault
     FROM {{ source('jupiter_lend_solana', 'dex_call_swap_out') }}
     WHERE 1=1
-        {% if is_incremental() %}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('call_block_date') }}
-        {% else %}
+        {% else -%}
         AND call_block_date >= DATE '{{ project_start_date }}'
-        {% endif %}
+        {% endif -%}
 )
 
 SELECT
