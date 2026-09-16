@@ -1,0 +1,68 @@
+version: 2
+
+sources:
+  # ===========================================
+  # Base EVM Source (transactions, blocks etc.)
+  # ===========================================
+  - name: arc
+    description: >
+      Raw EVM tables for the Arc chain. Only the tables the token transfer spells read are
+      declared today; add further raw tables here as spells start using them.
+    tables:
+      # No traces table is declared on purpose: Arc implements EIP-7708, so every native
+      # value movement is logged as a Transfer event from the system emitter and arrives on
+      # erc20_arc.evt_Transfer. That stream is a complete native record, so
+      # tokens_arc_base_transfers has no traces leg to read -- reading both would double
+      # count. See the comments in that model.
+      - name: transactions
+        description: "Transactions executed on Arc: sender, receiver, value, gas, status and input data."
+        columns:
+          - name: block_date
+            description: "The UTC date of the block in which this transaction was included"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was mined/sequenced"
+          - name: block_number
+            description: "The sequential number (height) of the block containing this transaction"
+          - name: hash
+            description: "The unique 32-byte identifier (hash) of this transaction"
+          - name: index
+            description: "The transaction's position (index) within its block"
+          - name: from
+            description: "The address that initiated (signed and sent) the transaction"
+          - name: to
+            description: "The recipient address of the transaction (contract or EOA); null for contract creations"
+          - name: value
+            description: "Amount of the native gas token sent with the transaction, in its smallest unit"
+          - name: success
+            description: "Boolean indicating whether the transaction executed successfully"
+
+  # ===========================================
+  # ERC20 Source
+  # ===========================================
+  - name: erc20_arc
+    description: >
+      Standard ERC20 fungible token event tables for Arc. Also carries the EIP-7708 system
+      emitter at 0xfffffffffffffffffffffffffffffffffffffffe, whose Transfer logs are Arc's
+      complete record of native value movement.
+    tables:
+      - name: evt_Transfer
+        description: >
+          ERC20 Transfer events on Arc, including the EIP-7708 system-emitter logs that stand
+          in for the traces leg every other EVM chain uses for native transfers.
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract that emitted this event; 0xffff...fffe for the EIP-7708 system emitter"
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: from
+            description: "Sender of the tokens; the address debited by the movement"
+          - name: to
+            description: "Recipient of the tokens; the address credited by the movement"
+          - name: value
+            description: "Amount transferred, in the emitting interface's own decimals (18 for the system emitter)"
