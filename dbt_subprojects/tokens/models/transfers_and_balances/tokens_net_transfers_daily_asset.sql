@@ -7,7 +7,6 @@
 
 {% set chains = [
      'arbitrum'
-    , 'arc'
     , 'avalanche_c'
     , 'b3'
     , 'base'
