@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: prices_arc_tokens
+    meta:
+      blockchain: arc
+      sector: prices
+      contributors: 0xRob
+    config:
+      tags: ['prices', 'tokens', 'usd', 'arc']
+    description: >
+      Token prices and metadata on Arc. Holds Circle's canonical assets (the 6-decimal USDC
+      ERC-20 interface and EURC) plus the Animus / Wirex wrapper tokens, which are priced off
+      their underlying asset's CoinPaprika feed on an assumed 1:1 peg, pending issuer
+      confirmation. The native gas token lives in prices_native_tokens, not here.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - contract_address
+      - test_prices_tokens_against_erc20
+    columns:
+      - name: token_id
+        description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
+      - name: blockchain
+        description: "Native blockchain of the token, if any"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [ "arc" ]
+      - name: contract_address
+        description: "Contract address of the token, if any"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Number of decimals for the token contract"
