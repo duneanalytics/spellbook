@@ -578,3 +578,24 @@
             "permitAndCall" : contracts.AggregationRouterV6.methods.permitAndCall,
     }) }) }}
 {% endmacro %}
+
+-- ARC AR CONFIG MACRO (chain-specific AggregationRouterV6 deployment address, so arc is not in the canonical AggregationRouterV6.blockchains list above) --
+{% macro oneinch_arc_ar_contracts_cfg_macro() %}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6, address="0xe08cab0828a67291ec4af1fb3e7f867e206a6bda", methods={
+            "swap"          : contracts.AggregationRouterV6.methods.swap,
+            "ethUnoswap"    : contracts.AggregationRouterV6.methods.ethUnoswap,
+            "ethUnoswap2"   : contracts.AggregationRouterV6.methods.ethUnoswap2,
+            "ethUnoswap3"   : contracts.AggregationRouterV6.methods.ethUnoswap3,
+            "ethUnoswapTo"  : contracts.AggregationRouterV6.methods.ethUnoswapTo,
+            "ethUnoswapTo2" : contracts.AggregationRouterV6.methods.ethUnoswapTo2,
+            "ethUnoswapTo3" : contracts.AggregationRouterV6.methods.ethUnoswapTo3,
+            "unoswap"       : contracts.AggregationRouterV6.methods.unoswap,
+            "unoswap2"      : contracts.AggregationRouterV6.methods.unoswap2,
+            "unoswap3"      : contracts.AggregationRouterV6.methods.unoswap3,
+            "unoswapTo"     : contracts.AggregationRouterV6.methods.unoswapTo,
+            "unoswapTo2"    : contracts.AggregationRouterV6.methods.unoswapTo2,
+            "unoswapTo3"    : contracts.AggregationRouterV6.methods.unoswapTo3,
+            "permitAndCall" : contracts.AggregationRouterV6.methods.permitAndCall,
+    }) }) }}
+{% endmacro %}

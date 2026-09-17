@@ -303,3 +303,9 @@
     {% set contracts = oneinch_lo_contracts_cfg_macro() %}
     {{ return({ "AggregationRouterV6"   : dict(contracts.AggregationRouterV6, address="0x5281602adc446a94eb48d055f514a6d8d5bee176") }) }}
 {% endmacro %}
+
+-- ARC LO CONFIG MACRO (chain-specific AggregationRouterV6 deployment address) --
+{% macro oneinch_arc_lo_contracts_cfg_macro() %}
+    {% set contracts = oneinch_lo_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6"   : dict(contracts.AggregationRouterV6, address="0xe08cab0828a67291ec4af1fb3e7f867e206a6bda") }) }}
+{% endmacro %}

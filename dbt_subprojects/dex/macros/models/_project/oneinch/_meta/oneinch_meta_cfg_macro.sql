@@ -19,7 +19,7 @@
 {% endmacro %}
 
 -- ERC20True placeholder used as the counter-leg of Fusion+ cross-chain orders: https://github.com/1inch/cross-chain-swap/blob/master/contracts/mocks/ERC20True.sol
--- 0x175a30f8... is the cronos / monad / hyperevm deployment
+-- 0x175a30f8... is the cronos / monad / hyperevm / arc deployment
 {% macro oneinch_cross_chain_placeholder_tokens_cfg_macro() %}
     {{ return([
         '0xda0000d4000015a526378bb6fafc650cea5966f8',
@@ -365,6 +365,27 @@
     }) }}
 {% endmacro %}
 
+{% macro oneinch_arc_cfg_macro() %}
+    {# native_token_symbol / wrapped_native_token_address: arc's gas token is USDC (18 decimals, address 0x00..00 in dune.blockchains); the router's WETH immutable is the 1inch-deployed WUSDC 0x1111161b... (18 decimals), read from the router's constructor args #}
+    {# transfers_from_traces = false: arc tokens uses the newer base_transfers schema (event-based, EIP-7708 native transfers), no transfers_from_traces table #}
+    {# dex_base_trades = false: no dex_arc_base_trades model exists yet, so lop_venue_settled_fills has no venue rows to test against and dex_arc_trades does not exist to carry the LOP passthrough #}
+    {# fusion_settlement_addresses: chain-specific SimpleSettlement deployment (same address as cronos / monad / hyperevm), the canonical multichain settlement addresses are not deployed on this chain #}
+    {# escrow_factory_addresses: the active cross-chain v1.2 factory and the v1-ABI factory; they drive LO factory_in_args detection (cross-chain mode), order is not significant; CC models are deferred to the CC iteration #}
+    {{ return({
+        "name"                          : "arc",
+        "start"                         : "2026-09-01",
+        "chain_id"                      : "5042",
+        "native_token_symbol"           : "'USDC'",
+        "wrapped_native_token_address"  : "0x1111161b5af064893d1a88e467293ecf660eeeee",
+        "explorer_link"                 : "'https://explorer.arc.io'",
+        "fusion_settlement_addresses"   : ['0x65497e56cf49c51f1c1d54dc9005a7b38b98b30f'],
+        "escrow_factory_addresses"      : ['0x8e6c3c2e2631de0a1d4fd46a15f79a1373486fa4', '0x9e010857ed5aaa4fca6d5404f7c7c54b1bbb8ad2'],
+        "atokens"                       : false,
+        "transfers_from_traces"         : false,
+        "dex_base_trades"               : false,
+    }) }}
+{% endmacro %}
+
 {% macro oneinch_solana_cfg_macro() %}
     {{ return({
         "name"                          : "solana",
@@ -381,7 +402,7 @@
 -- EXPOSED --
 
 {% macro oneinch_blockchains_cfg_macro() %}
-    {# cronos/monad/hyperevm access tokens are deployed at their own addresses, not the canonical 0xacce55... vanity ones #}
+    {# cronos/monad/hyperevm/arc access tokens are deployed at their own addresses, not the canonical 0xacce55... vanity ones #}
     {{ return([
         dict(oneinch_ethereum_cfg_macro()   , evm=true  , fusionV1=true , exposed=["ar", "lo", "cc"] , contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_bnb_cfg_macro()        , evm=true  , fusionV1=true , exposed=["ar", "lo", "cc"] , contracts=oneinch_meta_contracts_cfg_macro()),
@@ -415,6 +436,11 @@
             "AccessTokenCrossChainV1"   : dict(oneinch_meta_contracts_cfg_macro().AccessTokenCrossChainV1   , address="0x14c635a133e51eb6a98ec98d51b37c7cf67be452"),
         }),
         dict(oneinch_hyperevm_cfg_macro()   , evm=true  , fusionV1=false, exposed=["ar", "lo"]      , contracts={
+            "AccessTokenLimitsV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenLimitsV1       , address="0xaad580f37c74184e64bda5ebbfb46fba1e2871b7"),
+            "AccessTokenFusionV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenFusionV1       , address="0x826ff268ee2d9e7e7275b780d0f4a9d7aab0e533"),
+            "AccessTokenCrossChainV1"   : dict(oneinch_meta_contracts_cfg_macro().AccessTokenCrossChainV1   , address="0x14c635a133e51eb6a98ec98d51b37c7cf67be452"),
+        }),
+        dict(oneinch_arc_cfg_macro()        , evm=true  , fusionV1=false, exposed=["ar", "lo"]      , contracts={
             "AccessTokenLimitsV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenLimitsV1       , address="0xaad580f37c74184e64bda5ebbfb46fba1e2871b7"),
             "AccessTokenFusionV1"       : dict(oneinch_meta_contracts_cfg_macro().AccessTokenFusionV1       , address="0x826ff268ee2d9e7e7275b780d0f4a9d7aab0e533"),
             "AccessTokenCrossChainV1"   : dict(oneinch_meta_contracts_cfg_macro().AccessTokenCrossChainV1   , address="0x14c635a133e51eb6a98ec98d51b37c7cf67be452"),
