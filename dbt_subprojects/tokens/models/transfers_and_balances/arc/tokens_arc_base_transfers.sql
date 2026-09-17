@@ -26,8 +26,7 @@
 --    rather than adding to it -- running both would double count. The emitter arrives on
 --    erc20_arc.evt_Transfer alongside every other token, so it is classified inline in the
 --    event projection instead of being read separately. This is also why there is no
---    tokens_arc_transfers_from_traces model. arc.traces is declared as a source for other
---    spells to use; this model deliberately does not read it.
+--    tokens_arc_transfers_from_traces model.
 --
 -- 2. The 6-decimal USDC ERC-20 interface at 0x3600...0000 is excluded. The emitter already
 --    carries every movement made through it, at native 18-decimal precision. It is dropped

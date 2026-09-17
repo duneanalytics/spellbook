@@ -102,8 +102,5 @@ FROM (
         , (2818, 'morph', 'Morph', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x5300000000000000000000000000000000000011, 'https://explorer.morphl2.io/', timestamp '2024-10-21 06:00:00', 'Morph', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (4663, 'robinhood', 'Robinhood Chain', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, NULL, timestamp '2026-04-30 16:52:11', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
         , (25, 'cronos', 'Cronos', 'Layer 1', NULL, 'CRO', 0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23, 'https://cronoscan.com/', timestamp '2021-11-08 00:00', NULL, NULL, NULL, true, NULL)
-        -- Arc's gas token is USDC itself; wrapped_native_token_address is NULL because Arc has no
-        -- wrapped USDC -- the native asset satisfies IERC20 directly. first_block_time is the first
-        -- transaction in arc.transactions (block 9327); arc.blocks genesis is 2026-05-12 00:00:00.
         , (5042, 'arc', 'Arc', 'Layer 1', NULL, 'USDC', NULL, 'https://explorer.arc.io/', timestamp '2026-05-15 15:17:24', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
