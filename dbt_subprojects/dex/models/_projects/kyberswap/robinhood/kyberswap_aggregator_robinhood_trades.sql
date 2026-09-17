@@ -16,28 +16,26 @@
 WITH meta_router AS
 (
         SELECT
-            block_time              AS block_time
+            evt_block_time          AS block_time
             ,'kyberswap'            AS project
             ,'meta_2'               AS version
-            ,bytearray_substring(data, 13, 20)  AS taker
-            ,bytearray_substring(data, 109, 20) AS maker
-            ,bytearray_to_uint256(bytearray_substring(data, 161, 32)) AS token_bought_amount_raw
-            ,bytearray_to_uint256(bytearray_substring(data, 129, 32)) AS token_sold_amount_raw
+            ,sender                 AS taker
+            ,dstReceiver            AS maker
+            ,returnAmount           AS token_bought_amount_raw
+            ,spentAmount            AS token_sold_amount_raw
             ,CAST(NULL AS DOUBLE)   AS amount_usd
-            ,bytearray_substring(data, 77, 20)  AS token_bought_address
-            ,bytearray_substring(data, 45, 20)  AS token_sold_address
+            ,dstToken               AS token_bought_address
+            ,srcToken               AS token_sold_address
             ,contract_address       AS project_contract_address
-            ,tx_hash                AS tx_hash
-            ,index                  AS evt_index
+            ,evt_tx_hash            AS tx_hash
+            ,evt_index              AS evt_index
             ,ARRAY[-1]              AS trace_address
         FROM
-            {{ source('robinhood', 'logs') }}
+            {{ source('kyber_robinhood', 'MetaAggregationRouterV2_evt_Swapped') }}
         WHERE
-            contract_address = 0x6131b5fae19ea4f9d964eac0408e4408b66337b5
-            AND topic0 = 0xd6d4f5681c246c9f42c203e287975af1601f8df8035a9251f79aab5c8f09e2f8
-            AND block_date >= DATE '{{ project_start_date }}'
+            evt_block_date >= DATE '{{ project_start_date }}'
             {% if is_incremental() %}
-            AND {{incremental_predicate('block_time')}}
+            AND {{incremental_predicate('evt_block_time')}}
             {% endif %}
 )
 SELECT
