@@ -74,6 +74,7 @@ SELECT
 FROM meta_router
 INNER JOIN {{ source('robinhood', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
+    AND tx.block_date = CAST(date_trunc('day', meta_router.block_time) AS DATE)
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% else %}
