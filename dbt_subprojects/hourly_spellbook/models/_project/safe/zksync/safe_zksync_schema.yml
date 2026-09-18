@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: zksync
       project: safe
-      contributors: ['danielpartida' , 'kryptaki']
+      contributors: ['danielpartida' , 'kryptaki', 'doublesc00p']
     config:
       tags: ['safe', 'zksync']
     description: "Safe addresses"
@@ -39,7 +39,7 @@ models:
     meta:
       blockchain: zksync
       project: safe
-      contributors: ['danielpartida' , 'kryptaki']
+      contributors: ['danielpartida' , 'kryptaki', 'doublesc00p']
     config:
       tags: ['safe', 'transfers', 'zksync']
     description: "Eth transfers for safes"
@@ -77,7 +77,7 @@ models:
     meta:
       blockchain: zksync
       project: safe
-      contributors: ['danielpartida' , 'kryptaki']
+      contributors: ['danielpartida' , 'kryptaki', 'doublesc00p']
     config:
       tags: ['safe', 'singletons', 'zksync']
     description: "Singletons addresses used with Safes"
@@ -92,7 +92,7 @@ models:
     meta:
       blockchain: zksync
       project: safe
-      contributors: kryptaki
+      contributors: kryptaki, doublesc00p 
     config:
       tags: ['safe', 'zksync']
     description: "Safe transactions"
