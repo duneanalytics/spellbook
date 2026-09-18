@@ -31,6 +31,12 @@ sources:
         loaded_at_field: call_block_time
       - name: raydium_amm_call_swapBaseIn
         loaded_at_field: call_block_time
+      - name: raydium_amm_call_swapBaseOutV2
+        description: "Raydium AMM V4 SwapBaseOutV2 instructions (0x11)"
+        loaded_at_field: call_block_time
+      - name: raydium_amm_call_swapBaseInV2
+        description: "Raydium AMM V4 SwapBaseInV2 instructions (0x10)"
+        loaded_at_field: call_block_time
   - name: raydium_cp_solana
     description: "raydium_cpmm_solana v5 decoded tables"
     freshness: # default freshness
