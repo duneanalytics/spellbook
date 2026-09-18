@@ -14,6 +14,8 @@
 {% set project_start_date = '2021-03-21' %}
 
 WITH swaps AS (
+    -- V2 swaps use the same pool and instruction keys as the legacy swaps.
+    {% for instruction in ['swapBaseOut', 'swapBaseIn', 'swapBaseOutV2', 'swapBaseInV2'] %}
     SELECT
           account_amm
         , call_is_inner
@@ -26,7 +28,7 @@ WITH swaps AS (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
-    FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
+    FROM {{ source('raydium_amm_solana', 'raydium_amm_call_' ~ instruction) }}
     WHERE 1=1
         {% if is_incremental() %}
         AND {{ incremental_predicate('call_block_time') }}
@@ -34,30 +36,14 @@ WITH swaps AS (
         AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 
+    {% if not loop.last %}
     UNION ALL
-
-    SELECT
-          account_amm
-        , call_is_inner
-        , call_outer_instruction_index
-        , call_inner_instruction_index
-        , call_tx_id
-        , call_block_time
-        , call_block_slot
-        , call_block_date
-        , call_outer_executing_account
-        , call_tx_signer
-        , call_tx_index
-    FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
-    WHERE 1=1
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('call_block_time') }}
-        {% else %}
-        AND call_block_date >= DATE '{{ project_start_date }}'
-        {% endif %}
+    {% endif %}
+    {% endfor %}
 )
 
-SELECT
+-- Decoded IDL versions can repeat an instruction with identical swap metadata.
+SELECT DISTINCT
       sp.call_block_slot AS block_slot
     , CAST(date_trunc('month', sp.call_block_date) AS DATE) AS block_month
     , sp.call_block_date AS block_date
