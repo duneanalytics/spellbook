@@ -18,7 +18,6 @@
 ,ref('safe_mantle_mnt_transfers')
 ,ref('safe_optimism_eth_transfers')
 ,ref('safe_polygon_matic_transfers')
-,ref('safe_ronin_eth_transfers')
 ,ref('safe_scroll_eth_transfers')
 ,ref('safe_sonic_s_transfers')
 ,ref('safe_unichain_eth_transfers')

@@ -16,3 +16,8 @@ union
 
 select distinct singleton as address 
 from {{ source('gnosis_safe_arbitrum', 'SafeProxyFactory_v_1_4_1_evt_ProxyCreation') }}
+
+union
+
+select distinct singleton as address 
+from {{ source('gnosis_safe_arbitrum', 'SafeProxyFactory_v1_5_0_evt_ProxyCreation') }} 

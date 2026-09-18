@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental',
-        schema = 'safe_ronin',
+        schema='safe_ink',
         alias= 'transactions',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'],
@@ -11,6 +11,4 @@
     )
 }}
 
-{% set project_start_date = '2024-10-01' %}
-
-{{ safe_transactions('ronin', project_start_date) }}
+{{ safe_transactions('ink', '2023-07-01') }}
