@@ -9,7 +9,6 @@
 
 {% set uniswap_models = [
 ref('uniswap_arbitrum_trades')
-, ref('uniswap_arc_trades')
 , ref('uniswap_avalanche_c_trades')
 , ref('uniswap_base_trades')
 , ref('uniswap_blast_trades')

@@ -6,7 +6,6 @@
 
 {% set models = [
     ref('uniswap_arbitrum_base_liquidity_events')
-   ,ref('uniswap_arc_base_liquidity_events')
    ,ref('uniswap_avalanche_c_base_liquidity_events')
    ,ref('uniswap_base_base_liquidity_events')
    ,ref('uniswap_blast_base_liquidity_events')
