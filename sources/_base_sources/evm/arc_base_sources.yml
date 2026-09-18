@@ -268,6 +268,52 @@ sources:
             description: "Deployed bytecode of the contract"
 
 
+      - name: traces
+        description: "Represents internal operations or execution steps within a transaction (e.g., contract calls, creations). Traces form a tree structure for each transaction."
+        columns:
+          - name: block_date
+            description: "The UTC date of the block in which this trace was included"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was mined/sequenced"
+          - name: block_number
+            description: "The sequential number (height) of the block containing this trace"
+          - name: value
+            description: "Amount of the native gas token transferred in this trace, in its smallest unit"
+          - name: gas
+            description: "Amount of gas allocated for this trace's execution (may include gas for sub-traces)"
+          - name: gas_used
+            description: "Actual amount of gas consumed by this specific trace step"
+          - name: success
+            description: "Boolean flag indicating if this specific trace step executed successfully (true) or reverted (false)"
+          - name: tx_index
+            description: "Index of the parent transaction within its containing block"
+          - name: subtraces
+            description: "Number of direct child traces initiated by this trace"
+          - name: error
+            description: "Error message or reason if this trace step failed/reverted"
+          - name: tx_success
+            description: "Boolean flag indicating the success status of the parent transaction"
+          - name: tx_hash
+            description: "Unique 256-bit identifier (hash) of the parent transaction"
+          - name: from
+            description: "Address initiating this trace step (caller)"
+          - name: to
+            description: "Address receiving this trace step (callee)"
+          - name: trace_address
+            description: "Array representing the path from the root trace to this trace within the execution tree"
+          - name: type
+            description: "Type of trace action (e.g., 'call', 'staticcall', 'delegatecall', 'create', 'suicide')"
+          - name: address
+            description: "Address associated with the trace action (e.g., newly created contract address)"
+          - name: code
+            description: "Bytecode of the contract being created"
+          - name: call_type
+            description: "Specific type of call operation (e.g., 'call', 'delegatecall', 'staticcall')"
+          - name: input
+            description: "Input data provided for this trace step (e.g., function arguments for a call)"
+          - name: output
+            description: "Output data returned by this trace step"
+
   # ===========================================
   # ERC20 Source
   # ===========================================
