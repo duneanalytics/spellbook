@@ -6,6 +6,7 @@
 
 {% set uniswap_models = [
 ref('uniswap_arbitrum_pools')
+, ref('uniswap_arc_pools')
 , ref('uniswap_avalanche_c_pools')
 , ref('uniswap_base_pools')
 , ref('uniswap_blast_pools')
