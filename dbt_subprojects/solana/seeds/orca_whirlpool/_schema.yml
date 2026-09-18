@@ -1,0 +1,20 @@
+version: 2
+
+seeds:
+  - name: orca_whirlpool_v2_base_trades_seed
+    description: >
+      Successful direct SwapV2 with 17 accounts, absent from the decoded source.
+      Expected amounts and pool were verified against solana.instruction_calls
+      and tokens_solana.transfers for 2026-09-09.
+    config:
+      column_types:
+        block_month: date
+        surrogate_key: decimal(38,0)
+        tx_id: varchar
+        outer_instruction_index: integer
+        inner_instruction_index: integer
+        token_sold_amount_raw: uint256
+        token_bought_amount_raw: uint256
+        token_sold_mint_address: varchar
+        token_bought_mint_address: varchar
+        project_program_id: varchar
