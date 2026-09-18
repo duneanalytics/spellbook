@@ -16,6 +16,7 @@
   )
 }}
 
+-- ci-stamp: 1 -- Rebuild trade output with V2 swaps from staging.
 WITH swaps AS (
     SELECT
           block_slot

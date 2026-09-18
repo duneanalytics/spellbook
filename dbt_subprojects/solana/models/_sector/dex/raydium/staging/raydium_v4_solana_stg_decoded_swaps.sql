@@ -55,6 +55,38 @@ WITH swaps AS (
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
+    UNION ALL
+
+    -- AMM V2 swaps are not registered in the decoded sources above.
+    -- Raydium's eight-account layout uses account 2 for the pool and emits
+    -- the same input/output SPL transfers consumed by the base trade model.
+    -- Opcodes 16/17 are disjoint from legacy swapBaseIn/Out (9/11).
+    -- https://github.com/raydium-io/raydium-amm/blob/master/program/src/instruction.rs
+    SELECT
+          element_at(account_arguments, 2) AS account_amm
+        , is_inner AS call_is_inner
+        , outer_instruction_index AS call_outer_instruction_index
+        , inner_instruction_index AS call_inner_instruction_index
+        , tx_id AS call_tx_id
+        , block_time AS call_block_time
+        , block_slot AS call_block_slot
+        , block_date AS call_block_date
+        , outer_executing_account AS call_outer_executing_account
+        , tx_signer AS call_tx_signer
+        , tx_index AS call_tx_index
+    FROM {{ source('solana', 'instruction_calls') }}
+    WHERE executing_account = '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8'
+        AND executing_account_prefix = '67'
+        AND tx_success
+        AND bytearray_substring(data, 1, 1) IN (0x10, 0x11)
+        AND length(data) = 17
+        AND cardinality(account_arguments) >= 8
+        AND element_at(account_arguments, 1) = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+        {% if is_incremental() -%}
+        AND {{ incremental_predicate('block_time') }}
+        {% else -%}
+        AND block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif -%}
 )
 
 -- Overlapping upstream IDL ranges can emit identical swaps; collapse them before MERGE.
