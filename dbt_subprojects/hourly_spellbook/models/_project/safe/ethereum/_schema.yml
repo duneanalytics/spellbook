@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: safe
-      contributors: scherbovich, tschubotz, frankmaseo, danielpartida
+      contributors: scherbovich, tschubotz, frankmaseo, danielpartida, doublesc00p
     config:
       tags: ['safe', 'ethereum']
     description: "Safe addresses"
@@ -33,7 +33,7 @@ models:
     meta:
       blockchain: ethereum
       project: safe
-      contributors: scherbovich, tschubotz
+      contributors: scherbovich, tschubotz, doublesc00p
     config:
       tags: ['safe', 'transfers', 'ethereum']
     description: "Eth transfers for safes"
@@ -69,7 +69,7 @@ models:
     meta:
       blockchain: ethereum
       project: safe
-      contributors: tschubotz
+      contributors: tschubotz, doublesc00p
     config:
       tags: ['safe', 'singletons', 'ethereum']
     description: "Singletons addresses used with Safes"
@@ -84,7 +84,7 @@ models:
     meta:
       blockchain: ethereum
       project: safe
-      contributors: tschubotz, danielpartida
+      contributors: tschubotz, danielpartida, doublesc00p
     config:
       tags: ['safe', 'ethereum']
     description: "Safe transactions"

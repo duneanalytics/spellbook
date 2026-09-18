@@ -22,6 +22,7 @@ select
         when et.to = 0xfb1bffc9d739b8d520daf37df666da4c687191ea then '1.3.0L2' -- for chains with EIP-155
         when et.to = 0x41675C099F32341bf84BFc5382aF534df5C7461a then '1.4.1'
         when et.to = 0x29fcB43b46531BcA003ddC8FCB67FFE91900C762 then '1.4.1L2'
+        when et.to = 0x14F2982D601c9458F93bd70B218933A6f8165e7b then '1.5.0'
         else 'unknown'
     end as creation_version,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,

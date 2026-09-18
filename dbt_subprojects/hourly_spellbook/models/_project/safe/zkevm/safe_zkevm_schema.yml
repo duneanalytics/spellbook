@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: zkevm
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'zkevm']
     description: "Safe addresses"
@@ -39,7 +39,7 @@ models:
     meta:
       blockchain: zkevm
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'transfers', 'zkevm']
     description: "MATIC transfers for safes"
@@ -76,7 +76,7 @@ models:
     meta:
       blockchain: zkevm
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'singletons', 'zkevm']
     description: "Singletons addresses used with Safes"
@@ -88,7 +88,7 @@ models:
     meta:
       blockchain: zkevm
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p    
     config:
       tags: ['safe', 'zkevm']
     description: "Safe transactions"
