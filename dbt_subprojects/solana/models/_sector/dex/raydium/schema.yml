@@ -148,11 +148,29 @@ models:
       tags: [ 'solana','dex','raydium' ]
       event_time: block_date
     description: >
-      staging model for raydium v4 swap data from decoded tables
+      staging model for raydium v4 legacy and V2 swap data from decoded tables
+    columns:
+      - name: block_month
+        description: "Month of the swap, used for partitioning"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Date of the swap"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "Unique Solana instruction key for the swap"
+        data_tests:
+          - not_null
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+      - check_seed:
+          arguments:
+            seed_file: ref('raydium_v4_decoded_swaps_seed')
+            match_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+            check_columns: [ 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index', 'pool_id' ]
 
   - name: raydium_v4_base_trades_backfill
     meta:
@@ -167,6 +185,11 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: [ 'block_month', 'surrogate_key' ]
+      - check_seed:
+          arguments:
+            seed_file: ref('raydium_v4_decoded_swaps_seed')
+            match_columns: [ 'block_month', 'surrogate_key' ]
+            check_columns: [ 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index', 'project_program_id', 'token_sold_amount_raw', 'token_bought_amount_raw', 'token_sold_mint_address', 'token_bought_mint_address' ]
 
   - name: raydium_v4_base_trades
     meta:
@@ -301,4 +324,3 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
-
