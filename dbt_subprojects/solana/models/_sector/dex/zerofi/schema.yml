@@ -8,7 +8,8 @@ models:
     config:
       tags: [ 'solana','dex', 'zerofi' ]
     description: >
-      staging model for zerofi swap data from instruction_calls
+      staging model for zerofi swap data from instruction_calls.
+      Covers the Swap (0x06) and SwapV4 (0x10) instructions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
