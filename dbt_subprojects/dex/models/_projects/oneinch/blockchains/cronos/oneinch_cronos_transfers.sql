@@ -1,4 +1,4 @@
-{%- set blockchain = oneinch_robinhood_cfg_macro() -%}
+{%- set blockchain = oneinch_cronos_cfg_macro() -%}
 
 {{-
     config(
