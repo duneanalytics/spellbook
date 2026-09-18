@@ -1,5 +1,9 @@
 version: 2
 sources:
+  - name: tokens_arc
+    tables:
+      - name: erc20
+
   - name: tokens_aave_v3
     tables:
       - name: tokens
@@ -460,4 +464,3 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
