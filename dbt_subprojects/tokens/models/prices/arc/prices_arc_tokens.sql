@@ -43,6 +43,12 @@ FROM
     -- canonical Circle assets
       ('usdc-usd-coin', 'USDC', 0x3600000000000000000000000000000000000000, 6)
     , ('euroc-euro-coin', 'EURC', 0x89b50855aa3be2f677cd6303cec089b5f319d72a, 6)
+    -- assets listed on Aave v4's Arc deployment. Addresses read from the
+    -- protocol's AddAsset events on the Core hub, decimals from the same event.
+    -- cirBTC (0x171a4217b86a807a64eb94757db6849fb4bdbaa0, 8) is left out: it has
+    -- no feed of its own and check_tokens rejects borrowing wbtc's.
+    , ('euroc-euro-coin', 'EURC', 0xbef5f6d51cb62b58e6a8f77868681825c6fe21c1, 6)
+    , ('weth-weth', 'WETH', 0x128cc466b61f542da60c70e3aa11c10e19b84edb, 18)
     -- wrapper -> underlying substitutions (1:1 peg assumed, pending issuer confirmation)
     , ('usdc-usd-coin', 'AUSD', 0xf5b08979251f398180385b54381ee3d6fa1bbe09, 18)
     , ('euroc-euro-coin', 'AEUR', 0x8cd7e5a2240a1a7efaa9b164caa1dc80e9ed23a3, 18)
