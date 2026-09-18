@@ -186,6 +186,8 @@ The `erc20_arc.evt_transfer` table contains Transfer events for ERC20 tokens on 
 
 This table is used for tracking ERC20 token movements on the arc network.
 
+Arc implements EIP-7708, so this table also carries the system emitter at `0xfffffffffffffffffffffffffffffffffffffffe`. Those Transfer logs are Arc's complete record of native value movement, in 18 decimals, and stand in for the traces leg other EVM chains use.
+
 Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
 
 {% enddocs %}
