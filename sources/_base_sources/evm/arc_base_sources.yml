@@ -1,14 +1,21 @@
 version: 2
 
 sources:
+  - name: erc721_arc
+    tables:
+      - name: evt_Transfer
+        description: "ERC721 Transfer events on Arc used to identify NFT contracts."
+
   # ===========================================
   # Base EVM Source (transactions, blocks etc.)
   # ===========================================
   - name: arc
     description: >
-      Raw EVM tables for the Arc chain. Only the tables the token transfer spells read are
-      declared today; add further raw tables here as spells start using them.
+      Raw EVM tables for the Arc chain used by token transfers, contract deployments,
+      and address statistics.
     tables:
+      - name: creation_traces
+        description: "Contract creations on Arc, including deployment time, transaction, address, and bytecode."
       # tokens_arc_base_transfers reads no traces on purpose: Arc implements EIP-7708, so every
       # native value movement is logged as a Transfer event from the system emitter and arrives
       # on erc20_arc.evt_Transfer. That stream is a complete native record, so the transfers
