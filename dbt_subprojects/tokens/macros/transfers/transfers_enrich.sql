@@ -16,7 +16,57 @@
 	{{ exceptions.raise_compiler_error("base_transfers parameter cannot be null or empty") }}
 {%- endif -%}
 
-with base_transfers as (
+{#- Merge dest must see historical null-amount rows for recently updated tokens,
+    otherwise incremental_predicates on block_date insert duplicate unique_keys. -#}
+{%- set dest_pred -%}
+({{ incremental_predicate('DBT_INTERNAL_DEST.block_date') }}
+	or (
+		DBT_INTERNAL_DEST.amount is null
+		and DBT_INTERNAL_DEST.amount_raw is not null
+		and DBT_INTERNAL_DEST.contract_address in (
+			select e.contract_address
+			from {{ tokens_erc20_model }} as e
+			where e.decimals is not null
+				and e.blockchain = '{{ blockchain }}'
+				and {{ incremental_predicate('e._updated_at') }}
+		)
+	))
+{%- endset -%}
+{{- config(incremental_predicates = [dest_pred]) -}}
+
+with
+{% if is_incremental() %}
+-- Re-enrich dest rows whose token metadata arrived after the incremental window.
+recent_metadata as (
+	select
+		blockchain
+		, contract_address
+	from
+		{{ tokens_erc20_model }} as e
+	where
+		e.decimals is not null
+		and e.blockchain = '{{ blockchain }}'
+		and {{ incremental_predicate('e._updated_at') }}
+)
+, heal_keys as (
+	select
+		d.block_month
+		, d.block_date
+		, d.unique_key
+		, d.block_time
+		, d.blockchain
+		, d.contract_address
+	from
+		{{ this }} as d
+	inner join recent_metadata as e
+		on e.blockchain = d.blockchain
+		and e.contract_address = d.contract_address
+	where
+		d.amount is null
+		and d.amount_raw is not null
+)
+, {% endif %}
+base_transfers as (
 	select
 		*
 	from
@@ -24,6 +74,17 @@ with base_transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('block_date') }}
+	union all
+	select
+		b.*
+	from
+		{{ base_transfers }} as b
+	inner join heal_keys as h
+		on b.block_month = h.block_month
+		and b.block_date = h.block_date
+		and b.unique_key = h.unique_key
+	where
+		not ({{ incremental_predicate('b.block_date') }})
 	{% elif target.name == 'ci' -%}
 	-- bound the CI initial-build scan to recent history so it completes against real data instead of
 	-- scanning the full source range; prod and manual runs still use transfers_start_date for backfills.
@@ -47,6 +108,29 @@ with base_transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('minute') }}
+	union all
+	select
+		p.minute
+		, p.blockchain
+		, p.contract_address
+		, p.decimals
+		, p.symbol
+		, p.price
+	from
+		{{ prices_model }} as p
+	inner join (
+		select distinct
+			date_trunc('minute', block_time) as minute
+			, blockchain
+			, contract_address
+		from
+			heal_keys
+	) as h
+		on p.minute = h.minute
+		and p.blockchain = h.blockchain
+		and p.contract_address = h.contract_address
+	where
+		not ({{ incremental_predicate('p.minute') }})
 	{% elif target.name == 'ci' -%}
 	where
 		minute >= current_date - interval '7' day
