@@ -32,10 +32,14 @@
 		)
 	))
 {%- endset -%}
+{#- CI incremental builds compile dest (this) into a schema that does not exist yet. -#}
+{%- set heal_late_metadata = is_incremental() and target.name != 'ci' -%}
+{%- if heal_late_metadata -%}
 {{- config(incremental_predicates = [dest_pred]) -}}
+{%- endif %}
 
 with
-{% if is_incremental() %}
+{% if heal_late_metadata %}
 -- Re-enrich dest rows whose token metadata arrived after the incremental window.
 recent_metadata as (
 	select
@@ -74,6 +78,7 @@ base_transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('block_date') }}
+	{% if heal_late_metadata %}
 	union all
 	select
 		b.*
@@ -85,6 +90,7 @@ base_transfers as (
 		and b.unique_key = h.unique_key
 	where
 		not ({{ incremental_predicate('b.block_date') }})
+	{% endif %}
 	{% elif target.name == 'ci' -%}
 	-- bound the CI initial-build scan to recent history so it completes against real data instead of
 	-- scanning the full source range; prod and manual runs still use transfers_start_date for backfills.
@@ -108,6 +114,7 @@ base_transfers as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('minute') }}
+	{% if heal_late_metadata %}
 	union all
 	select
 		p.minute
@@ -131,6 +138,7 @@ base_transfers as (
 		and p.contract_address = h.contract_address
 	where
 		not ({{ incremental_predicate('p.minute') }})
+	{% endif %}
 	{% elif target.name == 'ci' -%}
 	where
 		minute >= current_date - interval '7' day
