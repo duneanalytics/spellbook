@@ -6,14 +6,13 @@ sources:
   # ===========================================
   - name: arc
     description: >
-      Raw EVM tables for the Arc chain. Only the tables the token transfer spells read are
-      declared today; add further raw tables here as spells start using them.
+      Raw EVM tables for the Arc chain used by token transfer and call-level spells.
     tables:
       # tokens_arc_base_transfers reads no traces on purpose: Arc implements EIP-7708, so every
       # native value movement is logged as a Transfer event from the system emitter and arrives
       # on erc20_arc.evt_Transfer. That stream is a complete native record, so the transfers
       # model has no traces leg to read -- reading both would double count. See the comments in
-      # that model. The traces table below is declared for call-level spells (1inch raw calls),
+      # that model. The traces table below is declared for call-level spells (1inch and 0x Settler),
       # not for native transfer accounting.
       - name: transactions
         description: "Transactions executed on Arc: sender, receiver, value, gas, status and input data."
@@ -82,6 +81,32 @@ sources:
             description: "Input data provided for this trace step (e.g., function arguments for a call)"
           - name: output
             description: "Output data returned by this trace step"
+
+      - name: logs
+        description: "Raw event logs on Arc, including Settler registry events and token transfers."
+        columns:
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: block_time
+            description: "The UTC timestamp of the block containing this log"
+          - name: block_number
+            description: "The block number containing this log"
+          - name: tx_hash
+            description: "The hash of the transaction that emitted this log"
+          - name: index
+            description: "The position of this log within its block"
+          - name: contract_address
+            description: "The address that emitted this log"
+          - name: topic0
+            description: "The event signature hash"
+          - name: topic1
+            description: "The first indexed event argument"
+          - name: topic2
+            description: "The second indexed event argument"
+          - name: topic3
+            description: "The third indexed event argument"
+          - name: data
+            description: "The encoded non-indexed event arguments"
 
   # ===========================================
   # ERC20 Source
