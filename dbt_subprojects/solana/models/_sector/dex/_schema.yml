@@ -27,11 +27,14 @@ models:
       # is state:modified.configs, so neither CI nor the prod deploy (state:modified.body)
       # rebuilds dex_solana.trades over a metadata-only change.
       # Thresholds are wider than dex.trades: this table runs slower, p95 11.7h and max 15.9h
-      # over the trailing week, and the legacy 13h SLO bound was being exceeded.
+      # over the trailing week, and the legacy 13h SLO bound was being exceeded. The observed
+      # peak is the zero-failure case; the floor adds the failure allowance on top, and on the
+      # 6-hourly spellbook_solana job that is 3*6h. Floor is U(1h, solana base tables) +
+      # D(0.84h) + 18h = 19.84h, so 24h is the nearest shared catalogue value above it.
       monitoring:
         enabled: true
-        warn_after: {count: 18, period: hour}
-        critical_after: {count: 24, period: hour}
+        warn_after: {count: 24, period: hour}
+        critical_after: {count: 48, period: hour}
         oncall: false
     config:
       tags: ['solana','dex']
