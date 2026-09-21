@@ -260,7 +260,9 @@ sources:
           - name: created_at # Dune timestamp from git history
             description: "Timestamp of when this contract was first decoded on Dune. This is not the contract creation timestamp."
 
-      - name: creation_traces # Added from original file
+      # Read by uniswap_v4_aggregator_hooks, which scans deployed bytecode to detect
+      # BaseAggregatorHook contracts. Contract creations only, not the full trace stream.
+      - name: creation_traces
         description: "{{ doc('arc_creation_traces_doc') }}"
         columns:
           - *block_time
@@ -269,25 +271,6 @@ sources:
           - name: address
             description: "Address of the contract created"
           - name: from # Creator address
-            description: "Address that created this contract. Can be a contract or EOA."
-          - name: code
-            description: "Deployed bytecode of the contract"
-
-
-      # Read by uniswap_v4_aggregator_hooks, which scans deployed bytecode to detect
-      # BaseAggregatorHook contracts. Contract creations only, not the full trace stream.
-      - name: creation_traces
-        description: "One row per contract creation on Arc: the created address, its creator, and its deployed bytecode."
-        columns:
-          - name: block_time
-            description: "The exact UTC timestamp when the block containing this creation was mined/sequenced"
-          - name: block_number
-            description: "The sequential number (height) of the block containing this creation"
-          - name: tx_hash
-            description: "Hash of the transaction that created the contract"
-          - name: address
-            description: "Address of the contract created"
-          - name: from
             description: "Address that created this contract. Can be a contract or EOA."
           - name: code
             description: "Deployed bytecode of the contract"
