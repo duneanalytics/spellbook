@@ -137,7 +137,7 @@ models:
     columns:
       - &contract_address
         name: contract_address
-        desctiption: "The address of the contract which fired the fill/swap event"
+        description: "The address of the contract which fired the fill/swap event"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
