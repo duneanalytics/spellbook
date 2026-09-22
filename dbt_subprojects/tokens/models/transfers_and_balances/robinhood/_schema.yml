@@ -69,6 +69,7 @@ models:
         critical_after: {count: 26, period: hour}
         oncall: false
     config:
+      event_time: block_time
       tags: ['tokens','transfers', 'robinhood']
     description: >
       Enriched token transfers on Robinhood

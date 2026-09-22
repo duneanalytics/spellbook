@@ -15,6 +15,7 @@ models:
         critical_after: {count: 26, period: hour}
         oncall: false
     config:
+      event_time: block_time
       tags: ['tokens','transfers','evm']
     description: >
       Transfers of all kinds of fungible tokens across all EVM-compatible networks on Dune. This model contains
@@ -125,6 +126,7 @@ models:
         critical_after: {count: 26, period: hour}
         oncall: false
     config:
+      event_time: block_time
       tags: ['tokens','transfers', 'evm']
     description: >
       Fungible token transfers across all EVM-compatible networks only. This model contains the same data as tokens.transfers
