@@ -61,6 +61,13 @@ models:
       blockchain: cronos
       sector: tokens
       contributors: jeff-dude
+      # Freshness monitoring declaration. Under meta, not config, on purpose: a yml config
+      # change is state:modified.configs, so a metadata-only edit triggers no rebuild.
+      monitoring:
+        enabled: true
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: false
     config:
       tags: ['tokens','transfers', 'cronos']
     description: >
