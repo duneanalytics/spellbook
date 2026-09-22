@@ -13,7 +13,7 @@ models:
         enabled: true
         warn_after: {count: 10, period: hour}
         critical_after: {count: 26, period: hour}
-        oncall: false
+        oncall: true
     config:
       event_time: block_time
       tags: ['tokens','transfers','evm']
@@ -124,7 +124,7 @@ models:
         enabled: true
         warn_after: {count: 10, period: hour}
         critical_after: {count: 26, period: hour}
-        oncall: false
+        oncall: true
     config:
       event_time: block_time
       tags: ['tokens','transfers', 'evm']
