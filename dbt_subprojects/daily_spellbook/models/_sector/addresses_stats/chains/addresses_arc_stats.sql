@@ -10,4 +10,6 @@
   )
 }}
 
-{{ addresses_stats('arc', funding_relation=ref('addresses_events_arc_first_funded_by')) }}
+-- Build hourly addresses_events_arc.first_funded_by before the initial daily run.
+-- The cross-project source lookup does not enforce this deployment dependency.
+{{ addresses_stats('arc') }}

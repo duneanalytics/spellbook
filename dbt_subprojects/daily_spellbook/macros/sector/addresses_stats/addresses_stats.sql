@@ -1,6 +1,4 @@
-{% macro addresses_stats(blockchain, funding_relation=none) %}
-
-{% set funding_relation = funding_relation if funding_relation is not none else source('addresses_events_' ~ blockchain, 'first_funded_by') %}
+{% macro addresses_stats(blockchain) %}
 
 with
 
@@ -13,7 +11,7 @@ first_funded as (
         address,
         first_funded_by,
         block_time as first_funded_at
-    from {{ funding_relation }}
+    from {{ source('addresses_events_' ~ blockchain, 'first_funded_by') }}
 ),
 
 contract_addresses as (
@@ -100,7 +98,7 @@ funding_updates as (
         f.address,
         f.first_funded_by,
         f.block_time as first_funded_at
-    from {{ funding_relation }} f
+    from {{ source('addresses_events_' ~ blockchain, 'first_funded_by') }} f
     left join {{ this }} t
       on t.address = f.address
     where

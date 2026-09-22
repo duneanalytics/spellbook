@@ -3,6 +3,7 @@ sources:
   - name: tokens_arc
     tables:
       - name: erc20
+      - name: transfers
 
   - name: tokens_aave_v3
     tables:
