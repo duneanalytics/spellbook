@@ -11,7 +11,7 @@ sources:
       # native value movement is logged as a Transfer event from the system emitter and arrives
       # on erc20_arc.evt_Transfer. That stream is a complete native record, so the transfers
       # model has no traces leg to read -- reading both would double count. See the comments in
-      # that model. The traces table below is declared for call-level spells (1inch raw calls),
+      # that model. The traces table below is declared for call-level spells (1inch and 0x Settler),
       # not for native transfer accounting.
       - name: transactions
         # description: "Contains detailed information about each transaction executed on the arc network. Includes sender, receiver, value, gas details, status, input data, and potentially L2-specific L1 submission info."
