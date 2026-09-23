@@ -21,8 +21,24 @@ models:
       contributors: ["ilemi", "0xRob"]
       docs_slug: /curated/dex-trades/solana/solana-dex-trades
       short_description: "Detailed data on trades executed via decentralized exchanges (DEXs) on Solana, containing one or many trades per transaction with Solana-specific fields like block_slot, fee_tier, and token vaults."
+      # Freshness monitoring declaration, read by monitoring_config_spellbook_solana into
+      # delta_prod.monitoring.config_spellbook_solana.
+      # Declared here rather than in the model's config() block on purpose: a yml config change
+      # is state:modified.configs, so neither CI nor the prod deploy (state:modified.body)
+      # rebuilds dex_solana.trades over a metadata-only change.
+      # Thresholds are wider than dex.trades: this table runs slower, p95 11.7h and max 15.9h
+      # over the trailing week, and the legacy 13h SLO bound was being exceeded. The observed
+      # peak is the zero-failure case; the floor adds the failure allowance on top, and on the
+      # 6-hourly spellbook_solana job that is 3*6h. Floor is U(1h, solana base tables) +
+      # D(0.84h) + 18h = 19.84h, so 24h is the nearest shared catalogue value above it.
+      monitoring:
+        enabled: true
+        warn_after: {count: 24, period: hour}
+        critical_after: {count: 48, period: hour}
+        oncall: true
     config:
       tags: ['solana','dex']
+      event_time: block_time
     description: >
         The dex_solana.trades table captures detailed data on decentralized exchange (DEX) trades on the Solana blockchain, recording all trade events across various protocols.
     data_tests:

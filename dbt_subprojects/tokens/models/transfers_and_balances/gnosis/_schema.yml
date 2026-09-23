@@ -51,6 +51,10 @@ models:
       blockchain: gnosis
       sector: tokens
       contributors: ['aalan3', 'jeff-dude', 'hdser']
+      # No monitoring declaration yet: this model's `columns:` uses `- <<: *base_columns`,
+      # a merge key against a list anchor, which YAML does not splice. The documented
+      # column set therefore resolves to nothing, and validate_monitoring requires
+      # event_time to be among the declared columns. Fix the anchor, then declare.
     config:
       tags: ['tokens', 'transfers', 'gnosis']
     columns: 
