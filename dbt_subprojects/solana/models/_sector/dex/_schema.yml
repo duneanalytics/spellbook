@@ -35,7 +35,7 @@ models:
         enabled: true
         warn_after: {count: 24, period: hour}
         critical_after: {count: 48, period: hour}
-        oncall: false
+        oncall: true
     config:
       tags: ['solana','dex']
       event_time: block_time
