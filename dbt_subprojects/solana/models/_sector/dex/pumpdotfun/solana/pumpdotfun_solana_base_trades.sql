@@ -51,6 +51,7 @@ with
             , outer_instruction_index
             , inner_instruction_index
             , outer_executing_account
+            , tx_signer
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
         AND executing_account_prefix = '6E'
@@ -66,25 +67,6 @@ with
         -- and block_slot = 269850397
         --buy https://solscan.io/tx/5782i58ZHCKSANgTi3WXL5vjFAWEVJuPMGAr6gjx2qqcRP6LLNRH2g6pb61tk44H7PC9ohFNCUKQVUAMd5vYeUns
         --sell https://solscan.io/tx/4thHCu9SX166TP2cnjgwJ7mDSSMn5MBe8xLsTYzRLJmE7jPgwQatXh4ehh3At4xvVcgUefFzzsYVBaVwYyS1bA6v
-    )
-
-    , okx_swaps as (
-        SELECT
-            tx_id
-            , block_time
-            , outer_instruction_index
-            , element_at(account_arguments, 1) as trader_id
-        FROM {{ source('solana','instruction_calls') }}
-        WHERE executing_account = 'proVF4pMXVaYqmy4NjniPh4pqKNfMmsihgd4wdkCX3u'
-            AND executing_account_prefix = 'pr'
-            AND is_inner = false
-            AND tx_success = true
-            AND bytearray_substring(data, 1, 8) IN (0xaa2955b184501f35, 0xbbc9d433109bec3c)
-        {% if is_incremental() -%}
-            AND {{ incremental_predicate('block_time') }}
-        {% else -%}
-            AND block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif -%}
     )
 
     , trades_base as (
@@ -116,8 +98,8 @@ with
             , sp.sol_reserves/pow(10,tk_sol.decimals) as sol_reserves
             , sp.token_reserves as token_reserves_raw
             , sp.token_reserves/pow(10,tk.decimals) as token_reserves
-            -- OKX's shared swap authority is an intermediary, not the router's user.
-            , coalesce(okx.trader_id, sp.user) as trader_id
+            -- OKX's shared swap authority is an intermediary; attribute to the tx signer, matching other Solana DEX spells.
+            , case when sp.user = 'ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn' then sp.tx_signer else sp.user end as trader_id
             , sp.tx_id
             , sp.outer_instruction_index
             , sp.inner_instruction_index
@@ -130,11 +112,6 @@ with
                 else bonding_curve_vault
                 end as varchar) as token_sold_vault
         FROM swaps sp
-        LEFT JOIN okx_swaps okx ON okx.tx_id = sp.tx_id
-            AND okx.block_time = sp.block_time
-            AND okx.outer_instruction_index = sp.outer_instruction_index
-            AND sp.outer_executing_account = 'proVF4pMXVaYqmy4NjniPh4pqKNfMmsihgd4wdkCX3u'
-            AND sp.user = 'ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn'
         LEFT JOIN {{ source('tokens_solana','fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
         LEFT JOIN {{ source('tokens_solana','fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
         LEFT JOIN bonding_curves bc ON bc.token_mint_address = sp.token_mint_address
