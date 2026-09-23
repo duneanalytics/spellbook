@@ -74,7 +74,8 @@ SELECT
     , CAST(NULL AS VARBINARY) AS maker
     , dexs.project_contract_address
     , dexs.tx_hash
-    , ROW_NUMBER() OVER (
+    -- synthetic evt_index: trace-derived, banded clear of real log indices (see dex/README.md)
+    , 102000000 + ROW_NUMBER() OVER (
         PARTITION BY dexs.tx_hash
         ORDER BY
             dexs.trace_address

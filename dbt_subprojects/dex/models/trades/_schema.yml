@@ -22,6 +22,18 @@ models:
       tags: [ 'dex', 'trades']
       event_time: block_time
     description: '{{ doc("dex_trades_doc") }}'
+    data_tests:
+      # Consumers merge on (blockchain, tx_hash, evt_index), so it must identify one trade.
+      # Warn-only until the renumbered models are fully refreshed; flip to error after.
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: warn
+            where: "block_time >= now() - interval '3' day"
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain

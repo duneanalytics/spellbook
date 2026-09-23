@@ -1,5 +1,6 @@
 {% set chains = [
 	'arbitrum',
+	'arc',
 	'avalanche_c',
 	'base',
 	'bnb',
