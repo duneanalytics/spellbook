@@ -12,7 +12,7 @@ models:
         enabled: true
         warn_after: {count: 10, period: hour}
         critical_after: {count: 26, period: hour}
-        oncall: false
+        oncall: true
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
       event_time: block_time
