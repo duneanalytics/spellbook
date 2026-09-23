@@ -16,4 +16,4 @@
 -- depends on: {{ ref('oneinch_' + blockchain + '_project_orders_raw_logs') }}
 -- depends on: {{ ref('oneinch_' + blockchain + '_project_orders_raw_traces') }}
 
-{{ oneinch_project_orders_macro(blockchain = blockchain, date_from = '2026-09-20') }}
+{{ oneinch_project_orders_macro(blockchain = blockchain) }}

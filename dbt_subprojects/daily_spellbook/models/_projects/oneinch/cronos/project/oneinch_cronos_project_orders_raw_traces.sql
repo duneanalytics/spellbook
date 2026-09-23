@@ -20,6 +20,5 @@
 {{
     oneinch_project_orders_raw_traces_macro(
         blockchain = blockchain
-        , date_from = '2026-09-20'
     )
 }}

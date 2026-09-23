@@ -21,6 +21,5 @@
 {{
     oneinch_project_calls_macro(
         blockchain = blockchain
-        , date_from = '2026-09-20'
     )
 }}
