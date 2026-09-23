@@ -10,8 +10,8 @@ models:
       short_description: "Trades routed through DEX aggregators (e.g. 1inch, CowSwap, Paraswap), recording swap execution details across various aggregators and blockchains."
       monitoring:
         enabled: true
-        warn_after: {count: 24, period: hour}
-        critical_after: {count: 48, period: hour}
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
         oncall: false
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
