@@ -13,5 +13,7 @@
         'linea',
         'sonic',
         'unichain',
+        'monad',
+        'hyperevm',
     ]) }}
 {% endmacro %}
