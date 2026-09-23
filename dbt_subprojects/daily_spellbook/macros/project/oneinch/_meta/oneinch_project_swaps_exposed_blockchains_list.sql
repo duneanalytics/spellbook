@@ -15,5 +15,8 @@
         'unichain',
         'monad',
         'hyperevm',
+        'robinhood',
+        'cronos',
+        'arc',
     ]) }}
 {% endmacro %}
