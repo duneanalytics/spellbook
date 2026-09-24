@@ -51,6 +51,7 @@ with
             , outer_instruction_index
             , inner_instruction_index
             , outer_executing_account
+            , tx_signer
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
         AND executing_account_prefix = '6E'
@@ -97,7 +98,8 @@ with
             , sp.sol_reserves/pow(10,tk_sol.decimals) as sol_reserves
             , sp.token_reserves as token_reserves_raw
             , sp.token_reserves/pow(10,tk.decimals) as token_reserves
-            , sp.user as trader_id
+            -- OKX's shared swap authority is an intermediary; attribute to the tx signer, matching other Solana DEX spells.
+            , case when sp.user = 'ARu4n5mFdZogZAravu7CcizaojWnS6oqka37gdLT5SZn' then sp.tx_signer else sp.user end as trader_id
             , sp.tx_id
             , sp.outer_instruction_index
             , sp.inner_instruction_index
