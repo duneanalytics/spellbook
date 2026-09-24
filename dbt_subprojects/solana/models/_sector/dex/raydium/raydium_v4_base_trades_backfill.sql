@@ -17,6 +17,7 @@
 }}
 
 WITH swaps AS (
+    -- CI body stamp: rebuild this model so its seed test checks PR staging output.
     SELECT
           block_slot
         , block_date
