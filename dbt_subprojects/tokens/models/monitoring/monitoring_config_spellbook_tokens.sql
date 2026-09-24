@@ -5,7 +5,6 @@
     , file_format = 'delta'
 ) }}
 
--- ci-stamp: 1
 /*
     The tokens subproject's arm of the freshness monitoring config: one row per model
     here declaring `meta.monitoring.enabled`, read from the parsed manifest. One writer table
