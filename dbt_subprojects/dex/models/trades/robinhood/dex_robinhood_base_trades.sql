@@ -30,6 +30,7 @@
     , ref('uponrh_v3_robinhood_base_trades')
     , ref('gigadex_v2_robinhood_base_trades')
     , ref('gigadex_v3_robinhood_base_trades')
+    , ref('metric_robinhood_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

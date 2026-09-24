@@ -269,4 +269,5 @@ FROM (VALUES
     , ('cronaswap', 'CronaSwap', 'Direct', 'CronaSwap_org')
     , ('ferro', 'Ferro', 'Direct', 'FerroProtocol')
     , ('agra', 'Agra', 'Direct', 'agra_gg')
+    , ('metric', 'Metric', 'Direct', 'metricxyz')
 ) AS temp_table (project, name, marketplace_type, x_username)

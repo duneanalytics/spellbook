@@ -3,16 +3,16 @@ version: 2
 models:
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb, base, scroll, linea, polygon, celo, blast, ink, monad, tempo, unichain, worldchain, zora
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, arc, bnb, base, scroll, linea, polygon, celo, blast, ink, monad, tempo, unichain, worldchain, zora
       sector: dex_aggregator
       contributors: bh2smith, Henrystats, jeff-dude, rantum, thevaizman
       docs_slug: /curated/dex-trades/evm/dex-aggregator-trades
       short_description: "Trades routed through DEX aggregators (e.g. 1inch, CowSwap, Paraswap), recording swap execution details across various aggregators and blockchains."
       monitoring:
         enabled: true
-        warn_after: {count: 24, period: hour}
-        critical_after: {count: 48, period: hour}
-        oncall: false
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: true
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
       event_time: block_time
@@ -108,7 +108,7 @@ models:
 
   - name: dex_aggregator_base_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb, base, polygon, celo, blast, ink, monad, tempo, unichain, worldchain, zora
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, arc, bnb, base, polygon, celo, blast, ink, monad, tempo, unichain, worldchain, zora
       sector: dex_aggregator
       contributors: hosuke, thevaizman
     config:

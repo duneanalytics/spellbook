@@ -7,7 +7,15 @@ models:
       sector: tokens
       short_description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata."
       contributors: aalan3, jeff-dude, 0xBoxer, hildobby, hosuke, tomfutago
+      # Freshness monitoring declaration. Under meta, not config, on purpose: a yml config
+      # change is state:modified.configs, so a metadata-only edit triggers no rebuild.
+      monitoring:
+        enabled: true
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: true
     config:
+      event_time: block_time
       tags: ['tokens','transfers','evm']
     description: >
       Transfers of all kinds of fungible tokens across all EVM-compatible networks on Dune. This model contains
@@ -110,7 +118,15 @@ models:
     meta:
       sector: tokens
       contributors: kryptaki
+      # Freshness monitoring declaration. Under meta, not config, on purpose: a yml config
+      # change is state:modified.configs, so a metadata-only edit triggers no rebuild.
+      monitoring:
+        enabled: true
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: true
     config:
+      event_time: block_time
       tags: ['tokens','transfers', 'evm']
     description: >
       Fungible token transfers across all EVM-compatible networks only. This model contains the same data as tokens.transfers

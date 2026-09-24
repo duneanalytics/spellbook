@@ -1,6 +1,41 @@
 version: 2
 
 models:
+  - name: addresses_arc_stats
+    description: "Per-address Arc stats: first native funding and contract deployment. Use _updated_at for incremental reads."
+    meta:
+      blockchain: arc
+      sector: addresses
+      contributors: karimhass
+    data_tests:
+      - check_seed:
+          arguments:
+            seed_file: ref('arc_first_funding_seed')
+            match_columns: [blockchain, address]
+            check_columns: [first_funded_by, first_funded_at]
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [blockchain, address]
+    columns:
+      - name: blockchain
+        description: "Blockchain name."
+        data_tests: [not_null]
+      - name: address
+        description: "Funded or deployed address."
+        data_tests: [not_null]
+      - name: first_funded_by
+        description: "Sender of the first native transfer."
+      - name: first_funded_at
+        description: "Block timestamp of the first native transfer."
+      - name: is_smart_contract
+        description: "Whether the address appears in Arc creation traces."
+      - name: is_eoa
+        description: "Whether the address has no recorded contract deployment."
+      - name: first_deployment_date
+        description: "Earliest recorded contract deployment timestamp."
+      - name: _updated_at
+        description: "Timestamp of the latest write for incremental consumers."
+
   - name: addresses_ethereum_stats
     meta:
       blockchain: ethereum
