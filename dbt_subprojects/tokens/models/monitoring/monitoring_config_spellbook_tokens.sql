@@ -12,6 +12,8 @@
     Consumers read the delta_prod.monitoring.config view in curated-data, never this table.
     No ref() on purpose: it reads declarations, not data, so it emits rows even when upstream
     builds fail.
+    Keep this writer body changed with monitoring metadata edits so deploy selects it and publishes
+    the updated declarations.
 */
 
 {{ monitoring_config_select() }}
