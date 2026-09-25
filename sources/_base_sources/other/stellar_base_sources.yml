@@ -51,3 +51,59 @@ sources:
             description: "Last update timestamp on the source row"
           - name: ingested_at
             description: "Ingestion timestamp on the source row"
+      - name: history_contract_events
+        description: "Soroban contract events emitted during successful and diagnostic contract execution"
+        columns:
+          - name: closed_at_date
+            description: "Ledger close date; partition column"
+          - name: transaction_hash
+            description: "Transaction hash"
+          - name: transaction_id
+            description: "Transaction identifier (TOID)"
+          - name: successful
+            description: "Whether the enclosing transaction succeeded"
+          - name: in_successful_contract_call
+            description: "Whether the event occurred during a successful contract call"
+          - name: contract_id
+            description: "Contract that emitted the event (C... strkey)"
+          - name: type
+            description: "Numeric contract event type"
+          - name: type_string
+            description: "Contract event type label (Contract, Diagnostic, or System)"
+          - name: topics
+            description: "Encoded event topics"
+          - name: topics_decoded
+            description: "JSON-decoded event topics"
+          - name: data
+            description: "Encoded event data"
+          - name: data_decoded
+            description: "JSON-decoded event data"
+          - name: contract_event_xdr
+            description: "Raw XDR for the contract event"
+          - name: closed_at
+            description: "Ledger close timestamp"
+          - name: ledger_sequence
+            description: "Ledger sequence number"
+          - name: operation_id
+            description: "Operation identifier (TOID); nullable for some Soroban events"
+          - name: updated_at
+            description: "Last update timestamp on the source row"
+          - name: ingested_at
+            description: "Ingestion timestamp on the source row"
+      - name: history_transactions
+        description: "Stellar transactions, including Soroban resource and fee metadata"
+        columns:
+          - name: closed_at_date
+            description: "Ledger close date; partition column"
+          - name: id
+            description: "Transaction identifier (TOID)"
+          - name: transaction_hash
+            description: "Transaction hash"
+          - name: ledger_sequence
+            description: "Ledger sequence number"
+          - name: account
+            description: "Source account that originated the transaction"
+          - name: successful
+            description: "Whether the transaction succeeded"
+          - name: closed_at
+            description: "Ledger close timestamp"
