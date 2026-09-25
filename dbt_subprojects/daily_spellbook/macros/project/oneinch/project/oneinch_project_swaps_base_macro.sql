@@ -10,6 +10,8 @@
 {%- set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' -%}
 {%- set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
 {%- set zero_address = '0x0000000000000000000000000000000000000000' -%}
+{#- chains onboarded to the legacy tokens schema expose transfers_from_traces; newer ones only have event-based base_transfers (same split as oneinch_transfers_macro in dex) -#}
+{%- set transfers_from_traces = blockchain not in ['robinhood', 'cronos', 'arc'] -%}
 
 
 
@@ -163,11 +165,16 @@ meta as (
         block_number
         , block_time
         , tx_hash
+        {%- if transfers_from_traces %}
         , trace_address as transfer_trace_address
+        {%- else %}
+        , coalesce(trace_address, array[-1, evt_index]) as transfer_trace_address -- event-based transfers have no trace_address; unique non-overlapping stand-in
+        , trace_address is null as event_based
+        {%- endif %}
         , contract_address as contract_address_raw -- original
         , if(token_standard = 'native', wrapped_native_token_address, contract_address) as contract_address
         , token_standard = 'native' as native
-        , symbol
+        , {% if transfers_from_traces %}symbol{% else %}erc20_symbol as symbol{% endif %}
         , amount_raw as amount
         , native_symbol
         , "from" as transfer_from
@@ -175,7 +182,17 @@ meta as (
         , block_month
         , block_date
         , date_trunc('minute', block_time) as minute
+    {%- if transfers_from_traces %}
     from {{ source('tokens_' + blockchain, 'transfers_from_traces') }}, meta
+    {%- else %}
+    from {{ source('tokens_' + blockchain, 'base_transfers') }}
+    cross join meta
+    left join (
+        select contract_address as erc20_address, symbol as erc20_symbol
+        from {{ source('tokens', 'erc20') }}
+        where blockchain = '{{ blockchain }}'
+    ) as erc20 on erc20_address = contract_address -- base_transfers carries no symbol
+    {%- endif %}
     where true
         and block_time >= timestamp '{{ date_from }}'
         and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
@@ -234,8 +251,17 @@ meta as (
         and swaps.block_month = transfers.block_month
         and swaps.block_number = transfers.block_number
         and swaps.tx_hash = transfers.tx_hash
+        {%- if transfers_from_traces %}
         and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
         and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
+        {%- else %}
+        and if(not event_based
+            , slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
+                and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
+            -- event-based transfers can't be placed in the call subtree: attribute them only when every tracked call of the tx sits within this call's subtree
+            , all_match(array_distinct(call_trace_addresses), x -> slice(x, 1, cardinality(call_trace_address)) = call_trace_address)
+        )
+        {%- endif %}
         and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only
     left join prices using(contract_address, minute)
     left join trusted_tokens using(contract_address)
