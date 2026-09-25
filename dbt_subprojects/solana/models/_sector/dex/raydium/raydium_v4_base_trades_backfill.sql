@@ -8,7 +8,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
     , event_time = 'block_time'
-    , begin = '2021-03-21'
+    , begin = '2025-09-01' if target.name == 'ci' else '2021-03-21'
     , batch_size = var('raydium_v4_batch_size', 'day')
     , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
@@ -17,7 +17,7 @@
 }}
 
 WITH swaps AS (
-    -- CI body stamp: rebuild this model so its seed test checks PR staging output.
+    -- ci-stamp: 1
     SELECT
           block_slot
         , block_date
