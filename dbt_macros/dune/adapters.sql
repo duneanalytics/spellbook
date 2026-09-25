@@ -52,6 +52,7 @@
     {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
     {%- do _properties.update({'location': "'" + location + "'"}) -%}
   {%- endif -%}
+  {%- do _properties.update({'delta.enableChangeDataFeed': 'true'}) -%}
   {%- if target.name == 'ci' -%}
     {%- do _properties.update({'extra_properties': "map_from_entries(ARRAY[ROW('dune.public', 'true')])"}) -%}
   {%- endif -%}
