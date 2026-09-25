@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: squeeze_base_deployments
+    meta:
+      blockchain: base
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['base', 'squeeze', 'launchpad', 'doppler']
+    description: >
+      Tokens launched through Squeeze on Base via Doppler Airlock where
+      integrator = 0x6C61feE73584670AbEd65101946734006DAB12d6.
+      Requires decoded Airlock_call_create (ABI submit).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['token']
+    columns:
+      - name: token
+        description: ERC-20 asset address from Airlock create
+        data_tests:
+          - not_null
+      - name: integrator
+        description: Doppler integrator (Squeeze identity)
+      - name: tx_hash
+        description: Launch transaction
+
+  - name: squeeze_base_trades
+    meta:
+      blockchain: base
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['base', 'squeeze', 'launchpad', 'dex']
+    description: >
+      dex.trades rows touching Squeeze-launched Base tokens (attribution; overlaps Uniswap volume).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - blockchain
+              - tx_hash
+              - evt_index

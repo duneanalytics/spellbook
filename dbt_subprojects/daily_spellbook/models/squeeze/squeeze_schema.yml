@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: squeeze_deployments
+    meta:
+      blockchain: base, robinhood
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['squeeze', 'launchpad']
+    description: >
+      Union of Squeeze Doppler Airlock deployments on Base and Robinhood.
+
+  - name: squeeze_trades
+    meta:
+      blockchain: base, robinhood
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['squeeze', 'launchpad', 'dex']
+    description: >
+      Union of EVM dex.trades attribution for Squeeze-launched tokens.

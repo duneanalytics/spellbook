@@ -1,0 +1,20 @@
+# sources placeholder — update namespaces after Airlock ABI decode on Dune
+
+version: 2
+
+sources:
+  - name: doppler_base
+    description: >
+      Decoded Doppler Airlock on Base. Confirm schema/table names in Dune after
+      submitting ABI for 0x660eAaEdEBc968f8f3694354FA8EC0b4c5Ba8D12.
+    tables:
+      - name: Airlock_call_create
+        description: Decoded Airlock.create calls including integrator field
+
+  - name: doppler_robinhood
+    description: >
+      Decoded Doppler Airlock on Robinhood (4663). Confirm after ABI submit for
+      0xeb7c034704ef8dcd2d32324c1545f62fb4ad0862.
+    tables:
+      - name: Airlock_call_create
+        description: Decoded Airlock.create calls including integrator field
