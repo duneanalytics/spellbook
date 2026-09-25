@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: staking_plume_deposits
+    meta:
+      blockchain: plume
+      sector: staking
+      short_description: "Plume staking deposit events, decoded from raw contract logs (contract not yet ABI-decoded on Dune)."
+      contributors: lukasrozado
+      docs_slug: /curated/staking/deposits
+    config:
+      tags: ['plume', 'staking', 'deposits']
+    description: >
+        Canonical record of staking deposit activity on Plume, with one row per
+        on-chain staking action. Fully derived from plume.logs by decoding raw
+        event topics/data for the Plume staking contract
+        (0x30c791E4654EdAc575FA1700eD8633CB2FEDE871). No aggregation or pricing
+        logic is applied.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain the deposit occurred on (always 'plume')"
+      - name: block_time
+        description: "Block time of the staking deposit transaction"
+        data_tests:
+          - not_null
+      - name: block_number
+        description: "Block number of the staking deposit transaction"
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Transaction hash of the staking deposit"
+        data_tests:
+          - not_null
+      - name: evt_index
+        description: "Log index of the stake event within the block"
+        data_tests:
+          - not_null
+      - name: depositor_address
+        description: "Address that made the staking deposit (decoded from topic1)"
+        data_tests:
+          - not_null
+      - name: validator_id
+        description: "Identifier of the validator being staked to (decoded from topic2)"
+      - name: amount_staked
+        description: "Raw amount staked in the deposit event, in the token's minimal unit (decoded from data)"
+        data_tests:
+          - not_null
+      - name: contract_address
+        description: "Address of the Plume staking contract that emitted this event"
