@@ -245,5 +245,6 @@ FROM
     ('up-superform', 'base', 'UP', 0x5b2193fDc451C1f847bE09CA9d13A4Bf60f8c86B, 18),
     ('fun-sportfun', 'base', 'FUN', 0x16EE7ecAc70d1028E7712751E2Ee6BA808a7dd92, 18),
     --Coinpaprika RWA tokenized stocks, ETFs & FX
-    ('mxne-real-mxn-1', 'base', 'MXNe', 0x269cae7dc59803e5c596c95756faeebb6030e0af, 6)
+    ('mxne-real-mxn-1', 'base', 'MXNe', 0x269cae7dc59803e5c596c95756faeebb6030e0af, 6),
+    ('reusd-re-protocol-reusd', 'base', 'reUSD', 0x7d214438d0f27afccc23b3d1e1a53906ace5cfea, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

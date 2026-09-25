@@ -25,4 +25,5 @@ FROM
     , ('usdt-tether', 'USD₮0', 0x0200C29006150606B650577BBE7B6248F58470c1, 6)
     , ('kbtc-kraken-wrapped-bitcoin', 'kBTC', 0x73e0c0d45e048d25fc26fa3159b0aa04bfa4db98, 8)
     , ('usdg-global-dollar', 'USDG', 0xe343167631d89b6ffc58b88d6b7fb0228795491d, 6)
+    , ('reusd-re-protocol-reusd', 'reUSD', 0x5bcf6b008bf80b9296238546bace1797657b05d6, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
