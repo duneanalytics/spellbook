@@ -35,6 +35,11 @@ WITH swaps AS (
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
+        {% if target.name == 'ci' %}
+        -- Keep the CI fixture build to its seven-day sample window; prod is unaffected.
+        AND call_block_date >= DATE '2026-09-01'
+        AND call_block_date < DATE '2026-09-08'
+        {% endif %}
 
     {% if not loop.last %}
     UNION ALL

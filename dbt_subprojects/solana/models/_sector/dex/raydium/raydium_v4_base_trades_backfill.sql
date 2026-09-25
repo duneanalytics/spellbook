@@ -8,7 +8,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
     , event_time = 'block_time'
-    , begin = '2025-09-01' if target.name == 'ci' else '2021-03-21'
+    , begin = '2026-09-01' if target.name == 'ci' else '2021-03-21'
     , batch_size = var('raydium_v4_batch_size', 'day')
     , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
@@ -33,6 +33,10 @@ WITH swaps AS (
         , pool_id
         , surrogate_key
     FROM {{ ref('raydium_v4_solana_stg_decoded_swaps') }}
+    {% if target.name == 'ci' %}
+    WHERE block_date >= DATE '2026-09-01'
+        AND block_date < DATE '2026-09-08'
+    {% endif %}
 )
 
 , transfers AS (
@@ -48,7 +52,11 @@ WITH swaps AS (
         , to_token_account
     FROM {{ source('tokens_solana', 'transfers') }}
     WHERE
-        token_version = 'spl_token' OR token_version = 'spl_token_2022'
+        (token_version = 'spl_token' OR token_version = 'spl_token_2022')
+        {% if target.name == 'ci' %}
+        AND block_date >= DATE '2026-09-01'
+        AND block_date < DATE '2026-09-08'
+        {% endif %}
 )
 
 , all_swaps AS (
