@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: unichain
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'unichain']
     description: "Safe addresses"
@@ -39,7 +39,7 @@ models:
     meta:
       blockchain: unichain
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'transfers', 'unichain']
     description: "ETH transfers for safes"
@@ -76,7 +76,7 @@ models:
     meta:
       blockchain: unichain
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'singletons', 'unichain']
     description: "Singletons addresses used with Safes"
@@ -88,7 +88,7 @@ models:
     meta:
       blockchain: unichain
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p  
     config:
       tags: ['safe', 'unichain']
     description: "Safe transactions"
