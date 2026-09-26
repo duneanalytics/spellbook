@@ -148,11 +148,21 @@ models:
       tags: [ 'solana','dex','raydium' ]
       event_time: block_date
     description: >
-      staging model for raydium v4 swap data from decoded tables
+      Raydium v4 swaps from legacy decoded tables and raw AMM V2 instructions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+    columns:
+      - name: block_month
+        description: UTC month of the swap
+        data_tests: [not_null]
+      - name: block_date
+        description: UTC date of the swap
+        data_tests: [not_null]
+      - name: surrogate_key
+        description: Instruction identity from block slot, transaction index and outer/inner indices
+        data_tests: [not_null]
 
   - name: raydium_v4_base_trades_backfill
     meta:
@@ -167,6 +177,18 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: [ 'block_month', 'surrogate_key' ]
+      - check_seed:
+          arguments:
+            seed_file: ref('raydium_v4_v2_trades_seed')
+            match_columns: ['block_month', 'surrogate_key']
+            check_columns: ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'token_sold_amount_raw', 'token_bought_amount_raw', 'token_sold_mint_address', 'token_bought_mint_address', 'project_program_id']
+    columns:
+      - name: block_month
+        description: UTC month of the swap
+        data_tests: [not_null]
+      - name: surrogate_key
+        description: Instruction identity from block slot, transaction index and outer/inner indices
+        data_tests: [not_null]
 
   - name: raydium_v4_base_trades
     meta:
@@ -301,4 +323,3 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
-
