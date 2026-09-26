@@ -33,6 +33,7 @@
 , ref('addresses_events_katana_first_activity')
 , ref('addresses_events_ink_first_activity')
 , ref('addresses_events_opbnb_first_activity')
+, ref('addresses_events_unichain_first_activity')
 , ref('addresses_events_hyperevm_first_activity')
 , ref('addresses_events_monad_first_activity')
 ] %}
