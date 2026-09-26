@@ -110,6 +110,28 @@ calls as (
 )
 
 , prices as (
+    {%- if blockchain.name == 'arc' %}
+    -- ponytail: prices.usd has no arc rows, so Arc USDC/WUSDC/EURC take the Ethereum twin.
+    -- decimals here are the Arc token's (WUSDC is 18; the Ethereum USDC price row is 6).
+    -- Delete this branch once prices.usd and prices.trusted_tokens contain arc.
+    select
+        twins.contract_address
+        , prices.minute
+        , prices.price
+        , twins.decimals
+        , twins.symbol
+    from (
+        values
+            (0x1111161b5af064893d1a88e467293ecf660eeeee, 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 18, 'WUSDC')
+            , (0x3600000000000000000000000000000000000000, 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 6, 'USDC')
+            , (0xbef5f6d51cb62b58e6a8f77868681825c6fe21c1, 0x1abaea1f7c830bd89acc67ec4af516284b1bc33c, 6, 'EURC')
+    ) as twins(contract_address, price_address, decimals, symbol)
+    join {{ source('prices', 'usd') }} as prices on prices.contract_address = twins.price_address
+    where true
+        and prices.blockchain = 'ethereum'
+        and prices.minute >= least({% for stream in streams %}date('{{ stream.start }}'){% if not loop.last %}, {% endif %}{% endfor %})
+        {% if is_incremental() -%} and {{ incremental_predicate('prices.minute') }} {%- endif %}
+    {%- else %}
     select
         contract_address
         , minute
@@ -121,6 +143,7 @@ calls as (
         and blockchain = '{{ blockchain.name }}'
         and minute >= least({% for stream in streams %}date('{{ stream.start }}'){% if not loop.last %}, {% endif %}{% endfor %})
         {% if is_incremental() -%} and {{ incremental_predicate('minute') }} {%- endif %}
+    {%- endif %}
 )
 
 , trusted_tokens as (
