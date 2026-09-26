@@ -85,7 +85,7 @@ models:
         description: "Method ID of the transaction. This is useful for determining how a contract was deployed (i.e Safe transaction vs traditional deployment)"
       - &created_tx_index
         name: created_tx_index
-        dedscription: "Index of the contract creation transaction within its block"
+        description: "Index of the contract creation transaction within its block"
       - &top_level_contract_address
         name: top_level_contract_address
         description: "Top-Level contract address"
