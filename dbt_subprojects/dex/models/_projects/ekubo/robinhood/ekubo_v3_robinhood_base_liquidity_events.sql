@@ -16,9 +16,24 @@
         , version = '3'
         , start_block_number = '33534'
         , ekubo_core_contract = '0x00000000000014aA86C5d3c41765bb24e11bd701'
-        , position_updated = source ('ekubo_v3_robinhood', 'core_evt_positionupdated')
-        , position_fees_collected = source ('ekubo_v3_robinhood', 'core_evt_positionfeescollected')
-        , position_fees_accumulated = source ('ekubo_v3_robinhood', 'core_evt_feesaccumulated')
+        , position_updated = ekubo_v3_core_events_from_logs(
+              blockchain = 'robinhood'
+            , ekubo_core_contract = '0x00000000000014aA86C5d3c41765bb24e11bd701'
+            , start_block_number = '33534'
+            , event = 'PositionUpdated'
+          )
+        , position_fees_collected = ekubo_v3_core_events_from_logs(
+              blockchain = 'robinhood'
+            , ekubo_core_contract = '0x00000000000014aA86C5d3c41765bb24e11bd701'
+            , start_block_number = '33534'
+            , event = 'PositionFeesCollected'
+          )
+        , position_fees_accumulated = ekubo_v3_core_events_from_logs(
+              blockchain = 'robinhood'
+            , ekubo_core_contract = '0x00000000000014aA86C5d3c41765bb24e11bd701'
+            , start_block_number = '33534'
+            , event = 'FeesAccumulated'
+          )
         , liquidity_pools = ref('ekubo_v3_robinhood_pools')
     )
 }}
