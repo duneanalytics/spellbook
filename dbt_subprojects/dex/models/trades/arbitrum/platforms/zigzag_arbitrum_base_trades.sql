@@ -21,7 +21,7 @@ with dexs as (
       from_hex(json_extract_scalar(zzmo.takerOrder, '$.user')) as taker,
       call_tx_hash as tx_hash,
       call_block_number as block_number,
-      row_number() OVER(PARTITION BY call_tx_hash ORDER BY zzmo.makerOrder) AS evt_index, --prevent duplicates
+      104000000 + row_number() OVER(PARTITION BY call_tx_hash ORDER BY zzmo.makerOrder) AS evt_index, --prevent duplicates; banded, see dex/README.md
       contract_address as project_contract_address
     from
     {{ source('zigzag_test_v6_arbitrum', 'zigzag_settelment_call_matchOrders') }} zzmo

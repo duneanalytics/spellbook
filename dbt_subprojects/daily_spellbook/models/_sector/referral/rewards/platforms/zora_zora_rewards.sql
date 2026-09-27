@@ -1,7 +1,8 @@
 {{ config(
     schema = 'zora_zora',
     alias = 'rewards',
-    materialized = 'incremental',
+    materialized = 'table',
+    tags = ['static'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['project','tx_hash','sub_tx_id'],

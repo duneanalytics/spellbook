@@ -82,7 +82,9 @@ sources:
           - name: reward_type
             description: "Type of reward: 'Fee', 'Rent', 'Voting', 'Staking'"
           - name: commission
-            description: "Vote account commission when the reward was credited, only present for voting and staking rewards"
+            description: "Vote account commission percentage for voting and staking rewards; NULL from slot 433,296,000 onward"
+          - name: commission_bps
+            description: "Vote account commission in basis points for voting and staking rewards, populated from slot 433,296,000 onward"
 
       - name: account_activity
         description: '{{ doc("solana_account_activity_doc") }}'

@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: addresses_events_arc_first_funded_by
+    description: "First native USDC funding per Arc address, using event ordering for EIP-7708 transfers."
+    meta:
+      blockchain: arc
+      sector: addresses_events
+      project: addresses
+      contributors: karimhass
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'arc']
+    data_tests:
+      - check_seed:
+          arguments:
+            seed_file: ref('first_funded_by_seed')
+            filter:
+              blockchain: arc
+            match_columns: [address]
+            check_columns: [first_funded_by, block_number, tx_hash]
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [address]
+    columns:
+      - name: blockchain
+        description: "Blockchain name."
+      - name: address
+        description: "Address receiving native funds."
+        data_tests: [not_null]
+      - name: first_funded_by
+        description: "Sender of the first native transfer."
+      - name: first_funding_executed_by
+        description: "Address that executed the first funding transaction."
+      - name: amount
+        description: "Native USDC amount of the first funding transfer."
+      - name: amount_usd
+        description: "USD value of the first funding transfer."
+      - name: block_time
+        description: "Block timestamp of the first native transfer."
+      - name: block_number
+        description: "Block number of the first native transfer."
+      - name: tx_hash
+        description: "Transaction hash of the first native transfer."
+      - name: tx_index
+        description: "Index of the first funding transaction in its block."
+      - name: trace_address
+        description: "Standard funding trace address; null for Arc EIP-7708 transfers."
+      - name: unique_key
+        description: "Unique identifier of the first funding transfer, selected by event index."

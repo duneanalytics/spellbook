@@ -1,10 +1,10 @@
 {{
     config(
         alias = 'likely_bot_contracts_zora',
-        materialized = 'incremental',
+        materialized = 'table',
         unique_key = ['blockchain', 'address'],
         incremental_strategy = 'merge'
-        , tags = ['prod_exclude']
+        , tags = ['prod_exclude', 'static']
         , post_hook='{{ hide_spells() }}'
     )
 }}

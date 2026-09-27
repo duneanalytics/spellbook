@@ -5,6 +5,7 @@
         schema = 'balancer_v2_zkevm',
         alias = 'bpt_supply_changes_daily', 
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}

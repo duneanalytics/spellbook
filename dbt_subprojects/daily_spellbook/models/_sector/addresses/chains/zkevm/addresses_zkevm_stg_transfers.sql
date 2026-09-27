@@ -5,6 +5,7 @@
 		schema = 'addresses_' + blockchain,
 		alias = 'stg_transfers',
 		materialized = 'table',
+		tags = ['static'],
 		file_format = 'delta',
 		partition_by = ['address_prefix'],
 	)

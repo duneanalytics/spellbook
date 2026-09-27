@@ -18,7 +18,10 @@ The `solana.rewards` table provides information about rewards on the Solana bloc
 - `pre_balances` and `post_balances`: Account balances before and after the reward was applied
 - `recipient`: Public key of the account that received the reward
 - `reward_type`: Type of reward (e.g., 'Fee', 'Rent', 'Voting', 'Staking')
-- `commission`: Vote account commission for voting and staking rewards
+- `commission`: Vote account commission percentage for voting and staking rewards; NULL from slot 433,296,000 onward
+- `commission_bps`: Vote account commission in basis points for voting and staking rewards, populated from slot 433,296,000 onward
+
+To query a consistent basis-points value across both eras, use `coalesce(commission_bps, commission * 100)`.
 {% enddocs %}
 
 {% docs solana_account_activity_doc %}
@@ -59,5 +62,4 @@ The `solana.vote_transactions` table contains only vote transactions. The votes 
 - `tx_type`: The type of the transaction
 - `limit_type`: The type of compute limit applied to the transaction
 {% enddocs %}
-
 

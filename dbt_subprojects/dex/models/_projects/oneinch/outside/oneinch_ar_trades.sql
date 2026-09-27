@@ -7,8 +7,9 @@
     )
 }}
 
-{% set src_symbol = "coalesce(src_executed_symbol, '')" %}
-{% set dst_symbol = "coalesce(dst_executed_symbol, '')" %}
+-- unresolved symbols stay NULL (instead of '') so gaps are detectable; token_pair then also stays NULL, like in enrich_dex_aggregator_trades
+{% set src_symbol = "src_executed_symbol" %}
+{% set dst_symbol = "dst_executed_symbol" %}
 {% set placeholder_tokens = oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') %}
 
 

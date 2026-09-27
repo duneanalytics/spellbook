@@ -1,7 +1,8 @@
 {{ config(
     schema = 'rollup_economics_zkevm'
     , alias = 'l1_data_fees'
-    , materialized = 'incremental'
+    , materialized = 'table'
+    , tags = ['static']
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['name', 'tx_hash']

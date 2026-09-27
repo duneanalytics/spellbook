@@ -1,7 +1,8 @@
 {{ config(
         schema='zora',
         alias = 'address_metrics',
-        materialized = 'incremental',
+        materialized = 'table',
+        tags = ['static'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address']

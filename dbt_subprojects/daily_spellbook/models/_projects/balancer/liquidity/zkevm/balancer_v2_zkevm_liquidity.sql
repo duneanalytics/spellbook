@@ -6,6 +6,7 @@
         schema = 'balancer_v2_zkevm',
         alias = 'liquidity',
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}

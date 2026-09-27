@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['prod_exclude'],
+        tags = ['prod_exclude', 'static'],
         schema = 'contracts_zora',
         alias = 'contract_mapping',
         materialized ='table',

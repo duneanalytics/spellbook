@@ -4,6 +4,8 @@
 ) %}
 
 {%- set placeholder_tokens = oneinch_cross_chain_placeholder_tokens_cfg_macro() | join(', ') -%}
+{#- chains without a dex_<chain>_base_trades model (e.g. arc) have no venue rows to co-occur with, so nothing can be venue-settled there: the model is kept (the union models ref it per lo-exposed chain) and is empty by definition -#}
+{%- set dex_base_trades = blockchain.get('dex_base_trades', true) -%}
 
 {% set window_guard %}
         {% if var('dev_dates', false) -%} and block_date > current_date - interval '3' day
@@ -74,6 +76,7 @@ fills as (
 -- joined to the small LOP tx set (instead of EXISTS with the base trades as the build side)
 -- so the base trades scan gets dynamically filtered on tx_hash
 , venue_txs as (
+    {% if dex_base_trades -%}
     select distinct
         k.block_month
         , k.tx_hash
@@ -89,6 +92,13 @@ fills as (
     join lop_tx_keys as k
         on k.block_month = b.block_month
         and k.tx_hash = b.tx_hash
+    {%- else -%}
+    select
+        block_month
+        , tx_hash
+    from lop_tx_keys
+    where false -- no dex base trades on this chain, so no venue rows can co-occur
+    {%- endif %}
 )
 
 -- output --

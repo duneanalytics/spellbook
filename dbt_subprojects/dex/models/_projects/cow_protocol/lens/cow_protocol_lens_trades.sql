@@ -1,7 +1,8 @@
 {{  config(
     schema='cow_protocol_lens',
     alias='trades',
-    materialized='incremental',
+    materialized='table',
+    tags=['static'],
     partition_by = ['block_month'],
     unique_key = ['tx_hash', 'order_uid', 'evt_index'],
     on_schema_change='sync_all_columns',

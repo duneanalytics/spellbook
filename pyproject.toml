@@ -3,7 +3,7 @@ name = "spellbook"
 version = "0.0.0"
 requires-python = "==3.13.*"
 dependencies = [
-    "dbt-core>=1.12.0",
+    "dbt-core>=1.12.3",
     "dbt-trino>=1.10.1,<1.11",
     "jinja2>=3.1.6",
     "pre-commit==4.0.1",
@@ -13,4 +13,12 @@ dependencies = [
 
 [tool.uv]
 exclude-newer = "3 days"
+# TEMPORARY EXEMPTION (approved 2026-09-15). dbt-core >=1.12.3 is required to pick up
+# sqlparse 0.6.0, which patches GHSA-prg7-hcfm-mfcr, GHSA-pwgv-4x5q-6m9f,
+# GHSA-f2ff-p2ww-7p4p, GHSA-cfqr-cjx5-5jcm and GHSA-3496-9g83-7v6x. dbt-core 1.12.3+
+# depends on dbt-core-experimental-parser>=2.0.0b1, and that package's first stable
+# release (2.0.0/2.0.1, 2026-09-14) is still inside the global 3-day cooldown. This
+# per-package cutoff narrowly admits that release without weakening the cooldown for
+# any other dependency. Drop this line once the global window has moved past 2026-09-17.
+exclude-newer-package = { dbt-core-experimental-parser = "2026-09-15T00:00:00Z" }
 package = false

@@ -4,7 +4,8 @@
         alias = 'matic_transfers',
         partition_by = ['block_month'],
         on_schema_change='fail',
-        materialized='incremental',
+        materialized='table',
+        tags=['static'],
         file_format ='delta',
         incremental_strategy='merge',
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address']

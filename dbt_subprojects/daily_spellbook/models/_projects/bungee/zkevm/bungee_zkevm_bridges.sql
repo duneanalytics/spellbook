@@ -2,7 +2,8 @@
     config(
         schema = 'bungee_zkevm',
         alias = 'bridges',
-        materialized = 'incremental',
+        materialized = 'table',
+        tags = ['static'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['transfer_id'],

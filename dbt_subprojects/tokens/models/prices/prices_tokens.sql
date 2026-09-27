@@ -13,6 +13,7 @@
     ,ref('prices_abstract_tokens')
     ,ref('prices_apechain_tokens')
     ,ref('prices_arbitrum_tokens')
+    ,ref('prices_arc_tokens')
     ,ref('prices_avalanche_c_tokens')
     ,ref('prices_base_tokens')
     ,ref('prices_berachain_tokens')

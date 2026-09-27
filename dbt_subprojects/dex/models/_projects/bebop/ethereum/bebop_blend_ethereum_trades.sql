@@ -171,7 +171,8 @@ unnested_aggregate_orders AS (
         json_array_length(json_extract(maker_tokens_json, concat('$[', cast(sequence_number - 1 as VARCHAR), ']'))) as maker_tokens_len,
         sequence_number - 1 AS order_index
     FROM raw_bebop_aggregate_trade
-    CROSS JOIN UNNEST(sequence(1, orders_len)) AS t(sequence_number)
+    -- Empty arrays must produce no rows: sequence(1, 0) includes the invalid index 0.
+    CROSS JOIN UNNEST(IF(orders_len > 0, sequence(1, orders_len), CAST(ARRAY[] AS ARRAY<BIGINT>))) AS t(sequence_number)
 ),
 unnested_taker_arrays AS (
     SELECT
@@ -201,7 +202,7 @@ unnested_taker_arrays AS (
             taker_tokens, maker_tokens, taker_amounts, maker_amounts, taker_tokens_len, maker_tokens_len, order_index
         FROM unnested_aggregate_orders
     )
-    CROSS JOIN UNNEST(sequence(1, taker_tokens_len)) AS t(sequence_number)
+    CROSS JOIN UNNEST(IF(taker_tokens_len > 0, sequence(1, taker_tokens_len), CAST(ARRAY[] AS ARRAY<BIGINT>))) AS t(sequence_number)
 ),
 bebop_multi_and_aggregate_trades AS (
     SELECT
@@ -225,7 +226,7 @@ bebop_multi_and_aggregate_trades AS (
         maker_tokens_len,
         cast(array[order_index, taker_token_index, sequence_number - 1] as array<bigint>) as trace_address
     FROM unnested_taker_arrays
-    CROSS JOIN UNNEST(sequence(1, maker_tokens_len)) AS t(sequence_number)
+    CROSS JOIN UNNEST(IF(maker_tokens_len > 0, sequence(1, maker_tokens_len), CAST(ARRAY[] AS ARRAY<BIGINT>))) AS t(sequence_number)
 ),
 all_trades as (
   SELECT

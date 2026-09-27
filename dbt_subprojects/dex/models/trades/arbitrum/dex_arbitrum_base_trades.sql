@@ -65,6 +65,7 @@
     , ref('eulerswap_arbitrum_base_trades')
     , ref('zeroex_arbitrum_base_trades')
     , ref('zeroex_settler_arbitrum_base_trades')
+    , ref('metric_arbitrum_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

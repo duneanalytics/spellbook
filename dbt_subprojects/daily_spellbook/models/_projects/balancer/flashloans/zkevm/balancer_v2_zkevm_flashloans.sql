@@ -2,7 +2,8 @@
      partition_by = ['block_month']
       , schema = 'balancer_v2_zkevm'
       , alias = 'flashloans'
-      , materialized = 'incremental'
+      , materialized = 'table'
+      , tags = ['static']
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['tx_hash', 'evt_index']

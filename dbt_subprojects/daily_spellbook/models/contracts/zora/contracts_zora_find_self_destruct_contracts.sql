@@ -1,9 +1,9 @@
  {{
   config(
-        tags = ['prod_exclude'],
+        tags = ['prod_exclude', 'static'],
         schema = 'contracts_zora',
         alias = 'find_self_destruct_contracts',
-        materialized ='incremental',
+        materialized ='table',
         file_format ='delta',
         unique_key = ['blockchain', 'contract_address'],
         incremental_strategy='merge'

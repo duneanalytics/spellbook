@@ -55,7 +55,15 @@ models:
     meta:
       blockchain: tron
       sector: tokens
+      # Freshness monitoring declaration. Under meta, not config, on purpose: a yml config
+      # change is state:modified.configs, so a metadata-only edit triggers no rebuild.
+      monitoring:
+        enabled: true
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: false
     config:
+      event_time: block_time
       tags: ['tokens','transfers', 'tron']
     description: >
       Token transfers
@@ -103,9 +111,9 @@ models:
       - name: amount
         description: "The formatted amount of the transfer"
       - name: price_usd
-        description: "The USD price used to calculate the amount_usd"
+        description: "The USD price used to calculate the amount_usd. Only set for trc20 transfers; null for native and trc10 transfers, which Tron's Ethereum JSON-RPC cannot tell apart"
       - name: amount_usd
-        description: "The USD amount of the transfer"
+        description: "The USD amount of the transfer. Only set for trc20 transfers; null for native and trc10 transfers, which Tron's Ethereum JSON-RPC cannot tell apart"
       - name: _updated_at
         description: "Timestamp when this row was last written"
 

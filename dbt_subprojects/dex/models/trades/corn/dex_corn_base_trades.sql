@@ -2,7 +2,8 @@
     schema = 'dex_corn'
     , alias = 'base_trades'
     , partition_by = ['block_month']
-    , materialized = 'incremental'
+    , materialized = 'table'
+    , tags = ['static']
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']

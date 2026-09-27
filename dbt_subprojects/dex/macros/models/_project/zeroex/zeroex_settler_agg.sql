@@ -124,6 +124,12 @@ transfers AS (
       -- standard ERC20 value transfers only (uint256 amount is exactly 32 bytes): drops NFT/ERC721 (0-byte
       -- data) and non-standard >32-byte Transfer-topic logs. Row-reducer; the overflow guard is the CASE above.
       AND varbinary_length(logs.data) = 32
+    {% if blockchain == 'arc' %}
+      -- Arc's system emitter records native USDC, not an ERC20 asset.
+      -- See tokens_arc_base_transfers for Arc's native event classification.
+      -- Native sells use the NATIVE_CHECK / tx.value fallback below.
+      AND logs.contract_address <> 0xfffffffffffffffffffffffffffffffffffffffe
+    {% endif %}
     {% if is_incremental() %}
       AND {{ incremental_predicate('logs.block_time') }}
     {% else %}

@@ -1,7 +1,8 @@
 {{ config(
     schema = 'addresses_events_zora'
     , alias = 'first_activity'
-    , materialized = 'incremental'
+    , materialized = 'table'
+    , tags = ['static']
     , file_format = 'delta'
     , incremental_strategy = 'append'
     , unique_key = ['address']

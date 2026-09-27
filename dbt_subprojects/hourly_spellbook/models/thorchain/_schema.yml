@@ -115,6 +115,17 @@ models:
               - _unique_key
 
   - name: thorchain_silver_pool_block_statistics
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "total_stake >= 0"
+      # A pool holding liquidity units can never back its synths with negative units;
+      # this guards the THORNode-aligned floor on the (2 * asset_depth - synth_depth) denominator.
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "synth_units >= 0 AND pool_units >= 0"
+          config:
+            where: "total_stake > 0"
 
   - name: thorchain_silver_pool_events
 
