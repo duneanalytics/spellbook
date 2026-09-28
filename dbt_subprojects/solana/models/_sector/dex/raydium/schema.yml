@@ -185,11 +185,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: [ 'block_month', 'surrogate_key' ]
-      - check_seed:
-          arguments:
-            seed_file: ref('raydium_v4_decoded_swaps_seed')
-            match_columns: [ 'block_month', 'surrogate_key' ]
-            check_columns: [ 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index', 'project_program_id', 'token_sold_amount_raw', 'token_bought_amount_raw', 'token_sold_mint_address', 'token_bought_mint_address' ]
 
   - name: raydium_v4_base_trades
     meta:

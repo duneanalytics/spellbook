@@ -35,11 +35,6 @@ WITH swaps AS (
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
-        {% if target.name == 'ci' %}
-        -- Keep the CI fixture build to its seven-day sample window; prod is unaffected.
-        AND call_block_date >= DATE '2026-09-01'
-        AND call_block_date < DATE '2026-09-08'
-        {% endif %}
 
     {% if not loop.last %}
     UNION ALL
@@ -47,8 +42,7 @@ WITH swaps AS (
     {% endfor %}
 )
 
--- Multiple IDL mappings can emit the same instruction with identical metadata.
-SELECT DISTINCT
+SELECT
       sp.call_block_slot AS block_slot
     , CAST(date_trunc('month', sp.call_block_date) AS DATE) AS block_month
     , sp.call_block_date AS block_date
