@@ -17,7 +17,6 @@
 }}
 
 WITH swaps AS (
-    -- ci-stamp: 1
     SELECT
           block_slot
         , block_date
