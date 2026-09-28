@@ -47,7 +47,8 @@ WITH swaps AS (
     {% endfor %}
 )
 
-SELECT
+-- Multiple IDL mappings can emit the same instruction with identical metadata.
+SELECT DISTINCT
       sp.call_block_slot AS block_slot
     , CAST(date_trunc('month', sp.call_block_date) AS DATE) AS block_month
     , sp.call_block_date AS block_date
