@@ -184,3 +184,4 @@ sources:
       - name: metricommpoolv0_evt_swap
       - name: metricommpoolv1_evt_swap
       - name: metricommpoolv2_evt_swap
+      - name: metricommpoolv2_beta_evt_swap
