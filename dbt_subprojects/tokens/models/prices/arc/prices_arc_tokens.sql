@@ -51,4 +51,7 @@ FROM
     , ('trx-tron', 'ATRX', 0xfdd489aa05b452f2b042f34d12569dbe76fa1e61, 18)
     , ('gbp-pound-sterling-token', 'AGBP', 0xa073783b43dfbfa2a78e0ae015a82968d816f41a, 18)
     , ('wxt-wirex-token', 'AWXT', 0x04adf55844be2f4c8d23e3f5f2386b08400b0cd1, 18)
+    -- wrapped native USDC (1:1 by construction). Spells that map native transfers to the
+    -- wrapped native token, e.g. the oneinch transfers macro, price native USDC through it.
+    , ('usdc-usd-coin', 'WUSDC', 0x1111161b5af064893d1a88e467293ecf660eeeee, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
