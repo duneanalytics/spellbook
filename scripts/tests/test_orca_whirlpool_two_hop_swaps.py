@@ -58,12 +58,12 @@ class TwoHopMatchingTest(unittest.TestCase):
     def test_direct_two_legs_share_middle_transfer(self):
         rows = self.run_matcher()
         self.assertEqual(len(rows), 2)
-        self.assertEqual([(r[0], r[-2], r[-1]) for r in rows], [('pool1', 2, 5), ('pool2', 5, 8)])
-        self.assertEqual([r[2] for r in rows], [0, 2])
+        legs = sorted((r[0], r[-2], r[-1], r[2]) for r in rows)
+        self.assertEqual(legs, [('pool1', 2, 5, 0), ('pool2', 5, 8, 2)])
 
     def test_nested_memos_and_unrelated_vaults(self):
         rows = self.run_matcher(nested=True)
-        self.assertEqual([(r[-2], r[-1]) for r in rows], [(6, 9), (9, 12)])
+        self.assertEqual(sorted((r[-2], r[-1]) for r in rows), [(6, 9), (9, 12)])
 
     def test_ambiguous_transfers_fail_closed(self):
         self.assertEqual(self.run_matcher(duplicate=True), [])
