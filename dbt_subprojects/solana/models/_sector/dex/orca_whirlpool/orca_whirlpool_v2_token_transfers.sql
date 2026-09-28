@@ -23,7 +23,7 @@ WITH whirlpool_v2_swaps AS (
             , call_block_slot AS block_slot
             , call_tx_index AS tx_index
             , call_outer_instruction_index AS outer_instruction_index
-        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_swapV2', 'whirlpool_call_swap_v2', [], bounded=true) }}) decoded_swap_v2
+        FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_swapV2', 'whirlpool_call_swap_v2', [], bounded=true, dedupe=false) }}) decoded_swap_v2
 
         UNION ALL
 

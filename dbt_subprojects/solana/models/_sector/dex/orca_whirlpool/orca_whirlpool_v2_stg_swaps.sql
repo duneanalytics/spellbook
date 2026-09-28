@@ -192,7 +192,8 @@ WITH fee_tiers_defaults AS (
 )
 
 , decoded_swaps AS (
-    -- Both decoded naming conventions; current snake-case rows win on overlap.
+    -- Both decoded naming conventions. Overlap between them is collapsed by the
+    -- fee_rank window below, so the macro skips its own dedup pass here.
     SELECT
           account_whirlpool
         , call_outer_instruction_index
@@ -208,7 +209,7 @@ WITH fee_tiers_defaults AS (
         , account_tokenVaultA AS swap_tokenAVault
         , account_tokenMintB AS swap_tokenB
         , account_tokenVaultB AS swap_tokenBVault
-    FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_swapV2', 'whirlpool_call_swap_v2', [["account_whirlpool","account_whirlpool"],["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"]], bounded=true) }}) decoded_swap_v2
+    FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_swapV2', 'whirlpool_call_swap_v2', [["account_whirlpool","account_whirlpool"],["account_tokenMintA","account_token_mint_a"],["account_tokenMintB","account_token_mint_b"],["account_tokenVaultA","account_token_vault_a"],["account_tokenVaultB","account_token_vault_b"]], bounded=true, dedupe=false) }}) decoded_swap_v2
 
     UNION ALL
 
