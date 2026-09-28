@@ -32,17 +32,21 @@ class DecodedCallsTest(unittest.TestCase):
             call_tx_signer text, call_outer_executing_account text'''
         db.execute('create table legacy (' + metadata + ', old_value text)')
         db.execute('create table current (' + metadata + ', new_value text)')
-        def add(table, tx, inner, value):
+        def add(table, tx, inner, value, is_inner=False):
             db.execute('insert into ' + table + ' values (?,?,?,?,?,?,?,?,?,?,?)',
-                       ('2026-09-09', '2026-09-09', 10, tx, 1, 2, inner, 0, 'signer', 'orca', value))
+                       ('2026-09-09', '2026-09-09', 10, tx, 1, 2, inner,
+                        int(is_inner), 'signer', 'orca', value))
         add('legacy', 'overlap', None, 'old')
         add('current', 'overlap', 0, 'new')
         add('current', 'overlap', 3, 'other_instruction')
+        add('current', 'overlap', 0, 'distinct_inner_instruction', is_inner=True)
         add('legacy', 'historical', None, 'retained')
         add('current', 'recent', None, 'added')
         rows = db.execute(self.render()).fetchall()
-        self.assertEqual(len(rows), 4)
-        self.assertEqual({row[-1] for row in rows}, {'new', 'other_instruction', 'retained', 'added'})
+        self.assertEqual(len(rows), 5)
+        self.assertEqual({row[-1] for row in rows}, {
+            'new', 'other_instruction', 'distinct_inner_instruction', 'retained', 'added'
+        })
         db.close()
 
     def test_only_time_series_calls_are_bounded(self):

@@ -8,7 +8,7 @@ select
 from (
     select *, row_number() over (
         partition by call_block_slot, call_tx_id, call_outer_instruction_index,
-            coalesce(call_inner_instruction_index, 0)
+            coalesce(call_inner_instruction_index, 0), call_is_inner
         order by decoder_priority
     ) as decoder_rank
     from (
