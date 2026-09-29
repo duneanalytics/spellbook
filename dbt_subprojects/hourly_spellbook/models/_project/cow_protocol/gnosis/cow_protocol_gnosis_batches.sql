@@ -24,8 +24,20 @@ solvers_ranked as (
     from {{ source('gnosis', 'traces') }} t
         inner join {{ ref('cow_protocol_gnosis_solvers') }} solvers
             on t."from" = solvers.address
+        inner join (
+            select distinct evt_block_date, evt_block_number, evt_tx_hash
+            from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Settlement') }}
+            {% if is_incremental() %}
+            where {{ incremental_predicate('evt_block_time') }}
+            {% endif %}
+        ) settlements
+            on t.block_date = settlements.evt_block_date
+            and t.block_number = settlements.evt_block_number
+            and t.tx_hash = settlements.evt_tx_hash
     {% if is_incremental() %}
-    where {{ incremental_predicate('block_time') }}
+    where {{ incremental_predicate('t.block_time') }}
+    {% else %}
+    where t.block_time >= timestamp '2021-04-01' --first settlement date
     {% endif %}
 ),
 
@@ -50,6 +62,8 @@ batch_counts as (
     from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
+            and i.evt_block_number = s.evt_block_number
+            and i.evt_block_date = s.evt_block_date
             {% if is_incremental() %}
             and {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
@@ -76,6 +90,8 @@ batch_values as (
             on p.contract_address = 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
             {% if is_incremental() %}
             and {{ incremental_predicate('minute') }}
+            {% else %}
+            and p.minute >= timestamp '2021-04-01' --first settlement date
             {% endif %}
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'gnosis'
@@ -106,8 +122,9 @@ combined_batch_info as (
         join batch_values t
             on b.evt_tx_hash = t.tx_hash
         inner join {{ source('gnosis', 'transactions') }} tx
-            on evt_tx_hash = hash
-            and evt_block_number = block_number
+            on b.evt_tx_hash = tx.hash
+            and b.evt_block_number = tx.block_number
+            and b.block_date = tx.block_date
             {% if is_incremental() %}
             and {{ incremental_predicate('tx.block_time') }}
             {% endif %}
