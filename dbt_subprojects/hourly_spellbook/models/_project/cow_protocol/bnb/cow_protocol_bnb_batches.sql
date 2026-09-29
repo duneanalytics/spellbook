@@ -24,16 +24,6 @@ solvers_ranked as (
     from {{ source('bnb', 'traces') }} t
         inner join {{ ref('cow_protocol_bnb_solvers') }} solvers
             on t."from" = solvers.address
-        inner join (
-            select distinct evt_block_date, evt_block_number, evt_tx_hash
-            from {{ source('gnosis_protocol_v2_bnb', 'GPv2Settlement_evt_Settlement') }}
-            {% if is_incremental() %}
-            where {{ incremental_predicate('evt_block_time') }}
-            {% endif %}
-        ) settlements
-            on t.block_date = settlements.evt_block_date
-            and t.block_number = settlements.evt_block_number
-            and t.tx_hash = settlements.evt_tx_hash
     {% if is_incremental() %}
     where {{ incremental_predicate('t.block_time') }}
     {% else %}
