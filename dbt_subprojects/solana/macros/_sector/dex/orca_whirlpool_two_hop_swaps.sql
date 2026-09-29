@@ -13,14 +13,25 @@ with calls as (
         ['account_tokenVaultTwoIntermediate', 'account_token_vault_two_intermediate'],
         ['account_tokenVaultTwoOutput', 'account_token_vault_two_output']
     ], bounded=true) }}
-), instructions as (
-    select i.tx_id, i.block_slot, i.outer_instruction_index, i.inner_instruction_index, i.stack_height
+), whirlpool_instructions as (
+    {#
+        A two-hop call's transfers all touch whirlpool vaults, and only the whirlpool
+        program moves vault funds, so the call frame ends at the next whirlpool
+        instruction inside the same outer instruction. Restricting the scan to the
+        whirlpool program keeps the executing_account_prefix partition pruning
+        (see #9674) instead of reading every program's instructions.
+    #}
+    select i.tx_id, i.block_slot, i.outer_instruction_index, i.inner_instruction_index
     from {{ source('solana', 'instruction_calls') }} i
     inner join (
-        select distinct call_tx_id, call_block_slot, call_outer_instruction_index from calls
+        select distinct call_tx_id, call_block_slot, call_outer_instruction_index
+        from calls
+        where call_is_inner
     ) c on i.tx_id = c.call_tx_id and i.block_slot = c.call_block_slot
         and i.outer_instruction_index = c.call_outer_instruction_index
-    where 1=1
+    where i.executing_account_prefix = 'wh'
+        and i.executing_account = 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc'
+        and i.is_inner
     {% if is_incremental() %}
         and {{ incremental_predicate('i.block_time') }}
     {% else %}
@@ -31,16 +42,11 @@ with calls as (
         coalesce(c.call_inner_instruction_index, 0) as start_index,
         coalesce(min(n.inner_instruction_index), 2147483647) as end_index
     from calls c
-    inner join instructions p on p.tx_id = c.call_tx_id
-        and p.block_slot = c.call_block_slot
-        and p.outer_instruction_index = c.call_outer_instruction_index
-        and coalesce(p.inner_instruction_index, 0) = coalesce(c.call_inner_instruction_index, 0)
-    left join instructions n on n.tx_id = p.tx_id and n.block_slot = p.block_slot
-        and n.outer_instruction_index = p.outer_instruction_index
+    left join whirlpool_instructions n on n.tx_id = c.call_tx_id
+        and n.block_slot = c.call_block_slot
+        and n.outer_instruction_index = c.call_outer_instruction_index
         and c.call_is_inner
-        and n.inner_instruction_index > p.inner_instruction_index
-        and n.stack_height <= p.stack_height
-    where not c.call_is_inner or p.stack_height is not null
+        and n.inner_instruction_index > coalesce(c.call_inner_instruction_index, 0)
     group by 1, 2, 3
 ), matched as (
     select c.call_tx_id, c.call_outer_instruction_index, b.start_index,
