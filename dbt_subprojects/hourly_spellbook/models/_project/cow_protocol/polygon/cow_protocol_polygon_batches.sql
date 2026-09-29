@@ -48,6 +48,7 @@ batch_counts as (
            ) as dex_swaps,
            sum(case when selector = 0x2e1a7d4d then 1 else 0 end) as unwraps,
            sum(case when selector = 0x095ea7b3 then 1 else 0 end) as token_approvals
+    -- Contract upgrade: refresh history for the newly decoded settlement contracts.
     from {{ source('gnosis_protocol_v2_polygon', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_polygon', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
