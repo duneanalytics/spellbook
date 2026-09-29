@@ -3,9 +3,10 @@ version: 2
 seeds:
   - name: orca_whirlpool_v2_base_trades_seed
     description: >
-      Successful direct SwapV2 with 17 accounts, absent from the decoded source.
-      Expected amounts and pool were verified against solana.instruction_calls
-      and tokens_solana.transfers for 2026-09-09.
+      Whirlpool v2 swaps from 2026-09-09 that only exist in the snake-case decoded
+      tables (whirlpool_call_swap_v2 / whirlpool_call_two_hop_swap_v2), i.e. after
+      the 2026-02-04 IDL cutover. Expected amounts and pools were verified against
+      solana.instruction_calls and tokens_solana.transfers.
     config:
       column_types:
         block_month: date
