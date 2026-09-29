@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: celo
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'singletons', 'celo']
     description: "Singletons addresses used with Safes"
@@ -21,7 +21,7 @@ models:
     meta:
       blockchain: celo
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'celo']
     description: "Safe addresses"
@@ -47,7 +47,7 @@ models:
     meta:
       blockchain: celo
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'celo']
     description: "Safe transactions"
