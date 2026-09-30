@@ -16,6 +16,7 @@
 }}
 
 {% set project_start_date = '2024-06-05' %}
+{% set ci_start_date = '2026-09-01' %}
 
 WITH whirlpool_v2_swaps AS (
     SELECT DISTINCT
@@ -36,7 +37,10 @@ WITH whirlpool_v2_swaps AS (
             , call_tx_index AS tx_index
             , call_outer_instruction_index AS outer_instruction_index
         FROM ({{ orca_whirlpool_decoded_calls('whirlpool_call_twoHopSwapV2', 'whirlpool_call_two_hop_swap_v2', [], bounded=true, dedupe=false) }}) decoded_two_hop
-    )
+    ) swaps
+    {% if target.name == 'ci' -%}
+    WHERE block_date >= DATE '{{ ci_start_date }}'
+    {% endif -%}
 )
 
 , token_transfers AS (
@@ -59,6 +63,10 @@ WITH whirlpool_v2_swaps AS (
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '{{ project_start_date }}'
+        {% endif -%}
+        {% if target.name == 'ci' -%}
+        -- Full history does not finish inside the CI time limit. 2026-09-01 keeps the seed rows.
+        AND block_date >= DATE '{{ ci_start_date }}'
         {% endif -%}
 )
 
