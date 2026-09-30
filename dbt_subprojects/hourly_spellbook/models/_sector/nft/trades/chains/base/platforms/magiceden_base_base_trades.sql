@@ -113,16 +113,19 @@ WITH trades AS (
     , t.currency_contract
     , t.price_raw
     , t.sub_tx_trade_id
-    , fc.message
     FROM trades t
-    INNER JOIN {{ source('limitbreak_base','TrustedForwarder_call_forwardCall') }} fc ON fc.call_block_number=t.block_number
-        AND fc.call_tx_hash=t.tx_hash
-        AND fc.contract_address = 0x5ebc127fae83ed5bdd91fc6a5f5767e259df5642
+    WHERE EXISTS (
+        SELECT 1
+        FROM {{ source('limitbreak_base','TrustedForwarder_call_forwardCall') }} fc
+        WHERE fc.call_block_number=t.block_number
+            AND fc.call_tx_hash=t.tx_hash
+            AND fc.contract_address = 0x5ebc127fae83ed5bdd91fc6a5f5767e259df5642
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
         {% else %}
         AND call_block_time >= {{magiceden_start_date}}
         {% endif %}
+    )
     )
 
 , bundled_whitelisted_trades AS (
