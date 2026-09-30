@@ -47,6 +47,39 @@ Each model within Spellbook contains a config block with various properties. Dep
    - Only use for time-series data — do NOT use when you need to check against full history (e.g., pool creation events).
    - **Note**: This is a newer addition to Spellbook. Please add this property for new incremental spells.
 
+## Default Table Properties
+
+Each subproject defines `vars.dune_default_table_properties` in its `dbt_project.yml`.
+The shared table-creation macro merges these defaults with the model's `properties`,
+with model values taking precedence. This avoids dbt-trino's replacement of an entire
+project-level `+properties` dictionary when a model supplies its own.
+
+CDF defaults to `change_data_feed_enabled: 'true'`. Existing `partition_by` configs
+continue to work and inherit this default. To opt out while retaining partitioning:
+
+```sql
+{{ config(
+    schema='example',
+    alias='events',
+    materialized='table',
+    file_format='delta',
+    partition_by=['block_month'],
+    properties={'change_data_feed_enabled': 'false'}
+) }}
+```
+
+Property values are SQL expressions, for example `'true'` or `"ARRAY['block_month']"`.
+Precedence is shared defaults, then `partition_by` translated to `partitioned_by`,
+then explicit model `properties`. Generated S3 locations and CI visibility properties
+are applied afterward by the existing macro.
+
+These defaults and model properties apply when creating or rebuilding persistent
+tables, including full refreshes. They do not apply to temporary tables or views,
+and ordinary incremental runs do not alter existing tables. Enable CDF on an existing
+table without rebuilding with
+`ALTER TABLE catalog.schema.table_name SET PROPERTIES change_data_feed_enabled = true`.
+CDF records changes after enablement; it does not backfill past changes.
+
 ## Freshness Monitoring
 
 `meta.monitoring` declares when a production table should warn or page for stale data. The
