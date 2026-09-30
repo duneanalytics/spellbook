@@ -8,7 +8,10 @@
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     , unique_key = ['block_date', 'unique_instruction_key']
-    , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
+    , pre_hook = [
+        "{{ enforce_join_distribution('PARTITIONED') }}"
+        , "{{ set_trino_session_property(true, 'join_reordering_strategy', 'NONE') }}"
+      ]
   )
 }}
 
@@ -37,7 +40,18 @@ WITH whirlpool_v2_swaps AS (
 )
 
 , token_transfers AS (
-    SELECT *
+    SELECT
+          block_date
+        , block_slot
+        , tx_index
+        , tx_id
+        , outer_instruction_index
+        , inner_instruction_index
+        , unique_instruction_key
+        , amount
+        , token_mint_address
+        , from_token_account
+        , to_token_account
     FROM {{ source('tokens_solana', 'transfers') }}
     WHERE 1=1
         AND token_version != 'native'
@@ -48,6 +62,22 @@ WITH whirlpool_v2_swaps AS (
         {% endif -%}
 )
 
-SELECT *
-FROM token_transfers
-INNER JOIN whirlpool_v2_swaps USING (block_date, block_slot, tx_index, outer_instruction_index)
+-- Swaps stay on the right. With join reordering off, that side is the one loaded into memory.
+SELECT
+      t.block_date
+    , t.block_slot
+    , t.tx_index
+    , t.tx_id
+    , t.outer_instruction_index
+    , t.inner_instruction_index
+    , t.unique_instruction_key
+    , t.amount
+    , t.token_mint_address
+    , t.from_token_account
+    , t.to_token_account
+FROM token_transfers AS t
+INNER JOIN whirlpool_v2_swaps AS w
+    ON t.block_date = w.block_date
+    AND t.block_slot = w.block_slot
+    AND t.tx_index = w.tx_index
+    AND t.outer_instruction_index = w.outer_instruction_index

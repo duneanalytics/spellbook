@@ -246,8 +246,10 @@ FROM (
         AND memo.executing_account = 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'
         AND memo.executing_account_prefix = 'Me'
         {% if is_incremental() -%}
+        AND {{ incremental_predicate('memo.block_date') }}
         AND {{ incremental_predicate('memo.block_time') }}
         {% else -%}
+        AND memo.block_date >= DATE '{{ project_start_date }}'
         AND memo.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
     -- Decoded account fields keep swaps independent of pool initialization coverage.
