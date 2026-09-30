@@ -47,6 +47,28 @@ Each model within Spellbook contains a config block with various properties. Dep
    - Only use for time-series data — do NOT use when you need to check against full history (e.g., pool creation events).
    - **Note**: This is a newer addition to Spellbook. Please add this property for new incremental spells.
 
+## Unique Key Metadata
+
+On prod runs, all Dune property post-hooks publish `dune.unique_key_columns` as a JSON list
+inherited from the model's `unique_key`. A single string becomes a one-element list; composite
+keys retain their column order. Set `meta.dune.unique_key_columns` to override the published key,
+including for full-table materializations without an incremental key:
+
+```yaml
+models:
+  - name: my_full_table_model
+    config:
+      meta:
+        dune:
+          unique_key_columns: [blockchain, address]
+```
+
+The override must be a non-empty list of non-empty column names. It also works on incremental
+models and does not change dbt's merge key. Models without either declaration omit the property;
+full-table models should declare their row identity explicitly. The property is applied on every
+prod run, including incremental runs and full refreshes. As with the other property post-hooks,
+it is not applied on dev or CI targets.
+
 ## Freshness Monitoring
 
 `meta.monitoring` declares when a production table should warn or page for stale data. The
