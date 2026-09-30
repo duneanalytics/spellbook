@@ -59,6 +59,7 @@
     , ref('origin_arm_ethereum_base_trades')
     , ref('agra_ethereum_base_trades')
     , ref('metric_ethereum_base_trades')
+    , ref('motoswap_v2_ethereum_base_trades')
 ] %}
 WITH base AS (
     {{ dex_base_trades_macro(
