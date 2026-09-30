@@ -51,4 +51,9 @@ FROM
     , ('trx-tron', 'ATRX', 0xfdd489aa05b452f2b042f34d12569dbe76fa1e61, 18)
     , ('gbp-pound-sterling-token', 'AGBP', 0xa073783b43dfbfa2a78e0ae015a82968d816f41a, 18)
     , ('wxt-wirex-token', 'AWXT', 0x04adf55844be2f4c8d23e3f5f2386b08400b0cd1, 18)
+    -- native CoinPaprika listings
+    , ('cool-usdc-is-cool', 'COOL', 0xeb64987643db71c76b2a2be7e723decc995e5b37, 18)
+    , ('ellipse-ellipse', 'ELLIPSE', 0x86f7424c3e1ebb3f42e1e687468e36d5f2a1222e, 18)
+    , ('weth-arc-bridged-weth-arc', 'WETH', 0x128cc466b61f542da60c70e3aa11c10e19b84edb, 18)
+    , ('wonk-wonk-fun', 'WONK', 0x548df4bf91624d8cec46d606211eb13f7492e27e, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
