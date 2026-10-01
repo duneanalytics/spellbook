@@ -253,7 +253,6 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-      - name: nft
 
   - name: tokens_gnosis
     tables:
