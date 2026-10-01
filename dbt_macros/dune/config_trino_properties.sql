@@ -16,13 +16,24 @@
     {%- if columns is not sequence or columns is string or columns is mapping or columns | length == 0 -%}
       {%- do exceptions.raise_compiler_error("unique_key or meta.dune.unique_key_columns must resolve to a non-empty list of column names.") -%}
     {%- endif -%}
-    {%- for column in columns -%}
-      {%- if column is not string or column | trim == '' -%}
-        {%- do exceptions.raise_compiler_error("unique_key or meta.dune.unique_key_columns must contain only non-empty column names.") -%}
-      {%- endif -%}
-    {%- endfor -%}
-    {%- do properties.update({'dune.unique_key_columns': tojson(columns)}) -%}
+    {%- do properties.update({'dune.unique_key_columns': tojson(unique_key_column_names(columns))}) -%}
   {%- endif -%}
+{%- endmacro -%}
+
+{#- unique_key entries are SQL, but dune.unique_key_columns stores column names. Each entry must be
+    a bare identifier or a double-quoted one, such as '"from"', which is stored unquoted. -#}
+{%- macro unique_key_column_names(columns) -%}
+  {%- set names = [] -%}
+  {%- for column in columns -%}
+    {%- if column is string and modules.re.fullmatch('[A-Za-z_][A-Za-z0-9_]*', column) -%}
+      {%- do names.append(column) -%}
+    {%- elif column is string and modules.re.fullmatch('"(?:[^"]|"")+"', column) -%}
+      {%- do names.append(column[1:-1] | replace('""', '"')) -%}
+    {%- else -%}
+      {%- do exceptions.raise_compiler_error("unique_key or meta.dune.unique_key_columns must list column names, each bare or double-quoted; got " ~ column) -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- do return(names) -%}
 {%- endmacro -%}
 
 {#
