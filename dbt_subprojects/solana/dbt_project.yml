@@ -17,6 +17,9 @@ flags:
   require_certificate_validation: true
 
 vars:
+  # Merged into table DDL before model properties; +properties would be replaced wholesale.
+  dune_default_table_properties:
+    change_data_feed_enabled: 'true'
   freshness: '6 hours'
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '1') }}"
