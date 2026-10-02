@@ -9,29 +9,28 @@
 ) }}
 
 -- this is just decoding program data, could be moved into decoding pipeline
+-- version 1 txs can carry several top-level SetComputeUnitLimit instructions; keep the first.
+-- picked per row from the ordered instructions array, since a window/aggregate over full history exceeds memory
 
-WITH compute_limit_instructions AS (
+WITH first_compute_limit_instruction AS (
 SELECT
-    tx_id,
+    id AS tx_id,
     block_date,
     date_trunc('hour', block_time) AS block_hour,
     block_time,
     block_slot,
-    tx_index,
-    bytearray_to_bigint(
-        bytearray_reverse(
-            bytearray_substring(data, 2, 8)
-        )
-    ) as compute_limit,
-    -- version 1 txs can carry several legacy SetComputeUnitLimit instructions; keep the first
-    row_number() OVER (PARTITION BY block_date, block_slot, tx_id ORDER BY outer_instruction_index) AS instruction_rank
-FROM {{ source('solana', 'instruction_calls') }}
-WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
-AND executing_account_prefix = 'Co'
-AND bytearray_substring(data,1,1) = 0x02
-AND inner_instruction_index is null
+    index AS tx_index,
+    element_at(
+        filter(
+            instructions,
+            x -> x.executing_account = 'ComputeBudget111111111111111111111111111111'
+                AND bytearray_substring(from_base58(x.data), 1, 1) = 0x02
+        ),
+        1
+    ) AS instruction
+FROM {{ source('solana', 'transactions') }}
 {% if is_incremental() %}
-    AND {{ incremental_predicate('block_date') }}
+WHERE {{ incremental_predicate('block_date') }}
 {% endif %}
 )
 
@@ -42,6 +41,10 @@ SELECT
     block_time,
     block_slot,
     tx_index,
-    compute_limit
-FROM compute_limit_instructions
-WHERE instruction_rank = 1
+    bytearray_to_bigint(
+        bytearray_reverse(
+            bytearray_substring(from_base58(instruction.data), 2, 8)
+        )
+    ) as compute_limit
+FROM first_compute_limit_instruction
+WHERE instruction IS NOT NULL
