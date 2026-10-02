@@ -10,6 +10,7 @@
 
 -- this is just decoding program data, could be moved into decoding pipeline
 
+WITH compute_limit_instructions AS (
 SELECT
     tx_id,
     block_date,
@@ -21,7 +22,9 @@ SELECT
         bytearray_reverse(
             bytearray_substring(data, 2, 8)
         )
-    ) as compute_limit
+    ) as compute_limit,
+    -- version 1 txs can carry several legacy SetComputeUnitLimit instructions; keep the first
+    row_number() OVER (PARTITION BY block_date, block_slot, tx_id ORDER BY outer_instruction_index) AS instruction_rank
 FROM {{ source('solana', 'instruction_calls') }}
 WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
 AND executing_account_prefix = 'Co'
@@ -30,3 +33,15 @@ AND inner_instruction_index is null
 {% if is_incremental() %}
     AND {{ incremental_predicate('block_date') }}
 {% endif %}
+)
+
+SELECT
+    tx_id,
+    block_date,
+    block_hour,
+    block_time,
+    block_slot,
+    tx_index,
+    compute_limit
+FROM compute_limit_instructions
+WHERE instruction_rank = 1
