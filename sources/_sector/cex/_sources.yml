@@ -1,0 +1,72 @@
+version: 2
+
+# cex_<chain>.flows moved to curated-data (duneanalytics/curated-data#1095); the
+# prod_exclude'd deposit address models still parse against them as sources.
+sources:
+  - name: cex_arbitrum
+    tables:
+      - name: flows
+
+  - name: cex_avalanche_c
+    tables:
+      - name: flows
+
+  - name: cex_base
+    tables:
+      - name: flows
+
+  - name: cex_berachain
+    tables:
+      - name: flows
+
+  - name: cex_bnb
+    tables:
+      - name: flows
+
+  - name: cex_celo
+    tables:
+      - name: flows
+
+  - name: cex_ethereum
+    tables:
+      - name: flows
+
+  - name: cex_gnosis
+    tables:
+      - name: flows
+
+  - name: cex_ink
+    tables:
+      - name: flows
+
+  - name: cex_katana
+    tables:
+      - name: flows
+
+  - name: cex_nova
+    tables:
+      - name: flows
+
+  - name: cex_opbnb
+    tables:
+      - name: flows
+
+  - name: cex_optimism
+    tables:
+      - name: flows
+
+  - name: cex_polygon
+    tables:
+      - name: flows
+
+  - name: cex_scroll
+    tables:
+      - name: flows
+
+  - name: cex_unichain
+    tables:
+      - name: flows
+
+  - name: cex_zora
+    tables:
+      - name: flows
