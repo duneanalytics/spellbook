@@ -9,10 +9,12 @@ import json
 import re
 from pathlib import Path
 from types import SimpleNamespace
+from unittest import mock
 
 import pytest
 from jinja2 import DictLoader, Environment
 from jinja2.ext import do
+from jinja2.runtime import Macro
 
 MACRO_DIR = Path(__file__).resolve().parent.parent / "dune"
 MACRO_FILES = (
@@ -23,6 +25,7 @@ MACRO_FILES = (
     "deprecate_spells.sql",
 )
 FILTERING_COLUMNS = "dune.data_explorer.filtering_columns"
+UNIQUE_KEY_COLUMNS = "dune.unique_key_columns"
 
 # Every macro that emits Dune table properties, with representative arguments.
 PROPERTY_MACROS = {
@@ -41,6 +44,25 @@ class CompilerError(Exception):
     """Stands in for dbt's compilation error, which is raised out of the macro context."""
 
 
+class MacroReturn(Exception):
+    """Stands in for dbt's `return()`, which hands a value back to the calling macro."""
+
+    def __init__(self, value):
+        self.value = value
+
+
+def macro_return(value):
+    raise MacroReturn(value)
+
+
+class ReturningMacro(Macro):
+    def _invoke(self, arguments, autoescape):
+        try:
+            return super()._invoke(arguments, autoescape)
+        except MacroReturn as returned:
+            return returned.value
+
+
 def render(macro, materialized="view", config=None, target="prod"):
     source = "\n".join((MACRO_DIR / name).read_text() for name in MACRO_FILES)
     env = Environment(loader=DictLoader({"macros": source}), extensions=[do])
@@ -48,7 +70,9 @@ def render(macro, materialized="view", config=None, target="prod"):
 
     env.filters["as_text"] = lambda value: value
     env.globals.update(
+        **{"return": macro_return},
         tojson=json.dumps,
+        modules=SimpleNamespace(re=re),
         fromjson=json.loads,
         var=lambda name, default=None: "1h",
         exceptions=SimpleNamespace(
@@ -65,7 +89,9 @@ def render(macro, materialized="view", config=None, target="prod"):
             config=SimpleNamespace(materialized=materialized, get=model_config.get),
         ),
     )
-    template = env.get_template("macros")
+    # Compiled templates import Macro from jinja2.runtime, so patch it while compiling.
+    with mock.patch("jinja2.runtime.Macro", ReturningMacro):
+        template = env.get_template("macros")
     return getattr(template.module, macro)(*PROPERTY_MACROS[macro])
 
 
@@ -142,3 +168,71 @@ def test_filtering_columns_does_not_displace_the_other_properties():
         "dune.vacuum",
         FILTERING_COLUMNS,
     } <= set(properties)
+
+
+@pytest.mark.parametrize("macro", PROPERTY_MACROS)
+def test_unique_key_columns_emitted_by_every_property_macro(macro):
+    sql = render(macro, "incremental", {"unique_key": ["block_month", "tx_hash"]})
+    assert json.loads(emitted_properties(sql)[UNIQUE_KEY_COLUMNS]) == [
+        "block_month",
+        "tx_hash",
+    ]
+
+
+@pytest.mark.parametrize(
+    "unique_key, expected",
+    [
+        ("tx_hash", ["tx_hash"]),
+        (["block_month", "address", '"from"'], ["block_month", "address", "from"]),
+        (['"a""b"'], ['a"b']),
+    ],
+)
+def test_unique_key_entries_publish_as_column_names(unique_key, expected):
+    sql = render("expose_spells", "incremental", {"unique_key": unique_key})
+    assert json.loads(emitted_properties(sql)[UNIQUE_KEY_COLUMNS]) == expected
+
+
+def test_meta_unique_key_columns_overrides_unique_key():
+    config = {
+        "unique_key": ["tx_hash"],
+        "meta": {"dune": {"unique_key_columns": ["block_month", '"from"']}},
+    }
+    sql = render("expose_spells", "table", config)
+    assert json.loads(emitted_properties(sql)[UNIQUE_KEY_COLUMNS]) == [
+        "block_month",
+        "from",
+    ]
+
+
+def test_unique_key_columns_omitted_without_a_key():
+    assert UNIQUE_KEY_COLUMNS not in emitted_properties(
+        render("expose_spells", "table")
+    )
+
+
+@pytest.mark.parametrize(
+    "unique_key",
+    [
+        ["concat(block_month, tx_hash)"],
+        ["block_month, tx_hash"],
+        ["t.tx_hash"],
+        [" tx_hash"],
+        ['"from'],
+        ['""'],
+        [""],
+        [3],
+    ],
+)
+def test_unique_key_entries_that_are_not_column_names_are_rejected(unique_key):
+    with pytest.raises(CompilerError, match="must list column names"):
+        render("expose_spells", "incremental", {"unique_key": unique_key})
+
+
+@pytest.mark.parametrize("unique_key", [[], {"tx_hash": True}])
+def test_unique_key_must_resolve_to_a_non_empty_list(unique_key):
+    with pytest.raises(CompilerError, match="non-empty list"):
+        render(
+            "expose_spells",
+            "incremental",
+            {"meta": {"dune": {"unique_key_columns": unique_key}}},
+        )

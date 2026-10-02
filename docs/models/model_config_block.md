@@ -85,7 +85,9 @@ CDF records changes after enablement; it does not backfill past changes.
 
 On prod runs, all Dune property post-hooks publish `dune.unique_key_columns` as a JSON list
 inherited from the model's `unique_key`. A single string becomes a one-element list; composite
-keys retain their column order. Set `meta.dune.unique_key_columns` to override the published key,
+keys retain their column order. Each entry must be a column name, either bare or double-quoted
+for reserved words: `unique_key = ['block_month', '"from"']` publishes `["block_month","from"]`.
+Expressions fail compilation. Set `meta.dune.unique_key_columns` to override the published key,
 including for full-table materializations without an incremental key:
 
 ```yaml
