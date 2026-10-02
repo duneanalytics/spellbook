@@ -2,6 +2,7 @@
 
         schema = 'cex',
         alias ='deposit_addresses',
+        tags = ['prod_exclude'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
