@@ -8,25 +8,20 @@
     unique_key = ['block_date', 'block_slot', 'tx_id']
 ) }}
 
--- this is just decoding program data, could be moved into decoding pipeline
+-- Read the effective compute limit from the transaction config. Version 1
+-- transactions carry this config in the message; their legacy compute-budget
+-- instructions can be no-ops and may not represent the effective limit.
 
 SELECT
-    tx_id,
+    id AS tx_id,
     block_date,
     date_trunc('hour', block_time) AS block_hour,
     block_time,
     block_slot,
-    tx_index,
-    bytearray_to_bigint(
-        bytearray_reverse(
-            bytearray_substring(data, 2, 8)
-        )
-    ) as compute_limit
-FROM {{ source('solana', 'instruction_calls') }}
-WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
-AND executing_account_prefix = 'Co'
-AND bytearray_substring(data,1,1) = 0x02
-AND inner_instruction_index is null
+    index AS tx_index,
+    transaction_config.compute_unit_limit AS compute_limit
+FROM {{ source('solana', 'transactions') }}
+WHERE transaction_config.compute_unit_limit IS NOT NULL
 {% if is_incremental() %}
     AND {{ incremental_predicate('block_date') }}
 {% endif %}
