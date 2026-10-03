@@ -43,6 +43,8 @@ sources:
       - name: EscrowFactoryV1_call_addressOfEscrowSrc
       - name: EscrowFactoryV1_call_createDstEscrow
       - name: EscrowFactoryV1_evt_SrcEscrowCreated
+      - name: EscrowFactoryV1_2_call_addressOfEscrowSrc
+      - name: EscrowFactoryV1_2_call_createDstEscrow
       - name: EscrowSrcV1_call_withdraw
       - name: EscrowSrcV1_call_withdrawTo
       - name: EscrowSrcV1_call_publicWithdraw
