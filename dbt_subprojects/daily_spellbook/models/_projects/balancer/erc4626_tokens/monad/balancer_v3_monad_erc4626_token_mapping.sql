@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v3_monad',
-        alias = 'erc4626_token_mapping', 
+        alias = 'erc4626_token_mapping',
         materialized = 'table',
         file_format = 'delta'
     )
@@ -29,14 +29,15 @@
       AND t.contract_address != vm.vault_address -- Exclude transfers of the vault token itself
       AND t.value = vm.amountUnderlying -- Match the amount transferred
       AND t.to = 0xba1333333333a1ba1108e8412f11850a5c319ba9  -- Only transfers to the balancer vault
-  )
+  ),
 
+  buffer_derived AS (
     SELECT DISTINCT
-      'monad' AS blockchain, 
-      ut.vault_address as erc4626_token,
+      'monad' AS blockchain,
+      ut.vault_address AS erc4626_token,
       COALESCE(vault_tokens.name, 'Unknown Vault') AS erc4626_token_name,
       COALESCE(vault_tokens.symbol, 'Unknown') AS erc4626_token_symbol,
-      ut.underlying_address as underlying_token,
+      ut.underlying_address AS underlying_token,
       COALESCE(underlying_tokens.symbol, 'Unknown') AS underlying_token_symbol,
       vault_tokens.decimals AS decimals
     FROM underlying_tokens ut
@@ -44,3 +45,31 @@
       AND vault_tokens.blockchain = 'monad'
     LEFT JOIN {{ source('tokens','erc20') }} underlying_tokens ON underlying_tokens.contract_address = ut.underlying_address
       AND underlying_tokens.blockchain = 'monad'
+  ),
+
+  -- Hardcoded fallbacks for wrappers that ops never seeded via LiquidityAddedToBuffer (e.g. wnWMON)
+  hardcoded AS (
+    SELECT
+      'monad' AS blockchain,
+      erc4626_token,
+      erc4626_token_name,
+      erc4626_token_symbol,
+      underlying_token,
+      underlying_token_symbol,
+      decimals
+    FROM (VALUES
+      (
+        0xdb39a9d4a1f1b4e93a5684d602207628ad60613c,
+        'Wrapped Neverland WMON',
+        'wnWMON',
+        0x3bd359c1119da7da1d913d1c4d2b7c461115433a,
+        'WMON',
+        18
+      )
+    ) AS t (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
+  )
+
+SELECT * FROM buffer_derived
+UNION ALL
+SELECT * FROM hardcoded
+WHERE erc4626_token NOT IN (SELECT erc4626_token FROM buffer_derived)
