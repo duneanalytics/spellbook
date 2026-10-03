@@ -24,6 +24,9 @@ select
 from {{ source(blockchain, 'traces') }}
 where true
     and block_time >= timestamp '{{ date_from }}'
+    {% if target.name == 'ci' -%}
+    and block_time >= now() - interval '7' day -- CI full-refreshes this shared macro; bound the scan to a representative week
+    {%- endif %}
     and substr(input, 1, 4) in (
         {% set selectors = [] %}
         {% for item in oneinch_project_orders_cfg_methods_macro() %}
