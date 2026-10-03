@@ -22,7 +22,7 @@ models:
         description: "address of the dao deployed"
       - &dao_wallet_address
         name: dao_wallet_address
-        desciption: "wallet address used by DAO to receive & transfer funds"
+        description: "wallet address used by DAO to receive & transfer funds"
       - &created_date
         name: created_date
         description: "UTC event block date of DAO creation"

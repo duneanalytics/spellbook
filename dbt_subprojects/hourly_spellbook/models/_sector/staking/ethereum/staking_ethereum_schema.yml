@@ -1,7 +1,5 @@
 version: 2
 
-models:version: 2
-
 models:
   - name: staking_ethereum_entities
     meta:

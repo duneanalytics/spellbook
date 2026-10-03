@@ -135,7 +135,7 @@ models:
         description: "If the swap was filled/consumed thru 0x API"
       - &contract_address
         name: contract_address
-        desctiption: "The address of the contract which fired the fill/swap event"
+        description: "The address of the contract which fired the fill/swap event"
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"   
