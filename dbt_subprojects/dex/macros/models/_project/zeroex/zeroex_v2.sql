@@ -358,6 +358,15 @@ select * from tbl_trades
 {%- if target.name == 'ci' -%}
     {%- set start_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=14)).strftime('%Y-%m-%d') -%}
 {%- endif -%}
+{# Leg-divergence guard: a settler trade's two priced legs (sold vs bought) should be
+   close in USD. In bundled / multi-path settler txs (e.g. Relay-routed orders) the
+   heuristically-matched maker (bought/output) leg can latch onto an unrelated side-swap
+   transfer, distorting volume_usd. The taker (sold) leg is the deterministic settler
+   input (the user's actual deposit, matched first), so it is the trustworthy anchor.
+   When both legs are priced and diverge by at least this factor, fall back to the
+   sold-leg value rather than the mismatch-prone maker leg (which can be a tiny side-swap
+   amount -> understatement, or a large intermediate hop -> overstatement). #}
+{%- set leg_divergence_tolerance = 5 -%}
 WITH token_metadata AS (
     SELECT 
         blockchain, 
@@ -450,7 +459,17 @@ SELECT
         maker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw,
-        amount_usd as volume_usd,
+        -- Guard against the maker leg being mismatched to an unrelated side-swap transfer
+        -- (see leg_divergence_tolerance above): when both legs are priced and diverge
+        -- implausibly, anchor on the deterministic sold (taker) leg rather than the
+        -- mismatch-prone maker leg that produced the collapsed amount_usd.
+        CASE
+            WHEN taker_amount > 0
+                AND maker_amount > 0
+                AND greatest(taker_amount, maker_amount) / least(taker_amount, maker_amount) >= {{ leg_divergence_tolerance }}
+            THEN taker_amount
+            ELSE amount_usd
+        END AS volume_usd,
         taker_token,
         maker_token,
         taker,
