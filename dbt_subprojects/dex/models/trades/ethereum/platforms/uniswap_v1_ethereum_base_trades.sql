@@ -27,14 +27,26 @@ WITH dexs AS
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
     FROM
-        {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }} t
+        (
+            -- Decoded sources can contain identical rows for the same event.
+            SELECT DISTINCT
+                evt_block_number
+                , evt_block_time
+                , buyer
+                , tokens_bought
+                , eth_sold
+                , contract_address
+                , evt_tx_hash
+                , evt_index
+            FROM {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }}
+            {% if is_incremental() %}
+            WHERE
+                {{incremental_predicate('evt_block_time')}}
+            {% endif %}
+        ) t
     INNER JOIN
         {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
         ON f.exchange = t.contract_address
-    {% if is_incremental() %}
-    WHERE 
-        {{incremental_predicate('t.evt_block_time')}}
-    {% endif %}
 
     UNION ALL
 
@@ -52,14 +64,26 @@ WITH dexs AS
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
     FROM
-        {{ source('uniswap_ethereum', 'Exchange_evt_EthPurchase') }} t
+        (
+            -- Decoded sources can contain identical rows for the same event.
+            SELECT DISTINCT
+                evt_block_number
+                , evt_block_time
+                , buyer
+                , eth_bought
+                , tokens_sold
+                , contract_address
+                , evt_tx_hash
+                , evt_index
+            FROM {{ source('uniswap_ethereum', 'Exchange_evt_EthPurchase') }}
+            {% if is_incremental() %}
+            WHERE
+                {{incremental_predicate('evt_block_time')}}
+            {% endif %}
+        ) t
     INNER JOIN
         {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
         ON f.exchange = t.contract_address
-    {% if is_incremental() %}
-    WHERE
-        {{incremental_predicate('t.evt_block_time')}}
-    {% endif %}
 )
 
 SELECT
