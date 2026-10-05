@@ -87,3 +87,14 @@ sources:
           - &singleton
             name: singleton
             description: "Singleton"
+      - name: SafeProxyFactory_v1_5_0_evt_ProxyCreation
+        loaded_at_field: evt_block_time
+        description: "Safe v1.5.0 factory ProxyCreation events"
+        columns:
+          - name: contract_address
+          - name: evt_block_number
+          - name: evt_block_time
+          - name: evt_index
+          - name: evt_tx_hash
+          - name: proxy
+          - name: singleton
