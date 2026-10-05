@@ -10,7 +10,7 @@
 
 -- Fetch all known singleton/mastercopy addresses used via factories.
 select distinct singleton as address
-from {{ source('gnosis_safe_base', 'SafeProxyFactoryv_1_3_0_evt_ProxyCreation') }}
+from {{ source('gnosis_safe_base', 'SafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
 
 union
 

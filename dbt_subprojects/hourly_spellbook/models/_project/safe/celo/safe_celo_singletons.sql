@@ -17,8 +17,3 @@ union
 
 select distinct singleton as address
 from {{ source('gnosis_safe_celo', 'SafeProxyFactory_v1_4_1_evt_ProxyCreation') }}
-
-union
-
-select distinct singleton as address
-from {{ source('safe_celo', 'safeproxyfactory_evt_proxycreation') }} --1.5.0
