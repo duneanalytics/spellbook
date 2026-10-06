@@ -1,10 +1,39 @@
 {%- macro trino_properties(properties) -%}
   map_from_entries(ARRAY[
   {%- for key, value in properties.items() %}
-      ROW('{{ key }}', '{{ value }}')
+      ROW('{{ key }}', '{{ value | replace("'", "''") }}')
       {%- if not loop.last -%},{%- endif -%}
     {%- endfor %}
   ])
+{%- endmacro -%}
+
+{%- macro apply_unique_key_columns(properties) -%}
+  {%- set unique_key = model.config.get('unique_key') -%}
+  {%- set overrides = (model.config.get('meta', {}) or {}).get('dune', {}) -%}
+  {%- set has_override = overrides is mapping and 'unique_key_columns' in overrides -%}
+  {%- if unique_key or has_override -%}
+    {%- set columns = overrides['unique_key_columns'] if has_override else ([unique_key] if unique_key is string else unique_key) -%}
+    {%- if columns is not sequence or columns is string or columns is mapping or columns | length == 0 -%}
+      {%- do exceptions.raise_compiler_error("unique_key or meta.dune.unique_key_columns must resolve to a non-empty list of column names.") -%}
+    {%- endif -%}
+    {%- do properties.update({'dune.unique_key_columns': tojson(unique_key_column_names(columns))}) -%}
+  {%- endif -%}
+{%- endmacro -%}
+
+{#- unique_key entries are SQL, but dune.unique_key_columns stores column names. Each entry must be
+    a bare identifier or a double-quoted one, such as '"from"', which is stored unquoted. -#}
+{%- macro unique_key_column_names(columns) -%}
+  {%- set names = [] -%}
+  {%- for column in columns -%}
+    {%- if column is string and modules.re.fullmatch('[A-Za-z_][A-Za-z0-9_]*', column) -%}
+      {%- do names.append(column) -%}
+    {%- elif column is string and modules.re.fullmatch('"(?:[^"]|"")+"', column) -%}
+      {%- do names.append(column[1:-1] | replace('""', '"')) -%}
+    {%- else -%}
+      {%- do exceptions.raise_compiler_error("unique_key or meta.dune.unique_key_columns must list column names, each bare or double-quoted; got " ~ column) -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- do return(names) -%}
 {%- endmacro -%}
 
 {#
@@ -45,6 +74,7 @@
             'dune.vacuum': '{"enabled":true}'
           } -%}
     {%- do apply_filtering_columns(properties) -%}
+    {%- do apply_unique_key_columns(properties) -%}
     {%- if model.config.materialized == "view" -%}
       CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
         {{ trino_properties(properties) }}
@@ -66,6 +96,7 @@
             'dune.vacuum': '{"enabled":true}'
           } -%}
     {%- do apply_filtering_columns(properties) -%}
+    {%- do apply_unique_key_columns(properties) -%}
     {%- if model.config.materialized == "view" -%}
       CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
         {{ trino_properties(properties) }}
