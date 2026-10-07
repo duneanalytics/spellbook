@@ -37,5 +37,7 @@ union
 select distinct singleton as address
 from {{ source('gnosis_safe_gnosis', 'SafeProxyFactory_v1_5_0_evt_ProxyCreation') }}
 
+union
+
 -- The Circles project used a custom Safe master copy, not via the official factories though, adding that manually.
 select 0x2cb0ebc503de87cfd8f0eceed8197bf7850184ae as address
