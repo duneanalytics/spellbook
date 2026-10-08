@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: jupiter_lend_solana
+    description: "jupiter_lend_solana dex decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: dex_call_swap_in
+        loaded_at_field: call_block_time
+        config:
+          event_time: call_block_date
+      - name: dex_call_swap_out
+        loaded_at_field: call_block_time
+        config:
+          event_time: call_block_date

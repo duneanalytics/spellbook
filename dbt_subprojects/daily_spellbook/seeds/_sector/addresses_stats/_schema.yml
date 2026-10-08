@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: arc_first_funding_seed
+    description: "Arc first native funding verified from full transfer history (Dune execution 01M2TRVKYJMDTR6S9ANSCHCVXE)."
+    config:
+      column_types:
+        blockchain: varchar
+        address: varbinary
+        first_funded_by: varbinary
+        first_funded_at: timestamp(3) with time zone

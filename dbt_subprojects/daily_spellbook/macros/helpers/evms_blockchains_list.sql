@@ -4,6 +4,7 @@
         "apechain",
         "arbitrum",
         "nova",
+        "arc",
         "avalanche_c",
         "b3",
         "base",

@@ -1,0 +1,21 @@
+version: 2
+
+seeds:
+  - name: orca_whirlpool_v2_base_trades_seed
+    description: >
+      Whirlpool v2 swaps from 2026-09-09 that only exist in the snake-case decoded
+      tables (whirlpool_call_swap_v2 / whirlpool_call_two_hop_swap_v2), i.e. after
+      the 2026-02-04 IDL cutover. Expected amounts and pools were verified against
+      solana.instruction_calls and tokens_solana.transfers.
+    config:
+      column_types:
+        block_month: date
+        surrogate_key: decimal(38,0)
+        tx_id: varchar
+        outer_instruction_index: integer
+        inner_instruction_index: integer
+        token_sold_amount_raw: uint256
+        token_bought_amount_raw: uint256
+        token_sold_mint_address: varchar
+        token_bought_mint_address: varchar
+        project_program_id: varchar

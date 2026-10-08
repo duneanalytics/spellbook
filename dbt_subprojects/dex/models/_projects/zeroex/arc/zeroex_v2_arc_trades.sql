@@ -1,0 +1,21 @@
+{{
+    config(
+        schema = 'zeroex_v2_arc',
+        alias = 'trades',
+        materialized = 'incremental',
+        partition_by = ['block_month'],
+        unique_key = ['block_month', 'block_date', 'tx_hash', 'evt_index', 'trace_address'],
+        on_schema_change = 'sync_all_columns',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+
+-- The first observed Arc Settler registry event is on 7 September 2026.
+{{
+    zeroex_settler_agg(
+        blockchain = 'arc',
+        start_date = '2026-09-07'
+    )
+}}

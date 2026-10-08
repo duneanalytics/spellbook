@@ -15,13 +15,25 @@ models:
       # rebuilds dex.trades over a metadata-only change.
       monitoring:
         enabled: true
-        warn_after: {count: 4, period: hour}
-        critical_after: {count: 8, period: hour}
-        oncall: false
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: true
     config:
       tags: [ 'dex', 'trades']
       event_time: block_time
     description: '{{ doc("dex_trades_doc") }}'
+    data_tests:
+      # Consumers merge on (blockchain, tx_hash, evt_index), so it must identify one trade.
+      # Warn-only until the renumbered models are fully refreshed; flip to error after.
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: warn
+            where: "block_time >= now() - interval '3' day"
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - tx_hash
+              - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -106,9 +118,9 @@ models:
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
       monitoring:
         enabled: true
-        warn_after: {count: 24, period: hour}
-        critical_after: {count: 48, period: hour}
-        oncall: false
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: true
     config:
       tags: ['dex', 'trades', 'evm']
       event_time: block_time

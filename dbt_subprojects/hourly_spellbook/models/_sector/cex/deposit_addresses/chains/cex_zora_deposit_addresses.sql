@@ -5,7 +5,7 @@
         schema = 'cex_' + blockchain,
         alias = 'deposit_addresses',
         materialized = 'table',
-        tags = ['static'],
+        tags = ['static', 'prod_exclude'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address']

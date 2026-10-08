@@ -16,6 +16,7 @@
     ,ref('kyberswap_aggregator_bnb_trades')
     ,ref('kyberswap_aggregator_polygon_trades')
     ,ref('kyberswap_aggregator_base_trades')
+    ,ref('kyberswap_aggregator_robinhood_trades')
 ] %}
 
 

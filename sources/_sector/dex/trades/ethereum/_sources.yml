@@ -181,3 +181,11 @@ sources:
   - name: agra_multichain
     tables:
       - name: settlement_evt_orderfulfilled
+
+  - name: metric_multichain
+    tables:
+      - name: metricommpoolfactoryv0_evt_poolcreated
+      - name: metricommpoolv0_evt_swap
+      - name: metricommpoolv1_evt_swap
+      - name: metricommpoolv2_evt_swap
+      - name: metricommpoolv2_beta_evt_swap

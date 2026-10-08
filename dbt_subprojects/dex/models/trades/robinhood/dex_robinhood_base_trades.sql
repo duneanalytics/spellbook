@@ -14,6 +14,7 @@
     ref('uniswap_v2_robinhood_base_trades')
     , ref('uniswap_v3_robinhood_base_trades')
     , ref('uniswap_v4_robinhood_base_trades')
+    , ref('ekubo_v3_robinhood_base_trades')
     , ref('ramsesxyz_legacy_robinhood_base_trades')
     , ref('ramsesxyz_cl_robinhood_base_trades')
     , ref('ramsesxyz_dlmm_robinhood_base_trades')
@@ -30,6 +31,7 @@
     , ref('uponrh_v3_robinhood_base_trades')
     , ref('gigadex_v2_robinhood_base_trades')
     , ref('gigadex_v3_robinhood_base_trades')
+    , ref('metric_robinhood_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

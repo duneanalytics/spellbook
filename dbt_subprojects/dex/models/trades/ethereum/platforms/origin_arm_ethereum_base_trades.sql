@@ -218,7 +218,8 @@ SELECT
     , CAST(NULL AS VARBINARY) AS maker
     , trades.project_contract_address
     , trades.tx_hash
-    , ROW_NUMBER() OVER (
+    -- synthetic evt_index: trace-derived, banded clear of real log indices (see dex/README.md)
+    , 101000000 + ROW_NUMBER() OVER (
         PARTITION BY trades.tx_hash
         ORDER BY trades.trace_address, trades.trade_source, trades.project_contract_address
     ) AS evt_index

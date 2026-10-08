@@ -1,6 +1,9 @@
 version: 2
 
 sources:
+  - name: addresses_events_arc
+    tables:
+      - name: first_funded_by
   - name: abi
     tables:
       - name: signatures

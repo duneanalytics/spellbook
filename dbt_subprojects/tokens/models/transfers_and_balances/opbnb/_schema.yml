@@ -57,7 +57,15 @@ models:
       blockchain: opbnb
       sector: tokens
       contributors: hosuke
+      # Freshness monitoring declaration. Under meta, not config, on purpose: a yml config
+      # change is state:modified.configs, so a metadata-only edit triggers no rebuild.
+      monitoring:
+        enabled: true
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: false
     config:
+      event_time: block_time
       tags: ['tokens','transfers', 'opbnb']
     description: >
       Token transfers

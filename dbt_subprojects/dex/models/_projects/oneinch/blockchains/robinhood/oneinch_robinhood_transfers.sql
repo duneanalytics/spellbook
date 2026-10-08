@@ -19,7 +19,6 @@
         streams = [
             oneinch_ar_transfers_cfg_macro(),
             oneinch_lo_transfers_cfg_macro(),
-            oneinch_cc_transfers_cfg_macro(),
         ]
     )
 -}}

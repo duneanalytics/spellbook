@@ -18,6 +18,8 @@ with prices_native_tokens as (
         , ('apechain', 'ape-apecoin')
         , ('aptos', 'apt-aptos')
         , ('arbitrum', 'eth-ethereum')
+        -- Arc's gas token is USDC itself, at 0x00..00 with 18 decimals; see prices_arc/.
+        , ('arc', 'usdc-usd-coin')
         , ('avalanche_c', 'avax-avalanche')
         , ('b3', 'eth-ethereum')
         , ('base', 'eth-ethereum')

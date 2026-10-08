@@ -13,6 +13,7 @@
 {% set base_models = [
     ref('kumbaya_megaeth_base_trades'),
     ref('prismfi_megaeth_base_trades')
+    , ref('metric_megaeth_base_trades')
 ] %}
 
 {{ dex_base_trades_macro(

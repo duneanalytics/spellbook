@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: kyberswap_aggregator_robinhood_trades
+    meta:
+      blockchain: robinhood
+      sector: dex_aggregator
+      project: kyberswap
+      contributors: karim
+    config:
+      tags: ['robinhood', 'kyberswap', 'aggregator', 'trades', 'dex']
+    description: >
+      KyberSwap Aggregator trades on Robinhood.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+              - trace_address
+      - check_dex_aggregator_seed:
+          arguments:
+            blockchain: robinhood
+            project: kyberswap
+            version: meta_2
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: project
+        data_tests:
+          - not_null
+      - name: version
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: evt_index
+        data_tests:
+          - not_null
+      - name: trace_address
+        data_tests:
+          - not_null
