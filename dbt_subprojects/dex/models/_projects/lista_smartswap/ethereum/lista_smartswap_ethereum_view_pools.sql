@@ -3,7 +3,6 @@
     alias = 'view_pools',
     materialized = 'table',
     file_format = 'delta',
-    filtering_columns = ['pool_address'],
     post_hook = '{{ hide_spells() }}'
 ) }}
 
