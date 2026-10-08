@@ -46,9 +46,10 @@
             0xb63e800d -- setup method v1.1.0, v1.1.1, v1.2.0, v1.3.0, v1.3.0L2, v1.4.1, v.1.4.1L2
         )
         and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
-        {% if not is_incremental() %}
-        and et.block_time > TIMESTAMP '2020-05-21' -- for initial query optimisation
-        {% endif %}
         {% if is_incremental() %}
         and et.block_time > date_trunc('day', now() - interval '7' day)
+        {% elif target.name == 'ci' %}
+        and et.block_time >= current_date - interval '7' day
+        {% else %}
+        and et.block_time > TIMESTAMP '2020-05-21' -- for initial query optimisation
         {% endif %}

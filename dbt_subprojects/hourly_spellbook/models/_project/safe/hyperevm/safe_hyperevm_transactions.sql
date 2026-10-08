@@ -11,4 +11,8 @@
     )
 }}
 
+{% if target.name == 'ci' %}
+{{ safe_transactions('hyperevm', (run_started_at - modules.datetime.timedelta(days=7)).strftime('%Y-%m-%d')) }}
+{% else %}
 {{ safe_transactions('hyperevm', '2023-07-01') }}
+{% endif %}

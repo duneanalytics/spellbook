@@ -47,9 +47,10 @@ where et.success = true
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
     and et.tx_success = true
-    {% if not is_incremental() %}
-    and et.block_time > TIMESTAMP '2021-01-26' -- for initial query optimisation
-    {% endif %}
     {% if is_incremental() %}
     and et.block_time > date_trunc('day', now() - interval '7' day)
+    {% elif target.name == 'ci' %}
+    and et.block_time >= current_date - interval '7' day
+    {% else %}
+    and et.block_time > TIMESTAMP '2021-01-26' -- for initial query optimisation
     {% endif %}
