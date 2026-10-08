@@ -1,3 +1,7 @@
+-- Historical snapshot: requires a full-history build. CI only materializes
+-- a recent window so this count is not meaningful there.
+{{ config(enabled = target.name != 'ci') }}
+
 -- Check that safes count on a specific date is correct
 
 with test_data as (
