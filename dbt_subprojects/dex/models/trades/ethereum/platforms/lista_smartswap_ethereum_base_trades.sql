@@ -31,9 +31,9 @@ WITH dexs AS (
     INNER JOIN {{ ref('lista_smartswap_ethereum_view_pools') }} p_sold
         ON e.contract_address = p_sold.pool_address
         AND e.sold_id = p_sold.token_id
-    {% if is_incremental() %}
+    {% if is_incremental() -%}
     WHERE {{ incremental_predicate('e.evt_block_time') }}
-    {% endif %}
+    {% endif -%}
 )
 
 SELECT
