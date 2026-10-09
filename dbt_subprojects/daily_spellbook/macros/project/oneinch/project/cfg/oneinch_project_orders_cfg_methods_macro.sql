@@ -805,6 +805,63 @@
     "order_hash":       "substr(input, 4 + 32*0 + 1             , 32)",
 }] %}
 
+-- OKXDEX --
+
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0x0c307f76",
+    "name":             "dagSwapTo",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0xf2c42696",
+    "name":             "dagSwapByOrderId",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0xb80c2f09",
+    "name":             "smartSwapByOrderId",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0x03b87e5f",
+    "name":             "smartSwapTo",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0x9871efa4",
+    "name":             "unxswapByOrderId",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0x08298b5a",
+    "name":             "unxswapTo",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0x0d5f0e3b",
+    "name":             "uniswapV3SwapTo",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0xe99bfa95",
+    "name":             "smartSwapByInvest",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+{% set methods = methods + [{
+    "project":          "OKXDEX",
+    "selector":         "0x591b3d08",
+    "name":             "smartSwapByInvestWithRefund",
+    "event":            "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c",
+}] %}
+
 {{ return(methods) }}
 
 {% endmacro %}

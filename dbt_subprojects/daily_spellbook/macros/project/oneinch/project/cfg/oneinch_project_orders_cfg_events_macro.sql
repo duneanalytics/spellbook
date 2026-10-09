@@ -99,6 +99,15 @@
             "taking_amount":    "substr(data    , 32*3 + 1              , 32)",
             "order_hash":       "substr(data    , 32*5 + 1              , 16)",
         },
+        "0x1bb43f2da90e35f7b0cf38521ca95a49e68eb42fac49924930a5bd73cdf7576c": {
+            "project":          "OKXDEX",
+            "name":             "OrderRecord",
+            "taker":            "substr(data    , 32*2 + 12 + 1         , 20)",
+            "maker_asset":      "substr(data    , 32*1 + 12 + 1         , 20)",
+            "taker_asset":      "substr(data    , 32*0 + 12 + 1         , 20)",
+            "making_amount":    "substr(data    , 32*4 + 1              , 32)",
+            "taking_amount":    "substr(data    , 32*3 + 1              , 32)",
+        },
         "0x0c3ca67555399daacbfbeef89219bf4eca6380fdc58f2ed80cdc0841616c5818": {
             "project":          "Native",
             "name":             "ExternalSwap",
