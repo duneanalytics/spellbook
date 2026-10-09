@@ -22,6 +22,7 @@ select
         when et.to = 0xfb1bffc9d739b8d520daf37df666da4c687191ea then '1.3.0L2' -- for chains with EIP-155
         when et.to = 0x41675C099F32341bf84BFc5382aF534df5C7461a then '1.4.1'
         when et.to = 0x29fcB43b46531BcA003ddC8FCB67FFE91900C762 then '1.4.1L2'
+        when et.to = 0x14F2982D601c9458F93bd70B218933A6f8165e7b then '1.5.0'
         else 'unknown'
     end as creation_version,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
@@ -39,9 +40,10 @@ where et.success = true
         0xb63e800d -- setup method v1.1.0, v1.1.1, v1.2.0, v1.3.0, v1.3.0L2, v1.4.1, v.1.4.1L2
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
-    {% if not is_incremental() %}
-    and et.block_time > TIMESTAMP '2023-07-01' -- for initial query optimisation
-    {% endif %}
     {% if is_incremental() %}
     and et.block_time > date_trunc('day', now() - interval '7' day)
+    {% elif target.name == 'ci' %}
+    and et.block_time >= current_date - interval '7' day
+    {% else %}
+    and et.block_time > TIMESTAMP '2023-07-01' -- for initial query optimisation
     {% endif %}
