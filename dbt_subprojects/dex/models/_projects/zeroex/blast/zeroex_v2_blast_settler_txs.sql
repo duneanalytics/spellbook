@@ -2,7 +2,8 @@
     config(
         schema = 'zeroex_v2_blast',
         alias = 'settler_txs',
-        materialized = 'incremental',
+        materialized = 'table',
+        tags = ['static'],
         partition_by = ['block_month'],
         unique_key = ['block_month', 'tx_hash', 'rn'],
         on_schema_change = 'sync_all_columns',

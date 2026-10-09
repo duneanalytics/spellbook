@@ -1,0 +1,18 @@
+version: 2
+
+seeds:
+  - name: raydium_v4_decoded_swaps_seed
+    description: >
+      Legacy and V2 Raydium AMM swaps, covering direct and inner calls.
+      Base-trade amounts and mints for these rows were verified against token transfers:
+      https://dune.com/queries/8770064
+    config:
+      column_types:
+        block_month: date
+        block_date: date
+        surrogate_key: decimal(38,0)
+        tx_id: varchar
+        tx_index: integer
+        outer_instruction_index: integer
+        inner_instruction_index: integer
+        pool_id: varchar
