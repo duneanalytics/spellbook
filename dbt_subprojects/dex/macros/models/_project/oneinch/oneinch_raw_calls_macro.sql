@@ -16,8 +16,7 @@ with
 {% if type == "raw" -%} creations as (
     select
         distinct address as contract_address
-        {#- the escrow implementation address position in the clone creation code differs by chain: standard EVM EIP-1167 clones hold it at byte 21, zksync bytecode differs (byte 13) -#}
-        , substr(code, {{ blockchain.get('creations_parent_code_offset', 13) }}, 20) as parent
+        , code
     from {{ source(blockchain.name, 'creation_traces') }}
     where true
         and "from" in ({{ blockchain.escrow_factory_addresses | join(', ') }})
@@ -41,7 +40,11 @@ payload as (
             {% if contract_data.address == "creations" -%}
             {%- if type == "raw" -%}
             from creations
-            where parent = {{ contract_data.initial_address }}
+            {# the escrow implementation address position in the clone code can differ per contract generation
+               on one chain: zksync v1 zk-format clone blobs hold it right-aligned in the last word (byte 109),
+               while its v1.2 EVM-format clones hold it at byte 11 — so the offset resolves per contract first,
+               then per chain (default 13: the pre-2026 zksync creation code layout) -#}
+            where substr(code, {{ contract_data.get("creations_parent_code_offset", blockchain.get("creations_parent_code_offset", 13)) }}, 20) = {{ contract_data.initial_address }}
             {%- else -%}
             from (
                 select distinct contract_address
