@@ -29,7 +29,7 @@ models:
       - &strategy
         name: strategy
         description: "Strategy to withdraw from"
-        type: varbinary
+        data_type: varbinary
       - &shares
         name: shares
         description: "Shares of strategy of the withdrawal"
@@ -139,7 +139,7 @@ models:
       - &token
         name: token
         description: "ERC20 Token"
-        type: varbinary
+        data_type: varbinary
       - &category
         name: category
         description: "Category of the strategy"

@@ -106,8 +106,9 @@ models:
         description: "daily closing USD price of a token"
 
   - name: prices_usd_native
+    meta:
+      contributors: krishhh
     description: "Native token prices in USD"
-    contributors: krishhh
     columns:
       - name: blockchain
         description: "The blockchain name"

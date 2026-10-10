@@ -46,7 +46,7 @@ models:
     columns:
       - &gauge_address
         name: gauge_address
-        descripton: "Gauge address"
+        description: "Gauge address"
       - &pool_id
         name: pool_id
         description: "Unique encoded identifier that refers to each pool to which each gauge directs incentives"
