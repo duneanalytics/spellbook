@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'bebop',
+        schema = 'bebop_hyperevm',
         alias = 'trades',
         materialized = 'view'
         , post_hook='{{ hide_spells() }}'
@@ -7,16 +7,7 @@
 
 
 {% set bebop_models = [
-    ref('bebop_polygon_trades'),
-    ref('bebop_ethereum_trades'),
-    ref('bebop_arbitrum_trades'),
-    ref('bebop_bnb_trades'),
-    ref('bebop_base_trades'),
-    ref('bebop_optimism_trades'),
-    ref('bebop_scroll_trades'),
-    ref('bebop_zksync_trades'),
-    ref('bebop_hyperevm_trades'),
-    ref('bebop_robinhood_trades')
+    ref('bebop_blend_hyperevm_trades')
 ] %}
 
 SELECT *
