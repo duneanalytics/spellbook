@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: squeeze_solana_launches
+    meta:
+      blockchain: solana
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['solana', 'squeeze', 'launchpad', 'raydium_launchlab']
+    description: >
+      Distinct Raydium LaunchLab pools for Squeeze platformId
+      FpKUW9vDSRPTByNu4MerR2SU4YPkJU9pLWQTnChGAW3h.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['pool_id']
+
+  - name: squeeze_solana_trades
+    meta:
+      blockchain: solana
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['solana', 'squeeze', 'launchpad', 'raydium_launchlab']
+    description: >
+      LaunchLab base trades filtered to Squeeze platform_config (attribution vs full raydium_launchlab).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - tx_id
+              - outer_instruction_index
+              - inner_instruction_index
