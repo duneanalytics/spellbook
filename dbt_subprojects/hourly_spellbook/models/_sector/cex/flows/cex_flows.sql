@@ -29,6 +29,7 @@
      , (ref('cex_zkevm_flows'))
      , (ref('cex_berachain_flows'))
      , (ref('cex_ink_flows'))
+     , (ref('cex_kaia_flows'))
      , (ref('cex_katana_flows'))
      , (ref('cex_nova_flows'))
      , (ref('cex_opbnb_flows'))
