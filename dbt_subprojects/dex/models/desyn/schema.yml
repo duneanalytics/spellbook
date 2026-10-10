@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: desyn_liquidity
+    meta:
+      blockchain: ethereum, arbitrum, bnb, linea, scroll, hemi, bnb, plume
+    description: "DeSyn Protocol daily liquidity (TVL) across all supported chains"
+
+    columns:
+      - name: day
+        description: "Date of the snapshot"
+      - name: blockchain
+        description: "Blockchain name"
+      - name: version
+        description: "Protocol version"
+      - name: protocol_liquidity_usd
+        description: "Total locked liquidity in USD"
+
+  - name: desyn_ethereum_liquidity_v1
+    description: "DeSyn Ethereum daily liquidity per pool (detailed)"
+    columns:
+      - name: day
+      - name: blockchain
+      - name: pool_address
+        description: "DeSyn Smart Pool contract address"
+      - name: protocol_liquidity_usd
+        description: "Pool liquidity in USD"
+
+  - name: desyn_arbitrum_liquidity_v1
+    meta:
+        blockchain: arbitrum
+    description: "DeSyn Arbitrum chain daily liquidity v1"
+
+  - name: desyn_bnb_liquidity_v1
+    description: "DeSyn BSC chain daily liquidity v1"
+
+  - name: desyn_hemi_liquidity_v1
+    description: "DeSyn Hemi chain daily liquidity v1"
+
+  - name: desyn_linea_liquidity_v1
+    description: "DeSyn Linea chain daily liquidity v1"
+
+  - name: desyn_plume_liquidity_v1
+    description: "DeSyn Plume chain daily liquidity v1"
+
+  - name: desyn_scroll_liquidity_v1
+    description: "DeSyn Scroll chain daily liquidity v1"
