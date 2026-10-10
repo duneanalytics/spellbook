@@ -33,14 +33,24 @@ swap_events as (
             then varbinary_to_int256(varbinary_concat(from_hex('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), substr(el."data", 69, 16)))
             else varbinary_to_int256(varbinary_concat(from_hex('0x00000000000000000000000000000000'), substr(el."data", 69, 16)))
         end as amount1,
+        -- The trailing 32 bytes carry the pool state after the swap:
+        -- sqrtRatio (uint96 SqrtRatio float), tick (int32), liquidity (uint128).
+        varbinary_to_uint256(substr(el."data", 85, 12)) as sqrt_ratio_after,
+        case
+            when bitwise_and(varbinary_to_bigint(substr(el."data", 97, 1)), from_base('80', 16)) = from_base('80', 16)
+            then varbinary_to_bigint(substr(el."data", 97, 4)) - 4294967296
+            else varbinary_to_bigint(substr(el."data", 97, 4))
+        end as tick_after,
+        varbinary_to_uint256(substr(el."data", 101, 16)) as liquidity_after,
         el.tx_hash,
         el.index as evt_index,
         'swap' as event_type
-    from 
-    {{ source (blockchain, 'logs') }} el 
+    from
+    {{ source (blockchain, 'logs') }} el
     where block_number >= {{ start_block_number }}
     and contract_address = {{ ekubo_core_contract }}
-    and topic0 is null 
+    and topic0 is null
+    and length(el."data") = 116
     {%- if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {%- endif %} 
@@ -57,6 +67,9 @@ liquidity_events as (
         poolId as id,
         delta0 as amount0,
         delta1 as amount1,
+        cast(null as uint256) as sqrt_ratio_after,
+        cast(null as bigint) as tick_after,
+        cast(null as uint256) as liquidity_after,
         evt_tx_hash as tx_hash,
         evt_index,
         'modify_liquidity' as event_type 
@@ -82,9 +95,12 @@ liquidity_events as (
             then varbinary_to_int256(varbinary_concat(from_hex('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), substr(balanceUpdate, 1+16, 16)))
             else varbinary_to_int256(varbinary_concat(from_hex('0x00000000000000000000000000000000'), substr(balanceUpdate, 1+16, 16)))
         end as amount1,
+        cast(null as uint256) as sqrt_ratio_after,
+        cast(null as bigint) as tick_after,
+        cast(null as uint256) as liquidity_after,
         evt_tx_hash as tx_hash,
         evt_index,
-        'modify_liquidity' as event_type 
+        'modify_liquidity' as event_type
     from 
     {{ position_updated }}
     {%- if is_incremental() %}
@@ -102,6 +118,9 @@ liquidity_events as (
         poolId as id,
         -amount0 as amount0,
         -amount1 as amount1,
+        cast(null as uint256) as sqrt_ratio_after,
+        cast(null as bigint) as tick_after,
+        cast(null as uint256) as liquidity_after,
         evt_tx_hash as tx_hash,
         evt_index,
         'fees_collected' as event_type 
@@ -120,9 +139,12 @@ liquidity_events as (
         poolId as id,
         amount0 as amount0,
         amount1 as amount1,
+        cast(null as uint256) as sqrt_ratio_after,
+        cast(null as bigint) as tick_after,
+        cast(null as uint256) as liquidity_after,
         evt_tx_hash as tx_hash,
         evt_index,
-        'fees_accumulated' as event_type 
+        'fees_accumulated' as event_type
     from 
     {{ position_fees_accumulated }}
     {%- if is_incremental() %}
@@ -166,8 +188,12 @@ get_pools as (
         ep.token0,
         ep.token1,
         CAST(ae.amount0 AS double) as amount0_raw,
-        CAST(ae.amount1 AS double) as amount1_raw
-    from 
+        CAST(ae.amount1 AS double) as amount1_raw,
+        ae.sqrt_ratio_after,
+        {{ ekubo_sqrt_ratio_to_fixed('ae.sqrt_ratio_after') }} as sqrt_ratio_after_fixed,
+        CAST(ae.tick_after AS integer) as tick_after,
+        ae.liquidity_after
+    from
     all_events ae 
     inner join 
     get_pools ep 
