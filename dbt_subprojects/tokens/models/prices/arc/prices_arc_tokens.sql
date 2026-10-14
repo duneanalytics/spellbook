@@ -43,6 +43,12 @@ FROM
     -- canonical Circle assets
       ('usdc-usd-coin', 'USDC', 0x3600000000000000000000000000000000000000, 6)
     , ('euroc-euro-coin', 'EURC', 0x89b50855aa3be2f677cd6303cec089b5f319d72a, 6)
+    -- assets listed on Aave v4's Arc deployment. Addresses read from the
+    -- protocol's AddAsset events on the Core hub, decimals from the same event.
+    -- cirBTC (0x171a4217b86a807a64eb94757db6849fb4bdbaa0, 8) is left out: it has
+    -- no feed of its own and check_tokens rejects borrowing wbtc's. WETH
+    -- (0x128c...) is registered below under its own CoinPaprika listing.
+    , ('euroc-euro-coin', 'EURC', 0xbef5f6d51cb62b58e6a8f77868681825c6fe21c1, 6)
     -- wrapper -> underlying substitutions (1:1 peg assumed, pending issuer confirmation)
     , ('usdc-usd-coin', 'AUSD', 0xf5b08979251f398180385b54381ee3d6fa1bbe09, 18)
     , ('euroc-euro-coin', 'AEUR', 0x8cd7e5a2240a1a7efaa9b164caa1dc80e9ed23a3, 18)
@@ -55,4 +61,7 @@ FROM
     , ('cool-usdc-is-cool', 'COOL', 0xeb64987643db71c76b2a2be7e723decc995e5b37, 18)
     , ('ellipse-ellipse', 'ELLIPSE', 0x86f7424c3e1ebb3f42e1e687468e36d5f2a1222e, 18)
     , ('weth-arc-bridged-weth-arc', 'WETH', 0x128cc466b61f542da60c70e3aa11c10e19b84edb, 18)
+    -- wrapped native USDC (1:1 by construction). Spells that map native transfers to the
+    -- wrapped native token, e.g. the oneinch transfers macro, price native USDC through it.
+    , ('usdc-usd-coin', 'WUSDC', 0x1111161b5af064893d1a88e467293ecf660eeeee, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
