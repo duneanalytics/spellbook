@@ -123,6 +123,7 @@ WITH filter_1 AS (
     {% if is_incremental() %}
     AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
     {% endif %}
+    GROUP BY unique_trade_id
     )
 
 SELECT nftt.blockchain

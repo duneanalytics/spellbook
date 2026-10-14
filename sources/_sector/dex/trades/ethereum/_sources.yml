@@ -173,6 +173,10 @@ sources:
       - name: ethenaarm_call_swaptokensforexacttokens
       - name: multiassetarm_call_swapexacttokensfortokens
       - name: multiassetarm_call_swaptokensforexacttokens
+  - name: lista_ethereum
+    tables:
+      - name: stableswapfactory_evt_newstableswappair
+      - name: stableswappool_evt_tokenexchange
 
   - name: agra_multichain
     tables:
@@ -184,3 +188,4 @@ sources:
       - name: metricommpoolv0_evt_swap
       - name: metricommpoolv1_evt_swap
       - name: metricommpoolv2_evt_swap
+      - name: metricommpoolv2_beta_evt_swap

@@ -3,7 +3,8 @@
 {{ config(
         schema = 'tokens_' + blockchain
         , alias = 'net_transfers_daily'
-        , materialized = 'incremental'
+        , materialized = 'table'
+        , tags = ['static']
         , file_format = 'delta'
         , incremental_strategy = 'merge'
         , unique_key = ['blockchain', 'block_date']

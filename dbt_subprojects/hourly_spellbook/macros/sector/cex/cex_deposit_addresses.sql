@@ -5,7 +5,7 @@ WITH unique_inflows_raw AS (
     SELECT cf."from" AS suspected_deposit_address
     , MIN(cf.block_number) AS block_number
     , MIN_BY(cf.unique_key, cf.block_number) AS unique_key
-    FROM {{ ref('cex_'~blockchain~'_flows') }} cf
+    FROM {{ cex_local_flows }} cf
     INNER JOIN {{ref('cex_'~blockchain~'_addresses')}} ca ON ca.address=cf."from"
     WHERE cf.flow_type = 'Internal'
     AND REGEXP_LIKE(ca.distinct_name, 'Deposit( ?\d+)?$')

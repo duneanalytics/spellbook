@@ -18,6 +18,9 @@ flags:
   require_certificate_validation: true
 
 vars:
+  # Merged into table DDL before model properties; +properties would be replaced wholesale.
+  dune_default_table_properties:
+    change_data_feed_enabled: 'true'
   freshness: 'hourly'
   # force-incremental: True
   # NOTE: do not set to False here — it would override CLI --vars '{force-incremental: True}'

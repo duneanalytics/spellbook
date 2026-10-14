@@ -7,13 +7,16 @@
     MetricOmmPoolFactory calls a MetricOmmPoolDeployer which CREATEs the pool. The contracts are decoded on Dune under
     project `metric` (multi-chain submission -> schema `metric_multichain`, filtered on `chain`).
 
-    Trades: the decoded Swap events of the pool contracts (metricommpoolv{0,1,2}_evt_swap).
+    Trades: the decoded Swap events of the pool contracts (metricommpoolv{0,1,2,2_beta}_evt_swap).
       version 0  Swap(sender, recipient, exactInput, int128 amount0Delta, int128 amount1Delta, newTick, newPositionInBin)
       version 1  Swap(sender, recipient, exactInput, int256 amount0Delta, int256 amount1Delta, newTick, newPositionInBin,
                       protocolFeeAmount)
       version 2  Swap(sender, recipient, uint256 details, uint256 amountDeltas, uint256 platformFees)
                  amountDeltas = (int128 amount0Delta << 128) | int128 amount1Delta (amount0 in the HIGH half, each half
                  two's-complement) -> unpacked below with uint256 division / modulo.
+      version 2_beta  the factory redeployed 2026-09-15 (0x2a53833c...): the factory dropped its moderator role, the pool
+                 only changed simulateSwapAndRevert, and Swap / PoolCreated are byte-for-byte the version 2 events, so
+                 this version is read the same way from its own decoded tables.
     Sign convention (all versions): positive delta = token moved INTO the pool (sold by the taker),
     negative delta = token moved OUT of the pool (bought by the taker).
 
@@ -36,7 +39,8 @@
     project_start_date = '2026-02-23',
     factories = [
         {'version': '1', 'factory': '0x622911384e7973439b8be305f5e3fc3c5736ede4'},
-        {'version': '2', 'factory': '0xa32761549a1de40060c194c86a8df24f0a29ba2d'}
+        {'version': '2', 'factory': '0xa32761549a1de40060c194c86a8df24f0a29ba2d'},
+        {'version': '2_beta', 'factory': '0x2a53833cc95548cf52c7b159110e22d3a9018f32'}
     ],
     pool_created_topic0 = '0x4b36a0ddce54edb36597ee7d496df06c53fe875aba9d7257534a38d5177899aa'
     )
@@ -128,6 +132,36 @@ swaps AS (
             amountDeltas / UINT256 '340282366920938463463374607431768211456' AS hi,
             amountDeltas % UINT256 '340282366920938463463374607431768211456' AS lo
         FROM {{ source('metric_multichain', 'metricommpoolv2_evt_swap') }}
+        WHERE chain = '{{ blockchain }}'
+        AND evt_block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
+    )
+
+    UNION ALL
+
+    -- version 2_beta: redeployed factory, same Swap event and packing as version 2
+    SELECT
+        '2_beta' AS version,
+        evt_block_number,
+        evt_block_time,
+        evt_tx_hash,
+        evt_index,
+        contract_address,
+        recipient,
+        CASE WHEN hi >= UINT256 '170141183460469231731687303715884105728'
+             THEN CAST(hi AS int256) - INT256 '340282366920938463463374607431768211456'
+             ELSE CAST(hi AS int256) END,
+        CASE WHEN lo >= UINT256 '170141183460469231731687303715884105728'
+             THEN CAST(lo AS int256) - INT256 '340282366920938463463374607431768211456'
+             ELSE CAST(lo AS int256) END
+    FROM (
+        SELECT
+            evt_block_number, evt_block_time, evt_tx_hash, evt_index, contract_address, recipient,
+            amountDeltas / UINT256 '340282366920938463463374607431768211456' AS hi,
+            amountDeltas % UINT256 '340282366920938463463374607431768211456' AS lo
+        FROM {{ source('metric_multichain', 'metricommpoolv2_beta_evt_swap') }}
         WHERE chain = '{{ blockchain }}'
         AND evt_block_time >= TIMESTAMP '{{ project_start_date }}'
         {% if is_incremental() %}
