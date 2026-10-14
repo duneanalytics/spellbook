@@ -114,7 +114,6 @@ FROM (VALUES
     , ('bitcoin', 'bc1qs5vdqkusz4v7qac8ynx0vt9jrekwuupx2fl5udp9jql3sr03z3gsr2mf0f', 'Bybit', 'Bybit 4', 'hildobby', date '2024-04-20')
     
     , ('bitcoin', 'bc1qpy4jwethqenp4r7hqls660wy8287vw0my32lmy', 'Crypto.com', 'Crypto.com 1', 'hildobby', date '2023-04-06')
-    , ('bitcoin', '3lhhdlbvwbzchnqv8dn4ndkfcnycg1fq', 'Crypto.com', 'Crypto.com 2', 'hildobby', date '2023-04-06')
     , ('bitcoin', 'bc1qr4dl5wa7kl8yu792dceg9z5knl2gkn220lk7a9', 'Crypto.com', 'Crypto.com 3', 'hildobby', date '2023-04-06')
     , ('bitcoin', 'bc1q4c8n5t00jmj8temxdgcc3t32nkg2wjwz24lywv', 'Crypto.com', 'Crypto.com 4', 'hildobby', date '2023-04-06')
     , ('bitcoin', 'bc1qjqy709gqpse60hdsm2d2v0dzzu7yp5dej7fdrpl2x3taccvujq4s0vzsyd', 'Crypto.com', 'Crypto.com 5', 'hildobby', date '2023-04-06')
@@ -526,8 +525,6 @@ FROM (VALUES
     , ('bitcoin', '15mWNoPBfJswMPTJHHeLkDNJo3tC2GEMZ7', 'Poloniex', 'Poloniex 35', 'hildobby', date '2024-05-27')
 
     , ('bitcoin', 'bc1qaxyju6n2x2tednv8e7hgnhnz44vrfcmuhjxpfk', 'BTSE', 'BTSE 1', 'hildobby', date '2024-04-20')
-    , ('bitcoin', 'TPEpdLYtHr8cN1Jbwf6CGNB9Ppho7L2otr', 'BTSE', 'BTSE 2', 'hildobby', date '2024-05-27')
-    , ('bitcoin', 'TB7dATko4gkk4YjQnu9Exf7chpxwiRGab5', 'BTSE', 'BTSE 3', 'hildobby', date '2024-05-27')
 
     , ('bitcoin', '3F12ncAyx4VkfpvnS7ZxdpggFx4p9RKfVe', 'Bitmake', 'Bitmake 1', 'hildobby', date '2024-04-20')
 
@@ -770,7 +767,6 @@ FROM (VALUES
 
     , ('bitcoin', 'bc1qznd382dqapcp0j2xf5jyu548g55743jy3ywwqc', 'XT.com', 'XT.com 1', 'hildobby', date '2024-05-04')
 
-    , ('bitcoin', 'TD1tjf1ZVzq2NCeYoppUAsBZevobkftYDu', 'Wirex', 'Wirex 1', 'hildobby', date '2024-05-27')
 
     , ('bitcoin', '322GfdSXmYNJb4nAsqTmbhs2LXkTqCPMYk', '1xBet', '1xBet 1', 'hildobby', date '2024-09-06')
     , ('bitcoin', '37RpvaLDcNXXQ6v5uPzhjSEpPM3hJ3EFoN', '1xBet', '1xBet 2', 'hildobby', date '2024-09-06')
@@ -779,8 +775,6 @@ FROM (VALUES
     , ('bitcoin', '1NqwEcrdxqpP1Fug5HuCvUyr4kcpR5Mi9Z', '1xBet', '1xBet 5', 'hildobby', date '2024-09-06')
     , ('bitcoin', '3KtUhkjv7qC6DieMuprgojV9d1T1iRTgfh', '1xBet', '1xBet 6', 'hildobby', date '2024-09-06')
 
-    , ('bitcoin', 'TPQqrAEnrWKTefTpgCNzXAGmJuvBqUrk1P', 'WazirX', 'WazirX 1', 'hildobby', date '2024-05-27')
-    , ('bitcoin', 'TXe3EibZP9jFogwyqLPd3APdwxZbiQBUqi', 'WazirX', 'WazirX 2', 'hildobby', date '2024-05-27')
 
     , ('bitcoin', 'bc1quq29mutxkgxmjfdr7ayj3zd9ad0ld5mrhh89l2', 'Gemini', 'Gemini 1', 'hildobby', date '2024-05-27')
     , ('bitcoin', '3Kzh9qAqVWQhEsfQz7zEQL1EuSx5tyNLNS', 'Gemini', 'Gemini 2', 'hildobby', date '2024-05-27')
@@ -797,8 +791,6 @@ FROM (VALUES
 
     , ('bitcoin', '3FDWNdFxrJxXoF4hWXF4dkc1FFxsNyKAHh', 'Upbit', 'Upbit 1', 'hildobby', date '2024-05-27')
 
-    , ('bitcoin', 'TNrPUjc47JU1fgaQZPa1odQnD5RTdH3NSu', 'BigONE', 'BigONE 1', 'hildobby', date '2024-05-27')
-    , ('bitcoin', 'TE4CRGTXpLR3eRsn2mNKwsJWBFT7ojtvnU', 'BigONE', 'BigONE 2', 'hildobby', date '2024-05-27')
 
     , ('bitcoin', '38ACxfQHasxq7ZSMX8CSmZJxtZt1FWjiVw', 'Bitcoin Suisse', 'Bitcoin Suisse 1', 'hildobby', date '2024-05-27')
     , ('bitcoin', '3MKePai3WFRC2MuZyGEz8zboyu5CktzXCs', 'Bitcoin Suisse', 'Bitcoin Suisse 2', 'hildobby', date '2024-05-27')
