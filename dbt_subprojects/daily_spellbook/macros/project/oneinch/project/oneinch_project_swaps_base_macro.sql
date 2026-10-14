@@ -12,6 +12,8 @@
 {%- set zero_address = '0x0000000000000000000000000000000000000000' -%}
 {#- chains onboarded to the legacy tokens schema expose transfers_from_traces; newer ones only have event-based base_transfers (same split as oneinch_transfers_macro in dex) -#}
 {%- set transfers_from_traces = blockchain not in ['robinhood', 'cronos', 'arc'] -%}
+{#- the left join on event-based chains brings calls with no transfer row; keep them out of the token and address aggregates -#}
+{%- set attributed = '' if transfers_from_traces else ' and transfers.tx_hash is not null' -%}
 
 
 
@@ -75,6 +77,9 @@ meta as (
 , calls as (
     select *
         , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash, project) as call_trace_addresses
+        {%- if not transfers_from_traces %}
+        , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash) as tx_call_trace_addresses -- all projects of the tx: event-based transfers go only to the outermost call
+        {%- endif %}
     from {{ ref('oneinch_' + blockchain + '_project_calls') }}
     where true
         and call_success
@@ -110,6 +115,9 @@ meta as (
         , replace(taker_asset, {{ zero_address }}, {{ native_address }}) as taker_asset
         , taking_amount
         , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash, coalesce(order_project, project)) as call_trace_addresses -- to update the array after filtering nested calls of the project
+        {%- if not transfers_from_traces %}
+        , tx_call_trace_addresses
+        {%- endif %}
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
         , coalesce(order_hash, concat(tx_hash, to_utf8(array_join(call_trace_address, ',')))) as call_trade_id -- without call_trade for the correctness of the max transfer approach
@@ -165,10 +173,8 @@ meta as (
         block_number
         , block_time
         , tx_hash
-        {%- if transfers_from_traces %}
         , trace_address as transfer_trace_address
-        {%- else %}
-        , coalesce(trace_address, array[-1, evt_index]) as transfer_trace_address -- event-based transfers have no trace_address; unique non-overlapping stand-in
+        {%- if not transfers_from_traces %}
         , trace_address is null as event_based
         {%- endif %}
         , contract_address as contract_address_raw -- original
@@ -227,11 +233,11 @@ meta as (
         , array_agg(distinct
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
                 as row(symbol varchar, contract_address_raw varbinary))
-        ) as tokens
+        ) {%- if not transfers_from_traces %} filter(where transfers.tx_hash is not null) {%- endif %} as tokens
         , array_agg(distinct
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
                 as row(symbol varchar, contract_address_raw varbinary))
-        ) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_tokens
+        ) filter(where (creations_from.block_number is null or creations_to.block_number is null){{ attributed }}) as user_tokens
         , array_agg(distinct
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
                 as row(symbol varchar, contract_address_raw varbinary))
@@ -244,10 +250,14 @@ meta as (
         , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_from or transfer_to = call_from) and trusted) as caller_amount_usd_trusted
         , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_to or transfer_to = call_to) as contract_amount_usd
         , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_to or transfer_to = call_to) and trusted) as contract_amount_usd_trusted
-        , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
-        , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
+        , array_agg(distinct transfer_from) filter(where creations_from.block_number is null{{ attributed }}) as senders
+        , array_agg(distinct transfer_to) filter(where creations_to.block_number is null{{ attributed }}) as receivers
     from swaps
+    {%- if transfers_from_traces %}
     join transfers on true
+    {%- else %}
+    left join transfers on true -- keep calls without attributable transfers
+    {%- endif %}
         and swaps.block_month = transfers.block_month
         and swaps.block_number = transfers.block_number
         and swaps.tx_hash = transfers.tx_hash
@@ -258,8 +268,8 @@ meta as (
         and if(not event_based
             , slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
                 and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
-            -- event-based transfers can't be placed in the call subtree: attribute them only when every tracked call of the tx sits within this call's subtree
-            , all_match(array_distinct(call_trace_addresses), x -> slice(x, 1, cardinality(call_trace_address)) = call_trace_address)
+            -- event-based transfers can't be placed in the call subtree: attribute them only when every call of the tx, of any project, sits within this call's subtree
+            , all_match(array_distinct(tx_call_trace_addresses), x -> slice(x, 1, cardinality(call_trace_address)) = call_trace_address)
         )
         {%- endif %}
         and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only

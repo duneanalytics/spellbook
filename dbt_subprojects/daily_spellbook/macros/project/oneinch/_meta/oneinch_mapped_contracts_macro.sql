@@ -37,6 +37,7 @@
         , ('0x6fd4383cb451173d5f9304f041c7bcbf27d561ff', 'true', '1inch'                , 'AggregationRouterV6'     , ['zksync'])
         , ('0x5281602adc446a94eb48d055f514a6d8d5bee176', 'true', '1inch'                , 'AggregationRouterV6'     , ['hyperevm'])
         , ('0xe08cab0828a67291ec4af1fb3e7f867e206a6bda', 'true', '1inch'                , 'AggregationRouterV6'     , ['arc'])
+        , ('0x5a705de8982235a7fa45bb83dcacf03a211389c7', 'true', '1inch'                , 'AggregationRouterV6'     , ['robinhood'])
         , ('0xa88800cd213da5ae406ce248380802bd53b47647', 'true', '1inch'                , 'SettlementV1'            , ['ethereum'])
         , ('0x1d0ae300eec4093cee4367c00b228d10a5c7ac63', 'true', '1inch'                , 'SettlementV1'            , ['bnb'])
         , ('0x1e8ae092651e7b14e4d0f93611267c5be19b8b9f', 'true', '1inch'                , 'SettlementV1'            , ['polygon'])
