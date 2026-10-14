@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: arbitrum
       project: safe
-      contributors: tschubotz
+      contributors: tschubotz, doublesc00p
     config:
       tags: ['safe', 'singletons', 'arbitrum']
     description: "Singletons addresses used with Safes"
@@ -21,7 +21,7 @@ models:
     meta:
       blockchain: arbitrum
       project: safe
-      contributors: tschubotz
+      contributors: tschubotz, doublesc00p
     config:
       tags: ['safe', 'arbitrum']
     description: "Safe addresses"
@@ -47,7 +47,7 @@ models:
     meta:
       blockchain: arbitrum
       project: safe
-      contributors: tschubotz, danielpartida
+      contributors: tschubotz, danielpartida, doublesc00p
     config:
       tags: ['safe', 'arbitrum']
     description: "Safe transactions"
@@ -108,7 +108,7 @@ models:
     meta:
       blockchain: arbitrum
       project: safe
-      contributors: tschubotz
+      contributors: tschubotz, doublesc00p
     config:
       tags: ['safe', 'transfers', 'arbitrum']
     description: "ETH transfers into or out of Safes"

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: linea
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'linea']
     description: "Safe addresses"
@@ -39,7 +39,7 @@ models:
     meta:
       blockchain: linea
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'transfers', 'linea']
     description: "Eth transfers for safes"
@@ -76,7 +76,7 @@ models:
     meta:
       blockchain: linea
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'singletons', 'linea']
     description: "Singletons addresses used with Safes"
@@ -91,7 +91,7 @@ models:
     meta:
       blockchain: linea
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p  
     config:
       tags: ['safe', 'linea']
     description: "Safe transactions"
