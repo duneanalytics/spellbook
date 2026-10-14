@@ -3,12 +3,12 @@ version: 2
 models:
   - name: kyberswap_aggregator_trades
     meta:
-      blockchain: avalanche_c, optimism, ethereum, arbitrum, bnb, polygon, base
+      blockchain: avalanche_c, optimism, ethereum, arbitrum, bnb, polygon, base, robinhood
       sector: dex_aggregator
       project: kyberswap
       contributors: nhd98z, Henrystats
     config:
-      tags:  ['arbitrum', 'avalanche_c', 'optimism', 'ethereum', 'bnb', 'polygon', 'dex', 'aggregator', 'trades', 'kyberswap', 'nhd98z']
+      tags:  ['arbitrum', 'avalanche_c', 'optimism', 'ethereum', 'bnb', 'polygon', 'base', 'robinhood', 'dex', 'aggregator', 'trades', 'kyberswap', 'nhd98z']
     description: >
       Kyberswap Aggregator. This table will load dex_aggregator trades downstream.
     columns:

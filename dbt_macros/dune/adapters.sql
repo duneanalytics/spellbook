@@ -1,8 +1,14 @@
-{% macro trino__create_table_as(temporary, relation, sql) -%}
+{% macro trino__create_table_as(temporary, relation, sql, on_exists=None) -%}
   {%- set _properties = {} -%}
+  {% if not temporary -%}
+    {% do _properties.update(var('dune_default_table_properties', {})) -%}
+  {% endif -%}
   {%- if config.get('partition_by', None) != None -%}
     {%- do _properties.update({'partitioned_by': "ARRAY['" + (config.get('partition_by') | join("', '") )  + "']"}) -%}
   {%- endif -%}
+  {% if not temporary -%}
+    {% do _properties.update(config.get('properties', {}) or {}) -%}
+  {% endif -%}
   create or replace table {{ relation }}
     {{ create_table_properties(_properties, relation) }}
   as (

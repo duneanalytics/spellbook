@@ -37,6 +37,7 @@
   ,ref('zeroex_v2_ink_trades')
   ,ref('zeroex_v2_monad_trades')
   ,ref('zeroex_v2_robinhood_trades')
+  ,ref('zeroex_v2_arc_trades')
 ] %}
 
 

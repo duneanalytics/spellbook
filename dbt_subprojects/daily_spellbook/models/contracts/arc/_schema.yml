@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: contracts_arc_deployments
+    description: "Contract deployments on Arc, including function selectors, token flags, and bytecode."
+    meta:
+      blockchain: arc
+      contributors: karimhass
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [blockchain, contract_address, deployment_tx_hash, deployment_block_month]
+    columns:
+      - name: blockchain
+        description: "Blockchain name."
+        data_tests: [not_null]
+      - name: contract_address
+        description: "Deployed contract address."
+        data_tests: [not_null]
+      - name: deployment_tx_hash
+        description: "Transaction hash of the deployment."
+        data_tests: [not_null]
+      - name: deployment_block_month
+        description: "Month of deployment; table partition."
+        data_tests: [not_null]
+      - name: deployment_block_time
+        description: "Block timestamp of the deployment."
+      - name: deployment_block_number
+        description: "Block number of the deployment."
+      - name: function_selectors
+        description: "Function selectors extracted from runtime bytecode."
+      - name: erc20_flag
+        description: "ERC20 classification from token metadata or function selectors."
+      - name: erc721_flag
+        description: "ERC721 classification from transfer events or function selectors."
+      - name: bytecode
+        description: "Runtime contract bytecode."

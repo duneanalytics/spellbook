@@ -3,7 +3,8 @@
 {{ config(
     schema = 'bridges_' + blockchain
     , alias = 'withdrawals'
-    , materialized = 'incremental'
+    , materialized = 'table'
+    , tags = ['static']
     , file_format = 'delta'
     , partition_by = ['block_month']
     , incremental_strategy='merge'

@@ -319,7 +319,10 @@ WITH dexs AS
         , amount_raw as amount 
         , case 
             when token_standard = 'erc20' then array[evt_index]
-            when token_standard = 'native' then trace_address 
+            -- chains implementing EIP-7708 log native transfers as events and have no
+            -- traces leg, so trace_address is null on every native row; fall back to
+            -- evt_index there to keep the ordering deterministic
+            when token_standard = 'native' then coalesce(trace_address, array[evt_index]) 
         end as token_index 
     FROM {{ source('tokens', 'transfers') }}
     WHERE block_date >= date '{{start_date}}'

@@ -9,6 +9,7 @@
             'dune.data_explorer.contributors': contributors | as_text,
           } -%}
     {%- do apply_filtering_columns(properties) -%}
+    {%- do apply_unique_key_columns(properties) -%}
     {%- if model.config.materialized == "view" -%}
       CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
         {{ trino_properties(properties) }}

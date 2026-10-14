@@ -25,7 +25,9 @@ solvers_ranked as (
         inner join {{ ref('cow_protocol_gnosis_solvers') }} solvers
             on t."from" = solvers.address
     {% if is_incremental() %}
-    where {{ incremental_predicate('block_time') }}
+    where {{ incremental_predicate('t.block_time') }}
+    {% else %}
+    where t.block_time >= timestamp '2021-04-01' --first settlement date
     {% endif %}
 ),
 
@@ -46,9 +48,12 @@ batch_counts as (
            ) as dex_swaps,
            sum(case when selector = 0x2e1a7d4d then 1 else 0 end) as unwraps,
            sum(case when selector = 0x095ea7b3 then 1 else 0 end) as token_approvals
+    -- Contract upgrade: refresh history for the newly decoded settlement contracts.
     from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
+            and i.evt_block_number = s.evt_block_number
+            and i.evt_block_date = s.evt_block_date
             {% if is_incremental() %}
             and {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
@@ -75,6 +80,8 @@ batch_values as (
             on p.contract_address = 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
             {% if is_incremental() %}
             and {{ incremental_predicate('minute') }}
+            {% else %}
+            and p.minute >= timestamp '2021-04-01' --first settlement date
             {% endif %}
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'gnosis'
@@ -105,8 +112,9 @@ combined_batch_info as (
         join batch_values t
             on b.evt_tx_hash = t.tx_hash
         inner join {{ source('gnosis', 'transactions') }} tx
-            on evt_tx_hash = hash
-            and evt_block_number = block_number
+            on b.evt_tx_hash = tx.hash
+            and b.evt_block_number = tx.block_number
+            and b.block_date = tx.block_date
             {% if is_incremental() %}
             and {{ incremental_predicate('tx.block_time') }}
             {% endif %}

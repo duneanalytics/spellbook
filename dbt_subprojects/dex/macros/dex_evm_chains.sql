@@ -6,6 +6,7 @@
         'abstract'
         , 'apechain'
         , 'arbitrum'
+        , 'arc'
         , 'avalanche_c'
         , 'base'
         , 'berachain'

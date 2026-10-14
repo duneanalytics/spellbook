@@ -44,6 +44,27 @@ macros:
         type: dict[string, any]
         description: "Property map to update in place"
 
+  - name: apply_unique_key_columns
+    description: >
+      Adds dune.unique_key_columns as a JSON list, inheriting the model's unique_key and
+      normalizing a single string to a one-element list. meta.dune.unique_key_columns overrides
+      the inherited value, including for full-table models. Applied by every property post-hook.
+      When provided, the resolved key must be a non-empty list of column names.
+    arguments:
+      - name: properties
+        type: dict[string, any]
+        description: "Property map to update in place"
+
+  - name: unique_key_column_names
+    description: >
+      Converts unique_key entries to column names. Each entry must be a bare identifier or a
+      double-quoted identifier such as '"from"', which is returned unquoted; anything else fails
+      compilation.
+    arguments:
+      - name: columns
+        type: list[string]
+        description: "unique_key or meta.dune.unique_key_columns entries"
+
   - name: deprecate_spells
     description: >
       Prod post-hook: set dune.public false and dune.visible false. For deprecated relations that should

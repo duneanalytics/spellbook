@@ -28,9 +28,6 @@ sources:
   - name: nft_gnosis
     tables:
       - name: transfers
-  - name: nft_goerli
-    tables:
-      - name: transfers
   - name: nft_optimism
     tables:
       - name: transfers

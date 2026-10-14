@@ -1,0 +1,141 @@
+version: 2
+
+models:
+  - name: tokens_arc_base_transfers
+    meta:
+      blockchain: arc
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: ['tokens','transfers', 'arc']
+    description: >
+      Unpriced token transfers on Arc. A written-out analogue of the transfers_base macro with
+      EIP-7708 handling: native movements come from the EIP-7708 system emitter at 18 decimals
+      in place of the traces leg, and all other tokens come from their own transfer events. The
+      6-decimal USDC ERC-20 interface at 0x3600...0000 is excluded, since the emitter already
+      records the movements made through it. Staging input to tokens_arc_transfers.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
+    columns:
+      - &unique_key
+        name: unique_key
+        description: "Surrogate key to identify unique row"
+        data_tests:
+          - not_null
+      - &blockchain
+        name: blockchain
+        description: "The blockchain of the transfers"
+      - &block_month
+        name: block_month
+        description: "Month bucket derived from block_date"
+      - &block_date
+        name: block_date
+        description: "The date of the block"
+        data_tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "The time of the block"
+      - &block_number
+        name: block_number
+        description: "The block number"
+      - &tx_hash
+        name: tx_hash
+        description: "The transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "The log event index of the transfer"
+      - &trace_address
+        name: trace_address
+        description: "The trace address of the transfer if any; always null on Arc, since no traces leg is read"
+      - &token_standard
+        name: token_standard
+        description: "The token standard of the transfer"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['native', 'erc20']
+      - &tx_from
+        name: tx_from
+        description: "The transaction sender"
+      - &tx_to
+        name: tx_to
+        description: "The transaction receiver"
+      - &tx_index
+        name: tx_index
+        description: "The transaction index"
+      - &from
+        name: from
+        description: "The sender of the transfer"
+      - &to
+        name: to
+        description: "The receiver of the transfer"
+      - &contract_address
+        name: contract_address
+        description: "The contract address of the transfer; native rows carry Arc's native token address"
+      - &amount_raw
+        name: amount_raw
+        description: >
+          The raw amount of the transfer, in the units of the emitting interface: 18 decimals
+          for native rows, the token's own decimals for erc20 rows
+      - &updated_at
+        name: _updated_at
+        description: "Timestamp when this row was last written"
+
+  - name: tokens_arc_transfers
+    meta:
+      blockchain: arc
+      sector: tokens
+      contributors: 0xRob
+      # Freshness monitoring declaration. Under meta, not config, on purpose: a yml config
+      # change is state:modified.configs, so a metadata-only edit triggers no rebuild.
+      monitoring:
+        enabled: true
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: false
+    config:
+      event_time: block_time
+      tags: ['tokens','transfers', 'arc']
+    description: >
+      Enriched token transfers on Arc: tokens_arc_base_transfers with symbol, decimals and USD
+      value added by the transfers_enrich macro, against the crosschain tokens.erc20,
+      prices.usd_with_native and prices.trusted_tokens. Unioned into tokens.transfers.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - unique_key
+    columns:
+      - *unique_key
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - *token_standard
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *from
+      - *to
+      - *contract_address
+      - name: symbol
+        description: "The token symbol transferred, from tokens.erc20 where known, else from the price feed"
+      - *amount_raw
+      - name: amount
+        description: "The transfer amount scaled by the token's decimals; null when no decimals are known for the contract"
+      - name: price_usd
+        description: "The USD price used to calculate the amount_usd, null when unpriced"
+      - name: amount_usd
+        description: "The USD amount of the transfer; nulled for untrusted tokens above the outlier threshold"
+      - *updated_at
+

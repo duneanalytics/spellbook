@@ -58,6 +58,7 @@ trades_with_prices AS (
            feeAmount                 as fee_amount,
            coalesce(ps.price, atoken_ps.price) as sell_price,
            coalesce(pb.price, atoken_pb.price) as buy_price
+    -- Contract upgrade: refresh history for the newly decoded settlement contracts.
     FROM {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }} trade
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address

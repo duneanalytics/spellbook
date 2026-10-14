@@ -15,9 +15,9 @@ models:
       # rebuilds dex.trades over a metadata-only change.
       monitoring:
         enabled: true
-        warn_after: {count: 4, period: hour}
-        critical_after: {count: 8, period: hour}
-        oncall: false
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: true
     config:
       tags: [ 'dex', 'trades']
       event_time: block_time
@@ -118,9 +118,9 @@ models:
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
       monitoring:
         enabled: true
-        warn_after: {count: 24, period: hour}
-        critical_after: {count: 48, period: hour}
-        oncall: false
+        warn_after: {count: 10, period: hour}
+        critical_after: {count: 26, period: hour}
+        oncall: true
     config:
       tags: ['dex', 'trades', 'evm']
       event_time: block_time
