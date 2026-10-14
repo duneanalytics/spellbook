@@ -246,6 +246,7 @@
         , ('0x156acd2bc5fc336d59baae602a2bd9b5e20d6672', 'true', 'OKXDEX'               , 'DexRouter'               , ['ethereum'])
         , ('0x6088d94c5a40cecd3ae2d4e0710ca687b91c61d0', 'true', 'OKXDEX'               , 'DexRouter'               , ['ethereum'])
         , ('0x2E1Dee213BA8d7af0934C49a23187BabEACa8764', 'true', 'OKXDEX'               , 'DexRouter'               , ['ethereum'])
+        , ('0x28b1Dc1a5E3699A428BC51d234DFab7C9CB2a183', 'true', 'OKXDEX'               , 'DexRouter'               , ['ethereum'])
         , ('0x8feB9E84b7E9DC86adc6cD6Eb554C5B4355c8405', 'true', 'OKXDEX'               , 'DexRouter'               , ['sonic'])
         , ('0x010BC6B1014E5ed8284ab0667b116AAb99588159', 'true', 'OKXDEX'               , 'DexRouter'               , ['zksync'])
         , ('0x86F752f1F662f39BFbcBeF95EE56B6C20d178969', 'true', 'OKXDEX'               , 'DexRouter'               , ['optimism'])
