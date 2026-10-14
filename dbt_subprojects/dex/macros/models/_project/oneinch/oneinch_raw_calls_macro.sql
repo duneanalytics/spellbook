@@ -39,12 +39,15 @@ payload as (
                 , {{ method_data.get('auxiliary', contract_data.get('auxiliary', 'false')) }} as auxiliary
             {% if contract_data.address == "creations" -%}
             {%- if type == "raw" -%}
+            {# the escrow implementation address position in the clone code can differ for each contract generation
+               on one chain: zksync v1 zk-format clone blobs have it at byte 109, and zksync v1.2 EVM-format clones
+               have it at byte 11. Each raw creations contract must set creations_parent_code_offset explicitly. -#}
+            {%- set parent_code_offset = contract_data.get("creations_parent_code_offset", blockchain.get("creations_parent_code_offset")) -%}
+            {%- if parent_code_offset is none -%}
+                {%- do exceptions.raise_compiler_error("creations_parent_code_offset is required for raw creations contract " ~ contract ~ " on " ~ blockchain.name) -%}
+            {%- endif -%}
             from creations
-            {# the escrow implementation address position in the clone code can differ per contract generation
-               on one chain: zksync v1 zk-format clone blobs hold it right-aligned in the last word (byte 109),
-               while its v1.2 EVM-format clones hold it at byte 11 — so the offset resolves per contract first,
-               then per chain (default 13: the pre-2026 zksync creation code layout) -#}
-            where substr(code, {{ contract_data.get("creations_parent_code_offset", blockchain.get("creations_parent_code_offset", 13)) }}, 20) = {{ contract_data.initial_address }}
+            where substr(code, {{ parent_code_offset }}, 20) = {{ contract_data.initial_address }}
             {%- else -%}
             from (
                 select distinct contract_address
