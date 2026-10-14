@@ -61,4 +61,7 @@ FROM
     , ('cool-usdc-is-cool', 'COOL', 0xeb64987643db71c76b2a2be7e723decc995e5b37, 18)
     , ('ellipse-ellipse', 'ELLIPSE', 0x86f7424c3e1ebb3f42e1e687468e36d5f2a1222e, 18)
     , ('weth-arc-bridged-weth-arc', 'WETH', 0x128cc466b61f542da60c70e3aa11c10e19b84edb, 18)
+    -- wrapped native USDC (1:1 by construction). Spells that map native transfers to the
+    -- wrapped native token, e.g. the oneinch transfers macro, price native USDC through it.
+    , ('usdc-usd-coin', 'WUSDC', 0x1111161b5af064893d1a88e467293ecf660eeeee, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
