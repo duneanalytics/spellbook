@@ -43,5 +43,6 @@ FROM
    , ('xo-xociety','XO', '0x90f9eb95f62d31fbe2179313547e360db86d88d2399103a94286291b63f469ba::xo::XO', 9)
    , ('mmt-momentum','MMT', '0x35169bc93e1fddfcf3a82a9eae726d349689ed59e4b065369af8789fe59f8608::mmt::MMT', 9)
    , ('truth-swarm-network','TRUTH', '0x0a48f85a3905cfa49a652bdb074d9e9fabad27892d54afaa5c9e0adeb7ac3cdf::swarm_network_token::SWARM_NETWORK_TOKEN', 8)
+   , ('magma-magma-finance','MAGMA', '0x9f854b3ad20f8161ec0886f15f4a1752bf75d22261556f14cc8d3a1c5d50e529::magma::MAGMA', 9)
 ) as temp (token_id, symbol, contract_address, decimals)
 
