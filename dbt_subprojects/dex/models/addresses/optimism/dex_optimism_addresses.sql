@@ -17,6 +17,8 @@ FROM (VALUES
       ('optimism', 0xe592427a0aece92de3edee1f18e0157c05861564, 'Uniswap', 'SwapRouter'),
       ('optimism', 0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45, 'Uniswap', 'SwapRouter02'),
       ('optimism', 0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad, 'Uniswap', 'UniversalRouter'),
+      ('optimism', 0x851116d9223fabed8e56c0e6b8ad0c31d98b3507, 'Uniswap', 'UniversalRouterV2'),
+      ('optimism', 0x8b844f885672f333bc0042cb669255f93a4c1e6b, 'Uniswap', 'UniversalRouterV2_1_1'),
       ('optimism', 0xdef1abe32c034e558cdd535791643c58a13acc10, 'ZeroEx', 'ExchangeProxy'),
       ('optimism', 0x5130f6ce257b8f9bf7fac0a0b519bd588120ed40, 'Clipper', 'ClipperPackedVerifiedExchange'),
       ('optimism', 0xa132dab612db5cb9fc9ac426a0cc215a3423f9c9, 'Velodrome', 'Router'),

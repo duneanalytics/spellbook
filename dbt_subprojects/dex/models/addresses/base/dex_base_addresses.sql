@@ -10,6 +10,8 @@ FROM (VALUES
       ('base', 0x2626664c2603336e57b271c5c0b26f421741e481, 'Uniswap', 'SwapRouter02'),
       ('base', 0x198ef79f1f515f02dfe9e3115ed9fc07183f02fc, 'Uniswap', 'UniversalRouter'),
       ('base', 0xec8b0f7ffe3ae75d7ffab09429e3675bb63503e4, 'Uniswap', 'UniversalRouter'),
+      ('base', 0x6ff5693b99212da76ad316178a184ab56d299b43, 'Uniswap', 'UniversalRouterV2'),
+      ('base', 0xfdf682f51fe81aa4898f0ae2163d8a55c127fbc7, 'Uniswap', 'UniversalRouterV2_1_1'),
       ('base', 0xdef1c0ded9bec7f1a1670819833240f027b25eff, 'ZeroEx', 'ExchangeProxy'),
       ('base', 0x1b8eea9315be495187d873da7773a874545d9d48, 'BaseSwap', 'SwapRouter'),
       ('base', 0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43, 'Aerodrome', 'SwapRouter'),
