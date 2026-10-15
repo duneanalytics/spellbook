@@ -223,7 +223,7 @@ WITH pool_labels AS (
             price
         FROM {{ source('prices', 'day') }}
         WHERE blockchain = '{{blockchain}}'
-
+        AND contract_address NOT IN (0xb47f575807fc5466285e1277ef8acfbb5c6686e8)
     ),
 
     dex_prices_1 AS (
