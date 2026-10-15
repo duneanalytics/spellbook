@@ -95,6 +95,7 @@ meta as (
         blockchain
         , block_month
         , block_number
+        , block_time
         , tx_hash
         , tx_from
         , tx_to
@@ -213,7 +214,7 @@ meta as (
         , swaps.tx_hash
         , swaps.call_trace_address
         , swaps.call_trade_id
-        , any_value(block_time) as block_time
+        , any_value(swaps.block_time) as block_time
         , any_value(tx_from) as tx_from
         , any_value(tx_to) as tx_to
         , any_value(project) as project
