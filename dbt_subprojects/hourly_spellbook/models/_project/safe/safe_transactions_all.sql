@@ -25,6 +25,7 @@
 ,ref('safe_optimism_transactions')
 ,ref('safe_polygon_transactions')
 ,ref('safe_robinhood_transactions')
+,ref('safe_ronin_transactions')
 ,ref('safe_scroll_transactions')
 ,ref('safe_sonic_transactions')
 ,ref('safe_tempo_transactions')

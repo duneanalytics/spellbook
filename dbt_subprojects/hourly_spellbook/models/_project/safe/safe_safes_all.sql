@@ -26,6 +26,7 @@
 ,ref('safe_tempo_safes')
 ,ref('safe_optimism_safes')
 ,ref('safe_polygon_safes')
+,ref('safe_ronin_safes')
 ,ref('safe_scroll_safes')
 ,ref('safe_sonic_safes')
 ,ref('safe_unichain_safes')

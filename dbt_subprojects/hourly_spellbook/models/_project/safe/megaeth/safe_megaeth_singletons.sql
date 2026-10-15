@@ -1,5 +1,6 @@
 {{ 
     config(
+        schema='safe_megaeth',
         materialized='table',
         alias = 'singletons'
         , post_hook='{{ hide_spells() }}'

@@ -56,7 +56,7 @@ select
         when singleton = 0x41675C099F32341bf84BFc5382aF534df5C7461a then '1.4.1'
         when singleton = 0x29fcB43b46531BcA003ddC8FCB67FFE91900C762 then '1.4.1L2'
         when singleton = 0xFf51A5898e281Db6DfC7855790607438dF2ca44b then '1.5.0'
-        when singleton = 0x14f2982d601c9458f93bd70b218933a6f8165e7b then '1.5.0'
+        when singleton = 0xEdd160fEBBD92E350D4D398fb636302fccd67C7e then '1.5.0L2'
         else 'unknown'
     end as creation_version,
     try_cast(date_trunc('day', evt_block_time) as date) as block_date,
