@@ -276,7 +276,7 @@ WITH
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             LEAD(DATE_TRUNC('day', minute), 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrapped_token ORDER BY date_trunc('day', minute)) AS next_change
-        FROM {{ source('balancer_v3' , 'erc4626_token_prices') }}
+        FROM {{ ref('balancer_v3_erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
     ),    
