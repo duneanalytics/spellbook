@@ -20,6 +20,7 @@
     , ref('labels_ofac_sanctionned_ethereum')
     , ref('labels_project_wallets')
     , ref('labels_safe_ethereum')
+    , ref('labels_squeeze')
     , ref('labels_tornado_cash')
     , ref('labels_quest_participants')
     , ref('labels_cex_users')
