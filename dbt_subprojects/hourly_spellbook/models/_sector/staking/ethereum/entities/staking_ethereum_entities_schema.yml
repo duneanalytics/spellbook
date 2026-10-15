@@ -28,7 +28,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_coinbase
     meta:
@@ -57,7 +57,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_binance
     meta:
@@ -86,7 +86,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_bitcoin_suisse
     meta:
@@ -115,7 +115,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_batch_contracts_tx_from
     meta:
@@ -144,7 +144,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_batch_contracts_pubkey
     meta:
@@ -173,7 +173,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_withdrawal_credentials
     meta:
@@ -202,7 +202,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_depositor_addresses
     meta:
@@ -231,7 +231,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_tx_from_addresses
     meta:
@@ -260,7 +260,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_darma_capital
     meta:
@@ -289,7 +289,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_stakewise_v3
     meta:
@@ -318,7 +318,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_entities_chorusone
     meta:
@@ -347,4 +347,4 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]

@@ -55,7 +55,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
       - name: sub_entity
         description: "Identified sub entity name"
       - name: sub_entity_unique_name
@@ -65,7 +65,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:
-                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
+                values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'DAT', 'Others', NULL]
 
   - name: staking_ethereum_deposits
     meta:
