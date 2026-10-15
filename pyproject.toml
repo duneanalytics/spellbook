@@ -22,3 +22,6 @@ exclude-newer = "3 days"
 # any other dependency. Drop this line once the global window has moved past 2026-09-17.
 exclude-newer-package = { dbt-core-experimental-parser = "2026-09-15T00:00:00Z" }
 package = false
+no-build = true
+# binary-only, except allow daff (sdist-only, no wheels) to build from source
+no-binary-package = ["daff"]
