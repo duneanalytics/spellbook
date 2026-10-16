@@ -15,4 +15,4 @@
 
 -- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}
 
-{{ oneinch_project_swaps_base_macro(blockchain = blockchain) }}
+{{ oneinch_project_swaps_base_new_chains_macro(blockchain = blockchain) }}
