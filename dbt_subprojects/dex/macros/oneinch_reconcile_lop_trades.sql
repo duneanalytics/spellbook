@@ -173,7 +173,6 @@
             {% set create_sql %}
                 create table {{ stage_relation }}
                 comment 'Temporary 1inch repair source; not a published model'
-                with (format = 'delta')
                 as {{ desired_sql }}
             {% endset %}
             {% do run_query('EXPLAIN ' ~ create_sql) %}
