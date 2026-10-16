@@ -143,14 +143,15 @@ FROM
 {%- set native_token_address = native_token_address or v4_native_token_overrides.get(blockchain) -%}
 {#- aggregator_hooks: ref to the BaseAggregatorHook registry; when set, rows get an
     is_aggregator_hook_swap flag and hook swaps derive direction from the call swapDelta -#}
+{#- Custom-accounting hooks can emit zero core Swap amounts while returning a nonzero
+    caller delta. Use that delta for direction even when the hook is not an aggregator. -#}
+{%- set empty_event = "e.amount0 = INT256 '0' AND e.amount1 = INT256 '0'" -%}
 {%- if aggregator_hooks %}
-{#- aggregator-hook swaps emit an empty Swap event (amount0=0, amount1=0), so the event-based
-    direction always falls through to the ELSE branch; for those rows the direction must come
-    from the call swapDelta (same swapper-perspective sign convention) -#}
-{%- set buy_is_currency1 = "(ah.address IS NOT NULL AND (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0')) OR (ah.address IS NULL AND (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0'))" %}
+{%- set use_call_direction = "ah.address IS NOT NULL OR (" ~ empty_event ~ ")" -%}
 {%- else %}
-{%- set buy_is_currency1 = "e.amount0 < INT256 '0' OR e.amount1 > INT256 '0'" %}
+{%- set use_call_direction = empty_event -%}
 {%- endif %}
+{%- set buy_is_currency1 = "(CASE WHEN " ~ use_call_direction ~ " THEN (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0') ELSE (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0') END)" -%}
 WITH dexs AS
 (
     WITH clean_swaps AS (
