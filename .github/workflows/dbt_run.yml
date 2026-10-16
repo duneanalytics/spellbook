@@ -36,7 +36,7 @@ jobs:
       contents: read
       actions: read
       statuses: write
-    timeout-minutes: 90
+    timeout-minutes: ${{ inputs.project == 'dex' && 240 || 90 }}
 
     steps:
       - name: Report pending status to PR
