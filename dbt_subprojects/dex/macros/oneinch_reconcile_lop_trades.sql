@@ -6,7 +6,8 @@
 {% macro oneinch_reconcile_lop_trades(target_kind, blockchain, block_month, apply=false,
     expected_old_count=none, expected_desired_count=none, expected_delete_count=none,
     expected_insert_count=none, expected_update_count=none, allow_empty_source=false,
-    restore_version=none, through_month=none) %}
+    restore_version=none, through_month=none, stage_id=none, create_stage=false,
+    cleanup_stage=false) %}
     {% set affected_chains = [
         'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'gnosis',
         'linea', 'optimism', 'polygon', 'sonic', 'unichain', 'zksync'
@@ -40,6 +41,29 @@
     {% else %}
         {{ exceptions.raise_compiler_error('target_kind must be chain, dex, or aggregator') }}
     {% endif %}
+    {% if stage_id is none %}
+        {% if create_stage or cleanup_stage or (through_month != block_month and restore_version is none) %}
+            {{ exceptions.raise_compiler_error('A month range or stage operation requires stage_id') }}
+        {% endif %}
+    {% else %}
+        {% set stage_id = stage_id | string %}
+        {% if stage_id | length != 14 or not stage_id.isdigit() %}
+            {{ exceptions.raise_compiler_error('stage_id must be a unique 14-digit UTC timestamp') }}
+        {% endif %}
+        {% if restore_version is not none %}
+            {{ exceptions.raise_compiler_error('Rollback reads the pinned target version directly; omit stage_id') }}
+        {% endif %}
+        {% set stage_identifier = '__oneinch_repair_stage_' ~ target_kind ~ '_' ~ blockchain ~ '_'
+            ~ block_month[:4] ~ block_month[5:7] ~ '_' ~ through_month[:4] ~ through_month[5:7] ~ '_' ~ stage_id %}
+        {% set stage_relation = api.Relation.create(database=target_relation.database,
+            schema=target_relation.schema, identifier=stage_identifier, type='table') %}
+    {% endif %}
+    {% if create_stage and (apply or cleanup_stage) %}
+        {{ exceptions.raise_compiler_error('create_stage cannot run with apply or cleanup_stage') }}
+    {% endif %}
+    {% if cleanup_stage and apply %}
+        {{ exceptions.raise_compiler_error('cleanup_stage cannot run with apply') }}
+    {% endif %}
     {% if restore_version is not none %}
         {% if not (restore_version | string).isdigit() %}
             {{ exceptions.raise_compiler_error('restore_version must be a nonnegative Delta version') }}
@@ -56,6 +80,19 @@
     {% endif %}
     {% if target.name != 'prod' %}
         {{ exceptions.raise_compiler_error('1inch repair operates only on the prod target') }}
+    {% endif %}
+    {% if cleanup_stage %}
+        {% set existing_stage = adapter.get_relation(database=stage_relation.database,
+            schema=stage_relation.schema, identifier=stage_relation.identifier) %}
+        {% if existing_stage is none %}
+            {{ exceptions.raise_compiler_error('Exact repair stage does not exist: ' ~ stage_relation) }}
+        {% endif %}
+        {% if existing_stage.type != 'table' %}
+            {{ exceptions.raise_compiler_error('Repair stage must be a materialized table: ' ~ stage_relation) }}
+        {% endif %}
+        {% do adapter.drop_relation(existing_stage) %}
+        {{ log('Dropped exact 1inch repair stage ' ~ stage_relation, info=true) }}
+        {{ return(none) }}
     {% endif %}
 
     {% set target_columns = adapter.get_columns_in_relation(target_relation) %}
@@ -125,6 +162,40 @@
         from {{ source_sql }} as src
         where {{ scope }}
     {% endset %}
+    {% if stage_id is not none %}
+        {% set existing_stage = adapter.get_relation(database=stage_relation.database,
+            schema=stage_relation.schema, identifier=stage_relation.identifier) %}
+        {% if create_stage %}
+            {% if existing_stage is not none %}
+                {{ exceptions.raise_compiler_error('Repair stage already exists; choose a new stage_id: ' ~ stage_relation) }}
+            {% endif %}
+            {# Trino inlines the desired CTE in the diff and MERGE. Persist it once per exact cohort. #}
+            {% set create_sql %}
+                create table {{ stage_relation }}
+                comment 'Temporary 1inch repair source; not a published model'
+                with (format = 'delta')
+                as {{ desired_sql }}
+            {% endset %}
+            {% do run_query('EXPLAIN ' ~ create_sql) %}
+            {% do run_query(create_sql) %}
+            {{ log('Created 1inch repair stage ' ~ stage_relation, info=true) }}
+        {% elif existing_stage is none %}
+            {{ exceptions.raise_compiler_error('Exact repair stage does not exist: ' ~ stage_relation) }}
+        {% endif %}
+        {% if existing_stage is not none and existing_stage.type != 'table' %}
+            {{ exceptions.raise_compiler_error('Repair stage must be a materialized table: ' ~ stage_relation) }}
+        {% endif %}
+        {% set stage_columns = adapter.get_columns_in_relation(stage_relation) %}
+        {% set stage_names = [] %}
+        {% for col in stage_columns %}
+            {% do stage_names.append(col.name | lower) %}
+        {% endfor %}
+        {% if stage_names != names %}
+            {{ exceptions.raise_compiler_error('Repair stage columns differ from target: ' ~ stage_relation) }}
+        {% endif %}
+        {% set desired_sql = 'select * from ' ~ stage_relation ~ ' where ' ~ scope %}
+        {{ log('Using 1inch repair stage ' ~ stage_relation, info=true) }}
+    {% endif %}
     {% set diff_sql %}
         with desired as ({{ desired_sql }}),
         old as (select * from {{ target_relation }} where {{ scope }}),
@@ -152,6 +223,12 @@
     {% set row = diff.rows[0] %}
     {% set old_count = row[0] | int %}
     {% set desired_count = row[1] | int %}
+    {% if stage_id is not none %}
+        {% set stage_total = run_query('select count(*) from ' ~ stage_relation) %}
+        {% if stage_total.rows[0][0] | int != desired_count %}
+            {{ exceptions.raise_compiler_error('Repair stage has rows outside its exact chain/month/date scope') }}
+        {% endif %}
+    {% endif %}
     {% set delete_count = row[2] | int %}
     {% set insert_count = row[3] | int %}
     {% set update_count = row[4] | int %}
