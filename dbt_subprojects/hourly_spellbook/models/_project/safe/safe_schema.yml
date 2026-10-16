@@ -111,7 +111,7 @@ models:
       - *blockchain
       - &symbol
         name: symbol
-        description: "Symbol of native gas token: ETH"
+        description: "Symbol of the chain's native gas token"
       - name: address
         description: "Safe contract address"
       - *block_date
@@ -119,9 +119,9 @@ models:
       - *block_time
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of transferred ETH"
+        description: "Raw amount of transferred native token"
       - *tx_hash
       - *trace_address
       - &amount_usd
         name: amount_usd
-        description: "USD amount of transferred ETH"
+        description: "USD amount of transferred native token"
