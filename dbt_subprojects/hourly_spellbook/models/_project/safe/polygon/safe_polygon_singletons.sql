@@ -30,4 +30,9 @@ from {{ source('gnosis_safe_polygon', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCr
 union
 
 select distinct singleton as address 
-from {{ source('gnosis_safe_polygon', 'ProxyFactoryv_1_4_1_evt_ProxyCreation') }}
+from {{ source('gnosis_safe_polygon', 'ProxyFactoryv_1_4_1_evt_ProxyCreation') }}           
+
+union
+
+select distinct singleton as address 
+from {{ source('gnosis_safe_polygon', 'SafeProxyFactory_v1_5_0_evt_ProxyCreation') }}
