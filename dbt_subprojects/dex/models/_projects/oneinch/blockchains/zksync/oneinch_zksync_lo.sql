@@ -1,4 +1,4 @@
-{%- set blockchain = oneinch_zksync_cfg_macro() -%}
+{%- set blockchain = oneinch_v1_2_escrow_factory_cfg_macro(oneinch_zksync_cfg_macro()) -%}
 {%- set stream = oneinch_lo_cfg_macro() -%}
 
 {{-

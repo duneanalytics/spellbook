@@ -10,6 +10,7 @@
 
 
 {%- for blockchain in oneinch_blockchains_cfg_macro() %}
+    {%- set blockchain = oneinch_v1_2_escrow_factory_cfg_macro(blockchain) -%}
     select
         '{{ blockchain.name }}' as blockchain
         , {{ blockchain.get('chain_id', 'null') }} as chain_id

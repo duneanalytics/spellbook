@@ -96,7 +96,7 @@
         "wrapped_native_token_address"  : "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
         "explorer_link"                 : "'https://etherscan.io'",
         "fusion_settlement_addresses"   : ['0x399740157391a9f1bf4e9921a8834f9bc8f2678e', '0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0xa88800cd213da5ae406ce248380802bd53b47647'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -110,7 +110,7 @@
         "wrapped_native_token_address"  : "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
         "explorer_link"                 : "'https://bscscan.com'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0x1d0ae300eec4093cee4367c00b228d10a5c7ac63'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : false,
     }) }}
 {% endmacro %}
@@ -124,7 +124,7 @@
         "wrapped_native_token_address"  : "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
         "explorer_link"                 : "'https://polygonscan.com'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0x1e8ae092651e7b14e4d0f93611267c5be19b8b9f'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -138,7 +138,7 @@
         "wrapped_native_token_address"  : "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
         "explorer_link"                 : "'https://arbiscan.io'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0x4bc3e539aaa5b18a82f6cd88dc9ab0e113c63377'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0xc02e6487fbf69d6849b4b9ad9ec0bf5ff8d0c2a1', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0xc02e6487fbf69d6849b4b9ad9ec0bf5ff8d0c2a1'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -152,7 +152,7 @@
         "wrapped_native_token_address"  : "0x4200000000000000000000000000000000000006",
         "explorer_link"                 : "'https://optimistic.etherscan.io'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0xd89adc20c400b6c45086a7f6ab2dca19745b89c2'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -166,7 +166,7 @@
         "wrapped_native_token_address"  : "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
         "explorer_link"                 : "'https://snowtrace.io'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0x7731f8df999a9441ae10519617c24568dc82f697'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -180,7 +180,7 @@
         "wrapped_native_token_address"  : "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d",
         "explorer_link"                 : "'https://gnosisscan.io'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0xcbdb7490968d4dbf183c60fc899c2e9fbd445308'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -236,7 +236,7 @@
         "wrapped_native_token_address"  : "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91",
         "explorer_link"                 : "'https://explorer.zksync.io'",
         "fusion_settlement_addresses"   : ['0x8261425bf01caf25259dabe36fd05f430b38aee0', '0xfafc781997d41a42eb5023c103e562417524cfb6', '0x0302b42c86540e636e438395c6344ed88c55b70e', '0x11de482747d1b39e599f120d526af512dd1a9326'],
-        "escrow_factory_addresses"      : ['0x584aeab186d81dbb52a8a14820c573480c3d4773', '0xd9085ac07da21bd6eb003a530a524ab054ca8652'],
+        "escrow_factory_addresses"      : ['0x584aeab186d81dbb52a8a14820c573480c3d4773'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -250,7 +250,7 @@
         "wrapped_native_token_address"  : "0x4200000000000000000000000000000000000006",
         "explorer_link"                 : "'https://basescan.org'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -264,7 +264,7 @@
         "wrapped_native_token_address"  : "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f",
         "explorer_link"                 : "'https://lineascan.build'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
     }) }}
 {% endmacro %}
@@ -278,7 +278,7 @@
         "wrapped_native_token_address"  : "0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38",
         "explorer_link"                 : "'https://sonicscan.org'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : false,
     }) }}
 {% endmacro %}
@@ -292,7 +292,7 @@
         "wrapped_native_token_address"  : "0x4200000000000000000000000000000000000006",
         "explorer_link"                 : "'https://uniscan.xyz'",
         "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e'],
-        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a', '0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa'],
+        "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : false,
     }) }}
 {% endmacro %}

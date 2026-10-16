@@ -29,15 +29,10 @@
 {% endmacro %}
 
 -- METHODS CONFIG --
--- v1_2: the v1.2 Immutables struct gained a trailing `bytes parameters`, which turns it into a dynamic tuple:
--- its calldata head becomes a pointer word and the fields land deeper (one extra word for methods where the
--- struct is the only preceding change; two for createDstEscrow, whose head is [pointer, srcCancellationTimestamp]).
--- Field extraction expressions are unchanged, so the v1 layouts are reused at shifted offsets. Selectors differ.
 {% macro oneinch_cc_methods_cfg_macro(type="decoded") %}
     {% set immutables0 = oneinch_cc_immutables_cfg_macro(offset="0") %}
     {% set immutables1 = oneinch_cc_immutables_cfg_macro(offset="1") %}
     {% set immutables2 = oneinch_cc_immutables_cfg_macro(offset="2") %}
-    {% set immutables3 = oneinch_cc_immutables_cfg_macro(offset="3") %}
     {{ return({
         "v1": {
             "addressOfEscrowSrc": dict(immutables0.v1[type], selector="0xfb6bd47e"),
@@ -49,16 +44,24 @@
             "publicCancel"      : dict(immutables0.v1[type], selector="0xdaff233e"),
             "rescueFunds"       : dict(immutables2.v1[type], selector="0x4649088b"),
         },
-        "v1_2": {
-            "addressOfEscrowSrc": dict(immutables1.v1[type], selector="0xfd6de035"),
-            "createDstEscrow"   : dict(immutables2.v1[type], selector="0xede88f38"),
-            "withdraw"          : dict(immutables2.v1[type], selector="0x78a5e1a1"),
-            "withdrawTo"        : dict(immutables3.v1[type], selector="0x4c345901"),
-            "publicWithdraw"    : dict(immutables2.v1[type], selector="0x3e99ca75"),
-            "cancel"            : dict(immutables1.v1[type], selector="0x2537a347"),
-            "publicCancel"      : dict(immutables1.v1[type], selector="0x056fb477"),
-            "rescueFunds"       : dict(immutables3.v1[type], selector="0x5e504d03"),
-        },
+    }) }}
+{% endmacro %}
+
+-- v1.2 adds trailing `bytes parameters`, making the Immutables tuple dynamic. Its calldata head is a pointer;
+-- fields shift one word, or two for createDstEscrow with srcCancellationTimestamp in the head.
+{% macro oneinch_cc_v1_2_methods_cfg_macro(type="decoded") %}
+    {% set immutables1 = oneinch_cc_immutables_cfg_macro(offset="1") %}
+    {% set immutables2 = oneinch_cc_immutables_cfg_macro(offset="2") %}
+    {% set immutables3 = oneinch_cc_immutables_cfg_macro(offset="3") %}
+    {{ return({
+        "addressOfEscrowSrc": dict(immutables1.v1[type], selector="0xfd6de035"),
+        "createDstEscrow"   : dict(immutables2.v1[type], selector="0xede88f38"),
+        "withdraw"          : dict(immutables2.v1[type], selector="0x78a5e1a1"),
+        "withdrawTo"        : dict(immutables3.v1[type], selector="0x4c345901"),
+        "publicWithdraw"    : dict(immutables2.v1[type], selector="0x3e99ca75"),
+        "cancel"            : dict(immutables1.v1[type], selector="0x2537a347"),
+        "publicCancel"      : dict(immutables1.v1[type], selector="0x056fb477"),
+        "rescueFunds"       : dict(immutables3.v1[type], selector="0x5e504d03"),
     }) }}
 {% endmacro %}
 
@@ -83,8 +86,8 @@
 -- NOTE: on zksync (escrow_type="raw") the EVM CREATE2 formula does not apply (zkEVM address derivation).
 -- Thus dst_creation `escrow` is null on zksync, and executions use escrow = call_to.
 {% macro oneinch_cc_v1_2_contracts_cfg_macro(factory, src_impl, dst_impl, start, escrow_type="decoded", parent_code_offset=none) %}
-    {% set methods_factory = oneinch_cc_methods_cfg_macro(type="decoded").v1_2 %}
-    {% set methods = oneinch_cc_methods_cfg_macro(type=escrow_type).v1_2 %}
+    {% set methods_factory = oneinch_cc_v1_2_methods_cfg_macro(type="decoded") %}
+    {% set methods = oneinch_cc_v1_2_methods_cfg_macro(type=escrow_type) %}
     {% if escrow_type == "raw" %}
         {% set dst_escrow = "cast(null as varbinary)" %}
         {% set secret = "substr(call_input, 4 + 32*0 + 1, 32)" %}
@@ -143,12 +146,12 @@
 {% endmacro %}
 
 -- CONTRACTS CONFIG --
--- The base config has both generations for the canonical 11 chains on decoded tables: the v1 line (since 2024-08-20)
--- and the v1.2 line (since 2026-02-04). When Dune completes the remaining clone backfill (polygon EscrowDstV1_2),
+-- The base config is the original v1 line. Canonical chains layer v1.2 on top, beginning 2026-02-04.
+-- When Dune completes the remaining clone backfill (polygon EscrowDstV1_2),
 -- the 1inch analytics team will request a full refresh (tracked in 1inch Jira DPA2-5765).
 {% macro oneinch_cc_contracts_cfg_macro() %}
     {% set methodsV1 = oneinch_cc_methods_cfg_macro(type="decoded").v1 %}
-    {% set contracts = {
+    {{ return({
         "EscrowFactoryV1": {
             "version": "1",
             "start": "2024-08-20",
@@ -184,7 +187,11 @@
                 "rescueFunds"   : dict(methodsV1.rescueFunds    , flow="'dst_rescue'"),
             },
         },
-    } %}
+    }) }}
+{% endmacro %}
+
+{% macro oneinch_cc_v1_2_existing_contracts_cfg_macro() %}
+    {% set contracts = oneinch_cc_contracts_cfg_macro() %}
     {% do contracts.update(oneinch_cc_v1_2_contracts_cfg_macro(
         factory="0x03a25b3215a0e5c15cf23ac4d2e5cf86c0ff7efa",
         src_impl="0x30476b0bf2f73f78a75488742920da7ff76c0ca0",
@@ -197,28 +204,28 @@
 
 
 -- ETHEREUM CC CONFIG MACRO --
-{% macro oneinch_ethereum_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_ethereum_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- BNB CC CONFIG MACRO --
-{% macro oneinch_bnb_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_bnb_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- POLYGON CC CONFIG MACRO --
-{% macro oneinch_polygon_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_polygon_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- ARBITRUM CC CONFIG MACRO --
-{% macro oneinch_arbitrum_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_arbitrum_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- AVALANCHE CC CONFIG MACRO --
-{% macro oneinch_avalanche_c_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_avalanche_c_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- GNOSIS CC CONFIG MACRO --
-{% macro oneinch_gnosis_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_gnosis_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- OPTIMISM CC CONFIG MACRO --
-{% macro oneinch_optimism_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_optimism_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- BASE CC CONFIG MACRO --
-{% macro oneinch_base_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_base_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- ZKSYNC CC CONFIG MACRO --
 -- zkSync Era is not EVM-equivalent, so Dune cannot decode the minimal-proxy EscrowSrc/Dst clones.
@@ -260,13 +267,13 @@
 {% endmacro %}
 
 -- LINEA CC CONFIG MACRO --
-{% macro oneinch_linea_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_linea_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- SONIC CC CONFIG MACRO --
-{% macro oneinch_sonic_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_sonic_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- UNICHAIN CC CONFIG MACRO --
-{% macro oneinch_unichain_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_contracts_cfg_macro()) }} {% endmacro %}
+{% macro oneinch_unichain_cc_contracts_cfg_macro() %} {{ return(oneinch_cc_v1_2_existing_contracts_cfg_macro()) }} {% endmacro %}
 
 -- ROBINHOOD CC CONFIG MACRO --
 -- Robinhood has its own escrow deployments for both generations: the v1-ABI line (since 2026-06-01) and the v1.2 line
