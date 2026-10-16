@@ -6,7 +6,7 @@
     )
 -%}
 
-{%- set date_from = [blockchain.start, stream.start, oneinch_easy_date()] | max -%}
+{%- set date_from = [blockchain.start, stream.start] | max -%}
 {%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set settlements = blockchain.fusion_settlement_addresses | join(', ') -%}
 {%- set factories = blockchain.escrow_factory_addresses | join(', ') -%}
