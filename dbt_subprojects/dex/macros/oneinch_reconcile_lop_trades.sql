@@ -19,7 +19,11 @@
         or block_month < '2026-02-01' %}
         {{ exceptions.raise_compiler_error('block_month must be YYYY-MM-01 on or after 2026-02-01') }}
     {% endif %}
-    {% if target_kind == 'dex' %}
+    {% if target_kind == 'chain' %}
+        {% set target_relation = ref('dex_' ~ blockchain ~ '_trades') %}
+        {% set source_relation = ref('oneinch_' ~ blockchain ~ '_lop_own_trades') %}
+        {% set keys = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month'] %}
+    {% elif target_kind == 'dex' %}
         {% set target_relation = ref('dex_trades') %}
         {% set source_relation = ref('dex_' ~ blockchain ~ '_trades') %}
         {% set keys = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month'] %}
@@ -28,7 +32,7 @@
         {% set source_relation = ref('oneinch_lop_aggregator_trades') %}
         {% set keys = ['block_month', 'block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'] %}
     {% else %}
-        {{ exceptions.raise_compiler_error('target_kind must be dex or aggregator') }}
+        {{ exceptions.raise_compiler_error('target_kind must be chain, dex, or aggregator') }}
     {% endif %}
     {% if restore_version is not none %}
         {% if not (restore_version | string).isdigit() %}
@@ -36,6 +40,8 @@
         {% endif %}
         {% set source_relation = target_relation %}
         {% set source_sql = source_relation ~ ' FOR VERSION AS OF ' ~ restore_version %}
+    {% elif target_kind == 'chain' %}
+        {% set source_sql = '(' ~ oneinch_lop_dex_trades_passthrough(blockchain=blockchain, full_history=true) ~ ')' %}
     {% else %}
         {% set source_sql = source_relation %}
     {% endif %}
@@ -60,7 +66,7 @@
         {% if name not in keys and name != '_updated_at' %}
             {% do content_names.append(name) %}
         {% endif %}
-        {% if name not in source_names and not (target_kind == 'aggregator' and name == '_updated_at') %}
+        {% if name not in source_names and not (target_kind in ['chain', 'aggregator'] and name == '_updated_at') %}
             {{ exceptions.raise_compiler_error('Repair source is missing target column: ' ~ name) }}
         {% endif %}
     {% endfor %}
@@ -78,7 +84,7 @@
         {% set name = col.name | lower %}
         {% do insert_columns.append('"' ~ name ~ '"') %}
         {% do insert_values.append('s."' ~ name ~ '"') %}
-        {% if target_kind == 'aggregator' and restore_version is none and name == '_updated_at' %}
+        {% if target_kind in ['chain', 'aggregator'] and restore_version is none and name == '_updated_at' %}
             {% do desired_columns.append('cast(current_timestamp as ' ~ col.data_type ~ ') as "' ~ name ~ '"') %}
         {% else %}
             {% do desired_columns.append('cast(src."' ~ name ~ '" as ' ~ col.data_type ~ ') as "' ~ name ~ '"') %}

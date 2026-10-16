@@ -1,5 +1,6 @@
 {% macro oneinch_lop_dex_trades_passthrough(
-	blockchain
+	blockchain,
+	full_history=false
 ) %}
 
 {%- if blockchain is none or blockchain == '' -%}
@@ -42,10 +43,10 @@ LEFT JOIN {{ source('tokens', 'erc20') }} AS ts
 	ON ts.blockchain = '{{ blockchain }}'
 	AND ts.contract_address = o.token_sold_address
 WHERE o.blockchain = '{{ blockchain }}'
-{% if var('dev_dates', false) -%}
+{% if not full_history and var('dev_dates', false) -%}
 	AND o.block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
 {%- else -%}
-	{% if is_incremental() %}
+	{% if not full_history and is_incremental() %}
 	AND {{ incremental_predicate('o.block_time') }}
 	{% endif %}
 {%- endif %}
