@@ -6,7 +6,7 @@
 {% macro oneinch_reconcile_lop_trades(target_kind, blockchain, block_month, apply=false,
     expected_old_count=none, expected_desired_count=none, expected_delete_count=none,
     expected_insert_count=none, expected_update_count=none, allow_empty_source=false,
-    restore_version=none) %}
+    restore_version=none, through_month=none) %}
     {% set affected_chains = [
         'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'gnosis',
         'linea', 'optimism', 'polygon', 'sonic', 'unichain', 'zksync'
@@ -18,6 +18,12 @@
         or block_month[8:] != '01' or not (block_month[:4] ~ block_month[5:7] ~ block_month[8:]).isdigit()
         or block_month < '2026-02-01' %}
         {{ exceptions.raise_compiler_error('block_month must be YYYY-MM-01 on or after 2026-02-01') }}
+    {% endif %}
+    {% set through_month = block_month if through_month is none else through_month %}
+    {% if through_month | length != 10 or through_month[4] != '-' or through_month[7] != '-'
+        or through_month[8:] != '01' or not (through_month[:4] ~ through_month[5:7] ~ through_month[8:]).isdigit()
+        or through_month < block_month %}
+        {{ exceptions.raise_compiler_error('through_month must be YYYY-MM-01 on or after block_month') }}
     {% endif %}
     {% if target_kind == 'chain' %}
         {% set target_relation = ref('dex_' ~ blockchain ~ '_trades') %}
@@ -110,8 +116,10 @@
         {% do changes.append('t."' ~ name ~ '" is distinct from d."' ~ name ~ '"') %}
         {% do merge_changes.append('t."' ~ name ~ '" is distinct from s."' ~ name ~ '"') %}
     {% endfor %}
-    {% set scope = "blockchain = '" ~ blockchain ~ "' and project = '1inch-LOP' and block_month = date '" ~ block_month ~ "' and block_date >= date '2026-02-04'" %}
-    {% set target_scope = "t.blockchain = '" ~ blockchain ~ "' and t.project = '1inch-LOP' and t.block_month = date '" ~ block_month ~ "' and t.block_date >= date '2026-02-04'" %}
+    {% set month_scope = "block_month = date '" ~ block_month ~ "'" if through_month == block_month
+        else "block_month between date '" ~ block_month ~ "' and date '" ~ through_month ~ "'" %}
+    {% set scope = "blockchain = '" ~ blockchain ~ "' and project = '1inch-LOP' and " ~ month_scope ~ " and block_date >= date '2026-02-04'" %}
+    {% set target_scope = "t.blockchain = '" ~ blockchain ~ "' and t.project = '1inch-LOP' and t." ~ month_scope ~ " and t.block_date >= date '2026-02-04'" %}
     {% set desired_sql %}
         select {{ desired_columns | join(', ') }}
         from {{ source_sql }} as src
@@ -151,7 +159,7 @@
     {% set desired_null_keys = row[6] | int %}
     {% set old_duplicate_keys = row[7] | int %}
     {% set desired_duplicate_keys = row[8] | int %}
-    {{ log('1inch repair ' ~ target_kind ~ '/' ~ blockchain ~ '/' ~ block_month ~
+    {{ log('1inch repair ' ~ target_kind ~ '/' ~ blockchain ~ '/' ~ block_month ~ '..' ~ through_month ~
         ' restore_version=' ~ (restore_version if restore_version is not none else 'none') ~
         ' old=' ~ old_count ~ ' desired=' ~ desired_count ~ ' delete=' ~ delete_count ~
         ' insert=' ~ insert_count ~ ' update=' ~ update_count ~
@@ -177,7 +185,7 @@
         on {{ target_conditions | join(' and ') }}
             and t.blockchain = '{{ blockchain }}'
             and t.project = '1inch-LOP'
-            and t.block_month = date '{{ block_month }}'
+            and t.{{ month_scope }}
             and t.block_date >= date '2026-02-04'
         when matched and s._delete then delete
         when matched and ({{ merge_changes | join(' or ') }}) then
@@ -189,7 +197,7 @@
        identity's DELETE/UPDATE permission, including the self-read in old_only. #}
     {% if not apply %}
         {% do run_query('EXPLAIN ' ~ merge_sql) %}
-        {{ log('1inch repair MERGE EXPLAIN passed for ' ~ target_kind ~ '/' ~ blockchain ~ '/' ~ block_month, info=true) }}
+        {{ log('1inch repair MERGE EXPLAIN passed for ' ~ target_kind ~ '/' ~ blockchain ~ '/' ~ block_month ~ '..' ~ through_month, info=true) }}
         {{ return({'old': old_count, 'desired': desired_count, 'delete': delete_count,
             'insert': insert_count, 'update': update_count}) }}
     {% endif %}
