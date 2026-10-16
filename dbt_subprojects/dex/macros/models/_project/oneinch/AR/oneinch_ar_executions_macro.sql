@@ -5,7 +5,7 @@
     )
 -%}
 
-{%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set date_from = [blockchain.start, stream.start, oneinch_easy_date()] | max -%}
 {%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set nsymbol = blockchain.native_token_symbol -%}
 {%- set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
