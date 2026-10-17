@@ -1,6 +1,6 @@
 version: 2
 
-sepolials:
+models:
   - name: tokens_sepolia_base_transfers
     meta:
       blockchain: sepolia
