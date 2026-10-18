@@ -15,3 +15,8 @@ from {{ source('gnosis_safe_worldchain', 'SafeProxyFactory_v_1_3_0_evt_ProxyCrea
 union
 select distinct singleton as address
 from {{ source('gnosis_safe_worldchain', 'SafeProxyFactory_v_1_4_1_evt_ProxyCreation') }}
+
+union
+
+select distinct singleton as address
+from {{ source('gnosis_safe_worldchain', 'SafeProxyFactory_v1_5_0_evt_ProxyCreation') }}
