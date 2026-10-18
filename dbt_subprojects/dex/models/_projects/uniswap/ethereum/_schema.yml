@@ -405,6 +405,11 @@ models:
             seed_file: ref('uniswap_ethereum_base_trades_seed')
             filter:
               version: 4
+      - check_seed:
+          arguments:
+            seed_file: ref('uniswap_v4_ethereum_taker_seed')
+            match_columns: ['tx_hash', 'evt_index']
+            check_columns: ['token_bought_address', 'taker']
     columns:
       - name: tx_hash
         data_tests:
