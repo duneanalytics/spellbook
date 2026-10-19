@@ -146,6 +146,13 @@ FROM
 {#- A nonzero Swap event sets direction (afterSwap hooks can rewrite the caller delta after it is
     emitted); an empty event means a custom-accounting hook settled via the delta, so the delta does -#}
 {%- set buy_is_currency1 = "(CASE WHEN e.amount0 = INT256 '0' AND e.amount1 = INT256 '0' THEN (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0') ELSE (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0') END)" -%}
+{#- Calls pair with Swap events by rank within the tx, so calls must rank in event emission order.
+    PoolManager.swap emits Swap after its beforeSwap hook call and before afterSwap, so a swap a hook
+    makes inside beforeSwap emits first although its trace sorts after the outer call. beforeSwap is
+    trace child 0 when the hook address has BEFORE_SWAP_FLAG (bit 7). Mapping each trace element t to
+    2t+1 and appending 2 (flag set) or 0 sorts a call between its beforeSwap and afterSwap subtrees
+    and keeps trace order everywhere else. -#}
+{%- set call_emission_order = "transform(call_trace_address, t -> 2 * t + 1) || ARRAY[IF(BITWISE_AND(VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(hooks, 19, 2)), 128) = 128, BIGINT '2', BIGINT '0')]" -%}
 WITH dexs AS
 (
     WITH clean_swaps AS (
@@ -230,7 +237,7 @@ WITH dexs AS
         {%- endif %}
         , hooks
         , call_trace_address
-        , row_number() over(partition by call_tx_hash order by call_trace_address) as call_rn
+        , row_number() over(partition by call_tx_hash order by {{ call_emission_order }}) as call_rn
 
         FROM wrangled
     )
