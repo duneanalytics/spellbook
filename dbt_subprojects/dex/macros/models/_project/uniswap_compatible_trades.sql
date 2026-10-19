@@ -142,16 +142,10 @@ FROM
 {%- set v4_native_token_overrides = {'polygon': '0x0000000000000000000000000000000000001010'} -%}{#- POL genesis contract -#}
 {%- set native_token_address = native_token_address or v4_native_token_overrides.get(blockchain) -%}
 {#- aggregator_hooks: ref to the BaseAggregatorHook registry; when set, rows get an
-    is_aggregator_hook_swap flag and hook swaps derive direction from the call swapDelta -#}
-{#- Custom-accounting hooks can emit zero core Swap amounts while returning a nonzero
-    caller delta. Use that delta for direction even when the hook is not an aggregator. -#}
-{%- set empty_event = "e.amount0 = INT256 '0' AND e.amount1 = INT256 '0'" -%}
-{%- if aggregator_hooks %}
-{%- set use_call_direction = "ah.address IS NOT NULL OR (" ~ empty_event ~ ")" -%}
-{%- else %}
-{%- set use_call_direction = empty_event -%}
-{%- endif %}
-{%- set buy_is_currency1 = "(CASE WHEN " ~ use_call_direction ~ " THEN (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0') ELSE (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0') END)" -%}
+    is_aggregator_hook_swap flag -#}
+{#- A nonzero Swap event sets direction (afterSwap hooks can rewrite the caller delta after it is
+    emitted); an empty event means a custom-accounting hook settled via the delta, so the delta does -#}
+{%- set buy_is_currency1 = "(CASE WHEN e.amount0 = INT256 '0' AND e.amount1 = INT256 '0' THEN (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0') ELSE (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0') END)" -%}
 WITH dexs AS
 (
     WITH clean_swaps AS (
@@ -319,7 +313,8 @@ WITH dexs AS
         , contract_address as token_address 
         , amount_raw as amount 
         , case 
-            when token_standard = 'erc20' then array[evt_index]
+            -- token standards other than native (erc20, bep20 on bnb, tip20 on tempo) order by log index
+            when token_standard <> 'native' then array[evt_index]
             -- chains implementing EIP-7708 log native transfers as events and have no
             -- traces leg, so trace_address is null on every native row; fall back to
             -- evt_index there to keep the ordering deterministic
@@ -334,12 +329,30 @@ WITH dexs AS
         {%- endif %}
 )
 
+, tx_swap_parties as (
+    SELECT
+        tx_hash
+        , array_agg(DISTINCT hooks) FILTER (WHERE hooks <> 0x0000000000000000000000000000000000000000) AS hooks
+        , array_agg(DISTINCT sender || token_bought_address) AS sender_bought_tokens
+    FROM
+    dexs
+    GROUP BY
+        tx_hash
+)
+
 , rank_token_transfers as (
-    SELECT 
-        * 
-        , row_number() over (partition by tx_hash, token_address order by token_index) as token_rank 
-    FROM 
-    token_transfers
+    SELECT
+        tt.*
+        , row_number() over (partition by tt.tx_hash, tt.token_address order by tt.token_index) as token_rank
+    FROM
+    token_transfers tt
+    LEFT JOIN tx_swap_parties p
+        ON p.tx_hash = tt.tx_hash
+    -- a PoolManager transfer to a swap's hook is the hook's own take() (custom accounting,
+    -- fees), not a swapper's output, unless the hook itself swapped for that token
+    WHERE p.hooks IS NULL
+        OR NOT contains(p.hooks, tt.taker)
+        OR contains(p.sender_bought_tokens, tt.taker || tt.token_address)
 )
 
 , rank_swap_events as (
