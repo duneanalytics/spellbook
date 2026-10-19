@@ -7,7 +7,7 @@ models:
       sector: tokens
       contributors: cursor
     config:
-      tags: ['tokens','transfers', 'story']
+      tags: ['tokens','transfers', 'story', 'static']
     description: >
       Token transfers
     data_tests:
@@ -66,7 +66,7 @@ models:
         oncall: false
     config:
       event_time: block_time
-      tags: ['tokens','transfers', 'story']
+      tags: ['tokens','transfers', 'story', 'static']
     description: >
       Token transfers
     data_tests:
@@ -125,7 +125,7 @@ models:
       sector: tokens
       contributors: 0xRob, cursor
     config:
-      tags: ['tokens', 'net_transfers', 'daily']
+      tags: ['tokens', 'net_transfers', 'daily', 'static']
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -140,7 +140,7 @@ models:
       sector: tokens
       contributors: 0xRob, cursor
     config:
-      tags: ['tokens', 'net_transfers']
+      tags: ['tokens', 'net_transfers', 'static']
     description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -156,7 +156,7 @@ models:
       sector: tokens
       contributors: cursor
     config:
-      tags: ['tokens', 'transfers', 'story']
+      tags: ['tokens', 'transfers', 'story', 'static']
     description: "Native token transfers from traces on Story"
 
   - name: tokens_story_transfers_from_traces_base
@@ -165,7 +165,7 @@ models:
       sector: tokens
       contributors: cursor
     config:
-      tags: ['tokens', 'transfers', 'story']
+      tags: ['tokens', 'transfers', 'story', 'static']
     description: "Base native token transfers from traces on Story"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -180,7 +180,7 @@ models:
       sector: tokens
       contributors: cursor
     config:
-      tags: ['tokens', 'transfers', 'story']
+      tags: ['tokens', 'transfers', 'story', 'static']
     description: "Wrapper deposit transfers from traces on Story"
     data_tests:
       - dbt_utils.unique_combination_of_columns:

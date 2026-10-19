@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: dex_story_trades
+    config:
+      tags: ["static"]
     data_tests:
       - check_columns_dex_trades
       - dbt_utils.unique_combination_of_columns:
@@ -18,6 +20,8 @@ models:
             max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_story_base_trades
+    config:
+      tags: ["static"]
     data_tests:
       - check_dex_info_relationship
 
@@ -28,7 +32,7 @@ models:
       project: story_hunt
       contributors: tomfutago
     config:
-      tags: ["story", "dex", "trades", "story_hunt"]
+      tags: ["story", "dex", "trades", "story_hunt", "static"]
     description: "Story Hunt story base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -48,7 +52,7 @@ models:
       version: '2'
       contributors: tomfutago
     config:
-      tags: ["story", "dex", "trades", "piperx"]
+      tags: ["story", "dex", "trades", "piperx", "static"]
     description: "Piperx v2 story base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -70,7 +74,7 @@ models:
       version: '3'
       contributors: tomfutago
     config:
-      tags: ["story", "dex", "trades", "piperx"]
+      tags: ["story", "dex", "trades", "piperx", "static"]
     description: "Piperx v3 story base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -85,6 +89,8 @@ models:
               version: 3
 
   - name: dex_story_token_volumes_daily
+    config:
+      tags: ["static"]
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
