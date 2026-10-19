@@ -336,52 +336,94 @@ WITH dexs AS
         {%- endif %}
 )
 
-, tx_swap_parties as (
+-- Swaps and PoolManager outgoing transfers in one relation, paired with windows rather than joins:
+-- Trino inlines CTEs, so every extra reference to dexs or token_transfers would scan it again
+, taker_candidates as (
     SELECT
         tx_hash
-        , array_agg(DISTINCT hooks) FILTER (WHERE hooks <> 0x0000000000000000000000000000000000000000) AS hooks
-        , array_agg(DISTINCT sender || token_bought_address) AS sender_bought_tokens
+        , block_number
+        , true AS is_swap
+        , evt_index
+        , token_bought_address AS token_address
+        , CAST(token_bought_amount_raw AS UINT256) AS amount
+        , ARRAY[evt_index] AS pairing_order
+        , CAST(NULL AS VARBINARY) AS taker
+        , hooks AS hook_key
+        , sender AS buyer_key
     FROM
     dexs
-    GROUP BY
-        tx_hash
-)
-
-, rank_token_transfers as (
+    UNION ALL
     SELECT
-        tt.*
-        , row_number() over (partition by tt.tx_hash, tt.token_address order by tt.token_index) as token_rank
+        tx_hash
+        , block_number
+        , false
+        , NULL
+        , token_address
+        , amount
+        , token_index
+        , taker
+        , taker
+        , taker
     FROM
-    token_transfers tt
-    LEFT JOIN tx_swap_parties p
-        ON p.tx_hash = tt.tx_hash
-    -- a PoolManager transfer to a swap's hook is the hook's own take() (custom accounting,
-    -- fees), not a swapper's output, unless the hook itself swapped for that token
-    WHERE p.hooks IS NULL
-        OR NOT contains(p.hooks, tt.taker)
-        OR contains(p.sender_bought_tokens, tt.taker || tt.token_address)
+    token_transfers
 )
 
-, rank_swap_events as (
-    SELECT 
+, taker_parties as (
+    SELECT
         *
-        , row_number() over (partition by tx_hash, token_bought_address order by evt_index) as token_rank 
-    FROM 
-    dexs 
+        , bool_or(is_swap AND hook_key <> 0x0000000000000000000000000000000000000000) over (partition by tx_hash, hook_key) as to_swap_hook
+        , bool_or(is_swap) over (partition by tx_hash, buyer_key, token_address) as to_swap_buyer
+    FROM
+    taker_candidates
+)
+
+-- A swap pairs first with a transfer of exactly its bought amount (k-th swap with the k-th transfer
+-- of that token and amount), then leftover swaps with leftover transfers by order, so a transfer to
+-- a fee recipient or an unpaired leg cannot shift every later pairing by one
+, amount_ranked as (
+    SELECT
+        *
+        , row_number() over (partition by tx_hash, token_address, amount, is_swap order by pairing_order) as amount_rank
+        , count_if(is_swap) over (partition by tx_hash, token_address, amount) as n_amount_swaps
+        , count_if(NOT is_swap) over (partition by tx_hash, token_address, amount) as n_amount_transfers
+    FROM
+    taker_parties
+    -- a PoolManager transfer to a swap's hook is the hook's own take() (custom accounting,
+    -- fees), not a swapper's output, unless the hook itself swapped for that token; dropping it
+    -- also keeps a netted hop's input pull, which equals the previous hop's output, out of pass 1
+    WHERE is_swap
+        OR NOT to_swap_hook
+        OR to_swap_buyer
+)
+
+, amount_paired as (
+    SELECT
+        *
+        , max(taker) over (partition by tx_hash, token_address, amount, amount_rank) as amount_taker
+        , row_number() over (partition by tx_hash, token_address, amount_matched, is_swap order by pairing_order) as rest_rank
+    FROM (
+        SELECT
+            *
+            , amount_rank <= IF(is_swap, n_amount_transfers, n_amount_swaps) AS amount_matched
+        FROM
+        amount_ranked
+    )
 )
 
 , get_taker as (
-    SELECT 
-        rse.*
-        , rtt.taker as transfers_taker 
-    FROM 
-    rank_swap_events rse 
-    left join 
-    rank_token_transfers rtt 
-        on rse.block_number = rtt.block_number 
-        and rse.tx_hash = rtt.tx_hash 
-        and rse.token_bought_address = rtt.token_address 
-        and rse.token_rank = rtt.token_rank 
+    SELECT
+        tx_hash
+        , block_number
+        , evt_index
+        , IF(amount_matched, amount_taker, rest_taker) AS transfers_taker
+    FROM (
+        SELECT
+            *
+            , max(taker) over (partition by tx_hash, token_address, amount_matched, rest_rank) as rest_taker
+        FROM
+        amount_paired
+    )
+    WHERE is_swap
 )
 
 
@@ -397,7 +439,7 @@ SELECT
     , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
     , dexs.token_bought_address
     , dexs.token_sold_address
-    , coalesce(dexs.taker, dexs.transfers_taker) as taker
+    , coalesce(dexs.taker, t.transfers_taker) as taker
     , dexs.maker
     , dexs.project_contract_address
     , dexs.tx_hash
@@ -414,5 +456,9 @@ SELECT
     , dexs.is_aggregator_hook_swap
     {%- endif %}
 FROM
-    get_taker dexs
+    dexs
+    LEFT JOIN get_taker t
+        ON t.block_number = dexs.block_number
+        AND t.tx_hash = dexs.tx_hash
+        AND t.evt_index = dexs.evt_index
 {% endmacro %}
