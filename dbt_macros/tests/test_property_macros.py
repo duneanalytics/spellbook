@@ -179,6 +179,20 @@ def test_unique_key_columns_emitted_by_every_property_macro(macro):
     ]
 
 
+@pytest.mark.parametrize("macro", PROPERTY_MACROS)
+@pytest.mark.parametrize(
+    "config",
+    [
+        {"unique_key": ["block_month", "tx_hash"]},
+        {"meta": {"dune": {"unique_key_columns": ["block_month", "tx_hash"]}}},
+    ],
+)
+def test_unique_key_columns_not_set_on_views(macro, config):
+    sql = render(macro, "view", config)
+    assert "alter_view_properties" in sql
+    assert UNIQUE_KEY_COLUMNS not in emitted_properties(sql)
+
+
 @pytest.mark.parametrize(
     "unique_key, expected",
     [

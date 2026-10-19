@@ -59,5 +59,5 @@ def test_valid_token5():
 
 
 def test_valid_token6():
-    test_line = "('bets-betswirl', 'polygon', 'BETS', 0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b, 18),"
+    test_line = "('link-chainlink', 'polygon', 'LINK', 0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39, 18),"
     checker.validate_token(test_line)

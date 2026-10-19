@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: sonic
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'sonic']
     description: "Safe addresses"
@@ -39,7 +39,7 @@ models:
     meta:
       blockchain: sonic
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'transfers', 'sonic']
     description: "S transfers for safes"
@@ -76,7 +76,7 @@ models:
     meta:
       blockchain: sonic
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p    
     config:
       tags: ['safe', 'singletons', 'sonic']
     description: "Singletons addresses used with Safes"

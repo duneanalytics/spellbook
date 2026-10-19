@@ -7,7 +7,7 @@ models:
       sector: gas
       contributors: cursor
     config:
-      tags: ['story', 'gas', 'fees']
+      tags: ['story', 'gas', 'fees', 'static']
     description: >
         Gas Fees on Story
     data_tests:

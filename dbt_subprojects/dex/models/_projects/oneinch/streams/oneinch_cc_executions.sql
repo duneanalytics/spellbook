@@ -31,11 +31,16 @@ incremental as (
         from {{ ref('oneinch_' + blockchain.name + '_' + stream.name + '_executions') }}
         where true
             and block_date >= date('{{ date_from }}')
-            {% if is_incremental() -%}
-                and hashlock in (select hashlock from incremental) -- e.g. if "cancel" happens a week later, update the whole trade
-            {%- endif %}
         {% if not loop.last -%} union all {%- endif %}
     {% endfor %}
+)
+
+, filtered_iterations as (
+    select *
+    from iterations
+    {% if is_incremental() -%}
+        where hashlock in (select hashlock from incremental) -- e.g. if "cancel" happens a week later, update the whole trade
+    {%- endif %}
 )
 
 , actions as (
@@ -67,7 +72,7 @@ incremental as (
                 , amount uint256
             )
         )) as actions
-    from iterations
+    from filtered_iterations
     group by 1, 2
 )
 
@@ -143,7 +148,7 @@ select
     , native_decimals
 from (
     select *
-    from iterations
+    from filtered_iterations
     where true
         and flow = 'src_creation'
 )
