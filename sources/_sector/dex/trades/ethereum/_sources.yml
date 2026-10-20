@@ -189,3 +189,7 @@ sources:
       - name: metricommpoolv1_evt_swap
       - name: metricommpoolv2_evt_swap
       - name: metricommpoolv2_beta_evt_swap
+  - name: communityv3_ethereum
+    tables:
+      - name: uniswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap
