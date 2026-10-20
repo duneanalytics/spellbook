@@ -75,6 +75,11 @@ models:
       docs_slug: /curated/balances/solana-latest-balances
     config:
       tags: ['solana','balances']
+      # The MERGE rewrites ~29k files. Under retry_policy QUERY their commit fragments overflow
+      # Trino's 32MB deduplication buffer (EXCHANGE_MANAGER_NOT_CONFIGURED), so run it without
+      # query retries and reset after, keeping the cluster default for later models.
+      pre_hook: "{{ set_trino_session_property(true, 'retry_policy', 'NONE') }}"
+      post_hook: "RESET SESSION retry_policy"
     description: >
         get the latest balances for each address
     columns:
