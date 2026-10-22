@@ -6,15 +6,23 @@ models:
     meta:
       blockchain: robinhood
       contributors: karimhass
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [blockchain, contract_address, deployment_tx_hash, deployment_block_month]
     columns:
       - name: blockchain
         description: "Blockchain name."
+        data_tests: [not_null]
       - name: contract_address
         description: "Deployed contract address."
+        data_tests: [not_null]
       - name: deployment_tx_hash
         description: "Transaction hash of the deployment."
+        data_tests: [not_null]
       - name: deployment_block_month
         description: "Month of deployment; table partition."
+        data_tests: [not_null]
       - name: deployment_block_time
         description: "Block timestamp of the deployment."
       - name: deployment_block_number

@@ -42,11 +42,17 @@ models:
       blockchain: robinhood
       sector: addresses
       contributors: karimhass
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [blockchain, address]
     columns:
       - name: blockchain
         description: "Blockchain name."
+        data_tests: [not_null]
       - name: address
         description: "Funded or deployed address."
+        data_tests: [not_null]
       - name: first_funded_by
         description: "Sender of the first native transfer."
       - name: first_funded_at
