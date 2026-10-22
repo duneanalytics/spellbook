@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: contracts_robinhood_deployments
+    description: "Contract deployments on Robinhood, including function selectors, token flags, and bytecode."
+    meta:
+      blockchain: robinhood
+      contributors: karimhass
+    columns:
+      - name: blockchain
+        description: "Blockchain name."
+      - name: contract_address
+        description: "Deployed contract address."
+      - name: deployment_tx_hash
+        description: "Transaction hash of the deployment."
+      - name: deployment_block_month
+        description: "Month of deployment; table partition."
+      - name: deployment_block_time
+        description: "Block timestamp of the deployment."
+      - name: deployment_block_number
+        description: "Block number of the deployment."
+      - name: function_selectors
+        description: "Function selectors extracted from runtime bytecode."
+      - name: erc20_flag
+        description: "ERC20 classification from token metadata or function selectors."
+      - name: erc721_flag
+        description: "ERC721 classification from transfer events or function selectors."
+      - name: bytecode
+        description: "Runtime contract bytecode."

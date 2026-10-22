@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: addresses_events_robinhood_first_funded_by
+    meta:
+      blockchain: robinhood
+      sector: addresses_events
+      project: addresses
+      contributors: karimhass
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'robinhood']
+    description: "Table showing who first funded each Robinhood address with native ETH"
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Address that first received native ETH"
+      - name: first_funded_by
+        description: "Address that first funded this address with native ETH"
+      - name: first_funding_executed_by
+        description: "Address that executed the first funding transaction"
+      - name: amount
+        description: "Amount of native ETH in the first funding transfer"
+      - name: amount_usd
+        description: "USD value of native ETH in the first funding transfer"
+      - name: block_time
+        description: "Block time of the first funding transfer"
+      - name: block_number
+        description: "Block number of the first funding transfer"
+      - name: tx_hash
+        description: "Transaction hash of the first funding transfer"
+      - name: tx_index
+        description: "Transaction index of the first funding transfer"
+      - name: trace_address
+        description: "Trace address of the first funding transfer"
+      - name: unique_key
+        description: "Unique transfer identifier"

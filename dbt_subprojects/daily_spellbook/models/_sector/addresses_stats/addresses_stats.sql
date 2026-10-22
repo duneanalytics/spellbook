@@ -10,6 +10,7 @@
 	'monad',
 	'optimism',
 	'polygon',
+	'robinhood',
 	'sei',
 	'zksync',
 ] %}

@@ -36,6 +36,7 @@
 , (ref('addresses_events_opbnb_first_funded_by'), 'BNB')
 , (ref('addresses_events_hyperevm_first_funded_by'), 'HYPE')
 , (ref('addresses_events_monad_first_funded_by'), 'MON')
+, (ref('addresses_events_robinhood_first_funded_by'), 'ETH')
 ] %}
 
 WITH joined_data AS (
