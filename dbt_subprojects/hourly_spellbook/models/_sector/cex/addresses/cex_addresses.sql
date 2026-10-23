@@ -12,7 +12,6 @@
  , ref('cex_base_addresses')
  , ref('cex_bitcoin_addresses')
  , ref('cex_bnb_addresses')
- , ref('cex_cardano_addresses')
  , ref('cex_celo_addresses')
  , ref('cex_cosmos_addresses')
  , ref('cex_elrond_addresses')

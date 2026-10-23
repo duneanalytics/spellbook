@@ -5,6 +5,11 @@ sources:
       - name: erc20
       - name: transfers
 
+  - name: tokens_robinhood
+    tables:
+      - name: erc20
+      - name: transfers
+
   - name: tokens_aave_v3
     tables:
       - name: tokens
