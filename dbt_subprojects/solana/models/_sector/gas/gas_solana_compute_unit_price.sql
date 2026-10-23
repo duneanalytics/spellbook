@@ -10,41 +10,33 @@
 
 -- this is just decoding program data, could be moved into decoding pipeline
 -- version 1 txs can carry several top-level SetComputeUnitPrice instructions; keep the first.
--- picked per row from the ordered instructions array, since a window/aggregate over full history exceeds memory
-
-WITH first_compute_unit_price_instruction AS (
-SELECT
-    id AS tx_id,
-    block_date,
-    date_trunc('hour', block_time) AS block_hour,
-    block_time,
-    block_slot,
-    index AS tx_index,
-    element_at(
-        filter(
-            instructions,
-            x -> x.executing_account = 'ComputeBudget111111111111111111111111111111'
-                AND bytearray_substring(from_base58(x.data), 1, 1) = 0x03
-        ),
-        1
-    ) AS instruction
-FROM {{ source('solana', 'transactions') }}
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('block_date') }}
-{% endif %}
-)
+-- aggregate the prefix-pruned instruction_calls scan; ranking all solana.transactions exceeded memory
 
 SELECT
     tx_id,
     block_date,
-    block_hour,
-    block_time,
+    date_trunc('hour', min(block_time)) AS block_hour,
+    min(block_time) AS block_time,
     block_slot,
-    tx_index,
-    bytearray_to_bigint(
-        bytearray_reverse(
-            bytearray_substring(from_base58(instruction.data), 2, 8)
-        )
+    min(tx_index) AS tx_index,
+    min_by(
+        bytearray_to_bigint(
+            bytearray_reverse(
+                bytearray_substring(data, 2, 8)
+            )
+        ),
+        outer_instruction_index
     ) AS compute_unit_price
-FROM first_compute_unit_price_instruction
-WHERE instruction IS NOT NULL
+FROM {{ source('solana', 'instruction_calls') }}
+WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
+AND executing_account_prefix = 'Co'
+AND bytearray_substring(data, 1, 1) = 0x03
+AND inner_instruction_index is null
+{% if is_incremental() %}
+AND {{ incremental_predicate('block_date') }}
+{% endif %}
+{% if target.name == 'ci' %}
+-- full refresh in CI has no incremental predicate; prod incremental stays on the 1-day window
+AND block_date >= current_date - interval '3' day
+{% endif %}
+GROUP BY tx_id, block_date, block_slot
