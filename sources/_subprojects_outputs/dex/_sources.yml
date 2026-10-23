@@ -154,6 +154,9 @@ sources:
   - name: zeroex_fantom
     tables:
       - name: settler_addresses
+  - name: zeroex_hyperevm
+    tables:
+      - name: settler_addresses
   - name: zeroex_linea
     tables:
       - name: settler_addresses
