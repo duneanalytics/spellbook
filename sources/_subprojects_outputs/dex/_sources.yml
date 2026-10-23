@@ -133,6 +133,9 @@ sources:
   - name: zeroex_arbitrum
     tables:
       - name: settler_addresses
+  - name: zeroex_arc
+    tables:
+      - name: settler_addresses
   - name: zeroex_avalanche_c
     tables:
       - name: settler_addresses
@@ -154,10 +157,16 @@ sources:
   - name: zeroex_linea
     tables:
       - name: settler_addresses
+  - name: zeroex_monad
+    tables:
+      - name: settler_addresses
   - name: zeroex_optimism
     tables:
       - name: settler_addresses
   - name: zeroex_polygon
+    tables:
+      - name: settler_addresses
+  - name: zeroex_robinhood
     tables:
       - name: settler_addresses
   - name: zeroex_unichain
