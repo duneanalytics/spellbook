@@ -527,7 +527,7 @@ contracts as (
     ) as c(address, user, project, tag)
 
     -- automated
-    {% if blockchain in ['ethereum','bnb','polygon','arbitrum','avalanche_c','optimism','base','linea','unichain','monad','robinhood','arc'] %}
+    {% if blockchain in ['ethereum','bnb','polygon','arbitrum','avalanche_c','optimism','base','linea','unichain','monad','robinhood','arc','hyperevm'] %}
     union all
     select
         settler_address as address
