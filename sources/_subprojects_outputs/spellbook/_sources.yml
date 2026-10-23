@@ -4,6 +4,9 @@ sources:
   - name: addresses_events_arc
     tables:
       - name: first_funded_by
+  - name: addresses_events_robinhood
+    tables:
+      - name: first_funded_by
   - name: abi
     tables:
       - name: signatures
