@@ -3,7 +3,7 @@ version: 2
 models:
   - name: lending_flashloans
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea, sonic, unichain
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, corn, ethereum, fantom, gnosis, ink, katana, linea, optimism, plasma, plume, polygon, scroll, sonic, tac, unichain, worldchain, zkevm, zksync
       sector: lending
       project: aave
       contributors: tomfutago, hildobby
