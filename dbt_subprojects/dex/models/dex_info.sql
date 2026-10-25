@@ -270,4 +270,5 @@ FROM (VALUES
     , ('ferro', 'Ferro', 'Direct', 'FerroProtocol')
     , ('agra', 'Agra', 'Direct', 'agra_gg')
     , ('metric', 'Metric', 'Direct', 'metricxyz')
+    , ('communityv3', 'CommunityV3', 'Direct', NULL)
 ) AS temp_table (project, name, marketplace_type, x_username)
