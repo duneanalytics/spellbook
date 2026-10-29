@@ -14,5 +14,5 @@
 
 {{cex_deposit_addresses(
         blockchain = blockchain
-        , cex_local_flows = ref('cex_' + blockchain + '_flows')
+        , cex_local_flows = source('cex_' + blockchain, 'flows')
 )}}

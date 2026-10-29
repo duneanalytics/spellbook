@@ -142,15 +142,17 @@ FROM
 {%- set v4_native_token_overrides = {'polygon': '0x0000000000000000000000000000000000001010'} -%}{#- POL genesis contract -#}
 {%- set native_token_address = native_token_address or v4_native_token_overrides.get(blockchain) -%}
 {#- aggregator_hooks: ref to the BaseAggregatorHook registry; when set, rows get an
-    is_aggregator_hook_swap flag and hook swaps derive direction from the call swapDelta -#}
-{%- if aggregator_hooks %}
-{#- aggregator-hook swaps emit an empty Swap event (amount0=0, amount1=0), so the event-based
-    direction always falls through to the ELSE branch; for those rows the direction must come
-    from the call swapDelta (same swapper-perspective sign convention) -#}
-{%- set buy_is_currency1 = "(ah.address IS NOT NULL AND (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0')) OR (ah.address IS NULL AND (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0'))" %}
-{%- else %}
-{%- set buy_is_currency1 = "e.amount0 < INT256 '0' OR e.amount1 > INT256 '0'" %}
-{%- endif %}
+    is_aggregator_hook_swap flag -#}
+{#- A nonzero Swap event sets direction (afterSwap hooks can rewrite the caller delta after it is
+    emitted); an empty event means a custom-accounting hook settled via the delta, so the delta does -#}
+{%- set buy_is_currency1 = "(CASE WHEN e.amount0 = INT256 '0' AND e.amount1 = INT256 '0' THEN (c.amount0 < INT256 '0' OR c.amount1 > INT256 '0') ELSE (e.amount0 < INT256 '0' OR e.amount1 > INT256 '0') END)" -%}
+{#- Calls pair with Swap events by rank within the tx, so calls must rank in event emission order.
+    PoolManager.swap emits Swap after its beforeSwap hook call and before afterSwap, so a swap a hook
+    makes inside beforeSwap emits first although its trace sorts after the outer call. beforeSwap is
+    trace child 0 when the hook address has BEFORE_SWAP_FLAG (bit 7). Mapping each trace element t to
+    2t+1 and appending 2 (flag set) or 0 sorts a call between its beforeSwap and afterSwap subtrees
+    and keeps trace order everywhere else. -#}
+{%- set call_emission_order = "transform(call_trace_address, t -> 2 * t + 1) || ARRAY[IF(BITWISE_AND(VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(hooks, 19, 2)), 128) = 128, BIGINT '2', BIGINT '0')]" -%}
 WITH dexs AS
 (
     WITH clean_swaps AS (
@@ -235,7 +237,7 @@ WITH dexs AS
         {%- endif %}
         , hooks
         , call_trace_address
-        , row_number() over(partition by call_tx_hash order by call_trace_address) as call_rn
+        , row_number() over(partition by call_tx_hash order by {{ call_emission_order }}) as call_rn
 
         FROM wrangled
     )
@@ -318,7 +320,8 @@ WITH dexs AS
         , contract_address as token_address 
         , amount_raw as amount 
         , case 
-            when token_standard = 'erc20' then array[evt_index]
+            -- token standards other than native (erc20, bep20 on bnb, tip20 on tempo) order by log index
+            when token_standard <> 'native' then array[evt_index]
             -- chains implementing EIP-7708 log native transfers as events and have no
             -- traces leg, so trace_address is null on every native row; fall back to
             -- evt_index there to keep the ordering deterministic
@@ -333,34 +336,94 @@ WITH dexs AS
         {%- endif %}
 )
 
-, rank_token_transfers as (
-    SELECT 
-        * 
-        , row_number() over (partition by tx_hash, token_address order by token_index) as token_rank 
-    FROM 
+-- Swaps and PoolManager outgoing transfers in one relation, paired with windows rather than joins:
+-- Trino inlines CTEs, so every extra reference to dexs or token_transfers would scan it again
+, taker_candidates as (
+    SELECT
+        tx_hash
+        , block_number
+        , true AS is_swap
+        , evt_index
+        , token_bought_address AS token_address
+        , CAST(token_bought_amount_raw AS UINT256) AS amount
+        , ARRAY[evt_index] AS pairing_order
+        , CAST(NULL AS VARBINARY) AS taker
+        , hooks AS hook_key
+        , sender AS buyer_key
+    FROM
+    dexs
+    UNION ALL
+    SELECT
+        tx_hash
+        , block_number
+        , false
+        , NULL
+        , token_address
+        , amount
+        , token_index
+        , taker
+        , taker
+        , taker
+    FROM
     token_transfers
 )
 
-, rank_swap_events as (
-    SELECT 
+, taker_parties as (
+    SELECT
         *
-        , row_number() over (partition by tx_hash, token_bought_address order by evt_index) as token_rank 
-    FROM 
-    dexs 
+        , bool_or(is_swap AND hook_key <> 0x0000000000000000000000000000000000000000) over (partition by tx_hash, hook_key) as to_swap_hook
+        , bool_or(is_swap) over (partition by tx_hash, buyer_key, token_address) as to_swap_buyer
+    FROM
+    taker_candidates
+)
+
+-- A swap pairs first with a transfer of exactly its bought amount (k-th swap with the k-th transfer
+-- of that token and amount), then leftover swaps with leftover transfers by order, so a transfer to
+-- a fee recipient or an unpaired leg cannot shift every later pairing by one
+, amount_ranked as (
+    SELECT
+        *
+        , row_number() over (partition by tx_hash, token_address, amount, is_swap order by pairing_order) as amount_rank
+        , count_if(is_swap) over (partition by tx_hash, token_address, amount) as n_amount_swaps
+        , count_if(NOT is_swap) over (partition by tx_hash, token_address, amount) as n_amount_transfers
+    FROM
+    taker_parties
+    -- a PoolManager transfer to a swap's hook is the hook's own take() (custom accounting,
+    -- fees), not a swapper's output, unless the hook itself swapped for that token; dropping it
+    -- also keeps a netted hop's input pull, which equals the previous hop's output, out of pass 1
+    WHERE is_swap
+        OR NOT to_swap_hook
+        OR to_swap_buyer
+)
+
+, amount_paired as (
+    SELECT
+        *
+        , max(taker) over (partition by tx_hash, token_address, amount, amount_rank) as amount_taker
+        , row_number() over (partition by tx_hash, token_address, amount_matched, is_swap order by pairing_order) as rest_rank
+    FROM (
+        SELECT
+            *
+            , amount_rank <= IF(is_swap, n_amount_transfers, n_amount_swaps) AS amount_matched
+        FROM
+        amount_ranked
+    )
 )
 
 , get_taker as (
-    SELECT 
-        rse.*
-        , rtt.taker as transfers_taker 
-    FROM 
-    rank_swap_events rse 
-    left join 
-    rank_token_transfers rtt 
-        on rse.block_number = rtt.block_number 
-        and rse.tx_hash = rtt.tx_hash 
-        and rse.token_bought_address = rtt.token_address 
-        and rse.token_rank = rtt.token_rank 
+    SELECT
+        tx_hash
+        , block_number
+        , evt_index
+        , IF(amount_matched, amount_taker, rest_taker) AS transfers_taker
+    FROM (
+        SELECT
+            *
+            , max(taker) over (partition by tx_hash, token_address, amount_matched, rest_rank) as rest_taker
+        FROM
+        amount_paired
+    )
+    WHERE is_swap
 )
 
 
@@ -376,7 +439,7 @@ SELECT
     , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
     , dexs.token_bought_address
     , dexs.token_sold_address
-    , coalesce(dexs.taker, dexs.transfers_taker) as taker
+    , coalesce(dexs.taker, t.transfers_taker) as taker
     , dexs.maker
     , dexs.project_contract_address
     , dexs.tx_hash
@@ -393,5 +456,9 @@ SELECT
     , dexs.is_aggregator_hook_swap
     {%- endif %}
 FROM
-    get_taker dexs
+    dexs
+    LEFT JOIN get_taker t
+        ON t.block_number = dexs.block_number
+        AND t.tx_hash = dexs.tx_hash
+        AND t.evt_index = dexs.evt_index
 {% endmacro %}

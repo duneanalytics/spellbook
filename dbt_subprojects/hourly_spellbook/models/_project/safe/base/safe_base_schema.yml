@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: base
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'base']
     description: "Safe addresses"
@@ -33,7 +33,7 @@ models:
     meta:
       blockchain: base
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'transfers', 'base']
     description: "Eth transfers for safes"
@@ -62,7 +62,7 @@ models:
     meta:
       blockchain: base
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'singletons', 'base']
     description: "Singletons addresses used with Safes"
@@ -77,7 +77,7 @@ models:
     meta:
       blockchain: base
       project: safe
-      contributors: danielpartida
+      contributors: danielpartida, doublesc00p  
     config:
       tags: ['safe', 'base']
     description: "Safe transactions"

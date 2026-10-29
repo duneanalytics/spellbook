@@ -385,3 +385,6 @@ models:
       - *contract_address 
       - *bridge_transfer_id 
       - *deposit_chain_id
+  - name: bridges_story_deposits
+    config:
+      tags: [ 'static' ]
