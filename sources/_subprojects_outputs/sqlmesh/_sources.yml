@@ -137,17 +137,121 @@ sources:
     description: "Price data from CoinPaprika API"
     tables:
       - name: minute
+        description: "Minute-level token prices from Coinpaprika. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
         meta:
           docs_slug: /curated/prices/prices_external_minute
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol (not unique; do not use as a standalone identifier)"
+            type: varchar
+          - name: timestamp
+            description: "UTC timestamp for the minute"
+            type: "timestamp(3) with time zone"
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: contract_address_varchar
+            description: "Text form of the contract address (base58 on Solana, Tron address on Tron, otherwise hex)"
+            type: varchar
       - name: hour
+        description: "Hourly token prices from Coinpaprika. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
         meta:
           docs_slug: /curated/prices/prices_external_hour
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol (not unique; do not use as a standalone identifier)"
+            type: varchar
+          - name: timestamp
+            description: "UTC timestamp for the hour"
+            type: "timestamp(3) with time zone"
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: contract_address_varchar
+            description: "Text form of the contract address (base58 on Solana, Tron address on Tron, otherwise hex)"
+            type: varchar
       - name: day
+        description: "Daily token prices from Coinpaprika. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
         meta:
           docs_slug: /curated/prices/prices_external_day
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol (not unique; do not use as a standalone identifier)"
+            type: varchar
+          - name: timestamp
+            description: "UTC timestamp for the day"
+            type: "timestamp(3) with time zone"
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: contract_address_varchar
+            description: "Text form of the contract address (base58 on Solana, Tron address on Tron, otherwise hex)"
+            type: varchar
       - name: latest
+        description: "Latest available token prices from Coinpaprika. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
         meta:
           docs_slug: /curated/prices/prices_external_latest
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol (not unique; do not use as a standalone identifier)"
+            type: varchar
+          - name: timestamp
+            description: "UTC timestamp of the latest price"
+            type: "timestamp(3) with time zone"
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: contract_address_varchar
+            description: "Text form of the contract address (base58 on Solana, Tron address on Tron, otherwise hex)"
+            type: varchar
   - name: prices_dex
     description: "Price data from DEX pipeline"
     tables:
