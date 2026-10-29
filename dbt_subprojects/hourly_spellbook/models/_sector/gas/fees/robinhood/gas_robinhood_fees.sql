@@ -12,4 +12,4 @@
     )
 }}
 
-{{ op_stack_gas_fees(blockchain) }}
+{{ arbitrum_orbit_stack_gas_fees(blockchain) }}
