@@ -26,10 +26,12 @@ with
         amount1,
         recipient
         {% else %}
-        amount0In,
-        amount1In,
-        amount0Out,
-        amount1Out,
+        -- Both tokens can have outputs (including input-token dust). Use net pool deltas
+        -- so the V2 direction macro identifies the economically bought and sold tokens.
+        if(amount0In > amount0Out, amount0In - amount0Out, uint256 '0') as amount0In,
+        if(amount1In > amount1Out, amount1In - amount1Out, uint256 '0') as amount1In,
+        if(amount0Out > amount0In, amount0Out - amount0In, uint256 '0') as amount0Out,
+        if(amount1Out > amount1In, amount1Out - amount1In, uint256 '0') as amount1Out,
         "to"
         {% endif %}
     from {{ source('aero_multichain', pool ~ '_evt_Swap') }}
