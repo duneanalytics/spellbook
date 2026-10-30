@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: aero_robinhood_base_trades
+    description: "Aero stable, volatile and concentrated-liquidity trades on robinhood, restricted to the requested factories. One row per swap event."
+    meta:
+      blockchain: robinhood
+      sector: dex
+      project: aero
+      contributors: ['thecaptncrunch']
+    config:
+      tags: ['robinhood', 'dex', 'trades', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [tx_hash, evt_index]
+      - check_seed:
+          arguments:
+            seed_file: ref('aero_robinhood_base_trades_seed')
+            match_columns: [tx_hash, evt_index]
+            check_columns: [version, block_number, token_bought_address, token_sold_address, token_bought_amount_raw, token_sold_amount_raw]
+    columns:
+      - name: tx_hash
+        description: "Transaction hash of the swap."
+        data_tests:
+          - not_null
+      - name: evt_index
+        description: "Log index of the swap within its transaction."
+        data_tests:
+          - not_null
