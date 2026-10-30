@@ -16,6 +16,7 @@ FROM
 (
     VALUES
     ('aave-new','polygon','AAVE',0xd6df932a45c0f255f85145f286ea0b292b21c90b,18),
+    ('eure-monerium-eur-emoney', 'polygon', 'EURe', 0xE0aEa583266584DafBB3f9C3211d5588c73fEa8d, 18),
     ('ageur-ageur','polygon','agEUR',0xe0b52e49357fd4daf2c15e02058dce6bc0057db4,18),
     ('axlusdt-axelar-usd-tether', 'polygon', 'axlUSDT', 0xceed2671d8634e3ee65000edbbee66139b132fbf, 6),
     ('axlatom-axelar-wrapped-atom', 'polygon', 'axlATOM', 0x33f8a5029264bcfb66e39157af3fea3e2a8a5067, 6),
