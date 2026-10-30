@@ -1,5 +1,8 @@
 {% macro aero_trades(blockchain, cl_factory) %}
-{# Keep factory lookups at full history. The namespace also contains older deployments. #}
+{# Keep factory lookups at full history. The namespace also contains older deployments.
+   Contract identity is (chain, address): 0x7F83235643181E440433400a027618Cd50879751
+   is Arc's CLFactory, Ethereum's GaugeFactory, and Robinhood's VotingRewardsFactory.
+   Filter BOTH factory events and swap events to the requested chain before joining pools. #}
 {% set pool_types = [
     ('stable', 'StablePool', 'StablePoolFactory', '0x78589e876edcebdce72ee3436ab3c9ad3a7cef2d'),
     ('volatile', 'VolatilePool', 'VolatilePoolFactory', '0x8e6a9fcd1d638cc760ffba397605fe3355de76d2'),
