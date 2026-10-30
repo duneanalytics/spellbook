@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: aero_multichain
+    description: "Aero factory and pool events across supported chains."
+    tables:
+      - name: StablePoolFactory_evt_PoolCreated
+      - name: VolatilePoolFactory_evt_PoolCreated
+      - name: CLFactory_evt_PoolCreated
+      - name: StablePool_evt_Swap
+      - name: VolatilePool_evt_Swap
+      - name: CLPool_evt_Swap

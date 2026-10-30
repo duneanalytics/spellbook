@@ -11,7 +11,8 @@
 }}
 
 {% set base_models = [
-    ref('defiswap_ethereum_base_trades')
+    ref('aero_ethereum_base_trades')
+    , ref('defiswap_ethereum_base_trades')
     , ref('uniswap_v4_ethereum_base_trades')
     , ref('uniswap_v2_ethereum_base_trades')
     , ref('uniswap_v3_ethereum_base_trades')

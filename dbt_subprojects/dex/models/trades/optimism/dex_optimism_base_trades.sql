@@ -11,7 +11,8 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_v4_optimism_base_trades')
+    ref('aero_optimism_base_trades')
+    , ref('uniswap_v4_optimism_base_trades')
     , ref('uniswap_v3_optimism_base_trades')
     , ref('uniswap_v2_optimism_base_trades')
     , ref('woofi_optimism_base_trades')
