@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: bridges_aero_v1_routes
+    description: "Allowlist of shared USDC Warp routes used by Aero. All six use six decimals and a 1:1 message scale."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['blockchain']
+    columns:
+      - name: blockchain
+        data_tests: [not_null]
+      - name: chain_id
+        description: "Hyperlane domain ID; equals the EVM chain ID for these six routes."
+        data_tests: [not_null, unique]
+      - name: bridge_address
+        description: "Shared Hyperlane USDC collateral router; its traffic is not exclusively Aero."
+        data_tests: [not_null]
+      - name: token_address
+        description: "Local USDC token, including Arc's ERC20 native-token interface."
+        data_tests: [not_null]
+      - name: mailbox_address
+        description: "Canonical Hyperlane mailbox from the registry."
+        data_tests: [not_null]
+  - name: bridges_aero_v1_deposits
+    description: "Persistent Aero bridge-message ledger: successful Metarouter transferRemote calls with persisted DispatchId logs. Amount is principal after source token fees. Excludes governance, receipt redemptions, non-USDC and cross-collateral routes."
+    data_tests:
+      - check_aero_bridge_seed:
+          arguments:
+            seed_file: ref('aero_v1_deposits_seed')
+            direction: deposits
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['deposit_chain', 'tx_hash', 'evt_index']
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['bridge_transfer_id']
+    columns:
+      - name: deposit_chain
+        description: "Origin chain of the Aero Metarouter call."
+        data_tests: [not_null]
+      - name: tx_hash
+        description: "Source transaction hash."
+        data_tests: [not_null]
+      - name: evt_index
+        description: "Mailbox DispatchId log index, not a synthetic trace index."
+        data_tests: [not_null]
+      - name: bridge_transfer_id
+        description: "32-byte Hyperlane message ID encoded as a hex string."
+        data_tests: [not_null]
+      - name: sender
+        description: "Bridge caller, the Aero Metarouter. The transaction initiator is tx_from."
+      - name: recipient
+        description: "Bridge recipient; can be an interchain account rather than the final swap beneficiary."
+  - name: bridges_aero_v1_withdrawals
+    description: "Confirmed USDC delivery for an Aero message, requiring both the canonical mailbox ProcessId and token-router ReceivedTransferRemote. Full-history deposit lookup preserves delayed settlements."
+    data_tests:
+      - check_aero_bridge_seed:
+          arguments:
+            seed_file: ref('aero_v1_withdrawals_seed')
+            direction: withdrawals
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['withdrawal_chain', 'tx_hash', 'evt_index']
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['bridge_transfer_id']
+    columns:
+      - name: withdrawal_chain
+        description: "Destination chain where the message was processed."
+        data_tests: [not_null]
+      - name: tx_hash
+        description: "Destination processing transaction hash."
+        data_tests: [not_null]
+      - name: evt_index
+        description: "Mailbox ProcessId log index."
+        data_tests: [not_null]
+      - name: bridge_transfer_id
+        description: "Same Hyperlane message ID as the source deposit."
+        data_tests: [not_null]
