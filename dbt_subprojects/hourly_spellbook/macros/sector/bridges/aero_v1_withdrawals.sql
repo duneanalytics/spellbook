@@ -2,7 +2,7 @@
 
 -- Deposits are a persistent message-ID ledger. Do not time-filter this lookup:
 -- an old Aero dispatch can settle after the normal incremental lookback.
-SELECT origin.chain_id AS deposit_chain_id
+SELECT source_route.chain_id AS deposit_chain_id
     , d.deposit_chain
     , '{{ blockchain }}' AS withdrawal_chain
     , 'Aero' AS bridge_name
@@ -35,8 +35,8 @@ INNER JOIN {{ ref('bridges_aero_v1_routes') }} destination
 INNER JOIN {{ ref('bridges_aero_v1_deposits') }} d
     ON d.withdrawal_chain = '{{ blockchain }}'
     AND CAST(l.topic1 AS varchar) = d.bridge_transfer_id
-INNER JOIN {{ ref('bridges_aero_v1_routes') }} origin
-    ON origin.blockchain = d.deposit_chain
+INNER JOIN {{ ref('bridges_aero_v1_routes') }} source_route
+    ON source_route.blockchain = d.deposit_chain
 WHERE l.topic0 = keccak(to_utf8('ProcessId(bytes32)'))
     {% if is_incremental() %}
     AND {{ incremental_predicate('l.block_time') }}
@@ -47,18 +47,29 @@ WHERE l.topic0 = keccak(to_utf8('ProcessId(bytes32)'))
     -- Confirm the destination token router accepted this exact bridge leg.
     AND EXISTS (
         SELECT 1
-        FROM {{ source(blockchain, 'logs') }} received
-        WHERE received.block_date = l.block_date
-            AND received.tx_hash = l.tx_hash
-            AND received.contract_address = destination.bridge_address
-            AND received.topic0 = keccak(to_utf8('ReceivedTransferRemote(uint32,bytes32,uint256)'))
-            AND varbinary_to_uint256(received.topic1) = origin.chain_id
-            AND varbinary_substring(received.topic2, 13, 20) = d.recipient
-            AND varbinary_to_uint256(received.data) = d.deposit_amount_raw
+        FROM {{ source('hyperlane_' + blockchain, 'hyperc20collateral_evt_receivedtransferremote') }} received
+        -- Match the event identity to its canonical emitter rather than
+        -- assuming decoded contract_address always identifies the proxy.
+        INNER JOIN {{ source(blockchain, 'logs') }} canonical
+            ON canonical.tx_hash = received.evt_tx_hash
+            AND canonical.index = received.evt_index
+            AND canonical.block_date = received.evt_block_date
+            AND canonical.contract_address = destination.bridge_address
+            AND canonical.topic0 = keccak(to_utf8('ReceivedTransferRemote(uint32,bytes32,uint256)'))
             {% if is_incremental() %}
-            AND {{ incremental_predicate('received.block_time') }}
+            AND {{ incremental_predicate('canonical.block_time') }}
             {% else %}
-            AND received.block_date >= DATE '2026-10-01'
+            AND canonical.block_date >= DATE '2026-10-01'
+            {% endif %}
+        WHERE received.evt_block_date = l.block_date
+            AND received.evt_tx_hash = l.tx_hash
+            AND received.origin = source_route.chain_id
+            AND varbinary_substring(received.recipient, 13, 20) = d.recipient
+            AND received.amountOrId = d.deposit_amount_raw
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('received.evt_block_time') }}
+            {% else %}
+            AND received.evt_block_date >= DATE '2026-10-01'
             {% endif %}
     )
 

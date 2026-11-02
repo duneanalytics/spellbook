@@ -11,17 +11,33 @@ SELECT '{{ blockchain }}' AS deposit_chain
     , t.block_date
     , t.block_time
     , t.block_number
-    , varbinary_to_uint256(varbinary_substring(t.input, 69, 32)) AS deposit_amount_raw
+    , warp._amount AS deposit_amount_raw
     , t."from" AS sender
-    , varbinary_substring(t.input, 49, 20) AS recipient
+    , varbinary_substring(warp._recipient, 13, 20) AS recipient
     , origin.token_address AS deposit_token_address
     , 'erc20' AS deposit_token_standard
     , aero.call_tx_from AS tx_from
     , t.tx_hash
     , l.index AS evt_index
     , t."to" AS contract_address
-    , CAST(t.output AS varchar) AS bridge_transfer_id
+    , CAST(warp.output_messageId AS varchar) AS bridge_transfer_id
 FROM {{ source(blockchain, 'traces') }} t
+-- Proxy and implementation decodings may identify different trace frames.
+-- Deduplicate typed calls by message/payload, then use the persisted return
+-- value to match the outer call from Aero to the canonical proxy.
+INNER JOIN (
+    SELECT DISTINCT call_tx_hash, call_block_date, _amount, _destination, _recipient, output_messageId
+    FROM {{ source('hyperlane_' + blockchain, 'hyperc20collateral_call_transferremote') }}
+    WHERE call_success
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('call_block_time') }}
+        {% else %}
+        AND call_block_date >= DATE '2026-10-01'
+        {% endif %}
+) warp
+    ON warp.call_tx_hash = t.tx_hash
+    AND warp.call_block_date = t.block_date
+    AND warp.output_messageId = t.output
 INNER JOIN (
     SELECT DISTINCT call_tx_hash, call_block_date, call_tx_from
     FROM {{ source('aero_' + blockchain, 'metarouter_call_execute') }}
@@ -39,14 +55,14 @@ INNER JOIN {{ ref('bridges_aero_v1_routes') }} origin
     ON origin.blockchain = '{{ blockchain }}'
     AND t."to" = origin.bridge_address
 INNER JOIN {{ ref('bridges_aero_v1_routes') }} destination
-    ON varbinary_to_uint256(varbinary_substring(t.input, 5, 32)) = destination.chain_id
+    ON warp._destination = destination.chain_id
     AND destination.blockchain <> origin.blockchain
 INNER JOIN {{ source(blockchain, 'logs') }} l
     ON l.tx_hash = t.tx_hash
     AND l.block_date = t.block_date
     AND l.contract_address = origin.mailbox_address
     AND l.topic0 = keccak(to_utf8('DispatchId(bytes32)'))
-    AND l.topic1 = t.output
+    AND l.topic1 = warp.output_messageId
     {% if is_incremental() %}
     AND {{ incremental_predicate('l.block_time') }}
     {% else %}

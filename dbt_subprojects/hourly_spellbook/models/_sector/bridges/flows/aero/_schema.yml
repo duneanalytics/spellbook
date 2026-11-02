@@ -23,7 +23,7 @@ models:
         description: "Canonical Hyperlane mailbox from the registry."
         data_tests: [not_null]
   - name: bridges_aero_v1_deposits
-    description: "Persistent Aero bridge-message ledger: successful Metarouter transferRemote calls with persisted DispatchId logs. Amount is principal after source token fees. Excludes governance, receipt redemptions, non-USDC and cross-collateral routes."
+    description: "Persistent Aero bridge-message ledger: decoded Hyperlane transferRemote calls attributed to Aero by canonical caller traces and persisted DispatchId logs. Amount is principal after source token fees. Excludes governance, receipt redemptions, non-USDC and cross-collateral routes."
     data_tests:
       - check_aero_bridge_seed:
           arguments:
@@ -53,7 +53,7 @@ models:
       - name: recipient
         description: "Bridge recipient; can be an interchain account rather than the final swap beneficiary."
   - name: bridges_aero_v1_withdrawals
-    description: "Confirmed USDC delivery for an Aero message, requiring both the canonical mailbox ProcessId and token-router ReceivedTransferRemote. Full-history deposit lookup preserves delayed settlements."
+    description: "Confirmed USDC delivery for an Aero message, requiring both the canonical mailbox ProcessId and decoded token-router ReceivedTransferRemote with canonical event identity. Full-history deposit lookup preserves delayed settlements."
     data_tests:
       - check_aero_bridge_seed:
           arguments:
