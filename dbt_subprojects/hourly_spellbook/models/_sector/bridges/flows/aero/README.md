@@ -35,7 +35,7 @@ This version excludes governance messages, xAERO redemptions, non-USDC assets, `
 
 [Compiled SQL round-trip fixture](https://dune.com/queries/9057881): Optimism transaction `0x9bc92a7c4c5deb3ac6e765b668fd2ad9786c4cb90a0ec4584bcf61fb34f5dec7`, source log 83, matches Base transaction `0x1bee37baf393ed3c0e20377bc808d8bf32bf21cbb7413efadc0af63cb3a9994f`, destination log 428. Both legs have message `0xa421413a7f8369907f9604b36688009f8e3abf5d4eeca1cfdd5d8ad1f694634a` and 45,682,762 raw USDC units. These independently observed rows are regression seeds, with uniqueness and non-null tests on ledger keys.
 
-[Six-chain source fixtures](https://dune.com/queries/9057890) returned six distinct deposits. [Destination checks](https://dune.com/queries/9057899) matched five of those messages; the Arc source fixture remains unmatched in this check. This is sample validation, not a claim that every route or pending transfer has been verified.
+[Six-chain source fixtures](https://dune.com/queries/9057890) returned six distinct deposits. [Destination checks](https://dune.com/queries/9057899) matched all six messages, including Arc (domain ID 5042). The regression seeds include all six pairs plus the round-trip fixture above. This is sample validation, not a claim that every route or pending transfer has been verified.
 
 Local validation: `uv run dbt compile --select '*aero*' bridges_arc_deposits bridges_arc_withdrawals bridges_evms_deposits_raw bridges_evms_withdrawals_raw --project-dir dbt_subprojects/hourly_spellbook/ --profiles-dir dbt_subprojects/hourly_spellbook/ --no-introspect --no-populate-cache`.
 

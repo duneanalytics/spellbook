@@ -2,7 +2,7 @@ version: 2
 
 seeds:
   - name: aero_v1_deposits_seed
-    description: "Live matched Optimism-to-Base bridge fixture verified on 2026-11-02; https://dune.com/queries/9057881."
+    description: "Live bridge fixtures from six source chains verified on 2026-11-02; https://dune.com/queries/9057890 and https://dune.com/queries/9057899, plus https://dune.com/queries/9057881."
     config:
       column_types:
         deposit_chain: varchar
@@ -13,7 +13,7 @@ seeds:
         amount_raw: uint256
         recipient: varbinary
   - name: aero_v1_withdrawals_seed
-    description: "Live matched Optimism-to-Base bridge fixture verified on 2026-11-02; https://dune.com/queries/9057881."
+    description: "Live bridge fixtures from six source chains verified on 2026-11-02; https://dune.com/queries/9057890 and https://dune.com/queries/9057899, plus https://dune.com/queries/9057881."
     config:
       column_types:
         deposit_chain: varchar
