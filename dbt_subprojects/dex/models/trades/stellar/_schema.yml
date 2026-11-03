@@ -1,0 +1,132 @@
+version: 2
+
+models:
+  - name: sushiswap_v3_stellar_swap_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: sushiswap
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'dex', 'trades', 'sushiswap', 'v3']
+    description: >
+      Swap events decoded from sushiswap_v3_stellar_evt. Retains raw topic/data
+      columns plus decoded tick, liquidity, amounts, and pool metadata.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Blockchain name"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "SushiSwap pool version"
+      - name: block_time
+        description: "Ledger close timestamp"
+      - name: ledger_sequence
+        description: "Stellar ledger sequence"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: transaction_id
+        description: "Transaction identifier (TOID)"
+      - name: operation_id
+        description: "Operation identifier (TOID); nullable on some source rows"
+      - name: contract_id
+        description: "Pool contract that emitted the swap"
+      - name: event_name
+        description: "Decoded Soroban event name"
+      - name: pool
+        description: "SushiSwap pool contract id"
+      - name: token0
+        description: "Token0 contract id"
+      - name: token1
+        description: "Token1 contract id"
+      - name: fee
+        description: "Pool fee in hundredths of a bip"
+      - name: tick_spacing
+        description: "Pool tick spacing"
+      - name: sender
+        description: "Swap sender"
+      - name: recipient
+        description: "Swap recipient"
+      - name: amount0
+        description: "Signed token0 delta; negative means token0 left the pool"
+      - name: amount1
+        description: "Signed token1 delta; negative means token1 left the pool"
+      - name: liquidity
+        description: "Pool liquidity after the swap"
+      - name: sqrt_price_x96
+        description: "sqrtPriceX96 after the swap"
+      - name: tick
+        description: "Pool tick after the swap"
+
+  - name: sushiswap_v3_stellar_base_trades
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: sushiswap
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'dex', 'trades', 'sushiswap', 'v3']
+    description: >
+      Structured SushiSwap V3 Stellar base trades. Maps signed amount0/amount1 onto
+      bought/sold tokens using Uniswap V3 sign convention. Not yet wired into dex.trades.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over the deduplicated swap identity"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Blockchain name"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "SushiSwap pool version"
+      - name: block_month
+        description: "Ledger close month"
+      - name: block_time
+        description: "Ledger close timestamp"
+      - name: block_number
+        description: "Stellar ledger sequence"
+      - name: token_bought_amount_raw
+        description: "Raw amount of the token bought"
+      - name: token_sold_amount_raw
+        description: "Raw amount of the token sold"
+      - name: token_bought_address
+        description: "Token bought contract id"
+      - name: token_sold_address
+        description: "Token sold contract id"
+      - name: taker
+        description: "Swap recipient"
+      - name: maker
+        description: "Pool contract id"
+      - name: project_contract_address
+        description: "Pool contract id"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: tick
+        description: "Pool tick after the swap"
+      - name: fee
+        description: "Pool fee in hundredths of a bip"
