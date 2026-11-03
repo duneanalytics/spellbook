@@ -34,7 +34,7 @@ WITH
     {% if is_incremental() %}
       WHERE
         {{ incremental_predicate('fulfilled.block_time') }}
-        AND {{ incremental_predicate('reverted.block_time') }}
+        OR {{ incremental_predicate('reverted.block_time') }}
     {% endif %}
     GROUP BY
       1, 2
