@@ -4,6 +4,7 @@
     partition_by = ['block_month'],
     materialized = 'incremental',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
    )
