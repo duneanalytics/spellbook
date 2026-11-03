@@ -1,0 +1,141 @@
+version: 2
+
+sources:
+  - name: hyperlane_arbitrum
+    description: "Hyperlane HypERC20Collateral proxy decoding submitted for the shared USDC route; historical backfill must finish before production backfill."
+    tables:
+      - name: hyperc20collateral_call_transferremote
+        description: "Decoded transferRemote principal, destination, recipient and returned message ID. Canonical traces establish the Aero caller and proxy."
+        columns:
+          - name: _amount
+            description: "Source principal after token fees; not the total bridge budget."
+          - name: _destination
+            description: "Destination Hyperlane domain."
+          - name: _recipient
+            description: "32-byte encoded bridge recipient."
+          - name: output_messageId
+            description: "Hyperlane message ID returned by transferRemote."
+      - name: hyperc20collateral_evt_receivedtransferremote
+        description: "Decoded destination transfer acceptance. Matched to the canonical log by transaction hash and event index."
+        columns:
+          - name: origin
+            description: "Origin Hyperlane domain."
+          - name: recipient
+            description: "32-byte encoded bridge recipient."
+          - name: amountOrId
+            description: "Accepted USDC principal in message units, equal to local units for this 1:1 allowlist."
+  - name: hyperlane_arc
+    description: "Hyperlane HypERC20Collateral proxy decoding submitted for the shared USDC route; historical backfill must finish before production backfill."
+    tables:
+      - name: hyperc20collateral_call_transferremote
+        description: "Decoded transferRemote principal, destination, recipient and returned message ID. Canonical traces establish the Aero caller and proxy."
+        columns:
+          - name: _amount
+            description: "Source principal after token fees; not the total bridge budget."
+          - name: _destination
+            description: "Destination Hyperlane domain."
+          - name: _recipient
+            description: "32-byte encoded bridge recipient."
+          - name: output_messageId
+            description: "Hyperlane message ID returned by transferRemote."
+      - name: hyperc20collateral_evt_receivedtransferremote
+        description: "Decoded destination transfer acceptance. Matched to the canonical log by transaction hash and event index."
+        columns:
+          - name: origin
+            description: "Origin Hyperlane domain."
+          - name: recipient
+            description: "32-byte encoded bridge recipient."
+          - name: amountOrId
+            description: "Accepted USDC principal in message units, equal to local units for this 1:1 allowlist."
+  - name: hyperlane_base
+    description: "Hyperlane HypERC20Collateral proxy decoding submitted for the shared USDC route; historical backfill must finish before production backfill."
+    tables:
+      - name: hyperc20collateral_call_transferremote
+        description: "Decoded transferRemote principal, destination, recipient and returned message ID. Canonical traces establish the Aero caller and proxy."
+        columns:
+          - name: _amount
+            description: "Source principal after token fees; not the total bridge budget."
+          - name: _destination
+            description: "Destination Hyperlane domain."
+          - name: _recipient
+            description: "32-byte encoded bridge recipient."
+          - name: output_messageId
+            description: "Hyperlane message ID returned by transferRemote."
+      - name: hyperc20collateral_evt_receivedtransferremote
+        description: "Decoded destination transfer acceptance. Matched to the canonical log by transaction hash and event index."
+        columns:
+          - name: origin
+            description: "Origin Hyperlane domain."
+          - name: recipient
+            description: "32-byte encoded bridge recipient."
+          - name: amountOrId
+            description: "Accepted USDC principal in message units, equal to local units for this 1:1 allowlist."
+  - name: hyperlane_ethereum
+    description: "Hyperlane HypERC20Collateral proxy decoding submitted for the shared USDC route; historical backfill must finish before production backfill."
+    tables:
+      - name: hyperc20collateral_call_transferremote
+        description: "Decoded transferRemote principal, destination, recipient and returned message ID. Canonical traces establish the Aero caller and proxy."
+        columns:
+          - name: _amount
+            description: "Source principal after token fees; not the total bridge budget."
+          - name: _destination
+            description: "Destination Hyperlane domain."
+          - name: _recipient
+            description: "32-byte encoded bridge recipient."
+          - name: output_messageId
+            description: "Hyperlane message ID returned by transferRemote."
+      - name: hyperc20collateral_evt_receivedtransferremote
+        description: "Decoded destination transfer acceptance. Matched to the canonical log by transaction hash and event index."
+        columns:
+          - name: origin
+            description: "Origin Hyperlane domain."
+          - name: recipient
+            description: "32-byte encoded bridge recipient."
+          - name: amountOrId
+            description: "Accepted USDC principal in message units, equal to local units for this 1:1 allowlist."
+  - name: hyperlane_ink
+    description: "Hyperlane HypERC20Collateral proxy decoding submitted for the shared USDC route; historical backfill must finish before production backfill."
+    tables:
+      - name: hyperc20collateral_call_transferremote
+        description: "Decoded transferRemote principal, destination, recipient and returned message ID. Canonical traces establish the Aero caller and proxy."
+        columns:
+          - name: _amount
+            description: "Source principal after token fees; not the total bridge budget."
+          - name: _destination
+            description: "Destination Hyperlane domain."
+          - name: _recipient
+            description: "32-byte encoded bridge recipient."
+          - name: output_messageId
+            description: "Hyperlane message ID returned by transferRemote."
+      - name: hyperc20collateral_evt_receivedtransferremote
+        description: "Decoded destination transfer acceptance. Matched to the canonical log by transaction hash and event index."
+        columns:
+          - name: origin
+            description: "Origin Hyperlane domain."
+          - name: recipient
+            description: "32-byte encoded bridge recipient."
+          - name: amountOrId
+            description: "Accepted USDC principal in message units, equal to local units for this 1:1 allowlist."
+  - name: hyperlane_optimism
+    description: "Hyperlane HypERC20Collateral proxy decoding submitted for the shared USDC route; historical backfill must finish before production backfill."
+    tables:
+      - name: hyperc20collateral_call_transferremote
+        description: "Decoded transferRemote principal, destination, recipient and returned message ID. Canonical traces establish the Aero caller and proxy."
+        columns:
+          - name: _amount
+            description: "Source principal after token fees; not the total bridge budget."
+          - name: _destination
+            description: "Destination Hyperlane domain."
+          - name: _recipient
+            description: "32-byte encoded bridge recipient."
+          - name: output_messageId
+            description: "Hyperlane message ID returned by transferRemote."
+      - name: hyperc20collateral_evt_receivedtransferremote
+        description: "Decoded destination transfer acceptance. Matched to the canonical log by transaction hash and event index."
+        columns:
+          - name: origin
+            description: "Origin Hyperlane domain."
+          - name: recipient
+            description: "32-byte encoded bridge recipient."
+          - name: amountOrId
+            description: "Accepted USDC principal in message units, equal to local units for this 1:1 allowlist."

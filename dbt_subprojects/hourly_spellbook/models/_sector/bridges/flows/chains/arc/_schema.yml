@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: bridges_arc_deposits
+    description: "Bridge deposits on Arc, currently Aero-attributed USDC Warp transfers."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['block_month', 'tx_hash', 'evt_index', 'bridge_transfer_id']
+    columns:
+      - name: block_month
+        description: "UTC source event month, included in the row key."
+        data_tests: [not_null]
+      - name: tx_hash
+        description: "Source transaction hash."
+        data_tests: [not_null]
+      - name: evt_index
+        description: "Source event index."
+        data_tests: [not_null]
+      - name: bridge_transfer_id
+        description: "Protocol transfer identifier."
+        data_tests: [not_null]
+  - name: bridges_arc_withdrawals
+    description: "Bridge withdrawals on Arc, currently Aero-attributed USDC Warp transfers."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['block_month', 'tx_hash', 'evt_index', 'bridge_transfer_id']
+    columns:
+      - name: block_month
+        description: "UTC destination event month, included in the row key."
+        data_tests: [not_null]
+      - name: tx_hash
+        description: "Destination transaction hash."
+        data_tests: [not_null]
+      - name: evt_index
+        description: "Destination event index."
+        data_tests: [not_null]
+      - name: bridge_transfer_id
+        description: "Protocol transfer identifier."
+        data_tests: [not_null]

@@ -64,3 +64,29 @@ models:
     config:
       tags: [ 'ink', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Ink"
+
+  - name: bridges_ink_aero_v1_deposits
+    description: "Aero Metarouter-attributed USDC bridge deposits on ink; bridge leg only, including ICA recipients."
+    config:
+      tags: ['ink', 'bridges', 'flows', 'deposits', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: bridge_transfer_id
+        description: "Hyperlane message ID, shared by the source dispatch and destination processing."
+        data_tests: [not_null]
+
+  - name: bridges_ink_aero_v1_withdrawals
+    description: "Aero Metarouter-attributed USDC bridge withdrawals on ink; bridge leg only, including ICA recipients."
+    config:
+      tags: ['ink', 'bridges', 'flows', 'withdrawals', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: bridge_transfer_id
+        description: "Hyperlane message ID, shared by the source dispatch and destination processing."
+        data_tests: [not_null]

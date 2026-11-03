@@ -4,6 +4,7 @@
     schema = 'bridges_' + blockchain,
     alias = 'avalanche_c_native_v2_deposits',
     materialized = 'view',
+    filtering_columns = ['block_date'],
     )
 }}
 
@@ -23,10 +24,13 @@ SELECT 'ethereum' AS deposit_chain
 , contract_address AS deposit_token_address
 , tx_from AS tx_from
 , tx_hash AS tx_hash
-, COALESCE(evt_index, 0) AS evt_index
+, evt_index AS evt_index
 , to AS contract_address
 , unique_key AS bridge_transfer_id
 --, {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('tokens_ethereum', 'transfers') }}
 WHERE to = 0x8eb8a3b98659cce290402893d0123abb75e3ab28
 AND block_number >= 5096229
+-- Bridge nodes process ERC-20 deposits; native ETH transfers are not bridged.
+-- https://support.avax.network/en/articles/5462271-what-is-the-role-of-the-avalanche-bridge-nodes
+AND token_standard = 'erc20'
