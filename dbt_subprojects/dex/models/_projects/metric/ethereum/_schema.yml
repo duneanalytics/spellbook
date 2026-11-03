@@ -1,0 +1,92 @@
+version: 2
+
+models:
+
+  - name: metric_ethereum_pool_creations
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: metric
+      contributors: mathewae
+    config:
+      tags: ["ethereum", "dex", "pools", "metric"]
+    description: >
+      Metric (oracle-based on-chain market maker) ethereum pool creations, all factory versions (0, 1, 2, 2_beta).
+      PoolCreated has 21 arguments from version 1 onwards, above Dune's 16-argument decoding limit, so the decoded
+      metricommpoolfactoryv{1,2,2_beta}_evt_poolcreated views cannot be queried at all; those versions are unpacked
+      from the chain's logs table instead. Version 0 emits a different five-argument event that decodes normally and
+      carries no factory-level fee or admin configuration, so those columns are null for it.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - blockchain
+              - pool
+    columns:
+      - name: blockchain
+        description: "Blockchain the pool was created on"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "Factory version that created the pool (0, 1, 2 or 2_beta)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['0', '1', '2', '2_beta']
+      - name: factory_address
+        description: "MetricOmmPoolFactory contract that emitted PoolCreated"
+        data_tests:
+          - not_null
+      - name: creation_block_month
+        description: "Month of pool creation, for partitioning"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+        data_tests:
+          - not_null
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: creation_tx_hash
+        description: "Transaction hash that created the pool"
+        data_tests:
+          - not_null
+      - name: evt_index
+        description: "Index of the PoolCreated event within the block"
+      - name: pool
+        description: "MetricOmmPool contract address"
+        data_tests:
+          - not_null
+      - name: token0
+        description: "First token of the pool"
+        data_tests:
+          - not_null
+      - name: token1
+        description: "Second token of the pool"
+        data_tests:
+          - not_null
+      - name: pool_idx
+        description: "Sequential index of the pool within its factory (null for version 0)"
+      - name: admin
+        description: "Pool admin at creation (null for version 0)"
+      - name: price_provider
+        description: "Oracle contract supplying the pool's reference price"
+      - name: price_provider_timelock
+        description: "Delay, in seconds, enforced on price provider changes (null for version 0)"
+      - name: initial_scaled_amount0_per_e18_shares
+        description: "Scaled amount of token0 backing 1e18 shares at creation (null for version 0)"
+      - name: initial_scaled_amount1_per_e18_shares
+        description: "Scaled amount of token1 backing 1e18 shares at creation (null for version 0)"
+      - name: minimal_operational_liquidity
+        description: "Minimum liquidity the pool must hold to stay operational (null for version 0)"
+      - name: spread_protocol_fee_e6
+        description: "Protocol share of the spread at creation, in millionths (null for version 0)"
+      - name: protocol_notional_fee_e8
+        description: "Protocol notional fee at creation, in hundred-millionths (null for version 0)"
+      - name: admin_spread_fee_e6
+        description: "Pool admin share of the spread at creation, in millionths (null for version 0)"
+      - name: admin_notional_fee_e8
+        description: "Pool admin notional fee at creation, in hundred-millionths (null for version 0)"
+      - name: admin_fee_destination
+        description: "Address receiving the pool admin's fees (null for version 0)"
+      - name: cur_bin_dist_from_provided_price_e6
+        description: "Signed distance of the current bin from the oracle price at creation, in millionths (null for version 0)"
