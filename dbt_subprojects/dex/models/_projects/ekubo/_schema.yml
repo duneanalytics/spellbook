@@ -116,7 +116,19 @@ models:
         description: "Liquidity amount of token0 in USD"
       - &amount1_usd
         name: amount1_usd
-        description: "Liquidity amount of token1 in USD"       
+        description: "Liquidity amount of token1 in USD"
+      - &sqrt_ratio_after
+        name: sqrt_ratio_after
+        description: "Pool sqrt ratio immediately after the swap, as the raw uint96 SqrtRatio float. Null for non-swap events"
+      - &sqrt_ratio_after_fixed
+        name: sqrt_ratio_after_fixed
+        description: "Pool sqrt ratio immediately after the swap as Q128 fixed point, i.e. sqrt(token1/token0 in raw units) * 2^128. Null for non-swap events"
+      - &tick_after
+        name: tick_after
+        description: "Pool tick immediately after the swap. Null for non-swap events"
+      - &liquidity_after
+        name: liquidity_after
+        description: "Pool active liquidity immediately after the swap. Null for non-swap events"
 
   - name: ekubo_base_liquidity_events
     meta:
@@ -152,6 +164,10 @@ models:
       - *token1
       - *amount0_raw
       - *amount1_raw
+      - *sqrt_ratio_after
+      - *sqrt_ratio_after_fixed
+      - *tick_after
+      - *liquidity_after
 
   - name: ekubo_daily_agg_liquidity_events
     meta:
