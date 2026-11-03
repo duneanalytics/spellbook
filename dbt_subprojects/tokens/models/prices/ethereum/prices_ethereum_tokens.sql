@@ -421,6 +421,7 @@ FROM
     ('zrx-0x', 'ethereum', 'ZRX', 0xe41d2489571d322189246dafa5ebde1f4699f498, 18),
     ('knight-citadao','ethereum', 'KNIGHT', 0x3541A5C1b04AdABA0B83F161747815cd7B1516bC, 18),
     ('eure-monerium-eur-emoney', 'ethereum', 'EURe', 0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f, 18),
+    ('eure-monerium-eur-emoney', 'ethereum', 'EURe', 0x39b8B6385416f4cA36a20319F70D28621895279D, 18),
     ('caps-ternoa', 'ethereum', 'CAPS', 0x03be5c903c727ee2c8c4e9bc0acc860cca4715e2, 18),
     ('aura-aura-finance',  'ethereum', 'AURA', 0xc0c293ce456ff0ed870add98a0828dd4d2903dbf, 18),
     ('inv-inv', 'ethereum', 'INV', 0x41d5d79431a913c4ae7d69a668ecdfe5ff9dfb68, 18),

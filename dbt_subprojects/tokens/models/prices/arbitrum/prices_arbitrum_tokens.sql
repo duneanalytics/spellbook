@@ -16,6 +16,7 @@ FROM
 (
     VALUES
     ('dlcbtc-dlcbtc', 'arbitrum', 'DLCBTC', 0x050C24dBf1eEc17babE5fc585F06116A259CC77A, 8),
+    ('eure-monerium-eur-emoney', 'arbitrum', 'EURe', 0x0c06cCF38114ddfc35e07427B9424adcca9F44F8, 18),
     ('0xbtc-0xbitcoin','arbitrum','0xBTC',0x7cb16cb78ea464ad35c8a50abf95dff3c9e09d5d,8),
     ('aave-new','arbitrum','AAVE',0xba5ddd1f9d7f570dc94a51479a000e3bce967196,18),
     ('ageur-ageur','arbitrum','agEUR',0xfa5ed56a203466cbbc2430a43c66b9d8723528e7,18),

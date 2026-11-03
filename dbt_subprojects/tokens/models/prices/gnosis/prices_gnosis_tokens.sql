@@ -34,6 +34,7 @@ FROM
     ('wsteth-wrapped-liquid-staked-ether-20', 'gnosis', 'wstETH', 0x6c76971f98945ae98dd7d4dfca8711ebea946ea6, 18),
     ('sdai-savings-dai', 'gnosis', 'sDAI',0xaf204776c7245bF4147c2612BF6e5972Ee483701,18),
     ('eure-monerium-eur-emoney', 'gnosis', 'EURe', 0xcB444e90D8198415266c6a2724b7900fb12FC56E, 18),
+    ('eure-monerium-eur-emoney', 'gnosis', 'EURe', 0x420CA0f9B9b604cE0fd9C18EF134C705e5Fa3430, 18),
     ('olas-autonolas', 'gnosis', 'OLAS', 0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f, 18),
     ('steth-lido-staked-ether', 'gnosis', 'stETH', 0x3C037849a8ffcf19886e2f5B04f293B7847D0377, 18),
     ('crvusd-curvefi-usd-stablecoin', 'gnosis', 'crvUSD', 0xaBEf652195F98A91E490f047A5006B71c85f058d, 18),

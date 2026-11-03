@@ -16,6 +16,7 @@ FROM
 (
     VALUES
     ('weth-weth','base','WETH',0x4200000000000000000000000000000000000006,18),
+    ('eure-monerium-eur-emoney', 'base', 'EURe', 0xbf6e2966A9C3D99C9E4D069E04f7Bdb9C8aa762C, 18),
     --ingesting flETH with price for weth until flETH is available with correct date from Coinpaprika. flETH is 1:1 with ETH so price diff. is small
     ('weth-weth','base','flETH',0x000000000D564D5be76f7f0d28fE52605afC7Cf8,18),
     ('axl-axelar','base','AXL',0x23ee2343b892b1bb63503a4fabc840e0e2c6810f,6),
