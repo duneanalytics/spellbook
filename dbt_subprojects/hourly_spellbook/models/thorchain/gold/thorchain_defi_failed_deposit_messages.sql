@@ -4,6 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
+    merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp', 'modified_timestamp', '_audit_run_id'],
     unique_key = ['block_month', 'fact_failed_deposit_messages_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],

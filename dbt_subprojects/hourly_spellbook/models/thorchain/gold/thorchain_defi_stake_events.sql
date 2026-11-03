@@ -4,6 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
+    merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp', 'modified_timestamp'],
     unique_key = ['day', 'fact_stake_events_id'],
     partition_by = ['day'],
     tags = ['thorchain', 'defi', 'stake_events', 'fact', 'staking'],

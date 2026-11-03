@@ -4,6 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
+    merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp', 'modified_timestamp'],
     unique_key = ['day', 'fact_block_rewards_id'],
     partition_by = ['day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
