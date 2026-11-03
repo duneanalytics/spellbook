@@ -14,7 +14,9 @@
     ref('bebop_base_trades'),
     ref('bebop_optimism_trades'),
     ref('bebop_scroll_trades'),
-    ref('bebop_zksync_trades')
+    ref('bebop_zksync_trades'),
+    ref('bebop_hyperevm_trades'),
+    ref('bebop_robinhood_trades')
 ] %}
 
 SELECT *
