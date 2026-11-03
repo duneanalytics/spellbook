@@ -2,7 +2,7 @@
 	schema = 'cleave'
 	, alias = 'base_trades'
 	, materialized = 'view'
-	, filtering_columns = ['block_date', 'blockchain']
+	, filtering_columns = ['block_month', 'blockchain']
 	)
 }}
 

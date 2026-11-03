@@ -6,6 +6,7 @@
 	, incremental_strategy = 'merge'
 	, unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
 	, incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+	, filtering_columns = ['block_date']
 	)
 }}
 

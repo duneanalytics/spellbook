@@ -51,15 +51,15 @@ models:
       - name: block_number
         description: "Block number of each DEX trade"
       - name: token_bought_amount_raw
-        description: "Raw amount of the token bought, as received by the recipient"
+        description: "Raw amount of the token bought, delivered to the recipient (measured for version 2)"
       - name: token_sold_amount_raw
-        description: "Raw amount of the token sold, as paid by the payer"
+        description: "Raw amount of the token sold, paid by the payer (measured for version 2)"
       - name: token_bought_address
         description: "Contract address of the token bought"
       - name: token_sold_address
         description: "Contract address of the token sold"
       - name: taker
-        description: "Address of the trader"
+        description: "Version 1: the transaction sender; for swaps executed on delivery from another chain this is the delivering relayer. Version 2: the payer when the payer sent the transaction or the swap feeds a transfer to another chain, otherwise the recipient"
       - name: maker
         description: "Always null for aggregator trades"
       - name: project_contract_address
