@@ -7,7 +7,6 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
-        merge_skip_unchanged = false,
         incremental_predicates = ['DBT_INTERNAL_DEST.day >= date_trunc(\'day\', now() - interval \'1\' day)'],
         unique_key = ['unique_address_key'],
         post_hook='{{ expose_spells(\'["solana"]\',
