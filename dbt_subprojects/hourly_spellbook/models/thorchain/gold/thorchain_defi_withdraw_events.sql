@@ -4,6 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
+    merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp'],
     unique_key = ['fact_withdraw_events_id'],
     tags = ['thorchain', 'defi', 'withdraw_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',

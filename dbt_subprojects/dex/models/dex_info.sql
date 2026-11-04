@@ -39,6 +39,7 @@ FROM (VALUES
     , ('platypus_finance', 'Platypus', 'Direct', 'Platypusdefi')
     , ('hashflow', 'hashflow', 'Direct', 'hashflow')
     , ('velodrome', 'Velodrome', 'Direct', 'VelodromeFi')
+    , ('aero', 'Aero', 'Direct', cast(null as varchar))
     , ('aerodrome', 'Aerodrome', 'Direct', 'aerodromefi')
     , ('quickswap', 'QuickSwap', 'Direct', 'QuickswapDEX')
     , ('mstable', 'mStable', 'Direct', 'mstable_')

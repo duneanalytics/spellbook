@@ -4,6 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
+    merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp', '_audit_run_id'],
     unique_key = ['block_month', 'fact_pending_liquidity_events_id'],
     partition_by = ['block_month'],
     tags = ['thorchain', 'defi', 'pending_liquidity_events', 'fact', 'liquidity'],
