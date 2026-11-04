@@ -22,14 +22,16 @@
     {%- set update_columns = get_merge_update_columns(merge_update_columns, merge_exclude_columns, dest_columns) -%}
     {%- set sql_header = config.get('sql_header', none) -%}
 
-    {#-- [dune] merge_skip_unchanged: skip updating rows where no tracked column changed.
+    {#-- [dune] merge_skip_unchanged (default true): skip updating rows where no tracked column changed.
+         Set merge_skip_unchanged = false on models whose rows cannot be compared (json-typed columns) or that
+         stamp every row with a per-run value such as now(), so the comparison would never skip anything.
          Tracked columns = all dest columns minus unique_key, merge_exclude_columns, and the per-run stamp columns
-         _updated_at and modified_timestamp, which are excluded from the comparison but still updated. --#}
-    {%- set merge_skip_unchanged = config.get('merge_skip_unchanged', false) -%}
+         _updated_at, updated_at and modified_timestamp, which are excluded from the comparison but still updated. --#}
+    {%- set merge_skip_unchanged = config.get('merge_skip_unchanged', true) -%}
     {%- if merge_skip_unchanged %}
         {%- set unique_key_list = [unique_key] if unique_key is string else (unique_key if unique_key is sequence and unique_key is not mapping else []) -%}
         {%- set excluded_cols = merge_exclude_columns if merge_exclude_columns is not none else [] -%}
-        {%- set change_tracking_excluded_columns = (unique_key_list + excluded_cols + ['_updated_at', 'modified_timestamp']) | map('lower') | list -%}
+        {%- set change_tracking_excluded_columns = (unique_key_list + excluded_cols + ['_updated_at', 'updated_at', 'modified_timestamp']) | map('lower') | list -%}
         {%- set change_tracking_columns = [] -%}
         {%- for col in dest_columns -%}
             {%- if col.name | lower not in change_tracking_excluded_columns -%}
