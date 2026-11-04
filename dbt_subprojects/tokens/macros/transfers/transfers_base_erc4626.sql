@@ -50,8 +50,14 @@ with erc4626_synthetic_raw as (
     inner join {{ source('tokens', 'erc20') }} as tok
         on tok.contract_address = t.contract_address
         and tok.blockchain = '{{ blockchain }}'
+    where true
+    {% if blockchain == 'ethereum' -%}
+    -- Kamui USDst burns shares at settlement, before the claim's Withdraw event.
+    -- The real ERC20 burn is already included by transfers_base in that earlier tx.
+    and t.contract_address <> 0xcda323c2df692d989b24ba51d0acca924cf9a344
+    {% endif -%}
     {% if is_incremental() -%}
-    where {{ incremental_predicate('t.evt_block_time') }}
+    and {{ incremental_predicate('t.evt_block_time') }}
     {% endif -%}
 )
 
