@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     merge_skip_unchanged = true,
-    merge_exclude_columns = ['inserted_timestamp', 'modified_timestamp'],
+    merge_exclude_columns = ['inserted_timestamp'],
     unique_key = ['day', 'fact_pool_events_id'],
     partition_by = ['day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],

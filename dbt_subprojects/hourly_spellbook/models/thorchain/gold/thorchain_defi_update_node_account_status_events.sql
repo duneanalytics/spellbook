@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     merge_skip_unchanged = true,
-    merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp', 'modified_timestamp'],
+    merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp'],
     unique_key = ['fact_update_node_account_status_events_id'],
     tags = ['thorchain', 'defi', 'update_node_account_status_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',

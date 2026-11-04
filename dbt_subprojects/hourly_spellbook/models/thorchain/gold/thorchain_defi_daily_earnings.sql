@@ -6,7 +6,7 @@
   unique_key = ['day', 'fact_daily_earnings_id'],
   incremental_strategy = 'merge',
   merge_skip_unchanged = true,
-  merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp', 'modified_timestamp'],
+  merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp'],
   partition_by = ['day'],
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
   tags = ['thorchain', 'defi', 'daily', 'earnings', 'fact'],
