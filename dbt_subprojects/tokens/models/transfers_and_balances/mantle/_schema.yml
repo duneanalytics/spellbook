@@ -7,7 +7,7 @@ models:
       sector: tokens
       contributors: aalan3, jeff-dude, hildobby
     config:
-      tags: ['tokens','transfers', 'mantle']
+      tags: ['tokens','transfers', 'mantle', 'prod_exclude']
     description: >
       Token transfers
     data_tests:
@@ -66,7 +66,7 @@ models:
         oncall: false
     config:
       event_time: block_time
-      tags: ['tokens','transfers', 'mantle']
+      tags: ['tokens','transfers', 'mantle', 'prod_exclude']
     description: >
       Token transfers
     data_tests:

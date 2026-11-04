@@ -7,7 +7,7 @@ models:
       sector: tokens
       contributors: 0xRob
     config:
-      tags: ['tokens','transfers', 'arc']
+      tags: ['tokens','transfers', 'arc', 'prod_exclude']
     description: >
       Unpriced token transfers on Arc. A written-out analogue of the transfers_base macro with
       EIP-7708 handling: native movements come from the EIP-7708 system emitter at 18 decimals
@@ -100,7 +100,7 @@ models:
         oncall: false
     config:
       event_time: block_time
-      tags: ['tokens','transfers', 'arc']
+      tags: ['tokens','transfers', 'arc', 'prod_exclude']
     description: >
       Enriched token transfers on Arc: tokens_arc_base_transfers with symbol, decimals and USD
       value added by the transfers_enrich macro, against the crosschain tokens.erc20,
