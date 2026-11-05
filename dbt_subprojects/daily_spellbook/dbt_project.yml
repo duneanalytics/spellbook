@@ -25,6 +25,9 @@ vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '3') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
+  # Prod first-build floor when a model sets no `begin` config (dbt_macros/dune/window.sql):
+  # 2009-01-03, the Bitcoin genesis block, the start of on-chain history on the oldest chain.
+  DBT_DEFAULT_BEGIN: "{{ env_var('DBT_DEFAULT_BEGIN', '2009-01-03') }}"
   ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
 
 # These configurations specify where dbt should look for different types of files.

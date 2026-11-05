@@ -112,6 +112,12 @@ jobs:
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+          # A first build outside prod needs an explicit window (dbt_macros/dune/window.sql): CI
+          # builds the last 7 days, fixed per run so a PR build is reproducible. Exported as
+          # DBT_EVENT_TIME_START/END only by the compile and initial-run steps; microbatch models
+          # slice from the same pair. The incremental run below runs without it.
+          echo "CI_EVENT_TIME_START=$(date -u -d '7 days ago' +%F)" >> $GITHUB_ENV
+          echo "CI_EVENT_TIME_END=$(date -u -d 'tomorrow' +%F)" >> $GITHUB_ENV
 
       - name: Get latest manifest
         run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json --no-sign-request --region=eu-west-1"
@@ -124,6 +130,9 @@ jobs:
         run: "uv run bash ./scripts/ensure_cluster.sh"
 
       - name: dbt compile to create manifest to compare to
+        env:
+          DBT_EVENT_TIME_START: ${{ env.CI_EVENT_TIME_START }}
+          DBT_EVENT_TIME_END: ${{ env.CI_EVENT_TIME_END }}
         run: "uv run dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
 
       - name: Validate meta.monitoring declarations
@@ -139,7 +148,12 @@ jobs:
         run: "uv run bash ./scripts/list_modified_downstream.sh"
 
       - name: dbt run initial model(s)
-        run: "uv run dbt -x run $PROFILE --select state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        env:
+          DBT_EVENT_TIME_START: ${{ env.CI_EVENT_TIME_START }}
+          DBT_EVENT_TIME_END: ${{ env.CI_EVENT_TIME_END }}
+        run: |
+          echo "CI build window: [${DBT_EVENT_TIME_START}, ${DBT_EVENT_TIME_END})"
+          uv run dbt -x run $PROFILE --select state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}
 
       - name: dbt test initial model(s)
         run: "uv run dbt test $PROFILE --select state:new state:modified.body state:modified.macros --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
