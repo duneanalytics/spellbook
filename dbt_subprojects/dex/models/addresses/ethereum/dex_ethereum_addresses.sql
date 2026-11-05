@@ -49,6 +49,8 @@ FROM (VALUES
       ('ethereum', 0xf164fc0ec4e93095b804a4795bbe1e041497b92a, 'Uniswap', 'Router01'),
       ('ethereum', 0xef1c6e67703c7bd7107eed8303fbe6ec2554bf6b, 'Uniswap', 'Universal Router'),
       ('ethereum', 0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad, 'Uniswap', 'Universal Router'),
+      ('ethereum', 0x66a9893cc07d91d95644aedd05d03f95e1dba8af, 'Uniswap', 'UniversalRouterV2'),
+      ('ethereum', 0x4c82d1fbfe28c977cbb58d8c7ff8fcf9f70a2cca, 'Uniswap', 'UniversalRouterV2_1_1'),
       ('ethereum', 0x6000da47483062a0d734ba3dc7576ce6a0b645c4, 'Uniswap', 'UniswapX'),
       ('ethereum', 0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2, 'GemSwap', 'GemSwap'),
       ('ethereum', 0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f, 'SushiSwap', 'Router02'),
