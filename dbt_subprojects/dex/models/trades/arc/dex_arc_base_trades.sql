@@ -11,7 +11,8 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_v2_arc_base_trades')
+    ref('aero_arc_base_trades')
+    , ref('uniswap_v2_arc_base_trades')
     , ref('uniswap_v3_arc_base_trades')
     , ref('uniswap_v4_arc_base_trades')
 ] %}

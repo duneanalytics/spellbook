@@ -28,6 +28,7 @@ Each model within Spellbook contains a config block with various properties. Dep
 2. **incremental_strategy**
 
    - `merge` – Standard setting for most spells.
+     - Merges only update a matched row when at least one tracked column differs (`IS DISTINCT FROM` on every column except the unique key, `merge_exclude_columns`, `_updated_at`, `updated_at` and `modified_timestamp`). This is on by default; set `merge_skip_unchanged = false` on models with `json`-typed columns (not comparable) or that stamp every row with a per-run value such as `now()`, where the comparison could never skip anything.
    - `append` – For append-only use cases where deduplication is not needed.
    - `delete+insert` – Rare; deletes matching rows in the target before inserting new ones.
 
