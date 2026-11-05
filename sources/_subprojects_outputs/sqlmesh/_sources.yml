@@ -9,6 +9,7 @@ sources:
       - name: day
         description: "Hybrid daily closing prices — volume-weighted averages combining Coinpaprika and onchain DEX trades — for 900,000+ tokens across 70+ blockchains, forward-filled up to 30 days."
         meta:
+          docs_slug: /curated/prices/prices_day
           import: true
         columns:
           - name: blockchain
