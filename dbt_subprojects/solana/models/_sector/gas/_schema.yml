@@ -2,7 +2,19 @@ version: 2
 
 models:
   - name: gas_solana_compute_limit #todo: add full metadata and tests
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            where: "block_date >= current_date - interval '3' day"
+          arguments:
+            combination_of_columns: ['block_date', 'block_slot', 'tx_id']
   - name: gas_solana_compute_unit_price #todo: add full metadata and tests
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            where: "block_date >= current_date - interval '3' day"
+          arguments:
+            combination_of_columns: ['block_date', 'block_slot', 'tx_id']
   - name: gas_solana_tx_fees #todo: add full metadata and tests
   - name: gas_solana_vote_fees #todo: add full metadata and tests
   - name: gas_solana_fees #todo: add tests
