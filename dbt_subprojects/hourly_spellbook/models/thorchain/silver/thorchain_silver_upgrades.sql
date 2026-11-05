@@ -7,7 +7,7 @@
     unique_key = ['day', '_unique_key'],
     partition_by = ['day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
-    tags = ['prod_exclude', 'thorchain', 'upgrades', 'silver']
+    tags = ['thorchain', 'upgrades', 'silver']
 ) }}
 
 WITH block_prices AS (
