@@ -1,4 +1,5 @@
 {{ config(
+    tags=['prod_exclude'],
   schema = 'dex_sui',
   alias  = 'trades',
   materialized = 'incremental',

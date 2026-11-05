@@ -7,7 +7,7 @@
   incremental_strategy = 'merge',
   unique_key = ['tx_register','evt_index_register'],
   incremental_predicates = [ incremental_predicate('DBT_INTERNAL_DEST.block_date') ],
-  tags=['walrus'],
+  tags=['prod_exclude', 'walrus'],
     post_hook='{{ expose_spells(\'["sui"]\',
                               "sector",
                               "walrus",
