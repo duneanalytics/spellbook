@@ -6,7 +6,7 @@
     incremental_strategy='merge',
     unique_key=['pool_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags=['prod_exclude', 'sui','tvl','dex','cetus','pool_details']
+    tags=['sui','tvl','dex','cetus','pool_details']
 ) }}
 
 -- Cetus pool creation events to map pool_id to coin types

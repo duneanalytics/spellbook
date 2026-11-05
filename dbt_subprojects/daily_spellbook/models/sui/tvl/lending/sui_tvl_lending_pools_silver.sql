@@ -6,7 +6,7 @@
     incremental_strategy='merge',
     unique_key=['block_date', 'protocol', 'market_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    tags=['prod_exclude', 'sui','tvl','lending','silver']
+    tags=['sui','tvl','lending','silver']
 ) }}
 
 -- Silver layer: Daily lending pools with end-of-day calculations

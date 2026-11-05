@@ -1,5 +1,4 @@
 {{ config(
-    tags=['prod_exclude'],
     schema = 'aftermath_sui',
     alias = 'base_trades',
     materialized = 'incremental',

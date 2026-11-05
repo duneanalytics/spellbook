@@ -7,7 +7,7 @@
     unique_key=['pool_id', 'object_id', 'version'],
     partition_by=['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags=['prod_exclude', 'sui','tvl','dex','bluefin']
+    tags=['sui','tvl','dex','bluefin']
 ) }}
 
 -- Bluefin DEX pools for TVL calculation (Bronze Layer)

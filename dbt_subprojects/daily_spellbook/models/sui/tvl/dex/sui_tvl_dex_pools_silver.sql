@@ -6,7 +6,7 @@
     incremental_strategy='merge',
     unique_key=['block_date', 'protocol', 'pool_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    tags=['prod_exclude', 'sui','tvl','dex','silver']
+    tags=['sui','tvl','dex','silver']
 ) }}
 
 -- Silver layer: Daily aggregated DEX pools with metadata enrichment

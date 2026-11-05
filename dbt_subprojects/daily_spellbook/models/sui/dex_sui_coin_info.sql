@@ -5,7 +5,7 @@
   file_format='delta',
   incremental_strategy='merge',
   unique_key=['coin_type'],
-  tags=['prod_exclude', 'sui','dex']
+  tags=['sui','dex']
 ) }}
 
 -- 1) Pull only new CoinMetadata objects (incremental on checkpoint)
