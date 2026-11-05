@@ -9,7 +9,7 @@
     unique_key = ['block_month', 'fact_network_version_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['prod_exclude', 'thorchain', 'core', 'network_version_events', 'fact'],
+    tags = ['thorchain', 'core', 'network_version_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
                                   "thorchain",

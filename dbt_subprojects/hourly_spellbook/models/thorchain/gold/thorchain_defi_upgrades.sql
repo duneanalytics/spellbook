@@ -8,7 +8,7 @@
     merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp'],
     unique_key = ['fact_upgrades_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
-    tags = ['prod_exclude', 'thorchain', 'defi', 'upgrades', 'fact'],
+    tags = ['thorchain', 'defi', 'upgrades', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
                                   "thorchain",
