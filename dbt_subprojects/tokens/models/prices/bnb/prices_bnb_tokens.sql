@@ -90,6 +90,7 @@ FROM
     ('one-harmony', 'bnb', 'ONE', 0x04baf95fd4c52fd09a56d840baee0ab8d7357bf0, 18),
     ('ont-ontology', 'bnb', 'ONT', 0xfd7b3a77848f1c2d67e05e54d78d174a0c850335, 18),
     ('orbs-orbs', 'bnb', 'ORBS', 0xebd49b26169e1b52c04cfd19fcf289405df55f80, 18),
+    ('pendle-pendle', 'bnb', 'PENDLE', 0xb3ed0a426155b79b898849803e3b36552f7ed507, 18),
     ('pets-micropets', 'bnb', 'PETS', 0xa77346760341460b42c230ca6d21d4c8e743fa9c, 18),
     ('pmon-polychain-monsters', 'bnb', 'PMON', 0x1796ae0b0fa4862485106a0de9b654efe301d0b2, 18),
     ('pols-polkastarter', 'bnb', 'POLS', 0x7e624fa0e1c4abfd309cc15719b7e2580887f570, 18),
