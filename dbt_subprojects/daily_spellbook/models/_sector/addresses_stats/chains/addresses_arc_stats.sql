@@ -5,6 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = true,
     unique_key = ['blockchain', 'address'],
     filtering_columns = []
   )

@@ -1,6 +1,7 @@
 {{ config(    
     schema = 'reservoir',
     alias = 'tokens',
+    tags = ['static'],
     post_hook = '{{ expose_dataset(\'["ethereum"]\',
                 \'[""]\') }}'
     )
