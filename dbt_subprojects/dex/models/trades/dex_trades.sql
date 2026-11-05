@@ -3,11 +3,11 @@
 {{ config(
     schema = 'dex'
     , alias = 'trades'
-    , partition_by = ['block_date', 'blockchain', 'project']
+    , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_date']
+    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , merge_skip_unchanged = true
     , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
