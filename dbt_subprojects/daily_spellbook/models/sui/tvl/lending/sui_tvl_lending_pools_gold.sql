@@ -7,7 +7,7 @@
     unique_key=['block_date', 'protocol', 'collateral_coin_symbol'],
     partition_by=['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    tags=['prod_exclude', 'sui','tvl','lending','gold']
+    tags=['sui','tvl','lending','gold']
 ) }}
 
 -- Gold layer: BTC lending pools with USD pricing and business metrics

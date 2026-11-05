@@ -7,7 +7,7 @@
     unique_key=['protocol', 'market_id', 'object_id', 'version'],
     partition_by=['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags=['prod_exclude', 'sui','tvl','lending','bucket']
+    tags=['sui','tvl','lending','bucket']
 ) }}
 
 -- Bucket lending pools for TVL calculation (Bronze Layer)

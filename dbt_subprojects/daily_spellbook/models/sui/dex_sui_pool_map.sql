@@ -5,7 +5,7 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['pool_id'],
-    tags=['prod_exclude', 'sui','dex']
+    tags=['sui','dex']
 ) }}
 
 -- 1) Pools to resolve

@@ -7,7 +7,7 @@
     unique_key=['block_date', 'protocol', 'pool_id'],
     partition_by=['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    tags=['prod_exclude', 'sui','tvl','dex','gold']
+    tags=['sui','tvl','dex','gold']
 ) }}
 
 -- Gold layer: BTC DEX pools with pricing

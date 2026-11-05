@@ -7,7 +7,7 @@
     unique_key = ['transaction_digest','block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     partition_by = ['block_month'],
-    tags=['prod_exclude', 'walrus']
+    tags=['walrus']
 ) }}
 
 -- A) Walrus tx set (one row per tx_register)

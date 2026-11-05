@@ -7,7 +7,7 @@
     unique_key=['coin_type', 'object_id', 'version'],
     partition_by=['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags=['prod_exclude', 'sui','tvl','supply']
+    tags=['sui','tvl','supply']
 ) }}
 
 -- Tracks the minted on-chain supply of tokens (Bronze Layer)

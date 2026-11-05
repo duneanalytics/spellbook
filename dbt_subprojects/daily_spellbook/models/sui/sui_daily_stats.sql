@@ -1,5 +1,4 @@
 {{ config(
-    tags=['prod_exclude'],
     schema = 'sui_daily',
     alias = 'stats',
     partition_by = ['block_month'],
