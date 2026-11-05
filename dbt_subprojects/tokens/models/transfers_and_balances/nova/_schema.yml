@@ -7,7 +7,7 @@ models:
       sector: tokens
       contributors: hosuke
     config:
-      tags: ['tokens','transfers', 'nova']
+      tags: ['tokens','transfers', 'nova', 'prod_exclude']
     description: >
       Token transfers
     data_tests:
@@ -67,7 +67,7 @@ models:
         oncall: false
     config:
       event_time: block_time
-      tags: ['tokens','transfers', 'nova']
+      tags: ['tokens','transfers', 'nova', 'prod_exclude']
     description: >
       Token transfers
     data_tests:
