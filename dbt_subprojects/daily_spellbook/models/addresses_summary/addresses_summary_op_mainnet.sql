@@ -4,6 +4,7 @@
     materialized='incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    merge_skip_unchanged = false,
     unique_key = ['address']
     , post_hook='{{ hide_spells() }}'
     )
