@@ -8,7 +8,7 @@
     merge_exclude_columns = ['_inserted_timestamp', 'inserted_timestamp', '_audit_run_id'],
     unique_key = ['block_month', 'fact_loan_repayment_events_id'],
     partition_by = ['block_month'],
-    tags = ['thorchain', 'defi', 'loan_repayment_events', 'fact'],
+    tags = ['prod_exclude', 'thorchain', 'defi', 'loan_repayment_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
                                   "thorchain",
