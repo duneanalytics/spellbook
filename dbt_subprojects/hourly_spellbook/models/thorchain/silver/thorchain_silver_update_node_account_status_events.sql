@@ -1,7 +1,7 @@
 {{ config(
     schema = 'thorchain_silver',
     alias = 'update_node_account_status_events',
-    tags = ['thorchain', 'node_status', 'silver']
+    tags = ['prod_exclude', 'thorchain', 'node_status', 'silver']
 ) }}
 
 with base as (
