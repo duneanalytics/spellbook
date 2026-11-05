@@ -7,7 +7,7 @@
     merge_skip_unchanged = false,
     unique_key = ['block_month', 'event_id'],
     partition_by = ['block_month'],
-    tags = ['thorchain', 'loan_open_events', 'silver']
+    tags = ['prod_exclude', 'thorchain', 'loan_open_events', 'silver']
 ) }}
 
 WITH deduplicated AS (

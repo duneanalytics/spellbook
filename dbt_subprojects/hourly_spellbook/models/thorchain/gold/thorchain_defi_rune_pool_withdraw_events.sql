@@ -9,7 +9,7 @@
     unique_key = ['block_month', 'fact_rune_pool_withdraw_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['thorchain', 'defi', 'rune_pool_withdraw_events', 'fact'],
+    tags = ['prod_exclude', 'thorchain', 'defi', 'rune_pool_withdraw_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
                                   "thorchain",
