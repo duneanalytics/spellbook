@@ -7,7 +7,7 @@
     unique_key=['protocol', 'market_id', 'object_id', 'version'],
     partition_by=['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags=['sui','tvl','lending','navi']
+    tags=['prod_exclude', 'sui','tvl','lending','navi']
 ) }}
 
 -- Navi lending pools for TVL calculation (Bronze Layer)

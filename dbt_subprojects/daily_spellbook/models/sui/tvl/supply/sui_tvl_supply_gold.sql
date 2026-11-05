@@ -7,7 +7,7 @@
     , unique_key=['block_date']
     , partition_by=['block_date']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-    , tags=['sui','tvl','supply','gold']
+    , tags=['prod_exclude', 'sui','tvl','supply','gold']
 ) }}
 
 -- Gold layer: BTC supply with USD pricing and business metrics

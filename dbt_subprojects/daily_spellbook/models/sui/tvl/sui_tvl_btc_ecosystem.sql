@@ -7,7 +7,7 @@
     unique_key=['block_date', 'object_type', 'market_id'],
     partition_by=['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    tags=['sui','tvl','btc','ecosystem'],
+    tags=['prod_exclude', 'sui','tvl','btc','ecosystem'],
     post_hook='{{ expose_spells(\'["sui"]\',
                                 "sector",
                                 "btc_ecosystem",

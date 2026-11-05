@@ -1,4 +1,5 @@
 {{ config(
+    tags=['prod_exclude'],
     schema = 'momentum_sui',
     alias = 'base_trades',
     partition_by = ['block_month'],

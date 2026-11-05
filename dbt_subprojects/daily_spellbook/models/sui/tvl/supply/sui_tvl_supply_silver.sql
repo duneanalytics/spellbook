@@ -6,7 +6,7 @@
     incremental_strategy='merge',
     unique_key=['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    tags=['sui','tvl','supply','silver']
+    tags=['prod_exclude', 'sui','tvl','supply','silver']
 ) }}
 
 -- Silver layer: BTC supply with LOCF (Last Observation Carried Forward)
