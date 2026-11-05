@@ -7,7 +7,9 @@ sources:
       docs_slug: /curated/prices/prices_day
     tables:
       - name: day
-        description: "Daily token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
+        description: "Hybrid daily closing prices — volume-weighted averages combining Coinpaprika and onchain DEX trades — for 900,000+ tokens across 70+ blockchains, forward-filled up to 30 days."
+        meta:
+          import: true
         columns:
           - name: blockchain
             description: "Native blockchain of the token"
@@ -38,9 +40,10 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: hour
-        description: "Hourly token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
+        description: "Hybrid hourly volume-weighted average prices combining Coinpaprika and onchain DEX trades for 900,000+ tokens across 70+ blockchains, forward-filled up to 7 days."
         meta:
           docs_slug: /curated/prices/prices_hour
+          import: true
         columns:
           - name: blockchain
             description: "Native blockchain of the token"
@@ -71,9 +74,10 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: minute
-        description: "Minute-level token prices aggregated from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens."
+        description: "Hybrid minute-level token prices interpolated from hourly anchor points (Coinpaprika + onchain DEX) for 900,000+ tokens across 70+ blockchains, forward-filled up to 48 hours."
         meta:
           docs_slug: /curated/prices/prices_minute
+          import: true
         columns:
           - name: blockchain
             description: "Native blockchain of the token"
@@ -104,9 +108,10 @@ sources:
             type: "timestamp(3) with time zone"
 
       - name: latest
-        description: "Latest available token prices from various sources. Token symbols are not unique; use (blockchain, contract_address) to identify tokens. "
+        description: "Most recent available price per token across all supported blockchains, combining Coinpaprika and onchain DEX sources for 900,000+ tokens."
         meta:
           docs_slug: /curated/prices/prices_latest
+          import: true
         columns:
           - name: blockchain
             description: "Native blockchain of the token"
@@ -137,17 +142,25 @@ sources:
     description: "Price data from CoinPaprika API"
     tables:
       - name: minute
+        description: "Coinpaprika-only minute-level prices for ~2,000 major tokens; used internally by tokens.transfers for stable USD pricing."
         meta:
           docs_slug: /curated/prices/prices_external_minute
+          import: true
       - name: hour
+        description: "Coinpaprika-only hourly prices for ~2,000 major tokens, providing stable exchange-aggregated pricing without DEX-derived noise."
         meta:
           docs_slug: /curated/prices/prices_external_hour
+          import: true
       - name: day
+        description: "Coinpaprika-only daily closing prices for ~2,000 major tokens; used internally by tokens.transfers for stable USD pricing."
         meta:
           docs_slug: /curated/prices/prices_external_day
+          import: true
       - name: latest
+        description: "Most recent Coinpaprika-only price per token, covering ~2,000 major tokens, excluding onchain DEX-derived pricing."
         meta:
           docs_slug: /curated/prices/prices_external_latest
+          import: true
   - name: prices_dex
     description: "Price data from DEX pipeline"
     tables:
