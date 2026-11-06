@@ -2,10 +2,50 @@
 {% set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' %}
 {% set default_address = '0x0000000000000000000000000000000000000000' %}
 
+-- Fallback for ERC4626 share tokens that never emit ERC20 mint/burn Transfer
+-- events (e.g. sDAI, #9524). For those vaults, Deposit/Withdraw events are the
+-- only record of share supply changes, so we synthesize mint/burn rows from them.
+--
 -- Only include ERC4626 events from contracts that are known ERC20 tokens.
 -- This filters out proxy vaults (which delegate share minting to a separate
 -- token contract) and avoids double-counting their already-tracked ERC20 transfers.
-with erc4626_synthetic_raw as (
+--
+-- Contracts that emit real ERC20 mint/burn Transfer events are excluded entirely.
+-- The per-tx dedup below is not enough for them: async vaults (e.g. ERC-7540 style,
+-- such as Kamui USDst) burn shares from an escrow at settlement and emit Withdraw
+-- from the owner in a later claim tx, so the burn and the Withdraw never match on
+-- tx_hash/wallet and every Withdraw becomes a phantom burn.
+with erc4626_contracts as (
+    select distinct
+        t.contract_address
+    from (
+        select contract_address, evt_block_time from {{ erc4626_deposit }}
+        union all
+        select contract_address, evt_block_time from {{ erc4626_withdraw }}
+    ) as t
+    inner join {{ source('tokens', 'erc20') }} as tok
+        on tok.contract_address = t.contract_address
+        and tok.blockchain = '{{ blockchain }}'
+    {% if is_incremental() -%}
+    where {{ incremental_predicate('t.evt_block_time') }}
+    {% endif -%}
+)
+
+, erc20_self_minting_contracts as (
+    select distinct
+        t.contract_address
+    from {{ erc20_transfers }} as t
+    where (
+        t."from" = {{ default_address }}
+        or t.to = {{ default_address }}
+    )
+    and t.contract_address in (select contract_address from erc4626_contracts)
+    {% if is_incremental() -%}
+    and t.evt_block_time >= now() - interval '365' day
+    {% endif -%}
+)
+
+, erc4626_synthetic_raw as (
     select
         t.evt_block_date as block_date
         , t.evt_block_time as block_time
@@ -25,8 +65,11 @@ with erc4626_synthetic_raw as (
     inner join {{ source('tokens', 'erc20') }} as tok
         on tok.contract_address = t.contract_address
         and tok.blockchain = '{{ blockchain }}'
+    left join erc20_self_minting_contracts as smc
+        on smc.contract_address = t.contract_address
+    where smc.contract_address is null
     {% if is_incremental() -%}
-    where {{ incremental_predicate('t.evt_block_time') }}
+    and {{ incremental_predicate('t.evt_block_time') }}
     {% endif -%}
 
     union all
@@ -50,8 +93,11 @@ with erc4626_synthetic_raw as (
     inner join {{ source('tokens', 'erc20') }} as tok
         on tok.contract_address = t.contract_address
         and tok.blockchain = '{{ blockchain }}'
+    left join erc20_self_minting_contracts as smc
+        on smc.contract_address = t.contract_address
+    where smc.contract_address is null
     {% if is_incremental() -%}
-    where {{ incremental_predicate('t.evt_block_time') }}
+    and {{ incremental_predicate('t.evt_block_time') }}
     {% endif -%}
 )
 
