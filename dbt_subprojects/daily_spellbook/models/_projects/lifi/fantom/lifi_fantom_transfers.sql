@@ -1,7 +1,8 @@
 {{ config(
     schema = 'lifi_fantom',
     alias = 'transfers',
-    materialized = 'incremental',
+    materialized = 'table',
+    tags = ['static'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_id'],

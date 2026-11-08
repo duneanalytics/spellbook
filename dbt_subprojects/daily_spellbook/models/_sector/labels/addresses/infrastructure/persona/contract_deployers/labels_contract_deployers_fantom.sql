@@ -1,6 +1,7 @@
 {{
     config(
         alias = 'contract_deployers_fantom'
+        , tags = ['static']
         , post_hook='{{ hide_spells() }}'
     )
 }}

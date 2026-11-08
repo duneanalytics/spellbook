@@ -3,7 +3,8 @@
 
     alias='fm_reward_evt_transfer_daily',
     partition_by=['date_month'],
-    materialized='incremental',
+    materialized='table',
+    tags = ['static'],
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['date_start', 'admin_address']

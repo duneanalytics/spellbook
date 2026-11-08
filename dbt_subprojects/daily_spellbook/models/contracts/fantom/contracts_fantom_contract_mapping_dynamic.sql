@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['prod_exclude'],
+        tags = ['prod_exclude', 'static'],
         schema = 'contracts_fantom',
         alias = 'contract_mapping_dynamic',
         materialized ='table',

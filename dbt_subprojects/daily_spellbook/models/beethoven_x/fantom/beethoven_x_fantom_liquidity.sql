@@ -5,6 +5,7 @@
         schema = 'beethoven_x_fantom',
         alias = 'liquidity',
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}

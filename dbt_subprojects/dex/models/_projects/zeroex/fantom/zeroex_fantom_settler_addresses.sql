@@ -2,7 +2,8 @@
     config(
         schema = 'zeroex_fantom',
         alias = 'settler_addresses',
-        materialized='incremental',
+        materialized='table',
+        tags = ['static'],
         unique_key = ['settler_address'],
         on_schema_change='sync_all_columns',
         file_format ='delta',

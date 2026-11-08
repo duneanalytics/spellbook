@@ -4,7 +4,8 @@
 	config(
 		schema = 'addresses_' + blockchain,
 		alias = 'stg_executed_txs_daily',
-		materialized = 'incremental',
+		materialized = 'table',
+		tags = ['static'],
 		file_format = 'delta',
 		incremental_strategy = 'merge',
 		partition_by = ['block_month'],

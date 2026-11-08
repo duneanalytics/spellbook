@@ -2,7 +2,8 @@
     
     alias = 'send',
     partition_by = ['block_month'],
-    materialized = 'incremental',
+    materialized = 'table',
+    tags = ['static'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'tx_hash', 'user_address', 'trace_address', 'source_chain_id', 'destination_chain_id']

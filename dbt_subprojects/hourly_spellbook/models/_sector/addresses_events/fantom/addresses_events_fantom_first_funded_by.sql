@@ -4,7 +4,8 @@
     schema = 'addresses_events_' + blockchain
     
     , alias = 'first_funded_by'
-    , materialized = 'incremental'
+    , materialized = 'table'
+    , tags = ['static']
     , file_format = 'delta'
     , incremental_strategy = 'append'
     , unique_key = ['address']

@@ -1,6 +1,7 @@
 {{ 
     config(
-        materialized='incremental',
+        materialized='table',
+        tags = ['static'],
         
         alias = 'safes',
         partition_by = ['block_month'],
