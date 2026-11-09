@@ -58,7 +58,7 @@ models:
       sector: tokens
       contributors: jeff-dude
     config:
-      tags: ['tokens','transfers', 'zksync']
+      tags: ['tokens','transfers', 'zksync', 'prod_exclude']
     description: >
       ERC4626 contracts that emit their own ERC20 mint/burn Transfer events. tokens_zksync_base_transfers builds no synthetic ERC4626 mint/burn rows for them.
     data_tests:
