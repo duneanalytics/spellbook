@@ -13,7 +13,8 @@
 }}
 
 {% set bridges_platforms = [
-    'bridges_' + blockchain + '_cctp_v1_withdrawals'
+    'bridges_' + blockchain + '_aero_v1_withdrawals'
+    , 'bridges_' + blockchain + '_cctp_v1_withdrawals'
     , 'bridges_' + blockchain + '_across_v2_withdrawals'
     , 'bridges_' + blockchain + '_across_v3_withdrawals'
     , 'bridges_' + blockchain + '_synapse_rfq_withdrawals'

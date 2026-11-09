@@ -226,3 +226,29 @@ models:
     description: "LayerZero's v1 bridge deposits events on OP Mainnet"
 
 
+
+  - name: bridges_optimism_aero_v1_deposits
+    description: "Aero Metarouter-attributed USDC bridge deposits on optimism; bridge leg only, including ICA recipients."
+    config:
+      tags: ['optimism', 'bridges', 'flows', 'deposits', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: bridge_transfer_id
+        description: "Hyperlane message ID, shared by the source dispatch and destination processing."
+        data_tests: [not_null]
+
+  - name: bridges_optimism_aero_v1_withdrawals
+    description: "Aero Metarouter-attributed USDC bridge withdrawals on optimism; bridge leg only, including ICA recipients."
+    config:
+      tags: ['optimism', 'bridges', 'flows', 'withdrawals', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: bridge_transfer_id
+        description: "Hyperlane message ID, shared by the source dispatch and destination processing."
+        data_tests: [not_null]

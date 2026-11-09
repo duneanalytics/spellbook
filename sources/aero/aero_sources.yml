@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: aero_arbitrum
+    description: "Verified Aero Metarouter at 0x0fEf9e88A7b76BCDBF451780C6774FE32965Ee98, documented in Aero security docs."
+    tables:
+      - name: metarouter_call_execute
+        description: "Decoded successful and reverted Metarouter executions. The bridge model filters successful calls and deduplicates transaction hashes."
+  - name: aero_arc
+    description: "Verified Aero Metarouter at 0x0fEf9e88A7b76BCDBF451780C6774FE32965Ee98, documented in Aero security docs."
+    tables:
+      - name: metarouter_call_execute
+        description: "Decoded successful and reverted Metarouter executions. The bridge model filters successful calls and deduplicates transaction hashes."
+  - name: aero_base
+    description: "Verified Aero Metarouter at 0x0fEf9e88A7b76BCDBF451780C6774FE32965Ee98, documented in Aero security docs."
+    tables:
+      - name: metarouter_call_execute
+        description: "Decoded successful and reverted Metarouter executions. The bridge model filters successful calls and deduplicates transaction hashes."
+  - name: aero_ethereum
+    description: "Verified Aero Metarouter at 0x0fEf9e88A7b76BCDBF451780C6774FE32965Ee98, documented in Aero security docs."
+    tables:
+      - name: metarouter_call_execute
+        description: "Decoded successful and reverted Metarouter executions. The bridge model filters successful calls and deduplicates transaction hashes."
+  - name: aero_ink
+    description: "Verified Aero Metarouter at 0x0fEf9e88A7b76BCDBF451780C6774FE32965Ee98, documented in Aero security docs."
+    tables:
+      - name: metarouter_call_execute
+        description: "Decoded successful and reverted Metarouter executions. The bridge model filters successful calls and deduplicates transaction hashes."
+  - name: aero_optimism
+    description: "Verified Aero Metarouter at 0x0fEf9e88A7b76BCDBF451780C6774FE32965Ee98, documented in Aero security docs."
+    tables:
+      - name: metarouter_call_execute
+        description: "Decoded successful and reverted Metarouter executions. The bridge model filters successful calls and deduplicates transaction hashes."
