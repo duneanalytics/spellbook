@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: zeroex_hyperevm_settler_addresses
+    meta:
+      blockchain: hyperevm
+      project: zeroex
+      contributors: alek-ardashev
+    config:
+      tags: ['hyperevm', '0x', 'settler']
+    description: >
+      0x Settler addresses registered on HyperEVM, including their activation periods.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - settler_address
+              - token_id
+    columns:
+      - name: settler_address
+        description: "Address authorised to settle 0x trades"
+        data_tests:
+          - not_null
+      - name: token_id
+        description: "Registry token ID associated with the Settler address"
+        data_tests:
+          - not_null
+      - name: begin_block_time
+        description: "UTC timestamp when the Settler address became active"
+      - name: end_block_time
+        description: "UTC timestamp when the Settler address stopped being active"
