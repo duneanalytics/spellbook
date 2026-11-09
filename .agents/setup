@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
+# uv is included in the orb base image. It installs the Python version required
+# by pyproject.toml; no system Python changes or environment activation needed.
+echo 'Syncing locked Python environment'
+time uv sync --locked
+
+# Only install packages: parsing, tests, and any remote reads are explicit tasks,
+# not snapshot setup. Never install git hooks or configure production profiles.
+for project_file in dbt_subprojects/*/dbt_project.yml; do
+    project_dir="${project_file%/*}"
+    echo "Installing dbt packages for $project_dir"
+    time uv run --no-sync dbt deps --project-dir "$project_dir"
+done
+
+echo 'Ready: use uv run dbt with the appropriate --project-dir'
