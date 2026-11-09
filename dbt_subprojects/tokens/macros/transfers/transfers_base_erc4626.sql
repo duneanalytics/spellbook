@@ -15,34 +15,12 @@
 -- such as Kamui USDst) burn shares from an escrow at settlement and emit Withdraw
 -- from the owner in a later claim tx, so the burn and the Withdraw never match on
 -- tx_hash/wallet and every Withdraw becomes a phantom burn.
-with erc4626_contracts as (
-    select distinct
-        t.contract_address
-    from (
-        select contract_address, evt_block_time from {{ erc4626_deposit }}
-        union all
-        select contract_address, evt_block_time from {{ erc4626_withdraw }}
-    ) as t
-    inner join {{ source('tokens', 'erc20') }} as tok
-        on tok.contract_address = t.contract_address
-        and tok.blockchain = '{{ blockchain }}'
-    {% if is_incremental() -%}
-    where {{ incremental_predicate('t.evt_block_time') }}
-    {% endif -%}
-)
-
-, erc20_self_minting_contracts as (
-    select distinct
-        t.contract_address
-    from {{ erc20_transfers }} as t
-    where (
-        t."from" = {{ default_address }}
-        or t.to = {{ default_address }}
-    )
-    and t.contract_address in (select contract_address from erc4626_contracts)
-    {% if is_incremental() -%}
-    and t.evt_block_time >= now() - interval '365' day
-    {% endif -%}
+-- The self-minting set is kept in its own incremental model, so this lookup reads a
+-- small table instead of scanning the full evt_Transfer history on every run.
+with erc20_self_minting_contracts as (
+    select
+        contract_address
+    from {{ ref('tokens_' ~ blockchain ~ '_erc4626_self_minting_contracts') }}
 )
 
 , erc4626_synthetic_raw as (

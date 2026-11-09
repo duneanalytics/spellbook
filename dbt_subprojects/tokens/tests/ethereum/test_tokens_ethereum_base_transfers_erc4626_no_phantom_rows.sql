@@ -35,7 +35,6 @@ self_minting_contracts as (
   from {{ source('erc20_ethereum', 'evt_Transfer') }}
   where ("from" = 0x0000000000000000000000000000000000000000
       or "to" = 0x0000000000000000000000000000000000000000)
-    and evt_block_time >= now() - interval '365' day
     and contract_address in (select contract_address from erc4626_events)
 ),
 
