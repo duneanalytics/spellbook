@@ -15,7 +15,7 @@ SELECT
 FROM
 (
     VALUES
-
+    ('tgbp-tokenised-gbp', 'avalanche_c', 'tGBP', 0x27f6c8289550fCE67f6B50BeD1F519966aFE5287, 18),
     ('aave-new','avalanche_c','AAVE.e',0x63a72806098bd3d9520cc43356dd78afe5d386d9,18),
     ('axlusdt-axelar-usd-tether', 'avalanche_c', 'axlUSDT', 0xf976ba91b6bb3468c91e4f02e68b37bc64a57e66, 6),
     ('axlatom-axelar-wrapped-atom', 'avalanche_c', 'axlATOM', 0x80d18b1c9ab0c9b5d6a6d5173575417457d00a12, 6),
