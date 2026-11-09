@@ -52,6 +52,30 @@ models:
       - name: _updated_at
         description: "Timestamp when this row was last written"
 
+  - name: tokens_mezo_erc4626_self_minting_contracts
+    meta:
+      blockchain: mezo
+      sector: tokens
+      contributors: jeff-dude
+    config:
+      tags: ['tokens','transfers', 'mezo']
+    description: >
+      ERC4626 contracts that emit their own ERC20 mint/burn Transfer events. tokens_mezo_base_transfers builds no synthetic ERC4626 mint/burn rows for them.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - contract_address
+    columns:
+      - name: blockchain
+        description: "The blockchain of the contract"
+      - name: contract_address
+        description: "The ERC4626 contract address"
+        data_tests:
+          - not_null
+      - name: first_mint_burn_block_time
+        description: "Block time of the first ERC20 mint or burn Transfer from this contract that was recorded"
+
   - name: tokens_mezo_transfers
     meta:
       blockchain: mezo

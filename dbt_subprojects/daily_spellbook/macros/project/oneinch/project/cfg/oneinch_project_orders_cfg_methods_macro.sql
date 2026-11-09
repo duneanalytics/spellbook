@@ -332,6 +332,34 @@
     "making_amount":    "substr(output, 32*0 + 1                    , 32)",
     "taking_amount":    "substr(input, " ~ _beginning ~ " + 32*2 + 20*5 + 32*1 + 1, 32)",
 }] %}
+{% set methods = methods + [{
+    "project":          "Native",
+    "tag":              "'NativeRFQPool'",
+    "selector":         "0xf1fbd694",
+    "name":             "tradeRFQT",
+    "event":            "0xc82975a4eae9f14416813a0bd7312edf547928cd25ae9b8597ee4c92fa6862d2",
+}] %}
+{% set methods = methods + [{
+    "project":          "Native",
+    "tag":              "'NativeRFQPool'",
+    "selector":         "0xe083cd47",
+    "name":             "tradeRFQT",
+    "event":            "0xc82975a4eae9f14416813a0bd7312edf547928cd25ae9b8597ee4c92fa6862d2",
+}] %}
+{% set methods = methods + [{
+    "project":          "Native",
+    "tag":              "'NativeRFQPool'",
+    "selector":         "0xaae6dd92",
+    "name":             "tradeRFQT",
+    "event":            "0xc82975a4eae9f14416813a0bd7312edf547928cd25ae9b8597ee4c92fa6862d2",
+}] %}
+{% set methods = methods + [{
+    "project":          "Native",
+    "tag":              "'NativeRFQPool'",
+    "selector":         "0x6367f5c8",
+    "name":             "RFQTrade",
+    "event":            "0xc82975a4eae9f14416813a0bd7312edf547928cd25ae9b8597ee4c92fa6862d2",
+}] %}
 
 -- Clipper --
 
