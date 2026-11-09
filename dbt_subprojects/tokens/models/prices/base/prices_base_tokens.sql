@@ -15,6 +15,7 @@ SELECT
 FROM
 (
     VALUES
+    ('tgbp-tokenised-gbp', 'base', 'tGBP', 0x27f6c8289550fCE67f6B50BeD1F519966aFE5287, 18),
     ('weth-weth','base','WETH',0x4200000000000000000000000000000000000006,18),
     --ingesting flETH with price for weth until flETH is available with correct date from Coinpaprika. flETH is 1:1 with ETH so price diff. is small
     ('weth-weth','base','flETH',0x000000000D564D5be76f7f0d28fE52605afC7Cf8,18),
