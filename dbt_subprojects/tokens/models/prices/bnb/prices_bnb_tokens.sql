@@ -15,7 +15,7 @@ SELECT
 FROM
 (
     VALUES
-
+    ('tgbp-tokenised-gbp', 'bnb', 'tGBP', 0x27f6c8289550fCE67f6B50BeD1F519966aFE5287, 18),
     ('1inch-1inch', 'bnb', '1INCH', 0x111111111117dc0aa78b770fa6a738034120c302, 18),
     ('aave-new', 'bnb', 'AAVE', 0xfb6115445bff7b52feb98650c87f44907e58f802, 18),
     --('abnbc-abnbc', 'bnb', 'ABNBC', 0xe85afccdafbe7f2b096f268e31cce3da8da2990a, 18),
