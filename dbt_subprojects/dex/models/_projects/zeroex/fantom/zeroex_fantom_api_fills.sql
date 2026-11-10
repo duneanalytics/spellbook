@@ -2,7 +2,7 @@
         tags=['static'],
         schema = 'zeroex_fantom',
         alias = 'api_fills',
-        materialized='incremental',
+        materialized='table',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',

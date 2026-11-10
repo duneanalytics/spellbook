@@ -2,7 +2,8 @@
   config(
 
     alias='vrf_v1_random_request_logs',
-    materialized='incremental',
+    materialized='table',
+    tags = ['static'],
     file_format='delta',
     incremental_strategy='merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],

@@ -1,6 +1,7 @@
 {{ 
     config(
         materialized='table',
+        tags = ['static'],
         
         alias = 'singletons'
         , post_hook='{{ hide_spells() }}'

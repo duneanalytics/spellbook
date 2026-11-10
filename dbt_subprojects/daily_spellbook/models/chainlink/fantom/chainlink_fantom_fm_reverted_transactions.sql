@@ -3,7 +3,8 @@
 
     alias='fm_reverted_transactions',
     partition_by=['date_month'],
-    materialized='incremental',
+    materialized='table',
+    tags = ['static'],
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['tx_hash', 'tx_index', 'node_address'],
