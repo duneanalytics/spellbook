@@ -3,7 +3,8 @@
 
     alias='ocr_reward_evt_transfer_daily',
     partition_by=['date_month'],
-    materialized='incremental',
+    materialized='table',
+    tags = ['static'],
     file_format='delta',
     incremental_strategy='merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.date_start')],

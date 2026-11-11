@@ -2,7 +2,8 @@
   config(
     schema = 'aave_v3_fantom',
     alias = 'base_market',
-    materialized = 'incremental',
+    materialized = 'table',
+    tags = ['static'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'token_address', 'tx_hash', 'evt_index'],

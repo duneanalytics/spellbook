@@ -1,5 +1,6 @@
 {{config(
     alias = 'token_standards_fantom'
+    , tags = ['static']
     , post_hook='{{ hide_spells() }}'
     )
 }}

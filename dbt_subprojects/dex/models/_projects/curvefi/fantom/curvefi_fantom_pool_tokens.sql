@@ -1,7 +1,8 @@
 {{ config(
     schema = 'curvefi_fantom',
     alias = 'pool_tokens',
-    materialized = 'incremental',
+    materialized = 'table',
+    tags = ['static'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'token_id', 'token_type']

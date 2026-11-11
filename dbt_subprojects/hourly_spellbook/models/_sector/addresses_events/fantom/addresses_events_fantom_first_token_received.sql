@@ -4,7 +4,8 @@
     schema = 'addresses_events_' + blockchain
     
     , alias = 'first_token_received'
-    , materialized = 'incremental'
+    , materialized = 'table'
+    , tags = ['static']
     , file_format = 'delta'
     , incremental_strategy = 'append'
     , partition_by = ['block_month']

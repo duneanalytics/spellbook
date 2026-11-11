@@ -3,7 +3,8 @@
 
     alias='price_feeds',
     partition_by=['block_month'],
-    materialized='incremental',
+    materialized='table',
+    tags = ['static'],
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['blockchain', 'block_number', 'proxy_address', 'aggregator_address']
