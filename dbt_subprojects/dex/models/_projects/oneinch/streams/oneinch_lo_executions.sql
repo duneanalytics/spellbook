@@ -9,7 +9,7 @@
     )
 }}
 
-{% for blockchain in oneinch_blockchains_cfg_macro() if stream in blockchain.exposed %}
+{% for blockchain in oneinch_blockchains_cfg_macro() | rejectattr('name', 'in', deprecated_evm_chains()) if stream in blockchain.exposed %}
     select * from {{ ref('oneinch_' + blockchain.name + '_' + stream + '_executions') }}
     {% if not loop.last -%} union all {%- endif %}
 {% endfor %}

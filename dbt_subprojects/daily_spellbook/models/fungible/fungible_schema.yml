@@ -3,7 +3,7 @@ version: 2
 models:
   - name: fungible_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, base
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, base
       sector: fungible
       contributors: hildobby
     config:

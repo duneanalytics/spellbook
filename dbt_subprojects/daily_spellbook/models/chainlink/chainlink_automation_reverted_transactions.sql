@@ -10,7 +10,6 @@
   'chainlink_ethereum_automation_reverted_transactions',
   'chainlink_avalanche_c_automation_reverted_transactions',
   'chainlink_bnb_automation_reverted_transactions',
-  'chainlink_fantom_automation_reverted_transactions',
   'chainlink_polygon_automation_reverted_transactions'
 ] %}
 

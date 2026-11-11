@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_ocr_fulfilled_transactions',
   'chainlink_bnb_ocr_fulfilled_transactions',
   'chainlink_ethereum_ocr_fulfilled_transactions',
-  'chainlink_fantom_ocr_fulfilled_transactions',
   'chainlink_gnosis_ocr_fulfilled_transactions',
   'chainlink_optimism_ocr_fulfilled_transactions',
   'chainlink_polygon_ocr_fulfilled_transactions'

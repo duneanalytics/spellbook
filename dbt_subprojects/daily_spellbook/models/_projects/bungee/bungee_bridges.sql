@@ -8,9 +8,9 @@
 }}
 
 {% set chains = [
-    'ethereum', 'zkevm', 'scroll', 'blast', 'linea', 'mantle', 'optimism',
+    'ethereum', 'scroll', 'linea', 'mantle', 'optimism',
     'gnosis', 'arbitrum', 'zksync', 'base', 'bnb', 'polygon',
-    'avalanche_c', 'fantom'
+    'avalanche_c'
 ] %}
 
 with bungee_bridges as (

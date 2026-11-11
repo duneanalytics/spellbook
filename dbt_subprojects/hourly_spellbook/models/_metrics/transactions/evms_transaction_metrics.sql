@@ -9,11 +9,9 @@
     'arbitrum',
     'avalanche_c',
     'base',
-    'blast',
     'bnb',
     'celo',
     'ethereum',
-    'fantom',
     'gnosis',
     'linea',
     'mantle',
@@ -21,9 +19,7 @@
     'polygon',
     'scroll',
     'sei',
-    'zkevm',
-    'zksync',
-    'zora'
+    'zksync'
 ] %}
 
 SELECT *

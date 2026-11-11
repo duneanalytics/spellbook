@@ -14,8 +14,7 @@
     ref('balancer_gnosis_trades'),
     ref('balancer_monad_trades'),
     ref('balancer_optimism_trades'),
-    ref('balancer_polygon_trades'),
-    ref('balancer_zkevm_trades')
+    ref('balancer_polygon_trades')
 ] %}
 
 

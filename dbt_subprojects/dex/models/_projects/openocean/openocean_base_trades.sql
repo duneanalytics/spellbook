@@ -8,7 +8,6 @@
 
 {%- set openocean_models = [
     ref('openocean_optimism_base_trades'),
-    ref('openocean_fantom_base_trades'),
     ref('openocean_avalanche_c_base_trades'),
     ref('openocean_base_base_trades'),
     ref('openocean_ethereum_base_trades'),

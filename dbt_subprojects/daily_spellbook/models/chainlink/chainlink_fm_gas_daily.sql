@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_fm_gas_daily',
   'chainlink_bnb_fm_gas_daily',
   'chainlink_ethereum_fm_gas_daily',
-  'chainlink_fantom_fm_gas_daily',
   'chainlink_gnosis_fm_gas_daily',
   'chainlink_optimism_fm_gas_daily',
   'chainlink_polygon_fm_gas_daily'

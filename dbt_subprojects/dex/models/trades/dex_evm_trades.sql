@@ -1,4 +1,4 @@
-{% set chains = dex_evm_chains() %}
+{% set chains = dex_evm_chains() | reject('in', deprecated_evm_chains()) | list %}
 
 {{ config(
 	schema = 'dex_evm'

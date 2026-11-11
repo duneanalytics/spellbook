@@ -20,7 +20,6 @@
     ref('eas_scroll_attestation_details'),
     ref('eas_celo_attestation_details'),
     ref('eas_linea_attestation_details'),
-    ref('eas_nova_attestation_details'),
     ref('eas_zksync_attestation_details')
   ]
 %}

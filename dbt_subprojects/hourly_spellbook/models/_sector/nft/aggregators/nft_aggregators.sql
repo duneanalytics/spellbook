@@ -11,7 +11,6 @@
         ('arbitrum', ref('nft_arbitrum_aggregators'))
         , ('avalanche_c', ref('nft_avalanche_c_aggregators'))
         , ('base', ref('nft_base_aggregators'))
-        , ('blast', ref('nft_blast_aggregators'))
         , ('bnb', ref('nft_bnb_aggregators'))
         , ('celo', ref('nft_celo_aggregators'))
         , ('ethereum', ref('nft_ethereum_aggregators'))

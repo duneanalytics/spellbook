@@ -3,7 +3,7 @@ version: 2
 models:
   - name: balancer_token_balance_changes
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
@@ -66,7 +66,7 @@ models:
 
   - name: balancer_token_balance_changes_daily
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']

@@ -7,7 +7,7 @@
     )
 -}}
 
-{%- for blockchain in oneinch_project_swaps_exposed_blockchains_list() %}
+{%- for blockchain in oneinch_project_swaps_exposed_blockchains_list() | reject('in', deprecated_evm_chains()) | list %}
     -- depends on: {{ ref('oneinch_' + blockchain + '_project_orders') }} --
     select * from {{ ref('oneinch_' + blockchain + '_project_swaps') }}
     {% if not loop.last -%} union all {%- endif %}

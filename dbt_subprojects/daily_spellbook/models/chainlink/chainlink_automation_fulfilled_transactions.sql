@@ -10,7 +10,6 @@
   'chainlink_ethereum_automation_fulfilled_transactions',
   'chainlink_avalanche_c_automation_fulfilled_transactions',
   'chainlink_bnb_automation_fulfilled_transactions',
-  'chainlink_fantom_automation_fulfilled_transactions',
   'chainlink_polygon_automation_fulfilled_transactions'
 ] %}
 

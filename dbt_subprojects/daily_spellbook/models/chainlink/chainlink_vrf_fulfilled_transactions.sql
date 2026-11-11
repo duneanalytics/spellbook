@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_vrf_fulfilled_transactions',
   'chainlink_bnb_vrf_fulfilled_transactions',
   'chainlink_ethereum_vrf_fulfilled_transactions',
-  'chainlink_fantom_vrf_fulfilled_transactions',
   'chainlink_polygon_vrf_fulfilled_transactions'
 ] %}
 

@@ -10,7 +10,6 @@
   'chainlink_ethereum_automation_performed',
   'chainlink_avalanche_c_automation_performed',
   'chainlink_bnb_automation_performed',
-  'chainlink_fantom_automation_performed',
   'chainlink_polygon_automation_performed'
 ] %}
 

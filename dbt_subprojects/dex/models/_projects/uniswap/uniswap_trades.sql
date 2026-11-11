@@ -11,7 +11,6 @@
 ref('uniswap_arbitrum_trades')
 , ref('uniswap_avalanche_c_trades')
 , ref('uniswap_base_trades')
-, ref('uniswap_blast_trades')
 , ref('uniswap_bnb_trades')
 , ref('uniswap_celo_trades')
 , ref('uniswap_ethereum_trades')
@@ -28,7 +27,6 @@ ref('uniswap_arbitrum_trades')
 , ref('uniswap_unichain_trades')
 , ref('uniswap_worldchain_trades')
 , ref('uniswap_zksync_trades')
-, ref('uniswap_zora_trades')
 ] %}
 
 

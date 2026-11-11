@@ -10,7 +10,6 @@
   'chainlink_ethereum_automation_gas_daily',
   'chainlink_avalanche_c_automation_gas_daily',
   'chainlink_bnb_automation_gas_daily',
-  'chainlink_fantom_automation_gas_daily',
   'chainlink_polygon_automation_gas_daily'
 ] %}
 

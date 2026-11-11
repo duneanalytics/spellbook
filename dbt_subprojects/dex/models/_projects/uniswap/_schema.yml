@@ -3,7 +3,7 @@ version: 2
 models:
   - name: uniswap_pools
     meta:
-      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain,celo
+      blockchain: ethereum,arbitrum,base,optimism,polygon,bnb,avalanche_c,worldchain,ink,unichain,celo
       sector: dex
       contributors: hildobby, tomfutago, msilb7, chuxin
     config:
@@ -149,7 +149,7 @@ models:
 
   - name: uniswap_base_liquidity_events
     meta:
-      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      blockchain: ethereum,arbitrum,base,optimism,polygon,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
       contributors: irishLatte19, Henrystats
     config:
@@ -252,7 +252,7 @@ models:
 
   - name: uniswap_trades
     meta:
-      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      blockchain: ethereum,arbitrum,base,optimism,polygon,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
       contributors: Henrystats
     config:
@@ -276,7 +276,7 @@ models:
 
   - name: uniswap_v4_aggregator_hooks
     meta:
-      blockchain: ethereum,arbitrum,arc,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain,celo,monad,tempo
+      blockchain: ethereum,arbitrum,arc,base,optimism,polygon,bnb,avalanche_c,worldchain,ink,unichain,celo,monad,tempo
       sector: dex
       project: uniswap
       contributors: thevaizman
@@ -304,7 +304,7 @@ models:
 
   - name: uniswap_v4_aggregator_base_trades
     meta:
-      blockchain: ethereum,arbitrum,arc,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain,celo,monad,tempo
+      blockchain: ethereum,arbitrum,arc,base,optimism,polygon,bnb,avalanche_c,worldchain,ink,unichain,celo,monad,tempo
       sector: dex_aggregator
       project: uniswap
       contributors: thevaizman

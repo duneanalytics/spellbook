@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_vrf_gas_daily',
   'chainlink_bnb_vrf_gas_daily',
   'chainlink_ethereum_vrf_gas_daily',
-  'chainlink_fantom_vrf_gas_daily',
   'chainlink_polygon_vrf_gas_daily'
 ] %}
 

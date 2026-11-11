@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_fm_reward_daily',
   'chainlink_bnb_fm_reward_daily',
   'chainlink_ethereum_fm_reward_daily',
-  'chainlink_fantom_fm_reward_daily',
   'chainlink_gnosis_fm_reward_daily',
   'chainlink_optimism_fm_reward_daily',
   'chainlink_polygon_fm_reward_daily'

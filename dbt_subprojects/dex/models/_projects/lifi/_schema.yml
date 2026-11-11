@@ -87,7 +87,7 @@ models:
 
   - name: lifi_base_trades
     meta:
-      blockchain: fantom, optimism
+      blockchain: optimism
       sector: dex
       project: lifi
       contributors: Henrystats, hosuke
