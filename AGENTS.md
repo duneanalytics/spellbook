@@ -212,3 +212,4 @@ Human-only:
 
 - `.github/**`, CODEOWNERS, `AGENTS.md`, `CLAUDE.md`, review policy and these boundaries.
 - Auth, authorization, IAM, secrets and credentials, PII/customer-data handling, and removal or weakening of tests, validation or safety/approval gates.
+- Dependency version bumps, including minor and patch: Dependabot here has no 7-day cooldown.
