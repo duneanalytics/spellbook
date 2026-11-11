@@ -199,3 +199,16 @@ A green CI check is necessary but not sufficient. Query CI tables to verify data
 ## Skills
 
 Use `.claude/skills/<name>/SKILL.md` for shared task-specific workflows. This path is read by Claude Code, opencode, and Cursor. Do not add shared instructions to `.cursor/rules`; promote always-on conventions to this file and procedural workflows to skills.
+
+## Review risk boundaries
+
+Auto-approval requires a fully understood low-risk diff, green relevant CI and resolved review findings. Human-only cases win in mixed PRs and reverts; unlisted changes need human review.
+
+Auto-approvable:
+
+- Amp and agent tooling configuration: orb setup and resume scripts (`.agents/setup`, `.agents/resume`), other files under `.agents/**` and `.amp/**` (such as `.agents/Procfile` and `.amp/services.yaml`), and agent skills under `.agents/skills/**` or `.claude/skills/**`. These only prepare agent sandboxes and guide agents; they are not CI/CD, build or deployment configuration. The change must not add secret values or credentials, change where secrets are sent or logged, deploy, write to production or shared infrastructure, or weaken tests or safety checks. Skills that add or change steps that deploy, write to production or bypass an approval gate stay human-only.
+
+Human-only:
+
+- `.github/**`, CODEOWNERS, `AGENTS.md`, `CLAUDE.md`, review policy and these boundaries.
+- Auth, authorization, IAM, secrets and credentials, PII/customer-data handling, and removal or weakening of tests, validation or safety/approval gates.
