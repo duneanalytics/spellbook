@@ -206,7 +206,7 @@ Auto-approval requires a fully understood low-risk diff, green relevant CI and r
 
 Auto-approvable:
 
-- Amp and agent tooling configuration: orb setup and resume scripts (`.agents/setup`, `.agents/resume`), other files under `.agents/**` and `.amp/**` (such as `.agents/Procfile` and `.amp/services.yaml`), and agent skills under `.agents/skills/**` or `.claude/skills/**`. These only prepare agent sandboxes and guide agents; they are not CI/CD, build or deployment configuration. The change must not add secret values or credentials, change where secrets are sent or logged, deploy, write to production or shared infrastructure, or weaken tests or safety checks. Skills that add or change steps that deploy, write to production or bypass an approval gate stay human-only.
+- Amp and agent tooling configuration: orb setup and resume scripts (`.agents/setup`, `.agents/resume`), other files under `.agents/**` and `.amp/**` (such as `.agents/Procfile` and `.amp/services.yaml`), and Amp skills under `.agents/skills/**`. These only prepare agent sandboxes and guide agents; they are not CI/CD, build or deployment configuration. The change must not add secret values or credentials, change where secrets are sent or logged, deploy, write to production or shared infrastructure, or weaken tests or safety checks. Setup and service scripts must not add or change package sources, run unpinned remote code (such as `curl | bash`), or drop `--locked` installs. Human-only: agent permission or tool allowlists, MCP server definitions, skills that add or change steps that deploy, write to production or bypass an approval gate, anything under `.claude/**` or linked from it (the review bot loads it from the PR), and `AGENTS.md`, `CLAUDE.md` and this section.
 
 Human-only:
 

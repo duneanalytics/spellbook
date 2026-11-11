@@ -27,6 +27,7 @@ jobs:
       dry-run: true
       deny-paths: |
         .github/*
+        .claude/*
         AGENTS.md
         CLAUDE.md
         */AGENTS.md
