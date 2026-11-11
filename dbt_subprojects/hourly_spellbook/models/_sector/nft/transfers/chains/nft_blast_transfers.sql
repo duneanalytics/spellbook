@@ -3,11 +3,8 @@
         schema = 'nft_blast',
         alias = 'transfers',
         partition_by=['block_month'],
-        materialized='incremental',
+        materialized='table',
         file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['block_month', 'tx_hash', 'evt_index', 'token_id', 'amount'],
         tags=['static'],
         post_hook='{{ hide_spells() }}'
 )

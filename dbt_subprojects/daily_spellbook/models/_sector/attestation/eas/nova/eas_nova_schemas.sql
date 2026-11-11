@@ -2,11 +2,9 @@
   config(
     schema = 'eas_nova',
     alias = 'schemas',
-    materialized = 'incremental',
+    materialized = 'table',
+    tags = ['static'],
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['schema_uid'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 

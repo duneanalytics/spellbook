@@ -2,13 +2,10 @@
 
         schema = 'zeroex_fantom',
         alias = 'api_fills_deduped',
-        materialized='incremental',
+        materialized='table',
+        tags=['static'],
         partition_by = ['block_date'],
-        unique_key = ['block_date', 'tx_hash', 'evt_index'],
-        on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 

@@ -3,10 +3,9 @@
 
     alias='price_feeds_hourly',
     partition_by=['block_month'],
-    materialized='incremental',
-    file_format='delta',
-    incremental_strategy='merge',
-    unique_key=['blockchain', 'hour', 'proxy_address', 'aggregator_address']
+    materialized='table',
+    tags=['static'],
+    file_format='delta'
     , post_hook='{{ hide_spells() }}'
   )
 }}

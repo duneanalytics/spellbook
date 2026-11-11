@@ -3,11 +3,9 @@
 
     alias='automation_performed_daily',
     partition_by=['date_month'],
-    materialized='incremental',
+    materialized='table',
+    tags=['static'],
     file_format='delta',
-    incremental_strategy='merge',
-    unique_key=['date_start', 'keeper_address'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.date_start')]
   )
 }}
 

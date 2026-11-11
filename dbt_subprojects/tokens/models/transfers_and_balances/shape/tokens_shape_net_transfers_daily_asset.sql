@@ -3,11 +3,9 @@
 {{ config(
         schema = 'tokens_' + blockchain
         , alias = 'net_transfers_daily_asset'
-        , materialized = 'incremental'
+        , materialized = 'table'
+        , tags = ['static']
         , file_format = 'delta'
-        , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date', 'contract_address']
-        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
         )
 }}
 

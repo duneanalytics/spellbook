@@ -2,11 +2,8 @@
     schema = 'dex_blast'
     , alias = 'base_trades'
     , partition_by = ['block_month']
-    , materialized = 'incremental'
+    , materialized = 'table'
     , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , tags=['static']
     , post_hook='{{ hide_spells() }}'
     )
