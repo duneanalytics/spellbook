@@ -12,4 +12,4 @@
 }}
 
 
-{{ evm_net_transfers_daily(blockchain) }}
+{{ evm_net_transfers_daily(blockchain, transfers=ref('tokens_tron_transfers')) }}
