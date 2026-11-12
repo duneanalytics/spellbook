@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: stormtrade_ton_trade_notification_v2
+    meta:
+      blockchain: ton
+      sector: perps
+      short_description: "Storm Trade V2 trade accounting notifications on TON."
+    config:
+      tags: ['ton', 'stormtrade', 'perps']
+    description: >
+      Successful V2 trade notifications (opcode 0x28d36491).
+      Use alongside stormtrade_ton.trade_notification to query both V1 and V2 notification records.
+      Amounts use the vault collateral token's raw units. No USD volume is implied.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [tx_hash, block_date]
+    columns:
+      - name: block_date
+        description: "Transaction date; part of the merge key."
+        data_tests:
+          - not_null
+      - name: tx_hash
+        description: "Vault transaction hash; part of the merge key."
+        data_tests:
+          - not_null
+      - name: trace_id
+        description: "TON trace identifier."
+      - name: tx_now
+        description: "Transaction Unix timestamp."
+      - name: tx_lt
+        description: "Transaction logical time."
+      - name: vault
+        description: "Receiving vault address."
+      - name: vault_token
+        description: "Vault collateral symbol."
+      - name: message_source
+        description: "Sender of the V2 notification."
+      - name: query_id
+        description: "Notification query identifier (uint64)."
+      - name: asset_id
+        description: "VAMM asset index."
+      - name: free_amount
+        description: "Signed free collateral balance delta."
+      - name: locked_amount
+        description: "Signed locked collateral balance delta."
+      - name: exchange_amount
+        description: "Signed exchange amount in raw vault collateral units; not USD notional volume."
+      - name: withdraw_locked_amount
+        description: "Locked collateral released for withdrawal."
+      - name: fee_to_stakers
+        description: "Fee credited to stakers."
+      - name: executor_amount
+        description: "Amount credited to executors."
+      - name: total_referrer_amount
+        description: "Total amount credited to referrers."
+      - name: ref_count
+        description: "Number of referral split entries. The referral dictionary is skipped, not flattened."
+      - name: trader_addr
+        description: "Smart-account address (sa_address)."
+      - name: origin_addr
+        description: "Original bundle sender address from the notification payload."
+      - name: balance_delta
+        description: "Balance delta from the notification payload."
+      - name: amm
+        description: "VAMM address from the notification payload."
