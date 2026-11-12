@@ -5,7 +5,8 @@
        , file_format = 'delta'
        , incremental_strategy = 'merge'
        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-       , unique_key = ['tx_hash', 'block_date'],
+       , unique_key = ['tx_hash', 'block_date']
+       , filtering_columns = ['block_date'],
     post_hook='{{ expose_spells(\'["ton"]\',
                                    "project",
                                    "evaa",
@@ -21,7 +22,7 @@ WITH evaa_ton_pools AS (
     {{ evaa_ton_pools() }}
 ),
 parsed_boc AS (
-    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, pool_address, pool_name, body_boc
+    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, pool_address, pool_name, bitwise_right_shift(opcode, 24) AS log_type, body_boc
     FROM {{ source('ton', 'messages') }} M
     JOIN evaa_ton_pools ON M.source = pool_address
     WHERE M.direction = 'out' AND M.destination IS NULL -- ext out message
@@ -29,9 +30,9 @@ parsed_boc AS (
     {% if is_incremental() %}
         AND {{ incremental_predicate('M.block_date') }}
     {% endif %}
-    AND bitwise_right_shift(opcode, 24) = 1 -- log::supply_success, 0x1
+    AND bitwise_right_shift(opcode, 24) IN (1, 22) -- supply_success or V9 supply_withdraw_success
 ), parse_output as (
-select {{ ton_from_boc('body_boc', [
+select CASE WHEN log_type = 1 THEN {{ ton_from_boc('body_boc', [
     ton_begin_parse(),
     ton_load_uint(8, 'opcode'),
     ton_load_address('owner_address'),
@@ -46,7 +47,27 @@ select {{ ton_from_boc('body_boc', [
     ton_load_int(64, 'new_total_borrow'),
     ton_load_uint(64, 's_rate'),
     ton_load_uint(64, 'b_rate')
-    ]) }} as result, * from parsed_boc
+    ]) }} END as result, * from parsed_boc WHERE log_type = 1
+), parse_output_supply_withdraw AS (
+-- The combined V9 log adds a recipient address. Its first root reference is
+-- supply asset data; the second is withdrawal data. Read them independently.
+select CASE WHEN log_type = 22 THEN {{ ton_from_boc('body_boc', [
+    ton_begin_parse(),
+    ton_load_uint(8, 'opcode'),
+    ton_load_address('owner_address'),
+    ton_load_address('sender_address'),
+    ton_load_address('recipient_address'),
+    ton_load_uint(32, '_current_time'),
+    ton_load_ref(),
+    ton_begin_parse(),
+    ton_load_uint(256, 'asset_id'),
+    ton_load_uint(64, 'amount_supplied'),
+    ton_load_int(64, 'user_new_principal'),
+    ton_load_int(64, 'new_total_supply'),
+    ton_load_int(64, 'new_total_borrow'),
+    ton_load_uint(64, 's_rate'),
+    ton_load_uint(64, 'b_rate')
+    ]) }} END as result, * from parsed_boc WHERE log_type = 22
 )
 select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
 result.owner_address, result.sender_address, result.asset_id,
@@ -54,3 +75,11 @@ result.amount_supplied, result.user_new_principal, result.new_total_supply,
 result.new_total_borrow,
 CAST(result.s_rate AS bigint) AS s_rate, CAST(result.b_rate AS bigint) AS b_rate -- should be less than 2^64
 from parse_output
+UNION ALL
+select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
+result.owner_address, result.sender_address, result.asset_id,
+result.amount_supplied, result.user_new_principal, result.new_total_supply,
+result.new_total_borrow,
+CAST(result.s_rate AS bigint) AS s_rate, CAST(result.b_rate AS bigint) AS b_rate
+from parse_output_supply_withdraw
+WHERE result.amount_supplied > 0
