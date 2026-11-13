@@ -10,6 +10,7 @@
         incremental_predicates = ['DBT_INTERNAL_DEST.day >= date_trunc(\'day\', now() - interval \'1\' day)'],
         unique_key = ['unique_address_key'],
         post_hook='{{ hide_spells() }}'
+)
 }}
 
 WITH
