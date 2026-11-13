@@ -286,6 +286,16 @@ unwrap_for_swap AS (
         AND rn_event = 1
 ),
 
+{# When a swap pairs with a matched Wrap/Unwrap, the amount is already substituted to the underlying;
+   resolve the address to the underlying too so downstream pricing applies to the underlying token. #}
+erc4626_token_mapping AS (
+    SELECT
+        erc4626_token,
+        underlying_token
+    FROM {{ source('balancer_v3', 'erc4626_token_mapping') }}
+    WHERE blockchain = '{{ blockchain }}'
+),
+
 dexs AS (
     SELECT
         swap.evt_block_number AS block_number,
@@ -294,8 +304,16 @@ dexs AS (
         CAST(NULL AS VARBINARY) AS maker,
         COALESCE(unwrap_for_swap.withdrawnUnderlying, swap.amountOut) AS token_bought_amount_raw,
         COALESCE(wrap_for_swap.depositedUnderlying, swap.amountIn) AS token_sold_amount_raw,
-        swap.tokenOut AS token_bought_address,
-        swap.tokenIn AS token_sold_address,
+        CASE
+            WHEN unwrap_for_swap.swap_evt_index IS NOT NULL AND m_out.underlying_token IS NOT NULL
+                THEN m_out.underlying_token
+            ELSE swap.tokenOut
+        END AS token_bought_address,
+        CASE
+            WHEN wrap_for_swap.swap_evt_index IS NOT NULL AND m_in.underlying_token IS NOT NULL
+                THEN m_in.underlying_token
+            ELSE swap.tokenIn
+        END AS token_sold_address,
         swap.pool AS project_contract_address,
         swap.pool AS pool_id,
         l.pool_symbol,
@@ -310,7 +328,11 @@ dexs AS (
     LEFT JOIN unwrap_for_swap
         ON unwrap_for_swap.evt_tx_hash = swap.evt_tx_hash
         AND unwrap_for_swap.swap_evt_index = swap.evt_index
-    LEFT JOIN pool_labels l 
+    LEFT JOIN erc4626_token_mapping m_in
+        ON m_in.erc4626_token = swap.tokenIn
+    LEFT JOIN erc4626_token_mapping m_out
+        ON m_out.erc4626_token = swap.tokenOut
+    LEFT JOIN pool_labels l
         ON l.blockchain = '{{ blockchain }}'
         AND l.pool_address = swap.pool
 )
