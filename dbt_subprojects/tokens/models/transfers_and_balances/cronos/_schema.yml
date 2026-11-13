@@ -7,7 +7,7 @@ models:
       sector: tokens
       contributors: jeff-dude
     config:
-      tags: ['tokens','transfers', 'cronos']
+      tags: ['tokens','transfers', 'cronos', 'prod_exclude']
     description: >
       Token transfers
     data_tests:
@@ -70,7 +70,7 @@ models:
         oncall: false
     config:
       event_time: block_time
-      tags: ['tokens','transfers', 'cronos']
+      tags: ['tokens','transfers', 'cronos', 'prod_exclude']
     description: >
       Token transfers
     data_tests:
