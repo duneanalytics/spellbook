@@ -32,19 +32,14 @@ WITH data AS (
                 0x6edd4f12 -- Commit Batches Shared Bridge, post-v24
                 , 0x6f497ac6 -- Execute Batches Shared Bridge, post-v24
             ) THEN varbinary_to_uint256(varbinary_substring(t.data, 5, 32))
+            -- 0 (not NULL) marks non-Era rows: a NULL arm here fails the implicit cast to UINT256.
             WHEN bytearray_substring(t.data, 1, 4) IN (
                 0x0db9eb87 -- Commit Batches, EraMultisigValidator (first arg is the chain diamond address)
                 , 0xa085344d -- Execute Batches, EraMultisigValidator (first arg is the chain diamond address)
-            ) THEN CASE
-                WHEN varbinary_substring(t.data, 17, 20) = 0x32400084C286CF3E17e7B677ea9583e60a000324 THEN 324 -- ZKsync Era diamond
-                ELSE NULL
-            END
+            ) THEN IF(varbinary_substring(t.data, 17, 20) = 0x32400084C286CF3E17e7B677ea9583e60a000324, 324, 0) -- ZKsync Era diamond
             WHEN bytearray_substring(t.data, 1, 4) IN (
                 0xd4d9bdcd -- approveHash, EraMultisigValidator signer approvals required before execution (no chain arg)
-            ) THEN CASE
-                WHEN t.to = 0xdC26B08F0335b68721F64001C38b05D0BC9B539d THEN 324
-                ELSE NULL
-            END
+            ) THEN IF(t.to = 0xdC26B08F0335b68721F64001C38b05D0BC9B539d, 324, 0)
             ELSE 324
         END AS chain_id        
     FROM {{ source('ethereum', 'transactions') }} t

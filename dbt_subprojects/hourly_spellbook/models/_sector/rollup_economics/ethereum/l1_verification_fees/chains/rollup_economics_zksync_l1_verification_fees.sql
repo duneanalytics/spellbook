@@ -31,10 +31,7 @@ WITH data AS (
             ) THEN varbinary_to_uint256(varbinary_substring(t.data, 5, 32))
             WHEN bytearray_substring(t.data, 1, 4) IN (
                 0x9271e450 -- Prove Batches, EraMultisigValidator (first arg is the chain diamond address)
-            ) THEN CASE
-                WHEN varbinary_substring(t.data, 17, 20) = 0x32400084C286CF3E17e7B677ea9583e60a000324 THEN 324 -- ZKsync Era diamond
-                ELSE NULL
-            END
+            ) THEN IF(varbinary_substring(t.data, 17, 20) = 0x32400084C286CF3E17e7B677ea9583e60a000324, 324, 0) -- ZKsync Era diamond; 0 not NULL, a NULL arm fails the implicit cast to UINT256
             ELSE 324
         END AS chain_id           
     FROM {{ source('ethereum', 'transactions') }} AS t
