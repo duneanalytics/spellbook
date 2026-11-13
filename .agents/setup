@@ -7,6 +7,13 @@ cd "$repo_root"
 # uv is included in the orb base image. It installs the Python version required
 # by pyproject.toml; no system Python changes or environment activation needed.
 echo 'Syncing locked Python environment'
+# The parser sdist uses urllib for a second, large download. IncompleteRead
+# escapes its retry handler. Fetch that locked asset with curl instead, checking
+# both the lockfile's sdist hash and the sdist's embedded wheel hash.
+# Keep an already installed parser on warm starts; the final sync is exact.
+time uv sync --locked --inexact --no-install-package dbt-core-experimental-parser
+time uv run --no-sync python .agents/install-dbt-parser.py
+# Do not report readiness after the deliberately incomplete first sync.
 time uv sync --locked
 
 # Only install packages: parsing, tests, and any remote reads are explicit tasks,
