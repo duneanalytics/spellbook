@@ -2,6 +2,7 @@
         schema = 'beethoven_x_fantom',
         alias = 'bpt_supply',
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}

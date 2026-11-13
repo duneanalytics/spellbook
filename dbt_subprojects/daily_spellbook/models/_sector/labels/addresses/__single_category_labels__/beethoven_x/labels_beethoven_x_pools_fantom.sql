@@ -1,5 +1,6 @@
 {{config(
   alias = 'beethoven_x_pools_fantom'
+  , tags = ['static']
   , post_hook='{{ hide_spells() }}'
 )}}
 

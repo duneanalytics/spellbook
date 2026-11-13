@@ -6,6 +6,7 @@
         file_format = 'delta',
         partition_by = ['deployment_block_month'],
         incremental_strategy = 'merge',
+        merge_skip_unchanged = true,
         unique_key = ['blockchain', 'contract_address', 'deployment_tx_hash'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.deployment_block_time')]
   )

@@ -4,7 +4,8 @@
 	config(
 		schema = 'addresses_' + blockchain,
 		alias = 'stg_info_is_contract',
-		materialized = 'incremental',
+		materialized = 'table',
+		tags = ['static'],
 		file_format = 'delta',
 		incremental_strategy = 'merge',
 		partition_by = ['address_prefix'],

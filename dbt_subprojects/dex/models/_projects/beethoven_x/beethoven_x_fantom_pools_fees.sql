@@ -2,7 +2,8 @@
     config(
         schema = 'beethoven_x_fantom',
         alias = 'pools_fees',
-        materialized = 'incremental',
+        materialized = 'table',
+        tags = ['static'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_number', 'tx_hash', 'index']

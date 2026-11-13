@@ -3,6 +3,7 @@
         schema = 'beethoven_x_fantom',
         alias = 'protocol_fee', 
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}

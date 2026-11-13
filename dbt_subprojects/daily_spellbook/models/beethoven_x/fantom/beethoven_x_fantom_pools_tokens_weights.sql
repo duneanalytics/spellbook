@@ -3,7 +3,8 @@
         schema='beethoven_x_fantom',
         alias = 'pools_tokens_weights',
         
-        materialized = 'incremental',
+        materialized = 'table',
+        tags = ['static'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['pool_id', 'token_address']

@@ -3,6 +3,7 @@
         schema = 'beethoven_x_fantom',
         alias = 'bpt_prices',        
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}

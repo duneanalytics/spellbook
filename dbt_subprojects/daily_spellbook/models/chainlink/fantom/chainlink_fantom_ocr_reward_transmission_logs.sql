@@ -2,7 +2,8 @@
   config(
     
     alias='ocr_reward_transmission_logs',
-    materialized='incremental',
+    materialized='table',
+    tags = ['static'],
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['tx_hash', 'index']
