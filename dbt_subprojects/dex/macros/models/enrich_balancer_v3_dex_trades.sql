@@ -126,7 +126,7 @@ SELECT
     , COALESCE(
         dexs.amount_usd,
         dexs.token_bought_amount * erc4626a.price,
-        dexs.token_sold_amount * erc4626a.price
+        dexs.token_sold_amount * erc4626b.price
     ) AS amount_usd
     , COALESCE(erc4626a.underlying_token, 
         token_bought_address) AS token_bought_address
