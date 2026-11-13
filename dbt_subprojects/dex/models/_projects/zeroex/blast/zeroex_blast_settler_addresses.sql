@@ -2,11 +2,8 @@
     config(
         schema = 'zeroex_blast',
         alias = 'settler_addresses',
-        materialized='incremental',
-        unique_key = ['settler_address'],
-        on_schema_change='sync_all_columns',
+        materialized='table',
         file_format ='delta',
-        incremental_strategy='merge',
         tags=['static'],
         post_hook='{{ hide_spells() }}'
         )

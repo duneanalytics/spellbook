@@ -1,5 +1,6 @@
 {{config(
         alias = 'bridges_fantom'
+        , tags = ['static']
         , post_hook='{{ hide_spells() }}'
     )
 }}

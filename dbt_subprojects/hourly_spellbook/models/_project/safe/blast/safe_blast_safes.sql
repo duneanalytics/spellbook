@@ -1,13 +1,10 @@
 {{
     config(
-        materialized='incremental',
+        materialized='table',
         schema = 'safe_blast',
         alias= 'safes',
         partition_by = ['block_month'],
-        unique_key = ['block_date', 'address'],
-        on_schema_change='fail',
         file_format ='delta',
-        incremental_strategy='merge',
         tags=['static'],
         post_hook='{{ hide_spells() }}'
     )

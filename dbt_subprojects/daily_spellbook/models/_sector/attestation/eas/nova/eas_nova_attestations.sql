@@ -2,10 +2,9 @@
   config(
     schema = 'eas_nova',
     alias = 'attestations',
-    materialized = 'incremental',
+    materialized = 'table',
+    tags = ['static'],
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['schema_uid', 'attestation_uid']
   )
 }}
 

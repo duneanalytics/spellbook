@@ -1,10 +1,8 @@
 {{ config(
     schema = 'fantasy_blast',
     alias = 'base_trades',
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
     tags=['static'],
     post_hook='{{ hide_spells() }}'
     )

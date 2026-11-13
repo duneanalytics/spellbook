@@ -1,10 +1,8 @@
 {{ config(
     schema = 'uniswap_v4_blast'
     , alias = 'sqrtpricex96_monthly'
-    , materialized = 'incremental'
+    , materialized = 'table'
     , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'id', 'block_month']
     , tags=['static']
     , post_hook='{{ hide_spells() }}'
     )

@@ -1,11 +1,8 @@
 {{ config(
     schema = 'uniswap_v2_blast'
     , alias = 'pools'
-    , materialized = 'incremental'
+    , materialized = 'table'
     , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['id']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
     , tags=['static']
     , post_hook='{{ hide_spells() }}'
     )

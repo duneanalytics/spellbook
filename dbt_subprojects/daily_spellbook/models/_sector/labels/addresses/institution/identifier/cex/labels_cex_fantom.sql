@@ -1,6 +1,7 @@
 {{config(
 
         alias = 'cex_fantom'
+        , tags = ['static']
         , post_hook='{{ hide_spells() }}'
     )
 }}

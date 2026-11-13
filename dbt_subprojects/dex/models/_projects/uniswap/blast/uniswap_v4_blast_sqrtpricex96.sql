@@ -1,11 +1,8 @@
 {{ config(
     schema = 'uniswap_v4_blast'
     , alias = 'sqrtpricex96'
-    , materialized = 'incremental'
+    , materialized = 'table'
     , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['id', 'blockchain', 'block_index_sum']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , tags=['static']
     , post_hook='{{ hide_spells() }}'
     )
