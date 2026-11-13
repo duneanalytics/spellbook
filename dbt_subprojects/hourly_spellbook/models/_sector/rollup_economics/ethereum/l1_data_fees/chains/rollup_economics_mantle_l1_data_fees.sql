@@ -22,19 +22,30 @@ SELECT
     , {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     , (length(t.data)) AS data_length
 FROM {{ source('ethereum', 'transactions') }} t
-WHERE t.to IN (
-    0xD1328C9167e0693B689b5aa5a024379d4e437858 -- Rollup Proxy (last used as of block 19437175)
-    , 0x31d543e7BE1dA6eFDc2206Ef7822879045B9f481 -- L2OutputOracle Proxy (used as of block 19440324)
-    , 0x50Fa427235C7C8cAA4A0C21b5009f5a0d015B23A -- BVM_EigenDataLayrChain Proxy (DA1) (last used as of block 19437271)
-    , 0x5BD63a7ECc13b955C4F57e3F12A64c10263C14c1 -- DataLayrServiceManager Proxy (DA2) (used as of block 19439557)
-)
-AND bytearray_substring(t.data, 1, 4) IN (
-    0x49cd3004 -- createAssertionWithStateBatch
-    , 0x9aaab648 -- proposeL2Output
-    , 0x5e4a3056 -- storeData (DA1)
-    , 0x4618ed87 -- confirmData (DA1)
-    , 0x58942e73 -- confirmDataStore (DA2)
-    , 0xdcf49ea7 -- initDataStore (DA2)
+WHERE (
+    (
+        t.to IN (
+            0xD1328C9167e0693B689b5aa5a024379d4e437858 -- Rollup Proxy (last used as of block 19437175)
+            , 0x31d543e7BE1dA6eFDc2206Ef7822879045B9f481 -- L2OutputOracle Proxy (used as of block 19440324, OPSuccinctL2OutputOracle as of block 23373925)
+            , 0x50Fa427235C7C8cAA4A0C21b5009f5a0d015B23A -- BVM_EigenDataLayrChain Proxy (DA1) (last used as of block 19437271)
+            , 0x5BD63a7ECc13b955C4F57e3F12A64c10263C14c1 -- DataLayrServiceManager Proxy (DA2) (used as of block 19439557, last used 2025-03-19)
+        )
+        AND bytearray_substring(t.data, 1, 4) IN (
+            0x49cd3004 -- createAssertionWithStateBatch
+            , 0x9aaab648 -- proposeL2Output
+            , 0x5e4a3056 -- storeData (DA1)
+            , 0x4618ed87 -- confirmData (DA1)
+            , 0x58942e73 -- confirmDataStore (DA2)
+            , 0xdcf49ea7 -- initDataStore (DA2)
+            , 0x9ad84880 -- proposeL2Output (OPSuccinctL2OutputOracle)
+            , 0x1e856800 -- checkpointBlockHash (OPSuccinctL2OutputOracle)
+        )
+    )
+    OR (
+        -- Batcher (SystemConfig.batcherHash) to the batch inbox, used as of 2025-03-19 (calldata at first, blobs with empty calldata now)
+        t."from" = 0x2f40d796917ffb642bd2e2bdd2c762a5e40fd749
+        AND t.to = 0xFFEEDDCcBbAA0000000000000000000000000000
+    )
 )
 AND t.block_time >= TIMESTAMP '2023-06-27'
 {% if is_incremental() %}
