@@ -10,7 +10,6 @@
 ,ref('safe_avalanche_c_safes')
 ,ref('safe_base_safes')
 ,ref('safe_berachain_safes')
-,ref('safe_blast_safes')
 ,ref('safe_bnb_safes')
 ,ref('safe_celo_safes')
 ,ref('safe_monad_safes')
@@ -18,7 +17,6 @@
 ,ref('safe_hyperevm_safes')
 ,ref('safe_ink_safes')
 ,ref('safe_ethereum_safes')
-,ref('safe_fantom_safes')
 ,ref('safe_gnosis_safes')
 ,ref('safe_linea_safes')
 ,ref('safe_mantle_safes')
@@ -31,7 +29,6 @@
 ,ref('safe_sonic_safes')
 ,ref('safe_unichain_safes')
 ,ref('safe_worldchain_safes')
-,ref('safe_zkevm_safes')
 ,ref('safe_zksync_safes')
 ] %}
 

@@ -20,7 +20,6 @@
 ,ref('nft_optimism_approvals')
 ,ref('nft_arbitrum_approvals')
 ,ref('nft_polygon_approvals')
-,ref('nft_fantom_approvals')
 ,ref('nft_celo_approvals')
 ,ref('nft_base_approvals')
 ,ref('nft_zksync_approvals')

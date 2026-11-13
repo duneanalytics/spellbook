@@ -14,7 +14,6 @@
     , ref('rollup_economics_optimism_l1_data_fees')
     , ref('rollup_economics_scroll_l1_data_fees')
     , ref('rollup_economics_starknet_l1_data_fees')
-    , ref('rollup_economics_zkevm_l1_data_fees')
     , ref('rollup_economics_zksync_l1_data_fees')
     , ref('rollup_economics_zksync_lite_l1_data_fees')
 ] %}

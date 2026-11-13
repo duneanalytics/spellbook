@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_vrf_v1_random_request_logs',
   'chainlink_bnb_vrf_v1_random_request_logs',
   'chainlink_ethereum_vrf_v1_random_request_logs',
-  'chainlink_fantom_vrf_v1_random_request_logs',
   'chainlink_polygon_vrf_v1_random_request_logs'
 ] %}
 

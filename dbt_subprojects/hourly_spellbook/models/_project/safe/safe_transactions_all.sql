@@ -10,11 +10,9 @@
 ,ref('safe_avalanche_c_transactions')
 ,ref('safe_base_transactions')
 ,ref('safe_berachain_transactions')
-,ref('safe_blast_transactions')
 ,ref('safe_bnb_transactions')
 ,ref('safe_celo_transactions')
 ,ref('safe_ethereum_transactions')
-,ref('safe_fantom_transactions')
 ,ref('safe_gnosis_transactions')
 ,ref('safe_hyperevm_transactions')
 ,ref('safe_ink_transactions')
@@ -31,7 +29,6 @@
 ,ref('safe_tempo_transactions')
 ,ref('safe_unichain_transactions')
 ,ref('safe_worldchain_transactions')
-,ref('safe_zkevm_transactions')
 ,ref('safe_zksync_transactions')
 ] %}
 

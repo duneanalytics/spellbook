@@ -13,7 +13,6 @@
   'chainlink_arbitrum_price_feeds_hourly',
   'chainlink_avalanche_c_price_feeds_hourly',
   'chainlink_ethereum_price_feeds_hourly',
-  'chainlink_fantom_price_feeds_hourly',
   'chainlink_gnosis_price_feeds_hourly'
 ] %}
 

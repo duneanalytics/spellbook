@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_fm_gas_submission_logs',
   'chainlink_bnb_fm_gas_submission_logs',
   'chainlink_ethereum_fm_gas_submission_logs',
-  'chainlink_fantom_fm_gas_submission_logs',
   'chainlink_gnosis_fm_gas_submission_logs',
   'chainlink_optimism_fm_gas_submission_logs',
   'chainlink_polygon_fm_gas_submission_logs'

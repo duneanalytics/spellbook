@@ -62,7 +62,6 @@ models:
           "arbitrum",
           "avalanche_c",
           "ethereum",
-          "fantom",
           "gnosis",
         ]
       sector: oracle
@@ -108,7 +107,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -186,7 +184,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -246,7 +243,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -298,7 +294,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -368,7 +363,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -425,7 +419,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -475,7 +468,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -523,7 +515,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -574,7 +565,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -624,7 +614,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -676,7 +665,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -730,7 +718,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -788,7 +775,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -839,7 +825,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -891,7 +876,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -941,7 +925,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -983,7 +966,6 @@ models:
           "avalanche_c",
           "bnb",
           "ethereum",
-          "fantom",
           "gnosis",
           "optimism",
           "polygon",
@@ -1028,7 +1010,7 @@ models:
 
   - name: chainlink_automation_fulfilled_transactions
     meta:
-      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1067,7 +1049,7 @@ models:
 
   - name: chainlink_automation_gas_daily
     meta:
-      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1108,7 +1090,7 @@ models:
 
   - name: chainlink_automation_upkeep_performed_logs
     meta:
-      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1156,7 +1138,7 @@ models:
 
   - name: chainlink_automation_request_daily
     meta:
-      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1194,7 +1176,7 @@ models:
 
   - name: chainlink_automation_reverted_transactions
     meta:
-      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1233,7 +1215,7 @@ models:
 
   - name: chainlink_automation_reward_daily
     meta:
-      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1272,7 +1254,7 @@ models:
 
   - name: chainlink_automation_performed
     meta:
-      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1299,7 +1281,7 @@ models:
 
   - name: chainlink_automation_performed_daily
     meta:
-      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1336,7 +1318,7 @@ models:
   - name: chainlink_vrf_fulfilled_transactions
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1377,7 +1359,7 @@ models:
   - name: chainlink_vrf_gas_daily
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1419,7 +1401,7 @@ models:
   - name: chainlink_vrf_v1_random_fulfilled_logs
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1467,7 +1449,7 @@ models:
   - name: chainlink_vrf_v1_random_request_logs
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1515,7 +1497,7 @@ models:
   - name: chainlink_vrf_v2_random_fulfilled_logs
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1564,7 +1546,7 @@ models:
   - name: chainlink_vrf_request_daily
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1603,7 +1585,7 @@ models:
   - name: chainlink_vrf_reverted_transactions
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1644,7 +1626,7 @@ models:
   - name: chainlink_vrf_reward_daily
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1684,7 +1666,7 @@ models:
   - name: chainlink_vrf_request_fulfilled
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
@@ -1713,7 +1695,7 @@ models:
   - name: chainlink_vrf_request_fulfilled_daily
     meta:
       blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "polygon"]
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]

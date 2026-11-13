@@ -8,7 +8,6 @@
 ref('uniswap_arbitrum_pools')
 , ref('uniswap_avalanche_c_pools')
 , ref('uniswap_base_pools')
-, ref('uniswap_blast_pools')
 , ref('uniswap_bnb_pools')
 , ref('uniswap_celo_pools')
 , ref('uniswap_ethereum_pools')
@@ -25,7 +24,6 @@ ref('uniswap_arbitrum_pools')
 , ref('uniswap_unichain_pools')
 , ref('uniswap_worldchain_pools')
 , ref('uniswap_zksync_pools')
-, ref('uniswap_zora_pools')
 ] %}
 
 

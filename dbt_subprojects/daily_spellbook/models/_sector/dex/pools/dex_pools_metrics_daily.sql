@@ -12,7 +12,6 @@
 
 {% set dex_pool_metrics_models = [
  source('balancer','pools_metrics_daily'),
- source('beethoven_x_fantom','pools_metrics_daily'),
  source('jelly_swap_sei','pools_metrics_daily')
 ] %}
 
@@ -33,8 +32,9 @@ FROM (
         tvl_eth,
         fee_amount_usd
     FROM {{ dex_model }}
+    WHERE blockchain NOT IN ({% for c in deprecated_evm_chains() %}'{{ c }}'{% if not loop.last %}, {% endif %}{% endfor %})
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_date')}}
+    AND {{incremental_predicate('block_date')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL

@@ -14,7 +14,6 @@
 ,ref('fungible_optimism_transfers')
 ,ref('fungible_arbitrum_transfers')
 ,ref('fungible_polygon_transfers')
-,ref('fungible_fantom_transfers')
 ,ref('fungible_base_transfers')
 ] %}
 

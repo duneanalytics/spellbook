@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_vrf_reverted_transactions',
   'chainlink_bnb_vrf_reverted_transactions',
   'chainlink_ethereum_vrf_reverted_transactions',
-  'chainlink_fantom_vrf_reverted_transactions',
   'chainlink_polygon_vrf_reverted_transactions'
 ] %}
 

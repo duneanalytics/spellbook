@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_fm_reverted_transactions',
   'chainlink_bnb_fm_reverted_transactions',
   'chainlink_ethereum_fm_reverted_transactions',
-  'chainlink_fantom_fm_reverted_transactions',
   'chainlink_gnosis_fm_reverted_transactions',
   'chainlink_optimism_fm_reverted_transactions',
   'chainlink_polygon_fm_reverted_transactions'

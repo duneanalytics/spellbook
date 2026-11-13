@@ -10,7 +10,6 @@
   'chainlink_ethereum_automation_upkeep_performed_logs',
   'chainlink_avalanche_c_automation_upkeep_performed_logs',
   'chainlink_bnb_automation_upkeep_performed_logs',
-  'chainlink_fantom_automation_upkeep_performed_logs',
   'chainlink_polygon_automation_upkeep_performed_logs'
 ] %}
 

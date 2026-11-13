@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_ocr_reward_transmission_logs',
   'chainlink_bnb_ocr_reward_transmission_logs',
   'chainlink_ethereum_ocr_reward_transmission_logs',
-  'chainlink_fantom_ocr_reward_transmission_logs',
   'chainlink_gnosis_ocr_reward_transmission_logs',
   'chainlink_optimism_ocr_reward_transmission_logs',
   'chainlink_polygon_ocr_reward_transmission_logs'

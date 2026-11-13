@@ -3,7 +3,7 @@ version: 2
 models:
   - name: paraswap_trades
     meta:
-      blockchain: avalanche_c, fantom, arbitrum, bnb, ethereum, optimism, polygon
+      blockchain: avalanche_c, arbitrum, bnb, ethereum, optimism, polygon
       sector: dex
       project: paraswap
       contributors: Henrystats, springzh

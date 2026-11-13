@@ -16,7 +16,6 @@
     ref('boost_ethereum_deployed'),
     ref('boost_optimism_deployed'),
     ref('boost_polygon_deployed'),
-    ref('boost_zora_deployed'),
 ] %}
 
 select

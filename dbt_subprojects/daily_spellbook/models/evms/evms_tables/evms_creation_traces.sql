@@ -6,7 +6,7 @@
         )
 }}
 
-{% set structured_blockchains = evms_structured_blockchains_list() %}
+{% set structured_blockchains = evms_structured_blockchains_list() | reject('in', deprecated_evm_chains()) | list %}
 
 SELECT
         *

@@ -10,11 +10,9 @@
     , 'avalanche_c'
     , 'base'
     , 'bitcoin'
-    , 'blast'
     , 'bnb'
     , 'celo'
     , 'ethereum'
-    , 'fantom'
     , 'gnosis'
     , 'linea'
     , 'mantle'
@@ -26,9 +24,7 @@
     , 'solana'
     , 'ton'
     , 'tron'
-    , 'zkevm'
     , 'zksync'
-    , 'zora'
 ] %}
 
 SELECT *

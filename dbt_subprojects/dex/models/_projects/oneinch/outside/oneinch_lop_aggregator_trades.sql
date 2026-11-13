@@ -19,7 +19,7 @@
 -- this view window-free lets consumers' block_time predicates push down into the
 -- oneinch_swaps scan
 with venue_settled_fills as (
-    {% for blockchain in oneinch_blockchains_cfg_macro() if blockchain.exposed and stream.name in blockchain.exposed %}
+    {% for blockchain in oneinch_blockchains_cfg_macro() | rejectattr('name', 'in', deprecated_evm_chains()) if blockchain.exposed and stream.name in blockchain.exposed %}
     select *
     from {{ ref('oneinch_' + blockchain.name + '_lop_venue_settled_fills') }}
     {% if not loop.last %}union all{% endif %}

@@ -12,7 +12,7 @@
 -- consume the per-chain models directly (oneinch_lop_dex_trades_passthrough) so that
 -- one chain's base-trades changes don't fan out to every chain's trades lineage
 
-{% for blockchain in oneinch_blockchains_cfg_macro() if blockchain.exposed and stream.name in blockchain.exposed %}
+{% for blockchain in oneinch_blockchains_cfg_macro() | rejectattr('name', 'in', deprecated_evm_chains()) if blockchain.exposed and stream.name in blockchain.exposed %}
 select *
 from {{ ref('oneinch_' + blockchain.name + '_lop_own_trades') }}
 {% if not loop.last %}union all{% endif %}
