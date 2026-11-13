@@ -149,7 +149,7 @@ models:
       contributors: niftytable, lgingerich
     config:
       tags: ['rollup', 'l2']
-    description: Fees spent by Mantle for calldata gas on Ethereum
+    description: Fees spent by Mantle for calldata gas on Ethereum, including L2 output proposals, block hash checkpoints and the execution gas of batcher transactions to the batch inbox
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:

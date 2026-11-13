@@ -149,7 +149,7 @@ models:
       contributors: niftytable, lgingerich
     config:
       tags: ['rollup', 'l2']
-    description: Fees spent by ZKsync Era for proof verification on Ethereum
+    description: Fees spent by ZKsync Era for proof verification on Ethereum, including the approveHash transactions EraMultisigValidator signers send before each batch can be executed
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:

@@ -32,6 +32,13 @@ WITH data AS (
                 0x6edd4f12 -- Commit Batches Shared Bridge, post-v24
                 , 0x6f497ac6 -- Execute Batches Shared Bridge, post-v24
             ) THEN varbinary_to_uint256(varbinary_substring(t.data, 5, 32))
+            WHEN bytearray_substring(t.data, 1, 4) IN (
+                0x0db9eb87 -- Commit Batches, EraMultisigValidator (first arg is the chain diamond address)
+                , 0xa085344d -- Execute Batches, EraMultisigValidator (first arg is the chain diamond address)
+            ) THEN CASE
+                WHEN varbinary_substring(t.data, 17, 20) = 0x32400084C286CF3E17e7B677ea9583e60a000324 THEN 324 -- ZKsync Era diamond
+                ELSE NULL
+            END
             ELSE 324
         END AS chain_id        
     FROM {{ source('ethereum', 'transactions') }} t
@@ -42,7 +49,8 @@ WITH data AS (
         , 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E -- L1 transactions settle here post v24 upgrade (shared bridge)
         , 0x0D3250c3D5FAcb74Ac15834096397a3Ef790ec99 -- Batcher
         , 0x3527439923a63F8C13CF72b8Fe80a77f6e572092 -- Validator
-        , 0x8c0Bfc04AdA21fd496c55B8C50331f904306F564 -- ValidatorTimelock
+        , 0x8c0Bfc04AdA21fd496c55B8C50331f904306F564 -- ValidatorTimelock (last used 2026-07-07)
+        , 0xdC26B08F0335b68721F64001C38b05D0BC9B539d -- EraMultisigValidator proxy (used as of 2026-07-07)
     )
     AND bytearray_substring(t.data, 1, 4) IN (
         0x0c4dd810 -- Commit Block, pre-Boojum
@@ -53,6 +61,8 @@ WITH data AS (
         , 0x6f497ac6 -- Execute Batches, post v24 upgrade (shared bridge)
         , 0xcf02827d -- executeBatchesSharedBridge (Validator)
         , 0x98f81962 -- commitBatchesSharedBridge (Batcher)
+        , 0x0db9eb87 -- commitBatchesSharedBridge (EraMultisigValidator)
+        , 0xa085344d -- executeBatchesSharedBridge (EraMultisigValidator)
     )
     AND t.block_time >= TIMESTAMP '2023-02-14'
     {% if is_incremental() %}
