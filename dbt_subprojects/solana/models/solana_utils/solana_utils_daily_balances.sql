@@ -9,10 +9,7 @@
         incremental_strategy='merge',
         incremental_predicates = ['DBT_INTERNAL_DEST.day >= date_trunc(\'day\', now() - interval \'1\' day)'],
         unique_key = ['unique_address_key'],
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "solana_utils",
-                                    \'["ilemi"]\') }}')
+        post_hook='{{ hide_spells() }}'
 }}
 
 WITH
