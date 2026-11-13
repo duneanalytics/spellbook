@@ -57,4 +57,14 @@ FROM
     , (0x4c9712cd94376c537464caa4d87bce198d59936c, 'GigaMart') -- GigaMart's GigaAggregator
     , (0xdc077a4e3f46138dedac5d684882d33fcc927cf7, 'GigaMart') -- GigaMart's GigaAggregator v 1.2
     , (0x4abab19c2ad968adbc52e2c8a5ccda5379629576, 'Skillet') -- Skillet
+    , (0x3b59bffe109e0f33f20887343759a98b48ecdf5f, 'GONDI') -- GONDI PurchaseBundler
+    , (0xcea7eea12c6fc82d0318704b9d35a4192c2d260a, 'GONDI') -- GONDI PurchaseBundler
+    , (0xf46a58cada29ff34cf62f72357d2b37815506feb, 'GONDI') -- GONDI PurchaseBundler
+    , (0x2b5e66c44b223b9d3b192e697f58795febcd6c10, 'GONDI') -- GONDI PurchaseBundler
+    , (0x53ceda4c47585df08201955820e23bb261489140, 'GONDI') -- GONDI PurchaseBundler
+    , (0x500007b5ccc7dc461dfc0f0ac99295b2e077c333, 'GONDI') -- GONDI PurchaseBundler
+    , (0x1fba531724ea2493a15bf5c4ea05f6ab5c0fcd62, 'GONDI') -- GONDI PurchaseBundler
+    , (0xfd31a0cd628f0bab2cc174c3abd6bfc2d01aca61, 'GONDI') -- GONDI PurchaseBundler
+    , (0xc10472ac1bf9f2e58ff2c83596b4535334c90814, 'GONDI') -- GONDI PurchaseBundler
+    , (0xe02d85e80c1ebda5aa43b8a1996332a83f855a59, 'GONDI') -- GONDI PurchaseBundler
   ) AS temp_table (contract_address, name)
