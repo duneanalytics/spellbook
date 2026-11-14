@@ -8,7 +8,7 @@ models:
       sector: tokens
       contributors: ['aalan3', 'jeff-dude', 'hdser']
     config:
-      tags: ['tokens', 'base', 'transfers', 'gnosis']
+      tags: ['tokens', 'base', 'transfers', 'gnosis', 'prod_exclude']
     columns: &base_columns
       - name: unique_key
         description: "Surrogate key to identify unique row."
@@ -51,7 +51,7 @@ models:
       sector: tokens
       contributors: jeff-dude
     config:
-      tags: ['tokens','transfers', 'gnosis']
+      tags: ['tokens','transfers', 'gnosis', 'prod_exclude']
     description: >
       ERC4626 contracts that emit their own ERC20 mint/burn Transfer events. tokens_gnosis_base_transfers builds no synthetic ERC4626 mint/burn rows for them.
     data_tests:
@@ -80,7 +80,7 @@ models:
       # column set therefore resolves to nothing, and validate_monitoring requires
       # event_time to be among the declared columns. Fix the anchor, then declare.
     config:
-      tags: ['tokens', 'transfers', 'gnosis']
+      tags: ['tokens', 'transfers', 'gnosis', 'prod_exclude']
     columns: 
       - <<: *base_columns
       - name: symbol
@@ -101,7 +101,7 @@ models:
       sector: tokens
       contributors: ['0xRob', 'hdser']
     config:
-      tags: ['tokens', 'suicide', 'events', 'gnosis']
+      tags: ['tokens', 'suicide', 'events', 'gnosis', 'prod_exclude']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -147,7 +147,7 @@ models:
       sector: tokens
       contributors: ['hdser']
     config:
-      tags: ['tokens', 'suicide', 'transfers', 'gnosis']
+      tags: ['tokens', 'suicide', 'transfers', 'gnosis', 'prod_exclude']
     columns: 
       - <<: *base_columns
       - name: refund_address
@@ -160,7 +160,7 @@ models:
       sector: tokens
       contributors: ['hdser']
     config:
-      tags: ['tokens', 'base', 'non-suicide', 'transfers', 'gnosis']
+      tags: ['tokens', 'base', 'non-suicide', 'transfers', 'gnosis', 'prod_exclude']
     columns: 
       - <<: *base_columns
 
@@ -171,7 +171,7 @@ models:
       sector: tokens
       contributors: ['hdser']
     config:
-      tags: ['tokens', 'non-standard', 'transfers', 'gnosis']
+      tags: ['tokens', 'non-standard', 'transfers', 'gnosis', 'prod_exclude']
     columns: 
       - <<: *base_columns
       - name: transfer_type
@@ -184,7 +184,7 @@ models:
       sector: tokens
       contributors: ['hdser']
     config:
-      tags: ['tokens', 'full', 'transfers', 'gnosis']
+      tags: ['tokens', 'full', 'transfers', 'gnosis', 'prod_exclude']
     columns: 
       - <<: *base_columns
       - name: transfer_type
