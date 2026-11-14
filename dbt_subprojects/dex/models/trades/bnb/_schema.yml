@@ -585,6 +585,25 @@ models:
           arguments:
             seed_file: ref('lista_smartswap_bnb_base_trades_seed')
 
+  - name: lista_v3_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: lista
+      contributors: toccata
+    config:
+      tags: ["bnb", "dex", "trades", "lista", "uniswap", "v3"]
+    description: "Lista V3 BNB base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          arguments:
+            seed_file: ref('lista_v3_bnb_base_trades_seed')
+
   - name: onepunchswap_bnb_base_trades
     meta:
       blockchain: bnb
