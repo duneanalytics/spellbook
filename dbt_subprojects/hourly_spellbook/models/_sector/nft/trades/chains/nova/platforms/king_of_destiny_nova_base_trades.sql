@@ -1,10 +1,9 @@
 {{ config(
     schema = 'king_of_destiny_nova',
     alias = 'base_trades',
-    materialized = 'incremental',
+    materialized = 'table',
+    tags = ['static'],
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
     )
 }}
 

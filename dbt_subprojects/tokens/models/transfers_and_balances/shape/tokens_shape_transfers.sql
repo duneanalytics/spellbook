@@ -2,12 +2,9 @@
      schema = 'tokens_shape'
      , alias = 'transfers'
      , partition_by = ['block_month']
-     , materialized = 'incremental'
+     , materialized = 'table'
+     , tags = ['static']
      , file_format = 'delta'
-     , incremental_strategy = 'merge'
-     , merge_skip_unchanged = true
-     , unique_key = ['block_date','unique_key']
-     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
      , post_hook='{{ hide_spells() }}'
      )
 }}

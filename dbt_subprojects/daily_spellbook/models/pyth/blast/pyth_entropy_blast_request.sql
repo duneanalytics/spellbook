@@ -2,10 +2,8 @@
     config(
         schema='pyth_entropy_blast',
         alias='request',
-        materialized='incremental',
+        materialized='table',
         file_format='delta',
-        incremental_strategy='merge',
-        unique_key=['tx_hash', 'assigned_sequence_number'],
         tags=['static'],
         post_hook='{{ hide_spells() }}'
     )

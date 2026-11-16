@@ -4,11 +4,9 @@
         
         schema = 'cex_' + blockchain,
         alias = 'deposit_addresses',
-        tags = ['prod_exclude'],
-        materialized = 'incremental',
+        tags = ['prod_exclude', 'static'],
+        materialized = 'table',
         file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['address']
 )
 }}
 

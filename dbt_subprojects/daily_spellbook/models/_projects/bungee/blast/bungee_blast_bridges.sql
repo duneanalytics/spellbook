@@ -2,11 +2,8 @@
     config(
         schema = 'bungee_blast',
         alias = 'bridges',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['transfer_id'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
         tags=['static'],
         post_hook='{{ hide_spells() }}'
     )

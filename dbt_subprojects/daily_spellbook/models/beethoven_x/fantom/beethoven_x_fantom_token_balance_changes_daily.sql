@@ -3,6 +3,7 @@
         schema = 'beethoven_x_fantom',
         alias = 'token_balance_changes_daily', 
         materialized = 'table',
+        tags = ['static'],
         file_format = 'delta'
     )
 }}
