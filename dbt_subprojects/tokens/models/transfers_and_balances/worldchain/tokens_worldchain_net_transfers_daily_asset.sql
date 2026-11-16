@@ -12,7 +12,7 @@
 }}
 
 
-{{ evm_net_transfers_daily_asset(
+{{ evm_net_transfers_daily_asset_by_source(
         blockchain=blockchain,
         native_contract_address=var('ETH_ERC20_ADDRESS')
 ) 
