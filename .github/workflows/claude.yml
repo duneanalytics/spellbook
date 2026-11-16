@@ -24,7 +24,7 @@ jobs:
       # The self-hosted runner group does not allow public repositories.
       runs-on: '"ubuntu-latest"'
       auto-approve: true
-      dry-run: true
+      dry-run: false
       deny-paths: |
         .github/*
         .claude/*
