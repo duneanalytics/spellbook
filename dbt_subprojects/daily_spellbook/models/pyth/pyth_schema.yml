@@ -3,7 +3,7 @@ version: 2
 models:
   - name: pyth_entropy_request
     meta:
-      blockchain: abstract, apechain. arbitrum, b3, base, berachain, blast, kaia, mode, optimism, sei, sonic
+      blockchain: abstract, apechain. arbitrum, base, berachain, kaia, mode, optimism, sei, sonic
       project: pyth
       contributors: gunboats
     config:

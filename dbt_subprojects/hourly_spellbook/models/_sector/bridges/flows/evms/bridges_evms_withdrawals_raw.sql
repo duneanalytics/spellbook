@@ -10,18 +10,14 @@
     , 'avalanche_c'
     , 'base'
     , 'berachain'
-    , 'blast'
     , 'bnb'
-    , 'corn'
     , 'ethereum'
-    , 'fantom'
     , 'gnosis'
     , 'flare'
     , 'hyperevm'
     , 'ink'
     , 'lens'
     , 'linea'
-    , 'nova'
     , 'opbnb'
     , 'optimism'
     , 'plasma'
@@ -31,7 +27,6 @@
     , 'unichain'
     , 'worldchain'
     , 'zksync'
-    , 'zora'
 ] %}
 
 SELECT *

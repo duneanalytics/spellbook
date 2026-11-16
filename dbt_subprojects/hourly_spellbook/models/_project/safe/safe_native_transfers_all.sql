@@ -9,7 +9,6 @@
  ref('safe_arbitrum_eth_transfers')
 ,ref('safe_avalanche_c_avax_transfers')
 ,ref('safe_base_eth_transfers')
-,ref('safe_blast_eth_transfers')
 ,ref('safe_bnb_bnb_transfers')
 ,ref('safe_celo_celo_transfers')
 ,ref('safe_ethereum_eth_transfers')
@@ -22,7 +21,6 @@
 ,ref('safe_sonic_s_transfers')
 ,ref('safe_unichain_eth_transfers')
 ,ref('safe_worldchain_eth_transfers')
-,ref('safe_zkevm_matic_transfers')
 ,ref('safe_zksync_eth_transfers')
 ] %}
 

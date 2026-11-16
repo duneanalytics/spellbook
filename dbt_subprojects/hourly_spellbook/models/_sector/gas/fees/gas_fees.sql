@@ -1,4 +1,4 @@
-{% set chains = gas_evm_chains() + ['tron'] %}
+{% set chains = (gas_evm_chains() | reject('in', deprecated_evm_chains()) | list) + ['tron'] %}
 
 {{ config(
     schema = 'gas',

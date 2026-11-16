@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_vrf_request_fulfilled_daily',
   'chainlink_bnb_vrf_request_fulfilled_daily',
   'chainlink_ethereum_vrf_request_fulfilled_daily',
-  'chainlink_fantom_vrf_request_fulfilled_daily',
   'chainlink_polygon_vrf_request_fulfilled_daily'
 ] %}
 

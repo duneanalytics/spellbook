@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_fm_reward_evt_transfer',
   'chainlink_bnb_fm_reward_evt_transfer',
   'chainlink_ethereum_fm_reward_evt_transfer',
-  'chainlink_fantom_fm_reward_evt_transfer',
   'chainlink_gnosis_fm_reward_evt_transfer',
   'chainlink_optimism_fm_reward_evt_transfer',
   'chainlink_polygon_fm_reward_evt_transfer'

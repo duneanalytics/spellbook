@@ -15,18 +15,15 @@
      , (ref('inscription_avalanche_c_mints'))
      , (ref('inscription_bnb_mints'))
      , (ref('inscription_ethereum_mints'))
-     , (ref('inscription_fantom_mints'))
      , (ref('inscription_gnosis_mints'))
      , (ref('inscription_optimism_mints'))
      , (ref('inscription_polygon_mints'))
      , (ref('inscription_base_mints'))
      , (ref('inscription_celo_mints'))
-     , (ref('inscription_zora_mints'))
      , (ref('inscription_scroll_mints'))
      , (ref('inscription_zksync_mints'))
      , (ref('inscription_goerli_mints'))
      , (ref('inscription_linea_mints'))
-     , (ref('inscription_zkevm_mints'))
 ] %}
 
 SELECT *

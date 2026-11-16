@@ -58,7 +58,7 @@ meta as (
         , date_trunc('minute', block_time) as minute
         , row_number() over(partition by blockchain, block_number, tx_hash order by call_trace_address, order_hash) as counter
     from (
-        {% for blockchain in oneinch_project_swaps_exposed_blockchains_list() %}
+        {% for blockchain in oneinch_project_swaps_exposed_blockchains_list() | reject('in', deprecated_evm_chains()) | list %}
             select
                 {{ orders_base_columns | join(', ') }}
                 , tag

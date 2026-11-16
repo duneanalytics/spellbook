@@ -15,18 +15,15 @@
      , (ref('inscription_avalanche_c_deploys'))
      , (ref('inscription_bnb_deploys'))
      , (ref('inscription_ethereum_deploys'))
-     , (ref('inscription_fantom_deploys'))
      , (ref('inscription_gnosis_deploys'))
      , (ref('inscription_optimism_deploys'))
      , (ref('inscription_polygon_deploys'))
      , (ref('inscription_base_deploys'))
      , (ref('inscription_celo_deploys'))
-     , (ref('inscription_zora_deploys'))
      , (ref('inscription_scroll_deploys'))
      , (ref('inscription_zksync_deploys'))
      , (ref('inscription_goerli_deploys'))
      , (ref('inscription_linea_deploys'))
-     , (ref('inscription_zkevm_deploys'))
 ] %}
 
 SELECT *

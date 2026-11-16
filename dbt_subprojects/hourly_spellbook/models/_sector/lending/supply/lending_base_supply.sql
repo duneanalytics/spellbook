@@ -18,9 +18,7 @@
     ref('lending_base_base_supply'),
     ref('lending_bnb_base_supply'),
     ref('lending_celo_base_supply'),
-    ref('lending_corn_base_supply'),
     ref('lending_ethereum_base_supply'),
-    ref('lending_fantom_base_supply'),
     ref('lending_gnosis_base_supply'),
     ref('lending_ink_base_supply'),
     ref('lending_katana_base_supply'),
@@ -31,7 +29,6 @@
     ref('lending_polygon_base_supply'),
     ref('lending_scroll_base_supply'),
     ref('lending_sonic_base_supply'),
-    ref('lending_tac_base_supply'),
     ref('lending_unichain_base_supply'),
     ref('lending_worldchain_base_supply'),
     ref('lending_zksync_base_supply')

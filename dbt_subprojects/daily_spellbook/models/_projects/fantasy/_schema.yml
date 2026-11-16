@@ -135,7 +135,7 @@ models:
       - *tactics_bought
   - name: fantasy_events
     meta:
-      blockchain: base, blast
+      blockchain: base
       project: fantasy
       contributors: hildobby
     config:

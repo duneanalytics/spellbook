@@ -20,7 +20,6 @@
     ref('eas_scroll_schemas'),
     ref('eas_celo_schemas'),
     ref('eas_linea_schemas'),
-    ref('eas_nova_schemas'),
     ref('eas_zksync_schemas')
   ]
 %}

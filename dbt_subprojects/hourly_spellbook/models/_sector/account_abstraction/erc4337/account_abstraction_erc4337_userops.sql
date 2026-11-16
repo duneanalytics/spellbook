@@ -15,7 +15,6 @@
 , ref('account_abstraction_erc4337_base_userops')
 , ref('account_abstraction_erc4337_bnb_userops')
 , ref('account_abstraction_erc4337_celo_userops')
-, ref('account_abstraction_erc4337_zora_userops')
 ] %}
 
 SELECT *

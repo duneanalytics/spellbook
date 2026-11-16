@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_sandwiches
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora, mantle, unichain
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, celo, zksync, scroll, mantle, unichain
       sector: dex
       contributors: hildobby, agaperste
       docs_slug: /curated/dex-trades/evm/dex-sandwiches
@@ -95,7 +95,7 @@ models:
 
   - name: dex_sandwiched
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, celo, zksync, scroll
       sector: dex
       contributors: hildobby
       docs_slug: /curated/dex-trades/evm/dex-sandwiched

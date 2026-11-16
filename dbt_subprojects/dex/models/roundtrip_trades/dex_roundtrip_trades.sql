@@ -11,7 +11,6 @@
 ref('dex_arbitrum_roundtrip_trades')
 , ref('dex_avalanche_c_roundtrip_trades')
 , ref('dex_base_roundtrip_trades')
-, ref('dex_blast_roundtrip_trades')
 , ref('dex_bnb_roundtrip_trades')
 , ref('dex_celo_roundtrip_trades')
 , ref('dex_ethereum_roundtrip_trades')
@@ -28,7 +27,6 @@ ref('dex_arbitrum_roundtrip_trades')
 , ref('dex_unichain_roundtrip_trades')
 , ref('dex_worldchain_roundtrip_trades')
 , ref('dex_zksync_roundtrip_trades')
-, ref('dex_zora_roundtrip_trades')
 ] %}
 
 

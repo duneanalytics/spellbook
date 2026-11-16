@@ -14,7 +14,6 @@
     ('arbitrum', ref('addresses_arbitrum_info'))
     , ('avalanche_c', ref('addresses_avalanche_c_info'))
     , ('base', ref('addresses_base_info'))
-    , ('blast', ref('addresses_blast_info'))
     , ('bnb', ref('addresses_bnb_info'))
     , ('celo', ref('addresses_celo_info'))
     , ('ethereum', ref('addresses_ethereum_info'))
@@ -26,9 +25,6 @@
     , ('polygon', ref('addresses_polygon_info'))
     , ('scroll', ref('addresses_scroll_info'))
     , ('sei', ref('addresses_sei_info'))
-    , ('zora', ref('addresses_zora_info'))
-    , ('fantom', ref('addresses_fantom_info'))
-    , ('zkevm', ref('addresses_zkevm_info'))
     , ('zksync', ref('addresses_zksync_info'))
 ] %}
 

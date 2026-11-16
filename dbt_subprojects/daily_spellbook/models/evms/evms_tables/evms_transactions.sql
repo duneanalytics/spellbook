@@ -7,7 +7,7 @@
 }}
 
 -- include non-L2s in models, since we want to control for L1 Gas Used
-{% set structured_blockchains = evms_structured_blockchains_list() %}
+{% set structured_blockchains = evms_structured_blockchains_list() | reject('in', deprecated_evm_chains()) | list %}
 
 SELECT *
 FROM (
@@ -34,14 +34,14 @@ FROM (
         , success
         , "type"
         , CAST(value AS double) AS value
-        {% if blockchain in ('ethereum', 'arbitrum', 'base', 'optimism', 'polygon', 'zkevm', 'bnb', 'gnosis', 'scroll', 'zora', 'mantle', 'berachain', 'unichain', 'worldchain', 'ink', 'nova', 'opbnb') %}
+        {% if blockchain in ('ethereum', 'arbitrum', 'base', 'optimism', 'polygon', 'bnb', 'gnosis', 'scroll', 'mantle', 'berachain', 'unichain', 'worldchain', 'ink', 'opbnb') %}
         , authorization_list
         {% else %}
         , CAST(NULL AS array(row(chainid bigint, address varbinary, nonce bigint, r varchar, s varchar, yparity varchar))) AS authorization_list
         {% endif %}
         
         --Logic for L2s
-                {% if blockchain in all_op_chains() + ('scroll','mantle','blast') %}
+                {% if blockchain in all_op_chains() + ('scroll','mantle') %}
                 , l1_tx_origin
                 , l1_fee_scalar
                 , l1_block_number

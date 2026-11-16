@@ -55,7 +55,7 @@
     , 'zkevm'
     , 'zksync'
     , 'zora'
-] %}
+] | reject('in', deprecated_evm_chains()) | list %}
 
 {% for chain in chains %}
 SELECT

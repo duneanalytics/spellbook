@@ -6,7 +6,7 @@
 
 SELECT *
 FROM (
-    {% for chain in uniswap_v4_chains() %}
+    {% for chain in uniswap_v4_chains() | reject('in', deprecated_evm_chains()) | list %}
     SELECT
         blockchain,
         project,

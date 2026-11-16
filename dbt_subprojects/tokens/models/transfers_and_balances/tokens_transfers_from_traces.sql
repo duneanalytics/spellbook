@@ -1,4 +1,4 @@
-{%- set exposed = transfers_from_traces_exposed_blockchains_macro() -%}
+{%- set exposed = transfers_from_traces_exposed_blockchains_macro() | reject('in', deprecated_evm_chains()) | list -%}
 
 {{-
     config(

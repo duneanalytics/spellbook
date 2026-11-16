@@ -3,7 +3,7 @@ version: 2
 models:
  - name: synapse_flashloans
    meta:
-    blockchain: ethereum, optimism, avalanche_c, bnb, arbitrum, polygon, fantom
+    blockchain: ethereum, optimism, avalanche_c, bnb, arbitrum, polygon
     sector: lending
     contributors: hildobby
    config:

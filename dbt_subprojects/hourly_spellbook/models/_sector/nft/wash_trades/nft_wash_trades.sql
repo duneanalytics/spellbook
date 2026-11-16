@@ -3,7 +3,7 @@
         schema = 'nft',
         filtering_columns = ['blockchain'],
         
-        post_hook='{{ expose_spells(\'["abstract", "apechain", "arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "fantom", "linea", "nova", "optimism", "polygon", "ronin", "scroll", "zksync", "zora"]\',
+        post_hook='{{ expose_spells(\'["abstract", "apechain", "arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "linea", "optimism", "polygon", "ronin", "scroll", "zksync"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby", "0xr3x"]\') }}')
@@ -21,10 +21,6 @@
 , ref('nft_zksync_wash_trades')
 , ref('nft_base_wash_trades')
 , ref('nft_scroll_wash_trades')
-, ref('nft_zora_wash_trades')
-, ref('nft_blast_wash_trades')
-, ref('nft_fantom_wash_trades')
-, ref('nft_nova_wash_trades')
 , ref('nft_linea_wash_trades')
 , ref('nft_ronin_wash_trades')
 , ref('nft_abstract_wash_trades')

@@ -3,7 +3,7 @@ version: 2
 models:
   - name: balancer_pools_fees
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'pools', 'fees']

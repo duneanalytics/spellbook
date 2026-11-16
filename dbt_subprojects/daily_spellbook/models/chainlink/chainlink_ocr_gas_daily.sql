@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_ocr_gas_daily',
   'chainlink_bnb_ocr_gas_daily',
   'chainlink_ethereum_ocr_gas_daily',
-  'chainlink_fantom_ocr_gas_daily',
   'chainlink_gnosis_ocr_gas_daily',
   'chainlink_optimism_ocr_gas_daily',
   'chainlink_polygon_ocr_gas_daily'

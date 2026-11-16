@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_roundtrip_trades
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora, mantle, unichain, monad
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, celo, zksync, scroll, mantle, unichain, monad
       sector: dex
       contributors: Henrystats, agaperste
     config:

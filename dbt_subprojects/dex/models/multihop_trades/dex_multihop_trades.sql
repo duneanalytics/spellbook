@@ -11,7 +11,6 @@
 ref('dex_arbitrum_multihop_trades')
 , ref('dex_avalanche_c_multihop_trades')
 , ref('dex_base_multihop_trades')
-, ref('dex_blast_multihop_trades')
 , ref('dex_bnb_multihop_trades')
 , ref('dex_celo_multihop_trades')
 , ref('dex_ethereum_multihop_trades')
@@ -28,7 +27,6 @@ ref('dex_arbitrum_multihop_trades')
 , ref('dex_unichain_multihop_trades')
 , ref('dex_worldchain_multihop_trades')
 , ref('dex_zksync_multihop_trades')
-, ref('dex_zora_multihop_trades')
 ] %}
 
 

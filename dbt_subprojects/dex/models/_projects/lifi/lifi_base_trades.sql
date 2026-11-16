@@ -5,8 +5,7 @@
 }}
 
 {% set lifi_models = [
-ref('lifi_fantom_base_trades')
-, ref('lifi_optimism_base_trades')
+ref('lifi_optimism_base_trades')
 ] %}
 
 

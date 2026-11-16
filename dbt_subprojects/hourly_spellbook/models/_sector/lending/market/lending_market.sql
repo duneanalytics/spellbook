@@ -19,7 +19,6 @@
     ref('lending_bnb_base_market'),
     ref('lending_celo_base_market'),
     ref('lending_ethereum_base_market'),
-    ref('lending_fantom_base_market'),
     ref('lending_gnosis_base_market'),
     ref('lending_linea_base_market'),
     ref('lending_optimism_base_market'),

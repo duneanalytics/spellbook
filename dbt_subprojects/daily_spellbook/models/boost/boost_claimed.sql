@@ -19,7 +19,6 @@
     ref('boost_ethereum_claimed'),
     ref('boost_optimism_claimed'),
     ref('boost_polygon_claimed'),
-    ref('boost_zora_claimed'),
 ] %}
 
 with quest_claimed_data as (

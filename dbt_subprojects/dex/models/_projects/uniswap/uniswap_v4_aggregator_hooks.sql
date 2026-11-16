@@ -17,7 +17,7 @@
 -- matching the PUSH4-prefixed selectors keeps the check deterministic and
 -- self-maintaining (no static address list).
 
-{% set chains = uniswap_v4_chains() %}
+{% set chains = uniswap_v4_chains() | reject('in', deprecated_evm_chains()) | list %}
 
 {% for chain in chains %}
 select

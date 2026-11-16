@@ -13,7 +13,6 @@
     ref('lending_bnb_base_supply_scaled'),
     ref('lending_celo_base_supply_scaled'),
     ref('lending_ethereum_base_supply_scaled'),
-    ref('lending_fantom_base_supply_scaled'),
     ref('lending_gnosis_base_supply_scaled'),
     ref('lending_linea_base_supply_scaled'),
     ref('lending_sonic_base_supply_scaled'),

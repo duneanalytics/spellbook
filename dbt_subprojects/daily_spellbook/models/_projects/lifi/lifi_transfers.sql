@@ -12,7 +12,6 @@
     'arbitrum',
     'avalanche_c',
     'bnb',
-    'fantom',
     'gnosis',
     'zksync'
 ] %}

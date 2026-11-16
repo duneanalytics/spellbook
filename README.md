@@ -38,6 +38,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 - [Documentation](#documentation)
 - [Introduction](#introduction)
 - [Sub-projects](#sub-projects)
+- [Deprecated chains](#deprecated-chains)
 - [How to contribute](#how-to-contribute)
   - [Submitting a contribution](#submitting-a-contribution)
   - [Testing your spell](#testing-your-spell)
@@ -76,6 +77,22 @@ Spellbook is organized into multiple dbt sub-projects within `dbt_subprojects/`:
 - **`tokens`** - Token metadata, transfers, and balances.
 
 See [this discussion](https://github.com/duneanalytics/spellbook/discussions/6037) for more details.
+
+## Deprecated chains
+
+A chain is deprecated when its ingestion is turned off: the harvester is disabled and the raw, base, ABI and decoding jobs are off (see the [Ingestion Data Eng Tracker](https://app.notion.com/p/duneanalytics/Ingestion-Data-Eng-Tracker-40ed8bb3254881c5b215d8fafd121455)). `deprecated_evm_chains()` in `dbt_macros/shared/deprecated_evm_chains.sql` is the single list of these chains.
+
+- **Per-chain models** stay as frozen tables: `materialized = 'table'` and `tag:static`, with the incremental config removed. Views stay views.
+- **Cross-chain models** filter the list out of every chain list they union or advertise in `expose_spells(blockchains = ...)` and `meta.blockchain`. Do not delete the chain from the shared list itself:
+
+  ```jinja
+  {% set chains = dex_evm_chains() | reject('in', deprecated_evm_chains()) | list %}
+  ```
+
+  A model that lists per-chain `ref()`s or chain names inline deletes the deprecated entries, because a `ref()` creates a dependency even when a loop skips it. A model that reads an all-chain source adds `where blockchain not in (...)` built from the same list.
+- **Label stores and input registries** that per-chain models read keep the chain, so the frozen tables can still rebuild.
+
+To deprecate a chain, add it to `deprecated_evm_chains()` and freeze its per-chain models.
 
 ## How to contribute
 

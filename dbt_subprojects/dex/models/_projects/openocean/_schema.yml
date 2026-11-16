@@ -87,7 +87,7 @@ models:
 
   - name: openocean_base_trades
     meta:
-      blockchain: optimism, fantom, avalanche_c, base, ethereum, bnb
+      blockchain: optimism, avalanche_c, base, ethereum, bnb
       sector: dex
       project: openocean
       contributors: thevaizman

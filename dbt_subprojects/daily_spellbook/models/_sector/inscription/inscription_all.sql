@@ -15,18 +15,15 @@
      , (ref('inscription_avalanche_c_all'))
      , (ref('inscription_bnb_all'))
      , (ref('inscription_ethereum_all'))
-     , (ref('inscription_fantom_all'))
      , (ref('inscription_gnosis_all'))
      , (ref('inscription_optimism_all'))
      , (ref('inscription_polygon_all'))
      , (ref('inscription_base_all'))
      , (ref('inscription_celo_all'))
-     , (ref('inscription_zora_all'))
      , (ref('inscription_zksync_all'))
      , (ref('inscription_scroll_all'))
      , (ref('inscription_goerli_all'))
      , (ref('inscription_linea_all'))
-     , (ref('inscription_zkevm_all'))
 ] %}
 
 SELECT *

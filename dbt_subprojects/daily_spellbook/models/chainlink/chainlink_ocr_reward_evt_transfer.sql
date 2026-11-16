@@ -11,7 +11,6 @@
   'chainlink_avalanche_c_ocr_reward_evt_transfer',
   'chainlink_bnb_ocr_reward_evt_transfer',
   'chainlink_ethereum_ocr_reward_evt_transfer',
-  'chainlink_fantom_ocr_reward_evt_transfer',
   'chainlink_gnosis_ocr_reward_evt_transfer',
   'chainlink_optimism_ocr_reward_evt_transfer',
   'chainlink_polygon_ocr_reward_evt_transfer'

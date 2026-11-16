@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_multihop_trades
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei, mantle, unichain, monad
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, polygon, base, celo, zksync, scroll, sei, mantle, unichain, monad
       sector: dex
       contributors: Henrystats, agaperste, hubbymatic
     config:

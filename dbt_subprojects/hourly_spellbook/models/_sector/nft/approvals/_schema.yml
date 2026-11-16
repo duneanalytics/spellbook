@@ -3,7 +3,7 @@ version: 2
 models:
   - name: nft_approvals
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, celo, base, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, celo, base, zksync
       sector: nft
       contributors: hildobby, tomfutago
     config:

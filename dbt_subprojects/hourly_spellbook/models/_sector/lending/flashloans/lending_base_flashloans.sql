@@ -19,7 +19,6 @@
     ref('lending_bnb_base_flashloans'),
     ref('lending_celo_base_flashloans'),
     ref('lending_ethereum_base_flashloans'),
-    ref('lending_fantom_base_flashloans'),
     ref('lending_gnosis_base_flashloans'),
     ref('lending_linea_base_flashloans'),
     ref('lending_optimism_base_flashloans'),
@@ -27,10 +26,8 @@
     ref('lending_polygon_base_flashloans'),
     ref('lending_scroll_base_flashloans'),
     ref('lending_sonic_base_flashloans'),
-    ref('lending_tac_base_flashloans'),
     ref('lending_unichain_base_flashloans'),
     ref('lending_worldchain_base_flashloans'),
-    ref('lending_zkevm_base_flashloans'),
     ref('lending_zksync_base_flashloans')
   ]
 %}
