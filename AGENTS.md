@@ -202,14 +202,14 @@ Use `.claude/skills/<name>/SKILL.md` for shared task-specific workflows. This pa
 
 ## Review risk boundaries
 
-Auto-approval requires a fully understood low-risk diff, green relevant CI and resolved review findings. Human-only cases win in mixed PRs and reverts; unlisted changes need human review.
+These changes need a human review:
 
-Auto-approvable:
-
-- Amp and agent tooling configuration: orb setup and resume scripts (`.agents/setup`, `.agents/resume`), other files under `.agents/**` and `.amp/**` (such as `.agents/Procfile` and `.amp/services.yaml`), and Amp skills under `.agents/skills/**`. These only prepare agent sandboxes and guide agents; they are not CI/CD, build or deployment configuration. The change must not add secret values or credentials, change where secrets are sent or logged, deploy, write to production or shared infrastructure, or weaken tests or safety checks. Setup and service scripts must not add or change package sources, run unpinned remote code (such as `curl | bash`), or drop `--locked` installs. Human-only: agent permission or tool allowlists, MCP server definitions, skills that add or change steps that deploy, write to production or bypass an approval gate, anything under `.claude/**` or linked from it (the review bot loads it from the PR), and `AGENTS.md`, `CLAUDE.md` and this section.
-
-Human-only:
-
-- `.github/**`, CODEOWNERS, `AGENTS.md`, `CLAUDE.md`, review policy and these boundaries.
-- Auth, authorization, IAM, secrets and credentials, PII/customer-data handling, and removal or weakening of tests, validation or safety/approval gates.
-- Dependency version bumps, including minor and patch: Dependabot here has no 7-day cooldown.
+- Changes to `dbt_project.yml`, `profiles.yml`, `packages.yml` or `package-lock.yml` in any sub-project under `dbt_subprojects/`.
+- Changes to shared macros in `dbt_macros/`, to sector macros in `dbt_subprojects/*/macros/sector/` and `dbt_subprojects/*/macros/_sector/`, and to any macro in `dbt_subprojects/dex/macros/` or `dbt_subprojects/tokens/macros/`.
+- Changes to the grain, `unique_key`, partitioning, columns or incremental logic of the sector-wide models: `dex.trades`, `dex_aggregator.trades`, `tokens.transfers` and the `prices` models in `dbt_subprojects/tokens/models/prices/`.
+- Changing or removing an existing token in the prices token lists under `dbt_subprojects/tokens/models/prices/`, including its `token_id`, `decimals` or contract address.
+- Dropping or renaming a column, or changing a column type, in a production model.
+- Deleting a production model, or deprecating it with `deprecate_spells`.
+- Python dependency changes in `pyproject.toml` or `uv.lock`, including minor and patch bumps. Dependabot here has no cooldown.
+- Agent permission or tool allowlists and MCP server definitions.
+- Changes to `.agents/setup` that add package sources, run unpinned remote code or drop `--locked` installs.
