@@ -7,7 +7,7 @@ models:
       sector: tokens
       contributors: 0xRob
     config:
-      tags: ['tokens','transfers', 'robinhood']
+      tags: ['tokens','transfers', 'robinhood', 'prod_exclude']
     description: >
       Token transfers on Robinhood
     data_tests:
@@ -70,7 +70,7 @@ models:
         oncall: false
     config:
       event_time: block_time
-      tags: ['tokens','transfers', 'robinhood']
+      tags: ['tokens','transfers', 'robinhood', 'prod_exclude']
     description: >
       Enriched token transfers on Robinhood
     data_tests:
