@@ -1,6 +1,4 @@
-{% macro evm_net_transfers_daily(blockchain, transfers=none) %}
-{#- Most EVM transfer tables are written outside Spellbook and read by source; tron passes its ref. -#}
-{%- set transfers = transfers if transfers is not none else source('tokens_' ~ blockchain, 'transfers') -%}
+{% macro evm_net_transfers_daily(blockchain) %} 
 
 with raw_transfers as (
     select
@@ -10,7 +8,7 @@ with raw_transfers as (
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
     from
-        {{ transfers }}
+        {{ ref('tokens_'~blockchain~'_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -31,7 +29,7 @@ with raw_transfers as (
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
     from
-        {{ transfers }}
+        {{ ref('tokens_'~blockchain~'_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -105,8 +103,7 @@ group by
 
 {% ############################################################################################ %}
 
-{% macro evm_net_transfers_daily_asset(blockchain, native_contract_address, transfers=none) %}
-{%- set transfers = transfers if transfers is not none else source('tokens_' ~ blockchain, 'transfers') -%}
+{% macro evm_net_transfers_daily_asset(blockchain, native_contract_address) %}
 with raw_transfers as (
     select
         blockchain
@@ -118,7 +115,7 @@ with raw_transfers as (
         , (sum(amount_usd) * -1) as transfer_amount_usd
         , count(*) transfer_count
     from
-        {{ transfers }}
+        {{ ref('tokens_'~blockchain~'_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -144,7 +141,7 @@ with raw_transfers as (
         , sum(amount_usd) as transfer_amount_usd
         , count(*) transfer_count
     from
-        {{ transfers }}
+        {{ ref('tokens_'~blockchain~'_transfers') }}
     where
         blockchain = '{{blockchain}}'
        {% if is_incremental() %}
