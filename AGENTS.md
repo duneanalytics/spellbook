@@ -199,3 +199,17 @@ A green CI check is necessary but not sufficient. Query CI tables to verify data
 ## Skills
 
 Use `.claude/skills/<name>/SKILL.md` for shared task-specific workflows. This path is read by Claude Code, opencode, and Cursor. Do not add shared instructions to `.cursor/rules`; promote always-on conventions to this file and procedural workflows to skills.
+
+## Review risk boundaries
+
+These changes need a human review:
+
+- Changes to `dbt_project.yml`, `profiles.yml`, `packages.yml` or `package-lock.yml` in any sub-project under `dbt_subprojects/`.
+- Changes to shared macros in `dbt_macros/`, to sector macros in `dbt_subprojects/*/macros/sector/` and `dbt_subprojects/*/macros/_sector/`, and to any macro in `dbt_subprojects/dex/macros/` or `dbt_subprojects/tokens/macros/`.
+- Changes to the grain, `unique_key`, partitioning, columns or incremental logic of the sector-wide models: `dex.trades`, `dex_aggregator.trades`, `tokens.transfers` and the `prices` models in `dbt_subprojects/tokens/models/prices/`.
+- Changing or removing an existing token in the prices token lists under `dbt_subprojects/tokens/models/prices/`, including its `token_id`, `decimals` or contract address.
+- Dropping or renaming a column, or changing a column type, in a production model.
+- Deleting a production model, or deprecating it with `deprecate_spells`.
+- Python dependency changes in `pyproject.toml` or `uv.lock`, including minor and patch bumps. Dependabot here has no cooldown.
+- Agent permission or tool allowlists and MCP server definitions.
+- Changes to `.agents/setup` that add package sources, run unpinned remote code or drop `--locked` installs.
