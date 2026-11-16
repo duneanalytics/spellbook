@@ -13,4 +13,4 @@
 }}
 
 
-{{ evm_net_transfers_daily(blockchain) }}
+{{ evm_net_transfers_daily_by_source(blockchain) }}
