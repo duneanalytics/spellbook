@@ -41,6 +41,10 @@ with pools as (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
+        , cast(null as varchar) as input_mint
+        , cast(null as varchar) as output_mint
+        , cast(null as varchar) as input_vault
+        , cast(null as varchar) as output_vault
     from {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }}
     union all
     select
@@ -54,6 +58,10 @@ with pools as (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
+        , account_inputVaultMint as input_mint
+        , account_outputVaultMint as output_mint
+        , account_inputVault as input_vault
+        , account_outputVault as output_vault
     from {{ source('raydium_clmm_solana', 'amm_v3_call_swapV2') }}
 )
 , transfers as (
@@ -79,26 +87,30 @@ with pools as (
             end as trade_source
         , tr_2.amount as token_bought_amount_raw
         , tr_1.amount as token_sold_amount_raw
-        , p.pool_id
+        , sp.account_poolState as pool_id
         , sp.call_tx_signer as trader_id
         , sp.call_tx_id as tx_id
         , sp.call_outer_instruction_index as outer_instruction_index
         , coalesce(sp.call_inner_instruction_index, 0) as inner_instruction_index
         , sp.call_tx_index as tx_index
-        , case when tr_1.token_mint_address = p.tokenA then p.tokenB
+        , case when p.pool_id is null then sp.output_mint
+            when tr_1.token_mint_address = p.tokenA then p.tokenB
             else p.tokenA
             end as token_bought_mint_address
-        , case when tr_1.token_mint_address = p.tokenA then p.tokenA
+        , case when p.pool_id is null then sp.input_mint
+            when tr_1.token_mint_address = p.tokenA then p.tokenA
             else p.tokenB
             end as token_sold_mint_address
-        , case when tr_1.token_mint_address = p.tokenA then p.tokenBVault
+        , case when p.pool_id is null then sp.output_vault
+            when tr_1.token_mint_address = p.tokenA then p.tokenBVault
             else p.tokenAVault
             end as token_bought_vault
-        , case when tr_1.token_mint_address = p.tokenA then p.tokenAVault
+        , case when p.pool_id is null then sp.input_vault
+            when tr_1.token_mint_address = p.tokenA then p.tokenAVault
             else p.tokenBVault
             end as token_sold_vault
     from swaps as sp
-    inner join pools as p
+    left join pools as p
         on sp.account_poolState = p.pool_id
         and p.recent_init = 1
     inner join transfers as tr_1
@@ -111,6 +123,12 @@ with pools as (
         and tr_2.outer_instruction_index = sp.call_outer_instruction_index
         and ((sp.call_is_inner = false and tr_2.inner_instruction_index = 2)
             or (sp.call_is_inner = true and tr_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
+    -- swapV2 supplies both vaults and mints even when createPool has no row.
+    where p.pool_id is not null
+        or (tr_1.to_token_account = sp.input_vault
+            and tr_2.from_token_account = sp.output_vault
+            and tr_1.token_mint_address = sp.input_mint
+            and tr_2.token_mint_address = sp.output_mint)
 )
 
 select
