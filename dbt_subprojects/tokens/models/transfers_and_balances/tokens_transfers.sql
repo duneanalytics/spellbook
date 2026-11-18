@@ -18,6 +18,7 @@
     ,'ethereum'
     ,'fantom'
     ,'flare'
+    ,'flow'
     ,'gnosis'
     ,'hemi'
     ,'henesys'
@@ -75,6 +76,8 @@
         )
 }}
 
+{# Tron transfers are built in this subproject. Every other chain's table is written outside
+   Spellbook, so it is read by source(). #}
 SELECT *
 FROM (
     {% for chain in chains %}
@@ -101,7 +104,11 @@ FROM (
         , price_usd
         , amount_usd
         , _updated_at
-    FROM {{ ref('tokens_'~chain~'_transfers') }}
+    {% if chain == 'tron' -%}
+    FROM {{ ref('tokens_tron_transfers') }}
+    {% else -%}
+    FROM {{ source('tokens_' ~ chain, 'transfers') }}
+    {% endif -%}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

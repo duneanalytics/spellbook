@@ -92,6 +92,10 @@ sources:
       - name: net_transfers_daily
 
 
+  - name: tokens_cronos
+    tables:
+      - name: transfers
+
   - name: tokens_degen
     tables:
       - name: transfers
@@ -179,11 +183,19 @@ sources:
       - name: transfers
       - name: net_transfers_daily
 
+  - name: tokens_mezo
+    tables:
+      - name: transfers
+
   - name: tokens_monad
     tables:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+
+  - name: tokens_morph
+    tables:
+      - name: transfers
 
   - name: tokens_nova
     tables:
@@ -226,6 +238,10 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
       
+  - name: tokens_rise
+    tables:
+      - name: transfers
+
   - name: tokens_ronin
     tables:
       - name: transfers
@@ -292,6 +308,10 @@ sources:
     tables:
       - name: transfers
       - name: net_transfers_daily
+  - name: tokens_tezos_evm
+    tables:
+      - name: transfers
+
   - name: tokens_ton
     tables:
       - name: net_transfers_daily
