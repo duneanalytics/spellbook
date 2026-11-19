@@ -373,6 +373,7 @@ models:
       tags: ['lending', 'borrow', 'compound', 'v2', 'ethereum']
     description: "Compound v2 borrow transactions on Ethereum"
     data_tests:
+      - lending_base_borrow_liquidation_counted_once
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
@@ -567,6 +568,7 @@ models:
       tags: ['lending', 'borrow', 'compound', 'fluxfinance', 'ethereum']
     description: "Flux Finance borrow transactions on Ethereum"
     data_tests:
+      - lending_base_borrow_liquidation_counted_once
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
@@ -605,6 +607,7 @@ models:
       tags: ['lending', 'borrow', 'compound', 'strike', 'ethereum']
     description: "Strike borrow transactions on Ethereum"
     data_tests:
+      - lending_base_borrow_liquidation_counted_once
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
