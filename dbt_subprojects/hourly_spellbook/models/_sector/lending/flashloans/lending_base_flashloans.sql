@@ -22,6 +22,7 @@
     ref('lending_fantom_base_flashloans'),
     ref('lending_gnosis_base_flashloans'),
     ref('lending_linea_base_flashloans'),
+    ref('lending_monad_base_flashloans'),
     ref('lending_optimism_base_flashloans'),
     ref('lending_plasma_base_flashloans'),
     ref('lending_polygon_base_flashloans'),
