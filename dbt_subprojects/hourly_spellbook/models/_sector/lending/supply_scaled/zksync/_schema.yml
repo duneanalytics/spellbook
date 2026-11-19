@@ -54,6 +54,9 @@ models:
       tags: ['lending', 'supply', 'aave', 'zksync']
     description: "Hourly Aave v3 scaled supply on zkSync"
     data_tests:
+      - lending_aave_v3_supply_scaled_matches_full_history:
+          arguments:
+            blockchain: zksync
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:

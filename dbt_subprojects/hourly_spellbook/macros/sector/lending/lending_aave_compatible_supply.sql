@@ -459,55 +459,39 @@ hourly_market as (
   {% endif %}
 ),
 
+-- market_ordered and supply_ordered read full history on every run, incremental runs included.
+-- A holder's balance is the sum of every supply event since their first one, so a run that only reads
+-- the incremental window restarts every balance from zero and drops holders with no recent activity.
 market_ordered as (
   select
-    blockchain,
-    project,
-    version,
     block_time,
     block_hour,
     block_number,
     token_address,
-    symbol,
     liquidity_index,
-    variable_borrow_index,
     tx_hash,
     row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
   from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('block_time') }}
-  {% endif %}
 ),
 
 supply_ordered as (
   select
-    blockchain,
-    project,
-    version,
     block_time,
     block_number,
     coalesce(on_behalf_of, depositor) as user,
     token_address,
-    symbol,
     amount,
     tx_hash,
     row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
   from {{ ref('aave_' ~ blockchain ~ '_supply')}}
   where version = '3'
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
 ),
 
 supplied as (
   select
-    s.blockchain,
-    s.project,
-    s.version,
     m.block_hour,
     s.user,
     s.token_address,
-    s.symbol,
     sum(s.amount / m.liquidity_index * power(10, 27)) as atoken_amount
   from supply_ordered s
     inner join market_ordered m
@@ -516,55 +500,34 @@ supplied as (
       and s.event_order = m.event_order
       and s.tx_hash = m.tx_hash
       and s.token_address = m.token_address
-  group by 1, 2, 3, 4, 5, 6, 7
+  group by 1, 2, 3
 ),
 
-first_supplied as (
+-- running scaled balance after each hour with activity, valid until the holder's next active hour
+balances as (
   select
-    blockchain,
-    project,
-    version,
     token_address,
     user,
-    min(block_hour) as first_block_hour
+    block_hour as valid_from,
+    lead(block_hour) over (partition by token_address, user order by block_hour) as valid_to,
+    sum(atoken_amount) over (partition by token_address, user order by block_hour) as atoken_balance
   from supplied
-  group by 1, 2, 3, 4, 5
-),
-
-hourly_market_user as (
-  select
-    hm.blockchain,
-    hm.project,
-    hm.version,
-    hm.block_hour,
-    hm.token_address,
-    hm.symbol,
-    hm.liquidity_index,
-    hm.variable_borrow_index,
-    fs.user
-  from hourly_market hm
-    inner join first_supplied fs
-      on hm.block_hour >= fs.first_block_hour
-      and hm.token_address = fs.token_address
 )
 
 select
-  hmu.blockchain,
-  hmu.project,
-  hmu.version,
-  cast(date_trunc('month', hmu.block_hour) as date) as block_month,
-  hmu.block_hour,
-  hmu.token_address,
-  hmu.symbol,
-  hmu.user,
-  sum(s.atoken_amount) over (
-    partition by hmu.token_address, hmu.user 
-    order by hmu.block_hour
-  ) * hmu.liquidity_index / power(10, 27) as amount
-from hourly_market_user hmu
-  left join supplied s
-    on hmu.block_hour = s.block_hour
-    and hmu.token_address = s.token_address
-    and hmu.user = s.user
+  hm.blockchain,
+  hm.project,
+  hm.version,
+  cast(date_trunc('month', hm.block_hour) as date) as block_month,
+  hm.block_hour,
+  hm.token_address,
+  hm.symbol,
+  b.user,
+  b.atoken_balance * hm.liquidity_index / power(10, 27) as amount
+from hourly_market hm
+  inner join balances b
+    on hm.token_address = b.token_address
+    and hm.block_hour >= b.valid_from
+    and (hm.block_hour < b.valid_to or b.valid_to is null)
 
 {% endmacro %}

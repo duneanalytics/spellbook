@@ -54,6 +54,9 @@ models:
       tags: ['lending', 'supply', 'aave', 'sonic']
     description: "Hourly Aave v3 scaled supply on Sonic"
     data_tests:
+      - lending_aave_v3_supply_scaled_matches_full_history:
+          arguments:
+            blockchain: sonic
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
