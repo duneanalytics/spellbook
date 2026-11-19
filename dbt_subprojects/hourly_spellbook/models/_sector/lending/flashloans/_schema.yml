@@ -21,6 +21,7 @@ models:
               - version
               - tx_hash
               - evt_index
+      - check_lending_amount_usd_priced
     columns:
       - &blockchain
         name: blockchain

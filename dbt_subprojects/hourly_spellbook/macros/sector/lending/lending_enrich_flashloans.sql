@@ -21,12 +21,12 @@ from {{ model }} flashloans
   left join {{ source('tokens', 'erc20') }} erc20
     on flashloans.token_address = erc20.contract_address
     and flashloans.blockchain = erc20.blockchain
-  left join {{ source('prices', 'usd') }} p 
-    on date_trunc('minute', flashloans.block_time) = p.minute
+  left join {{ source('prices', 'minute') }} p
+    on date_trunc('minute', flashloans.block_time) = p.timestamp
     and flashloans.token_address = p.contract_address
     and flashloans.blockchain = p.blockchain
     {% if is_incremental() %}
-    and {{ incremental_predicate('p.minute') }}
+    and {{ incremental_predicate('p.timestamp') }}
     {% endif %}
 {% if is_incremental() %}
 where {{ incremental_predicate('flashloans.block_time') }}
