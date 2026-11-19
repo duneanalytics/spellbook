@@ -88,6 +88,27 @@ ctokens as (
   select * from {{ ref( decoded_project ~ '_' ~ blockchain ~ '_ctokens' ) }}
 ),
 
+-- A liquidation repays the borrower's debt through the same code path as an ordinary repayment, so the
+-- market emits RepayBorrow and then LiquidateBorrow for a single debt reduction. Pair each liquidation
+-- with the last matching RepayBorrow before it, so that the reduction is reported once, as
+-- borrow_liquidation, and not a second time as repay.
+liquidation_repays as (
+  select
+    l.contract_address,
+    l.evt_tx_hash,
+    max(r.evt_index) as evt_index
+  from src_LiquidationCall l
+    inner join src_Repay r
+      on r.evt_block_number = l.evt_block_number
+      and r.evt_tx_hash = l.evt_tx_hash
+      and r.contract_address = l.contract_address
+      and r.borrower = l.borrower
+      and r.payer = l.liquidator
+      and r.repayAmount = l.repayAmount
+      and r.evt_index < l.evt_index
+  group by l.contract_address, l.evt_tx_hash, l.evt_index
+),
+
 base_borrow as (
   select
     'borrow' as transaction_type,
@@ -106,18 +127,23 @@ base_borrow as (
   union all
   select
     'repay' as transaction_type,
-    contract_address as ctoken_address,
-    borrower,
+    r.contract_address as ctoken_address,
+    r.borrower,
     cast(null as varbinary) as on_behalf_of,
-    payer as repayer,
+    r.payer as repayer,
     cast(null as varbinary) as liquidator,
-    -1 * cast(repayAmount as double) as amount,
-    repayAmount as amount_raw,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-  from src_Repay
+    -1 * cast(r.repayAmount as double) as amount,
+    r.repayAmount as amount_raw,
+    r.evt_tx_hash,
+    r.evt_index,
+    r.evt_block_time,
+    r.evt_block_number
+  from src_Repay r
+    left join liquidation_repays lr
+      on lr.evt_tx_hash = r.evt_tx_hash
+      and lr.contract_address = r.contract_address
+      and lr.evt_index = r.evt_index
+  where lr.evt_index is null
   union all
   select
     'borrow_liquidation' as transaction_type,

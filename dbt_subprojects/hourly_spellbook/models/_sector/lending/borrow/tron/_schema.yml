@@ -103,6 +103,7 @@ models:
       tags: ['lending', 'borrow', 'justlend', 'tron']
     description: "JustLend borrow transactions on Tron"
     data_tests:
+      - lending_base_borrow_liquidation_counted_once
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
