@@ -2063,11 +2063,9 @@ FROM
     ('apyusd-apyusd', 'ethereum', 'APYUSD', 0x38eeb52f0771140d10c4e9a9a72349a329fe8a6a, 18),
     ('apxusd-apxusd', 'ethereum', 'APXUSD', 0x98a878b1cd98131b271883b390f68d2c90674665, 18),
     ('fxusd-fx-protocol-fxusd', 'ethereum', 'FXUSD', 0x085780639cc2cacd35e474e71f4d000e2405d8f6, 18),
-    ('sdola-sdola', 'ethereum', 'SDOLA', 0xb45ad160634c528cc3d2926d9807104fa3157305, 18),
     ('bio-bio-protocol', 'ethereum', 'BIO', 0xcb1592591996765ec0efc1f92599a19767ee5ffa, 18),
     ('usd0-usual-usd', 'ethereum', 'USD0', 0x73a15fed60bf67631dc6cd7bc5b6e8da8190acf5, 18),
     ('tree-treehouse', 'ethereum', 'TREE', 0x77146784315ba81904d654466968e3a7c196d1f3, 18),
-    ('susdat-saturn-susdat', 'ethereum', 'SUSDAT', 0xd166337499e176bbc38a1fbd113ab144e5bd2df7, 18),
     ('usual-usual', 'ethereum', 'USUAL', 0xc4441c2be5d8fa8126822b9929ca0b81ea0de38e, 18),
     ('wlfi-official-world-liberty-financial', 'ethereum', 'WLFI', 0xda5e1988097297dcdc1f90d4dfe7909e847cbef6, 18),
     ('musd-metamask-usd', 'ethereum', 'MUSD', 0xaca92e438df0b2401ff60da7e4337b687a2435da, 6),
@@ -2091,7 +2089,6 @@ FROM
     ('shfl-shuffle', 'ethereum', 'SHFL', 0x8881562783028f5c1bcb985d2283d5e170d88888, 18),
     ('usdat-saturn-dollar', 'ethereum', 'USDAT', 0x23238f20b894f29041f48d88ee91131c395aaa71, 6),
     ('eurcv-eur-coinvertible', 'ethereum', 'EURCV', 0x5f7827fdeb7c20b443265fc2f40845b715385ff2, 18),
-    ('cirbtc-circle-wrapped-btc', 'ethereum', 'CIRBTC', 0x72dfb2e44f59c5ad2bafe84314e5b99a7cd5075e, 8),
     ('nil-nillion', 'ethereum', 'NIL', 0x7cf9a80db3b29ee8efe3710aadb7b95270572d47, 6),
     ('order-orderly-network', 'ethereum', 'ORDER', 0xabd4c63d2616a5201454168269031355f4764337, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
