@@ -81,7 +81,8 @@ base_supply as (
   union all
   select
     'deposit_liquidation' as transaction_type,
-    m.loanToken as token_address,
+    -- seizedAssets is denominated in collateral, not the repaid loan token.
+    m.collateralToken as token_address,
     l.borrower as depositor,
     cast(null as varbinary) as on_behalf_of,
     l.caller as withdrawn_to,
