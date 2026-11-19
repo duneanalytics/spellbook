@@ -24,8 +24,8 @@ from {{ model }} supply
   left join {{ source('tokens', 'erc20') }} erc20
     on supply.token_address = erc20.contract_address
     and supply.blockchain = erc20.blockchain
-  left join {{ source('prices', 'minute') }} p
-    on date_trunc('minute', supply.block_time) = p.timestamp
+  left join {{ source('prices', 'hour') }} p
+    on date_trunc('hour', supply.block_time) = p.timestamp
     and supply.token_address = p.contract_address
     and supply.blockchain = p.blockchain
     {% if is_incremental() %}
