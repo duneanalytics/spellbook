@@ -27,4 +27,6 @@ FROM
     , ('wbtc-wrapped-bitcoin', 'WBTC', 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c, 8)
     , ('wsteth-wrapped-liquid-staked-ether-20', 'wstETH', 0x10Aeaf63194db8d453d4D85a06E5eFE1dd0b5417, 18)
     , ('xaut-tether-gold', 'XAUt0', 0x01bFF41798a0BcF287b996046Ca68b395DbC1071, 6)
+    -- auto-added 2026-11-19: exact CoinPaprika contract match, price within 25% of DEX price
+    , ('musd-metamask-usd', 'MUSD', 0xaca92e438df0b2401ff60da7e4337b687a2435da, 6)
 ) as temp (token_id, symbol, contract_address, decimals)

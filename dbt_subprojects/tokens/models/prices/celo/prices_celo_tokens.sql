@@ -40,5 +40,7 @@ FROM
     ('g-gooddollar', 'celo', 'G$', 0x62b8b11039fcfe5ab0c56e502b1c372a3d2a9c7a, 18),
     --('ckes-celo-kenyan-shilling', 'celo', 'cKES', 0x456a3d042c0dbd3db53d5489e98dfb038553b0d0, 18),
     ('char-biochar', 'celo', 'CHAR', 0x50e85c754929840b58614f48e29c64bc78c58345, 18),
-    ('brla-brla-digital-brla', 'celo', 'BRLA', 0xfecb3f7c54e2caae9dc6ac9060a822d47e053760, 18)
+    ('brla-brla-digital-brla', 'celo', 'BRLA', 0xfecb3f7c54e2caae9dc6ac9060a822d47e053760, 18),
+    -- auto-added 2026-11-19: exact CoinPaprika contract match, price within 25% of DEX price
+    ('xaut0-tether-gold-tokens', 'celo', 'XAUT0', 0xaf37e8b6c9ed7f6318979f56fc287d76c30847ff, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
