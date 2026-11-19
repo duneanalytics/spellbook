@@ -214,7 +214,7 @@ FROM
     ('usdm-mountain-protocol-usd', 'arbitrum', 'wUSDM', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 18),
     ('matic-polygon', 'arbitrum', 'MATIC', 0x561877b6b3dd7651313794e5f2894b2f18be0766, 18),
     -- ('reserve-electronic-usd', 'arbitrum', 'eUSD', 0x12275dcb9048680c4be40942ea4d92c74c63b844, 18), -- not yet in coinpaprika
-    ('reserve-eth-plus', 'arbitrum', 'ETH+', 0x18c14c2d707b2212e17d1579789fc06010cfca23, 18), 
+    -- ('reserve-eth-plus', 'arbitrum', 'ETH+', 0x18c14c2d707b2212e17d1579789fc06010cfca23, 18), -- inactive: id no longer on Coinpaprika
     ('ethfi-etherfi', 'arbitrum', 'ETHFI', 0x7189fb5b6504bbff6a852b13b7b82a3c118fdc27, 18),
     ('ens-ethereum-name-service', 'arbitrum', 'ENS', 0xfea31d704deb0975da8e77bf13e04239e70d7c28, 18),
     ('peth-peth', 'arbitrum', 'pETH', 0xa0df47432d9d88bcc040e9ee66ddc7e17a882715, 18),
