@@ -158,7 +158,15 @@ FROM
     ('om-mantra-dao', 'polygon', 'OM', 0xc3ec80343d2bae2f8e680fdadde7c17e71e114ea, 18),     
     ('glm-golem', 'polygon', 'GLM', 0x0B220b82F3eA3B7F6d9A1D8ab58930C064A2b5Bf, 18),     
     ('super-superfarm', 'polygon', 'SUPER', 0xa1428174f516f527fafdd146b883bb4428682737, 18),
-    ('pkr-polker', 'polygon', 'PKR', 0x140a4e80dd8184536acc45f1c452d7540472e6e1, 18)
+    ('pkr-polker', 'polygon', 'PKR', 0x140a4e80dd8184536acc45f1c452d7540472e6e1, 18),
+    -- auto-added 2026-11-19: exact CoinPaprika contract match, price within 25% of DEX price
+    ('eure-monerium-eur-emoney', 'polygon', 'EURE', 0xe0aea583266584dafbb3f9c3211d5588c73fea8d, 18),
+    ('brz-brazilian-digital-token', 'polygon', 'BRZ', 0x4ed141110f6eeeaba9a1df36d8c26f684d2475dc, 18),
+    ('ces-whalebit', 'polygon', 'CES', 0x1bdf71ede1a4777db1eebe7232bcda20d6fc1610, 18),
+    ('sut-supertrust', 'polygon', 'SUT', 0x98965474ecbec2f532f1f780ee37b0b05f77ca55, 18),
+    ('lgns-origin-lgns', 'polygon', 'LGNS', 0xeb51d9a39ad5eef215dc0bf39a8821ff804a0f01, 9),
+    ('aipf-ai-powered-finance', 'polygon', 'AIPF', 0x2c72d25530191ebd244eb6325e1892480b0e6e28, 18),
+    ('jpyc-jpy-coin-jpyccojp', 'polygon', 'JPYC', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 18)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

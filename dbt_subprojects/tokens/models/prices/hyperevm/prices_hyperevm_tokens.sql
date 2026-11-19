@@ -25,4 +25,7 @@ FROM
     , ('btc-bitcoin', 'UBTC', 0x9fdbda0a5e284c32744d2f17ee5c74b284993463, 8)
     , ('pump-pumpfun', 'UPUMP', 0x27ec642013bcb3d80ca3706599d3cda04f6f4452, 6)
     , ('sol-solana', 'USOL', 0x068f321fa8fb9f0d135f290ef6a3e2813e1c8a29, 9)
+    -- auto-added 2026-11-19: exact CoinPaprika contract match, price within 25% of DEX price
+    , ('kntq-kinetiq', 'KNTQ', 0x000000000000780555bd0bca3791f89f9542c2d6, 18)
+    , ('usde-ethena-usde', 'USDE', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

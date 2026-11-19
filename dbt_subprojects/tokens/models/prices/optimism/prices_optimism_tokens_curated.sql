@@ -143,5 +143,8 @@ FROM
     ('tbtc-tbtc', 'tBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40,18),
     ('crvusd-curvefi-usd-stablecoin', 'crvUSD', 0xC52D7F23a2e460248Db6eE192Cb23dD12bDDCbf6,18),
     ('wct-walletconnect-token', 'WCT', 0xeF4461891DfB3AC8572cCf7C794664A8DD927945,18),
-    ('hyper-hyperlane', 'HYPER', 0x9923db8d7fbacc2e69e87fad19b886c81cd74979,18)
+    ('hyper-hyperlane', 'HYPER', 0x9923db8d7fbacc2e69e87fad19b886c81cd74979,18),
+    -- auto-added 2026-11-19: exact CoinPaprika contract match, price within 25% of DEX price
+    ('mseth-metronome-synth-eth', 'MSETH', 0x1610e3c85dd44af31ed7f33a63642012dca0c5a5, 18),
+    ('usdt0-usdt0', 'USDT0', 0x01bff41798a0bcf287b996046ca68b395dbc1071, 6)
 ) as temp (token_id, symbol, contract_address, decimals)

@@ -237,5 +237,11 @@ FROM
     ('hyper-hyperlane', 'arbitrum', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
     ('usdai-usdai', 'arbitrum', 'USDai', 0x0a1a1a107e45b7ced86833863f482bc5f4ed82ef, 18),
     ('logx-logx-network', 'arbitrum', 'LOGX', 0x59062301fb510f4ea2417b67404cb16d31e604ba, 18),
-    ('usdg-global-dollar', 'arbitrum', 'USDG', 0x004B506865409877C9fA29bfb1ebA929984B9bbC, 6)
+    ('usdg-global-dollar', 'arbitrum', 'USDG', 0x004B506865409877C9fA29bfb1ebA929984B9bbC, 6),
+    -- auto-added 2026-11-19: exact CoinPaprika contract match, price within 25% of DEX price
+    ('eure-monerium-eur-emoney', 'arbitrum', 'EURE', 0x0c06ccf38114ddfc35e07427b9424adcca9f44f8, 18),
+    ('cbbtc-coinbase-wrapped-btc', 'arbitrum', 'CBBTC', 0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8),
+    ('eval-evervalue', 'arbitrum', 'EVAL', 0x45d9831d8751b2325f3dbf48db748723726e1c8c, 18),
+    ('susdai-staked-usdai', 'arbitrum', 'SUSDAI', 0x0b2b2b2076d95dda7817e785989fe353fe955ef9, 18),
+    ('chip-usdai', 'arbitrum', 'CHIP', 0x0c1c1c109fe34733fca54b82d7b46b75cfb71f6e, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
