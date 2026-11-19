@@ -272,7 +272,6 @@ FROM
     ('edge-definitive', 'base', 'EDGE', 0xed6e000def95780fb89734c07ee2ce9f6dcaf110, 18),
     ('sndkc-sandisk-corporation-tokenized-stock-coinbase', 'base', 'SNDKC', 0xb200000000000000000000397293cb8cda9a10c5, 8),
     ('surplus-surplus-intelligence', 'base', 'SURPLUS', 0xc52aedec3374422d7510e294cfaa90799595cba3, 18),
-    ('aeon-aeon-2', 'base', 'AEON', 0xbf8e8f0e8866a7052f948c16508644347c57aba3, 18),
     ('eusd-electronic-usd', 'base', 'EUSD', 0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4, 18),
     ('despxa-defi-janus-henderson-anemoy-sampp500-fund-token', 'base', 'DESPXA', 0x9c5c365e764829876243d0b289733b9d2b729685, 18),
     ('spx-spx6900', 'base', 'SPX', 0x50da645f148798f68ef2d7db7c1cb22a6819bb2c, 8),
