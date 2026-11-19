@@ -80,8 +80,9 @@ reserve_data_hourly_agg as (
     block_hour,
     token_address,
     symbol,
-    max_by(liquidity_index, block_hour) as liquidity_index,
-    max_by(variable_borrow_index, block_hour) as variable_borrow_index,
+    -- closing value of the hour: the last update by block number and event index
+    max_by(liquidity_index, (block_number, evt_index)) as liquidity_index,
+    max_by(variable_borrow_index, (block_number, evt_index)) as variable_borrow_index,
     avg(cast(deposit_rate as double)) / 1e27 as deposit_rate,
     avg(cast(stable_borrow_rate as double)) / 1e27 as stable_borrow_rate,
     avg(cast(variable_borrow_rate as double)) / 1e27 as variable_borrow_rate
@@ -110,11 +111,12 @@ reserve_data_hourly_changes as (
       max(block_hour) as block_hour,
       token_address,
       symbol,
-      max(liquidity_index) as liquidity_index,
-      max(variable_borrow_index) as variable_borrow_index,
-      max(deposit_rate) as deposit_rate,
-      max(stable_borrow_rate) as stable_borrow_rate,
-      max(variable_borrow_rate) as variable_borrow_rate
+      -- values of the last hour with an update, not the highest value ever seen
+      max_by(liquidity_index, block_hour) as liquidity_index,
+      max_by(variable_borrow_index, block_hour) as variable_borrow_index,
+      max_by(deposit_rate, block_hour) as deposit_rate,
+      max_by(stable_borrow_rate, block_hour) as stable_borrow_rate,
+      max_by(variable_borrow_rate, block_hour) as variable_borrow_rate
     from reserve_data_hourly_agg
     where not {{ incremental_predicate('block_hour') }}
     group by 1,2,3,6,7
