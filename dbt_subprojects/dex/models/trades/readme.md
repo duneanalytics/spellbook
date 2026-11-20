@@ -119,7 +119,6 @@ For each model in the DEX sector, we must define its schema. This schema outline
     blockchain: ethereum
     sector: dex
     project: uniswap
-    contributors: jeff-dude, masquot, soispoke, hosuke
   config:
     tags: ["ethereum", "dex", "trades", "uniswap", "v2"]
   description: "uniswap ethereum v2 base trades"
