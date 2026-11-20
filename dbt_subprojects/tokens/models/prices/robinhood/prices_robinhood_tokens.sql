@@ -42,4 +42,7 @@ FROM
     , ('tsla-tesla-robinhood-tokenized-stock', 'TSLA', 0x322f0929c4625ed5bad873c95208d54e1c003b2d, 18)
     , ('vex-projectvex', 'VEX', 0x8ff92566f2e81bdd68edfaa8cde73942a723796b, 18)
     , ('xrp-xrp-robinhood', 'XRP', 0x6c866e8396a7e9931f5338f89e689f4699b66b03, 18)
+    -- auto-added 2026-11-19: exact CoinPaprika contract match, price within 25% of DEX price
+    , ('usde-ethena-usde', 'USDE', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 18)
+    , ('u-united-stables', 'U', 0xce24439f2d9c6a2289f741120fe202248b666666, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

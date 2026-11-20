@@ -30,4 +30,6 @@ FROM
     , ('wrseth-wrapped-rseth', 'wrsETH', 0x4Fc44BE15e9B6E30C1E774E2C87A21D3E8b5403F, 18)
     , ('usdc-usd-coin', 'MegaUSD', 0xfafddbb3fc7688494971a79cc65dca3ef82079e7, 18) -- TODO: replace token_id with USDm once integrated to coinpaprika
     , ('wsteth-wrapped-liquid-staked-ether-20', 'wstETH', 0x601aC63637933D88285A025C685AC4e9a92a98dA, 18)
+    -- auto-added 2026-11-19: exact CoinPaprika contract match, price within 25% of DEX price
+    , ('mega-megaeth', 'MEGA', 0x28b7e77f82b25b95953825f1e3ea0e36c1c29861, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

@@ -49,7 +49,6 @@ models:
       blockchain: solana
       short_description: "Daily SOL and SPL token balances for each Solana address, tracking how holdings change over time."
       contributors: [ilemi]
-      docs_slug: /curated/balances/solana-daily-balances
     config:
       tags: ['solana','balances']
     description: >
