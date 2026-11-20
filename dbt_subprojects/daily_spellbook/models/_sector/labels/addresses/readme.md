@@ -14,7 +14,7 @@ Anyone can contribute, if you have an idea you would just like to discuss first 
 2. Add the new label model to the top-level model in the category folder (i.e. `labels_dex.sql`)
 3. Create a new PR with your changed/added models.
 
-If you want to update/improve upon an existing label, start a discussion as well and tag the contributors (their names can be found in the schema file, which usually map closely to their github names). `ilemi` is `andrewhong5297`, I should be your default tag for questions.
+If you want to update/improve upon an existing label, start a discussion as well and tag its authors from the git history. `ilemi` is `andrewhong5297`, I should be your default tag for questions.
 
 The schema of all models should follow this format:
 

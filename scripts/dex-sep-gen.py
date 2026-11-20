@@ -64,8 +64,7 @@ for model_name in with_blockchain:
     materialized = 'view',
     post_hook='{{{{ expose_spells(blockchains = \'["{blockchain}"]\', 
                                   spell_type = "project", 
-                                  spell_name = "{project_name}", 
-                                  contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}}}'
+                                  spell_name = "{project_name}") }}}}'
     )
 }}}}
 
@@ -116,8 +115,7 @@ for model_name in without_blockchain:
         materialized = 'view',
         post_hook='{{{{ expose_spells(blockchains = \'[]\', 
                                       spell_type = "project", 
-                                      spell_name = "{project_name}", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}}}'
+                                      spell_name = "{project_name}") }}}}'
         )
 }}}}
 
