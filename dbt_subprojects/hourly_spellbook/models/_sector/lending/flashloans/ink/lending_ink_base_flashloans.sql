@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('morpho_ink_base_flashloans')
+    ref('morpho_ink_base_flashloans'),
+    ref('tydro_ink_base_flashloans')
   ]
 %}
 

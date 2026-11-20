@@ -102,3 +102,36 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: tydro_ink_base_flashloans
+    meta:
+      blockchain: ink
+      sector: lending
+      project: tydro
+      contributors: karimhass
+    config:
+      tags: ['lending', 'flashloans', 'tydro', 'aave', 'ink']
+    description: "Tydro flashloans transactions on Ink. Tydro is the Aave v3 whitelabel deployment on Ink (AaveV3InkWhitelabel in the Aave address book)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_lending_base_flashloans_seed:
+          arguments:
+            seed_file: ref('tydro_ink_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
