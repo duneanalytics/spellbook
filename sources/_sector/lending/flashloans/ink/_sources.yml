@@ -4,3 +4,6 @@ sources:
   - name: morpho_blue_ink
     tables:
       - name: MorphoBlue_evt_FlashLoan
+  - name: aave_v3_ink
+    tables:
+      - name: L2Pool_evt_FlashLoan

@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('morpho_ink_base_borrow')
+    ref('morpho_ink_base_borrow'),
+    ref('tydro_ink_base_borrow')
   ]
 %}
 
