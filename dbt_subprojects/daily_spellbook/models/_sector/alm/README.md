@@ -125,7 +125,6 @@ models:
     meta:
       blockchain: ethereum
       sector: alm
-      contributors: 0xrusowsky
     config:
       tags: [ 'ethereum', 'alm', 'trades' ]
 
@@ -134,7 +133,6 @@ models:
       blockchain: ethereum
       sector: alm
       project: arrakis_finance
-      contributors: 0xrusowsky
     config:
       tags: [ 'ethereum', 'alm', 'arrakis', 'arrakis_finance', 'trades' ]
     description: "arrakis finance ethereum base trades"

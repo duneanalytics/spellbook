@@ -63,7 +63,7 @@ class ReturningMacro(Macro):
             return returned.value
 
 
-def render(macro, materialized="view", config=None, target="prod"):
+def render(macro, materialized="view", config=None, target="prod", args=None, kwargs=None):
     source = "\n".join((MACRO_DIR / name).read_text() for name in MACRO_FILES)
     env = Environment(loader=DictLoader({"macros": source}), extensions=[do])
     model_config = {"materialized": materialized, **(config or {})}
@@ -92,7 +92,9 @@ def render(macro, materialized="view", config=None, target="prod"):
     # Compiled templates import Macro from jinja2.runtime, so patch it while compiling.
     with mock.patch("jinja2.runtime.Macro", ReturningMacro):
         template = env.get_template("macros")
-    return getattr(template.module, macro)(*PROPERTY_MACROS[macro])
+    return getattr(template.module, macro)(
+        *(PROPERTY_MACROS[macro] if args is None else args), **(kwargs or {})
+    )
 
 
 def emitted_properties(sql):
@@ -155,6 +157,41 @@ def test_views_and_tables_use_their_own_property_statement():
     assert "ALTER TABLE" in render("expose_spells", "incremental")
 
 
+@pytest.mark.parametrize("macro", ["expose_spells", "expose_dataset"])
+@pytest.mark.parametrize("materialized", ["view", "table", "incremental"])
+@pytest.mark.parametrize("call_style", ["positional", "keyword", "omitted"])
+def test_contributors_are_ignored_without_changing_other_properties(
+    macro, materialized, call_style
+):
+    args = PROPERTY_MACROS[macro][:-1]
+    expected = {
+        "dune.created_by": "dbt_spellbook",
+        "dune.public": "true",
+        "dune.visible": "true",
+        "dune.data_explorer.blockchains": '["ethereum"]',
+        "dune.data_explorer.category": "third_party_data",
+    }
+    if macro == "expose_spells":
+        expected.update({
+            "dune.data_explorer.category": "abstraction",
+            "dune.data_explorer.abstraction.type": "sector",
+            "dune.data_explorer.abstraction.name": "tokens",
+            "dune.data_explorer.freshness": "1h",
+            "dune.vacuum": '{"enabled":true}',
+        })
+    if call_style == "positional":
+        args += ("not JSON: obsolete metadata",)
+    kwargs = (
+        {"contributors": "not JSON: obsolete metadata"}
+        if call_style == "keyword" else {}
+    )
+    properties = emitted_properties(
+        render(macro, materialized, args=args, kwargs=kwargs)
+    )
+    assert "dune.data_explorer.contributors" not in properties
+    assert properties == expected
+
+
 def test_filtering_columns_does_not_displace_the_other_properties():
     sql = render("expose_spells", "incremental", {"filtering_columns": ["block_month"]})
     properties = emitted_properties(sql)
@@ -164,7 +201,6 @@ def test_filtering_columns_does_not_displace_the_other_properties():
         "dune.public",
         "dune.visible",
         "dune.data_explorer.category",
-        "dune.data_explorer.contributors",
         "dune.vacuum",
         FILTERING_COLUMNS,
     } <= set(properties)
