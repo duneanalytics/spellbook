@@ -175,8 +175,23 @@ models:
       project: avalanche_c_native
       contributors: [ 'hildobby']
     config:
-      tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Arbitrum's v1 native bridge deposits events on Ethereum"
+      tags: [ 'avalanche_c', 'bridges', 'flows' , 'deposits' ]
+    description: "Avalanche's v2 native bridge ERC-20 deposits on Ethereum; excludes native ETH transfers to the bridge wallet."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: evt_index
+        description: "ERC-20 Transfer event index within the transaction"
+        data_tests:
+          - not_null
+      - name: deposit_token_standard
+        description: "Token standard supported by the Avalanche bridge"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['erc20']
   - name: bridges_ethereum_avalanche_c_native_v2_withdrawals
     meta:
       blockchain: ethereum
@@ -411,3 +426,29 @@ models:
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
     description: "LayerZero's v1 bridge deposits events on Ethereum"
+
+  - name: bridges_ethereum_aero_v1_deposits
+    description: "Aero Metarouter-attributed USDC bridge deposits on ethereum; bridge leg only, including ICA recipients."
+    config:
+      tags: ['ethereum', 'bridges', 'flows', 'deposits', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: bridge_transfer_id
+        description: "Hyperlane message ID, shared by the source dispatch and destination processing."
+        data_tests: [not_null]
+
+  - name: bridges_ethereum_aero_v1_withdrawals
+    description: "Aero Metarouter-attributed USDC bridge withdrawals on ethereum; bridge leg only, including ICA recipients."
+    config:
+      tags: ['ethereum', 'bridges', 'flows', 'withdrawals', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: bridge_transfer_id
+        description: "Hyperlane message ID, shared by the source dispatch and destination processing."
+        data_tests: [not_null]
