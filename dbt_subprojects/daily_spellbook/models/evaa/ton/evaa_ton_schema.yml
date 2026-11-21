@@ -19,8 +19,12 @@ models:
     columns:
       - name: block_date
         description: "block_date of the transaction"
+        data_tests:
+          - not_null
       - name: tx_hash
         description: "transaction hash"
+        data_tests:
+          - not_null
       - name: trace_id
         description: "trace id"
       - name: tx_now
@@ -40,7 +44,7 @@ models:
       - name: asset_id
         description: "asset id"
       - name: withdraw_amount_current
-        description: "withdraw amount"
+        description: "Withdrawal amount, including the withdrawal leg of V9 combined supply/withdraw logs."
       - name: user_new_principal
         description: "user new principal value"
       - name: new_total_supply
@@ -69,8 +73,12 @@ models:
     columns:
       - name: block_date
         description: "block_date of the transaction"
+        data_tests:
+          - not_null
       - name: tx_hash
         description: "transaction hash"
+        data_tests:
+          - not_null
       - name: trace_id
         description: "trace id"
       - name: tx_now
@@ -88,7 +96,7 @@ models:
       - name: asset_id
         description: "asset id"
       - name: amount_supplied
-        description: "Amount supplied"
+        description: "Amount supplied, including nonzero supply legs of V9 combined supply/withdraw logs."
       - name: user_new_principal
         description: "user new principal value"
       - name: new_total_supply
