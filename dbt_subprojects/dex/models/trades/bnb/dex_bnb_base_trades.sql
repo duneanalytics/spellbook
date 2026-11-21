@@ -41,6 +41,7 @@
     , ref('thena_bnb_base_trades')
     , ref('ellipsis_finance_bnb_base_trades')
     , ref('lista_smartswap_bnb_base_trades')
+    , ref('lista_v3_bnb_base_trades')
     , ref('onepunchswap_bnb_base_trades')
     , ref('woofi_bnb_base_trades')
     , ref('hashflow_bnb_base_trades')
