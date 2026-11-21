@@ -155,7 +155,7 @@ models:
               - evt_index
       - check_dex_base_trades_seed:
           arguments:
-            seed_file: ref('cldex_kaia_base_trades')
+            seed_file: ref('cldex_kaia_base_trades_seed')
   - name: dex_kaia_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
