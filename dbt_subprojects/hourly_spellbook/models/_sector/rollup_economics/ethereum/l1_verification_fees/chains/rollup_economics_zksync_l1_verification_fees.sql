@@ -29,6 +29,10 @@ WITH data AS (
             WHEN bytearray_substring(t.data, 1, 4) IN (
                 0xc37533bb -- Prove Batches Shared Bridge, post-v24
             ) THEN varbinary_to_uint256(varbinary_substring(t.data, 5, 32))
+            -- Keep every arm a literal: a non-constant integer arm gets cast to UINT256 and fails planning on Dune.
+            WHEN bytearray_substring(t.data, 1, 4) = 0x9271e450 -- Prove Batches, EraMultisigValidator (first arg is the chain diamond address)
+                AND varbinary_substring(t.data, 17, 20) = 0x32400084C286CF3E17e7B677ea9583e60a000324 THEN 324 -- ZKsync Era diamond
+            WHEN bytearray_substring(t.data, 1, 4) = 0x9271e450 THEN 0 -- other chains, dropped below
             ELSE 324
         END AS chain_id           
     FROM {{ source('ethereum', 'transactions') }} AS t
@@ -38,13 +42,15 @@ WITH data AS (
         , 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD -- L1 transactions settle here post-EIP4844
         , 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E -- L1 transactions settle here post v24 upgrade (shared bridge)
         , 0x3527439923a63F8C13CF72b8Fe80a77f6e572092 -- Validator
-        , 0x8c0Bfc04AdA21fd496c55B8C50331f904306F564 -- ValidatorTimelock
+        , 0x8c0Bfc04AdA21fd496c55B8C50331f904306F564 -- ValidatorTimelock (last used 2026-07-07)
+        , 0xdC26B08F0335b68721F64001C38b05D0BC9B539d -- EraMultisigValidator proxy (used as of 2026-07-07)
     )
     AND bytearray_substring(t.data, 1, 4) IN (
         0x7739cbe7 -- Prove Block, pre-Boojum
         , 0x7f61885c -- Prove Batches, post-Boojum
         , 0xc37533bb -- Prove Batches, post v24 upgrade (shared bridge)
         , 0xe12a6137 -- proveBatchesSharedBridge (Validator)
+        , 0x9271e450 -- proveBatchesSharedBridge (EraMultisigValidator)
     )
     AND t.block_time >= TIMESTAMP '2023-02-14'
     {% if is_incremental() %}
