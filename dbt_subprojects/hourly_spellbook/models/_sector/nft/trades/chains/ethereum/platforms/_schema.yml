@@ -807,3 +807,37 @@ models:
               - block_number
               - tx_hash
               - sub_tx_trade_id
+
+  - name: gondi_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: nft
+      project: gondi
+      contributors: piratemonkee
+    config:
+      tags: [ 'gondi','base_trades','seaport' ]
+    description: >
+      GONDI base trades from seaport (v4): orders created on gondi.xyz and settled on Seaport 1.6
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+      - check_seed:
+          arguments:
+            seed_file: ref('gondi_v1_ethereum_base_trades_seed')
+            match_columns:
+              - block_number
+              - tx_hash
+              - sub_tx_trade_id
+            check_columns:
+              - buyer
+              - seller
+              - nft_contract_address
+              - nft_token_id
+              - price_raw
+              - platform_fee_amount_raw
+              - royalty_fee_amount_raw
