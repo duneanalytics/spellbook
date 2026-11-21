@@ -3,7 +3,7 @@ version: 2
 models:
  - name: limitbreak_creator_tokens
    meta:
-     blockchain: ethereum, base, optimism, arbitrum, avalanche_c, polygon, bnb, apechain, berachain, abstract
+     blockchain: ethereum, base, optimism, arbitrum, avalanche_c, polygon, bnb, apechain, berachain, abstract, megaeth, ronin, robinhood
      sector: limitbreak
      contributors: limitbreak
    config:
@@ -20,6 +20,8 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain that the contract is deployed to."
+        data_tests:
+          - not_null
       - &is_creator_token
         name: is_creator_token
         description: "Boolean flag if contract is identified as implementing the Creator Token Standards."
@@ -32,10 +34,350 @@ models:
       - &address
         name: address
         description: "Address of the smart contract."
+        data_tests:
+          - not_null
       - &is_clone
         name: is_clone
         description: "Boolean flag if the contract is identified as a ERC1167 minimal proxy clone."
-      - name: block_date
+      - &block_date
+        name: block_date
         description: "UTC event block date"
-      - name: block_month
+      - &block_month
+        name: block_month
         description: "UTC event block month"
+
+ - name: limitbreak_ethereum_creator_tokens
+   meta:
+     blockchain: ethereum
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Ethereum identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_arbitrum_creator_tokens
+   meta:
+     blockchain: arbitrum
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Arbitrum identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_avalanche_c_creator_tokens
+   meta:
+     blockchain: avalanche_c
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Avalanche C-Chain identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_base_creator_tokens
+   meta:
+     blockchain: base
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Base identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_bnb_creator_tokens
+   meta:
+     blockchain: bnb
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on BNB Chain identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_optimism_creator_tokens
+   meta:
+     blockchain: optimism
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on OP Mainnet identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_polygon_creator_tokens
+   meta:
+     blockchain: polygon
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Polygon PoS identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_apechain_creator_tokens
+   meta:
+     blockchain: apechain
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on ApeChain identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_berachain_creator_tokens
+   meta:
+     blockchain: berachain
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Berachain identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_abstract_creator_tokens
+   meta:
+     blockchain: abstract
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Abstract identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_abstract_zkevm_creator_tokens
+   meta:
+     blockchain: abstract
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Abstract identified as implementing Creator Token Standards. Uses the zkEVM trace variant of the inspection macro. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_megaeth_creator_tokens
+   meta:
+     blockchain: megaeth
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on MegaETH identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_ronin_creator_tokens
+   meta:
+     blockchain: ronin
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Ronin identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
+
+ - name: limitbreak_robinhood_creator_tokens
+   meta:
+     blockchain: robinhood
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Contracts on Robinhood Chain identified as implementing Creator Token Standards. Chain-level input to limitbreak.creator_tokens.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         arguments:
+           combination_of_columns:
+             - address
+   columns:
+      - *blockchain
+      - *is_creator_token
+      - *token_type
+      - *creation_time
+      - *address
+      - *is_clone
+      - *block_date
+      - *block_month
