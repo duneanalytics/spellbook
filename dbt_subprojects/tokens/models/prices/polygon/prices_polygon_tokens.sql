@@ -15,6 +15,7 @@ SELECT
 FROM
 (
     VALUES
+    ('tgbp-tokenised-gbp', 'polygon', 'tGBP', 0x27f6c8289550fCE67f6B50BeD1F519966aFE5287, 18),
     ('aave-new','polygon','AAVE',0xd6df932a45c0f255f85145f286ea0b292b21c90b,18),
     ('ageur-ageur','polygon','agEUR',0xe0b52e49357fd4daf2c15e02058dce6bc0057db4,18),
     ('axlusdt-axelar-usd-tether', 'polygon', 'axlUSDT', 0xceed2671d8634e3ee65000edbbee66139b132fbf, 6),
