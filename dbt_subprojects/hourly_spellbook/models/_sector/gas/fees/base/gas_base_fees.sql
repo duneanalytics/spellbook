@@ -24,7 +24,7 @@ WITH native_token_prices as (
         ,txns.block_number
         ,txns.hash AS tx_hash
         ,txns."index" AS tx_index
-        ,txns."from" AS tx_from
+        ,coalesce(txns.payer, txns."from") AS tx_from
         ,txns.to AS tx_to
         ,cast(gas_price as uint256) as gas_price
         ,txns.gas_used as gas_used
