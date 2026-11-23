@@ -14,7 +14,7 @@
 {{ solana_amm_base_trades(
     project = 'quantum'
     , project_main_id = 'QuaNtZsgYRe5Z9Bk4LZ4cTD9tbkVoyCNf1R2BN9bBDv'
-    , project_start_date = '2026-01-28'
+    , project_start_date = '2026-11-01'
     , stg_raw_swaps_model = ref('quantum_solana_stg_raw_swaps')
     , token_bought_offset = 2
     , token_sold_offset = 1

@@ -14,7 +14,7 @@
 {{ solana_amm_base_trades(
     project = 'byreal'
     , project_main_id = 'REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2'
-    , project_start_date = '2025-06-26'
+    , project_start_date = '2026-11-01'
     , stg_raw_swaps_model = ref('byreal_solana_stg_raw_swaps')
     , token_bought_offset = 2
     , token_sold_offset = 1

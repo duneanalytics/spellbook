@@ -16,7 +16,7 @@ SELECT * FROM (
 {{ solana_amm_base_trades(
     project = 'deriverse'
     , project_main_id = 'DRVSpZ2YUYYKgZP8XtLhAGtT1zYSCKzeHfb4DgRnrgqD'
-    , project_start_date = '2025-12-17'
+    , project_start_date = '2026-11-01'
     , stg_raw_swaps_model = ref('deriverse_solana_stg_raw_swaps_a_to_b')
     , token_bought_offset = 2
     , token_sold_offset = 1
@@ -29,7 +29,7 @@ SELECT * FROM (
 {{ solana_amm_base_trades(
     project = 'deriverse'
     , project_main_id = 'DRVSpZ2YUYYKgZP8XtLhAGtT1zYSCKzeHfb4DgRnrgqD'
-    , project_start_date = '2025-12-17'
+    , project_start_date = '2026-11-01'
     , stg_raw_swaps_model = ref('deriverse_solana_stg_raw_swaps_b_to_a')
     , token_bought_offset = 1
     , token_sold_offset = 2
