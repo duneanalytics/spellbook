@@ -49,10 +49,15 @@ sources:
         config:
           event_time: call_block_date
       - name: pump_amm_call_sell
+        config:
+          event_time: call_block_date
       - name: pump_amm_call_create_pool
       - name: pump_amm_call_create_config
       - name: pump_amm_call_update_fee_config
       - name: pump_amm_evt_buyevent
+        config:
+          event_time: evt_block_date
+      - name: pump_amm_evt_sellevent
         config:
           event_time: evt_block_date
 

@@ -48,6 +48,8 @@
       , ref('scorch_solana_base_trades')
       , ref('jupiterz_solana_base_trades')
       , ref('jupiter_lend_solana_base_trades')
+      , ref('quantum_solana_base_trades')
+      , ref('deriverse_solana_base_trades')
       ]
 %}
 
