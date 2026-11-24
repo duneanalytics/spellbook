@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zksync
       project: aragon
-      contributors: Henrystats 
     config:
       tags: [ 'zksync', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon App']
     description: >
@@ -49,7 +48,6 @@ models:
     meta:
       blockchain: zksync
       project: aragon
-      contributors: Henrystats 
     config:
       tags: [ 'zksync', 'dao', 'aragon', 'dao creator tools', 'Henrystats']
     description: >

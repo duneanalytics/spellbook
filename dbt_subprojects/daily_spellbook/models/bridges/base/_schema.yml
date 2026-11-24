@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: bridges
       project: addresses
-      contributors: rantum
     config:
       tags: ['table', 'bridges', 'addresses', 'base']
     description: "Known bridge addresses"

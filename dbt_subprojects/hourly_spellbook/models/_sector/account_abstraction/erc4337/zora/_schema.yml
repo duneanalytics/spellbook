@@ -7,7 +7,6 @@ models:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: intensodefi
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.6 user operations on zora"
@@ -54,7 +53,6 @@ models:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: intensodefi
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 user operation on zora"
@@ -109,7 +107,6 @@ models:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: intensodefi
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.6 account deployed on zora"
@@ -132,7 +129,6 @@ models:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: intensodefi
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 account deployed on zora"

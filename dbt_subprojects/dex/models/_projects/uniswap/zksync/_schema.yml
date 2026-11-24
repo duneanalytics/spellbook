@@ -7,7 +7,6 @@ models:
       blockchain: zksync
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['zksync', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: zksync
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['zksync', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -82,7 +80,6 @@ models:
       blockchain: zksync
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['zksync', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -137,7 +134,6 @@ models:
       blockchain: zksync
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['zksync', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -171,7 +167,6 @@ models:
     meta:
       blockchain: zksync
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: rise
       sector: prices
-      contributors: tomfutago
     config:
       tags: ['prices', 'tokens', 'usd', 'rise']
     description: "Price tokens on rise EVM chain"

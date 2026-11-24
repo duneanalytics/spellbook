@@ -4,7 +4,6 @@ models:
   - name: balancer_token_whitelist
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'zkevm']
     description: >
@@ -30,7 +29,6 @@ models:
   - name: balancer_single_recipient_gauges
     meta:
       blockchain: ethereum
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'gauges']
     description: >

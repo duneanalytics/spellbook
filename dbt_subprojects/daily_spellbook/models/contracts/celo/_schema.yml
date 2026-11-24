@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: celo
       sector: contracts
-      contributors: chuxin, msilb7, tomfutago
     config:
       tags: ['evm', 'celo', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on celo."
@@ -118,7 +117,6 @@ models:
     meta:
       blockchain: celo
       sector: contracts
-      contributors: chuxin, msilb7, tomfutago
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
@@ -148,7 +146,6 @@ models:
     meta:
       blockchain: celo
       sector: contracts
-      contributors: chuxin, msilb7, tomfutago
     config:
       tags: ['evm', 'celo', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on celo."
@@ -180,7 +177,6 @@ models:
     meta:
       blockchain: celo
       sector: contracts
-      contributors: chuxin, msilb7, tomfutago
     config:
       tags: ['evm', 'celo', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on celo."

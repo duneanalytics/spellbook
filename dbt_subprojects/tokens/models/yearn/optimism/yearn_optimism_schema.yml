@@ -7,7 +7,6 @@ models:
       blockchain: optimism
       sector: yield
       project: yearn
-      contributors: msilb7
 
     config:
       tags: ['yearn', 'tokens', 'optimism', 'yield']

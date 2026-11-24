@@ -6,7 +6,6 @@ models:
       blockchain: zksync
       sector: airdrop
       project: zksync
-      contributors: lgingerich
     config:
       tags: ['table', 'airdrop', 'zksync', 'claim']
     description: "List of claim transactions for the $ZK airdrop"

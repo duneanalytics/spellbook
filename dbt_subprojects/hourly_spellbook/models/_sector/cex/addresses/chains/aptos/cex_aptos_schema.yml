@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: aptos
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'aptos']
     description: "All CEX-tied addresses identified on Aptos"

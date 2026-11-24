@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: monad
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['monad', 'bpt', 'supply', 'changes']
     description: >
@@ -69,7 +68,6 @@ models:
     meta:
       blockchain: monad
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['monad', 'bpt', 'supply', 'changes']
     description: >

@@ -6,7 +6,6 @@ models:
    meta:
      blockchain: ["polygon"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'aavegotchi']
    description: "NFT trades view for aavegotchi"
@@ -16,7 +15,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'archipelago']
    description: "NFT trades view for archipelago"
@@ -26,7 +24,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'blur']
    description: "NFT trades view for blur"
@@ -36,7 +33,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'collectionswap']
    description: "NFT trades view for collectionswap"
@@ -46,7 +42,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'cryptopunks']
    description: "NFT trades view for cryptopunks"
@@ -56,7 +51,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'element']
    description: "NFT trades view for element"
@@ -66,7 +60,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'foundation']
    description: "NFT trades view for foundation"
@@ -76,7 +69,6 @@ models:
    meta:
      blockchain: ["polygon"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'fractal']
    description: "NFT trades view for fractal"
@@ -86,7 +78,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'looksrare']
    description: "NFT trades view for looksrare"
@@ -96,7 +87,6 @@ models:
    meta:
      blockchain: ["solana", "polygon"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'magiceden']
    description: "NFT trades view for magiceden"
@@ -106,7 +96,6 @@ models:
    meta:
      blockchain: ["bnb"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'nftb']
    description: "NFT trades view for nftb"
@@ -116,7 +105,6 @@ models:
    meta:
      blockchain: ["optimism"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'nftearth']
    description: "NFT trades view for nftearth"
@@ -126,7 +114,6 @@ models:
    meta:
      blockchain: ["bnb"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'nftrade']
    description: "NFT trades view for nftrade"
@@ -136,7 +123,6 @@ models:
    meta:
      blockchain: ["polygon"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'oneplanet']
    description: "NFT trades view for oneplanet"
@@ -146,7 +132,6 @@ models:
    meta:
      blockchain: ["ethereum", "solana", "polygon"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'opensea']
    description: "NFT trades view for opensea"
@@ -156,7 +141,6 @@ models:
    meta:
      blockchain: ["bnb"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'pancakeswap']
    description: "NFT trades view for pancakeswap"
@@ -166,7 +150,6 @@ models:
    meta:
      blockchain: ["optimism"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'quix']
    description: "NFT trades view for quix"
@@ -176,7 +159,6 @@ models:
    meta:
      blockchain: ["polygon"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'rarible']
    description: "NFT trades view for rarible"
@@ -186,7 +168,6 @@ models:
    meta:
      blockchain: ["arbitrum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'stealcam']
    description: "NFT trades view for stealcam"
@@ -196,7 +177,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'sudoswap']
    description: "NFT trades view for sudoswap"
@@ -206,7 +186,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'superrare']
    description: "NFT trades view for superrare"
@@ -216,7 +195,6 @@ models:
    meta:
      blockchain: ["optimism", "arbitrum", "polygon", "bnb"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'tofu']
    description: "NFT trades view for tofu"
@@ -226,7 +204,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'x2y2']
    description: "NFT trades view for x2y2"
@@ -236,7 +213,6 @@ models:
    meta:
      blockchain: ["optimism"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'zonic']
    description: "NFT trades view for zonic"
@@ -246,7 +222,6 @@ models:
    meta:
      blockchain: ["ethereum"]
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', 'zora']
    description: "NFT trades view for zora"
@@ -256,7 +231,6 @@ models:
    meta:
      blockchain: ["blast"]
      sector: nft
-     contributors: hildobby
    config:
      tags: ['nft', 'trades', 'blast']
    description: "NFT trades view for fantasy"

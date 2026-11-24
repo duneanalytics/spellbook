@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora, mantle, unichain, monad
       sector: dex
-      contributors: Henrystats, agaperste
     config:
       tags: ["dex", "roundtrip_trades"]
     description: >
@@ -88,7 +87,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -105,7 +103,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -122,7 +119,6 @@ models:
     meta:
       blockchain: base
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -139,7 +135,6 @@ models:
     meta:
       blockchain: blast
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -156,7 +151,6 @@ models:
     meta:
       blockchain: bnb
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -173,7 +167,6 @@ models:
     meta:
       blockchain: celo
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -190,7 +183,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -207,7 +199,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -224,7 +215,6 @@ models:
     meta:
       blockchain: ink
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -241,7 +231,6 @@ models:
     meta:
       blockchain: linea
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -258,7 +247,6 @@ models:
     meta:
       blockchain: mantle
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -275,7 +263,6 @@ models:
     meta:
       blockchain: monad
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -292,7 +279,6 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -309,7 +295,6 @@ models:
     meta:
       blockchain: plasma
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -326,7 +311,6 @@ models:
     meta:
       blockchain: polygon
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -343,7 +327,6 @@ models:
     meta:
       blockchain: scroll
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -360,7 +343,6 @@ models:
     meta:
       blockchain: sonic
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -377,7 +359,6 @@ models:
     meta:
       blockchain: unichain
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -394,7 +375,6 @@ models:
     meta:
       blockchain: worldchain
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -411,7 +391,6 @@ models:
     meta:
       blockchain: zksync
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:
@@ -428,7 +407,6 @@ models:
     meta:
       blockchain: zora
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex', 'roundtrip_trades' ]
     data_tests:

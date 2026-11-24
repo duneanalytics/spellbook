@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base, sonic
       project: tapio
-      contributors: brunota20
     config:
       tags: ["tapio", "liquidity", "dex", base, sonic]
     description: >

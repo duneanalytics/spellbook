@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: yield_yak
-      contributors: Henrystats
     config:
       tags: ['avalanche_c','trades', 'aggregator', 'yield_yak','dex']
     description: >

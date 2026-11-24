@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: airdrop
       project: ellipsis_finance
-      contributors: hildobby
     config:
       tags: ["table", "airdrop", "bnb", "claim", "ellipsis_finance"]
     description: "List of claim transactions for the $EPS airdrop"

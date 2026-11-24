@@ -7,7 +7,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: aero
-      contributors: ['thecaptncrunch']
     config:
       tags: ['robinhood', 'dex', 'trades', 'aero']
     data_tests:

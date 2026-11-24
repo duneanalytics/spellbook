@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: tessera
-      contributors: [amadarrrr]
     config:
       tags: ["ethereum", "tessera", "vault"]
     data_tests:
@@ -43,7 +42,6 @@ models:
     meta:
       blockchain: ethereum
       project: tessera
-      contributors: [amadarrrr]
     config:
       tags: ["ethereum", "tessera", "distribution", "auction"]
     description: >
@@ -68,7 +66,6 @@ models:
     meta:
       blockchain: ethereum
       project: tessera
-      contributors: [amadarrrr]
     config:
       tags: ["ethereum", "tessera", "auction"]
     description: >

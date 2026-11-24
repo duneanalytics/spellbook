@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: dex
       project: zerion
-      contributors: hildobby
     config:
       tags: ['gnosis', 'zerion', 'zerion', 'trades', 'dex']
     description: >

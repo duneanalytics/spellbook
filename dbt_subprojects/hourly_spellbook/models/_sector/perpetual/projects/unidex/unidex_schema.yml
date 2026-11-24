@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: ARDev097
     config:
       tags: ['optimism', 'perpetuals', 'perps', 'unidex','cross-chain']
     description: >

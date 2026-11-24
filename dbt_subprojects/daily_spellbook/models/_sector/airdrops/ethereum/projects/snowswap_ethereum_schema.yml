@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: snowswap
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'snowswap']
     description: "List of claim transactions for the $SNOW airdrop"

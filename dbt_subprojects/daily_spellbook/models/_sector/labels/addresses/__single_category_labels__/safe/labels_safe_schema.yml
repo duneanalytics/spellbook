@@ -16,7 +16,6 @@ models:
       sector: labels
       category: safe
       project: ['safe']
-      contributors: soispoke
     config:
       tags: ['labels', 'safe', 'ethereum']
     description: "Safe query labels"   
@@ -48,7 +47,6 @@ models:
       sector: labels
       category: safe
       project: ['safe']
-      contributors: soispoke
     config:
       tags: ['labels', 'safe', 'ethereum']
     description: "Safe query labels"   

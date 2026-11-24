@@ -6,7 +6,6 @@ models:
       blockchain: opbnb
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
     description: "Celer's v1 bridge deposits events on opBNB"
@@ -15,7 +14,6 @@ models:
       blockchain: opbnb
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on opBNB"
@@ -24,7 +22,6 @@ models:
       blockchain: opbnb
       sector: bridges
       project: zkbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'opbnb', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on opBNB"
@@ -33,7 +30,6 @@ models:
       blockchain: opbnb
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'opbnb', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on opBNB"
@@ -42,7 +38,6 @@ models:
       blockchain: opbnb
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'opbnb', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on opBNB"

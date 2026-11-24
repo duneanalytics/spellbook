@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: blast
       project: safe
-      contributors: danielpartida
     config:
       tags: ['safe', 'blast']
     description: "Safe addresses"
@@ -39,7 +38,6 @@ models:
     meta:
       blockchain: blast
       project: safe
-      contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'blast']
     description: "Eth transfers for safes"
@@ -76,7 +74,6 @@ models:
     meta:
       blockchain: blast
       project: safe
-      contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'blast']
     description: "Singletons addresses used with Safes"
@@ -91,7 +88,6 @@ models:
     meta:
       blockchain: blast
       project: safe
-      contributors: danielpartida
     config:
       tags: ['safe', 'blast']
     description: "Safe transactions"

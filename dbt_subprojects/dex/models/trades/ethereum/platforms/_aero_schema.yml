@@ -7,7 +7,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: aero
-      contributors: ['thecaptncrunch']
     config:
       tags: ['ethereum', 'dex', 'trades', 'aero']
     data_tests:

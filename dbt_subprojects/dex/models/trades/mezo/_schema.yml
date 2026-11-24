@@ -24,7 +24,6 @@ models:
       blockchain: mezo
       sector: dex
       project: rooster_protocol
-      contributors: tomfutago
     config:
       tags: ["mezo", "dex", "trades", "mezo swap"]
     description: "Mezo Swap mezo base trades"

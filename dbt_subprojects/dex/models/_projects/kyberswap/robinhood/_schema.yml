@@ -6,7 +6,6 @@ models:
       blockchain: robinhood
       sector: dex_aggregator
       project: kyberswap
-      contributors: karim
     config:
       tags: ['robinhood', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >

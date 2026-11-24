@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'balances']
     description: >
@@ -40,7 +39,6 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools', 'liquidity']
     description: >

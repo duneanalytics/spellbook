@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: celo
       sector: lending
-      contributors: hildobby, tomfutago
     config:
       tags: ['celo', 'flashloans']
     description: >

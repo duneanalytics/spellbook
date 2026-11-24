@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'balances']
     description: >
@@ -40,7 +39,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'liquidity']
     description: >

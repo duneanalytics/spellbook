@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, zksync
       sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, lgingerich
       docs_slug: /curated/nft-trades/evm/nft-mints
       short_description: "NFT minting events across supported chains, including mint price, platform fees, royalty fees, and aggregator details."
     config:

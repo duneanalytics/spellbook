@@ -24,7 +24,6 @@ models:
       blockchain: ronin
       sector: dex
       project: katana
-      contributors: jeff-dude, cxheng315
     config:
       tags: ["ronin", "dex", "trades", "katana"]
     description: "Katana v2 ronin base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: ronin
       sector: dex
       project: katana
-      contributors: cxheng315
     config:
       tags: ["ronin", "dex", "trades", "katana"]
     description: "Katana v3 ronin base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: ronin
       sector: dex
       project: tamadotmeme
-      contributors: 0xsandeshk
     config:
       tags: ["ronin", "dex", "trades", "tamadotmeme"]
     description: "tamadotmeme ronin base trades"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer
-      contributors: gustavobftorres
     config:
       tags: ['avalanche_c', 'token', 'mapping']
     description: >
@@ -35,7 +34,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer
-      contributors: gustavobftorres
     config:
       tags: ['avalanche_c', 'token', 'prices']
     description: >

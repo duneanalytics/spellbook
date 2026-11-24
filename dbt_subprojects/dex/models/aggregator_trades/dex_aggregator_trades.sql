@@ -10,8 +10,7 @@
         merge_skip_unchanged = true,
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum", "arc", "base", "linea", "scroll", "polygon", "celo", "blast", "ink", "monad", "tempo", "unichain", "worldchain", "zora"]\',
                                 "sector",
-                                "dex_aggregator",
-                                \'["bh2smith", "Henrystats", "jeff-dude", "rantum", "hosuke"]\') }}'
+                                "dex_aggregator") }}'
         )
 }}
 

@@ -6,7 +6,6 @@ models:
       blockchain: ink
       sector: lending
       project: aave, compound, morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'morpho', 'ink']
     description: "All lending supply transactions on Ink"
@@ -93,7 +92,6 @@ models:
       blockchain: ink
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "ink"]
     description: "Morpho supply transactions on Ink"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['polygon', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -33,7 +32,6 @@ models:
     meta:
       blockchain: polygon
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['polygon', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -55,7 +53,6 @@ models:
     meta:
       blockchain: polygon
       project: balancer_v2
-      contributors: stefenon
     config:
       tags: ['polygon', 'balancer', 'lbp']
     description: >

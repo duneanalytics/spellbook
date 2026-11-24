@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum
       project: aragon
-      contributors: Henrystats 
     config:
       tags: [ 'arbitrum', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon app']
     description: >
@@ -53,7 +52,6 @@ models:
     meta:
       blockchain: arbitrum
       project: aragon
-      contributors: Henrystats 
     config:
       tags: [ 'arbitrum', 'dao', 'aragon', 'dao creator tools', 'Henrystats']
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'avalanche_c','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on avalanche_c - formatted for dex.trades

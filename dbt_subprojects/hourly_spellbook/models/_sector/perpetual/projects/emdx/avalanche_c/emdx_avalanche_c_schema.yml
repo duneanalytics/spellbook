@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: perpetual
       project: emdx
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'emdx', 'perpetuals', 'perps']
     description: >

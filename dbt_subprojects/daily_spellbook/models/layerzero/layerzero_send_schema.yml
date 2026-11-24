@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb, optimism, celo, base
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['layerzero', 'endpoint', 'send', 'cross-chain', 'bennyfeng']
    description: "LayerZero message send call"

@@ -9,8 +9,7 @@
     partition_by = ['block_month'],
     post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
         spell_type = "project",
-        spell_name = "aptos_stablecoins",
-        contributors = \'["ying-w"]\') }}'
+        spell_name = "aptos_stablecoins") }}'
 ) }}
 WITH events AS (
     SELECT

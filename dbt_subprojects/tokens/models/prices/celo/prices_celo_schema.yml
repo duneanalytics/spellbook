@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: celo
       sector: prices
-      contributors: rantum
     config:
       tags: ['prices', 'tokens', 'usd', 'celo']
     description: "Price tokens on celo chain"

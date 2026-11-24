@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: yfx_v4
-      contributors: principatel
     config:
       tags: ['base', 'perpetual', 'yfx', 'perps']
     description: >
@@ -94,7 +93,6 @@ models:
     meta:
       blockchain: base
       sector: perpetual
-      contributors: principatel
     config:
       tags: ['base', 'yfx', 'perps']
     description: >

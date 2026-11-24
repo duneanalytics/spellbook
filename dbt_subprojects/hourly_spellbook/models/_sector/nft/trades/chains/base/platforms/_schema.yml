@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: nft
       project: alienswap
-      contributors: [ 'ARDev097']
     config:
       tags: [ 'base', 'nft', 'trades', 'alienswap' ]
     description: "AlienSwap base trades"
@@ -36,7 +35,6 @@ models:
       blockchain: base
       sector: nft
       project: element
-      contributors: ['Henrystats' ]
     config:
       tags: [ 'base', 'nft', 'trades', 'element' ]
     description: "element base trades"
@@ -73,7 +71,6 @@ models:
       blockchain: base
       sector: nft
       project: zonic
-      contributors: tomfutago
     config:
       tags: [ 'base', 'nft', 'trades', 'zonic' ]
     description: "Zonic base trades on Base"
@@ -106,7 +103,6 @@ models:
     meta:
       blockchain: base
       project: sudoswap
-      contributors: [ ilemi ]
     config:
       tags: [ 'base','sudoswap','pool_creations' ]
     description: >
@@ -122,7 +118,6 @@ models:
       blockchain: base
       sector: nft
       project: sudoswap
-      contributors: [ 'ilemi' ]
     config:
       tags: [ 'base', 'nft', 'trades', 'sudoswap' ]
     description: "sudoswap v2 base trades"
@@ -152,7 +147,6 @@ models:
       blockchain: base
       sector: nft
       project: magiceden
-      contributors: hildobby
     config:
       tags: [ 'magiceden', 'nft', 'trades' ]
     description: "NFT trades on Magic Eden on base"
@@ -166,7 +160,6 @@ models:
     meta:
       blockchain: base
       project: opensea
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >

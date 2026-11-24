@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: tornado_cash
-      contributors: [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'deposits', 'ethereum']
     description: "Tornado Cash Deposits on Ethereum"
@@ -51,7 +50,6 @@ models:
     meta:
       blockchain: ethereum
       project: tornado_cash
-      contributors:  [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'withdrawals', 'ethereum']
     description: "Tornado Cash Withdrawals on Ethereum"

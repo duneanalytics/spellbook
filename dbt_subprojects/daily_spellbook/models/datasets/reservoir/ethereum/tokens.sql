@@ -2,8 +2,7 @@
     schema = 'reservoir',
     alias = 'tokens',
     tags = ['static'],
-    post_hook = '{{ expose_dataset(\'["ethereum"]\',
-                \'[""]\') }}'
+    post_hook = '{{ expose_dataset(\'["ethereum"]\') }}'
     )
 }}
 

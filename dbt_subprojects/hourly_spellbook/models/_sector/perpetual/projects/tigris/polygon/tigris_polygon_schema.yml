@@ -7,7 +7,6 @@ models:
       blockchain: polygon
       sector: perpetual
       project: tigris
-      contributors: Henrystats
     config:
       tags: ['polygon', 'tigris', 'perpetuals', 'perps']
     description: >
@@ -105,7 +104,6 @@ models:
     meta:
       blockchain: polygon
       project: tigris
-      contributors: Henrystats
     config:
       tags: ['polygon', 'tigris', 'trades', 'perps', 'dex']
     description: >
@@ -174,7 +172,6 @@ models:
     meta:
       blockchain: polygon
       project: tigris
-      contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >

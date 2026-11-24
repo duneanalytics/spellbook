@@ -4,7 +4,6 @@ models:
   - name: goonfi_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Sector920 ]
     config:
       tags: [ 'solana','dex', 'goonfi' ]
     description: >
@@ -17,7 +16,6 @@ models:
   - name: goonfi_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Sector920 ]
     config:
       tags: [ 'solana','dex', 'goonfi' ]
     description: >
@@ -31,7 +29,6 @@ models:
   - name: goonfi_solana_trades
     meta:
       blockchain: solana
-      contributors: [Sector920]
     config:
       tags: ['solana','dex', 'goonfi']
     description: >
@@ -131,7 +128,6 @@ models:
   - name: goonfi_v2_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana','dex', 'goonfi', 'goonfi_v2' ]
     description: >
@@ -144,7 +140,6 @@ models:
   - name: goonfi_v2_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana','dex', 'goonfi', 'goonfi_v2' ]
     description: >
@@ -158,7 +153,6 @@ models:
   - name: goonfi_v2_solana_trades
     meta:
       blockchain: solana
-      contributors: [Eekeyguy]
     config:
       tags: ['solana','dex', 'goonfi', 'goonfi_v2']
     description: >

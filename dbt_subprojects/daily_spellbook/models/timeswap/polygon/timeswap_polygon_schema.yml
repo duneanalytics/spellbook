@@ -7,7 +7,6 @@ models:
       blockchain: polygon
       sector: lending-borrowing
       project: timeswap
-      contributors: raveena15, varunhawk19
     config:
       tags: ['polygon','timeswap','pools', 'view']
     description: >

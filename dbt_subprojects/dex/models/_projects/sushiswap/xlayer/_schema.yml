@@ -6,7 +6,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'xlayer','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on xlayer - formatted for dex.trades

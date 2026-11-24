@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: dodo_aggregator
-      contributors: scoffie, owen05
     config:
       tags: ['ethereum','dodo',"aggregator", 'trades', 'dex']
     description: >

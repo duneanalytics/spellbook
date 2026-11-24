@@ -6,7 +6,6 @@ models:
       blockchain: berachain
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'berachain', 'bridges', 'flows', 'deposits' ]
     description: "Tether's USDT0 v1 bridge deposits events on Berachain"
@@ -15,7 +14,6 @@ models:
       blockchain: berachain
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'berachain', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Berachain"
@@ -25,7 +23,6 @@ models:
       blockchain: berachain
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'berachain', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Berachain"
@@ -34,7 +31,6 @@ models:
       blockchain: berachain
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'berachain', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Berachain"

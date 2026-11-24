@@ -9,8 +9,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook='{{ expose_spells(\'["near"]\',
                                 "project",
-                                "bridge_omni",
-                                \'["krishgka"]\') }}'
+                                "bridge_omni") }}'
 )}}
 
 -- NEAR Omni Bridge transactions tracking inbound and outbound transfers

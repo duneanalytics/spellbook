@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: peaq
       sector: prices
-      contributors: krishg
     config:
       tags: ['prices', 'tokens', 'usd', 'peaq']
     description: "Price tokens on peaq chain"

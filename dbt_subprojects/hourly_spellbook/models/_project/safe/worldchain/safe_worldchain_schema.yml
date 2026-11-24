@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: worldchain
       project: safe
-      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'worldchain']
     description: "Safe addresses"
@@ -39,7 +38,6 @@ models:
     meta:
       blockchain: worldchain
       project: safe
-      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'transfers', 'worldchain']
     description: "ETH transfers for safes"
@@ -76,7 +74,6 @@ models:
     meta:
       blockchain: worldchain
       project: safe
-      contributors: danielpartida, doublesc00p
     config:
       tags: ['safe', 'singletons', 'worldchain']
     description: "Singletons addresses used with Safes"
@@ -88,7 +85,6 @@ models:
     meta:
       blockchain: worldchain
       project: safe
-      contributors: danielpartida, doublesc00p  
     config:
       tags: ['safe', 'worldchain']
     description: "Safe transactions"

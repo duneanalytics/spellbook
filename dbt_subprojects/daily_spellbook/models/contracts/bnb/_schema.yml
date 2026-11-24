@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       sector: contracts
-      contributors: davidcheongyl, ronaldkohhh, akritivij, robin-y-20230331
     config:
       tags: ['bnb', 'contracts', 'addresses']
     description: "A list of contract addresses and their corresponding project names/creator."
@@ -23,7 +22,6 @@ models:
     meta:
       blockchain: bnb
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'bnb', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on bnb."
@@ -137,7 +135,6 @@ models:
     meta:
       blockchain: bnb
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
@@ -168,7 +165,6 @@ models:
     meta:
       blockchain: bnb
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'bnb', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on bnb."
@@ -203,7 +199,6 @@ models:
     meta:
       blockchain: bnb
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'bnb', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on bnb."
@@ -254,7 +249,6 @@ models:
     meta:
       blockchain: bnb
       sector: contracts
-      contributors: kryptaki
     config:
       tags: ['bnb', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on BNB."

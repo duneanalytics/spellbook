@@ -24,7 +24,6 @@ models:
       blockchain: superseed
       sector: dex
       project: bulletx
-      contributors: krishhh
     config:
       tags: [ 'superseed', 'dex', 'trades', 'bulletx', 'v2', 'superseed' ]
     description: "bulletx superseed v2 base trades (uniswap v2 compatible)"
@@ -45,7 +44,6 @@ models:
       blockchain: superseed
       sector: dex
       project: bulletx
-      contributors: krishhh
     config:
       tags: [ 'superseed', 'dex', 'trades', 'bulletx', 'v3' ]
     description: "bulletx superseed v3 base trades (uniswap v3 compatible)"
@@ -66,7 +64,6 @@ models:
       blockchain: superseed
       sector: dex
       project: velodrome
-      contributors: krishhh
     config:
       tags: [ 'superseed', 'dex', 'trades', 'velodrome', 'v2' ]
     description: "velodrome superseed v2 base trades (uniswap v2 compatible)"

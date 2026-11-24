@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, fantom, bnb, avalanche_c, arbitrum,polygon, gnosis, optimism
       sector: labels
       category: dex
-      contributors: whiskey
     config:
       tags: ['labels', 'cross-chain', 'KYT', 'dex']
     description: "Trader category based on trader tx count and  trades value in the last 30 days"

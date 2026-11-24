@@ -4,7 +4,6 @@ models:
   - name: pumpswap_solana_stg_decoded_swaps
     meta:
       blockchain: solana
-      contributors: [ krishhh ]
     config:
       tags: [ 'solana','dex','pumpswap' ]
       event_time: block_time
@@ -18,7 +17,6 @@ models:
   - name: pumpswap_solana_base_trades_backfill
     meta:
       blockchain: solana
-      contributors: [ krishhh ]
     config:
       tags: [ 'solana','dex','microbatch' ]
     description: >
@@ -32,7 +30,6 @@ models:
   - name: pumpswap_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ krishhh ]
     config:
       tags: [ 'solana','dex','pumpswap' ]
     description: >
@@ -115,7 +112,6 @@ models:
   - name: pumpswap_solana_trades
     meta:
       blockchain: solana
-      contributors: [ krishhh ]
     config:
       tags: [ 'solana','dex','pumpswap' ]
     description: >
@@ -159,7 +155,6 @@ models:
   - name: pumpswap_solana_pools
     meta:
       blockchain: solana
-      contributors: [ krishhh ]
     config:
       tags: ['solana','dex', 'pumpswap']
     description: "Pumpswap pools on Solana with a quote-mint validity flag"
@@ -174,7 +169,6 @@ models:
   - name: pumpswap_version_1_base_trades
     meta:
       blockchain: solana
-      contributors: [ krishgka ]
     config:
       tags: [ 'solana','dex' ]
     description: >

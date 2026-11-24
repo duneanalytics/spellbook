@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       sector: tokens
-      contributors: 0xRob, krishhh
     config:
       tags: ['tokens', 'net_transfers', 'daily']
     description: "Total transfer amount per day"
@@ -20,7 +19,6 @@ models:
     meta:
       blockchain: bnb
       sector: tokens
-      contributors: 0xRob, krishhh
     config:
       tags: ['tokens', 'net_transfers']
     description: "Total transfer amount per day per asset"

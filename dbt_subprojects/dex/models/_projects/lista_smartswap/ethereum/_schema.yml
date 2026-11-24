@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: lista_smartswap
-      contributors: knight_in_kight
     config:
       tags: ["ethereum", "lista_smartswap", "dex"]
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: plasma
       sector: lending
       project: aave
-      contributors: 0xsandeshk
     config:
       tags: ['lending', 'flashloans', 'aave', 'plasma']
     description: "All lending flashloans transactions on Plasma"
@@ -79,7 +78,6 @@ models:
       blockchain: plasma
       sector: lending
       project: aave
-      contributors: 0xsandeshk
     config:
       tags: ['lending', 'flashloans', 'aave', 'plasma']
     description: "Aave v3 flashloans transactions on Plasma"

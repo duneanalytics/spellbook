@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: flow
       sector: prices
-      contributors: krishhh
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens on Flow chain"

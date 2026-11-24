@@ -5,7 +5,6 @@ models:
     description: "Contract deployments on Arc, including function selectors, token flags, and bytecode."
     meta:
       blockchain: arc
-      contributors: karimhass
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:

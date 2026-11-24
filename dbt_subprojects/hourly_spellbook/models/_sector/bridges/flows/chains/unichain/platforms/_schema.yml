@@ -6,7 +6,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'unichain', 'bridges', 'flows', 'deposits' ]
     description: "Circle's CCTP v1 bridge deposits events on Base"
@@ -23,7 +22,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
     description: "Circle's CCTP v1 bridge withdrawals events on Base"
@@ -40,7 +38,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v2 bridge deposits events on Unichain"
@@ -49,7 +46,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Unichain"
@@ -58,7 +54,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v3 bridge deposits events on Unichain"
@@ -67,7 +62,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Unichain"
@@ -76,7 +70,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'unichain', 'bridges', 'flows', 'deposits' ]
     description: "Tether's USDT0 v1 bridge deposits events on Unichain"
@@ -89,7 +82,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Unichain"
@@ -102,7 +94,6 @@ models:
       blockchain: arbitrum
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Unichain"
@@ -111,7 +102,6 @@ models:
       blockchain: unichain
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Unichain"

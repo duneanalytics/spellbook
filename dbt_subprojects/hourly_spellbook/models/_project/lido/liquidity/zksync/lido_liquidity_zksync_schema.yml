@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zksync
       project: lido
-      contributors: pipistrella
     config:
       tags: ['zksync','lido','liquidity']
     description: 

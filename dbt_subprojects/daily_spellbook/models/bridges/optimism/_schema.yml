@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: bridges
       project: addresses
-      contributors: rantum
     config:
       tags: ['table', 'bridges', 'addresses', 'optimism']
     description: "Known bridge addresses"

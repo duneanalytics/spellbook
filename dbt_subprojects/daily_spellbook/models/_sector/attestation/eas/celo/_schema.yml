@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'celo' ]
     description: "EAS schema registry on Celo"
@@ -27,7 +26,6 @@ models:
       blockchain: celo
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'celo' ]
     description: "EAS schema registry details on Celo"
@@ -50,7 +48,6 @@ models:
       blockchain: celo
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'celo' ]
     description: "EAS attestations on Celo"
@@ -73,7 +70,6 @@ models:
       blockchain: celo
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'celo' ]
     description: "EAS attestation details on Celo"

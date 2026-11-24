@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: addresses
-      contributors: hildobby, msilb7, rantum
     config:
       tags: ['table', 'bridges', 'addresses', 'ethereum']
     description: "Known bridge addresses"

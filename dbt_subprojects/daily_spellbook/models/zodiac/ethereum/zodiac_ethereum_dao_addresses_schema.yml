@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: zodiac
-      contributors: Henrystats 
     config:
       tags: [ 'ethereum', 'dao', 'zodiac', 'dao creator tools', 'Henrystats' ]
     description: >

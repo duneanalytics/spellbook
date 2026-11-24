@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: tx_hash_labels
       category: bluechip_investment
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'bluechip_investment', 'dex']
     description: "Trades that bought a blue chip type of token (wBTC, ETH, and WETH)"
@@ -47,7 +46,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: bluechip_investment
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'bluechip_investment', 'dex']
     description:  "Trades that bought a blue chip type of token (wBTC, ETH, and WETH)"

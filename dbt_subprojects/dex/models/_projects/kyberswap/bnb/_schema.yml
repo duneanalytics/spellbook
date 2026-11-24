@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex_aggregator
       project: kyberswap
-      contributors: nhd98z
     config:
       tags: ['bnb', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >

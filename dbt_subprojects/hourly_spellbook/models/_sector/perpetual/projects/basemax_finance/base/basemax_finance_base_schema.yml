@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: basemax_finance 
-      contributors: LLDAO
     config:
       tags: ['base','perpetual', 'basemax_finance','perps']
     description: >

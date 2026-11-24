@@ -6,7 +6,6 @@ models:
       blockchain: optimism, arbitrum, solana
       sector: labels
       project: system_addresses
-      contributors: msilb7
     config:
       tags: ['labels', 'system', 'addresses', 'exclude','optimism','arbitrum','solana']
     description: "Contract addresses for system transactions on various blockchains. These should be excluded in 'real usage' measurements."   

@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_transfers
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'transfers']
     description: Addresses that made only erc20 token transfer transactions

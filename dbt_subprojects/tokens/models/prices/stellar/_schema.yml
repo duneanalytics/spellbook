@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: stellar
       sector: prices
-      contributors: tomfutago
     config:
       tags: ['prices', 'tokens', 'usd', 'stellar']
     description: "Price tokens on Stellar"

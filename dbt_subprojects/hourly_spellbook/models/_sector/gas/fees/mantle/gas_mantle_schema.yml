@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: mantle
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['mantle', 'gas', 'fees']
     description: >

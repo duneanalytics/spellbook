@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zksync
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['zksync', 'gas', 'fees']
     description: >

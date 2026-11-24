@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: flashbots
-      contributors: hildobby
     config:
       tags: ['labels', 'ethereum', 'MEV', 'Flashbots']
     description: "Known Flashbots wallets on Ethereum"

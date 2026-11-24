@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'jelly_swap', 'pools_fees']
     description: >

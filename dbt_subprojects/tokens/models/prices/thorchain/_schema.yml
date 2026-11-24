@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: thorchain
       sector: prices
-      contributors: krishgka
     config:
       tags: ['prices', 'tokens', 'usd', 'thorchain']
     description: "Price tokens on Thorchain"

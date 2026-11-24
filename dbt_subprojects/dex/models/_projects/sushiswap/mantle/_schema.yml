@@ -6,7 +6,6 @@ models:
       blockchain: mantle
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'mantle','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on mantle - formatted for dex.trades

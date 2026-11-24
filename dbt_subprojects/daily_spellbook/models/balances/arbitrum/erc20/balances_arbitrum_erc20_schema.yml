@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: balances
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['balances', 'arbitrum', 'erc20', 'hour', 'Henrystats']
     description: >
@@ -43,7 +42,6 @@ models:
       blockchain: arbitrum
       sector: balances
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['balances', 'arbitrum', 'erc20', 'day', 'Henrystats']
     description: >
@@ -67,7 +65,6 @@ models:
       blockchain: arbitrum
       sector: balances
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['balances', 'arbitrum', 'erc20', 'latest', 'Henrystats']
     description: >
@@ -90,7 +87,6 @@ models:
       blockchain: arbitrum
       sector: balances
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['view', 'erc20', 'erc20_latest', 'erc20_hourly', 'erc20_daily']
     description: >

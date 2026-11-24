@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: degen
       sector: gas
-      contributors: 0xRob, hosuke
     config:
       tags: ['degen', 'gas', 'fees']
     description: >

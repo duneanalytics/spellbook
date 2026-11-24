@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'polygon']
     description: "Table showing who first funded each Polygon address in MATIC"
@@ -56,7 +55,6 @@ models:
       blockchain: polygon
       sector: addresses_events
       project: addresses
-      contributors: Henrystats
     config:
       tags: ['table', 'activity', 'addresses_events', 'polygon']
     description: "Table showing first activity of each Polygon Mainnet address"
@@ -96,7 +94,6 @@ models:
       blockchain: polygon
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'polygon']
     description: "Table showing which token was first received for each Polygon address"

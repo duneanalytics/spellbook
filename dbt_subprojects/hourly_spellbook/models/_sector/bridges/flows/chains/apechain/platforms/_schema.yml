@@ -6,7 +6,6 @@ models:
       blockchain: apechain
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'apechain', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Apechain"

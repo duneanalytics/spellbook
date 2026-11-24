@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: dex
       project: paraswap_v4
-      contributors: springzh
     config:
       tags: ['polygon','paraswap_v4','trades', 'paraswap','dex']
     description: >
@@ -103,7 +102,6 @@ models:
       blockchain: polygon
       sector: dex
       project: paraswap_v5
-      contributors: springzh
     config:
       tags: ['polygon','paraswap_v5','trades', 'paraswap','dex']
     description: >
@@ -154,7 +152,6 @@ models:
       blockchain: polygon
       sector: dex
       project: paraswap_v6
-      contributors: eptighte, mwamedacen
     config:
       tags: ['polygon','paraswap_v6','trades', 'paraswap','dex']
     description: >
@@ -208,7 +205,6 @@ models:
       blockchain: polygon
       sector: dex
       project: paraswap
-      contributors: springzh
     config:
       tags: ['polygon','dex','trades', 'paraswap']
     description: >

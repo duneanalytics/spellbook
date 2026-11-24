@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: solana
       sector: prices
-      contributors: aalan3, jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd', 'solana']
     description: "Price tokens on solana chain"

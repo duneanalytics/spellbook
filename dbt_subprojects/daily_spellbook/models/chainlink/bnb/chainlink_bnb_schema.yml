@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["bnb", "chainlink", "oracle"]
     description: >
@@ -52,7 +51,6 @@ models:
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
     config:
       tags: ["bnb", "chainlink", "oracle"]
     description: >
@@ -84,7 +82,6 @@ models:
     meta:
       blockchain: bnb
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["bnb", "chainlink", "oracle"]
     description: >
@@ -108,7 +105,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "bnb"]
     description: >
@@ -160,7 +156,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "bnb"]
     description: >
@@ -195,7 +190,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reverted", "transactions", "bnb"]
     description: >
@@ -222,7 +216,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "daily", "bnb"]
     description: >
@@ -267,7 +260,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "request", "daily", "bnb"]
     description: >
@@ -299,7 +291,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "transmission", "logs", "bnb"]
     description: >
@@ -335,7 +326,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "bnb"]
     description: >
@@ -357,7 +347,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "bnb"]
     description: >
@@ -381,7 +370,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "daily", "bnb"]
     description: >
@@ -406,7 +394,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "daily", "bnb"]
     description: >
@@ -435,7 +422,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "bnb"]
     description: >
@@ -467,7 +453,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "bnb"]
     description: >
@@ -494,7 +479,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "request", "daily", "bnb"]
     description: >
@@ -520,7 +504,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reverted", "transactions", "bnb"]
     description: >
@@ -547,7 +530,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "daily", "bnb"]
     description: >
@@ -572,7 +554,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "bnb"]
     description: >
@@ -588,7 +569,6 @@ models:
     meta:
       blockchain: bnb
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "daily", "bnb"]
     description: >
@@ -613,7 +593,6 @@ models:
       blockchain: "bnb"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "fulfilled", "transactions", "bnb"]
     description: >
@@ -641,7 +620,6 @@ models:
       blockchain: "bnb"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "gas", "daily", "bnb"]
     description: >
@@ -671,7 +649,6 @@ models:
       blockchain: "bnb"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "upkeep", "performed", "logs", "bnb"]
     description: >
@@ -707,7 +684,6 @@ models:
       blockchain: "bnb"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "request", "daily", "bnb"]
     description: >
@@ -734,7 +710,6 @@ models:
       blockchain: "bnb"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "reverted", "transactions", "bnb"]
     description: >
@@ -762,7 +737,6 @@ models:
       blockchain: "bnb"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "reward", "daily", "bnb"]
     description: >
@@ -790,7 +764,6 @@ models:
       blockchain: "bnb"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "performed", "bnb"]
     description: >
@@ -807,7 +780,6 @@ models:
       blockchain: "bnb"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "performed", "daily", "bnb"]
     description: >
@@ -831,7 +803,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "fulfilled", "transactions", "bnb"]
     description: >
@@ -858,7 +829,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "gas", "daily", "bnb"]
     description: >
@@ -886,7 +856,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "bnb"]
     description: >
@@ -919,7 +888,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "v1", "random", "request", "logs", "bnb"]
     description: >
@@ -955,7 +923,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "bnb"]
     description: >
@@ -988,7 +955,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "daily", "bnb"]
     description: >
@@ -1013,7 +979,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "reverted", "transactions", "bnb"]
     description: >
@@ -1040,7 +1005,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "reward", "daily", "bnb"]
     description: >
@@ -1066,7 +1030,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "fulfilled", "bnb"]
     description: >
@@ -1081,7 +1044,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "bnb"]
     description: >
@@ -1104,7 +1066,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "feeds", "daily", "bnb"]
     description: >
@@ -1130,7 +1091,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "feeds", "bnb"]
     description: >
@@ -1145,7 +1105,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "logs", "bnb"]
     description: >
@@ -1173,7 +1132,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "requester", "daily", "bnb"]
     description: >
@@ -1201,7 +1159,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "requester", "bnb"]
     description: >
@@ -1219,7 +1176,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "bnb"]
     description: >
@@ -1246,7 +1202,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "gas", "daily", "bnb"]
     description: >
@@ -1275,7 +1230,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "request", "daily", "bnb"]
     description: >
@@ -1298,7 +1252,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reverted", "transactions", "bnb"]
     description: >
@@ -1323,7 +1276,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reward", "daily", "bnb"]
     description: >
@@ -1349,7 +1301,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "bnb"]
     description: >
@@ -1373,7 +1324,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "bnb"]
     description: >
@@ -1401,7 +1351,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "traces", "bnb"]
     description: >
@@ -1436,7 +1385,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "bnb"]
     description: >
@@ -1470,7 +1418,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "transferred", "bnb"]
     description: >
@@ -1500,7 +1447,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "bnb"]
     description: >
@@ -1527,7 +1473,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "bnb"]
     description: >
@@ -1554,7 +1499,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "logs", "bnb"]
     description: >
@@ -1578,7 +1522,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "paid", "logs", "bnb"]
     description: >
@@ -1607,7 +1550,6 @@ models:
       blockchain: "bnb"
 
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "bnb"]
     description: >
@@ -1631,7 +1573,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "bnb"]
     description: >
@@ -1668,7 +1609,6 @@ models:
     meta:
       blockchain: "bnb"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "bnb"]
     description: >

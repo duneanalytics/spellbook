@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
     description: "Circle's CCTP v1 bridge deposits events on Avalanche"
@@ -87,7 +86,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'withdrawals' ]
     description: "Circle's CCTP v1 bridge withdrawals events on Avalanche"
@@ -128,7 +126,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
     description: "Celer's v1 bridge deposits events on Avalanche"
@@ -137,7 +134,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Avalanche"
@@ -146,7 +142,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Avalanche"
@@ -155,7 +150,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: nitro
-      contributors: [ 'hildobby']
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Avalanche"
@@ -164,7 +158,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Avalanche"
@@ -173,7 +166,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: avalanche
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows' , 'deposits' ]
     description: "Avalanche's Bitcoin bridge deposits events on Avalanche"
@@ -182,7 +174,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: avalanche
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
     description: "Avalanche's Bitcoin bridge withdrawals events on Avalanche"
@@ -191,7 +182,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Avalanche"
@@ -200,7 +190,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: allbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
     description: "Allbridge's v1 classic bridge deposits events on Avalanche"
@@ -209,7 +198,6 @@ models:
       blockchain: avalanche_c
       sector: bridges
       project: layerzero
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
     description: "LayerZero's v1 bridge deposits events on Avalanche"

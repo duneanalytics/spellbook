@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: hemi
       sector: gas
-      contributors: captncrunch
     config:
       tags: ['hemi', 'gas', 'fees']
     description: >

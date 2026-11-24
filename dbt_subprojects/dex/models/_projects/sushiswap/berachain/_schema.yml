@@ -6,7 +6,6 @@ models:
       blockchain: berachain
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'berachain','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on berachain - formatted for dex.trades

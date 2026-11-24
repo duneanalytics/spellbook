@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: zksync
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'zksync','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: zksync
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'zksync','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

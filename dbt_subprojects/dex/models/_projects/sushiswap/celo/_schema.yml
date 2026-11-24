@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'celo','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on celo - formatted for dex.trades

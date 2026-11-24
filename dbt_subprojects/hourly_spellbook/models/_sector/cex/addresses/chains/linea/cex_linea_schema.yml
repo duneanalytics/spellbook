@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: linea
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'linea']
     description: "All CEX-tied addresses identified on Linea"

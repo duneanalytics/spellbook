@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: forex
       project: jarvis_network
-      contributors: 0xroll
     config:
       tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
     description: >
@@ -79,7 +78,6 @@ models:
       blockchain: polygon
       sector: forex
       project: jarvis_network
-      contributors: 0xroll
     config:
       tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
     description: >
@@ -112,7 +110,6 @@ models:
       blockchain: polygon
       sector: forex
       project: jarvis_network
-      contributors: 0xroll
     config:
       tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
     description: >

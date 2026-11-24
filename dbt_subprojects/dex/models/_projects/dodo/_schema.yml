@@ -5,7 +5,6 @@ models:
       blockchain: ethereum, bnb, polygon, arbitrum, optimism, base
       sector: dex_aggregator
       project: dodo
-      contributors: owen05
     config:
       tags:  ['ethereum','bnb', 'polygon', 'arbitrum', 'optimism', 'base', 'dex', 'aggregator', 'trades', 'dodo']
     description: >

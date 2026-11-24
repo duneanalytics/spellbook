@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       sector: tokens
-      contributors: hildobby
     config:
       tags: ['tokens', 'metadata', 'gnosis', 'nft', 'erc721']
     description: >
@@ -24,7 +23,6 @@ models:
     meta:
       blockchain: gnosis
       sector: tokens
-      contributors: 0xRob
     config:
       tags: [ 'tokens', 'metadata', 'gnosis', 'nft', 'erc721' ]
     description: >
@@ -53,7 +51,6 @@ models:
     meta:
       blockchain: gnosis
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'nft','gnosis' ]
     description: >

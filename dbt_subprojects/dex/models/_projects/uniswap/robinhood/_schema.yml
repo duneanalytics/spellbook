@@ -6,7 +6,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: uniswap
-      contributors: jeff-dude
     config:
       tags: ['robinhood', 'dex', 'trades', 'uniswap', 'v4']
     description: >

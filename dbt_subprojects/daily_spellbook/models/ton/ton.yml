@@ -4,7 +4,6 @@ models:
   - name: ton_jetton_price_daily
     meta:
       blockchain: ton
-      contributors: pshuvalov, okhlopkov
       short_description: "Daily TON token (jetton) prices in TON and USD, derived from DEX trades, DEX LP tokens, and StormTrade SLP tokens."
     config:
       tags: ['ton','prices',' dex']
@@ -38,7 +37,6 @@ models:
   - name: ton_accounts
     meta:
       blockchain: ton
-      contributors: pshuvalov
       short_description: "TON blockchain account data: status, balance (nano TON), interfaces, deployment details, and initial funding info."
     config:
       tags: ['ton','balances', 'interfaces', 'deployments']
@@ -93,7 +91,6 @@ models:
     meta:
       blockchain: ton
       sector: tokens
-      contributors: [krishhh]
     config:
       tags: ['tokens', 'net_transfers', 'daily']
     description: "Total transfer amount per day"
@@ -115,7 +112,6 @@ models:
     meta:
       blockchain: ton
       sector: tokens
-      contributors: [krishhh]
     config:
       tags: ['tokens', 'net_transfers', 'daily']
     description: "Total transfer amount per day per asset"
@@ -141,7 +137,6 @@ models:
     meta:
       blockchain: ton
       sector: tokens
-      contributors: krishhh
     config:
       tags: ['tokens', 'metadata', 'ton']
     description: "Latest metadata for TON jettons, keeping only the most recent version per token"
@@ -155,7 +150,6 @@ models:
     meta:
       blockchain: ton
       sector: tokens
-      contributors: [pshuvalov]
       short_description: "Latest native TON and jetton balances per address, including mintless claim status."
     config:
       tags: ['balances', 'tokens']

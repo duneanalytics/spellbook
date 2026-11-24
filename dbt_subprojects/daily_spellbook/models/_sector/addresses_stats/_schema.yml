@@ -6,7 +6,6 @@ models:
       sector: addresses
       project: addresses
       short_description: "Cross-chain per-address stats (first funded, contract flag) unioning all supported chains."
-      contributors: kryptaki
     description: "Cross-chain view of per-address stats. Unions chain-level `addresses_<chain>.stats` tables. Use `_updated_at` for incremental reads."
     columns:
       - name: blockchain

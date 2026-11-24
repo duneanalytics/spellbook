@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: katana
       sector: lending
-      contributors: tomfutago
     config:
       tags: ["lending", "borrow", "aave", "katana"]
     description: "All lending borrow transactions on Katana"
@@ -92,7 +91,6 @@ models:
       blockchain: katana
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'morpho', 'katana']
     description: "Morpho borrow transactions on Katana"

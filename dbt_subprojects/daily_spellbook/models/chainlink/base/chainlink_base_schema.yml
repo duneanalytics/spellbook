@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "base"]
     description: >
@@ -42,7 +41,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "gas", "daily", "base"]
     description: >
@@ -89,7 +87,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "request", "daily", "base"]
     description: >
@@ -118,7 +115,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reverted", "transactions", "base"]
     description: >
@@ -143,7 +139,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reward", "daily", "base"]
     description: >
@@ -173,7 +168,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "base"]
     description: >
@@ -199,7 +193,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "base"]
     description: >
@@ -227,7 +220,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "traces", "base"]
     description: >
@@ -274,7 +266,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "base"]
     description: >
@@ -322,7 +313,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "transferred", "base"]
     description: >
@@ -352,7 +342,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "base"]
     description: >
@@ -379,7 +368,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "base"]
     description: >
@@ -406,7 +394,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "logs", "base"]
     description: >
@@ -430,7 +417,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "paid", "logs", "base"]
     description: >
@@ -459,7 +445,6 @@ models:
       blockchain: "base"
 
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "base"]
     description: >
@@ -483,7 +468,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "base"]
     description: >
@@ -520,7 +504,6 @@ models:
     meta:
       blockchain: "base"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "base"]
     description: >

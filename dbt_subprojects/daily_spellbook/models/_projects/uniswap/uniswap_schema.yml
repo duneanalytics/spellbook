@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, bnb, arbitrum, optimism, polygon, celo
       sector: lending
-      contributors: hildobby, tomfutago
     config:
       tags: ['ethereum', 'bnb', 'arbitrum', 'optimism', 'polygon', 'celo', 'flashloans']
     description: >

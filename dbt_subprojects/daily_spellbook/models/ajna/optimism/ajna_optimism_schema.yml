@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: ajna
-      contributors: [gunboats]
     config:
       tags: ["optimism", "ajna"]
     description: List of ERC20 pools deployed on Ajna

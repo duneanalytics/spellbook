@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: genie
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'genie']
     description: "List of claim transactions for the Genie $USDC airdrop"

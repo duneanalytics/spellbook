@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_governance
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'voters', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
@@ -56,7 +55,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_governance
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'delegators', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
@@ -86,7 +84,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_governance
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'retropgf', 'proposal submitters', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
@@ -117,7 +114,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_governance
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'retropgf', 'voters', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
@@ -148,7 +144,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_governance
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'derived archetype', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'

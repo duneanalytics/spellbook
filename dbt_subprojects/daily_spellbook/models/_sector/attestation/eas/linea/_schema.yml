@@ -6,7 +6,6 @@ models:
       blockchain: linea
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'linea' ]
     description: "EAS schema registry on Linea"
@@ -27,7 +26,6 @@ models:
       blockchain: linea
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'linea' ]
     description: "EAS schema registry details on Linea"
@@ -50,7 +48,6 @@ models:
       blockchain: linea
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'linea' ]
     description: "EAS attestations on Linea"
@@ -73,7 +70,6 @@ models:
       blockchain: linea
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'linea' ]
     description: "EAS attestation details on Linea"

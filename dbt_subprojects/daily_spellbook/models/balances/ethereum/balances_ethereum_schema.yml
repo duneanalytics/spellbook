@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: balances
       project: genesis
-      contributors: bernat
     config:
       tags: ['balances', 'ethereum', 'genesis', 'bernat']
     description: >

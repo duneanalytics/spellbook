@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: avalanche_c
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['avalanche_c', 'layerzero', 'send']
    description: "LayerZero message send call on avalanche c"

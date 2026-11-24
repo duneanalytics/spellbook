@@ -15,7 +15,6 @@ models:
       blockchain: ethereum, polygon, gnosis
       sector: labels
       category: dao
-      contributors: ilemi
     config:
       tags: ['labels', 'dao']
     description: "all dao labels"

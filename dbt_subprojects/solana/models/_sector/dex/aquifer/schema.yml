@@ -4,7 +4,6 @@ models:
   - name: aquifer_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ flyingfish ]
     config:
       tags: [ 'solana','dex', 'aquifer' ]
     description: >
@@ -17,7 +16,6 @@ models:
   - name: aquifer_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ flyingfish ]
     config:
       tags: [ 'solana','dex', 'aquifer' ]
     description: >
@@ -31,7 +29,6 @@ models:
   - name: aquifer_v2_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [flyingfish]
     config:
       tags: ['solana', 'dex', 'aquifer']
     description: >
@@ -44,7 +41,6 @@ models:
   - name: aquifer_v2_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [flyingfish]
     config:
       tags: ['solana', 'dex', 'aquifer']
     description: >
@@ -58,7 +54,6 @@ models:
   - name: aquifer_v2_solana_trades
     meta:
       blockchain: solana
-      contributors: [flyingfish]
     config:
       tags: ['solana', 'dex', 'aquifer']
     description: >
@@ -98,7 +93,6 @@ models:
   - name: aquifer_solana_trades
     meta:
       blockchain: solana
-      contributors: [flyingfish]
     config:
       tags: ['solana','dex', 'aquifer']
     description: >

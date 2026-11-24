@@ -7,7 +7,6 @@ models:
       blockchain: ethereum
       sector: lending-borrowing
       project: timeswap
-      contributors: raveena15, varunhawk19
     config:
       tags: ['ethereum','timeswap','pools', 'view']
     description: >

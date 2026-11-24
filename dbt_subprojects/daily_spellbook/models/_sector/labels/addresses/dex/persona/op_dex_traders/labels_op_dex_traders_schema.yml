@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: labels
       category: dex
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'traders', 'dex']
     description: '{{ doc("op_address_archetype_labels_description") }}'

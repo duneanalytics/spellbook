@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['avalanche_c', 'gas', 'fees']
     description: >

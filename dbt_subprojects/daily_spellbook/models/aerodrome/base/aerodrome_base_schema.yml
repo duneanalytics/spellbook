@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       project: aerodrome
-      contributors: msilb7
     config:
       tags: ['base','aerodrome','velo','dex', 'incentives']
     description: >

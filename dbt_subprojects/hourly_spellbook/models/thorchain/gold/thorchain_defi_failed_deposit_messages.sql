@@ -12,8 +12,7 @@
     tags = ['thorchain', 'defi', 'failed_deposit_messages', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
-                                  "thorchain",
-                                  \'["jeff-dude"]\') }}'
+                                  "thorchain") }}'
 ) }}
 
 -- Deduplication and gold layer combined (no silver layer needed)

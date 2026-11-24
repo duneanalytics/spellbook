@@ -16,7 +16,6 @@ models:
       sector: labels
       category: institution
       project: ['labels']
-      contributors: soispoke
     config:
       tags: ['labels', 'institution', 'cex', 'funds']
     description: "instituional labels"   

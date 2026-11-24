@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: openocean
-      contributors: thevaizman
     config:
       tags: [ 'avalanche_c', 'openocean', 'trades', 'dex', 'aggregator' ]
     description: >

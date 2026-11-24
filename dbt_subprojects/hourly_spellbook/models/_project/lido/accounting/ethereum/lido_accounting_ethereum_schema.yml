@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "stETH referral payments to referral partners"
@@ -31,7 +30,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Amount of DAI spend on referral programm"
@@ -50,7 +48,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "ETH deposits to Lido"
@@ -75,7 +72,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Fundraised Lido funds"
@@ -100,7 +96,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "LDO spent on refferral payments"
@@ -119,7 +114,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "LEGO expenses"
@@ -138,7 +132,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Amount of tokens spent on incentives"
@@ -168,7 +161,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Incentives spend on lox"
@@ -198,7 +190,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Operating expenses"
@@ -228,7 +219,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Other expenses"
@@ -258,7 +248,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Other income"
@@ -288,7 +277,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Raw revenue"
@@ -332,7 +320,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Trp expenses"
@@ -351,7 +338,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Protocol buffer ETH inflow"
@@ -372,7 +358,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Protocol buffer ETH outflow"
@@ -393,7 +378,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ gregshestakovlido, ppclunghe, xadcv ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "ETH principal withdrawals"

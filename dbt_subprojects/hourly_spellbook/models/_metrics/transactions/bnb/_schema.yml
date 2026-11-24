@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: bnb
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'bnb','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: bnb
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'bnb','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

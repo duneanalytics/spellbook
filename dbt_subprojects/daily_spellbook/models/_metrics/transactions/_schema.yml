@@ -4,7 +4,6 @@ models:
   - name: metrics_transactions_daily
     meta:
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: ['metrics', 'transactions', 'daily']
     description: "Sum of total tx's per day across all chains"
@@ -12,7 +11,6 @@ models:
   - name: metrics_transactions_stats
     meta:
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'metrics', 'transactions' ]
     description: "View of tx's per blockchain aggregated to various levels. The goal is to output one row per chain."

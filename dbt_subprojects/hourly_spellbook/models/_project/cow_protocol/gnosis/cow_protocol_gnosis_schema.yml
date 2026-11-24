@@ -10,7 +10,6 @@ models:
     meta:
       blockchain: gnosis
       project: cow_protocol
-      contributors: bh2smith, gentrexha
     config:
       tags: ['gnosis_chain','cow_protocol','solver']
     description: >
@@ -20,7 +19,6 @@ models:
     meta:
       blockchain: gnosis
       project: cow_protocol
-      contributors: bh2smith
     config:
       tags: ['gnosis','cow_protocol','trades', 'dex', 'aggregator', 'auction']
     description: >
@@ -30,7 +28,6 @@ models:
     meta:
       blockchain: gnosis
       project: cow_protocol
-      contributors: cowprotocol
     config:
       tags: [ 'gnosis','cow_protocol','eth-flow', "orders" ]
     description: >

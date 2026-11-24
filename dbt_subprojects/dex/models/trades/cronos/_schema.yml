@@ -24,7 +24,6 @@ models:
       blockchain: cronos
       sector: dex
       project: vvs_finance
-      contributors: jeff-dude
     config:
       tags: ["cronos", "dex", "trades", "vvs_finance", "v2"]
     description: "VVS Finance v2 Cronos base trades"
@@ -52,7 +51,6 @@ models:
       blockchain: cronos
       sector: dex
       project: vvs_finance
-      contributors: jeff-dude
     config:
       tags: ["cronos", "dex", "trades", "vvs_finance", "v3"]
     description: "VVS Finance v3 Cronos base trades"
@@ -80,7 +78,6 @@ models:
       blockchain: cronos
       sector: dex
       project: cronaswap
-      contributors: jeff-dude
     config:
       tags: ["cronos", "dex", "trades", "cronaswap"]
     description: "Cronaswap cronos base trades"
@@ -108,7 +105,6 @@ models:
       blockchain: cronos
       sector: dex
       project: ferro
-      contributors: jeff-dude
     config:
       tags: ["cronos", "dex", "trades", "ferro"]
     description: "Ferro cronos base trades"

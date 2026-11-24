@@ -11,8 +11,7 @@
     tags = ['thorchain', 'gov', 'slash_events', 'fact', 'governance'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
-                                  "thorchain",
-                                  \'["jeff-dude"]\') }}'
+                                  "thorchain") }}'
 ) }}
 
 WITH deduplicated AS (

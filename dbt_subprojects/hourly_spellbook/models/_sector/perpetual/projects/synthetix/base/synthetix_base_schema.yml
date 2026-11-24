@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: synthetix
-      contributors: Henrystats
     config:
       tags: ['base', 'synthetix', 'perpetuals', 'perps']
     description: >
@@ -96,7 +95,6 @@ models:
       blockchain: base
       sector: perpetual
       project: synthetix
-      contributors: Henrystats
     config:
       tags: ['base', 'synthetix', 'perpetuals', 'perps']
     description: >

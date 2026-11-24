@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: balances
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['balances', 'polygon', 'erc20', 'day', 'Henrystats']
     description: >
@@ -46,7 +45,6 @@ models:
       blockchain: polygon
       sector: balances
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['balances', 'polygon', 'erc20', 'latest', 'Henrystats']
     description: >
@@ -69,7 +67,6 @@ models:
       blockchain: polygon
       sector: balances
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['view', 'erc20', 'erc20_latest', 'erc20_hourly', 'erc20_daily']
     description: >

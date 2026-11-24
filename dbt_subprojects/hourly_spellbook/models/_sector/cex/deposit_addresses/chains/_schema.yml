@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on arbitrum"
@@ -56,7 +55,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on avalanche_c"
@@ -83,7 +81,6 @@ models:
     meta:
       blockchain: base
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on base"
@@ -110,7 +107,6 @@ models:
     meta:
       blockchain: bnb
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on bnb"
@@ -137,7 +133,6 @@ models:
     meta:
       blockchain: celo
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on celo"
@@ -164,7 +159,6 @@ models:
     meta:
       blockchain: ethereum
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on ethereum"
@@ -191,7 +185,6 @@ models:
     meta:
       blockchain: gnosis
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on gnosis"
@@ -218,7 +211,6 @@ models:
     meta:
       blockchain: optimism
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on optimism"
@@ -245,7 +237,6 @@ models:
     meta:
       blockchain: polygon
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on polygon"
@@ -272,7 +263,6 @@ models:
     meta:
       blockchain: scroll
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on scroll"
@@ -299,7 +289,6 @@ models:
     meta:
       blockchain: zora
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on zora"
@@ -326,7 +315,6 @@ models:
     meta:
       blockchain: berachain
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on berachain"
@@ -353,7 +341,6 @@ models:
     meta:
       blockchain: ink
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on ink"
@@ -380,7 +367,6 @@ models:
     meta:
       blockchain: katana
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on katana"
@@ -407,7 +393,6 @@ models:
     meta:
       blockchain: nova
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on nova"
@@ -434,7 +419,6 @@ models:
     meta:
       blockchain: opbnb
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on opbnb"
@@ -461,7 +445,6 @@ models:
     meta:
       blockchain: unichain
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','deposit']
     description: "All identified CEX deposit addresses on unichain"

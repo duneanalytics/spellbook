@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: celo
       project: zeroex
-      contributors: rantum
     config:
       tags: ["celo","0x","dex_aggregator","dex","aggregator"]
     description: >
@@ -89,7 +88,6 @@ models:
     meta:
       blockchain: celo
       project: zeroex
-      contributors: rantum
     config:
       tags: ["celo","0x","dex_aggregator","dex","aggregator"]
     description: >
@@ -140,7 +138,6 @@ models:
     meta:
       blockchain: celo
       project: zeroex
-      contributors: hosuke
     config:
       tags: ['celo', '0x', 'settler']
     description: >

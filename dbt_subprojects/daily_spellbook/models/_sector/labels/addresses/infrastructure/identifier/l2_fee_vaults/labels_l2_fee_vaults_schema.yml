@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: labels
       project: fee_vaults
-      contributors: msilb7
     config:
       tags: ['labels', 'system', 'addresses', 'exclude','optimism','fees']
     description: "Contract addresses for fee vaults or fee collectors on various blockchains."   

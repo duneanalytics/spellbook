@@ -7,7 +7,6 @@ models:
       blockchain: arc
       sector: addresses_events
       project: addresses
-      contributors: karimhass
     config:
       tags: ['table', 'funded', 'addresses_events', 'arc']
     data_tests:

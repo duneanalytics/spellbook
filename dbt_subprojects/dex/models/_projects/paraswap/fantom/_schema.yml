@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: dex
       project: paraswap_v5
-      contributors: Henrystats
     config:
       tags: ['fantom','paraswap_v5','trades', 'paraswap','dex']
     description: >
@@ -102,7 +101,6 @@ models:
       blockchain: fantom
       sector: dex
       project: paraswap_v6
-      contributors: eptighte, mwamedacen
     config:
       tags: ['fantom','paraswap_v6','trades', 'paraswap','dex']
     description: >
@@ -157,7 +155,6 @@ models:
       blockchain: fantom
       sector: dex
       project: paraswap
-      contributors: Henrystats
     config:
       tags: ['fantom','dex','trades', 'paraswap']
     description: >

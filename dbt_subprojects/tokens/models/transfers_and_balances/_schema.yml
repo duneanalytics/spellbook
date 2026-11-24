@@ -6,7 +6,6 @@ models:
       docs_slug: /curated/token-transfers/evm/token-transfers
       sector: tokens
       short_description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata."
-      contributors: aalan3, jeff-dude, 0xBoxer, hildobby, hosuke, tomfutago
       # Freshness monitoring declaration. Under meta, not config, on purpose: a yml config
       # change is state:modified.configs, so a metadata-only edit triggers no rebuild.
       monitoring:
@@ -91,7 +90,6 @@ models:
   - name: tokens_net_transfers_daily
     meta:
       sector: tokens
-      contributors: jeff-dude, krishhh, tomfutago
     config:
       tags: ['tokens', 'net_transfers']
     description: &net_transfers_description |
@@ -109,7 +107,6 @@ models:
   - name: tokens_net_transfers_daily_asset
     meta:
       sector: tokens
-      contributors: jeff-dude, krishhh, tomfutago
     config:
       tags: ['tokens', 'net_transfers']
     description: "Total transfer amount per day per asset across chains"
@@ -117,7 +114,6 @@ models:
   - name: tokens_evm_transfers
     meta:
       sector: tokens
-      contributors: kryptaki
       # Freshness monitoring declaration. Under meta, not config, on purpose: a yml config
       # change is state:modified.configs, so a metadata-only edit triggers no rebuild.
       monitoring:
@@ -158,7 +154,6 @@ models:
     meta:
       sector: tokens
       short_description: "Per-blockchain, per-month metadata showing when tokens.transfers was last updated."
-      contributors: jeff-dude
     config:
       tags: ['tokens','transfers','metadata']
     description: >

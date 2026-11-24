@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'polygon','erc20','daos', 'dao creator tools', 'henrystats' ]
     description: >
@@ -86,7 +85,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'polygon','eth','daos', 'dao creator tools', 'henrystats' ]
     description: >

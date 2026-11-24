@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: hedera
       sector: tokens
-      contributors: alice_dune
     config:
       tags: ['tokens', 'hedera', 'prices']
     description: "Token prices and metadata on Hedera"

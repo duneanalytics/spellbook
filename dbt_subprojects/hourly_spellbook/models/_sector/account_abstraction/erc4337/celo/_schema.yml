@@ -7,7 +7,6 @@ models:
       blockchain: celo
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly, tomfutago
     config:
       tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.6 user operations on celo"
@@ -54,7 +53,6 @@ models:
       blockchain: celo
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly, tomfutago
     config:
       tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 user operation on celo"
@@ -114,7 +112,6 @@ models:
       blockchain: celo
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly, tomfutago
     config:
       tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.6 account deployed on celo"
@@ -137,7 +134,6 @@ models:
       blockchain: celo
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly, tomfutago
     config:
       tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 account deployed on celo"

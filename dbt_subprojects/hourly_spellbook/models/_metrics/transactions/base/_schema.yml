@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: base
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'base','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: base
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'base','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

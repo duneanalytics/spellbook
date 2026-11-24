@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon
       project: balancer_v2
-      contributors: viniabussafi
     config:
       tags: ['polygon', 'revenue', 'fees']
     description: >

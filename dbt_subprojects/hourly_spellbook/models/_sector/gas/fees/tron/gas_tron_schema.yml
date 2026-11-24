@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: tron
       sector: gas
-      contributors: 0xRob
     config:
       tags: ['tron', 'gas', 'fees']
     description: >

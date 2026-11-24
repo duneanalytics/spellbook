@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c, fantom, arbitrum, bnb, ethereum, optimism, polygon
       sector: dex
       project: paraswap
-      contributors: Henrystats, springzh
     config:
       tags: ['avalanche_c', 'fantom', 'paraswap','trades', 'dex', 'aggregator', 'Henrystats','cross-chain', 'arbitrum', 'bnb', 'ethereum', 'optimism', 'polygon']
     description: >

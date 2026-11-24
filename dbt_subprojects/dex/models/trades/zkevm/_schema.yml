@@ -24,7 +24,6 @@ models:
       blockchain: polygon
       sector: dex
       project: balancer
-      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 zkevm base trades"
@@ -40,7 +39,6 @@ models:
       blockchain: zkevm
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
     description: "Pancakeswap zkevm v2 base trades"
@@ -61,7 +59,6 @@ models:
       blockchain: zkevm
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'pancakeswap' ]
     description: "Pancakeswap V3 zkevm base trades"
@@ -82,7 +79,6 @@ models:
       blockchain: zkevm
       sector: dex
       project: clipper
-      contributors: amalashkevich, 0xTemo
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'clipper' ]
     description: "Clipper zkevm base trades"
@@ -103,7 +99,6 @@ models:
       blockchain: zkevm
       sector: dex
       project: sushiswap
-      contributors: rosaria292
     config:
       tags: [ 'polygon', 'dex', 'trades', 'sushiswap', 'v2' ]
     description: "sushiswap zkevm v2 trades"
@@ -124,7 +119,6 @@ models:
       blockchain: zkevm
       sector: dex
       project: leetswap
-      contributors: Marin2Tan
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'leetswap' ]
     description: "Leetswap zkevm base trades"
@@ -143,7 +137,6 @@ models:
       blockchain: zkevm
       sector: dex
       project: quickswap
-      contributors: sofiat, surfquery
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'quickswap' ]
     description: "Quickswap zkevm base trades"

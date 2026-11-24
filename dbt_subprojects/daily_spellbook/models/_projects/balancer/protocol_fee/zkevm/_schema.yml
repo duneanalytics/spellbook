@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zkevm
       project: balancer_v2
-      contributors: viniabussafi
     config:
       tags: ['zkevm', 'revenue', 'fees']
     description: >

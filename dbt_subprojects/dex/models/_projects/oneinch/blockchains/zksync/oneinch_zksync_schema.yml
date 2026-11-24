@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ['zksync']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'ar', 'calls']
     description: >
@@ -71,7 +70,6 @@ models:
     meta:
       blockchain: ['zksync']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'lo', 'calls']
     description: >
@@ -137,7 +135,6 @@ models:
     meta:
       blockchain: ['zksync']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'calls']
     description: >

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       sector: lending
-      contributors: hildobby
     config:
       tags: ['bnb', 'flashloans']
     description: >

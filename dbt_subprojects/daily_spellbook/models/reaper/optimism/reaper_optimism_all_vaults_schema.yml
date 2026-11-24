@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: reaper
-      contributors: tollywood, miso
     config:
       tags: ['optimism', 'reaper','vaults','tollywood','miso']
     description: "List of all Reaper Vaults"

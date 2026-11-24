@@ -6,7 +6,6 @@ models:
       blockchain: nova
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'nova' ]
     description: "EAS schema registry on Nova"
@@ -27,7 +26,6 @@ models:
       blockchain: nova
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'nova' ]
     description: "EAS schema registry details on Nova"
@@ -50,7 +48,6 @@ models:
       blockchain: nova
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'nova' ]
     description: "EAS attestations on Nova"
@@ -73,7 +70,6 @@ models:
       blockchain: nova
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'nova' ]
     description: "EAS attestation details on Nova"

@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: value_defi
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'value_defi']
     description: "List of claim transactions for the $vUSD airdrop"

@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: mummy_finance 
-      contributors: LLDAO
     config:
       tags: ['base','perpetual', 'mummy_finance','perps']
     description: >

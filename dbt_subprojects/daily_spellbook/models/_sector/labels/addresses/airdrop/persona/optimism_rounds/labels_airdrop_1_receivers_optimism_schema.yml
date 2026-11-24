@@ -7,7 +7,6 @@ models:
       sector: labels
       category: airdrop
       project: ['optimism']
-      contributors: soispoke, hosuke
     config:
       tags: ['labels', 'airdrop', 'optimism']
     description: "$OP Airdrop 1 receivers query labels"   
@@ -41,7 +40,6 @@ models:
       sector: labels
       category: airdrop
       project: [ 'optimism' ]
-      contributors: hosuke
     config:
       tags: [ 'labels', 'airdrop', 'optimism' ]
     description: "$OP Airdrop 2 receivers query labels"
@@ -75,7 +73,6 @@ models:
       sector: labels
       category: airdrop
       project: [ 'optimism' ]
-      contributors: hosuke
     config:
       tags: [ 'labels', 'airdrop', 'optimism' ]
     description: "$OP Airdrop 3 receivers query labels"

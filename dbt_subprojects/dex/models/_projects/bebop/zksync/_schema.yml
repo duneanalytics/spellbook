@@ -6,7 +6,6 @@ models:
       blockchain: zksync
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'zksync','bebop','jam','trades','dex' ]
     description: Bebop-JAM contract trades on zksync - formatted for dex.trades
@@ -108,7 +107,6 @@ models:
       blockchain: zksync
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'zksync','bebop','trades','dex' ]
     description: Bebop contract trades on zksync - formatted for dex.trades

@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: perpetual
       project: gmx
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'gmx', 'perpetuals', 'perps']
     description: >

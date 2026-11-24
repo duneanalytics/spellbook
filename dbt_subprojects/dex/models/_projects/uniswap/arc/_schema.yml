@@ -7,7 +7,6 @@ models:
       blockchain: arc
       sector: dex
       project: uniswap
-      contributors: 0xRob
     config:
       tags: ['arc', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -34,7 +33,6 @@ models:
       blockchain: arc
       sector: dex_aggregator
       project: uniswap
-      contributors: 0xRob
     config:
       tags: ['arc', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

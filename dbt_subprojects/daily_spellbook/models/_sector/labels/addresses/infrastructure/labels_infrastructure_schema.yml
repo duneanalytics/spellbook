@@ -15,7 +15,6 @@ models:
       blockchain: ethereum, polygon, gnosis
       sector: labels
       category: infrastructure
-      contributors: ilemi, hildobby
     config:
       tags: ['labels', 'infrastructure','mev','staking','system','validator']
     description: "all infrastructure labels"

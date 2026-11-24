@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: megaeth
       sector: prices
-      contributors: tomfutago
     config:
       tags: ['prices', 'tokens', 'usd', 'megaeth']
     description: "Price tokens on megaeth EVM chain"

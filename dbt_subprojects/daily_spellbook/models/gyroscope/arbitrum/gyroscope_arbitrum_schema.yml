@@ -8,7 +8,6 @@ models:
 
       blockchain: arbitrum
       project: gyroscope
-      contributors: fmarrr
 
     config:
 

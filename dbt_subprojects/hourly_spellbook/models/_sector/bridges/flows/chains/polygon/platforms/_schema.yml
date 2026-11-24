@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
     description: "Circle's CCTP v1 bridge deposits events on Polygon"
@@ -23,7 +22,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Circle's CCTP v1 bridge withdrawals events on Polygon"
@@ -40,7 +38,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v1 bridge deposits events on Polygon"
@@ -49,7 +46,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v2 bridge deposits events on Polygon"
@@ -58,7 +54,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Polygon"
@@ -67,7 +62,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v3 bridge deposits events on Polygon"
@@ -76,7 +70,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Polygon"
@@ -85,7 +78,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
     description: "Celer's v1 bridge deposits events on Polygon"
@@ -94,7 +86,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Polygon"
@@ -103,7 +94,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
     description: "Tether's USDT0 v1 bridge deposits events on Polygon"
@@ -112,7 +102,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Polygon"
@@ -121,7 +110,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: zkbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on Polygon"
@@ -130,7 +118,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: connext
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on polygon"
@@ -139,7 +126,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: nitro
-      contributors: [ 'hildobby']
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Polygon"
@@ -150,7 +136,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Polygon"
@@ -159,7 +144,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Polygon"
@@ -168,7 +152,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Polygon"
@@ -177,7 +160,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: allbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
     description: "Allbridge's v1 classic bridge deposits events on Polygon"
@@ -186,7 +168,6 @@ models:
       blockchain: polygon
       sector: bridges
       project: layerzero
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
     description: "LayerZero's v1 bridge deposits events on Polygon"

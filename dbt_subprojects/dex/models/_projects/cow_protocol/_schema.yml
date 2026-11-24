@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: cow_protocol
-      contributors: bh2smith, gentrexha
     config:
       tags:
         [
@@ -98,7 +97,6 @@ models:
     meta:
       blockchain: arbitrum
       project: cow_protocol
-      contributors: olgafetisova
     config:
       tags: ["arbitrum", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -176,7 +174,6 @@ models:
     meta:
       blockchain: ethereum
       project: cow_protocol
-      contributors: bh2smith, gentrexha
     config:
       tags: ["ethereum", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -261,7 +258,6 @@ models:
     meta:
       blockchain: gnosis
       project: cow_protocol
-      contributors: bh2smith
     config:
       tags: ["gnosis", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -339,7 +335,6 @@ models:
     meta:
       blockchain: base
       project: cow_protocol
-      contributors: felix
     config:
       tags: ["base", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -417,7 +412,6 @@ models:
     meta:
       blockchain: avalanche
       project: cow_protocol
-      contributors: harisang
     config:
       tags: ["avalanche_c", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -495,7 +489,6 @@ models:
     meta:
       blockchain: polygon
       project: cow_protocol
-      contributors: harisang
     config:
       tags: ["polygon", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -573,7 +566,6 @@ models:
     meta:
       blockchain: lens
       project: cow_protocol
-      contributors: harisang
     config:
       tags: ["lens", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -651,7 +643,6 @@ models:
     meta:
       blockchain: bnb
       project: cow_protocol
-      contributors: harisang
     config:
       tags: ["bnb", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -729,7 +720,6 @@ models:
     meta:
       blockchain: linea
       project: cow_protocol
-      contributors: harisang, cowswapbram
     config:
       tags: ["linea", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -807,7 +797,6 @@ models:
     meta:
       blockchain: plasma
       project: cow_protocol
-      contributors: harisang, cowswapbram
     config:
       tags: ["plasma", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -885,7 +874,6 @@ models:
     meta:
       blockchain: ink
       project: cow_protocol
-      contributors: data-cowwboy
     config:
       tags: ["ink", "cow_protocol", "trades", "dex", "aggregator"]
     description: >

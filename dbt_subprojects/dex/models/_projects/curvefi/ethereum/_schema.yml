@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: curve
-      contributors: [agaperste, yulesa]
     config:
       tags: ["ethereum", "curve", "view"]
     description: >
@@ -70,7 +69,6 @@ models:
     meta:
       blockchain: ethereum
       project: curve
-      contributors: [agaperste, yulesa, ilemi, viniabussafi]
     config:
       tags: ["ethereum", "curve", "view_pools", "view"]
     description: >
@@ -113,7 +111,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: curvefi
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'curevfi']
     description: >
@@ -131,7 +128,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: curvefi
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'curevfi']
     description: >

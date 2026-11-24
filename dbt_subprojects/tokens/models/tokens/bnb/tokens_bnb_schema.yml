@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       sector: nft
-      contributors: hildobby
     config:
       tags: ['tokens', 'bnb', 'nft', 'erc721', 'erc1155']
     description: >
@@ -22,7 +21,6 @@ models:
     meta:
       blockchain: bnb
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'tokens', 'bnb', 'nft', 'bep721', 'bep1155' ]
     description: >
@@ -48,7 +46,6 @@ models:
     meta:
       blockchain: bnb
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'nft','bnb' ]
     description: >

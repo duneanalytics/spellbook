@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: megaeth
       sector: gas
-      contributors: tomfutago
     config:
       tags: ['megaeth', 'gas', 'fees']
     description: >

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Token transfers in the Nexus Mutual Capital Pool"
@@ -79,7 +78,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Daily running totals for core tokens in the Nexus Mutual Capital Pool"
@@ -194,7 +192,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Minimum Capital Requirement (MCR) in the Nexus Mutual Capital Pool"
@@ -220,7 +217,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Combined daily avg prices for base assets: ETH, DAI, USDC, cbBTC and NXM"
@@ -246,7 +242,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "swaps"]
     description: "swap/limit orders placed"
@@ -284,7 +279,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "swaps"]
     description: "swap/limit orders closed"

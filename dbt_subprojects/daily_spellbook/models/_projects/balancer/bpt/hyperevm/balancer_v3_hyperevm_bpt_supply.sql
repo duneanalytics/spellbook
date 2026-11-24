@@ -8,8 +8,7 @@
         file_format = 'delta',
         post_hook = '{{ expose_spells(\'["hyperevm"]\',
                                     "project",
-                                    "balancer_v3_hyperevm",
-                                    \'["balancerlabs"]\') }}'
+                                    "balancer_v3_hyperevm") }}'
     )
 }}
 

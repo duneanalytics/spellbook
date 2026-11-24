@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zkevm
       sector: dex
-      contributors: bizzyvinci, viniabussafi
     config:
       tags: ['balancer', 'zkevm', 'amm', 'trades', 'dex']
     description: >

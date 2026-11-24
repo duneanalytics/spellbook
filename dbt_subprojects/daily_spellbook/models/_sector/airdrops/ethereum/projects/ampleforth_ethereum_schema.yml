@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: ampleforth
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'ampleforth']
     description: "List of claim transactions for the $FORTH airdrop"

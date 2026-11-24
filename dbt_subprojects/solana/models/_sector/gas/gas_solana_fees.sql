@@ -5,8 +5,7 @@
     filtering_columns = ['block_date'],
     post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
-                                    "gas",
-                                    \'["0xBoxer"]\') }}'
+                                    "gas") }}'
 ) }}
 
 WITH all_fees AS (

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -38,7 +37,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -75,7 +73,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -109,7 +106,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -185,7 +181,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -222,7 +217,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -259,7 +253,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -293,7 +286,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -319,7 +311,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -345,7 +336,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -371,7 +361,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
     description: >
@@ -408,7 +397,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop', 'cell']
     description: >
@@ -466,7 +454,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: tesseract
-      contributors: angus_1
     config:
       tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop', 'cell']
     description: >

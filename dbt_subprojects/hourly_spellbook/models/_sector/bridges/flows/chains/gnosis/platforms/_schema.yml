@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
     description: "Celer's v1 bridge deposits events on Gnosis"
@@ -15,7 +14,6 @@ models:
       blockchain: gnosis
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Gnosis"
@@ -24,7 +22,6 @@ models:
       blockchain: gnosis
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'gnosis', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Gnosis"
@@ -33,7 +30,6 @@ models:
       blockchain: gnosis
       sector: bridges
       project: connext
-      contributors: [ 'hildobby']
     config:
       tags: [ 'gnosis', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on Gnosis"
@@ -42,7 +38,6 @@ models:
       blockchain: gnosis
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'gnosis', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Gnosis"

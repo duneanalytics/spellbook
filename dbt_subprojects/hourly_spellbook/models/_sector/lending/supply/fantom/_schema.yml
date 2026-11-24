@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'fantom']
     description: "All lending supply transactions on Fantom"
@@ -93,7 +92,6 @@ models:
       blockchain: fantom
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'fantom']
     description: "Aave v3 supply transactions on Fantom"
@@ -131,7 +129,6 @@ models:
       blockchain: fantom
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'granary', 'fantom']
     description: "Granary supply transactions on Fantom"

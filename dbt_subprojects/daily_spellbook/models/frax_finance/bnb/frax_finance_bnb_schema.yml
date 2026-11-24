@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: bnb
       project: frax_finance
-      contributors: herotat1
     config:
       tags: ["bnb", "frax_finance", "view"]
     description: This model shows the amount of bribe frax_finance is paying, at each epoch, to voters on a DEX who vote for frax pools. Since frax also partakes in voting, both for its pools and other pools, this model also tracks the bribes that it receives as reward. 

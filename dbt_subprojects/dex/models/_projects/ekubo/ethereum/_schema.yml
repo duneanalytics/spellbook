@@ -7,7 +7,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: ekubo
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'ekubo']
     description: >
@@ -50,7 +49,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: ekubo
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'ekubo']
     description: >

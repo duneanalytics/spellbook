@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       sector: perpetual
-      contributors: ARDev097
     config:
       tags: ['base', 'perpetuals', 'perps', 'vela_exchange','cross-chain']
     description: >

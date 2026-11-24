@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: tron
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'tron']
     description: "All lending supply transactions on Tron"
@@ -95,7 +94,6 @@ models:
       blockchain: tron
       sector: lending
       project: justlend
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'justlend', 'tron']
     description: "JustLend supply transactions on Tron"

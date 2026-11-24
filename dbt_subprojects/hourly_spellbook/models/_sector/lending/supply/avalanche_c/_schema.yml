@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'avalanche_c']
     description: "All lending supply transactions on avalanche_c"
@@ -93,7 +92,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'avalanche_c']
     description: "Aave v2 supply transactions on avalanche_c"
@@ -133,7 +131,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'avalanche_c']
     description: "Aave v3 supply transactions on avalanche_c"
@@ -173,7 +170,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: benqi
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'benqi', 'avalanche_c']
     description: "Benqi supply transactions on avalanche_c"
@@ -211,7 +207,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'granary', 'avalanche_c']
     description: "Granary supply transactions on avalanche_c"

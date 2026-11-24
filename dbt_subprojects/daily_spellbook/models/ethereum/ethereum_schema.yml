@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: ethereum
-      contributors: [hildobby]
     config:
       tags: ["ethereum", "upgrades"]
     description: "A table with info on all Ethereum upgrades"

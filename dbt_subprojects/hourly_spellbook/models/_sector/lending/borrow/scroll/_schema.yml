@@ -6,7 +6,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave, compound
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'scroll']
     description: "All lending borrow transactions on Scroll"
@@ -93,7 +92,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'scroll']
     description: "Aave v3 borrow transactions on Scroll"
@@ -131,7 +129,6 @@ models:
       blockchain: scroll
       sector: lending
       project: layer_bank
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'layer_bank', 'scroll']
     description: "LayerBank borrow transactions on Scroll"
@@ -169,7 +166,6 @@ models:
       blockchain: scroll
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'morpho', 'scroll']
     description: "Morpho borrow transactions on Scroll"

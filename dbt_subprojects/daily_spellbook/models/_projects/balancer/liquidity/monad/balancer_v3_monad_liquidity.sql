@@ -9,8 +9,7 @@
         file_format = 'delta',
         post_hook = '{{ expose_spells(\'["monad"]\',
                                     "project",
-                                    "balancer_v3_monad",
-                                    \'["balancerlabs"]\') }}'
+                                    "balancer_v3_monad") }}'
     )
 }}
 

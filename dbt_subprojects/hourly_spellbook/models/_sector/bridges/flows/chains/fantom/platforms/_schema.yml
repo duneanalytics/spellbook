@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
     description: "Celer's v1 bridge deposits events on Fantom"
@@ -15,7 +14,6 @@ models:
       blockchain: fantom
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Fantom"
@@ -24,7 +22,6 @@ models:
       blockchain: fantom
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'fantom', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Fantom"
@@ -33,7 +30,6 @@ models:
       blockchain: fantom
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'fantom', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Fantom"
@@ -42,7 +38,6 @@ models:
       blockchain: fantom
       sector: bridges
       project: allbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
     description: "Allbridge's v1 classic bridge deposits events on Fantom"
@@ -51,7 +46,6 @@ models:
       blockchain: fantom
       sector: bridges
       project: layerzero
-      contributors: [ 'hildobby']
     config:
       tags: [ 'fantom', 'bridges', 'flows', 'deposits' ]
     description: "LayerZero's v1 bridge deposits events on Fantom"

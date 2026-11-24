@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: unidex_v1
-      contributors: ARDev097
     config:
       tags: ['optimism', 'unidex', 'unidex_v1', 'perpetuals', 'perps']
     description: >
@@ -95,7 +94,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: unidex_v2
-      contributors: ARDev097
     config:
       tags: ['optimism', 'unidex', 'unidex_v2', 'perpetuals', 'perps']
     description: >
@@ -137,7 +135,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: unidex_v3
-      contributors: ARDev097
     config:
       tags: ['optimism', 'unidex', 'unidex_v3', 'perpetuals', 'perps']
     description: >
@@ -178,7 +175,6 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: ARDev097
     config:
       tags: ['optimism', 'perpetuals', 'perps', 'unidex']
     description: >

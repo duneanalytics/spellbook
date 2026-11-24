@@ -8,7 +8,6 @@ models:
 
       blockchain: avalanche_c
       project: gyroscope
-      contributors: viniabussafi
 
     config:
 

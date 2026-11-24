@@ -4,7 +4,6 @@ models:
   - name: orca_whirlpool_stg_swaps
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
       event_time: block_time
@@ -18,7 +17,6 @@ models:
   - name: orca_whirlpool_base_trades_backfill
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','microbatch' ]
     description: >
@@ -32,7 +30,6 @@ models:
   - name: orca_whirlpool_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -41,7 +38,6 @@ models:
   - name: orca_whirlpool_v2_token_transfers
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -64,7 +60,6 @@ models:
   - name: orca_whirlpool_v2_stg_swaps
     meta:
       blockchain: solana
-      contributors: [ tomfutago ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -94,7 +89,6 @@ models:
   - name: orca_whirlpool_v2_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -130,7 +124,6 @@ models:
   - name: orca_whirlpool_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','dex']
     description: >
@@ -206,7 +199,6 @@ models:
   - name: orca_whirlpool_token_prices
     meta:
       blockchain: solana
-      contributors: [get_nimbus]
     config:
       tags: ['solana','dex', 'price']
     description: >
@@ -237,7 +229,6 @@ models:
   - name: orca_whirlpool_version_v1_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >
@@ -246,7 +237,6 @@ models:
   - name: orca_whirlpool_version_v2_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >
@@ -255,7 +245,6 @@ models:
   - name: orca_whirlpool_token_prices_hour
     meta:
       blockchain: solana
-      contributors: [get_nimbus]
     config:
       tags: ['solana','dex', 'price']
     description: >

@@ -24,7 +24,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: kumbaya
-      contributors: tomfutago
     config:
       tags: ["megaeth", "dex", "trades", "kumbaya"]
     description: "kumbaya megaeth base trades"
@@ -43,7 +42,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: prismfi
-      contributors: tomfutago
     config:
       tags: ["megaeth", "dex", "trades", "prismfi"]
     description: "PrismFI megaeth base trades"
@@ -68,7 +66,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: metric
-      contributors: mathewae
     config:
       tags: ["megaeth", "dex", "trades", "metric"]
     description: "Metric (oracle-based on-chain market maker) megaeth base trades, all factory versions (0, 1, 2)"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: plume
       sector: prices
-      contributors: captncrunch
     config:
       tags: ['prices', 'tokens', 'usd', 'plume']
     description: "Price tokens on plume chain"

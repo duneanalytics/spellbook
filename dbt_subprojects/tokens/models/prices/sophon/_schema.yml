@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sophon
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'sophon']
     description: "Price tokens on Sophon EVM chain"

@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: fee_vaults
-      contributors: msilb7
     config:
       tags: ['labels', 'system', 'addresses', 'exclude','ethereum','l2']
     description: "Contract addresses for Data Availability Layer Batch Submitters for various L2 blockchains."   

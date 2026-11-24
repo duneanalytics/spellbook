@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: fantom
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: [fantom','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -98,7 +97,6 @@ models:
     meta:
       blockchain: fantom
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['fantom','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -160,7 +158,6 @@ models:
     meta:
       blockchain: fantom
       project: zeroex
-      contributors: hosuke
     config:
       tags: ['fantom', '0x', 'settler']
     description: >

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: princi
     config:
       tags: ['optimism', 'perpetuals', 'perps', 'polynomial_protocol','cross-chain']
     description: 

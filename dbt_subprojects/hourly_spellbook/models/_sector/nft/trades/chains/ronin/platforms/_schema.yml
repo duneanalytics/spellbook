@@ -6,7 +6,6 @@ models:
      blockchain: ronin
      sector: nft
      project: mavis_ronin
-     contributors: ['peterrliem' ]
    config:
      tags: [ 'ronin', 'nft', 'trades', 'mavis' ]
    description: "mavis marketplace base trades"
@@ -18,7 +17,6 @@ models:
     blockchain: ronin
     sector: nft
     project: opensea_ronin
-    contributors: ['peterrliem' ]
    config:
     tags: [ 'ronin', 'nft', 'trades', 'opensea' ]
    description: "opensea base trades"

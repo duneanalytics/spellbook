@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: fantom
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['fantom', 'layerzero', 'send']
    description: "LayerZero message send call on fantom"

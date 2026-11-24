@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: apecoin
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'apecoin']
     description: "List of claim transactions for the $APE airdrop"

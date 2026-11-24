@@ -6,7 +6,6 @@ models:
       blockchain: hemi
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'hemi','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on hemi - formatted for dex.trades

@@ -24,7 +24,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: ramsesxyz
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'ramsesxyz', 'uniswap', 'v2' ]
     description: "RamsesXYZ legacy constant-product trades on Robinhood."
@@ -52,7 +51,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: ramsesxyz
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'ramsesxyz', 'uniswap', 'v3' ]
     description: "RamsesXYZ concentrated-liquidity trades on Robinhood."
@@ -80,7 +78,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: ramsesxyz
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'ramsesxyz', 'dlmm', 'liquidity_book' ]
     description: "RamsesXYZ DLMM / Liquidity Book trades on Robinhood."
@@ -108,7 +105,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: uniswap
-      contributors: jeff-dude
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap robinhood v2 base trades"
@@ -131,7 +127,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: uniswap
-      contributors: jeff-dude
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap robinhood v3 base trades"
@@ -154,7 +149,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: uniswap
-      contributors: jeff-dude
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap robinhood v4 base trades"
@@ -177,7 +171,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: ekubo
-      contributors: moodysalem
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'ekubo', 'v3' ]
     description: "ekubo robinhood v3 base trades"
@@ -205,7 +198,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: swaphood
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'swaphood', 'v2' ]
     description: "SwapHood V2 trades on Robinhood, decoded from canonical pair swap logs."
@@ -233,7 +225,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: swaphood
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'swaphood', 'v3' ]
     description: "SwapHood V3 trades on Robinhood, decoded from Pancake V3-compatible pool swap logs."
@@ -261,7 +252,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: pancakeswap
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'pancakeswap', 'v2' ]
     description: "PancakeSwap V2 trades on Robinhood."
@@ -289,7 +279,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: pancakeswap
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'pancakeswap', 'v3' ]
     description: "PancakeSwap V3 trades on Robinhood."
@@ -317,7 +306,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: sheriff
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'sheriff', 'v2' ]
     description: "Sheriff V2 trades on Robinhood."
@@ -345,7 +333,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: sheriff
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'sheriff', 'v4' ]
     description: "Sheriff V4 concentrated-liquidity trades on Robinhood."
@@ -373,7 +360,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: sushiswap
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'sushiswap', 'v2' ]
     description: "SushiSwap V2 trades on Robinhood."
@@ -401,7 +387,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: sushiswap
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'sushiswap', 'v3' ]
     description: "SushiSwap V3 trades on Robinhood."
@@ -429,7 +414,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: robinswap
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'robinswap', 'v3' ]
     description: "RobinSwap V3 trades on Robinhood."
@@ -457,7 +441,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: catnip
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'catnip', 'v1' ]
     description: "CatNIP constant-product trades on Robinhood."
@@ -485,7 +468,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: uponrh
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'uponrh', 'v3' ]
     description: "UP concentrated-liquidity trades on Robinhood."
@@ -513,7 +495,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: gigadex
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'gigadex', 'v2' ]
     description: "GigaDEX Classic trades on Robinhood."
@@ -541,7 +522,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: gigadex
-      contributors: couchdicks
     config:
       tags: [ 'robinhood', 'dex', 'trades', 'gigadex', 'v3' ]
     description: "GigaDEX concentrated-liquidity trades on Robinhood."
@@ -578,7 +558,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: metric
-      contributors: mathewae
     config:
       tags: ["robinhood", "dex", "trades", "metric"]
     description: "Metric (oracle-based on-chain market maker) robinhood base trades, all factory versions (0, 1, 2)"

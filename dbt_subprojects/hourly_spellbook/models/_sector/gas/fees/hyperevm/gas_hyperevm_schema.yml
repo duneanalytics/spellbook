@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: hyperevm
       sector: gas
-      contributors: krishhh
     config:
       tags: ['hyperevm', 'gas', 'fees']
     description: >

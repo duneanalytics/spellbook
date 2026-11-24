@@ -4,7 +4,6 @@ models:
   - name: solana_utils_token_accounts
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','token_accounts']
     description: >
@@ -22,7 +21,6 @@ models:
   - name: solana_utils_epochs
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','epoch']
     description: >
@@ -48,7 +46,6 @@ models:
     meta:
       blockchain: solana
       short_description: "Daily SOL and SPL token balances for each Solana address, tracking how holdings change over time."
-      contributors: [ilemi]
     config:
       tags: ['solana','balances']
     description: >
@@ -70,7 +67,6 @@ models:
     meta:
       blockchain: solana
       short_description: "Latest SOL and SPL token balances for each Solana address, including token_balance_owner for delegated accounts."
-      contributors: [ilemi]
       docs_slug: /curated/balances/solana-latest-balances
     config:
       tags: ['solana','balances']
@@ -87,7 +83,6 @@ models:
   - name: solana_utils_sns_domains
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','sns','domains','bonfida']
     description: >
@@ -103,7 +98,6 @@ models:
   - name: solana_utils_block_leaders
     meta:
       blockchain: solana
-      contributors: [0xBoxer]
     config:
       tags: ['solana','block_leaders']
     description: >

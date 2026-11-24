@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, bnb, gnosis, zksync
       sector: airdrop
       project: addresses
-      contributors: hildobby, lgingerich
     config:
       tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'bnb', 'gnosis', 'zksync', 'claim']
     description: "List of claim transactions for all airdrops"
@@ -71,7 +70,6 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, zksync
       sector: airdrop
-      contributors: hildobby, lgingerich
     config:
       tags: ['airdrop', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'zksync', 'info']
     description: >

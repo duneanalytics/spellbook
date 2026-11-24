@@ -24,7 +24,6 @@ models:
       blockchain: tezos_evm
       sector: dex
       project: oku
-      contributors: tomfutago
     config:
       tags: ['tezos_evm', 'dex', 'trades', 'oku', 'v3']
     description: "Oku tezos_evm base trades"

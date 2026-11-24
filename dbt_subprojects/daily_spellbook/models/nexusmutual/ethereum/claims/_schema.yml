@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "claims"]
     description: "Nexus Mutual Claims v1"
@@ -62,7 +61,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "claims"]
     description: "Nexus Mutual Claims v2"
@@ -105,7 +103,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "claims"]
     description: "Nexus Mutual Claims v2"

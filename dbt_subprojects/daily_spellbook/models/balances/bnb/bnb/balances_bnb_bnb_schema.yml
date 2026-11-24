@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: balances
       project: bnb
-      contributors: Henrystats
     config:
       tags: ['balances', 'bnb', 'bnb', 'day', 'Henrystats']
     description: >
@@ -47,7 +46,6 @@ models:
       blockchain: bnb
       sector: balances
       project: bnb
-      contributors: Henrystats
     config:
       tags: ['balances', 'bnb', 'bnb', 'latest', 'Henrystats']
     description: >

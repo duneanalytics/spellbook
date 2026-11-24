@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: taiko
       sector: prices
-      contributors: krishhh
     config:
       tags: ['prices', 'tokens', 'usd', 'taiko']
     description: "Price tokens on taiko chain"

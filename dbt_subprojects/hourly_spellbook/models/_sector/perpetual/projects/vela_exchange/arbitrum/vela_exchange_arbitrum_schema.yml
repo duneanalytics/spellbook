@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: perpetual
       project: vela_exchange 
-      contributors: Chain_L
     config:
       tags: ['arbitrum','perpetual', 'vela_exchange','perps']
     description: >

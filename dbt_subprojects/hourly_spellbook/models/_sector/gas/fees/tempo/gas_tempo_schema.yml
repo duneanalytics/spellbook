@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: tempo
       sector: gas
-      contributors: 0xRob
     config:
       tags: ['tempo', 'gas', 'fees']
     description: >

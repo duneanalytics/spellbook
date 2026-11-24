@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'polygon','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on polygon - formatted for dex.trades

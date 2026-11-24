@@ -6,7 +6,6 @@ models:
       blockchain: zksync
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'zksync']
     description: "All Aave transactions involving borrow transactions on zkSync"
@@ -71,7 +70,6 @@ models:
       blockchain: zksync
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'zksync']
     description: "All Aave transactions involving flashloans transactions on zkSync"
@@ -103,7 +101,6 @@ models:
       blockchain: zksync
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'zksync']
     description: "All Aave transactions involving supply transactions on zkSync"
@@ -136,7 +133,6 @@ models:
       blockchain: zksync
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'zksync']
     description: "All Aave market transactions on zkSync"
@@ -176,7 +172,6 @@ models:
       blockchain: zksync
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'zksync']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: zksync
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'zksync']
     description: "Hourly aggregated lending market interest rates"

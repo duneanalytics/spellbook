@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: aave
-      contributors: paulx
     config:
       tags: ["labels", "ethereum", "aave", "liquidations", "mev"]
     description: "MEV and non-MEV liquidations on Aave v2 over the past year."

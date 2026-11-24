@@ -15,7 +15,6 @@ models:
       blockchain: ethereum, optimism
       sector: labels
       project: cex
-      contributors: msilb7
     config:
       tags: ['labels', 'optimism','ethereum', 'cex']
     description: "Addresses withrawing from known centralised exchange addresses across chains (sourced by chain withdrawals)"

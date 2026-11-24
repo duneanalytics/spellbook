@@ -24,7 +24,6 @@ models:
       blockchain: opbnb
       sector: dex
       project: pancakeswap
-      contributors: hosuke
     config:
       tags: ["opbnb", "dex", "trades", "pancakeswap", "v3"]
     description: "PancakeSwap opBNB v3 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: opbnb
       sector: dex
       project: pancakeswap
-      contributors: chef_butterbeer
     config:
       tags: ["opbnb", "dex", "trades", "pancakeswap", "v2"]
     description: "PancakeSwap opBNB v2 base trades"

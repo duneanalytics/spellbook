@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: tokens
       project: erc20
-      contributors: dot2dotseurat
     config:
       tags: ['table', 'erc20', 'rebase']
     description: >
@@ -24,7 +23,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: dot2dotseurat, hildobby, 0xbitfly
     config:
       tags: ['tokens', 'ethereum', 'nft', 'erc721']
     description: >
@@ -43,7 +41,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: dot2dotseurat, hildobby
     config:
       tags: ['tokens', 'ethereum', 'nft', 'erc721']
     description: >
@@ -71,7 +68,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: dot2dotseurat, hildobby
     config:
       tags: ['tokens', 'ethereum', 'nft', 'erc721']
     description: >
@@ -90,7 +86,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'nft','ethereum' ]
     description: >
@@ -111,7 +106,6 @@ models:
     meta:
       blockchain: ethereum
       sector: rwa
-      contributors: synthquest
     config:
       tags: ['tokens', 'ethereum', 'rwa']
     description: >

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum
       project: zeroex
-      contributors: rantum
     config:
       tags: ['arbitrum', '0x', 'aggregator']
     description: >
@@ -42,7 +41,6 @@ models:
     meta:
       blockchain: arbitrum
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: [arbitrum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -135,7 +133,6 @@ models:
     meta:
       blockchain: arbitrum
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['arbitrum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -195,7 +192,6 @@ models:
     meta:
       blockchain: arbitrum
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['arbitrum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -253,7 +249,6 @@ models:
     meta:
       blockchain: arbitrum
       project: zeroex
-      contributors: rantum
     config:
       tags: ['arbitrum', '0x', 'settler']
     description: >
@@ -297,7 +292,6 @@ models:
     meta:
       blockchain: arbitrum
       project: zeroex
-      contributors: rantum
     config:
       tags: ['arbitrum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -342,7 +336,6 @@ models:
     meta:
       blockchain: arbitrum
       project: zeroex
-      contributors: hosuke
     config:
       tags: ['arbitrum', '0x', 'settler']
     description: >

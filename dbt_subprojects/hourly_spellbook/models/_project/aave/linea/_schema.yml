@@ -6,7 +6,6 @@ models:
       blockchain: linea
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'linea']
     description: "All Aave transactions involving borrow transactions on Linea"
@@ -71,7 +70,6 @@ models:
       blockchain: linea
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'linea']
     description: "All Aave transactions involving flashloans transactions on Linea"
@@ -103,7 +101,6 @@ models:
       blockchain: linea
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'linea']
     description: "All Aave transactions involving supply transactions on Linea"
@@ -136,7 +133,6 @@ models:
       blockchain: linea
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'linea']
     description: "All Aave market transactions on Linea"
@@ -176,7 +172,6 @@ models:
       blockchain: linea
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'linea']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: linea
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'linea']
     description: "Hourly aggregated lending market interest rates"

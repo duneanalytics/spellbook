@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: arkham
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'arkham']
     description: "List of claim transactions for the $ARKM airdrop"

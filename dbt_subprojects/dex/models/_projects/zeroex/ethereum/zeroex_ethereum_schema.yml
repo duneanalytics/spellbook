@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: danning.sui, bakabhai993, hosuke
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -112,7 +111,6 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: bakabhai993
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -158,7 +156,6 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -215,7 +212,6 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: rantum
     config:
       tags: ['ethereum', '0x', 'settler']
     description: >
@@ -259,7 +255,6 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: rantum
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -304,7 +299,6 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: hosuke
     config:
       tags: ['ethereum', '0x', 'settler']
     description: >

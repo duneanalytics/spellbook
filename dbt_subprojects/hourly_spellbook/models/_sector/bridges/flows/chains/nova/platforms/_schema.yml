@@ -6,7 +6,6 @@ models:
       blockchain: nova
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
     description: "Celer's v1 bridge deposits events on Arbitrum Nova"
@@ -15,7 +14,6 @@ models:
       blockchain: nova
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Arbitrum Nova"
@@ -24,7 +22,6 @@ models:
       blockchain: nova
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'nova', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Arbitrum Nova"
@@ -33,7 +30,6 @@ models:
       blockchain: nova
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'nova', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Arbitrum Nova"

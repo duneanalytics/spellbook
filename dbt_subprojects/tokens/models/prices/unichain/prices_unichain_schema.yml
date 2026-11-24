@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: unichain
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'unichain']
     description: "Price tokens on unichain chain"

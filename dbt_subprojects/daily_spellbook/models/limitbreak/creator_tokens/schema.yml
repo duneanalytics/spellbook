@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: ethereum, base, optimism, arbitrum, avalanche_c, polygon, bnb, apechain, berachain, abstract
      sector: limitbreak
-     contributors: limitbreak
    config:
      tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
    description: >

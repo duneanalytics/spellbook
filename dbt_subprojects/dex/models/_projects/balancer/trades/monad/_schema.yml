@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: monad
       sector: dex
-      contributors: gustavobftorres
     config:
       tags: ['balancer', 'monad', 'amm', 'trades', 'dex']
     description: >
@@ -110,7 +109,6 @@ models:
     meta:
       blockchain: monad
       sector: dex
-      contributors: gustavobftorres
     config:
       tags: [ 'balancer', 'monad', 'amm', 'trades', 'dex', 'beta' ]
     description: >

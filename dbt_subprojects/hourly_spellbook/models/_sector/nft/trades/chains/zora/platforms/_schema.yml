@@ -6,7 +6,6 @@ models:
       blockchain: zora
       sector: nft
       project: zonic
-      contributors: tomfutago
     config:
       tags: ['zora', 'nft', 'trades', 'zonic']
     description: "zonic base trades"
@@ -35,7 +34,6 @@ models:
     meta:
       blockchain: zora
       project: opensea
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >

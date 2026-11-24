@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zksync
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'zksync','erc20','dao', 'dao creator tools', 'Henrystats' ]
     description: >

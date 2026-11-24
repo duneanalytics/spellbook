@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'ar', 'calls']
     description: >
@@ -71,7 +70,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'calls']
     description: >
@@ -137,7 +135,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'cc', 'calls']
     description: >
@@ -208,7 +205,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'cc', 'executions']
     description: >
@@ -290,7 +286,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'transfers']
     description: >
@@ -347,7 +342,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'blockchain']
     description: >
@@ -369,7 +363,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'dodgervl']
     config:
       tags: ['oneinch', 'internal']
     description: >
@@ -391,7 +384,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'ar', 'trades']
     description: >
@@ -441,7 +433,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr', 'thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -498,7 +489,6 @@ models:
     meta:
       blockchain: ['ethereum']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -543,7 +533,6 @@ models:
     meta:
       blockchain: ['ethereum']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -558,7 +547,6 @@ models:
     meta:
       blockchain: ['bnb']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -603,7 +591,6 @@ models:
     meta:
       blockchain: ['bnb']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -618,7 +605,6 @@ models:
     meta:
       blockchain: ['polygon']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -663,7 +649,6 @@ models:
     meta:
       blockchain: ['polygon']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -678,7 +663,6 @@ models:
     meta:
       blockchain: ['arbitrum']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -723,7 +707,6 @@ models:
     meta:
       blockchain: ['arbitrum']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -738,7 +721,6 @@ models:
     meta:
       blockchain: ['optimism']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -783,7 +765,6 @@ models:
     meta:
       blockchain: ['optimism']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -798,7 +779,6 @@ models:
     meta:
       blockchain: ['avalanche_c']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -843,7 +823,6 @@ models:
     meta:
       blockchain: ['avalanche_c']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -858,7 +837,6 @@ models:
     meta:
       blockchain: ['gnosis']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -903,7 +881,6 @@ models:
     meta:
       blockchain: ['gnosis']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -918,7 +895,6 @@ models:
     meta:
       blockchain: ['base']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -963,7 +939,6 @@ models:
     meta:
       blockchain: ['base']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -978,7 +953,6 @@ models:
     meta:
       blockchain: ['fantom']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1023,7 +997,6 @@ models:
     meta:
       blockchain: ['fantom']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1038,7 +1011,6 @@ models:
     meta:
       blockchain: ['zksync']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1083,7 +1055,6 @@ models:
     meta:
       blockchain: ['zksync']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1098,7 +1069,6 @@ models:
     meta:
       blockchain: ['linea']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1143,7 +1113,6 @@ models:
     meta:
       blockchain: ['linea']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1158,7 +1127,6 @@ models:
     meta:
       blockchain: ['sonic']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1203,7 +1171,6 @@ models:
     meta:
       blockchain: ['sonic']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1218,7 +1185,6 @@ models:
     meta:
       blockchain: ['unichain']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1263,7 +1229,6 @@ models:
     meta:
       blockchain: ['unichain']
       sector: oneinch
-      contributors: ['thevaizman']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1278,7 +1243,6 @@ models:
     meta:
       blockchain: ['robinhood']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1323,7 +1287,6 @@ models:
     meta:
       blockchain: ['robinhood']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1338,7 +1301,6 @@ models:
     meta:
       blockchain: ['cronos']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1383,7 +1345,6 @@ models:
     meta:
       blockchain: ['cronos']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1398,7 +1359,6 @@ models:
     meta:
       blockchain: ['monad']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1443,7 +1403,6 @@ models:
     meta:
       blockchain: ['monad']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1458,7 +1417,6 @@ models:
     meta:
       blockchain: ['hyperevm']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1503,7 +1461,6 @@ models:
     meta:
       blockchain: ['hyperevm']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1518,7 +1475,6 @@ models:
     meta:
       blockchain: ['arc']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo']
     description: >
@@ -1563,7 +1519,6 @@ models:
     meta:
       blockchain: ['arc']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1576,7 +1531,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['thevaizman', 'dodgervl']
     config:
       tags: ['oneinch', 'lo', 'trades']
     description: >
@@ -1630,7 +1584,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'dodgervl']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -1657,7 +1610,6 @@ models:
     meta:
       blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'dodgervl']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -1692,7 +1644,6 @@ models:
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain', 'robinhood', 'cronos', 'monad', 'hyperevm', 'arc']
       sector: oneinch
-      contributors: ['max-morrow', 'dodgervl']
     config:
       tags: ['oneinch', 'metadata']
     description: >

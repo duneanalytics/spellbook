@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'fantom','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on fantom - formatted for dex.trades

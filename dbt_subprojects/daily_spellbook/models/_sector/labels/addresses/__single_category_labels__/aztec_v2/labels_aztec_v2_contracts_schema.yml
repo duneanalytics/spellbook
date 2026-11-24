@@ -15,7 +15,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: aztec
-      contributors: jackiep00, Henrystats
     config:
       tags: ["labels", "ethereum", "aztec"]
     description: "Contracts that are in the Aztec Connect ecosystem"

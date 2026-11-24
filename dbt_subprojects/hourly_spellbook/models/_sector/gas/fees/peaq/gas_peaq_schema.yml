@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: peaq
       sector: gas
-      contributors: krishhh
     config:
       tags: ['peaq', 'gas', 'fees']
     description: >

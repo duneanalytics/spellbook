@@ -7,7 +7,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: aero
-      contributors: ['thecaptncrunch']
     config:
       tags: ['arbitrum', 'dex', 'trades', 'aero']
     data_tests:

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: solana
       project: magiceden
-      contributors: [ilemi]
     config:
       tags: ['magiceden','solana','nft']
     description: >
@@ -165,7 +164,6 @@ models:
     meta:
       blockchain: solana
       project: tensor
-      contributors: [ tsekityam ]
     config:
       tags: [ 'magiceden','solana','nft' ]
     description: >
@@ -239,7 +237,6 @@ models:
     meta:
       blockchain: solana
       project: tensor
-      contributors: [ tserkityam ]
     config:
       tags: [ 'magiceden','solana','nft' ]
     description: >
@@ -315,7 +312,6 @@ models:
     meta:
       blockchain: solana
       project: tensor
-      contributors: [ ilemi ]
     config:
       tags: [ 'tensorswap','solana','nft' ]
     description: >
@@ -392,7 +388,6 @@ models:
     meta:
       blockchain: solana
       project: tensor
-      contributors: [ ilemi ]
     config:
       tags: [ 'tensorswap','solana','nft' ]
     description: >

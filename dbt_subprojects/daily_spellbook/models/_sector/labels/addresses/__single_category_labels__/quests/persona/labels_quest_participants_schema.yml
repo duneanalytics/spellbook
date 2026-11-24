@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: labels
       category: quest_participants
-      contributors: msilb7
     config:
       tags: ['labels', 'quests','coinbase','optimism']
     description: "Quest participants query labels across chains"

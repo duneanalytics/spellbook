@@ -6,7 +6,6 @@ models:
       blockchain: scroll
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'scroll','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on scroll - formatted for dex.trades

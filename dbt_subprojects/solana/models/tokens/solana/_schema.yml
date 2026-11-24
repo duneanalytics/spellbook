@@ -7,7 +7,6 @@ models:
       blockchain: solana
       sector: tokens
       project: fees
-      contributors: ilemi
     config:
       tags: ['table', 'metadata', 'fess', 'solana']
     description: "fee updates on token2022 tokens"
@@ -32,7 +31,6 @@ models:
       blockchain: solana
       sector: tokens
       project: fungible
-      contributors: ilemi
     config:
       tags: ['table', 'metadata', 'fungible', 'solana']
     description: "NFTs minted using the Metaplex standard, with a master edition or cNFT tree"
@@ -93,7 +91,6 @@ models:
       blockchain: solana
       sector: tokens
       project: stablecoins
-      contributors: synthquest
     config:
       tags: ['table', 'metadata', 'stablecoins', 'solana']
     description: "Stablecoins on Solana blockchain with their details"

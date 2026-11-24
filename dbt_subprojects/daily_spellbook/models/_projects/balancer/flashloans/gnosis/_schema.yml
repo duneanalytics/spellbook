@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       sector: lending
-      contributors: hildobby, viniabussafi
     config:
       tags: ['gnosis', 'flashloans']
     description: >

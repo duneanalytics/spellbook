@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic, unichain
       sector: lending
       project: aave, compound
-      contributors: tomfutago, hildobby
       short_description: "Token borrow events across lending protocols, tracking assets borrowed against deposited collateral."
       docs_slug: /curated/lending/borrow
     config:
@@ -109,7 +108,6 @@ models:
       blockchain: tron
       sector: lending
       project: justlend
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'justlend', 'tron']
     description: "All lending transactions involving borrow transactions on Tron"

@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: firebird_finance
-      contributors: ARDev097
     config:
       tags: ['optimism','trades', 'firebird_finance','dex']
     description: >
@@ -105,7 +104,6 @@ models:
       blockchain: optimism
       sector: dex
       project: firebird_finance
-      contributors: ARDev097, hosuke
     config:
       tags: [ 'optimism','trades', 'firebird_finance','dex' ]
     description: >

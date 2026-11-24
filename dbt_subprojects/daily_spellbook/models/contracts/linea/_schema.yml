@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: linea
       sector: contracts
-      contributors: kryptaki
     config:
       tags: ['linea', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Linea."

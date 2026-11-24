@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: labels
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['labels', 'fantom', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Fantom.'

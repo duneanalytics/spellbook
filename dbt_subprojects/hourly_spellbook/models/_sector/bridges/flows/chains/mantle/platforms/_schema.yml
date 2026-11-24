@@ -6,7 +6,6 @@ models:
       blockchain: mantle
       sector: bridges
       project: zkbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'mantle', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on Mantle"
@@ -15,7 +14,6 @@ models:
       blockchain: mantle
       sector: bridges
       project: nitro
-      contributors: [ 'hildobby']
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Mantle"
@@ -24,7 +22,6 @@ models:
       blockchain: mantle
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'mantle', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Mantle"
@@ -33,7 +30,6 @@ models:
       blockchain: mantle
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'mantle', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Mantle"

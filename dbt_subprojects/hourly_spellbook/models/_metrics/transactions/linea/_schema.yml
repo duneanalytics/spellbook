@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: linea
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'linea','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: linea
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'linea','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

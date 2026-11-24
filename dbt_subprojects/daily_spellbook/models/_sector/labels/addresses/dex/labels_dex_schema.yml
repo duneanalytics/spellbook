@@ -15,7 +15,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: dex
-      contributors: ilemi
     config:
       tags: ['labels', 'dex']
     description: "all dex labels"

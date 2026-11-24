@@ -4,7 +4,6 @@ models:
   - name: ovm_optimism_cross_domain_messenger_messages
     meta:
       project: ovm_optimism
-      contributors: msilb7
     config:
       tags: ['cross-chain','optimism', 'messages']
     description: >

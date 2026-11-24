@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: celo
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'celo']
     description: "All CEX-tied addresses identified on zkSync"

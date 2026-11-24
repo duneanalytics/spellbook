@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, arbitrum, gnosis, optimism, polygon, fantom
       sector: labels
       category: dex
-      contributors: gentrexha, Henrystats
     config:
       tags: ['labels', 'cross-chain evm', 'average_trade_values', 'dex', 'dex_aggregator']
     description: "Trader average trade values for addresses who use dex and dex aggregators"

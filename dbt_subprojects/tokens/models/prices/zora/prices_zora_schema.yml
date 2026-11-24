@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zora
       sector: prices
-      contributors: hildobby
     config:
       tags: ['prices', 'tokens', 'usd', 'zora']
     description: "Price tokens on zora chain"

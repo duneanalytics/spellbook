@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'arbitrum']
     description: "Table showing who first funded each Arbitrum address in ETH"
@@ -56,7 +55,6 @@ models:
       blockchain: arbitrum
       sector: addresses_events
       project: addresses
-      contributors: Henrystats
     config:
       tags: ['table', 'activity', 'addresses_events', 'arbitrum']
     description: "Table showing first activity of each Arbitrum Mainnet address"
@@ -96,7 +94,6 @@ models:
       blockchain: arbitrum
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'arbitrum']
     description: "Table showing which token was first received for each Arbitrum address"

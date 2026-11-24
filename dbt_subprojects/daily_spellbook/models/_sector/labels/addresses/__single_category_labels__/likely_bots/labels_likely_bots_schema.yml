@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: labels
       category: bot_labels
-      contributors: msilb7
     config:
       tags: ['labels', 'optimism','bots','prod_exclude']
     description: "Likely bot labels"

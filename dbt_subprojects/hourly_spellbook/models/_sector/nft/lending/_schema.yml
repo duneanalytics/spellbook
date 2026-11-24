@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: Henrystats
     config:
       tags: ['ethereum','nft', 'lending']
     description: >

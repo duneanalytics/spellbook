@@ -6,7 +6,6 @@ models:
       blockchain: unichain
       sector: lending
       project: morpho
-      contributors: tomfutago, Henrystats
     config:
       tags: ['lending', 'flashloans', 'morpho', 'unichain']
     description: "All lending flashloans transactions on unichain"
@@ -79,7 +78,6 @@ models:
       blockchain: unichain
       sector: lending
       project: morpho
-      contributors: Henrystats, tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'unichain']
     description: "Morpho flashloans transactions on unichain"

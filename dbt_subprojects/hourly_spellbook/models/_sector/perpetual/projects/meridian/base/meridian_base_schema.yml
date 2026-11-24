@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: meridian 
-      contributors: LLDAO
     config:
       tags: ['base','perpetual', 'meridian','perps']
     description: >

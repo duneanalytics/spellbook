@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: nft
       project: tofu
-      contributors: 0xRob
     config:
       tags: ['arbitrum', 'nft', 'trades', 'tofu']
     description: "Tofu base trades"
@@ -20,7 +19,6 @@ models:
     meta:
       blockchain: arbitrum
       project: stealcam
-      contributors: [ hildobby ]
     config:
       tags: [ 'arbitrum','stealcam','v1','trades' ]
     description: >
@@ -36,7 +34,6 @@ models:
       blockchain: arbitrum
       sector: nft
       project: trove
-      contributors: bizzyvinci
     config:
       tags: [ 'trove', 'treasure', 'nft', 'trades' ]
     description: "NFT trades on trove v1 on arbitrum blockchain"
@@ -51,7 +48,6 @@ models:
       blockchain: arbitrum
       sector: nft
       project: trove
-      contributors: bizzyvinci
     config:
       tags: [ 'trove', 'treasure', 'nft', 'trades' ]
     description: "NFT trades on trove v2 on arbitrum blockchain"
@@ -66,7 +62,6 @@ models:
       blockchain: arbitrum
       sector: nft
       project: element
-      contributors: Henrystats
     config:
       tags: [ 'element', 'nft', 'trades' ]
     description: "NFT trades on Element v1 on arbitrum blockchain"
@@ -102,7 +97,6 @@ models:
     meta:
       blockchain: arbitrum
       project: sudoswap
-      contributors: [ ilemi ]
     config:
       tags: [ 'base','sudoswap','pool_creations' ]
     description: >
@@ -118,7 +112,6 @@ models:
       blockchain: arbitrum
       sector: nft
       project: sudoswap
-      contributors: [ 'ilemi' ]
     config:
       tags: [ 'arbitrum', 'nft', 'trades', 'sudoswap' ]
     description: "sudoswap v2 base trades"
@@ -148,7 +141,6 @@ models:
       blockchain: arbitrum
       sector: nft
       project: zonic
-      contributors: tomfutago
     config:
       tags: [ 'arbitrum', 'nft', 'trades', 'zonic' ]
     description: "zonic base trades"
@@ -177,7 +169,6 @@ models:
     meta:
       blockchain: arbitrum
       project: opensea
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
@@ -212,7 +203,6 @@ models:
     meta:
       blockchain: arbitrum
       project: opensea
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >

@@ -4,7 +4,6 @@ models:
   - name: hop_protocol_flows
     meta:
       project: hop_protocol
-      contributors: msilb7, soispoke
     config:
       tags: ['bridges','hop_protocol', 'flows', 'cross-chain', 'optimism']
     description: >
@@ -113,7 +112,6 @@ models:
   - name: hop_protocol_addresses
     meta:
       project: hop_protocol
-      contributors: msilb7, soispoke
     config:
       tags: ['bridge','hop_protocol','cross-chain']
     description: >

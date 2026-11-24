@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: solana
       sector: staking
-      contributors: ilemi
     config:
       tags: ['solana', 'staking', 'actions']
     description: Solana Stake11111 program actions
@@ -43,7 +42,6 @@ models:
     meta:
       blockchain: solana
       sector: staking
-      contributors: ilemi
     config:
       tags: ['solana', 'staking', 'delegate']
     description: Solana stake account vote delegations over time
@@ -67,7 +65,6 @@ models:
     meta:
       blockchain: solana
       sector: staking
-      contributors: ilemi
     config:
       tags: ['solana', 'staking', 'delegate']
     description: Solana validator stake accounts delegated for each epoch (includes only accounts delegated BEFORE epoch started)
@@ -93,7 +90,6 @@ models:
     meta:
       blockchain: solana
       sector: staking
-      contributors: ilemi
     config:
       tags: ['solana', 'staking', 'delegate']
     description: Solana validator stake accounts delegated for each epoch (includes only accounts delegated BEFORE epoch started)

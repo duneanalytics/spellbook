@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, solana
       sector: nft
-      contributors: springzh, 0xRob
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
     description: >
@@ -30,7 +29,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
       sector: nft
-      contributors: hildobby
     config:
       tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'info']
     description: >

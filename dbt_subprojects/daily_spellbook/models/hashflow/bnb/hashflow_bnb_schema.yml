@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex
       project: hashflow
-      contributors: BroderickBonelli
     config:
       tags: ['bnb','hashflow','trades','dex','BroderickBonelli']
     description: >

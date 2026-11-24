@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: nft
-      contributors: cat
     config:
       tags: [‘ethereum’,’nft’,’metadata’]
     description: >
@@ -60,7 +59,6 @@ models:
     meta:
       blockchain: ethereum
       project: nft
-      contributors: cat
     config:
       tags: [‘ethereum’,’nft’,’metadata’]
     description: >
@@ -108,7 +106,6 @@ models:
     meta:
       blockchain: ethereum
       project: nft
-      contributors: cat
     config:
       tags: [‘ethereum’,’nft’,’metadata’]
     description: >
@@ -159,7 +156,6 @@ models:
     meta:
       blockchain: ethereum
       project: nft
-      contributors: cat
     config:
       tags: [‘ethereum’,’nft’,’metadata’]
     description: >
@@ -214,7 +210,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'art_blocks']
     description: >
@@ -243,7 +238,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'bright_moments', 'metadata']
     description: >
@@ -270,7 +264,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails', 'metadata']
     description: >
@@ -299,7 +292,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'proof_collective', 'proof_grails', 'metadata']
     description: >
@@ -328,7 +320,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'braindrops', 'metadata']
     description: >
@@ -353,7 +344,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'verse', 'metadata']
     description: >
@@ -378,7 +368,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'fellowship', 'metadata']
     description: >
@@ -401,7 +390,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'mirage gallery curated', 'metadata']
     description: >
@@ -428,7 +416,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'metadata']
     description: >
@@ -451,7 +438,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'xcopy', 'metadata']
     description: >
@@ -492,7 +478,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'xcopy', 'metadata']
     description: >
@@ -511,7 +496,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: cat
     config:
       tags: ['nft', 'ethereum', 'xcopy', 'metadata']
     description: >

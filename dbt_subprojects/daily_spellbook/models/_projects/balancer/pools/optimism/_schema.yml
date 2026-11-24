@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['optimism', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -33,7 +32,6 @@ models:
     meta:
       blockchain: optimism
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['optimism', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -55,7 +53,6 @@ models:
     meta:
       blockchain: optimism
       project: balancer
-      contributors: msilb7
     config:
       tags: ['optimism', 'balancer', 'gauges', 'incentives']
     description: >

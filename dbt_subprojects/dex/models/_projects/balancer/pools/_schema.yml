@@ -4,7 +4,6 @@ models:
   - name: balancer_pools_fees
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'pools', 'fees']
     description: >
@@ -64,7 +63,6 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools_fees']
     description: >
@@ -91,7 +89,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['avalanche_c', 'balancer', 'pools_fees']
     description: >
@@ -118,7 +115,6 @@ models:
     meta:
       blockchain: base
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['base', 'balancer', 'pools_fees']
     description: >
@@ -145,7 +141,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'fees']
     description: >
@@ -172,7 +167,6 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['gnosis', 'balancer', 'pools_fees']
     description: >
@@ -199,7 +193,6 @@ models:
     meta:
       blockchain: optimism
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['optimism', 'balancer', 'pools_fees']
     description: >
@@ -226,7 +219,6 @@ models:
     meta:
       blockchain: polygon
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['polygon', 'balancer', 'pools', 'fees']
     description: >
@@ -253,7 +245,6 @@ models:
     meta:
       blockchain: zkevm
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['zkevm', 'balancer', 'pools_fees']
     description: >
@@ -280,7 +271,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools_fees']
     description: >
@@ -307,7 +297,6 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['gnosis', 'balancer', 'pools_fees']
     description: >
@@ -334,7 +323,6 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools_fees']
     description: >
@@ -361,7 +349,6 @@ models:
     meta:
       blockchain: base
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['base', 'balancer', 'pools_fees']
     description: >
@@ -388,7 +375,6 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer_v3
-      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'balancer', 'pools_fees']
     description: >
@@ -415,7 +401,6 @@ models:
     meta:
       blockchain: monad
       project: balancer_v3
-      contributors: gustavobftorres
     config:
       tags: ['monad', 'balancer', 'pools_fees']
     description: >

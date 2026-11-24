@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain,celo
       sector: dex
-      contributors: hildobby, tomfutago, msilb7, chuxin
     config:
       tags: ['ethereum', 'polygon', 'arbitrum', 'celo', 'pools']
     description: >
@@ -49,7 +48,6 @@ models:
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: msilb7, chuxin
     config:
       tags: ['optimism','uniswap','pools']
     description: >
@@ -76,7 +74,6 @@ models:
       blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
       short_description: The `uniswap.liquidity_events` table captures liquidity data on Uniswap. This table contains a detailed breakdown of liquidity pmodified per transaction. 
-      contributors: irishLatte19, Henrystats
     config:
       tags: [ 'dex', 'liquidity_events']
     data_tests:
@@ -151,7 +148,6 @@ models:
     meta:
       blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
-      contributors: irishLatte19, Henrystats
     config:
       tags: [ 'dex' ]
     columns:
@@ -176,7 +172,6 @@ models:
     meta:
       blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -208,7 +203,6 @@ models:
     meta:
       blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -254,7 +248,6 @@ models:
     meta:
       blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
 
@@ -262,7 +255,6 @@ models:
     meta:
       blockchain: ethereum,arbitrum,base,unichain
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -279,7 +271,6 @@ models:
       blockchain: ethereum,arbitrum,arc,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain,celo,monad,tempo
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['dex', 'uniswap', 'v4', 'hooks']
     description: >
@@ -307,7 +298,6 @@ models:
       blockchain: ethereum,arbitrum,arc,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain,celo,monad,tempo
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['dex_aggregator', 'trades', 'uniswap', 'v4', 'cross-chain']
     description: >

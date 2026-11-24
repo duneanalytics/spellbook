@@ -24,7 +24,6 @@ models:
       blockchain: arc
       sector: dex
       project: uniswap
-      contributors: ['0xRob']
     config:
       tags: [ 'arc', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap arc v2 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: arc
       sector: dex
       project: uniswap
-      contributors: ['0xRob']
     config:
       tags: [ 'arc', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap arc v3 base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: arc
       sector: dex
       project: uniswap
-      contributors: ['0xRob']
     config:
       tags: [ 'arc', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap arc v4 base trades"

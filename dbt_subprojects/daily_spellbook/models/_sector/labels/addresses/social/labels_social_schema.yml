@@ -15,7 +15,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: social
-      contributors: ilemi
     config:
       tags: ["labels", "social", "ens", "lens"]
     description: "all social labels"

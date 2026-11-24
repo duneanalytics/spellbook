@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zora
       project: boost
-      contributors: raho, pntemi
     config:
       tags: ["zora", "boost", "boost_inbox", "quest"]
     description: Boost deployments on [boost.xyz](https://boost.xyz), an open source platform to incentivize any onchain action, with any token, on any chain. 
@@ -66,7 +65,6 @@ models:
     meta:
       blockchain: zora
       project: boost
-      contributors: raho, pntemi
     config:
       tags: ["zora", "boost", "boost_inbox", "quest"]
     description: "Reward claimed from Boost completion"

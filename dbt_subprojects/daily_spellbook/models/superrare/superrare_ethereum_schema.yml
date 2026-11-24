@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: superrare
-      contributors: cat
     config:
       tags: ['usernames', 'ethereum', 'superrare']
     description: "SuperRare usernames"

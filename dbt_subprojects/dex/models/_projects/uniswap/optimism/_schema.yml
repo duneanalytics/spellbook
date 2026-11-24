@@ -7,7 +7,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats,msilb7,chuxin,mtitus6
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -112,7 +109,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -141,7 +137,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
     description: >
@@ -179,7 +174,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: irishlatte19, Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -239,7 +233,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -274,7 +267,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -309,7 +301,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -343,7 +334,6 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -359,7 +349,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['optimism', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -386,7 +375,6 @@ models:
       blockchain: optimism
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['optimism', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

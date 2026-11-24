@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: notional
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'notional']
     description: "List of claim transactions for the $NOTE airdrop"

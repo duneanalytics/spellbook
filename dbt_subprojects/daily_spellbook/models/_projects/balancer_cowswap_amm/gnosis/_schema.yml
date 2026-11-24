@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['gnosis', 'balancer', 'balances']
     description: >
@@ -40,7 +39,6 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['gnosis', 'balancer', 'pools', 'liquidity']
     description: >

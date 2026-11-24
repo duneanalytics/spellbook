@@ -9,8 +9,7 @@
     partition_by = ['block_month'],
     post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
         spell_type = "project",
-        spell_name = "aptos_stablecoins",
-        contributors = \'["ying-w"]\') }}'
+        spell_name = "aptos_stablecoins") }}'
 ) }}
 -- usdt is minted to a reserve account
 -- 0xd5b71ee4d1bad5cb7f14c880ee55633c7befcb7384cf070919ea5c481019a4e9

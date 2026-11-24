@@ -16,7 +16,6 @@ models:
       sector: labels
       category: project_wallets
       project: ['project_wallets']
-      contributors: soispoke
     config:
       tags: ['labels', 'optimism','projects']
     description: "Known wallets belong to projects and apps"   

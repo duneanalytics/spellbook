@@ -7,7 +7,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -109,7 +106,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -137,7 +133,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -165,7 +160,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -194,7 +188,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -249,7 +242,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -284,7 +276,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -319,7 +310,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -354,7 +344,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -389,7 +378,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'pancakeswap', 'sqrtpricex96']
     description: >

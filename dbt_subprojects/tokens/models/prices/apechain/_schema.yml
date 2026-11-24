@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: apechain
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'apechain']
     description: "Price tokens on Apechain EVM chain"

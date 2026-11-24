@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: coinbase_wallet_quests
-      contributors: msilb7
     config:
       tags: ['optimism','coinbase wallet','quests']
     description: >
@@ -31,7 +30,6 @@ models:
     meta:
       blockchain: optimism
       project: coinbase_wallet_quests
-      contributors: msilb7
     config:
       tags: ['optimism','coinbase wallet','quests']
     description: >

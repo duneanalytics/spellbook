@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'beethoven_x', 'pools', 'tokens', 'weights']
     description: >
@@ -30,7 +29,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'balancer', 'pools', 'liquidity']
     description: >
@@ -74,7 +72,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'revenue', 'fees']
     description: >
@@ -117,7 +114,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'bpt', 'supply']
     description: >
@@ -141,7 +137,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'bpt', 'prices']
     description: >
@@ -166,7 +161,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'bpt', 'transfers']
     description: >
@@ -195,7 +189,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'bpt', 'supply', 'changes']
     description: >
@@ -244,7 +237,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'bpt', 'supply', 'changes']
     description: >
@@ -280,7 +272,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'bpt', 'supply', 'changes']
     description: >
@@ -320,7 +311,6 @@ models:
     meta:
       blockchain: sonic
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'bpt', 'supply', 'changes']
     description: >
@@ -345,7 +335,6 @@ models:
   - name: beets_pools_metrics_daily
     meta:
       blockchain: sonic
-      contributors: viniabussafi, metacrypto
     config:
       tags: ['sonic', 'jelly_swap', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >

@@ -9,8 +9,7 @@
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook='{{ expose_spells(\'["sui"]\',
                               "sector",
-                              "dex_trades",
-                              \'["krishhh"]\') }}'
+                              "dex_trades") }}'
 ) }}
 
 -- 0) Base (pure pass-through union)

@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'optimism']
     description: "All Aave transactions involving borrow transactions on Optimism"
@@ -71,7 +70,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'optimism']
     description: "All Aave transactions involving flashloans transactions on Optimism"
@@ -103,7 +101,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'optimism']
     description: "All Aave transactions involving supply transactions on Optimism"
@@ -136,7 +133,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'optimism']
     description: "All Aave market transactions on Optimism"
@@ -176,7 +172,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'optimism']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'optimism']
     description: "Hourly aggregated lending market interest rates"
@@ -221,7 +215,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'optimism']
     description: "Hourly aggregated lending market interest rates"

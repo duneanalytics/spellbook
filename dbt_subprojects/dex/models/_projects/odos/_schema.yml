@@ -6,7 +6,6 @@ models:
       blockchain: optimism, ethereum, base, arbitrum
       sector: dex
       project: odos
-      contributors: Henrystats
     config:
       tags: ['odos','trades', 'dex', 'aggregator']
     description: >

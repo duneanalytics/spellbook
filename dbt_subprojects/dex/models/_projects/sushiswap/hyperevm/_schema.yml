@@ -6,7 +6,6 @@ models:
       blockchain: hyperevm
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'hyperevm','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on hyperevm - formatted for dex.trades

@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: galxe
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'galxe']
     description: "List of claim transactions for the $GAL airdrop"

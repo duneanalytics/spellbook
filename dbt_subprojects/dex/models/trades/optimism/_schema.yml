@@ -24,7 +24,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: agaperste
     config:
       tags: [ 'optimism', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap optimism v4 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: 0xBoxer, jeff-dude, hosuke
     config:
       tags: [ 'optimism', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap optimism v3 base trades"
@@ -68,7 +66,6 @@ models:
       blockchain: optimism
       sector: dex
       project: woofi
-      contributors: ARDev097, hosuke
     config:
       tags: [ 'optimism', 'dex', 'trades', 'woofi' ]
     description: >
@@ -89,7 +86,6 @@ models:
       blockchain: optimism
       sector: dex
       project: sushiswap
-      contributors: msilb7, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'sushiswap', 'v1' ]
     description: "sushiswap optimism v1 trades"
@@ -113,7 +109,6 @@ models:
       blockchain: optimism
       sector: dex
       project: sushiswap
-      contributors: tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'sushiswap', 'v2' ]
     description: "sushiswap optimism v2 trades"
@@ -135,7 +130,6 @@ models:
       blockchain: optimism
       sector: dex
       project: mummy_finance
-      contributors: ARDev097
     config:
       tags: [ 'optimism', 'dex', 'trades', 'mummy_finance' ]
     description: >
@@ -156,7 +150,6 @@ models:
       blockchain: optimism
       sector: dex
       project: zipswap
-      contributors: msilb7, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'zipswap', 'uniswap', 'v2' ]
     description: "Zipswap optimism trades"
@@ -178,7 +171,6 @@ models:
       blockchain: optimism
       sector: dex
       project: balancer
-      contributors: bizzyvinci, thetroyharris, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 optimism base trades"
@@ -200,7 +192,6 @@ models:
       blockchain: optimism
       sector: dex
       project: hashflow
-      contributors: ARDev097
     config:
       tags: [ 'optimism', 'dex', 'trades', 'hashflow' ]
     description: >
@@ -221,7 +212,6 @@ models:
       blockchain: optimism
       sector: dex
       project: wardenswap
-      contributors: Chain_L, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'wardenswap' ]
     description: "Wardenswap optimism base trades"
@@ -241,7 +231,6 @@ models:
       blockchain: optimism
       sector: dex
       project: dodo
-      contributors: owen05, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'dodo' ]
     description: "Dodo optimism base trades"
@@ -266,7 +255,6 @@ models:
       blockchain: optimism
       sector: dex
       project: clipper
-      contributors: 0xRob, amalashkevich, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'clipper' ]
     description: "clipper optimism base trades"
@@ -291,7 +279,6 @@ models:
       blockchain: optimism
       sector: dex
       project: kyberswap
-      contributors: zhongyiio, msilb7, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
     description: "kyberswap optimism base trades"
@@ -316,7 +303,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: msilb7, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'velodrome', 'uniswap', 'v2' ]
     description: "velodrome optimism base trades"
@@ -340,7 +326,6 @@ models:
       blockchain: optimism
       sector: dex
       project: synthetix
-      contributors: msilb7, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'synthetix' ]
     description: "synthetix optimism base trades"
@@ -360,7 +345,6 @@ models:
       blockchain: optimism
       sector: dex
       project: openxswap
-      contributors: ARDev097, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'openxswap' ]
     description: "openxswap optimism base trades"
@@ -380,7 +364,6 @@ models:
       blockchain: optimism
       sector: dex
       project: opx_finance
-      contributors: kaiblade, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'opx_finance' ]
     description: "OPX Finance optimism base trades"
@@ -400,7 +383,6 @@ models:
       blockchain: optimism
       sector: dex
       project: chainhop
-      contributors: ARDev097
     config:
       tags: [ 'optimism', 'dex', 'trades', 'chainhop' ]
     description: >
@@ -420,7 +402,6 @@ models:
       blockchain: optimism
       sector: dex
       project: rubicon
-      contributors: msilb7, tomfutago
     config:
       tags: [ 'optimism', 'dex', 'trades', 'rubicon' ]
     description: "rubicon optimism base trades"
@@ -440,7 +421,6 @@ models:
       blockchain: optimism
       sector: dex
       project: curve
-      contributors: msilb7, tomfutago
     config:
       tags: ['optimism', 'dex', 'trades', 'curve']
     description: "Curve optimism base trades"
@@ -460,7 +440,6 @@ models:
       blockchain: optimism
       sector: dex
       project: gridex
-      contributors: lldao
     config:
       tags: [ 'optimism', 'dex', 'trades', 'gridex' ]
     description: "gridex  optimism base trades"
@@ -480,7 +459,6 @@ models:
       blockchain: optimism
       sector: dex
       project: solidly
-      contributors: lldao
     config:
       tags: [ 'optimism', 'dex', 'trades', 'solidly' ]
     description: "solidly v3 optimism base trades"
@@ -500,7 +478,6 @@ models:
       blockchain: optimism
       sector: dex
       project: dackieswap
-      contributors: LLDAO
     config:
       tags: [ 'optimism', 'dex', 'trades', 'dackieswap' ]
     description: "dackieswap v2  optimism base trades"
@@ -521,7 +498,6 @@ models:
       blockchain: optimism
       sector: dex
       project: dackieswap
-      contributors: LLDAO
     config:
       tags: [ 'optimism', 'dex', 'trades', 'dackieswap' ]
     description: "dackieswap v3  optimism base trades"
@@ -542,7 +518,6 @@ models:
       blockchain: optimism
       sector: dex
       project: wombat_exchange
-      contributors: LLDAO
     config:
       tags: [ 'optimism', 'dex', 'trades', 'wombat_exchange' ]
     description: "wombat_exchange optimism base trades"
@@ -563,7 +538,6 @@ models:
       blockchain: optimism
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: [ 'optimism', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap optimism v2 base trades"
@@ -584,7 +558,6 @@ models:
       blockchain: optimism
       sector: dex
       project: elk_finance
-      contributors: archie
     config:
       tags: [ 'optimism', 'dex', 'trades', 'elk_finance' ]
     description: "elk_finance optimism base trades"
@@ -605,7 +578,6 @@ models:
       blockchain: optimism
       sector: dex
       project: fraxswap
-      contributors: Henrystats
     config:
       tags: ['optimism', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
     description: "Fraxswap optimism base trades"
@@ -626,7 +598,6 @@ models:
       blockchain: optimism
       sector: dex
       project: swaap
-      contributors: borelien
     config:
       tags: [ 'optimism', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 optimism base trades"
@@ -647,7 +618,6 @@ models:
       blockchain: optimism
       sector: dex
       project: timeswap_v2
-      contributors: archie
     config:
       tags: [ 'optimism', 'dex', 'trades', 'timeswap', 'v2']
     description: "timeswap v2 optimism base trades"
@@ -668,7 +638,6 @@ models:
       blockchain: optimism
       sector: dex
       project: saddle_finance
-      contributors: princi, hosuke
     config:
       tags: [ 'optimism', 'dex', 'trades', 'saddle_finance']
     description: "saddle finance optimism base trades"
@@ -687,7 +656,6 @@ models:
       blockchain: optimism
       sector: dex
       project: bridgers
-      contributors: princi
     config:
       tags: [ 'optimism', 'dex', 'trades', 'bridgers']
     description: "bridgers optimism base trades"

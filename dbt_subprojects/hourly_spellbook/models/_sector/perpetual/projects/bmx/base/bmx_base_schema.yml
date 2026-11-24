@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: bmx 
-      contributors: LLDAO
     config:
       tags: ['base','perpetual', 'bmx','perps']
     description: >

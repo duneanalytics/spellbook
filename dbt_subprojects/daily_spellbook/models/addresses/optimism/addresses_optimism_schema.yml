@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: grants_funding
       project: addresses
-      contributors: msilb7
     config:
       tags: ['table', 'grants', 'governance', 'incentives', 'addresses', 'optimism']
     description: "Project address for receiving Optimism Governance and Partner Funding Grants."
@@ -34,7 +33,6 @@ models:
       blockchain: optimism
       sector: fees
       project: addresses
-      contributors: msilb7
     config:
       tags: ['table', 'fees', 'l2', 'addresses', 'optimism']
     description: "Fee vault (receiver) addresses on Optimism Mainnet"

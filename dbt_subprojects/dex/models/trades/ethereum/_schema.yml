@@ -47,7 +47,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, hosuke
     config:
       tags: ["ethereum", "dex", "trades", "uniswap", "v1"]
     description: "uniswap ethereum v1 base trades"
@@ -68,7 +67,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, hosuke
     config:
       tags: ["ethereum", "dex", "trades", "uniswap", "v2"]
     description: "uniswap ethereum v2 base trades"
@@ -89,7 +87,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, hosuke
     config:
       tags: ["ethereum", "dex", "trades", "uniswap", "v3"]
     description: "uniswap ethereum v3 base trades"
@@ -110,7 +107,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: agaperste
     config:
       tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap ethereum v4 base trades"
@@ -126,7 +122,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: defiswap
-      contributors: pandajackson42, 0xRob, hosuke
     config:
       tags: ["ethereum", "dex", "trades", "defiswap"]
     description: "Defiswap ethereum base trades"
@@ -145,7 +140,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: airswap
-      contributors: hosuke, jeff-dude, ivigamberdiev, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "airswap"]
     description: "Defiswap ethereum base trades"
@@ -164,7 +158,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: sushiswap
-      contributors: pandajackson42, 0xRob, hosuke, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "sushiswap", "v1"]
     description: "sushiswap ethereum base trades"
@@ -185,7 +178,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: sushiswap
-      contributors: pandajackson42, 0xRob, hosuke, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "sushiswap", "v2"]
     description: "sushiswap ethereum base trades"
@@ -206,7 +198,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: carbon_defi
-      contributors: tiagofilipenunes, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "carbon_defi"]
     description: "Carbon_defi ethereum base trades"
@@ -225,7 +216,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: apeswap
-      contributors: hosuke
     config:
       tags: ["ethereum", "dex", "trades", "apeswap"]
     description: apeswap base trades
@@ -244,7 +234,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap Ethereum v2 base trades"
@@ -268,7 +257,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: shibaswap
-      contributors: 0xRob, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "shibaswap", "uniswap", "v2"]
     description: "sushiswap ethereum base trades"
@@ -289,7 +277,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "pancakeswap", "uniswap", "v3"]
     description: "Pancakeswap Ethereum v3 base trades"
@@ -310,7 +297,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer
-      contributors: bizzyvinci, thetroyharris, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "balancer"]
     description: "Balancer v1 ethereum base trades"
@@ -331,7 +317,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer
-      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: ["ethereum", "dex", "trades", "balancer"]
     description: "Balancer v2 ethereum base trades"
@@ -352,7 +337,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ["ethereum", "dex", "trades", "balancer"]
     description: "Balancer v3 ethereum base trades"
@@ -373,7 +357,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: fraxswap
-      contributors: kndlexi, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "fraxswap", "uniswap", "v2"]
     description: "Fraxswap ethereum base trades"
@@ -394,7 +377,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: bancor
-      contributors: tian7, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "bancor"]
     description: "Bancor ethereum base trades"
@@ -413,7 +395,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: verse_dex
-      contributors: Henrystats, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "verse_dex"]
     description: "Verse ethereum base trades"
@@ -432,7 +413,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: swapr
-      contributors: cryptoleishen, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "swapr", "uniswap", "v2"]
     description: "Verse ethereum base trades"
@@ -451,7 +431,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: mauve
-      contributors: jeff-dude, masquot, soispoke, raphaelr, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "mauve"]
     description: "Mauve ethereum base trades"
@@ -470,7 +449,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: dfx
-      contributors: Henrystats, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "dfx"]
     description: "DFX ethereum base trades"
@@ -489,7 +467,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: dodo
-      contributors: owen05, scoffie, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "dodo"]
     description: "Dodo ethereum base trades"
@@ -514,7 +491,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: integral
-      contributors: integralhq, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "integral", "uniswap", "v2"]
     description: "Integral ethereum v3 base trades"
@@ -533,7 +509,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: maverick
-      contributors: get620v, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "maverick"]
     description: "Maverick ethereum base trades"
@@ -554,7 +529,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: maverick
-      contributors: get620v
     config:
       tags: ["ethereum", "dex", "trades", "maverick"]
     description: "Maverick ethereum base trades"
@@ -575,7 +549,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: clipper
-      contributors: 0xRob, amalashkevich, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "clipper"]
     description: "clipper ethereum base trades"
@@ -600,7 +573,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: mstable
-      contributors: ripple3, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "mstable"]
     description: "mstable ethereum base trades"
@@ -623,7 +595,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: kyberswap
-      contributors: ppclunghe, gregshestakovlido, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "kyberswap", "uniswap", "v2"]
     description: "kyberswap ethereum base trades"
@@ -647,7 +618,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: xchange
-      contributors: mike-x7f, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "xchange", "uniswap", "v2"]
     description: "xchange ethereum base trades"
@@ -668,7 +638,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: xchange
-      contributors: mike-x7f, tomfutago
     config:
       tags: [ 'ethereum', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
     description: "xchange v2 ethereum base trades"
@@ -689,7 +658,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: curve
-      contributors: dsalv, yulesa, ilemi, jeff-dude, tomfutago
     config:
       tags: ["ethereum", "dex", "trades", "curve"]
     description: "Curve ethereum base trades"
@@ -716,7 +684,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: solidly
-      contributors: SolidlyLabs
     config:
       tags: ["ethereum", "dex", "trades", "solidly"]
     description: "solidly v3 ethereum base trades"
@@ -735,7 +702,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: swaap
-      contributors: borelien
     config:
       tags: ["ethereum", "dex", "trades", "swaap", "v2"]
     description: "swaap v2 ethereum base trades"
@@ -756,7 +722,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: valantis
-      contributors: 0xrusowsky
     config:
       tags: ["ethereum", "dex", "trades", "valantis", "arrakis", "hot"]
     description: "hot-amm ethereum base trades"
@@ -772,7 +737,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: fluid
-      contributors: maybeYonas, pyor_xyz
     config:
       tags: ["ethereum", "dex", "trades", "fluid"]
     description: "fluid dex ethereum base trades"
@@ -793,7 +757,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: native
-      contributors: j92z
     config:
       tags: ["ethereum", "dex", "trades", "native"]
     description: "native ethereum base trades"
@@ -814,7 +777,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: angstrom
-      contributors: jnoorchashm37
     config:
       tags: ["ethereum", "dex", "trades", "native"]
     description: "angstrom ethereum base trades"
@@ -835,7 +797,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ["ethereum", "dex", "trades", "eulerswap"]
     description: "eulerswap ethereum base trades"
@@ -856,7 +817,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: ekubo
-      contributors: 0xsandeshk
     config:
       tags: ["ethereum", "dex", "trades", "ekubo"]
     description: "ekubo ethereum base trades"
@@ -877,7 +837,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: supernova
-      contributors: 0xnabeel
     config:
       tags: ["ethereum", "dex", "trades", "supernova", "uniswap", "v2"]
     description: "Supernova ethereum v2 base trades"
@@ -898,7 +857,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: supernova
-      contributors: 0xnabeel
     config:
       tags: ["ethereum", "dex", "trades", "supernova", "uniswap", "v3"]
     description: "Supernova ethereum v3 base trades"
@@ -919,7 +877,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: agra
-      contributors: cxheng315
     config:
       tags: [ 'ethereum', 'dex', 'trades', 'agra' ]
     description: "Agra ethereum base trades"
@@ -948,7 +905,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: origin_arm
-      contributors: nicholasaddison
     config:
       tags: ["ethereum", "dex", "trades", "origin", "arm"]
     description: "Origin ARM swaps on Ethereum"
@@ -978,7 +934,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: lista_smartswap
-      contributors: knight_in_kight
     config:
       tags: ["ethereum", "dex", "trades", "lista_smartswap"]
     description: "Lista SmartSwap Ethereum StableSwap base trades"
@@ -1015,7 +970,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: metric
-      contributors: mathewae
     config:
       tags: ["ethereum", "dex", "trades", "metric"]
     description: "Metric (oracle-based on-chain market maker) ethereum base trades, all factory versions (0, 1, 2)"

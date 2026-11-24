@@ -7,7 +7,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -109,7 +106,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -138,7 +134,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -193,7 +188,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -228,7 +222,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -263,7 +256,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >

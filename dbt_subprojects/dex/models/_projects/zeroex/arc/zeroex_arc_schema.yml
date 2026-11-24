@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arc
       project: zeroex
-      contributors: bakabhai993
     config:
       tags: ['arc', '0x', 'settler']
     description: >
@@ -34,7 +33,6 @@ models:
     meta:
       blockchain: arc
       project: zeroex
-      contributors: bakabhai993
     config:
       tags: ['arc', '0x', 'settler']
     description: >
@@ -66,7 +64,6 @@ models:
     meta:
       blockchain: arc
       project: zeroex
-      contributors: bakabhai993
     config:
       tags: ['arc', '0x', 'settler', 'dex_aggregator', 'dex', 'aggregator']
     description: >

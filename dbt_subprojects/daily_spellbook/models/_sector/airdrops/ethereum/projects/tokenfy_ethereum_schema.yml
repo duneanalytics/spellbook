@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: tokenfy
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'tokenfy']
     description: "List of claim transactions for the $TKNFY airdrop"

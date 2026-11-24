@@ -5,8 +5,7 @@
         
         post_hook='{{ expose_spells(\'["abstract", "apechain", "arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "fantom", "linea", "nova", "optimism", "polygon", "ronin", "scroll", "zksync", "zora"]\',
                                     "sector",
-                                    "nft",
-                                    \'["hildobby", "0xr3x"]\') }}')
+                                    "nft") }}')
 }}
 
 {% set nft_wash_models = [

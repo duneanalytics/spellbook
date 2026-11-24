@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: looksrare
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'looksrare']
     description: "List of claim transactions for the $LOOKS airdrop"

@@ -7,7 +7,6 @@ models:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb
       sector: addresses_events
       project: addresses
-      contributors: hildobby, 0xr3x
     config:
       tags: ['table', 'funded', 'addresses_events', 'mainnets', 'crosschain']
     description: "Table showing what chain an address was first funded on and its details"
@@ -62,7 +61,6 @@ models:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'token_received', 'addresses_events', 'mainnets', 'crosschain']
     description: "Table showing what chain an address first received tokens on and its details"
@@ -102,7 +100,6 @@ models:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb
       sector: addresses_events
       project: addresses
-      contributors: Henrystats, hildobby, 0xr3x
     config:
       tags: ['table', 'first_activity', 'addresses_events', 'mainnets']
     description: "Table showing first activity of each address on every chain"

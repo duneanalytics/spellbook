@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: fxdx
-      contributors: kaiblade
     config:
       tags: ['optimism', 'fxdx', 'perpetuals', 'perps']
     description: >
@@ -95,7 +94,6 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: kaiblade
     config:
       tags: ['optimism', fxdx, 'perpetuals', 'perps']
     description: >

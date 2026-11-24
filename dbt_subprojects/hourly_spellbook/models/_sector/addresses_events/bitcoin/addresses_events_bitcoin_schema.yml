@@ -6,7 +6,6 @@ models:
       blockchain: bitcoin
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'bitcoin']
     description: "Table showing who first funded each Bitcoin address in BTC"

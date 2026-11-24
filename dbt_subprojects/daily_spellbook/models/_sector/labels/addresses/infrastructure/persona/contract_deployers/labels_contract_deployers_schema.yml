@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'arbitrum', 'contract_deployers']
     description: "Smart contract deployers on Arbitrum"
@@ -47,7 +46,6 @@ models:
       blockchain: avalanche_c
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'avalanche_c', 'contract_deployers']
     description: "Smart contract deployers on Avalanche"
@@ -68,7 +66,6 @@ models:
       blockchain: bnb
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'bnb', 'contract_deployers']
     description: "Smart contract deployers on BNB"
@@ -89,7 +86,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'ethereum', 'contract_deployers']
     description: "Smart contract deployers on Arbitrum"
@@ -110,7 +106,6 @@ models:
       blockchain: fantom
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'fantom', 'contract_deployers']
     description: "Smart contract deployers on Arbitrum"
@@ -131,7 +126,6 @@ models:
       blockchain: gnosis
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'gnosis', 'contract_deployers']
     description: "Smart contract deployers on Gnosis"
@@ -152,7 +146,6 @@ models:
       blockchain: goerli
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'goerli', 'contract_deployers']
     description: "Smart contract deployers on Goerli"
@@ -173,7 +166,6 @@ models:
       blockchain: optimism
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'optimism', 'contract_deployers']
     description: "Smart contract deployers on Optimism"
@@ -194,7 +186,6 @@ models:
       blockchain: polygon
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'polygon', 'contract_deployers']
     description: "Smart contract deployers on Polygon"
@@ -215,7 +206,6 @@ models:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, goerli, optimism, polygon
       sector: labels
       project: contract_deployers
-      contributors: hildobby
     config:
       tags: ['labels', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'contract_deployers']
     description: "Smart contract deployers across blockchains"

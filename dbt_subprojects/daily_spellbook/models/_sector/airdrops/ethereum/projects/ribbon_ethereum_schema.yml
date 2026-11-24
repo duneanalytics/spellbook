@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: ribbon
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'ribbon']
     description: "List of claim transactions for the $RBN airdrop"

@@ -6,7 +6,6 @@ models:
       blockchain: katana
       sector: lending
       project: aave, compound, morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'morpho', 'katana']
     description: "All lending supply transactions on Katana"
@@ -93,7 +92,6 @@ models:
       blockchain: katana
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "katana"]
     description: "Morpho supply transactions on Katana"

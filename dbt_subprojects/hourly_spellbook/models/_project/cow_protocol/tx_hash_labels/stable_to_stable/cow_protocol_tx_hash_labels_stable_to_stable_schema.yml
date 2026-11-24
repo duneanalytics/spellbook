@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: tx_hash_labels
       category: stable_to_stable
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
     description: "Trades that traded from one stable coin to another"
@@ -47,7 +46,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: stable_to_stable
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'stable_to_stable', 'dex']
     description:  "Trades that traded from one stable coin to another stable coin"

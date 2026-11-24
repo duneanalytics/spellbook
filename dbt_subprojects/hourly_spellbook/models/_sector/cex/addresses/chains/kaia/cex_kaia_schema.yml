@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: kaia
       sector: cex
-      contributors: anton
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'kaia']
     description: "All CEX-tied addresses identified on Kaia"

@@ -6,7 +6,6 @@ models:
       blockchain: plasma
       sector: lending
       project: aave, compound
-      contributors: 0xsandeshk
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'plasma']
     description: "Aave v1 borrow transactions on Plasma"
@@ -93,7 +92,6 @@ models:
       blockchain: plasma
       sector: lending
       project: aave
-      contributors: 0xsandeshk
     config:
       tags: ['lending', 'borrow', 'aave', 'v3', 'plasma']
     description: "Aave v3 borrow transactions on Plasma"

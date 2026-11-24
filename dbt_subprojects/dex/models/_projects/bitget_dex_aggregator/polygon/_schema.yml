@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: dex
       project: bitget_dex_aggregator
-      contributors: kunwh
     config:
       tags: ['bitget_dex_aggregator', 'Bitget Wallet Aggregator', 'trades', 'dex', 'aggregator', 'polygon']
     description: >

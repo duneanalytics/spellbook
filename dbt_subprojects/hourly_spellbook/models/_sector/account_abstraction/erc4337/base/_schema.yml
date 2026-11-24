@@ -7,7 +7,6 @@ models:
       blockchain: base
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly
     config:
       tags: ["base", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.6 user operations on base"
@@ -54,7 +53,6 @@ models:
       blockchain: base
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly
     config:
       tags: ["base", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 user operation on base"
@@ -114,7 +112,6 @@ models:
       blockchain: base
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly
     config:
       tags: ["base", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.6 account deployed on base"
@@ -137,7 +134,6 @@ models:
       blockchain: base
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly
     config:
       tags: ["base", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 account deployed on base"

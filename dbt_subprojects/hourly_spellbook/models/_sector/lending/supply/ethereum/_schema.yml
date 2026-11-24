@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave, compound
-      contributors: tomfutago, hildobby, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum']
     description: "All lending supply transactions on Ethereum"
@@ -93,7 +92,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v1 supply transactions on Ethereum"
@@ -133,7 +131,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v2 supply transactions on Ethereum"
@@ -173,7 +170,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v3 supply transactions on Ethereum"
@@ -213,7 +209,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave_lido
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'lido', 'ethereum']
     description: "Aave v3 supply transactions on Ethereum"
@@ -253,7 +248,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave_etherfi
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'etherfi', 'ethereum']
     description: "Aave v3 supply transactions on Ethereum"
@@ -293,7 +287,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave_horizon
-      contributors: 0xsandeshk
     config:
       tags: ['lending', 'supply', 'aave', 'horizon', 'v3', 'ethereum']  
     description: "Aave horizonv3 supply transactions on Ethereum"
@@ -333,7 +326,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: compound
-      contributors: bizzyvinci, hosuke, tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'ethereum']
     description: "Compound v2 supply transactions on Ethereum"
@@ -373,7 +365,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'compound', 'ethereum']
     description: "Compound v3 supply transactions on Ethereum"
@@ -413,7 +404,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: radiant
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'radiant', 'ethereum']
     description: "Radiant supply transactions on Ethereum"
@@ -451,7 +441,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: uwulend
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'uwulend', 'ethereum']
     description: "Uwulend supply transactions on Ethereum"
@@ -489,7 +478,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: spark
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'spark', 'ethereum']
     description: "Spark Protocol supply transactions on Ethereum"
@@ -527,7 +515,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: fluxfinance
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'fluxfinance', 'ethereum']
     description: "Flux Finance supply transactions on Ethereum"
@@ -565,7 +552,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: strike
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'strike', 'ethereum']
     description: "Strike supply transactions on Ethereum"
@@ -603,7 +589,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'granary', 'ethereum']
     description: "Granary supply transactions on Ethereum"
@@ -641,7 +626,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: morpho
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'supply', 'morpho', 'ethereum']
     description: "Morpho supply transactions on Ethereum"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: viction
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'viction']
     description: "Price tokens on Viction Network EVM chain"

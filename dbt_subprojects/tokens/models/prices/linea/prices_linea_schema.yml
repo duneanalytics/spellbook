@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: linea
       sector: prices
-      contributors: pipistrella
     config:
       tags: ['prices', 'tokens', 'usd', 'linea']
     description: "Price tokens on Linea L2 chain"

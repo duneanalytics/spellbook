@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: arrakis
-      contributors: msilb7
     config:
       tags: ['optimism','uniswap','arrakis','pools']
     description: >

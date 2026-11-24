@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: arbitrum
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['arbitrum', 'layerzero', 'send']
    description: "LayerZero message send call on arbitrum"
