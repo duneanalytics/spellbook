@@ -56,7 +56,7 @@ New to Spellbook or using AI tooling to navigate the repo? Start with these docs
 - **[CI overview](docs/ci_test/ci_test_overview.md)** - How Spellbook PR CI runs and where to find test tables
 - **[FAQ and common issues](docs/general/faq_and_common_issues.md)** - Common contributor and CI problems
 
-AI agents should also read [`AGENTS.md`](AGENTS.md) for shared repository instructions. Task-specific workflows live in [`.claude/skills/`](.claude/skills/) so Claude Code, opencode, and Cursor can use the same skill files.
+AI agents should also read [`AGENTS.md`](AGENTS.md) for shared repository instructions. Task-specific workflows live in [`.agents/skills/`](.agents/skills/) so Amp, Claude Code, opencode, and Cursor can use the same skill files (`.claude/skills` links to it).
 
 ## Introduction
 

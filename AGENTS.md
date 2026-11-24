@@ -21,7 +21,7 @@ Shared resources live at the repo root:
 - `dbt_macros/` - Shared macros such as `expose_spells`, `optimize_spell`, `mark_as_spell`, and `incremental_predicate`
 - `scripts/` - Development utilities, including query runners and source generators
 - `docs/` - Documentation for models, tests, seeds, macros, CI, and best practices
-- `.claude/skills/` - Shared task-specific skills for Claude Code, opencode, and Cursor
+- `.agents/skills/` - Shared task-specific skills for Amp, Claude Code, opencode, and Cursor (`.claude/skills` links to it)
 
 ## Documentation Map
 
@@ -198,7 +198,7 @@ A green CI check is necessary but not sufficient. Query CI tables to verify data
 
 ## Skills
 
-Use `.claude/skills/<name>/SKILL.md` for shared task-specific workflows. This path is read by Claude Code, opencode, and Cursor. Do not add shared instructions to `.cursor/rules`; promote always-on conventions to this file and procedural workflows to skills.
+Use `.agents/skills/<name>/SKILL.md` for shared task-specific workflows. Amp reads this path directly, and `.claude/skills` links to it for Claude Code, opencode, and Cursor. Do not add shared instructions to `.cursor/rules`; promote always-on conventions to this file and procedural workflows to skills.
 
 ## Review risk boundaries
 
