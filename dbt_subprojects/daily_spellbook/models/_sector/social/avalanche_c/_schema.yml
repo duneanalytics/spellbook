@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: social
       project: stars_arena
-      contributors: hildobby
     config:
       tags: ['table', 'social', 'avalanche_c', 'trades', 'stars_arena']
     description: "Stars Arena basic trades info"
@@ -76,7 +75,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: social
-      contributors: hildobby
     config:
       tags: ['table', 'social', 'avalanche_c', 'trades', 'stars_arena']
     description: "social trades on Avalanche"

@@ -5,7 +5,6 @@ models:
    meta:
     blockchain: ethereum, optimism, avalanche_c, bnb, arbitrum, polygon, fantom
     sector: lending
-    contributors: hildobby
    config:
       tags: ['ethereum', 'optimism', 'avalanche_c', 'bnb', 'arbitrum', 'polygon', 'fantom', 'flashloans']
    description: >

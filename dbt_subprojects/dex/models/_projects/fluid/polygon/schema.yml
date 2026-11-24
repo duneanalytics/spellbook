@@ -58,7 +58,6 @@ models:
       blockchain: polygon
       sector: dex
       project: fluid
-      contributors: Henrystats, dknugo
     config:
       tags: ['polygon', 'liquidity_events', 'liquidity', 'fluid']
     description: >
@@ -75,7 +74,6 @@ models:
       blockchain: polygon
       sector: dex
       project: fluid
-      contributors: Henrystats, dknugo
     config:
       tags: ['polygon', 'dex_events', 'liquidity', 'fluid']
     description: >
@@ -92,7 +90,6 @@ models:
       blockchain: polygon
       sector: dex
       project: fluid
-      contributors: Henrystats
     config:
       tags: ['polygon', 'dex_pools', 'liquidity', 'initializations']
     description: >
@@ -108,7 +105,6 @@ models:
       blockchain: polygon
       sector: dex
       project: fluid
-      contributors: Henrystats
     config:
       tags: ['polygon', 'dex_pools', 'liquidity', 'fee_updates']
     description: >

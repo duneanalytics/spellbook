@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex
       project: zerion
-      contributors: hildobby
     config:
       tags: ['bnb', 'zerion', 'zerion', 'trades', 'dex']
     description: >

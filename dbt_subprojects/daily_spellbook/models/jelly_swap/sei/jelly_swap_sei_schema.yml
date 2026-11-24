@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'jelly_swap', 'pools', 'tokens', 'weights']
     description: >
@@ -30,7 +29,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'jelly_swap', 'pools', 'liquidity']
     description: >
@@ -74,7 +72,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'revenue', 'fees']
     description: >
@@ -116,7 +113,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'bpt', 'supply']
     description: >
@@ -140,7 +136,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'bpt', 'prices']
     description: >
@@ -165,7 +160,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'bpt', 'transfers']
     description: >
@@ -194,7 +188,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'bpt', 'supply', 'changes']
     description: >
@@ -243,7 +236,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'bpt', 'supply', 'changes']
     description: >
@@ -279,7 +271,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'bpt', 'supply', 'changes']
     description: >
@@ -319,7 +310,6 @@ models:
     meta:
       blockchain: sei
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['sei', 'bpt', 'supply', 'changes']
     description: >
@@ -344,7 +334,6 @@ models:
   - name: jelly_swap_sei_pools_metrics_daily
     meta:
       blockchain: sei
-      contributors: viniabussafi, metacrypto
     config:
       tags: ['sei', 'jelly_swap', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >

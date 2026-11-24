@@ -5,7 +5,6 @@ models:
     meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei, mantle, unichain
       sector: dex
-      contributors: hildobby, agaperste
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages']
     description: >
@@ -98,7 +97,6 @@ models:
     meta: 
       blockchain: ethereum
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'ethereum']
     description: >
@@ -142,7 +140,6 @@ models:
     meta: 
       blockchain: arbitrum
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'arbitrum']
     description: >
@@ -186,7 +183,6 @@ models:
     meta: 
       blockchain: avalanche_c
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'avalanche_c']
     description: >
@@ -230,7 +226,6 @@ models:
     meta: 
       blockchain: bnb
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'bnb']
     description: >
@@ -274,7 +269,6 @@ models:
     meta: 
       blockchain: fantom
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'fantom']
     description: >
@@ -318,7 +312,6 @@ models:
     meta: 
       blockchain: gnosis
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'gnosis']
     description: >
@@ -362,7 +355,6 @@ models:
     meta: 
       blockchain: optimism
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'optimism']
     description: >
@@ -406,7 +398,6 @@ models:
     meta: 
       blockchain: polygon
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'polygon']
     description: >
@@ -450,7 +441,6 @@ models:
     meta: 
       blockchain: base
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'base']
     description: >
@@ -494,7 +484,6 @@ models:
     meta: 
       blockchain: celo
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'celo']
     description: >
@@ -538,7 +527,6 @@ models:
     meta: 
       blockchain: zksync
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'zksync']
     description: >
@@ -582,7 +570,6 @@ models:
     meta: 
       blockchain: scroll
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'scroll']
     description: >
@@ -627,7 +614,6 @@ models:
     meta: 
       blockchain: zora
       sector: dex
-      contributors: hildobby
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'zora']
     description: >
@@ -671,7 +657,6 @@ models:
     meta:
       blockchain: sei
       sector: dex
-      contributors: silointern
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'sei']
     description: >

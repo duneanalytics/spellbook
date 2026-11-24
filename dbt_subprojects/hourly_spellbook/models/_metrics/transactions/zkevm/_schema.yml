@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: zkevm
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'zkevm','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: zkevm
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'zkevm','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

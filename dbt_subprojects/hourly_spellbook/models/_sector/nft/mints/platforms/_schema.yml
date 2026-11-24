@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: zora
-      contributors: hildobby
     config:
       tags: ['zora', 'ethereum', 'mints']
     description: >
@@ -51,7 +50,6 @@ models:
     meta:
       blockchain: optimism
       project: zora
-      contributors: hildobby
     config:
       tags: ['zora', 'optimism', 'mints']
     description: >
@@ -97,7 +95,6 @@ models:
     meta:
       blockchain: optimism
       project: base
-      contributors: hildobby
     config:
       tags: ['base', 'optimism', 'mints']
     description: >
@@ -143,7 +140,6 @@ models:
     meta:
       blockchain: optimism
       project: zora
-      contributors: hildobby
     config:
       tags: ['zora', 'mints']
     description: >
@@ -189,7 +185,6 @@ models:
     meta:
       blockchain: ethereum, optimism, base
       project: zora
-      contributors: hildobby
     config:
       tags: ['zora', 'mints']
     description: >

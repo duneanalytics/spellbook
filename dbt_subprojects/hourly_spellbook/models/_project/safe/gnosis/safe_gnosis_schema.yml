@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       project: safe
-      contributors: tschubotz, doublesc00p
     config:
       tags: ['safe', 'singletons', 'gnosis']
     description: "Singletons addresses used with Safes"
@@ -21,7 +20,6 @@ models:
     meta:
       blockchain: gnosis
       project: safe
-      contributors: tschubotz, doublesc00p
     config:
       tags: ['safe', 'gnosis']
     description: "Safe addresses"
@@ -47,7 +45,6 @@ models:
     meta:
       blockchain: gnosis
       project: safe
-      contributors: tschubotz, danielpartida, doublesc00p
     config:
       tags: ['safe', 'gnosis']
     description: "Safe transactions"
@@ -108,7 +105,6 @@ models:
     meta:
       blockchain: gnosis
       project: safe
-      contributors: tschubotz
     config:
       tags: ['safe', 'transfers', 'gnosis']
     description: "xDAI transfers into or out of Safes"

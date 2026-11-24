@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: rubicon
-      contributors: denver
     config:
       tags: ['optimism','rubicon','dex']
     description: >

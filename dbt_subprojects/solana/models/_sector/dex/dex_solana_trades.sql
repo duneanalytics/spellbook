@@ -11,8 +11,7 @@
         merge_skip_unchanged = true,
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
-                                    "dex_solana",
-                                    \'["ilemi","0xRob","jeff-dude","0xBoxer","krishgka"]\') }}')
+                                    "dex_solana") }}')
 }}
 
 with base_trades as (

@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: mantle
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'mantle','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: mantle
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'mantle','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

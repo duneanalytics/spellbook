@@ -5,7 +5,6 @@ models:
     meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli, linea, zkevm
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints']
     description: >
@@ -67,7 +66,6 @@ models:
     meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli, linea, zkevm
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'deploys']
     description: >
@@ -103,7 +101,6 @@ models:
     meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli, linea, zkevm
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'all']
     description: >

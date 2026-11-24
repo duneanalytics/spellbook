@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: perpetual
       project: hubble_exchange
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'hubble_exchange', 'perpetuals', 'perps']
     description: >

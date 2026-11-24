@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: services
       project: pooltogether_v4
-      contributors: bronder
     config:
       tags: ['ethereum','pooltogether_v4','defi','services']
     description: >

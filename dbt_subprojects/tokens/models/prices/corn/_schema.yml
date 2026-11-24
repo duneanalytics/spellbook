@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: corn
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'corn']
     description: "Price tokens on Corn EVM chain"

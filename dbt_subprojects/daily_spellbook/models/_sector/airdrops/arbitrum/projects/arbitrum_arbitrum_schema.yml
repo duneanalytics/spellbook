@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: airdrop
       project: arbitrum
-      contributors: hildobby
     config:
       tags: ["table", "airdrop", "arbitrum", "claim"]
     description: "List of claim transactions for the $ARB airdrop"

@@ -23,7 +23,6 @@ models:
       blockchain: abstract
       sector: dex
       project: reservoir_swap
-      contributors: [jeff-dude]
     config:
       tags: ["abstract", "dex", "trades", "reservoir_swap", "v2"]
     description: "ReservoirSwap abstract v2 base trades"
@@ -38,7 +37,6 @@ models:
       blockchain: abstract
       sector: dex
       project: reservoir_swap
-      contributors: [jeff-dude]
     config:
       tags: ["abstract", "dex", "trades", "reservoir_swap", "v3"]
     description: "ReservoirSwap abstract v3 base trades"
@@ -53,7 +51,6 @@ models:
       blockchain: abstract
       sector: dex
       project: aborean
-      contributors: captncrunch
     config:
       tags: ["abstract", "dex", "trades", "aborean"]
     description: "Aborean abstract base trades"

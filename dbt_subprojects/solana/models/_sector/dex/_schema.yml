@@ -4,7 +4,6 @@ models:
   - name: dex_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ "ilemi", "0xRob" ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -18,7 +17,6 @@ models:
   - name: dex_solana_trades
     meta:
       blockchain: solana
-      contributors: ["ilemi", "0xRob"]
       docs_slug: /curated/dex-trades/solana/solana-dex-trades
       short_description: "Detailed data on trades executed via decentralized exchanges (DEXs) on Solana, containing one or many trades per transaction with Solana-specific fields like block_slot, fee_tier, and token vaults."
       # Freshness monitoring declaration, read by monitoring_config_spellbook_solana into
@@ -139,7 +137,6 @@ models:
   - name: dex_solana_price_hour
     meta:
       blockchain: solana
-      contributors: [get_nimbus]
     config:
       tags: ['solana','dex', 'price']
     description: >

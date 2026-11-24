@@ -6,7 +6,6 @@ models:
       blockchain: zksync
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'zksync' ]
     description: "EAS schema registry on zkSync"
@@ -27,7 +26,6 @@ models:
       blockchain: zksync
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'zksync' ]
     description: "EAS schema registry details on zkSync"
@@ -50,7 +48,6 @@ models:
       blockchain: zksync
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'zksync' ]
     description: "EAS attestations on zkSync"
@@ -73,7 +70,6 @@ models:
       blockchain: zksync
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'zksync' ]
     description: "EAS attestation details on zkSync"

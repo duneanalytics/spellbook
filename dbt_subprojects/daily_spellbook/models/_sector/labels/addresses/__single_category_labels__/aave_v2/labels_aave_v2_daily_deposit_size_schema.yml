@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: aave
-      contributors: paulx
     config:
       tags: ["labels", "ethereum", "aave", "deposit"]
     description: "Daily deposit sizes into Aave v2 lending pools."

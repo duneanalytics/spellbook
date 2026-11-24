@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb, ethereum, optimism, polygon
       sector: lending
-      contributors: hildobby
     config:
         tags: ['equalizer', 'flashloans']
     description: >

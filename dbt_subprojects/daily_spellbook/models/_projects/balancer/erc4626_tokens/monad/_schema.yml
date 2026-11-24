@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: monad
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['monad', 'token', 'mapping']
     description: >
@@ -35,7 +34,6 @@ models:
     meta:
       blockchain: monad
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['monad', 'token', 'prices']
     description: >

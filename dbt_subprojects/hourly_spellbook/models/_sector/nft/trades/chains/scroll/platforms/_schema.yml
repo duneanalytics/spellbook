@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: scroll
      project: zonic
-     contributors: 0xRob, tomfutago
    config:
      tags: [ 'scroll','zonic', 'trades' ]
    description: >
@@ -20,7 +19,6 @@ models:
    meta:
      blockchain: scroll
      project: element
-     contributors: 0xRob
    config:
      tags: [ 'scroll','element', 'trades' ]
    description: >

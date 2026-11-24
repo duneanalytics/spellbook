@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: nft
       project: blur
-      contributors: ['hildobby']
     config:
       tags: [ 'fantom', 'nft', 'trades', 'paintswap' ]
     description: "PaintSwap base trades"

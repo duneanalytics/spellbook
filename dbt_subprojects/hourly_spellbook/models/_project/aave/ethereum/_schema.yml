@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'ethereum']
     description: "All Aave transactions involving borrow transactions on Ethereum"
@@ -71,7 +70,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'ethereum']
     description: "All Aave transactions involving flashloans transactions on Ethereum"
@@ -103,7 +101,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "All Aave transactions involving supply transactions on Ethereum"
@@ -136,7 +133,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'ethereum']
     description: "All Aave market transactions on Ethereum"
@@ -176,7 +172,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'ethereum']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'ethereum']
     description: "Hourly aggregated lending market interest rates"
@@ -220,7 +214,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dao
-      contributors: soispoke
     config:
       tags:   ['ethereum', 'votes', 'dao', 'cross-chain']
     description: >
@@ -272,7 +265,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dao
-      contributors: soispoke
     config:
       tags: ['ethereum', 'proposals', 'dao', 'cross-chain']
     description: >

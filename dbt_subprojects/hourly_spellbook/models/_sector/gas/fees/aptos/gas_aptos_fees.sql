@@ -13,8 +13,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(\'["aptos"]\',
                                     "sector",
-                                    "gas",
-                                    \'["tomfutago"]\') }}'
+                                    "gas") }}'
   )
 }}
 

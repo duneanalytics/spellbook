@@ -5,7 +5,6 @@ models:
     meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei, mantle, unichain, monad
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -76,7 +75,6 @@ models:
     meta: 
       blockchain: arbitrum
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -116,7 +114,6 @@ models:
     meta: 
       blockchain: avalanche_c
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -156,7 +153,6 @@ models:
     meta: 
       blockchain: base
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -196,7 +192,6 @@ models:
     meta: 
       blockchain: blast
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -236,7 +231,6 @@ models:
     meta: 
       blockchain: bnb
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -276,7 +270,6 @@ models:
     meta: 
       blockchain: celo
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -316,7 +309,6 @@ models:
     meta: 
       blockchain: ethereum
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -356,7 +348,6 @@ models:
     meta: 
       blockchain: gnosis
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -396,7 +387,6 @@ models:
     meta: 
       blockchain: ink
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -436,7 +426,6 @@ models:
     meta: 
       blockchain: linea
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -476,7 +465,6 @@ models:
     meta: 
       blockchain: mantle
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -516,7 +504,6 @@ models:
     meta: 
       blockchain: monad
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -556,7 +543,6 @@ models:
     meta: 
       blockchain: optimism
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -596,7 +582,6 @@ models:
     meta: 
       blockchain: plasma
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -636,7 +621,6 @@ models:
     meta: 
       blockchain: polygon
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -676,7 +660,6 @@ models:
     meta: 
       blockchain: scroll
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -716,7 +699,6 @@ models:
     meta: 
       blockchain: sonic
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -756,7 +738,6 @@ models:
     meta: 
       blockchain: unichain
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -796,7 +777,6 @@ models:
     meta: 
       blockchain: worldchain
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -836,7 +816,6 @@ models:
     meta: 
       blockchain: zksync
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >
@@ -876,7 +855,6 @@ models:
     meta: 
       blockchain: zora
       sector: dex
-      contributors: Henrystats, agaperste, hubbymatic
     config:
       tags: ['dex', 'multihops']
     description: >

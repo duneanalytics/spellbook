@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: worldchain
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'worldchain']
     description: "Price tokens on worldchain EVM chain"

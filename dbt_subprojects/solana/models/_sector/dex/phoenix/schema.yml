@@ -4,7 +4,6 @@ models:
   - name: phoenix_v1_base_trades
     meta:
       blockchain: solana
-      contributors: [ilemi, jarryx]
     config:
       tags: ['solana','dex']
     description: >
@@ -18,7 +17,6 @@ models:
   - name: phoenix_v1_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi, jarryx ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -94,7 +92,6 @@ models:
   - name: phoenix_version_1_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >

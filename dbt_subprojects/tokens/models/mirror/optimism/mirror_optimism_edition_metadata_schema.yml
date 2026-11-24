@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: zora
-      contributors: [msilb7]
     config:
       tags: ['optimism','zora','nft']
     description: >

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       project: rubicon
-      contributors: denver
     config:
       tags: ['base','rubicon','dex']
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c, arbitrum, mantle
       sector: dex
       project: yield_yak
-      contributors: Henrystats, angus_1
     config:
       tags: ['avalanche_c', 'yield_yak','trades', 'dex', 'aggregator', 'Henrystats', 'angus_1', 'cross-chain', 'arbitrum', 'mantle']
     description: >
@@ -90,7 +89,6 @@ models:
       blockchain: avalanche_c, arbitrum, mantle
       sector: dex
       project: yield_yak
-      contributors: Henrystats, angus_1, hosuke
     config:
       tags: [ 'avalanche_c', 'yield_yak','trades', 'dex', 'aggregator', 'Henrystats', 'angus_1', 'cross-chain', 'arbitrum', 'mantle' ]
     description: >

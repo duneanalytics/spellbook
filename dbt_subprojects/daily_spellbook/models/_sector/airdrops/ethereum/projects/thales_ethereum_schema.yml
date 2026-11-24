@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: thales
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'thales']
     description: "List of claim transactions for the $THALES airdrop"

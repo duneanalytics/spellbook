@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave, compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'arbitrum']
     description: "All lending supply transactions on Arbitrum"
@@ -93,7 +92,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'arbitrum']
     description: "Aave v3 supply transactions on Arbitrum"
@@ -131,7 +129,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'compound', 'arbitrum']
     description: "Compound v3 supply transactions on Arbitrum"
@@ -171,7 +168,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: radiant
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'radiant', 'arbitrum']
     description: "Radiant supply transactions on Arbitrum"
@@ -209,7 +205,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: lodestar
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'lodestar', 'arbitrum']
     description: "Lodestar v0 supply transactions on Arbitrum"
@@ -249,7 +244,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: lodestar
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'lodestar', 'arbitrum']
     description: "Lodestar v1 supply transactions on Arbitrum"
@@ -289,7 +283,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'granary', 'arbitrum']
     description: "Granary supply transactions on Arbitrum"
@@ -327,7 +320,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "arbitrum"]
     description: "Morpho supply transactions on Arbitrum"

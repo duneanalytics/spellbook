@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: tezos_evm
       sector: gas
-      contributors: tomfutago
     config:
       tags: ['tezos_evm', 'gas', 'fees']
     description: >

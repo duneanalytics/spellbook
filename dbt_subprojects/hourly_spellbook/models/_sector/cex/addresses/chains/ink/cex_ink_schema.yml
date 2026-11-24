@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ink
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'ink']
     description: "All CEX-tied addresses identified on Ink"

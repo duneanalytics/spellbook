@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon
       sector: depin
-      contributors: 0xnirmal
     config:
       tags: ['depin', 'revenue']
     data_tests:

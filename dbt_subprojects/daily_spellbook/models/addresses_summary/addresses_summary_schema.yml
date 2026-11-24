@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       sector: addresses_summary
-      contributors: Henrystats
     config:
       tags: ['table', 'wallet summary', 'mainnet', 'addresses_summary', 'optimism']
     description: "Table showing summary of an address on OP Mainnet"

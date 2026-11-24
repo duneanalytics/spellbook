@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['gnosis', 'token', 'mapping']
     description: >
@@ -35,7 +34,6 @@ models:
     meta:
       blockchain: gnosis
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['gnosis', 'token', 'prices']
     description: >

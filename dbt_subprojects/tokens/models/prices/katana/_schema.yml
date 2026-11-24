@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: katana
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens on Katana EVM chain"

@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'optimism','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on optimism - formatted for dex.trades

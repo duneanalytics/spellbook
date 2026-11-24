@@ -24,7 +24,6 @@ models:
       blockchain: tempo
       sector: dex
       project: tempo_exchange
-      contributors: [ 'cursor' ]
     config:
       tags: [ 'tempo', 'dex', 'trades', 'tempo_exchange' ]
     description: "Tempo Exchange tempo base trades"
@@ -40,7 +39,6 @@ models:
       blockchain: tempo
       sector: dex
       project: uniswap
-      contributors: ['0xRob']
     config:
       tags: [ 'tempo', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap tempo v2 base trades"
@@ -56,7 +54,6 @@ models:
       blockchain: tempo
       sector: dex
       project: uniswap
-      contributors: ['0xRob']
     config:
       tags: [ 'tempo', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap tempo v3 base trades"
@@ -72,7 +69,6 @@ models:
       blockchain: tempo
       sector: dex
       project: uniswap
-      contributors: ['0xRob']
     config:
       tags: [ 'tempo', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap tempo v4 base trades"

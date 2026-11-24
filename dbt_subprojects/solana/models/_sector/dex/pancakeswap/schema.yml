@@ -4,7 +4,6 @@ models:
   - name: pancakeswap_v3_solana_stg_swaps
     meta:
       blockchain: solana
-      contributors: [chef_butterbeer]
     config:
       tags: ['solana', 'dex']
     description: >
@@ -17,7 +16,6 @@ models:
   - name: pancakeswap_v3_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [chef_butterbeer]
     config:
       tags: ["solana", "dex"]
     description: >
@@ -38,7 +36,6 @@ models:
   - name: pancakeswap_v3_solana_trades
     meta:
       blockchain: solana
-      contributors: [chef_butterbeer]
     config:
       tags: ["solana", "dex"]
     description: >
@@ -132,7 +129,6 @@ models:
   - name: pancakeswap_version_v3_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >

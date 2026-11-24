@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: synthetix
-      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'synthetix', 'kwenta', 'perpetuals', 'perps']
     description: >
@@ -100,7 +99,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: synthetix
-      contributors: rplust
     config:
       tags: ['optimism', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps']
     description: >
@@ -147,7 +145,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: synthetix
-      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps']
     description: >

@@ -7,7 +7,6 @@ models:
       blockchain: gnosis
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly, hosuke
     config:
       tags: ["gnosis", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.5 user operations on gnosis"
@@ -54,7 +53,6 @@ models:
       blockchain: gnosis
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly, hosuke
     config:
       tags: ["gnosis", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.6 user operations on gnosis"
@@ -77,7 +75,6 @@ models:
       blockchain: gnosis
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly, hosuke
     config:
       tags: ["gnosis", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 user operation on gnosis"
@@ -148,7 +145,6 @@ models:
       blockchain: gnosis
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly
     config:
       tags: ["gnosis", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.5 account deployed on gnosis"
@@ -172,7 +168,6 @@ models:
       blockchain: gnosis
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly
     config:
       tags: ["gnosis", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 v0.6 account deployed on gnosis"
@@ -193,7 +188,6 @@ models:
       blockchain: gnosis
       sector: erc4337
       project: erc4337
-      contributors: 0xbitfly
     config:
       tags: ["gnosis", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 account deployed on gnosis"

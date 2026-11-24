@@ -15,7 +15,6 @@ models:
       blockchain: ethereum, solana
       sector: labels
       category: cex, nft
-      contributors: hildobby, soispoke
     config:
       tags: ['labels', 'ethereum', 'solana', 'cex', 'nft']
     description: "All labels across chains and categories"

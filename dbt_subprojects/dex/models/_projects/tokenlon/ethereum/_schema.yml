@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: tokenlon
-      contributors: izayl
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl', 'metadata']
     description: >
@@ -77,7 +76,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: tokenlon
-      contributors: izayl
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
@@ -146,7 +144,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: tokenlon
-      contributors: izayl
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
@@ -215,7 +212,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: tokenlon
-      contributors: izayl
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
@@ -284,7 +280,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: tokenlon
-      contributors: keen
     config:
       tags: [ 'ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'keen' ]
     description: >
@@ -353,7 +348,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: tokenlon
-      contributors: izayl
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >

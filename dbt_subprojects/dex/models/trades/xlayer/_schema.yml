@@ -24,7 +24,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: uniswap
-      contributors: tomfutago
     config:
       tags: ["xlayer", "dex", "trades", "uniswap", "v2"]
     description: "uniswap xlayer v2 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: uniswap
-      contributors: tomfutago
     config:
       tags: ["xlayer", "dex", "trades", "uniswap", "v3"]
     description: "uniswap xlayer v3 base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: potatoswap
-      contributors: tomfutago
     config:
       tags: ["xlayer", "dex", "trades", "potatoswap", "v2"]
     description: "potatoswap xlayer v2 base trades"
@@ -87,7 +84,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: potatoswap
-      contributors: tomfutago
     config:
       tags: ["xlayer", "dex", "trades", "potatoswap", "v3"]
     description: "potatoswap xlayer v3 base trades"
@@ -108,7 +104,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: dyorswap
-      contributors: tomfutago
     config:
       tags: ["xlayer", "dex", "trades", "dyorswap", "v3"]
     description: "dyorswap xlayer v3 base trades"
@@ -129,7 +124,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: dyorswap
-      contributors: tomfutago
     config:
       tags: ["xlayer", "dex", "trades", "dyorswap", "v2"]
     description: "dyorswap xlayer v2 base trades"
@@ -145,7 +139,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ["xlayer", "dex", "trades", "uniswap", "v4"]
     description: "uniswap xlayer v4 base trades"

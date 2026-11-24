@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       project: ajna
-      contributors: [gunboats]
     config:
       tags: ["base", "ajna"]
     description: List of ERC20 pools deployed on Ajna

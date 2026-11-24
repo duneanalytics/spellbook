@@ -15,7 +15,6 @@ models:
       blockchain: optimism
       sector: labels
       category: op_retropgf
-      contributors:  msilb7
     config:
       tags: ['query', 'labels', 'optimism', 'retropgf']
     description: "Addresses related to OP Retroactive Public Goods Funding (RetroPGF)"

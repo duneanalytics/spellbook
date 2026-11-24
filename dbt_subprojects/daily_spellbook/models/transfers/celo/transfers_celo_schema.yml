@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: transfers
       project: celo
-      contributors: msilb7, chuxin, tomfutago
     config:
       tags: ["transfers", "celo"]
     description: "Events of native CELO transfers on Celo."
@@ -64,7 +63,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc20']
     description: "ERC20 Token Transfers on Celo. This table is updated every 30 minutes."
@@ -106,7 +104,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
     data_tests:
@@ -137,7 +134,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tomfutago
     description: "ERC20 Token Transfers on Celo per hour."
     config:
       tags: ['transfers', 'celo', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
@@ -171,7 +167,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
     data_tests:
@@ -198,7 +193,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tomfutago
     description: "ERC20 Token Transfers on Celo per day."
     config:
       tags: ['transfers', 'celo', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']

@@ -8,8 +8,7 @@
     , unique_key = ['tx_hash', 'block_date', 'nftIndex'],
     post_hook='{{ expose_spells(\'["ton"]\',
                     "project",
-                    "tonco",
-                    \'["markfromton"]\') }}'
+                    "tonco") }}'
     )
 }}
 

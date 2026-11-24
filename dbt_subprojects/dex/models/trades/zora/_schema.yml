@@ -24,7 +24,6 @@ models:
       blockchain: zora
       sector: dex
       project: uniswap
-      contributors: ilemi
     config:
       tags: [ 'zora', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap zora v2 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: zora
       sector: dex
       project: uniswap
-      contributors: ilemi
     config:
       tags: [ 'zora', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap zora v3 base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: zora
       sector: dex
       project: uniswap
-      contributors: agaperste
     config:
       tags: [ 'zora', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap zora v4 base trades"

@@ -15,7 +15,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: ens
-      contributors: spanish-or-vanish, hosuke
     config:
       tags:
         ["query", "labels", "ethereum", "ens", "ENS resolver", "ENS reverse"]

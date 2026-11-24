@@ -4,7 +4,6 @@ models:
   - name: evms_transaction_metrics
     meta:
       sector: metrics
-      contributors: 0xRob
     config:
       tags: ['metrics', 'evms']
     description: "fundamental blockchain transaction metrics"
@@ -19,7 +18,6 @@ models:
     meta:
       blockchain: evms
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'evms','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

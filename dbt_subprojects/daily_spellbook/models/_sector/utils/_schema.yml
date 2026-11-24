@@ -3,7 +3,6 @@ version: 2
 models:
   - name: utils_days
     meta:
-      contributors: 0xRob
       docs_slug: /curated/utilities/days
     config:
       tags: [ 'utils', 'days' ]
@@ -12,7 +11,6 @@ models:
   
   - name: utils_hours
     meta:
-      contributors: 0xRob
       docs_slug: /curated/utilities/hours
     config:
       tags: [ 'utils', 'hours' ]
@@ -21,7 +19,6 @@ models:
 
   - name: utils_minutes
     meta:
-      contributors: 0xRob
       docs_slug: /curated/utilities/minutes
     config:
       tags: [ 'utils', 'minutes' ]
@@ -30,7 +27,6 @@ models:
 
   - name: utils_weeks
     meta:
-      contributors: 0xRob, hildobby
       docs_slug: /curated/utilities/weeks
     config:
       tags: [ 'utils', 'weeks' ]
@@ -39,7 +35,6 @@ models:
       
   - name: utils_months
     meta:
-      contributors: 0xRob, hildobby
       docs_slug: /curated/utilities/months
     config:
       tags: [ 'utils', 'months' ]
@@ -48,7 +43,6 @@ models:
       
   - name: utils_years
     meta:
-      contributors: 0xRob, hildobby
       docs_slug: /curated/utilities/years
     config:
       tags: [ 'utils', 'years' ]
@@ -57,7 +51,6 @@ models:
       
   - name: utils_quarters
     meta:
-      contributors: 0xRob, hildobby
       docs_slug: /curated/utilities/quarters
     config:
       tags: [ 'utils', 'quarters' ]

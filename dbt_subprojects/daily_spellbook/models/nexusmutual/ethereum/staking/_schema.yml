@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools list"
@@ -33,7 +32,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools base data (base model)"
@@ -123,7 +121,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools base data (materialised)"
@@ -161,7 +158,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools event history"
@@ -222,7 +218,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools deposit ordered (base model)"
@@ -259,7 +254,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools deposit extensions (base model)"
@@ -298,7 +292,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking active stake daily (base model)"
@@ -321,7 +314,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking deposit updates daily (base model)"
@@ -346,7 +338,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking rewards minted at cover buy event - to be streamed over cover period"
@@ -374,7 +365,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staked NXM per pool (base model)"
@@ -396,7 +386,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staked NXM per pool - final view"
@@ -417,7 +406,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staked NXM per token (base model)"
@@ -442,7 +430,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staked NXM per token - final view"
@@ -466,7 +453,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staked NXM per token & tranche (base model)"
@@ -491,7 +477,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staked NXM per token & tranche - final view"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'gnosis','erc20','dao', 'dao creator tools', 'Henrystats' ]
     description: >
@@ -86,7 +85,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'gnosis','eth','dao', 'dao creator tools', 'Henrystats' ]
     description: >

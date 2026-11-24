@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: ethereum
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['ethereum', 'layerzero', 'send']
    description: "LayerZero message send call on ethereum"

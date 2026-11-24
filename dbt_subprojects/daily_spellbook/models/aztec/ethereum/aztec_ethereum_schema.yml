@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec', 'bridge']
     description: "View aztec rollup bridge transactions on ethereum"
@@ -88,7 +87,6 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec']
     description: "View aztec daily deposits grouped by token"
@@ -126,7 +124,6 @@ models:
     meta:
       blockchain: ethereum
       project: aztec_v2
-      contributors: jackie, Henrystats
     config:
       tags: ['ethereum','aztec']
     description: "Labels and addresses of bridges in the aztec ecosystem"

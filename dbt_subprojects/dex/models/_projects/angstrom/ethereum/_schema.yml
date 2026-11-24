@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: jnoorchashm37
     config:
       tags: ['ethereum', 'angstrom', 'trades']
     description: >
@@ -43,7 +42,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: jnoorchashm37
     config:
       tags: ['ethereum', 'angstrom', 'trades']
     description: >
@@ -85,7 +83,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: jnoorchashm37
     config:
       tags: ['ethereum', 'ansgtrom', 'trades']
     description: >
@@ -101,7 +98,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: jnoorchashm37, Henrystats
     config:
       tags: ['ethereum', 'ansgtrom', 'trades']
     description: >

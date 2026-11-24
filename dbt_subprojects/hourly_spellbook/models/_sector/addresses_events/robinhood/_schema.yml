@@ -6,7 +6,6 @@ models:
       blockchain: robinhood
       sector: addresses_events
       project: addresses
-      contributors: karimhass
     config:
       tags: ['table', 'funded', 'addresses_events', 'robinhood']
     description: "Table showing who first funded each Robinhood address with native ETH"

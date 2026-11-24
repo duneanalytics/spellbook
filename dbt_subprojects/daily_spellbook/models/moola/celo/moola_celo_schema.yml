@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: lending
       project: moola
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'moola', 'aave_v2', 'celo']
     description: "All Moola supply transactions on Celo"
@@ -65,7 +64,6 @@ models:
       blockchain: celo
       sector: lending
       project: moola
-      contributors: tomfutago
     config:
       tags: ['celo', 'moola', 'interest', 'lending', 'aave_v2']
     description: "Hourly Moola interest rates on Celo"
@@ -92,7 +90,6 @@ models:
       blockchain: celo
       sector: lending
       project: moola
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'moola', 'aave_v2', 'celo']
     description: "All Moola borrow transactions on Celo"
@@ -121,7 +118,6 @@ models:
       blockchain: celo
       sector: lending
       project: moola
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'moola', 'aave_v2', 'celo']
     description: "All Moola flashloans transactions on Celo"

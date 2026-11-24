@@ -6,7 +6,6 @@ models:
       blockchain: sei
       sector: dex
       project: toroperp
-      contributors: toroperp
     config:
       tags: ['toroperp', 'orderly', 'deposits', 'cross-chain']
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: flashloans
-      contributors: niftytable
     config:
       tags: ['labels', 'ethereum', 'flashloans']
     description: "Known flashloan users on Ethereum"

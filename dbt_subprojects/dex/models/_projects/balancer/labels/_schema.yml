@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v1
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created on Ethereum. "
@@ -52,7 +51,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v1
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created across blockchains."
@@ -73,7 +71,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Ethereum. '
@@ -103,7 +100,6 @@ models:
       blockchain: polygon
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'polygon', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Polygon.'
@@ -129,7 +125,6 @@ models:
       blockchain: gnosis
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'gnosis', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Gnosis.'
@@ -155,7 +150,6 @@ models:
       blockchain: avalanche_c
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'avalanche_c', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Avalanche Chain.'
@@ -181,7 +175,6 @@ models:
       blockchain: base
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'base', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Base Chain.'
@@ -207,7 +200,6 @@ models:
       blockchain: arbitrum
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'arbitrum', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Arbitrum.'
@@ -233,7 +225,6 @@ models:
       blockchain: optimism
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'optimism', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Optimism.'
@@ -259,7 +250,6 @@ models:
       blockchain: zkevm
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'zkevm', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Polygon zkevm.'
@@ -286,7 +276,6 @@ models:
       blockchain: ethereum, polygon, arbitrum, optimism, gnosis, base, avalanche_c, zkevm
       sector: labels
       project: balancer_v2
-      contributors: balancerlabs, viniabussafi
     config:
       tags:
         [
@@ -320,7 +309,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v3
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created on Ethereum.'
@@ -346,7 +334,6 @@ models:
       blockchain: gnosis
       sector: labels
       project: balancer_v3
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'gnosis', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created on Gnosis.'
@@ -372,7 +359,6 @@ models:
       blockchain: arbitrum
       sector: labels
       project: balancer_v3
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'arbitrum', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created on Arbitrum.'
@@ -398,7 +384,6 @@ models:
       blockchain: base
       sector: labels
       project: balancer_v3
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'base', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created on Base.'
@@ -424,7 +409,6 @@ models:
       blockchain: plasma
       sector: labels
       project: balancer_v3
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'plasma', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created on Plasma.'
@@ -450,7 +434,6 @@ models:
       blockchain: hyperevm
       sector: labels
       project: balancer_v3
-      contributors: balancerlabs, gustavobftorres
     config:
       tags: ['labels', 'hyperevm', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created on Hyperevm.'
@@ -476,7 +459,6 @@ models:
       blockchain: monad
       sector: labels
       project: balancer_v3
-      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'monad', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created on Monad.'
@@ -502,7 +484,6 @@ models:
       blockchain: arbitrum, base, ethereum, gnosis, plasma
       sector: labels
       project: balancer_v3
-      contributors: balancerlabs, gustavobftorres
     config:
       tags: ['labels', 'arbitrum', 'base', 'ethereum', 'gnosis', 'plasma', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created across blockchains.'

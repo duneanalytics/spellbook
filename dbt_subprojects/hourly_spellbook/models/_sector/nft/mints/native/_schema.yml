@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: umer_h_adil, hildobby
     config:
       tags: [ 'nft','ethereum' ]
     description: >
@@ -52,7 +51,6 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: chuxin
     config:
       tags: [ 'nft','optimism' ]
     description: >
@@ -76,7 +74,6 @@ models:
     meta:
       blockchain: base
       sector: nft
-      contributors: chuxin
     config:
       tags: [ 'nft','base' ]
     description: >
@@ -100,7 +97,6 @@ models:
     meta:
       blockchain: zora
       sector: nft
-      contributors: chuxin
     config:
       tags: [ 'nft','zora' ]
     description: >
@@ -124,7 +120,6 @@ models:
     meta:
       blockchain: zksync
       sector: nft
-      contributors: lgingerich
     config:
       tags: [ 'nft','zksync' ]
     description: >

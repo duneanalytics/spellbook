@@ -6,7 +6,6 @@ models:
       blockchain: bnb, ethereum, arbitrum, polygon, base
       sector: dex
       project: bitget_dex_aggregator
-      contributors: kunwh
     config:
       tags: ['bitget_dex_aggregator', 'Bitget Wallet Aggregator', 'trades', 'dex', 'aggregator']
     description: >

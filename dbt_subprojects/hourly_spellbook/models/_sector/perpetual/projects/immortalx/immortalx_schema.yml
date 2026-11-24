@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: celo
       sector: perpetual
-      contributors: tomfutago
     config:
       tags: ['celo', 'perpetuals', 'perps', 'immortalx']
     description: >

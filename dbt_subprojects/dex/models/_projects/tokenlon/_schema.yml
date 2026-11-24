@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: tokenlon
-      contributors: izayl
     config:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl', 'metadata']
     description: >

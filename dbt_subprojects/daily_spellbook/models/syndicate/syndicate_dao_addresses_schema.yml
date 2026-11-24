@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, polygon
       project: syndicate
-      contributors: Henrystats 
     config:
       tags: ['ethereum', 'polygon', 'dao', 'syndicate', 'dao creator tools', 'Henrystats']
     description: >

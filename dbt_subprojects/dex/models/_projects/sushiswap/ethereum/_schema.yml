@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'ethereum','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on ethereum - formatted for dex.trades

@@ -10,7 +10,6 @@ models:
     meta:
       blockchain: plasma
       project: cow_protocol
-      contributors: harisang
     config:
       tags: ["plasma", "cow_protocol", "solver"]
     description: >
@@ -19,7 +18,6 @@ models:
     meta:
       blockchain: plasma
       project: cow_protocol
-      contributors: harisang
     config:
       tags: ["plasma", "cow_protocol", "trades", "dex", "aggregator", "auction"]
     description: >
@@ -33,7 +31,6 @@ models:
     meta:
       blockchain: plasma
       project: cow_protocol
-      contributors: cowprotocol
     config:
       tags: [ "plasma", "cow_protocol", "eth-flow", "orders"]
     description: >

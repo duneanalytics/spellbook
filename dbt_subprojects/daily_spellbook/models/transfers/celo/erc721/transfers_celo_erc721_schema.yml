@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc721
-      contributors: soispoke, dot2dotseurat, tschubotz, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc721']
     description: "ERC721 Token Transfers on Celo. This table is updated every 30 minutes."
@@ -59,7 +58,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc721
-      contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc721', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "A helper table to construct erc721 balances"
@@ -87,7 +85,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc721
-      contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc721', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "A helper table to construct erc721 balances"

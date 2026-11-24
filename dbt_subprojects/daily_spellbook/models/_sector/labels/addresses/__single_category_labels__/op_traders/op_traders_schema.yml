@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_traders
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'nft trades', 'perpetual trades', 'DEX trades', 'derived archetype']
     description: '{{ doc("op_address_archetype_labels_description") }}'

@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'optimism']
     description: "All Aave borrow transactions on Optimism"
@@ -93,7 +92,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'optimism']
     description: "Aave v3 borrow transactions on Optimism"
@@ -131,7 +129,6 @@ models:
       blockchain: optimism
       sector: lending
       project: sonne_finance
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'sonne_finance', 'compound', 'optimism']
     description: "Sonne Finance borrow transactions on Optimism"
@@ -169,7 +166,6 @@ models:
       blockchain: optimism
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'granary', 'aave', 'optimism']
     description: "Granary borrow transactions on Optimism"
@@ -207,7 +203,6 @@ models:
       blockchain: optimism
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'morpho', 'optimism']
     description: "Morpho borrow transactions on Optimism"

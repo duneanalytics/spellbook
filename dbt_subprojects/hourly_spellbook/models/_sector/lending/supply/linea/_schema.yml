@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: linea
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'linea']
     description: "All lending supply transactions on Linea"
@@ -92,7 +91,6 @@ models:
       blockchain: linea
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'linea']
     description: "Aave v3 supply transactions on Linea"

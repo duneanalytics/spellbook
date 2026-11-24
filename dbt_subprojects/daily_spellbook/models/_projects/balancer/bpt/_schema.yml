@@ -4,7 +4,6 @@ models:
   - name: balancer_transfers_bpt
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevmn
-      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
     description: >
@@ -58,7 +57,6 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       sector: dex
-      contributors: thetroyharris, victorstefenon, viniabussafi
     config:
       tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base', 'zkevm']
     description: >
@@ -88,7 +86,6 @@ models:
   - name: balancer_bpt_supply
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      contributors: thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm',  'bpt']
     description: >
@@ -117,7 +114,6 @@ models:
   - name: balancer_bpt_supply_changes
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
     description: >
@@ -157,7 +153,6 @@ models:
   - name: balancer_bpt_supply_changes_daily
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
     description: >

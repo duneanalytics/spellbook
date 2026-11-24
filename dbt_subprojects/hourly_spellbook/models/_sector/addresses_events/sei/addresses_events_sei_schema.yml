@@ -6,7 +6,6 @@ models:
       blockchain: sei
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'sei']
     description: "Table showing who first funded each Sei address in SEI"
@@ -56,7 +55,6 @@ models:
       blockchain: sei
       sector: addresses_events
       project: addresses
-      contributors: Henrystats, lgingerich, hildobby
     config:
       tags: ['table', 'activity', 'addresses_events', 'sei']
     description: "Table showing first activity of each Sei Mainnet address"
@@ -97,7 +95,6 @@ models:
       blockchain: sei
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'sei']
     description: "Table showing which token was first received for each sei address"

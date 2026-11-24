@@ -6,7 +6,6 @@ models:
       blockchain: zksync
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'zksync','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on zksync - formatted for dex.trades

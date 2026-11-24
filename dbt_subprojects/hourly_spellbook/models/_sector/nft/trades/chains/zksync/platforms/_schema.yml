@@ -6,7 +6,6 @@ models:
       blockchain: zksync
       sector: nft
       project: tevaera
-      contributors: tomfutago
     config:
       tags: [ 'zksync', 'nft', 'trades', 'tevaera' ]
     description: "Tevaera base trades on zkSync"
@@ -40,7 +39,6 @@ models:
       blockchain: zksync
       sector: nft
       project: zonic
-      contributors: tomfutago
     config:
       tags: [ 'zksync', 'nft', 'trades', 'zonic' ]
     description: "Zonic base trades on zkSync"
@@ -73,7 +71,6 @@ models:
     meta:
       blockchain: zksync
       project: kreatorland
-      contributors: thetroyharris
     config:
       tags: [ 'zksync','kreatorland','base_trades' ]
     description: >
@@ -89,7 +86,6 @@ models:
       blockchain: zksync
       sector: nft
       project: zk_markets
-      contributors: tomfutago
     config:
       tags: [ 'zksync', 'nft', 'trades', 'zk_markets' ]
     description: "zkMarkets base trades on zkSync"
@@ -118,7 +114,6 @@ models:
     meta:
       blockchain: zksync
       project: element
-      contributors: ['0xRob', 'thetroyharris']
     config:
       tags: [ 'zksync','element','base_trades' ]
     description: >
@@ -134,7 +129,6 @@ models:
       blockchain: zksync
       sector: nft
       project: mint_square
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'nft', 'trades', 'mint_square' ]
     description: "Mint Square base trades on zkSync"

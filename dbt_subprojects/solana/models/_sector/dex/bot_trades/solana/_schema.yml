@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: solana
       sector: dex
-      contributors: ["whale_hunter", "hosuke"]
     config:
       tags: ["solana", "dex", "bot", "trades"]
       description: >
@@ -98,7 +97,6 @@ models:
       blockchain: solana
       sector: dex
       project: trojan
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "bot", "trojan", "trades"]
     description: >
@@ -122,7 +120,6 @@ models:
       blockchain: solana
       sector: dex
       project: banana_gun
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "banana_gun", "trades"]
     description: >
@@ -146,7 +143,6 @@ models:
       blockchain: solana
       sector: dex
       project: sol_trading_bot
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "soltradingbot", "trades"]
     description: >
@@ -170,7 +166,6 @@ models:
       blockchain: solana
       sector: dex
       project: pepe_boost
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "pepeboost", "trades"]
     description: >
@@ -194,7 +189,6 @@ models:
       blockchain: solana
       sector: dex
       project: maestro
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "maestro", "trades"]
     description: >
@@ -218,7 +212,6 @@ models:
       blockchain: solana
       sector: dex
       project: shuriken
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "shuriken", "trades"]
     description: >
@@ -242,7 +235,6 @@ models:
       blockchain: solana
       sector: dex
       project: magnum
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "magnum", "trades"]
     description: >
@@ -266,7 +258,6 @@ models:
       blockchain: solana
       sector: dex
       project: readyswap
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "readyswap", "trades"]
     description: >
@@ -290,7 +281,6 @@ models:
       blockchain: solana
       sector: dex
       project: sol_gun
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "solgun", "trades"]
     description: >
@@ -314,7 +304,6 @@ models:
       blockchain: solana
       sector: dex
       project: looter
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "looter", "trades"]
     description: >
@@ -338,7 +327,6 @@ models:
       blockchain: solana
       sector: dex
       project: consortium_key
-      contributors: clizzard
     config:
       tags: ["solana", "dex", "consortium_key", "trades"]
     description: >
@@ -362,7 +350,6 @@ models:
       blockchain: solana
       sector: dex
       project: wifbot
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "wifbot", "trades"]
     description: >
@@ -386,7 +373,6 @@ models:
       blockchain: solana
       sector: dex
       project: soul_sniper
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "soul_sniper", "trades"]
     description: >
@@ -410,7 +396,6 @@ models:
       blockchain: solana
       sector: dex
       project: consortium_key
-      contributors: whale_hunter
     description: >
       consortium_key users on Solana
     config:
@@ -430,7 +415,6 @@ models:
       blockchain: solana
       sector: dex
       project: soul_sniper
-      contributors: whale_hunter
     description: >
       soul_sniper users on Solana
     config:
@@ -445,7 +429,6 @@ models:
       blockchain: solana
       sector: dex
       project: tirador
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "tirador", "trades"]
     description: >
@@ -469,7 +452,6 @@ models:
       blockchain: solana
       sector: dex
       project: unibot
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "unibot", "trades"]
     description: >
@@ -493,7 +475,6 @@ models:
       blockchain: solana
       sector: dex
       project: mev_x
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "mev_x", "trades"]
     description: >
@@ -517,7 +498,6 @@ models:
       blockchain: solana
       sector: dex
       project: alpha_dex
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "alpha_dex", "trades"]
     description: >
@@ -541,7 +521,6 @@ models:
       blockchain: solana
       sector: dex
       project: alpha_dex
-      contributors: whale_hunter
     description: >
       alpha_dex users on Solana
     config:
@@ -556,7 +535,6 @@ models:
       blockchain: solana
       sector: dex
       project: jupbot
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "jupbot", "trades"]
     description: >
@@ -580,7 +558,6 @@ models:
       blockchain: solana
       sector: dex
       project: pinkpunk
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "pinkpunk", "trades"]
     description: >
@@ -604,7 +581,6 @@ models:
       blockchain: solana
       sector: dex
       project: falcon
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "falcon", "trades"]
     description: >
@@ -628,7 +604,6 @@ models:
       blockchain: solana
       sector: dex
       project: bloom
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "bloom", "trades"]
     description: >
@@ -652,7 +627,6 @@ models:
       blockchain: solana
       sector: dex
       project: autosnipe
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "autosnipe", "trades"]
     description: >
@@ -676,7 +650,6 @@ models:
       blockchain: solana
       sector: dex
       project: bitfoot
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "bitfoot", "trades"]
     description: >
@@ -700,7 +673,6 @@ models:
       blockchain: solana
       sector: dex
       project: tradewiz
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "tradewiz", "trades"]
     description: >
@@ -724,7 +696,6 @@ models:
       blockchain: solana
       sector: dex
       project: ChainSwap
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "cswap", "trades"]
     description: >
@@ -748,7 +719,6 @@ models:
       blockchain: solana
       sector: dex
       project: prophetbots
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "prophetbots", "trades"]
     description: >
@@ -772,7 +742,6 @@ models:
       blockchain: solana
       sector: dex
       project: nova
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "nova", "trades"]
     description: >
@@ -796,7 +765,6 @@ models:
       blockchain: solana
       sector: dex
       project: sanji
-      contributors: whale_hunter
     config:
       tags: ["solana", "dex", "sanji", "trades"]
     description: >
@@ -820,7 +788,6 @@ models:
       blockchain: solana
       sector: dex
       project: padre
-      contributors: clizzard
     config:
       tags: ["solana", "dex", "padre", "trades"]
     description: >
@@ -844,7 +811,6 @@ models:
       blockchain: solana
       sector: dex
       project: padre
-      contributors: whale_hunter
     description: >
       padre users on Solana
     config:

@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: nether_fi 
-      contributors: Chain_L
     config:
       tags: ['base','perpetual', 'nether_fi','perps']
     description: >

@@ -8,7 +8,6 @@ models:
 
       blockchain: ethereum, arbitrum, optimism, polygon, avalanche_c
       project: gyroscope
-      contributors: fmarrr, viniabussafi
 
     config:
 
@@ -90,7 +89,6 @@ models:
   - name: gyroscope_gyro_tokens
     meta:
       blockchain: arbitrum, ethereum, optimism
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'ethereum', 'optimism',]
     description: >

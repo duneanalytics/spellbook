@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: mezo
       sector: prices
-      contributors: jeff-dude, tomfutago
     config:
       tags: ['prices', 'tokens', 'usd', 'mezo']
     description: "Price tokens on mezo EVM chain"

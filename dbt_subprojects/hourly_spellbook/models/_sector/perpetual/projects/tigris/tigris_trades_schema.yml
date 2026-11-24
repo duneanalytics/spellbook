@@ -7,7 +7,6 @@ models:
       blockchain: polygon, arbitrum
       sector: perpetual
       project: tigris
-      contributors: Henrystats
     config:
       tags: ['polygon', 'arbitrum', 'tigris', 'perpetuals', 'perps']
     description: >
@@ -90,7 +89,6 @@ models:
     meta:
       blockchain: polygon, arbitrum
       project: tigris
-      contributors: Henrystats
     config:
       tags: ['polygon', 'arbitrum', 'tigris', 'trades', 'perps', 'dex']
     description: >
@@ -149,7 +147,6 @@ models:
     meta:
       blockchain: polygon, arbitrum
       project: tigris
-      contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
@@ -200,7 +197,6 @@ models:
     meta:
       blockchain: polygon, arbitrum
       project: tigris
-      contributors: Henrystats
     config:
       tags: ['polygon', 'arbitrum', 'tigris', 'trades', 'perps', 'dex']
     description: >

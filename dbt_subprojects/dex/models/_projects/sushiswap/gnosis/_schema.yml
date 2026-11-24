@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'gnosis','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on gnosis - formatted for dex.trades

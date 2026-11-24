@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum','trades', 'aggregator', 'yield_yak','dex']
     description: >

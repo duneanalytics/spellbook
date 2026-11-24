@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'base','bebop','jam','trades','dex' ]
     description: Bebop-JAM contract trades on base - formatted for dex.trades
@@ -108,7 +107,6 @@ models:
       blockchain: base
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'base','bebop','pmm','trades','dex', 'blend' ]
     description: Bebop-BLEND contract trades on base - formatted for dex.trades
@@ -160,7 +158,6 @@ models:
       blockchain: base
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'base','bebop','trades','dex' ]
     description: Bebop contract trades on base - formatted for dex.trades

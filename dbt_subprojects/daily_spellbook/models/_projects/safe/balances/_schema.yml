@@ -12,7 +12,6 @@ models:
     meta:
       blockchain: arbitrum
       project: safe
-      contributors: safeintern
     config:
       tags: ['safe', 'arbitrum']
     description: “Safe addresses balances”
@@ -28,7 +27,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: safe
-      contributors: safeintern
     config:
       tags: [ 'safe', 'avalanche_c' ]
     description: “Safe addresses balances”
@@ -44,7 +42,6 @@ models:
     meta:
       blockchain: base
       project: safe
-      contributors: safeintern
     config:
       tags: [ 'safe', 'base' ]
     description: “Safe addresses balances”
@@ -60,7 +57,6 @@ models:
     meta:
       blockchain: ethereum
       project: safe
-      contributors: safeintern
     config:
       tags: [ 'safe', 'ethereum' ]
     description: “Safe addresses balances”
@@ -76,7 +72,6 @@ models:
     meta:
       blockchain: linea
       project: safe
-      contributors: safeintern
     config:
       tags: [ 'safe', 'linea' ]
     description: “Safe addresses balances”
@@ -92,7 +87,6 @@ models:
     meta:
       blockchain: optimism
       project: safe
-      contributors: safeintern
     config:
       tags: [ 'safe', 'optimism' ]
     description: “Safe addresses balances”
@@ -108,7 +102,6 @@ models:
     meta:
       blockchain: polygon
       project: safe
-      contributors: safeintern
     config:
       tags: [ 'safe', 'polygon' ]
     description: “Safe addresses balances”
@@ -124,7 +117,6 @@ models:
     meta:
       blockchain: scroll
       project: safe
-      contributors: safeintern
     config:
       tags: [ 'safe', 'scroll' ]
     description: “Safe addresses balances”

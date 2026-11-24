@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex
       project: paraswap_v4
-      contributors: springzh
     config:
       tags: ['bnb','paraswap_v4','trades', 'paraswap','dex']
     description: >
@@ -103,7 +102,6 @@ models:
       blockchain: bnb
       sector: dex
       project: paraswap_v5
-      contributors: springzh
     config:
       tags: ['bnb','paraswap_v5','trades', 'paraswap','dex']
     description: >
@@ -154,7 +152,6 @@ models:
       blockchain: bnb
       sector: dex
       project: paraswap_v6
-      contributors: eptighte, mwamedacen
     config:
       tags: ['bnb','paraswap_v6','trades', 'paraswap','dex']
     description: >
@@ -209,7 +206,6 @@ models:
       blockchain: bnb
       sector: dex
       project: paraswap
-      contributors: springzh
     config:
       tags: ['bnb','dex','trades', 'paraswap']
     description: >

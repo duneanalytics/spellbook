@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       project: daohaus
-      contributors: Henrystats 
     config:
       tags: [ 'gnosis', 'dao', 'daohaus', 'dao creator tools', 'Henrystats' ]
     description: >

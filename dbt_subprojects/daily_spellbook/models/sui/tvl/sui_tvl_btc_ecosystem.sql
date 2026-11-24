@@ -10,8 +10,7 @@
     tags=['sui','tvl','btc','ecosystem'],
     post_hook='{{ expose_spells(\'["sui"]\',
                                 "sector",
-                                "btc_ecosystem",
-                                \'["krishhh"]\') }}'
+                                "btc_ecosystem") }}'
 ) }}
 
 -- BTC Ecosystem: One row per economic object (pool/market/registry)

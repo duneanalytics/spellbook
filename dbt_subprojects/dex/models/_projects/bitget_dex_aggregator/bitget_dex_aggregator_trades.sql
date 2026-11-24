@@ -6,8 +6,7 @@
     post_hook='{{ expose_spells(
         blockchains = \'["bnb", "ethereum", "arbitrum", "polygon", "base"]\',
         spell_type = "project",
-        spell_name = "bitget_dex_aggregator",
-        contributors = \'["kunwh"]\'
+        spell_name = "bitget_dex_aggregator"
     ) }}'
 ) }}
 

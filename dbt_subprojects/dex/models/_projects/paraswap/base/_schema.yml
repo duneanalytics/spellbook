@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: dex
       project: paraswap_v5
-      contributors: Henrystats
     config:
       tags: ['base','paraswap_v5','trades', 'paraswap','dex']
     description: >
@@ -103,7 +102,6 @@ models:
       blockchain: base
       sector: dex
       project: paraswap
-      contributors: Henrystats
     config:
       tags: ['base','dex','trades', 'paraswap']
     description: >
@@ -138,7 +136,6 @@ models:
       blockchain: base
       sector: dex
       project: paraswap_v6
-      contributors: eptighte
     config:
       tags: ["eptighte", "paraswap_v6", "trades", "paraswap", "dex"]
     description: >

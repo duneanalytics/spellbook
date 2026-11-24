@@ -24,7 +24,6 @@ models:
       blockchain: katana
       sector: dex
       project: sushiswap
-      contributors: captncrunch
     config:
       tags: [ 'katana', 'dex', 'trades', 'kaia_swap' ]
     description: "Sushiswap V2 Katana base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: katana
       sector: dex
       project: sushiswap
-      contributors: captncrunch
     config:
       tags: [ 'katana', 'dex', 'trades', 'defi_kingdoms' ]
     description: "Sushiswap V3 Katana base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: katana
       sector: dex
       project: blade
-      contributors: 0xTemo
     config:
       tags: [ 'katana', 'dex', 'trades', 'blade' ]
     description: "Blade katana base trades"

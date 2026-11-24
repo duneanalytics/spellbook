@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: optimism
       project: ovm_optimism
-      contributors: msilb7
 
     config:
       tags: ['cross-chain', 'optimism', 'tokens']

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'metadata']
     description: > 
@@ -24,7 +23,6 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'owners']
     description: > 
@@ -43,7 +41,6 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'transfers']
     description: > 
@@ -78,7 +75,6 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'owners']
     description: > 
@@ -95,7 +91,6 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'bids']
     description: > 
@@ -133,7 +128,6 @@ models:
     meta:
       blockchain: ethereum
       project: cryptopunks
-      contributors: [cat]
     config:
       tags: ['ethereum', 'cryptopunks', 'offers']
     description: > 

@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: lending
       project: aave, compound, pike
-      contributors: tomfutago, maybeYonas, pyor_xyz, brunota20
     config:
       tags: ["lending", "supply", "aave", "compound", "pike", "base"]
     description: "All lending supply transactions on Base"
@@ -93,7 +92,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ["lending", "supply", "aave", "base"]
     description: "Aave v3 supply transactions on Base"
@@ -131,7 +129,6 @@ models:
       blockchain: base
       sector: lending
       project: compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ["lending", "supply", "compound", "base"]
     description: "Compound v3 supply transactions on Base"
@@ -171,7 +168,6 @@ models:
       blockchain: base
       sector: lending
       project: seamlessprotocol
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "aave", "seamlessprotocol", "base"]
     description: "Seamless Protocol supply transactions on Base"
@@ -209,7 +205,6 @@ models:
       blockchain: base
       sector: lending
       project: moonwell
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "compound", "moonwell", "base"]
     description: "Moonwell supply transactions on Base"
@@ -247,7 +242,6 @@ models:
       blockchain: base
       sector: lending
       project: sonne_finance
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "compound", "sonne_finance", "base"]
     description: "Sonne Finance supply transactions on Base"
@@ -285,7 +279,6 @@ models:
       blockchain: base
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "aave", "granary", "base"]
     description: "Granary supply transactions on Base"
@@ -323,7 +316,6 @@ models:
       blockchain: base
       sector: lending
       project: Morpho
-      contributors: 0xDataWolf, tomfutago
     config:
       tags: ["lending", "supply", "morpho", "base"]
     description: "Morpho supply transactions on Base"
@@ -361,7 +353,6 @@ models:
       blockchain: base
       sector: lending
       project: Pike
-      contributors: brunota20
     config:
       tags: ["lending", "supply", "pike", "base"]
     description: "Pike supply transactions on Base"

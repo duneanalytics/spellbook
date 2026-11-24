@@ -6,7 +6,6 @@ models:
       blockchain: flare
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'flare', 'bridges', 'flows', 'deposits' ]
     description: "Tether's USDT0 v1 bridge deposits events on Flare"
@@ -15,7 +14,6 @@ models:
       blockchain: flare
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'flare', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Flare"

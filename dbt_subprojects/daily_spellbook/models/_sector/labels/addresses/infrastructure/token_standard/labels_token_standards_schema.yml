@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'arbitrum', 'token_standards', 'erc20', 'erc721', 'erc1155']
     description: "Smart contract token standards on Arbitrum"
@@ -47,7 +46,6 @@ models:
       blockchain: avalanche_c
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'avalanche_c', 'token_standards', 'erc20', 'erc721', 'erc1155']
     description: "Smart contract token standards on Avalanche"
@@ -68,7 +66,6 @@ models:
       blockchain: bnb
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'bnb', 'token_standards', 'bep20', 'bep721', 'bep1155']
     description: "Smart contract token standards on BNB"
@@ -89,7 +86,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'ethereum', 'token_standards', 'erc20', 'erc721', 'erc1155']
     description: "Smart contract token standards on Arbitrum"
@@ -110,7 +106,6 @@ models:
       blockchain: fantom
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'fantom', 'token_standards', 'erc20', 'erc721', 'erc1155']
     description: "Smart contract token standards on Arbitrum"
@@ -131,7 +126,6 @@ models:
       blockchain: gnosis
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'gnosis', 'token_standards', 'erc20', 'erc721', 'erc1155']
     description: "Smart contract token standards on Gnosis"
@@ -152,7 +146,6 @@ models:
       blockchain: optimism
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'optimism', 'token_standards', 'erc20', 'erc721', 'erc1155']
     description: "Smart contract token standards on Optimism"
@@ -173,7 +166,6 @@ models:
       blockchain: polygon
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'polygon', 'token_standards', 'erc20', 'erc721', 'erc1155']
     description: "Smart contract token standards on Polygon"
@@ -194,7 +186,6 @@ models:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon
       sector: labels
       project: token_standards
-      contributors: hildobby
     config:
       tags: ['labels', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon', 'token_standards', 'erc20', 'erc721', 'erc1155', 'bep20', 'bep721', 'bep1155']
     description: "Smart contract token standards across blockchains"

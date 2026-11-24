@@ -7,7 +7,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -109,7 +106,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -137,7 +133,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -166,7 +161,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -221,7 +215,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -256,7 +249,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -291,7 +283,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap']
     description: >
@@ -326,7 +317,6 @@ models:
       blockchain: base
       sector: dex
       project: pancakeswap
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'pancakeswap', 'sqrtpricex96']
     description: >

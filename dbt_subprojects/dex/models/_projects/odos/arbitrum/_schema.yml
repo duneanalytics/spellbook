@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: odos
-      contributors: lequangphu
     config:
       tags: ['arbitrum','trades', 'odos','dex']
     description: >
@@ -106,7 +105,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: odos
-      contributors: lequangphu
     config:
       tags: ['arbitrum','trades', 'odos','dex']
     description: >
@@ -158,7 +156,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: odos
-      contributors: lequangphu
     config:
       tags: ['arbitrum','trades', 'odos','dex']
     description: >

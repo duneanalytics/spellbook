@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       sector: lending
-      contributors: hildobby, viniabussafi
     config:
       tags: ['base', 'flashloans']
     description: >

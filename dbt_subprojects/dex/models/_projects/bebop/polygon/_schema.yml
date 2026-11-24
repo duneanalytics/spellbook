@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'polygon','bebop','rfq','trades','dex' ]
     description: Bebop-RFQ contract trades on Polygon - formatted for dex.trades
@@ -108,7 +107,6 @@ models:
       blockchain: polygon
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'polygon','bebop','jam','trades','dex' ]
     description: Bebop-JAM contract trades on Polygon - formatted for dex.trades
@@ -160,7 +158,6 @@ models:
       blockchain: polygon
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'polygon','bebop','pmm','trades','dex', 'blend' ]
     description: Bebop-BLEND contract trades on polygon - formatted for dex.trades
@@ -212,7 +209,6 @@ models:
       blockchain: polygon
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'polygon','bebop','trades','dex' ]
     description: Bebop contract trades on Polygon - formatted for dex.trades

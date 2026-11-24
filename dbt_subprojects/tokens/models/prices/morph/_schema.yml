@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: morph
       sector: tokens
-      contributors: jeff-dude
     config:
       tags: ['tokens', 'morph', 'prices']
     description: "Token prices and metadata on Morph"

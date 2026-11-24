@@ -7,7 +7,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'eulerswap']
     description: >
@@ -73,7 +72,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'eulerswap']
     description: >
@@ -114,7 +112,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'trades', 'eulerswap']
     description: "Eulerswap ethereum base trades"

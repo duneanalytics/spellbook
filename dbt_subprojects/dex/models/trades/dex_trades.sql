@@ -12,8 +12,7 @@
     , merge_skip_unchanged = true
     , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                     spell_type = "sector",
-                                    spell_name = "dex",
-                                    contributors = \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi", "krishhh", "kryptaki"]\') }}'
+                                    spell_name = "dex") }}'
     )
 }}
 

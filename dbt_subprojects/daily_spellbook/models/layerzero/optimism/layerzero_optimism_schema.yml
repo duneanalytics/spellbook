@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: optimism
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['optimism', 'layerzero', 'send']
    description: "LayerZero message send call on optimism"

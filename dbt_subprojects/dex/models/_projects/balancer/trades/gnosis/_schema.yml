@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: bizzyvinci, viniabussafi
     config:
       tags: ['balancer', 'gnosis', 'amm', 'trades', 'dex']
     description: >
@@ -110,7 +109,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: [ 'balancer', 'gnosis', 'amm', 'trades', 'dex', 'beta' ]
     description: >
@@ -149,7 +147,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: viniabussafi
     config:
       tags: [ 'balancer', 'gnosis', 'amm', 'trades', 'dex', 'beta' ]
     description: >

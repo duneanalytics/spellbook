@@ -4,7 +4,6 @@ models:
   - name: optimism_standard_bridge_flows
     meta:
       project: optimism
-      contributors: msilb7, soispoke
     config:
       tags: ['bridge','standard_bridge', 'flows', 'cross-chain', 'optimism']
     description: >

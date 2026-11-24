@@ -6,7 +6,6 @@ models:
      blockchain: nova
      sector: nft
      project: king_of_destiny
-     contributors: ['0xRob' ]
    config:
      tags: [ 'nova', 'nft', 'trades', 'king_of_destiny' ]
    description: "king_of_destiny base trades"
@@ -20,7 +19,6 @@ models:
    meta:
      blockchain: nova
      project: opensea
-     contributors: sohwak, 0xRob
    config:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
@@ -38,7 +36,6 @@ models:
    meta:
      blockchain: nova
      project: opensea
-     contributors: sohwak, 0xRob
    config:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >

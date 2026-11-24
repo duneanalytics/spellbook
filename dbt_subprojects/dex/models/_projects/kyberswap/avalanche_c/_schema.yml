@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex_aggregator
       project: kyberswap
-      contributors: nhd98z
     config:
       tags: ['avalanche_c', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >

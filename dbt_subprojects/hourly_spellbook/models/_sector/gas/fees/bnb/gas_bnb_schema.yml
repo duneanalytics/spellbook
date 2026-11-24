@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['bnb', 'gas', 'fees']
     description: >

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: katana
       sector: gas
-      contributors: captncrunch
     config:
       tags: ['katana', 'gas', 'fees']
     description: >

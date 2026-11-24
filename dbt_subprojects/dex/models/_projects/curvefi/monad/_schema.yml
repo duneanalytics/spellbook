@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: monad
       project: curve
-      contributors: kkqzhou
     config:
       tags: ['monad', 'curve', 'dex']
     description: >

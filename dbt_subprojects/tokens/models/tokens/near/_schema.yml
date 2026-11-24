@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: near
       sector: tokens
-      contributors: danzipie, Sector920
     config:
       tags: ['table', 'near']
     description: "Token Addresses, Symbols and Decimals on NEAR Network"

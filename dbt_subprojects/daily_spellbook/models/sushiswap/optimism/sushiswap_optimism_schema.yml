@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: sushiswap
-      contributors: msilb7
     config:
       tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
     description: >
@@ -39,7 +38,6 @@ models:
       blockchain: optimism
       sector: dex
       project: sushiswap
-      contributors: msilb7
     config:
       tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
     description: >
@@ -66,7 +64,6 @@ models:
       blockchain: optimism
       sector: dex
       project: sushiswap
-      contributors: msilb7
     config:
       tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
     description: >

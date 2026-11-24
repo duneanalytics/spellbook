@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "transactions"]
     description: "An EVM transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
@@ -80,7 +79,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "traces"]
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
@@ -131,7 +129,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "traces", "decoded"]
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
@@ -157,7 +154,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
       sector: evms
-      contributors: [hildobby, synthquest, rantum]
     config:
       tags: ["evms", "logs"]
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
@@ -187,7 +183,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "logs", "decoded"]
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
@@ -213,7 +208,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "blocks"]
     description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
@@ -236,7 +230,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "contracts"]
     description: "A view keeping track of what contracts are decoded across EVM chains on Dune; contains information associated with the decoded contract such as namespace, name, address, ABI."
@@ -273,7 +266,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "traces", "creation", "contracts"]
     description: "EVM chains creation traces"
@@ -293,7 +285,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "erc20", "transfers"]
     description: "Transfers events for ERC20 tokens on EVM chains."
@@ -334,7 +325,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, abstract, boba, sonic, kaia, apechain, berachain, b3, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "erc20", "approvals"]
     description: "Approval events for ERC20 tokens on EVM chains."
@@ -361,7 +351,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "erc1155", "transfers", "single"]
     description: "Single transfers events for ERC1155 tokens on EVM chains."
@@ -390,7 +379,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "erc1155", "transfers", "batch"]
     description: "Batch transfers events for ERC1155 tokens on EVM chains."
@@ -419,7 +407,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "erc1155", "approvals"]
     description: "Approval for all events for ERC1155 tokens on EVM chains."
@@ -448,7 +435,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "erc721", "transfers"]
     description: "Transfers events for ERC721 tokens on EVM chains."
@@ -473,7 +459,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
       sector: evms
-      contributors: [hildobby, synthquest]
     config:
       tags: ["evms", "erc721", "approvals"]
     description: "Approval for all events for ERC721 tokens on EVM chains."
@@ -499,7 +484,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, ink, sophon
       sector: evms
-      contributors: hildobby
     config:
       tags: ["evms", "info"]
     description: "Some information about the EVM chains"
@@ -538,7 +522,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, polygon, gnosis, avalanche_c, fantom, goerli, bnb, base, celo, ronin
       project: method_ids
-      contributors: msilb7
     config:
       tags: ["method_ids", "methods", "function", "signature"]
     description: >
@@ -562,7 +545,6 @@ models:
     meta:
       blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
       project: method_ids
-      contributors: msilb7
     config:
       tags: ["method_ids", "methods", "function", "signature"]
     description: >
@@ -585,7 +567,6 @@ models:
     meta:
       blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
       project: method_ids
-      contributors: msilb7
     config:
       tags: ["method_ids", "methods", "function", "signature"]
     description: >

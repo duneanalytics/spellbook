@@ -6,7 +6,6 @@ models:
       blockchain: corn
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'corn', 'bridges', 'flows', 'deposits' ]
     description: "Tether's USDT0 v1 bridge deposits events on Corn"
@@ -15,7 +14,6 @@ models:
       blockchain: corn
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'corn', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Corn"
@@ -24,7 +22,6 @@ models:
       blockchain: corn
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'corn', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Corn"

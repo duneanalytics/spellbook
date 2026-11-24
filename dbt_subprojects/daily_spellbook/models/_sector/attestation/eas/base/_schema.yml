@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'base' ]
     description: "EAS schema registry on Base"
@@ -27,7 +26,6 @@ models:
       blockchain: base
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'base' ]
     description: "EAS schema registry details on Base"
@@ -50,7 +48,6 @@ models:
       blockchain: base
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'base' ]
     description: "EAS attestations on Base"
@@ -73,7 +70,6 @@ models:
       blockchain: base
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'base' ]
     description: "EAS attestation details on Base"

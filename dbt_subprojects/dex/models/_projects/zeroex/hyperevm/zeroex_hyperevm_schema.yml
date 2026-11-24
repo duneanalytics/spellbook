@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: hyperevm
       project: zeroex
-      contributors: alek-ardashev
     config:
       tags: ['hyperevm', '0x', 'settler']
     description: >

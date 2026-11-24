@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       project: zeroex
-      contributors: rantum
     config:
       tags: ["base","0x","dex_aggregator","dex","aggregator"]
     description: >
@@ -87,7 +86,6 @@ models:
     meta:
       blockchain: base
       project: zeroex
-      contributors: rantum
     config:
       tags: ["base","0x","dex_aggregator","dex","aggregator"]
     description: >
@@ -140,7 +138,6 @@ models:
     meta:
       blockchain: base
       project: zeroex
-      contributors: rantum
     config:
       tags: ['base', '0x', 'settler']
     description: >
@@ -184,7 +181,6 @@ models:
     meta:
       blockchain: base
       project: zeroex
-      contributors: rantum
     config:
       tags: ['base','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -229,7 +225,6 @@ models:
     meta:
       blockchain: base
       project: zeroex
-      contributors: hosuke
     config:
       tags: ['base', '0x', 'settler']
     description: >

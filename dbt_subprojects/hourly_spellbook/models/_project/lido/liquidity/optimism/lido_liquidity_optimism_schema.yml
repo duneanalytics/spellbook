@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: lido
-      contributors: gregshestakovlido, ppclunghe
     config:
       tags: ['optimism','lido','liquidity']
     description: 
@@ -68,7 +67,6 @@ models:
     meta:
       blockchain: optimism
       project: lido
-      contributors: gregshestakovlido, ppclunghe
     config:
       tags: ['optimism','lido','liquidity']
     description: 
@@ -101,7 +99,6 @@ models:
     meta:
       blockchain: optimism
       project: lido
-      contributors: gregshestakovlido, ppclunghe
     config:
       tags: ['optimism','lido','liquidity']
     description: 
@@ -134,7 +131,6 @@ models:
     meta:
       blockchain: optimism
       project: lido
-      contributors: ppclunghe, kemasan
     config:
       tags: ['optimism','lido','liquidity']
     description: 
@@ -167,7 +163,6 @@ models:
     meta:
       blockchain: optimism
       project: lido
-      contributors: ppclunghe
     config:
       tags: ['optimism','lido','liquidity']
     description: 
@@ -200,7 +195,6 @@ models:
     meta:
       blockchain: optimism
       project: lido
-      contributors: ppclunghe
     config:
       tags: ['optimism','lido','liquidity']
     description: 
@@ -233,7 +227,6 @@ models:
     meta:
       blockchain: optimism
       project: lido
-      contributors: ppclunghe
     config:
       tags: ['optimism','lido','liquidity']
     description: 

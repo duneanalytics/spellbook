@@ -24,7 +24,6 @@ models:
       blockchain: berachain
       sector: dex
       project: kodiak
-      contributors: hosuke
     config:
       tags: ["berachain", "dex", "trades", "kodiak"]
     description: "Kodiak berachain base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: berachain
       sector: dex
       project: burrbear
-      contributors: hosuke
     config:
       tags: ["berachain", "dex", "trades", "burrbear"]
     description: "BurrBear berachain base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: berachain
       sector: dex
       project: beraswap
-      contributors: hosuke
     config:
       tags: ["berachain", "dex", "trades", "beraswap"]
     description: "BeraSwap berachain base trades"

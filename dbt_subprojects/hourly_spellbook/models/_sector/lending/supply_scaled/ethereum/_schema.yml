@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum']
     description: "Hourly lending scaled supply on Ethereum"
@@ -49,7 +48,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Hourly Aave v3 scaled supply on Ethereum"

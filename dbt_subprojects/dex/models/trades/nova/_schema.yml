@@ -24,7 +24,6 @@ models:
       blockchain: nova
       sector: dex
       project: sushiswap
-      contributors: hosuke
     config:
       tags: [ 'nova', 'dex', 'trades', 'sushiswap' ]
     description: "sushiswap nova base trades"
@@ -43,7 +42,6 @@ models:
       blockchain: nova
       sector: dex
       project: rcpswap
-      contributors: hosuke
     config:
       tags: [ 'nova', 'dex', 'trades', 'rcpswap' ]
     description: "rcpswap nova base trades"

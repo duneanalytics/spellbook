@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'arbitrum','erc20','dao', 'dao creator tools', 'Henrystats' ]
     description: >
@@ -86,7 +85,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'arbitrum','eth','dao', 'dao creator tools', 'Henrystats' ]
     description: >

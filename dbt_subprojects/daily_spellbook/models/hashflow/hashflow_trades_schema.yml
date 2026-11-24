@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, optimism, polygon
       sector: dex
       project: hashflow
-      contributors: BroderickBonelli
     config:
       tags: ['avalanche_c', 'bnb', 'ethereum', 'hashflow','trades','dex','BroderickBonelli']
     description: >

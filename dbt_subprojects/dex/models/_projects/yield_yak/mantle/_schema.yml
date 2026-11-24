@@ -6,7 +6,6 @@ models:
       blockchain: mantle
       sector: dex
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['mantle','trades', 'aggregator', 'yield_yak','dex']
     description: >

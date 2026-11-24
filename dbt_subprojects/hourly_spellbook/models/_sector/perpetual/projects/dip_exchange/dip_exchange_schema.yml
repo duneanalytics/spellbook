@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       sector: perpetual
-      contributors: princi
     config:
       tags: ['base', 'perpetuals', 'perps', 'dip_exchange']
     description: 

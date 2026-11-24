@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
     description: "All lending market transactions"

@@ -7,7 +7,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -109,7 +106,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -138,7 +134,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
     description: >
@@ -176,7 +171,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: irishlatte19, Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -236,7 +230,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -271,7 +264,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -306,7 +298,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['blast', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -340,7 +331,6 @@ models:
     meta:
       blockchain: blast
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -356,7 +346,6 @@ models:
       blockchain: blast
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['blast', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -383,7 +372,6 @@ models:
       blockchain: blast
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['blast', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

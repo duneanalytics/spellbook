@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: Henrystats
     config:
       tags: ['nft', 'ethereum', 'wallet pnl']
     description: >
@@ -37,7 +36,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: Henrystats
     config:
       tags: ['nft','ethereum', 'sales stats','volume']
     description: >
@@ -70,7 +68,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: NazihKalo
     config:
       tags: ['nft','ethereum','reservoir','floor']
     description: >
@@ -94,7 +91,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: NazihKalo
     config:
       tags: ['nft','ethereum', 'wallet stats','smart nft trader', 'roi', 'profit', 'loss', 'win', 'spend', 'gain']
     description: >

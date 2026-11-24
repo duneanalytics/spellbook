@@ -6,7 +6,6 @@ models:
       blockchain: monad
       sector: addresses_events
       project: addresses
-      contributors: kryptaki
     config:
       tags: ['table', 'funded', 'addresses_events', 'monad']
     description: "Table showing who first funded each Monad address with native token"
@@ -48,7 +47,6 @@ models:
       blockchain: monad
       sector: addresses_events
       project: addresses
-      contributors: kryptaki
     config:
       tags: ['table', 'activity', 'addresses_events', 'monad']
     description: "Table showing first activity of each Monad address"
@@ -82,7 +80,6 @@ models:
       blockchain: monad
       sector: addresses_events
       project: addresses
-      contributors: kryptaki
     config:
       tags: ['table', 'received', 'addresses_events', 'monad']
     description: "Table showing which token was first received for each Monad address"

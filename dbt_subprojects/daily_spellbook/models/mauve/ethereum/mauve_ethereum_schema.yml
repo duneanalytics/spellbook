@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: jeff-dude, masquot, soispoke, raphaelr
     config:
       tags: ['ethereum', 'mauve', 'pools', 'dex', 'defi', 'rwa']
     description: >

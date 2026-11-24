@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: sound_xyz
-      contributors: [msilb7]
     config:
       tags: ['optimism','sound_xyz','nft','music_nfts']
     description: >

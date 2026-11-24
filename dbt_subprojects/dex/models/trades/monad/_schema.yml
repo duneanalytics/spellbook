@@ -24,7 +24,6 @@ models:
       blockchain: monad
       sector: dex
       project: kuru
-      contributors: tomfutago
     config:
       tags: ["monad", "dex", "trades", "kuru"]
     description: "kuru monad base trades"
@@ -43,7 +42,6 @@ models:
       blockchain: monad
       sector: dex
       project: curve
-      contributors: kkqzhou
     config:
       tags: ["monad", "dex", "trades", "curve"]
     description: "curve monad base trades"
@@ -62,7 +60,6 @@ models:
       blockchain: monad
       sector: dex
       project: pinot
-      contributors: tomfutago
     config:
       tags: ["monad", "dex", "trades", "pinot"]
     description: "pinot monad base trades"
@@ -83,7 +80,6 @@ models:
       blockchain: monad
       sector: dex
       project: pinot
-      contributors: tomfutago
     config:
       tags: ["monad", "dex", "trades", "pinot"]
     description: "pinot v3 monad base trades"
@@ -104,7 +100,6 @@ models:
       blockchain: monad
       sector: dex
       project: uniswap
-      contributors: tomfutago
     config:
       tags: ["monad", "dex", "trades", "uniswap", "v2"]
     description: "uniswap monad v2 base trades"
@@ -125,7 +120,6 @@ models:
       blockchain: monad
       sector: dex
       project: uniswap
-      contributors: tomfutago
     config:
       tags: ["monad", "dex", "trades", "uniswap", "v3"]
     description: "uniswap monad v3 base trades"
@@ -146,7 +140,6 @@ models:
       blockchain: monad
       sector: dex
       project: nad_fun
-      contributors: kkqzhou
     config:
       tags: ["monad", "dex", "trades", "nad_fun", "v3"]
     description: "nad.fun monad v3 base trades — Uniswap V3-style pools graduated from the nad.fun bonding curve"
@@ -165,7 +158,6 @@ models:
       blockchain: monad
       sector: dex
       project: trader_joe
-      contributors: tomfutago
     config:
       tags: ["monad", "dex", "trades", "trader_joe", "v2.2"]
     description: "trader_joe monad v2.2 base trades"
@@ -186,7 +178,6 @@ models:
       blockchain: monad
       sector: dex
       project: pancakeswap
-      contributors: chef_butterbeer
     config:
       tags: ["monad", "dex", "trades", "pancakeswap", "v2"]
     description: "pancakeswap monad v2 base trades"
@@ -207,7 +198,6 @@ models:
       blockchain: monad
       sector: dex
       project: pancakeswap
-      contributors: chef_butterbeer
     config:
       tags: ["monad", "dex", "trades", "pancakeswap", "v3"]
     description: "pancakeswap monad v3 base trades"
@@ -228,7 +218,6 @@ models:
       blockchain: monad
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ["monad", "dex", "trades", "uniswap", "v3"]
     description: "uniswap monad v4 base trades"
@@ -249,7 +238,6 @@ models:
       blockchain: monad
       sector: dex
       project: balancer
-      contributors: Henrystats
     config:
       tags: ["monad", "dex", "trades", "balancer", "v3"]
     description: "balancer monad v3 base trades"
@@ -296,7 +284,6 @@ models:
       blockchain: monad
       sector: dex
       project: agra
-      contributors: cxheng315
     config:
       tags: [ 'monad', 'dex', 'trades', 'agra' ]
     description: "Agra Monad base trades"
@@ -324,7 +311,6 @@ models:
       blockchain: monad
       sector: dex
       project: metric
-      contributors: mathewae
     config:
       tags: ["monad", "dex", "trades", "metric"]
     description: "Metric (oracle-based on-chain market maker) monad base trades, all factory versions (0, 1, 2)"

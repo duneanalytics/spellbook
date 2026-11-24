@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon, zksync, base, scroll, zora, blast, fantom, ronin, linea, nova, abstract, apechain
       sector: nft
-      contributors: hildobby
       docs_slug: /curated/nft-trades/evm/nft-wash-trades
       short_description: "Identified potential wash trading activity in NFT transactions, flagging suspicious trades across marketplaces and blockchains."
     config:
@@ -123,7 +122,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -135,7 +133,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -147,7 +144,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -159,7 +155,6 @@ models:
     meta:
       blockchain: bnb
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -171,7 +166,6 @@ models:
     meta:
       blockchain: gnosis
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -183,7 +177,6 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -195,7 +188,6 @@ models:
     meta:
       blockchain: polygon
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -207,7 +199,6 @@ models:
     meta:
       blockchain: celo
       sector: nft
-      contributors: tomfutago
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -219,7 +210,6 @@ models:
     meta:
       blockchain: zksync
       sector: nft
-      contributors: lgingerich
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -231,7 +221,6 @@ models:
     meta:
       blockchain: base
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -243,7 +232,6 @@ models:
     meta:
       blockchain: scroll
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -255,7 +243,6 @@ models:
     meta:
       blockchain: zora
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -267,7 +254,6 @@ models:
     meta:
       blockchain: abstract
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
@@ -279,7 +265,6 @@ models:
     meta:
       blockchain: apechain
       sector: nft
-      contributors: 0xr3x
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >

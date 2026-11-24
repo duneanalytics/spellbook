@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: paraswap_v5
-      contributors: springzh
     config:
       tags: ['optimism','paraswap_v5','trades', 'paraswap','dex']
     description: >
@@ -102,7 +101,6 @@ models:
       blockchain: optimism
       sector: dex
       project: paraswap_v6
-      contributors: eptighte, mwamedacen
     config:
       tags: ['optimism','paraswap_v6','trades', 'paraswap','dex']
     description: >
@@ -157,7 +155,6 @@ models:
       blockchain: optimism
       sector: dex
       project: paraswap
-      contributors: springzh
     config:
       tags: ['optimism','dex','trades', 'paraswap']
     description: >

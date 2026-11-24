@@ -7,8 +7,7 @@
 	, filtering_columns = ['block_month', 'blockchain', 'project']
 	, post_hook = '{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
 									spell_type = "sector",
-									spell_name = "dex_evm",
-									contributors = \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi", "krishhh", "kryptaki"]\') }}'
+									spell_name = "dex_evm") }}'
 	)
 }}
 

@@ -7,7 +7,6 @@ models:
       blockchain: arbitrum, ethereum, bnb, avalanche_c, celo, gnosis, zora, polygon, base, optimism
       sector: alchemy
       project: alchemy
-      contributors: sofiat
 
     config:
       tags: ['alchemy', 'addresses', 'smart_accounts']

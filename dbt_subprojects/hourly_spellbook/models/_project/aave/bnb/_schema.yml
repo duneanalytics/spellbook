@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'bnb']
     description: "All Aave transactions involving borrow transactions on BNB"
@@ -71,7 +70,6 @@ models:
       blockchain: bnb
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'bnb']
     description: "All Aave transactions involving flashloans transactions on BNB"
@@ -103,7 +101,6 @@ models:
       blockchain: bnb
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'bnb']
     description: "All Aave transactions involving supply transactions on BNB"
@@ -136,7 +133,6 @@ models:
       blockchain: bnb
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'bnb']
     description: "All Aave market transactions on BNB"
@@ -176,7 +172,6 @@ models:
       blockchain: bnb
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'bnb']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: bnb
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'bnb']
     description: "Hourly aggregated lending market interest rates"

@@ -6,7 +6,6 @@ models:
       blockchain: tron
       sector: bridges
       project: allbridge
-      contributors: tomfutago
     config:
       tags: [ 'tron', 'bridges', 'flows', 'deposits' ]
     description: "Allbridge Classic bridge deposits events on Tron"
@@ -15,7 +14,6 @@ models:
       blockchain: tron
       sector: bridges
       project: symbiosis
-      contributors: tomfutago
     config:
       tags: [ 'tron', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Tron"

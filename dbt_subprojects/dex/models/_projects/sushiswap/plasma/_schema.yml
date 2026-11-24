@@ -6,7 +6,6 @@ models:
       blockchain: plasma
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'plasma','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on plasma - formatted for dex.trades

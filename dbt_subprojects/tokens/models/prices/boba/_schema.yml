@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: boba
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'boba']
     description: "Price tokens on Boba Network EVM chain"

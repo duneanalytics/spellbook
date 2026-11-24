@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: liquid_staking
       project: lido
-      contributors: [ pipistrella, adcv, zergil1397,lido ]
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Granular-level general ledger of LidoDAO with all accounting entries. Currently Work In Progress"
@@ -80,7 +79,6 @@ models:
     meta:
       blockchain: ethereum,optimism,arbitrum,polygon
       project: lido
-      contributors: gregshestakovlido, ppclunghe, hosuke
     config:
       tags: ['ethereum','optimism','arbitrum','polygon','lido','liquidity']
     description: 

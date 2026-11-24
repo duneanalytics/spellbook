@@ -6,7 +6,6 @@ models:
       blockchain: sei
       sector: labels
       project: jelly_swap
-      contributors: viniabussafi
     config:
       tags: ['labels', 'sei', 'balancer', 'pools']
     description: 'JellySwap liquidity pools created on sei.'

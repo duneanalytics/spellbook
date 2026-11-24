@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: dex
       project: openocean
-      contributors: thevaizman
     config:
       tags: [ 'base', 'openocean', 'trades', 'dex', 'aggregator' ]
     description: >

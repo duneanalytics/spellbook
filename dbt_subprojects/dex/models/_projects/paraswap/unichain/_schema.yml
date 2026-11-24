@@ -6,7 +6,6 @@ models:
       blockchain: unichain
       sector: dex
       project: paraswap_v6
-      contributors: eptighte
     config:
       tags: ['unichain','paraswap_v6','trades', 'paraswap','dex', "velora"]
     description: >
@@ -107,7 +106,6 @@ models:
       blockchain: unichain
       sector: dex
       project: paraswap
-      contributors: eptighte
     config:
       tags: ['unichain','dex','trades', 'paraswap', "velora"]
     description: >

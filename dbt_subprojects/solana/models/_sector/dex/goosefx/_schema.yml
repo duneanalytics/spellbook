@@ -4,7 +4,6 @@ models:
   - name: goosefx_ssl_v2_solana_base_trades_backfill
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','static','microbatch' ]
     description: >
@@ -18,7 +17,6 @@ models:
   - name: goosefx_ssl_v2_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -32,7 +30,6 @@ models:
   - name: goosefx_ssl_v2_solana_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','dex']
     description: >
@@ -129,7 +126,6 @@ models:
   - name: goosefx_version_ssl_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >

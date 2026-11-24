@@ -7,8 +7,7 @@
         unique_key = ['address'],
     post_hook='{{ expose_spells(\'["ton"]\',
                                     "sector",
-                                    "ton",
-                                    \'["pshuvalov"]\') }}'
+                                    "ton") }}'
     )
 }}
 

@@ -7,7 +7,6 @@ models:
       blockchain: bnb
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'eulerswap']
     description: >
@@ -73,7 +72,6 @@ models:
       blockchain: bnb
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'liquidity', 'eulerswap']
     description: >
@@ -114,7 +112,6 @@ models:
       blockchain: bnb
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ['bnb', 'pools', 'trades', 'eulerswap']
     description: "Eulerswap bnb base trades"

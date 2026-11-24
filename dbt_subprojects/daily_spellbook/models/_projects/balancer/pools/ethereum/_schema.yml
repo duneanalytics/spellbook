@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -33,7 +32,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -55,7 +53,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -77,7 +74,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: stefenon
     config:
       tags: ['ethereum', 'balancer', 'lbp']
     description: >
@@ -100,7 +96,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -122,7 +117,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'lbp']
     description: >

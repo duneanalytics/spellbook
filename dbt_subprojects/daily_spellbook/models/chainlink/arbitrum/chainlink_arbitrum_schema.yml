@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["arbitrum", "chainlink", "oracle"]
     description: >
@@ -52,7 +51,6 @@ models:
     meta:
       blockchain: arbitrum
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
     config:
       tags: ["arbitrum", "chainlink", "oracle"]
     description: >
@@ -84,7 +82,6 @@ models:
     meta:
       blockchain: arbitrum
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["arbitrum", "chainlink", "oracle"]
     description: >
@@ -108,7 +105,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "arbitrum"]
     description: >
@@ -160,7 +156,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "arbitrum"]
     description: >
@@ -195,7 +190,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reverted", "transactions", "arbitrum"]
     description: >
@@ -222,7 +216,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "daily", "arbitrum"]
     description: >
@@ -267,7 +260,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "request", "daily", "arbitrum"]
     description: >
@@ -299,7 +291,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "transmission", "logs", "arbitrum"]
     description: >
@@ -335,7 +326,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "arbitrum"]
     description: >
@@ -357,7 +347,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags:
         ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "arbitrum"]
@@ -382,7 +371,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "daily", "arbitrum"]
     description: >
@@ -407,7 +395,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "daily", "arbitrum"]
     description: >
@@ -436,7 +423,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "arbitrum"]
     description: >
@@ -468,7 +454,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "arbitrum"]
     description: >
@@ -495,7 +480,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "request", "daily", "arbitrum"]
     description: >
@@ -521,7 +505,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reverted", "transactions", "arbitrum"]
     description: >
@@ -548,7 +531,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "daily", "arbitrum"]
     description: >
@@ -573,7 +555,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "arbitrum"]
     description: >
@@ -589,7 +570,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags:
         ["chainlink", "fm", "reward", "evt", "transfer", "daily", "arbitrum"]
@@ -613,7 +593,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "fulfilled", "transactions", "arbitrum"]
     description: >
@@ -640,7 +619,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "gas", "daily", "arbitrum"]
     description: >
@@ -668,7 +646,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags:
         ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "arbitrum"]
@@ -704,7 +681,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "v1", "random", "request", "logs", "arbitrum"]
     description: >
@@ -740,7 +716,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags:
         ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "arbitrum"]
@@ -774,7 +749,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "daily", "arbitrum"]
     description: >
@@ -799,7 +773,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "reverted", "transactions", "arbitrum"]
     description: >
@@ -826,7 +799,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "reward", "daily", "arbitrum"]
     description: >
@@ -852,7 +824,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "fulfilled", "arbitrum"]
     description: >
@@ -867,7 +838,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "arbitrum"]
     description: >
@@ -890,7 +860,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "feeds", "daily", "arbitrum"]
     description: >
@@ -916,7 +885,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "feeds", "arbitrum"]
     description: >
@@ -931,7 +899,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "logs", "arbitrum"]
     description: >
@@ -959,7 +926,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "requester", "daily", "arbitrum"]
     description: >
@@ -987,7 +953,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "requester", "arbitrum"]
     description: >
@@ -1005,7 +970,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "arbitrum"]
     description: >
@@ -1032,7 +996,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "gas", "daily", "arbitrum"]
     description: >
@@ -1061,7 +1024,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "request", "daily", "arbitrum"]
     description: >
@@ -1084,7 +1046,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reverted", "transactions", "arbitrum"]
     description: >
@@ -1109,7 +1070,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reward", "daily", "arbitrum"]
     description: >
@@ -1135,7 +1095,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "arbitrum"]
     description: >
@@ -1159,7 +1118,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "arbitrum"]
     description: >
@@ -1187,7 +1145,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "traces", "arbitrum"]
     description: >
@@ -1222,7 +1179,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "arbitrum"]
     description: >
@@ -1256,7 +1212,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "transferred", "arbitrum"]
     description: >
@@ -1286,7 +1241,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "arbitrum"]
     description: >
@@ -1313,7 +1267,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "arbitrum"]
     description: >
@@ -1340,7 +1293,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "logs", "arbitrum"]
     description: >
@@ -1364,7 +1316,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "paid", "logs", "arbitrum"]
     description: >
@@ -1393,7 +1344,6 @@ models:
       blockchain: "arbitrum"
 
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "arbitrum"]
     description: >
@@ -1417,7 +1367,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "arbitrum"]
     description: >
@@ -1454,7 +1403,6 @@ models:
     meta:
       blockchain: "arbitrum"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "arbitrum"]
     description: >

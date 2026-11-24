@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: hashflow
-      contributors: ARDev097
     config:
       tags: ['optimism','hashflow','trades','dex','ARDev097']
     description: >

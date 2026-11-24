@@ -6,7 +6,6 @@ models:
       blockchain: sonic
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'sonic']
     description: "All Aave transactions involving borrow transactions on Sonic"
@@ -71,7 +70,6 @@ models:
       blockchain: sonic
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'sonic']
     description: "All Aave transactions involving flashloans transactions on Sonic"
@@ -103,7 +101,6 @@ models:
       blockchain: sonic
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'sonic']
     description: "All Aave transactions involving supply transactions on Sonic"
@@ -136,7 +133,6 @@ models:
       blockchain: sonic
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'sonic']
     description: "All Aave market transactions on Sonic"
@@ -176,7 +172,6 @@ models:
       blockchain: sonic
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'sonic']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: sonic
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'sonic']
     description: "Hourly aggregated lending market interest rates"

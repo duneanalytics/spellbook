@@ -6,7 +6,6 @@ models:
       blockchain: unichain
       sector: lending
       project: euler, venus, morpho, compound
-      contributors: tomfutago, Henrystats
     config:
       tags: ['lending', 'supply', 'venus', 'euler', 'morpho', 'compound', 'unichain']
     description: "All lending supply transactions on unichain"
@@ -93,7 +92,6 @@ models:
       blockchain: unichain
       sector: lending
       project: compound
-      contributors: Henrystats, tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'unichain']
     description: "Compound v3 supply transactions on unichain"
@@ -133,7 +131,6 @@ models:
       blockchain: unichain
       sector: lending
       project: morpho
-      contributors: Henrystats, tomfutago
     config:
       tags: ['lending', 'supply', 'morpho', 'unichain']
     description: "Morpho supply transactions on unichain"
@@ -171,7 +168,6 @@ models:
       blockchain: unichain
       sector: lending
       project: aave
-      contributors: Henrystats, tomfutago
     config:
       tags: ['lending', 'supply', 'euler', 'unichain']
     description: "Euler v2 supply transactions on unichain"
@@ -209,7 +205,6 @@ models:
       blockchain: unichain
       sector: lending
       project: venus
-      contributors: Henrystats, tomfutago
     config:
       tags: ['lending', 'supply', 'venus', 'unichain']
     description: "Venus supply transactions on unichain"

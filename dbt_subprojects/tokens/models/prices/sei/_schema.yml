@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sei
       sector: prices
-      contributors: jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd', 'sei']
     description: "Price tokens on Sei EVM chain"

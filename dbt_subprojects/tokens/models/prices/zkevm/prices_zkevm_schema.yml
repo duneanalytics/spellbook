@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zkevm
       sector: prices
-      contributors: viniabussafi
     config:
       tags: ['prices', 'tokens', 'usd', 'zkevm']
     description: "Price tokens on polygon zkevm chain"

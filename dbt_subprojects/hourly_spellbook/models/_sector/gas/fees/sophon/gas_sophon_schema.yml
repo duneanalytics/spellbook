@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sophon
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['sophon', 'gas', 'fees']
     description: >

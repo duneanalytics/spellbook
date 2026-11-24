@@ -7,7 +7,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: Henrystats, hildobby
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: Henrystats, hildobby
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -109,7 +106,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: Henrystats, hildobby
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -138,7 +134,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
     description: >
@@ -176,7 +171,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: irishlatte19, Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -236,7 +230,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -271,7 +264,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -306,7 +298,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -340,7 +331,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -355,7 +345,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -370,7 +359,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -386,7 +374,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['ethereum', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -423,7 +410,6 @@ models:
       blockchain: ethereum
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['ethereum', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

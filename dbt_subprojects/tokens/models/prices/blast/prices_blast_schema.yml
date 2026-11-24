@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: blast
       sector: prices
-      contributors: Henrystats, rantum
     config:
       tags: ['prices', 'tokens', 'usd', 'blast']
     description: "Price tokens on blast chain"

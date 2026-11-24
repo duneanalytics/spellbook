@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: solana
       project: sharky
-      contributors: [ennnas, hosuke]
     config:
       tags: ['sharky','solana','events']
     description: >

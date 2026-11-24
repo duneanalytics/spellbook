@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: burn_addresses
-      contributors: hildobby
     config:
       tags: ['labels', 'burn_addresses', 'erc20', 'ethereum']
     description: "Burn addresses"

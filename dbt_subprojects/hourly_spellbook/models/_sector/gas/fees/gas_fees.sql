@@ -6,8 +6,7 @@
     filtering_columns = ['block_month', 'blockchain'],
     post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                 spell_type = "sector",
-                                spell_name = "gas",
-                                contributors = \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh", "tomfutago"]\') }}'
+                                spell_name = "gas") }}'
         )
 }}
 

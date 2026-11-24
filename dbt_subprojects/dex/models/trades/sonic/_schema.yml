@@ -24,7 +24,6 @@ models:
       blockchain: sonic
       sector: dex
       project: beets
-      contributors: viniabussafi
     config:
       tags: ['sonic', 'dex', 'trades', 'beets']
     description: "beets v2 sonic base trades"
@@ -43,7 +42,6 @@ models:
       blockchain: sonic
       sector: dex
       project: beets
-      contributors: franz
     config:
       tags: ['sonic', 'dex', 'trades', 'beets']
     description: "beets v3 sonic base trades"
@@ -64,7 +62,6 @@ models:
       blockchain: sonic
       sector: dex
       project: equalizer
-      contributors: IrishLatte_19
     config:
       tags: ['sonic', 'dex', 'trades', 'equalizer']
     description: "Equalizer sonic base trades"
@@ -83,7 +80,6 @@ models:
       blockchain: sonic
       sector: dex
       project: wagmi
-      contributors: hosuke
     config:
       tags: ['sonic', 'dex', 'trades', 'wagmi']
     description: "wagmi sonic base trades"
@@ -102,7 +98,6 @@ models:
       blockchain: sonic
       sector: dex
       project: shadow
-      contributors: discochuck
     config:
       tags: ['sonic', 'dex', 'trades', 'shadow']
     description: "Shadow sonic base trades"
@@ -121,7 +116,6 @@ models:
       blockchain: sonic
       sector: dex
       project: silverswap
-      contributors: PolEpie
     config:
       tags: ['sonic', 'dex', 'trades', 'silverswap']
     description: "Silverswap sonic base trades"
@@ -140,7 +134,6 @@ models:
       blockchain: sonic
       sector: dex
       project: uniswap
-      contributors: ShawnEdwards23
     config:
       tags: [ 'zksync', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap sonic v3 base trades"
@@ -161,7 +154,6 @@ models:
       blockchain: sonic
       sector: dex
       project: tapio
-      contributors: brunota20
     config:
       tags: ["sonic", "dex", "trades", "tapio"]
     description: "Tapio sonic base trades"

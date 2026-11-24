@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: gas_dao
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'gas_dao']
     description: "List of claim transactions for the $GAS airdrop"

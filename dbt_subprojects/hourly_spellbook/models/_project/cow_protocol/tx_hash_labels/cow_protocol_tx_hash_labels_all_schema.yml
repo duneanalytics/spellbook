@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: dex
-      contributors: gentrexha
     config:
       tags: ['labels', 'ethereum', 'tx_hash']
     description: "Labels across chains and categories for CoW Protocol trades"

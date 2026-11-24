@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: optimism
       project: optimism_quests
-      contributors: msilb7
     config:
       tags: ['optimism','galxe', 'quests']
     description: >

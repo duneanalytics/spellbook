@@ -24,7 +24,6 @@ models:
       blockchain: peaq
       sector: dex
       project: machinex
-      contributors: krishg
     config:
       tags: [ 'peaq', 'dex', 'trades', 'machinex', 'v3' ]
     description: "Machine X V3 peaq base trades"

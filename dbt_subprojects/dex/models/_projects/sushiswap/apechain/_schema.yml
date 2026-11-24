@@ -6,7 +6,6 @@ models:
       blockchain: apechain
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'apechain','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on apechain - formatted for dex.trades

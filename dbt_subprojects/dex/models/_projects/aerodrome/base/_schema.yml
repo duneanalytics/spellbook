@@ -7,7 +7,6 @@ models:
       blockchain: base
       sector: dex
       project: aerodrome
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'aerodrome']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: base
       sector: dex
       project: aerodrome
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'aerodrome']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: base
       sector: dex
       project: aerodrome
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'aerodrome']
     description: >
@@ -110,7 +107,6 @@ models:
       blockchain: base
       sector: dex
       project: aerodrome
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'aerodrome']
     description: >
@@ -165,7 +161,6 @@ models:
       blockchain: base
       sector: dex
       project: aerodrome
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'aerodrome']
     description: >
@@ -200,7 +195,6 @@ models:
       blockchain: base
       sector: dex
       project: aerodrome
-      contributors: Henrystats
     config:
       tags: ['base', 'pools', 'liquidity', 'aerodrome']
     description: >

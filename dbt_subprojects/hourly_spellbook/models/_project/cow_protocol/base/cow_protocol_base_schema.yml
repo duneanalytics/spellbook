@@ -10,7 +10,6 @@ models:
     meta:
       blockchain: base
       project: cow_protocol
-      contributors: felix
     config:
       tags: ["base", "cow_protocol", "solver"]
     description: >
@@ -20,7 +19,6 @@ models:
     meta:
       blockchain: base
       project: cow_protocol
-      contributors: felix
     config:
       tags: ["base", "cow_protocol", "trades", "dex", "aggregator", "auction"]
     description: >
@@ -34,7 +32,6 @@ models:
     meta:
       blockchain: base
       project: cow_protocol
-      contributors: cowprotocol
     config:
       tags: [ 'base','cow_protocol','eth-flow', "orders" ]
     description: >

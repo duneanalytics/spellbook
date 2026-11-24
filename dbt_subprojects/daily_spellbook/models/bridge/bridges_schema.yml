@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, optimism
       sector: bridge
-      contributors: msilb7, soispoke
     config:
       tags: ['ethereum', 'optimism', 'bridge', 'flows', 'cross-chain']
     description: >

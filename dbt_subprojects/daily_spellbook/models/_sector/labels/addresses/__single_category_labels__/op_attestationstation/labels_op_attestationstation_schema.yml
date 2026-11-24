@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_attestationstation
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'attestation', 'attester']
     description: Attestation attesters on Optimism
@@ -56,7 +55,6 @@ models:
       blockchain: optimism
       sector: labels
       project: op_attestationstation
-      contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'attestation']
     description: Attestation creators on Optimism

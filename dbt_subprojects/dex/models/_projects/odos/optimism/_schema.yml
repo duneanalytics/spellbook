@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: odos
-      contributors: ARDev097
     config:
       tags: ['optimism','trades', 'odos','dex']
     description: >
@@ -106,7 +105,6 @@ models:
       blockchain: optimism
       sector: dex
       project: odos
-      contributors: ARDev097
     config:
       tags: ['optimism','trades', 'odos','dex']
     description: >
@@ -158,7 +156,6 @@ models:
       blockchain: optimism
       sector: dex
       project: odos
-      contributors: ARDev097
     config:
       tags: ['optimism','trades', 'odos','dex']
     description: >

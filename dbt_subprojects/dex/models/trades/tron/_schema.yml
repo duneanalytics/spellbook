@@ -23,7 +23,6 @@ models:
       blockchain: tron
       sector: dex
       project: sunswap
-      contributors: tomfutago
     config:
       tags: ["tron", "dex", "trades", "sunswap", "v1"]
     description: "sunswap tron v1 base trades"
@@ -44,7 +43,6 @@ models:
       blockchain: tron
       sector: dex
       project: sunswap
-      contributors: tomfutago
     config:
       tags: ["tron", "dex", "trades", "sunswap", "v1"]
     description: "sunswap tron v1 swap events decoded from tron.logs"
@@ -61,7 +59,6 @@ models:
       blockchain: tron
       sector: dex
       project: sunswap
-      contributors: tomfutago
     config:
       tags: ["tron", "dex", "trades", "sunswap", "v2"]
     description: "sunswap tron v2 base trades"
@@ -82,7 +79,6 @@ models:
       blockchain: tron
       sector: dex
       project: sunswap
-      contributors: tomfutago
     config:
       tags: ["tron", "dex", "trades", "sunswap", "v2"]
     description: "sunswap tron v2 swap events decoded from tron.logs"
@@ -99,7 +95,6 @@ models:
       blockchain: tron
       sector: dex
       project: sunswap
-      contributors: tomfutago
     config:
       tags: ["tron", "dex", "trades", "sunswap", "v3"]
     description: "sunswap tron v3 base trades"
@@ -120,7 +115,6 @@ models:
       blockchain: tron
       sector: dex
       project: sunswap
-      contributors: tomfutago
     config:
       tags: ["tron", "dex", "trades", "sunswap", "v3"]
     description: "sunswap tron v3 swap events decoded from tron.logs"

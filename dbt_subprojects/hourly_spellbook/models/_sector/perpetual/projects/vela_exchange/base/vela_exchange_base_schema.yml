@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: vela_exchange 
-      contributors: ARDev097
     config:
       tags: ['base','perpetual', 'vela_exchange','perps']
     description: >

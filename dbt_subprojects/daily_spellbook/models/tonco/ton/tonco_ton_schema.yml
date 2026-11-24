@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ton
       sector: dex
-      contributors: markfromton
       short_description: "Pool creation events on TONCO DEX on TON, including initial price, tick spacing, fee settings, and jetton minters."
     config:
       tags: ['ton', 'tonco', 'dex']
@@ -71,7 +70,6 @@ models:
     meta:
       blockchain: ton
       sector: dex
-      contributors: markfromton
       short_description: "Liquidity provision (mint) events on TONCO pools on TON."
     config:
       tags: ['ton', 'tonco', 'dex']
@@ -116,7 +114,6 @@ models:
     meta:
       blockchain: ton
       sector: dex
-      contributors: markfromton
       short_description: "Liquidity removal (burn) events on TONCO pools on TON."
     config:
       tags: ['ton', 'tonco', 'dex']
@@ -169,7 +166,6 @@ models:
     meta:
       blockchain: ton
       sector: dex
-      contributors: markfromton
       short_description: "Concentrated liquidity NFT position creation events on TONCO DEX on TON, with tick range and liquidity amount."
     config:
       tags: ['ton', 'tonco', 'dex']

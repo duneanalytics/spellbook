@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       project: colony
-      contributors: Henrystats 
     config:
       tags: [ 'gnosis', 'dao', 'colony', 'dao creator tools', 'Henrystats' ]
     description: >

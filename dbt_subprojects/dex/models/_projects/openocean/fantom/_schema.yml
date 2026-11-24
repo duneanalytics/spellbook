@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: dex
       project: openocean
-      contributors: thevaizman
     config:
       tags: [ 'fantom', 'openocean', 'trades', 'dex', 'aggregator' ]
     description: >

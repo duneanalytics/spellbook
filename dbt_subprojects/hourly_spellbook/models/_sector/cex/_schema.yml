@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora, aptos
       sector: cex
-      contributors: hildobby
     config:
       tags: ['dex', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'fantom', 'base', 'zksync', 'celo', 'zora', 'aptos', 'info']
     description: >

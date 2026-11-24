@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: optimism
       sector: DEX
-      contributors: jason
     config:
       tags: ['optimism', 'op_token', 'balances','pools']
     data_tests:

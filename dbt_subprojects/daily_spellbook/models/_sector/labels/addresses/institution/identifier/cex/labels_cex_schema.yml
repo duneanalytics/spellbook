@@ -7,7 +7,6 @@ models:
       sector: labels
       project: cex
       short_description: "Known centralized exchange wallet addresses across chains, labeled by exchange name."
-      contributors: hildobby, soispoke, Henrystats, msilb7
     config:
       tags: ['labels', 'ethereum', 'fantom', 'bnb', 'optimism', 'avalanche_c', 'bitcoin', 'polygon', 'arbitrum', 'cex']
     description: "Known centralised exchange addresses across chains"
@@ -69,7 +68,6 @@ models:
       blockchain: bnb
       sector: labels
       project: cex
-      contributors: soispoke, hildobby
     config:
       tags: ['labels', 'bnb', 'cex']
     description: "Known centralised exchange addresses on BNB chain"
@@ -90,7 +88,6 @@ models:
       blockchain: fantom
       sector: labels
       project: cex
-      contributors: Henrystats, hildobby
     config:
       tags: ['labels', 'fantom', 'cex']
     description: "Known centralised exchange addresses on Fantom chain"
@@ -111,7 +108,6 @@ models:
       blockchain: bitcoin
       sector: labels
       project: cex
-      contributors: hildobby, ilemi
     config:
       tags: ['labels', 'bitcoin', 'cex']
     description: "Known centralised exchange addresses on Bitcoin"
@@ -132,7 +128,6 @@ models:
       blockchain: arbitrum
       sector: labels
       project: cex
-      contributors: hildobby
     config:
       tags: ['labels', 'arbitrum', 'cex']
     description: "Known centralised exchange addresses on Arbitrum"
@@ -153,7 +148,6 @@ models:
       blockchain: polygon
       sector: labels
       project: cex
-      contributors: hildobby
     config:
       tags: ['labels', 'polygon', 'cex']
     description: "Known centralised exchange addresses on Polygon"
@@ -174,7 +168,6 @@ models:
       blockchain: avalanche_c
       sector: labels
       project: cex
-      contributors: hildobby
     config:
       tags: ['labels', 'avalanche_c', 'cex']
     description: "Known centralised exchange addresses on Avalanche"
@@ -195,7 +188,6 @@ models:
       blockchain: optimism
       sector: labels
       project: cex
-      contributors: hildobby, msilb7
     config:
       tags: ['labels', 'optimism', 'cex']
     description: "Known centralised exchange addresses on Optimism"

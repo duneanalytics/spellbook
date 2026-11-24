@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: degen
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'degen']
     description: "Price tokens on degen chain"

@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: paladin
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'paladin']
     description: "List of claim transactions for the $PAL airdrop"

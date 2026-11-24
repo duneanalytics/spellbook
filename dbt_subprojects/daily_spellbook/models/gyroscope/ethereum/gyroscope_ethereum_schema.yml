@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: gyroscope
-      contributors: fmarrr
     config:
       tags: ["ethereum", "gyroscope", "trades"]
     description: trades on gyroscope E-CLP pools on ethereum

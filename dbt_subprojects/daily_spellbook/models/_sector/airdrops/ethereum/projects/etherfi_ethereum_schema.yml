@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: etherfi
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'etherfi']
     description: "List of claim transactions for the $ETHFI airdrop"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       sector: prices
-      contributors: rantum
     config:
       tags: ['prices', 'tokens', 'usd', 'base']
     description: "Price tokens on base chain"

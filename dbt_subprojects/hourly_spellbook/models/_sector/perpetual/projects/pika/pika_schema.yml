@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: msilb7, drethereum, rplust
     config:
       tags: ['optimism', 'perpetuals', 'perps', 'pika','cross-chain']
     description: >

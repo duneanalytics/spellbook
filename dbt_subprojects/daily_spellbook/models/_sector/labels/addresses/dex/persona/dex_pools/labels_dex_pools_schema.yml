@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, arbitrum, polygon
       sector: labels
       category: dex_pools
-      contributors: hildobby
     config:
       tags: ['labels', 'dex', 'pools']
     description: "DEX pools query labels across chains"

@@ -24,7 +24,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: uniswap
-      contributors: agaperste
     config:
       tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap arbitrum v4 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, mtitus6
     config:
       tags: ["arbitrum", "dex", "trades", "uniswap", "v3"]
     description: "uniswap arbitrum v3 base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ["arbitrum", "dex", "trades", "uniswap", "v2"]
     description: "uniswap arbitrum v2 base trades"
@@ -87,7 +84,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: sushiswap
-      contributors: Henrystats, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "sushiswap", "v1"]
     description: "Sushiswap arbitrum base trades"
@@ -108,7 +104,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: sushiswap
-      contributors: tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "sushiswap", "v2"]
     description: "Sushiswap arbitrum base trades"
@@ -129,7 +124,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: airswap
-      contributors: tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "airswap"]
     description: "Airswap arbitrum base trades"
@@ -148,7 +142,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: camelot
-      contributors: ytoast, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "camelot", "uniswap", "v2"]
     description: "Camelot Arbitrum v2 base trades"
@@ -169,7 +162,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: camelot
-      contributors: whale_hunter, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "camelot", "uniswap", "v3"]
     description: "Camelot Arbitrum v2 base trades"
@@ -190,7 +182,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: arbswap
-      contributors: chrispearcx, hosuke, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "arbswap"]
     description: "Arbswap arbitrum base trades"
@@ -209,7 +200,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: trader_joe
-      contributors: hsrvc, pecio222, hosuke
     config:
       tags: ["arbitrum", "dex", "trades", "trader_joe", "v2"]
     description: "Trader Joe arbitrum base trades"
@@ -230,7 +220,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: trader_joe
-      contributors: chef_seaweed
     config:
       tags: ["arbitrum", "dex", "trades", "trader_joe", "v2.1"]
     description: "Trader Joe arbitrum base trades"
@@ -251,7 +240,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: trader_joe
-      contributors: chef_seaweed
     config:
       tags: ["arbitrum", "dex", "trades", "trader_joe", "v2.2"]
     description: "Trader Joe arbitrum base trades"
@@ -272,7 +260,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: chef_butterbeer, chef_seaweed, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap Arbitrum v2 base trades"
@@ -296,7 +283,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: balancer
-      contributors: bizzyvinci, thetroyharris, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "balancer"]
     description: "Balancer v2 arbitrum base trades"
@@ -317,7 +303,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "pancakeswap", "uniswap", "v3"]
     description: "Pancakeswap Arbitrum v3 base trades"
@@ -338,7 +323,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: dodo
-      contributors: owen05, scoffie, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "dodo"]
     description: "Dodo Arbitrum base trades"
@@ -363,7 +347,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: chef_seaweed, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "gmx"]
     description: "GMX Arbitrum v3 base trades"
@@ -382,7 +365,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: integral
-      contributors: integralhq, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "integral", "uniswap", "v2"]
     description: "Integral Arbitrum v3 base trades"
@@ -401,7 +383,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: clipper
-      contributors: 0xRob, amalashkevich, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "clipper"]
     description: "clipper Arbitrum base trades"
@@ -426,7 +407,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: kyberswap
-      contributors: ppclunghe, gregshestakovlido, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "kyberswap", "uniswap", "v2"]
     description: "kyberswap Arbitrum base trades"
@@ -450,7 +430,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: xchange
-      contributors: mike-x7f, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "xchange", "uniswap", "v2"]
     description: "xchange Arbitrum base trades"
@@ -469,7 +448,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: ramses
-      contributors: echovl, discochuck
     config:
       tags: ["arbitrum", "dex", "trades", "ramses", "uniswap", "v2"]
     description: "Ramses Arbitrum base trades"
@@ -492,7 +470,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: fraxswap
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "fraxswap"]
     description: "Fraxswap arbitrum base trades"
@@ -511,7 +488,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: chronos
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "chronos"]
     description: "Chronos arbitrum  base trades"
@@ -530,7 +506,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: zyberswap
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "zyberswap"]
     description: "Zyberswap arbitrum  base trades"
@@ -549,7 +524,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: solidlizard
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "solidlizard"]
     description: "Solidlizard arbitrum  base trades"
@@ -568,7 +542,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: rubicon
-      contributors: denver, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "rubicon"]
     description: "rubicon Arbitrum base trades"
@@ -587,7 +560,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: woofi
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "woofi"]
     description: "woofi Arbitrum  base trades"
@@ -606,7 +578,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: smardex
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "smardex"]
     description: "smardex Arbitrum  base trades"
@@ -625,7 +596,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: oasisswap
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "oasisswap"]
     description: "oasisswap Arbitrum  base trades"
@@ -644,7 +614,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: swaap
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "swaap", "v2"]
     description: "swaap v2 arbitrum base trades"
@@ -665,7 +634,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: apeswap
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "apeswap"]
     description: "apeswap Arbitrum  base trades"
@@ -684,7 +652,6 @@ models:
       blockchain: arbitrum
       sector: dex
       pproject: zigzag
-      contributors: jeff-dude, masquot, soispoke, mtitus6, hosuke
     config:
       tags: ["arbitrum", "trades", "zigzag", "dex"]
     description: >
@@ -704,7 +671,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gridex
-      contributors: LLDAO
     config:
       tags: ["arbitrum", "dex", "trades", "gridex"]
     description: "gridex Arbitrum  base trades"
@@ -723,7 +689,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: sterling_finance
-      contributors: ARDev097
     config:
       tags: ["arbitrum", "dex", "trades", "sterling_finance"]
     description: "sterling_finance Arbitrum  base trades"
@@ -742,7 +707,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: sharkyswap
-      contributors: ARDev097
     config:
       tags: ["arbitrum", "dex", "trades", "sharkyswap"]
     description: "sharkyswap Arbitrum  base trades"
@@ -761,7 +725,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: auragi
-      contributors: archie
     config:
       tags: ["arbitrum", "dex", "trades", "auragi"]
     description: "auragi Arbitrum  base trades"
@@ -780,7 +743,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: wombatexchange
-      contributors:
     config:
       tags: ["arbitrum", "dex", "trades", "wombat_exchange"]
     description: "wombatexchange arbitrum base trades"
@@ -799,7 +761,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: solidly
-      contributors: SolidlyLabs
     config:
       tags: ["arbitrum", "dex", "trades", "solidly"]
     description: "solidly v3 arbitrum base trades"
@@ -818,7 +779,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: dackieswap
-      contributors: blanchemaria6
     config:
       tags: ["arbitrum", "dex", "trades", "dackieswap"]
     description: "dackieswap v3 arbitrum base trades"
@@ -839,7 +799,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: dackieswap
-      contributors: blanchemaria6
     config:
       tags: ["arbitrum", "dex", "trades", "dackieswap"]
     description: "dackieswap v2 arbitrum base trades"
@@ -860,7 +819,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: maverick
-      contributors: get620v
     config:
       tags: ["arbitrum", "dex", "trades", "maverick"]
     description: "Maverick arbitrum base trades"
@@ -881,7 +839,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: valantis
-      contributors: 0xrusowsky
     config:
       tags: ["arbitrum", "dex", "trades", "valantis", "arrakis", "hot"]
     description: "hot-amm arbitrum base trades"
@@ -897,7 +854,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: spartadex
-      contributors: shawnedwards23
     config:
       tags: ["arbitrum", "dex", "trades", "spartadex"]
     description: "spartadex arbitrum base trades"
@@ -916,7 +872,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ["arbitrum", "dex", "trades", "balancer"]
     description: "Balancer v3 arbitrum base trades"
@@ -937,7 +892,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: akronswap
-      contributors: principatel
     config:
       tags: ["arbitrum", "dex", "trades", "akronswap"]
     description: "akronswap arbitrum base trades"
@@ -958,7 +912,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: mindgames
-      contributors: principatel
     config:
       tags: ["arbitrum", "dex", "trades", "mindgames"]
     description: "mindgames arbitrum base trades"
@@ -979,7 +932,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: fluid
-      contributors: maybeYonas, pyor_xyz, thetroyharris
     config:
       tags: ["arbitrum", "dex", "trades", "fluid"]
     description: "fluid dex arbitrum base trades"
@@ -1000,7 +952,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gammaswap
-      contributors: principatel
     config:
       tags: ["arbitrum", "dex", "trades", "gammaswap"]
     description: "gammaswap arbitrum base trades"
@@ -1021,7 +972,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: elk_finance
-      contributors: principatel
     config:
       tags: ["arbitrum", "dex", "trades", "elk_finance"]
     description: "elk_finance arbitrum base trades"
@@ -1042,7 +992,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: native
-      contributors: j92z
     config:
       tags: ["arbitrum", "dex", "trades", "native"]
     description: "native arbitrum base trades"
@@ -1063,7 +1012,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ["arbitrum", "dex", "trades", "eulerswap"]
     description: "eulerswap arbitrum base trades"
@@ -1109,7 +1057,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: metric
-      contributors: mathewae
     config:
       tags: ["arbitrum", "dex", "trades", "metric"]
     description: "Metric (oracle-based on-chain market maker) arbitrum base trades, all factory versions (0, 1, 2)"

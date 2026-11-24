@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: worldcoin
-      contributors: msilb7
     config:
       tags: ['optimism', 'worldcoin', 'accounts']
     description: >

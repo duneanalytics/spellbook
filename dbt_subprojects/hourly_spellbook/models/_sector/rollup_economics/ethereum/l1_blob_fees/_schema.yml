@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
-      contributors: niftytable, lgingerich
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by rollups for blob gas on Ethereum

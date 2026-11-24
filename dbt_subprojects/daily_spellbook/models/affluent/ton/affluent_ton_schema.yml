@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov, okhlopkov
       short_description: "Supply (deposit) events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
@@ -43,7 +42,6 @@ models:
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov, okhlopkov
       short_description: "Withdrawal events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
@@ -82,7 +80,6 @@ models:
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov, okhlopkov
       short_description: "Borrow events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
@@ -121,7 +118,6 @@ models:
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov, okhlopkov
       short_description: "Repayment events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
@@ -163,7 +159,6 @@ models:
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov, okhlopkov
       short_description: "Liquidation events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']

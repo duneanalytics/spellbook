@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'zora', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on zora."
@@ -119,7 +118,6 @@ models:
     meta:
       blockchain: zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
@@ -150,7 +148,6 @@ models:
     meta:
       blockchain: zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'zora', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on zora."
@@ -184,7 +181,6 @@ models:
     meta:
       blockchain: zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'zora', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on zora."

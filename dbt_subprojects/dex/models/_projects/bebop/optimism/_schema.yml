@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'optimism','bebop','rfq','trades','dex' ]
     description: Bebop-RFQ contract trades on optimism - formatted for dex.trades
@@ -108,7 +107,6 @@ models:
       blockchain: optimism
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'optimism','bebop','jam','trades','dex' ]
     description: Bebop-JAM contract trades on optimism - formatted for dex.trades
@@ -160,7 +158,6 @@ models:
       blockchain: optimism
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'optimism','bebop','pmm','trades','dex', 'blend' ]
     description: Bebop-BLEND contract trades on optimism - formatted for dex.trades
@@ -212,7 +209,6 @@ models:
       blockchain: optimism
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'optimism','bebop','trades','dex' ]
     description: Bebop contract trades on optimism - formatted for dex.trades

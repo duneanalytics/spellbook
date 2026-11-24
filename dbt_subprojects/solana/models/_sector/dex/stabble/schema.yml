@@ -4,7 +4,6 @@ models:
   - name: stabble_solana_stg_decoded_swaps
     meta:
       blockchain: solana
-      contributors: []
     config:
       tags: ['solana', 'dex', 'stabble']
       event_time: block_date
@@ -14,7 +13,6 @@ models:
   - name: stabble_solana_base_trades_backfill
     meta:
       blockchain: solana
-      contributors: []
     config:
       tags: ['solana', 'dex', 'microbatch']
     description: >
@@ -28,7 +26,6 @@ models:
   - name: stabble_solana_base_trades
     meta:
       blockchain: solana
-      contributors: []
     config:
       tags: ['solana', 'dex']
     description: >
@@ -42,7 +39,6 @@ models:
   - name: stabble_solana_trades
     meta:
       blockchain: solana
-      contributors: []
     config:
       tags: ['solana', 'dex']
     description: >
@@ -144,7 +140,6 @@ models:
   - name: stabble_version_1_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >

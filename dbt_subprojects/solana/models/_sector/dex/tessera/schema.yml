@@ -4,7 +4,6 @@ models:
   - name: tessera_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Sector920 ]
     config:
       tags: [ 'solana','dex', 'tessera' ]
     description: >
@@ -17,7 +16,6 @@ models:
   - name: tessera_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Sector920 ]
     config:
       tags: [ 'solana','dex', 'tessera' ]
     description: >
@@ -31,7 +29,6 @@ models:
   - name: tessera_solana_trades
     meta:
       blockchain: solana
-      contributors: [Sector920]
     config:
       tags: ['solana','dex', 'tessera']
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: taiko
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'taiko','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on taiko - formatted for dex.trades

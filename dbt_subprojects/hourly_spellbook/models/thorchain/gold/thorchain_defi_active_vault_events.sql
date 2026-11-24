@@ -11,8 +11,7 @@
     tags = ['thorchain', 'defi', 'active_vault_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
-                                  "thorchain",
-                                  \'["jeff-dude"]\') }}'
+                                  "thorchain") }}'
 ) }}
 
 -- Deduplication and gold layer combined (no silver layer needed)

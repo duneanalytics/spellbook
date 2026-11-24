@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: scroll
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'scroll','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: scroll
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'scroll','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

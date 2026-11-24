@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: apalchemydaoecoin
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'alchemydao']
     description: "List of claim transactions for the $ALCH airdrop"

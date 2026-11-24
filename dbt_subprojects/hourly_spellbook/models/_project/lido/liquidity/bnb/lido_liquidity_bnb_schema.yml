@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       project: lido
-      contributors: pipistrella
     config:
       tags: ['bnb','lido','liquidity']
     description: 

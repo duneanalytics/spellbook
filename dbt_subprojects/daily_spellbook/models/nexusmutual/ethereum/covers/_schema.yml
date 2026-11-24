@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Product Types v2"
@@ -56,7 +55,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Products v2"
@@ -100,7 +98,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: guyhow, tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Products v1"
@@ -127,7 +124,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Covers v1"
@@ -196,7 +192,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Covers v2"
@@ -259,7 +254,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Covers Full List"
@@ -379,7 +373,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Active Covers"
@@ -417,7 +410,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Daily Covers aggregates"
@@ -433,7 +425,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Cover Owners aggregates"
@@ -451,7 +442,6 @@ models:
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: [zxf, jonah]
     config:
       tags: ["ethereum","nexusmutual","quotation_trades"]
     description: >

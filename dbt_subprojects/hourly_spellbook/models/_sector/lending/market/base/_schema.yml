@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'base']
     description: "All lending market transactions on Base"
@@ -96,7 +95,6 @@ models:
     meta:
       blockchain: base
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'base']
     description: "Aave v3 market transactions on Base"

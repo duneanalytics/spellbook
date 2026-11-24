@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sonic
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'sonic']
     description: "All lending market transactions on Sonic"
@@ -96,7 +95,6 @@ models:
     meta:
       blockchain: sonic
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'sonic']
     description: "Aave v3 market transactions on Sonic"

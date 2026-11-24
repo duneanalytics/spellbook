@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: polygon
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['polygon', 'layerzero', 'send']
    description: "LayerZero message send call on polygon"

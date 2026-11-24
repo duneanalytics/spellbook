@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: safe
-      contributors: frankmaseo, doublesc00p
     config:
       tags: ['safe', 'optimism']
     description: "Safe addresses on Optimism"
@@ -32,7 +31,6 @@ models:
     meta:
       blockchain: optimism
       project: safe
-      contributors: tschubotz, doublesc00p  
     config:
       tags: ['safe', 'singletons', 'optimism']
     description: "Singletons addresses used with Safes"
@@ -47,7 +45,6 @@ models:
     meta:
       blockchain: optimism
       project: safe
-      contributors: tschubotz, danielpartida, doublesc00p
     config:
       tags: ['safe', 'optimism']
     description: "Safe transactions"
@@ -108,7 +105,6 @@ models:
     meta:
       blockchain: optimism
       project: safe
-      contributors: tschubotz, doublesc00p
     config:
       tags: ['safe', 'transfers', 'optimism']
     description: "ETH transfers into or out of Safes"

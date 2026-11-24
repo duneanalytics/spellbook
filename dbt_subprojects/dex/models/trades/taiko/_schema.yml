@@ -21,7 +21,6 @@ models:
     meta:
       blockchain: taiko
       sector: dex
-      contributors: krishhh
     config:
       tags: ['taiko', 'dex', 'trades']
     description: 'All DEX trades on Taiko'
@@ -31,7 +30,6 @@ models:
       blockchain: taiko
       sector: dex
       project: oku
-      contributors: krishhh
     config:
       tags: ['taiko', 'dex', 'trades', 'oku', 'v3']
     description: 'Oku V3 DEX trades on Taiko'
@@ -46,7 +44,6 @@ models:
       blockchain: taiko
       sector: dex
       project: unagi
-      contributors: krishhh
     config:
       tags: ['taiko', 'dex', 'trades', 'unagi', 'v3']
     description: 'Unagi V3 DEX trades on Taiko'
@@ -61,7 +58,6 @@ models:
       blockchain: taiko
       sector: dex
       project: izumi
-      contributors: krishhh
     config:
       tags: ['taiko', 'dex', 'trades', 'izumi']
     description: 'Izumi DEX trades on Taiko'

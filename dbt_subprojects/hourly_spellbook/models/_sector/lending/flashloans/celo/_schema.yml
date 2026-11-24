@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: lending
       project: moola
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'moola']
     description: "All lending flashloans transactions on Celo"
@@ -79,7 +78,6 @@ models:
       blockchain: celo
       sector: lending
       project: moola
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'moola', 'celo']
     description: "Moola flashloans transactions on Celo"
@@ -112,7 +110,6 @@ models:
       blockchain: celo
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'celo']
     description: "Aave v3 flashloans transactions on Celo"

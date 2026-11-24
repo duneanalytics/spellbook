@@ -6,7 +6,6 @@ models:
       blockchain: solana
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'solana']
     description: "Table showing who first funded each Solana address in SOL"

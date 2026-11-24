@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc1155
-      contributors: soispoke, dot2dotseurat, tschubotz, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc1155']
     description: "ERC1155 Token Transfers on Celo. This table is updated every 30 minutes."
@@ -60,7 +59,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc1155
-      contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc1155', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "A helper table to construct erc1155 balances"
@@ -88,7 +86,6 @@ models:
       blockchain: celo
       sector: transfers
       project: erc1155
-      contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc1155', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "A helper table to construct erc1155 balances"

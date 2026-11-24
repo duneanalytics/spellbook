@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: optimism
      project: tofu
-     contributors: [ chuxin ]
    config:
      tags: [ 'optimism','tofu','v1','trades' ]
    description: >
@@ -20,7 +19,6 @@ models:
    meta:
      blockchain: optimism
      project: zonic
-     contributors: chuxin, tomfutago
    config:
      tags: [ 'optimism','zonic', 'trades' ]
    description: >
@@ -35,7 +33,6 @@ models:
    meta:
      blockchain: optimism
      project: quix
-     contributors: chuxin
    config:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
@@ -50,7 +47,6 @@ models:
    meta:
      blockchain: optimism
      project: quix
-     contributors: chuxin
    config:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
@@ -65,7 +61,6 @@ models:
    meta:
      blockchain: optimism
      project: quix
-     contributors: chuxin
    config:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
@@ -80,7 +75,6 @@ models:
    meta:
      blockchain: optimism
      project: quix
-     contributors: chuxin
    config:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
@@ -95,7 +89,6 @@ models:
    meta:
      blockchain: optimism
      project: quix
-     contributors: chuxin
    config:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
@@ -111,7 +104,6 @@ models:
      blockchain: optimism
      sector: nft
      project: element
-     contributors: ['0xRob' ]
    config:
      tags: [ 'optimism', 'nft', 'trades', 'element' ]
    description: "element base trades"
@@ -147,7 +139,6 @@ models:
    meta:
      blockchain: optimism
      project: opensea
-     contributors: sohwak, 0xRob
    config:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
@@ -182,7 +173,6 @@ models:
    meta:
      blockchain: optimism
      project: opensea
-     contributors: sohwak, 0xRob
    config:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
@@ -217,7 +207,6 @@ models:
    meta:
      blockchain: optimism
      project: quix
-     contributors: chuxin
    config:
      tags: [ 'optimism','seaport','events','chuxin' ]
    description: >

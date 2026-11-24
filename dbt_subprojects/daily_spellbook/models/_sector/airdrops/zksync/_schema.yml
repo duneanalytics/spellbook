@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zksync
       sector: airdrop
-      contributors: lgingerich
     config:
       tags: ['airdrop', 'zksync', 'claim']
     description: "List of airdrop claim transactions on ZKsync Era"

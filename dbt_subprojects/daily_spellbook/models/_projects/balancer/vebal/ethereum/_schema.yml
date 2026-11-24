@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: markusbkoch, mendesfabio, victorstefenon, viniabussafi
     config:
       tags: ['balancer', 'ethereum', 'vebal', 'day']
     description: >
@@ -32,7 +31,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: markusbkoch, mendesfabio, victorstefenon, viniabussafi
     config:
       tags: ['balancer', 'ethereum', 'vebal', 'slope']
     description: >
@@ -66,7 +64,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: markusbkoch, mendesfabio, stefenon, viniabussafi
     config:
       tags: ['balancer', 'ethereum', 'vebal', 'votes']
     description: >

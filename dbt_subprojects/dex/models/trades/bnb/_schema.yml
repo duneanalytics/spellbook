@@ -24,7 +24,6 @@ models:
       blockchain: bnb
       sector: dex
       project: uniswap
-      contributors: agaperste
     config:
       tags: ["bnb", "dex", "trades", "uniswap", "v4"]
     description: "uniswap bnb v4 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: bnb
       sector: dex
       project: uniswap
-      contributors: chrispearcx
     config:
       tags: ["bnb", "dex", "trades", "uniswap", "v3"]
     description: "uniswap bnb v3 base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: bnb
       sector: dex
       project: airswap
-      contributors: tomfutago
     config:
       tags: ["bnb", "dex", "trades", "airswap"]
     description: "Airswap bnb base trades"
@@ -85,7 +82,6 @@ models:
       blockchain: bnb
       sector: dex
       project: sushiswap
-      contributors: chrispearcx, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "sushiswap", "v1"]
     description: "sushiswap bnb base trades"
@@ -106,7 +102,6 @@ models:
       blockchain: bnb
       sector: dex
       project: sushiswap
-      contributors: tomfutago
     config:
       tags: ["bnb", "dex", "trades", "sushiswap", "v2"]
     description: "sushiswap bnb base trades"
@@ -127,7 +122,6 @@ models:
       blockchain: bnb
       sector: dex
       project: trader_joe
-      contributors: hsrvc, hosuke
     config:
       tags: ["bnb", "dex", "trades", "trader_joe", "v2"]
     description: "Trader Joe bnb base trades"
@@ -148,7 +142,6 @@ models:
       blockchain: bnb
       sector: dex
       project: trader_joe
-      contributors: chef_seaweed
     config:
       tags: ["bnb", "dex", "trades", "trader_joe", "v2.1"]
     description: "Trader Joe bnb base trades"
@@ -169,7 +162,6 @@ models:
       blockchain: bnb
       sector: dex
       project: apeswap
-      contributors: hosuke
     config:
       tags: ["bnb", "dex", "trades", "apeswap"]
     description: apeswap base trades
@@ -190,7 +182,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: hosuke, chef_seaweed, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap BNB v2 base trades"
@@ -214,7 +205,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "pancakeswap", "uniswap", "v3"]
     description: "Pancakeswap BNB v3 base trades"
@@ -235,7 +225,6 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: chef_butterbeer
     config:
       tags: ["bnb", "dex", "trades", "pancakeswap", "infinity"]
     description: "Pancakeswap BNB Infinity base trades"
@@ -258,7 +247,6 @@ models:
       blockchain: bnb
       sector: dex
       project: fraxswap
-      contributors: kndlexi, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "fraxswap", "uniswap", "v2"]
     description: "Fraxswap bnb base trades"
@@ -277,7 +265,6 @@ models:
       blockchain: bnb
       sector: dex
       project: biswap
-      contributors: codingsh, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "biswap", "uniswap", "v2"]
     description: "biswap bnb base trades"
@@ -298,7 +285,6 @@ models:
       blockchain: bnb
       sector: dex
       project: biswap
-      contributors: chef_seaweed, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "biswap", "v3"]
     description: "biswap bnb base trades"
@@ -319,7 +305,6 @@ models:
       blockchain: bnb
       sector: dex
       project: babyswap
-      contributors: codingsh, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "babyswap", "uniswap", "v2"]
     description: "babyswap bnb base trades"
@@ -340,7 +325,6 @@ models:
       blockchain: bnb
       sector: dex
       project: mdex
-      contributors: codingsh, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "mdex", "uniswap", "v2"]
     description: "mdex bnb base trades"
@@ -361,7 +345,6 @@ models:
       blockchain: bnb
       sector: dex
       project: wombat
-      contributors: umer_h_adil, hosuke, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "wombat"]
     description: "Wombat bnb base trades"
@@ -382,7 +365,6 @@ models:
       blockchain: bnb
       sector: dex
       project: dodo
-      contributors: owen05, scoffie, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "dodo"]
     description: "Dodo bnb base trades"
@@ -407,7 +389,6 @@ models:
       blockchain: bnb
       sector: dex
       project: izumi_finance
-      contributors: umer_h_adil, hosuke, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "izumi_finance"]
     description: "izumi_finance bnb base trades"
@@ -426,7 +407,6 @@ models:
       blockchain: bnb
       sector: dex
       project: maverick
-      contributors: chef_seaweed, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "maverick"]
     description: "Maverick bnb base trades"
@@ -447,7 +427,6 @@ models:
       blockchain: bnb
       sector: dex
       project: maverick
-      contributors: get620v
     config:
       tags: ["bnb", "dex", "trades", "maverick"]
     description: "Maverick bnb base trades"
@@ -468,7 +447,6 @@ models:
       blockchain: bnb
       sector: dex
       project: nomiswap
-      contributors: codingsh, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "nomiswap", "uniswap", "v2"]
     description: "NomiSwap bnb base trades"
@@ -487,7 +465,6 @@ models:
       blockchain: bnb
       sector: dex
       project: kyberswap
-      contributors: nhd98z, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "kyberswap", "uniswap", "v2"]
     description: "kyberswap bnb base trades"
@@ -510,7 +487,6 @@ models:
       blockchain: bnb
       sector: dex
       project: xchange
-      contributors: mike-x7f, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "xchange", "uniswap", "v2"]
     description: "xchange bnb base trades"
@@ -529,7 +505,6 @@ models:
       blockchain: bnb
       sector: dex
       project: thena
-      contributors: hsrvc, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "thena"]
     description: "thena bnb base trades"
@@ -552,7 +527,6 @@ models:
       blockchain: bnb
       sector: dex
       project: ellipsis_finance
-      contributors: Henrystats, 0xRob, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "ellipsis_finance"]
     description: "ellipsis_finance bnb base trades"
@@ -571,7 +545,6 @@ models:
       blockchain: bnb
       sector: dex
       project: lista_smartswap
-      contributors: knight_in_kight
     config:
       tags: ["bnb", "dex", "trades", "lista_smartswap"]
     description: "Lista SmartSwap BNB base trades"
@@ -590,7 +563,6 @@ models:
       blockchain: bnb
       sector: dex
       project: onepunchswap
-      contributors: sunopar, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "onepunchswap"]
     description: "onepunchswap bnb base trades"
@@ -609,7 +581,6 @@ models:
       blockchain: bnb
       sector: dex
       project: woofi
-      contributors: scoffie, tomfutago
     config:
       tags: ["bnb", "dex", "trades", "woofi"]
     description: "woofi bnb base trades"
@@ -628,7 +599,6 @@ models:
       blockchain: bnb
       sector: dex
       project: hashflow
-      contributors: Henrystats, hosuke
     config:
       tags: ["bnb", "hashflow", "trades", "dex", "Henrystats"]
     description: >
@@ -648,7 +618,6 @@ models:
       blockchain: bnb
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ["bnb", "dex", "trades", "uniswap", "v2"]
     description: "uniswap bnb v2 base trades"
@@ -669,7 +638,6 @@ models:
       blockchain: bnb
       sector: dex
       project: swaap
-      contributors: borelien
     config:
       tags: ["bnb", "dex", "trades", "swaap", "v2"]
     description: "swaap v2 bnb base trades"
@@ -690,7 +658,6 @@ models:
       blockchain: bnb
       sector: dex
       project: hyperjump
-      contributors: bertastr
     config:
       tags: ["bnb", "dex", "trades", "hyperjump"]
     description: "hyperjump bnb base trades"
@@ -709,7 +676,6 @@ models:
       blockchain: bnb
       sector: dex
       project: native
-      contributors: j92z
     config:
       tags: ["bnb", "dex", "trades", "native"]
     description: "native bnb base trades"
@@ -730,7 +696,6 @@ models:
       blockchain: bnb
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ["bnb", "dex", "trades", "eulerswap"]
     description: "eulerswap bnb base trades"
@@ -751,7 +716,6 @@ models:
       blockchain: bnb
       sector: dex
       project: tessera_v
-      contributors: karimhass
     config:
       tags: ["bnb", "dex", "trades", "tessera_v"]
     description: "tessera_v bnb base trades"
@@ -803,7 +767,6 @@ models:
       blockchain: bnb
       sector: dex
       project: metric
-      contributors: mathewae
     config:
       tags: ["bnb", "dex", "trades", "metric"]
     description: "Metric (oracle-based on-chain market maker) bnb base trades, all factory versions (0, 1, 2)"

@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: odos
-      contributors: Henrystats
     config:
       tags: ['avalanche_c','trades', 'odos','dex']
     description: >
@@ -106,7 +105,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: odos
-      contributors: Henrystats
     config:
       tags: ['avalanche_c','trades', 'odos','dex']
     description: >
@@ -158,7 +156,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: odos
-      contributors: Henrystats
     config:
       tags: ['avalanche_c','trades', 'odos','dex']
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: scroll
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'scroll' ]
     description: "EAS schema registry on Scroll"
@@ -27,7 +26,6 @@ models:
       blockchain: scroll
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'scroll' ]
     description: "EAS schema registry details on Scroll"
@@ -50,7 +48,6 @@ models:
       blockchain: scroll
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'scroll' ]
     description: "EAS attestations on Scroll"
@@ -73,7 +70,6 @@ models:
       blockchain: scroll
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'scroll' ]
     description: "EAS attestation details on Scroll"

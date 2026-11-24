@@ -6,7 +6,6 @@ models:
       blockchain: near
       sector: authentication
       project: v1_signer
-      contributors: bh2smith
     config:
       tags:
         ["near", "v1_signer", "mpc", "chain_sigs"]

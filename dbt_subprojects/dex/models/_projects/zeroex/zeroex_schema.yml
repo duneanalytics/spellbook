@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, scroll
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator','optimism','polygon','arbitrum','fantom','avalanche','bnb']
     description: >
@@ -110,7 +109,6 @@ models:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast, mantle, worldchain, berachain, ink, monad, robinhood, arc
       sector: dex
       project: zeroex
-      contributors: rantum, bakabhai993
     config:
       tags: ['ethereum', 'optimism', 'polygon', 'bnb', 'avalanche', 'robinhood', 'arc', '0x','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
@@ -168,7 +166,6 @@ models:
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, linea, scroll, blast, worldchain, mantle, berachain
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993 
     config:
       tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fafntom', 'avalanche', 'bnb', '0x','dex_aggregator','dex','aggregator']
     description: >
@@ -228,7 +225,6 @@ models:
     meta:
       blockchain: ethereum,polygon,arbitrum,optimism,bnb
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['ethereum','polygon','0x','optimism','arbitrum','fantom','bnb','dex']
     description: >
@@ -274,7 +270,6 @@ models:
     meta:
       blockchain: ethereum, optimism, polygon, arbitrum, fantom, bnb
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993 
     config:
       tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fantom', 'bnb', '0x','dex_aggregator','dex','aggregator']
     description: >

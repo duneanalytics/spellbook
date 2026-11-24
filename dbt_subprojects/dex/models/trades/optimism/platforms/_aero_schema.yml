@@ -7,7 +7,6 @@ models:
       blockchain: optimism
       sector: dex
       project: aero
-      contributors: ['thecaptncrunch']
     config:
       tags: ['optimism', 'dex', 'trades', 'aero']
     data_tests:

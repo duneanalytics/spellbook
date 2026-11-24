@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: nex
-      contributors: kaiblade
     config:
       tags: ['optimism', 'nex', 'perpetuals', 'perps']
     description: >

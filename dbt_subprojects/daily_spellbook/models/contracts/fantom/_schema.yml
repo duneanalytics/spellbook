@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: fantom
       sector: contracts
-      contributors: Henrystats
     config:
       tags: ['fantom', 'contracts', 'addresses']
     description: "A list of contract addresses and their corresponding project names/creator."
@@ -23,7 +22,6 @@ models:
     meta:
       blockchain: fantom
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'fantom', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on fantom."
@@ -137,7 +135,6 @@ models:
     meta:
       blockchain: fantom
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
@@ -168,7 +165,6 @@ models:
     meta:
       blockchain: fantom
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'fantom', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on fantom."
@@ -203,7 +199,6 @@ models:
     meta:
       blockchain: fantom
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'fantom', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on fantom."

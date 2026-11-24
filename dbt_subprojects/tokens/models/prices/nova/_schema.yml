@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: nova
       sector: prices
-      contributors: jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd', 'nova']
     description: "Price tokens on nova EVM chain"

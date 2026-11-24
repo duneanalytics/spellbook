@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contributors: soispoke, dot2dotseurat, tschubotz, Henrystats
     config:
       tags: ['transfers', 'bnb', 'bep20']
     description: "bep20 Token Transfers on bnb. This table is updated every 30 minutes."
@@ -52,7 +51,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contributors: hosuke
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_hour', 'hosuke']
     data_tests:
@@ -83,7 +81,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contributors: hosuke
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
     data_tests:
@@ -110,7 +107,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contributors: hosuke
     description: "bep20 Token Transfers on bnb per hour."
     config:
       tags: ['transfers', 'bnb', 'bep20', 'rolling_hour', 'hosuke']
@@ -134,7 +130,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bep20
-      contributors: hosuke
     description: "bep20 Token Transfers on bnb per day."
     config:
       tags: ['transfers', 'bnb', 'bep20', 'rolling_day', 'hosuke']

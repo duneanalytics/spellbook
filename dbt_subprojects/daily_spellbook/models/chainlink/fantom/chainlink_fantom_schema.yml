@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: fantom
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["fantom", "chainlink", "oracle"]
     description: >
@@ -52,7 +51,6 @@ models:
     meta:
       blockchain: fantom
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
     config:
       tags: ["fantom", "chainlink", "oracle"]
     description: >
@@ -84,7 +82,6 @@ models:
     meta:
       blockchain: fantom
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["fantom", "chainlink", "oracle"]
     description: >
@@ -108,7 +105,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "fantom"]
     description: >
@@ -160,7 +156,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "fantom"]
     description: >
@@ -195,7 +190,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reverted", "transactions", "fantom"]
     description: >
@@ -222,7 +216,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "daily", "fantom"]
     description: >
@@ -267,7 +260,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "request", "daily", "fantom"]
     description: >
@@ -299,7 +291,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "transmission", "logs", "fantom"]
     description: >
@@ -335,7 +326,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "fantom"]
     description: >
@@ -357,7 +347,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "fantom"]
     description: >
@@ -381,7 +370,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "daily", "fantom"]
     description: >
@@ -406,7 +394,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "daily", "fantom"]
     description: >
@@ -435,7 +422,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "fantom"]
     description: >
@@ -467,7 +453,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "fantom"]
     description: >
@@ -494,7 +479,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "request", "daily", "fantom"]
     description: >
@@ -520,7 +504,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reverted", "transactions", "fantom"]
     description: >
@@ -547,7 +530,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "daily", "fantom"]
     description: >
@@ -572,7 +554,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "fantom"]
     description: >
@@ -588,7 +569,6 @@ models:
     meta:
       blockchain: fantom
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "daily", "fantom"]
     description: >
@@ -613,7 +593,6 @@ models:
       blockchain: "fantom"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "fulfilled", "transactions", "fantom"]
     description: >
@@ -641,7 +620,6 @@ models:
       blockchain: "fantom"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "gas", "daily", "fantom"]
     description: >
@@ -671,7 +649,6 @@ models:
       blockchain: "fantom"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "upkeep", "performed", "logs", "fantom"]
     description: >
@@ -707,7 +684,6 @@ models:
       blockchain: "fantom"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "request", "daily", "fantom"]
     description: >
@@ -734,7 +710,6 @@ models:
       blockchain: "fantom"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "reverted", "transactions", "fantom"]
     description: >
@@ -762,7 +737,6 @@ models:
       blockchain: "fantom"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "reward", "daily", "fantom"]
     description: >
@@ -790,7 +764,6 @@ models:
       blockchain: "fantom"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "performed", "fantom"]
     description: >
@@ -807,7 +780,6 @@ models:
       blockchain: "fantom"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "performed", "daily", "fantom"]
     description: >
@@ -831,7 +803,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "fulfilled", "transactions", "fantom"]
     description: >
@@ -858,7 +829,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "gas", "daily", "fantom"]
     description: >
@@ -886,7 +856,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "fantom"]
     description: >
@@ -919,7 +888,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "v1", "random", "request", "logs", "fantom"]
     description: >
@@ -955,7 +923,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "fantom"]
     description: >
@@ -988,7 +955,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "daily", "fantom"]
     description: >
@@ -1013,7 +979,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "reverted", "transactions", "fantom"]
     description: >
@@ -1040,7 +1005,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "reward", "daily", "fantom"]
     description: >
@@ -1066,7 +1030,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "fulfilled", "fantom"]
     description: >
@@ -1081,7 +1044,6 @@ models:
     meta:
       blockchain: "fantom"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "fantom"]
     description: >

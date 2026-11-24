@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: plasma
       sector: gas
-      contributors: krishhh
     config:
       tags: ['plasma', 'gas', 'fees']
     description: >

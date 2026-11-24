@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: xlayer
       sector: prices
-      contributors: tomfutago
     config:
       tags: ['prices', 'tokens', 'usd', 'xlayer']
     description: "Price tokens on xlayer EVM chain"

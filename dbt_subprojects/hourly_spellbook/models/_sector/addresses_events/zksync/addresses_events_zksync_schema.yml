@@ -6,7 +6,6 @@ models:
       blockchain: zksync
       sector: addresses_events
       project: addresses
-      contributors: hildobby, lgingerich
     config:
       tags: ['table', 'funded', 'addresses_events', 'zksync']
     description: "Table showing who first funded each zksync address in ETH"
@@ -56,7 +55,6 @@ models:
       blockchain: zksync
       sector: addresses_events
       project: addresses
-      contributors: Henrystats, lgingerich
     config:
       tags: ['table', 'activity', 'addresses_events', 'zksync']
     description: "Table showing first activity of each zksync Mainnet address"
@@ -96,7 +94,6 @@ models:
       blockchain: zksync
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'zksync']
     description: "Table showing which token was first received for each zksync address"

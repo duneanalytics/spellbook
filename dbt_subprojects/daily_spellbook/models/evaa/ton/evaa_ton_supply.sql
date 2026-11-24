@@ -8,8 +8,7 @@
        , unique_key = ['tx_hash', 'block_date'],
     post_hook='{{ expose_spells(\'["ton"]\',
                                    "project",
-                                   "evaa",
-                                   \'["pshuvalov"]\') }}'
+                                   "evaa") }}'
    )
  }}
 

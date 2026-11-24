@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       sector: nft
-      contributors: msilb7, dot2dotseurat
     config:
       tags: ['tokens', 'base', 'nft', 'erc721', 'erc1155']
     description: >
@@ -22,7 +21,6 @@ models:
     meta:
       blockchain: base
       sector: nft
-      contributors: msilb7, dot2dotseurat
     config:
       tags: [ 'tokens', 'base', 'nft', 'erc721', 'erc1155' ]
     description: >
@@ -48,7 +46,6 @@ models:
     meta:
       blockchain: base
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'nft','base' ]
     description: >

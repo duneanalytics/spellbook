@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "Circle's CCTP blockchains indexes"
@@ -22,7 +21,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "Across's blockchains indexes"
@@ -34,7 +32,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "Tether's blockchains indexes"
@@ -49,7 +46,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: connext
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "Connext's blockchains indexes"
@@ -61,7 +57,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: zkbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "zkBridge's blockchains indexes"
@@ -73,7 +68,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: zkbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "zkBridge's blockchains indexes"
@@ -93,7 +87,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "Symbiosis's blockchains indexes"
@@ -105,7 +98,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'token_indexes' ]
     description: "Axelar's token indexes for its ITS bridge"
@@ -123,7 +115,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'token_indexes' ]
     description: "Axelar's token indexes for its gateway bridge"
@@ -136,7 +127,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "Orbiter's blockchains indexes"
@@ -148,7 +138,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: layerzero
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "LayerZero's blockchains indexes"
@@ -163,7 +152,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: agglayer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "Agglayer's blockchains indexes"

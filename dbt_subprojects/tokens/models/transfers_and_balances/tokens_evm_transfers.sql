@@ -70,8 +70,7 @@
         , filtering_columns = ['block_month', 'blockchain']
         , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                         spell_type = "sector",
-                                        spell_name = "tokens_evm",
-                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke", "tomfutago"]\') }}'
+                                        spell_name = "tokens_evm") }}'
         )
 }}
 

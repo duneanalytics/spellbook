@@ -6,7 +6,6 @@ models:
       blockchain: zksync
       sector: lending
       project: zerolend
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'zksync']
     description: "All lending supply transactions on zkSync"
@@ -93,7 +92,6 @@ models:
       blockchain: zksync
       sector: lending
       project: zerolend
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'zerolend', 'zksync']
     description: "Zerolend supply transactions on zkSync"
@@ -131,7 +129,6 @@ models:
       blockchain: zksync
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'zksync']
     description: "Aave v3 supply transactions on zkSync"

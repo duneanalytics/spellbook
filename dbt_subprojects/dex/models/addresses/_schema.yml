@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum, base, bnb, ethereum, optimism, polygon
       sector: dex
       project: addresses
-      contributors: rantum
     config:
       tags: ['table', 'dex', 'addresses', 'arbitrum', 'base', 'bnb', 'ethereum', 'optimism', 'polygon']
     description: "Known decentralised exchange addresses"
@@ -25,7 +24,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: addresses
-      contributors: rantum
     config:
       tags: ['table', 'dex', 'addresses', 'arbitrum']
     description: "Known decentralised exchange addresses"
@@ -46,7 +44,6 @@ models:
       blockchain: base
       sector: dex
       project: addresses
-      contributors: rantum
     config:
       tags: ['table', 'dex', 'addresses', 'base']
     description: "Known decentralised exchange addresses"
@@ -67,7 +64,6 @@ models:
       blockchain: bnb
       sector: dex
       project: addresses
-      contributors: rantum
     config:
       tags: ['table', 'dex', 'addresses', 'bnb']
     description: "Known decentralised exchange addresses"
@@ -88,7 +84,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: addresses
-      contributors: soispoke, rantum
     config:
       tags: ['table', 'dex', 'addresses', 'ethereum']
     description: "Known decentralised exchange addresses"
@@ -109,7 +104,6 @@ models:
       blockchain: optimism
       sector: dex
       project: addresses
-      contributors: rantum
     config:
       tags: ['table', 'dex', 'addresses', 'optimism']
     description: "Known decentralised exchange addresses"
@@ -130,7 +124,6 @@ models:
       blockchain: polygon
       sector: dex
       project: addresses
-      contributors: rantum
     config:
       tags: ['table', 'dex', 'addresses', 'polygon']
     description: "Known decentralised exchange addresses"

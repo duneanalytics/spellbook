@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: algorand
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'algorand']
     description: "All CEX-tied addresses identified on Algorand"

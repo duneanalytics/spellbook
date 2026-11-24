@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: abstract, apechain. arbitrum, b3, base, berachain, blast, kaia, mode, optimism, sei, sonic
       project: pyth
-      contributors: gunboats
     config:
       tags: ['pyth', 'entropy', 'request', 'vrf']
     description: "Pyth Entropy request"

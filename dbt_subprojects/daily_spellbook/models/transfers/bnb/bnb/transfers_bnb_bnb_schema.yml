@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bnb
-      contributors: Henrystats
     config:
       tags: ['transfers', 'bnb', 'bnb']
     description: "bnb Transfers on bnb. This table is updated every 30 minutes."
@@ -53,7 +52,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bnb
-      contributors: Henrystats
     config:
       tags: ['transfers', 'bnb', 'bnb', 'agg_hour', 'Henrystats']
     data_tests:
@@ -84,7 +82,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bnb
-      contributors: Henrystats
     config:
       tags: ['transfers', 'bnb', 'bnb', 'agg_day', 'Henrystats']
     data_tests:
@@ -111,7 +108,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bnb
-      contributors: Henrystats
     description: "bnb Token Transfers on bnb per hour."
     config:
       tags: ['transfers', 'bnb', 'bnb', 'rolling_hour', 'Henrystats']
@@ -135,7 +131,6 @@ models:
       blockchain: bnb
       sector: transfers
       project: bnb
-      contributors: Henrystats
     description: "bnb Token Transfers on bnb per day."
     config:
       tags: ['transfers', 'bnb', 'bnb', 'rolling_day', 'Henrystats']

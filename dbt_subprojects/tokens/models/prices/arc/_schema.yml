@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arc
       sector: prices
-      contributors: 0xRob
     config:
       tags: ['prices', 'tokens', 'usd', 'arc']
     description: >

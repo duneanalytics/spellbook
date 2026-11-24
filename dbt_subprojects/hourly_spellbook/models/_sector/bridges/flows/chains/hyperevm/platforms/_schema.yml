@@ -6,7 +6,6 @@ models:
       blockchain: hyperevm
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v3 bridge deposits events on HyperEVM"
@@ -15,7 +14,6 @@ models:
       blockchain: hyperevm
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on HyperEVM"
@@ -24,7 +22,6 @@ models:
       blockchain: hyperevm
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'hyperevm', 'bridges', 'flows', 'deposits' ]
     description: "Tether's USDT0 v1 bridge deposits events on HyperEVM"
@@ -33,7 +30,6 @@ models:
       blockchain: hyperevm
       sector: bridges
       project: tether
-      contributors: [ 'hildobby']
     config:
       tags: [ 'hyperevm', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on HyperEVM"
@@ -42,7 +38,6 @@ models:
       blockchain: hyperevm
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'hyperevm', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on HyperEVM"

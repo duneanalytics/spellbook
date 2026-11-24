@@ -6,7 +6,6 @@ models:
       blockchain: plume
       sector: lending
       project: aave, compound, morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'morpho', 'plume']
     description: "All lending supply transactions on Plume"
@@ -93,7 +92,6 @@ models:
       blockchain: plume
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "plume"]
     description: "Morpho supply transactions on Plume"

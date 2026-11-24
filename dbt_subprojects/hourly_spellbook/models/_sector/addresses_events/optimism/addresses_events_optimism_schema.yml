@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'optimism']
     description: "Table showing who first funded each Optimism address in ETH"
@@ -55,7 +54,6 @@ models:
       blockchain: optimism
       sector: addresses_events
       project: addresses
-      contributors: Henrystats
     config:
       tags: ['table', 'activity', 'addresses_events', 'optimism']
     description: "Table showing first activity of each OP Mainnet address"
@@ -96,7 +94,6 @@ models:
       blockchain: optimism
       sector: addresses_events
       project: addresses
-      contributors: Henrystats
     config:
       tags: ['table', 'first_activity_path', 'addresses_events', 'optimism']
     description: "Table showing first activity path of each OP Mainnet address"
@@ -122,7 +119,6 @@ models:
       blockchain: optimism
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'optimism']
     description: "Table showing which token was first received for each Optimism address"

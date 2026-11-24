@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: trades
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['balancer', 'cowswap', 'gnosis', 'amm', 'trades']
     description: "Trades on Balancer CoWSwap AMM pools"
@@ -98,7 +97,6 @@ models:
       blockchain: gnosis
       sector: labels
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['labels', 'gnosis', 'balancer', 'pools']
     description: "Balancer CoWSwap AMM liquidity pools created on gnosis."

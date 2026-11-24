@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'bnb']
     description: "All CEX-tied addresses identified on BNB"

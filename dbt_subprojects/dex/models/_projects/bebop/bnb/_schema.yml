@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'bnb','bebop','jam','trades','dex' ]
     description: Bebop-JAM contract trades on bnb - formatted for dex.trades
@@ -108,7 +107,6 @@ models:
       blockchain: bnb
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'bnb','bebop','pmm','trades','dex', 'blend' ]
     description: Bebop-BLEND contract trades on bnb - formatted for dex.trades
@@ -160,7 +158,6 @@ models:
       blockchain: bnb
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'bnb','bebop','trades','dex' ]
     description: Bebop contract trades on bnb - formatted for dex.trades

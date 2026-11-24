@@ -12,8 +12,7 @@
     tags = ['thorchain', 'defi', 'daily_pool_stats', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
-                                  "thorchain",
-                                  \'["jeff-dude"]\') }}'
+                                  "thorchain") }}'
 ) }}
 
 WITH base AS (

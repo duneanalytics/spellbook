@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'ethereum' ]
     description: "EAS schema registry on Ethereum"
@@ -27,7 +26,6 @@ models:
       blockchain: ethereum
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'ethereum' ]
     description: "EAS schema registry details on Ethereum"
@@ -50,7 +48,6 @@ models:
       blockchain: ethereum
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'ethereum' ]
     description: "EAS attestations on Ethereum"
@@ -73,7 +70,6 @@ models:
       blockchain: ethereum
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'ethereum' ]
     description: "EAS attestation details on Ethereum"

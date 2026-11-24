@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: optimism_attestationstation
-      contributors: chuxin
     config:
       tags: ['optimism','attestation', 'attestationstation']
     description: >

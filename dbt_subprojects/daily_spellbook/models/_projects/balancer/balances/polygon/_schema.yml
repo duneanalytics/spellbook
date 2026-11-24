@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon
       project: balancer_v2
-      contributors: viniabussafi
     config:
       tags: ['polygon', 'bpt', 'supply', 'changes']
     description: >
@@ -69,7 +68,6 @@ models:
     meta:
       blockchain: polygon
       project: balancer_v2
-      contributors: viniabussafi
     config:
       tags: ['polygon', 'bpt', 'supply', 'changes']
     description: >

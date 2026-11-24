@@ -5,7 +5,6 @@ models:
     description: "Contract deployments on Robinhood, including function selectors, token flags, and bytecode."
     meta:
       blockchain: robinhood
-      contributors: karimhass
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:

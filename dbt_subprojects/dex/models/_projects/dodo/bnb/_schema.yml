@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex
       project: dodo_aggregator
-      contributors: owen05
     config:
       tags: ['bnb', 'dodo', 'aggregator', 'trades', 'dex']
     description: >

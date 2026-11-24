@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: zerion
-      contributors: hildobby
     config:
       tags: ['optimism', 'zerion', 'zerion', 'trades', 'dex']
     description: >

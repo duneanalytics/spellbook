@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'gnosis']
     description: "Table showing who first funded each Gnosis address in xDAI"
@@ -56,7 +55,6 @@ models:
       blockchain: gnosis
       sector: addresses_events
       project: addresses
-      contributors: Henrystats
     config:
       tags: ['table', 'activity', 'addresses_events', 'gnosis']
     description: "Table showing first activity of each Gnosis Mainnet address"
@@ -96,7 +94,6 @@ models:
       blockchain: gnosis
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'gnosis']
     description: "Table showing which token was first received for each Gnosis address"

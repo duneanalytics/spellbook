@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: funds
-      contributors: soispoke
     config:
       tags: ['labels', 'ethereum', 'funds']
     description: "Known funds addresses across chains"
@@ -47,7 +46,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: funds
-      contributors: hildobby, soispoke
     config:
       tags: ['labels', 'ethereum', 'funds']
     description: "Known funds addresses on Ethereum"

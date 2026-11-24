@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, celo, zksync, zora, scroll, mantle, blast, sei,
       sector: nft
-      contributors: hildobby, rantum, petertherock
       short_description: "All NFT token transfers (ERC721 and ERC1155) across supported chains, including sender, receiver, and token ID."
       docs_slug: /curated/nft-trades/evm/nft-transfers
     config:
@@ -87,7 +86,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -110,7 +108,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -134,7 +131,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -158,7 +154,6 @@ models:
     meta:
       blockchain: base
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -182,7 +177,6 @@ models:
     meta:
       blockchain: bnb
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -206,7 +200,6 @@ models:
     meta:
       blockchain: celo
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -230,7 +223,6 @@ models:
     meta:
       blockchain: fantom
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -254,7 +246,6 @@ models:
     meta:
       blockchain: gnosis
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -278,7 +269,6 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -302,7 +292,6 @@ models:
     meta:
       blockchain: polygon
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -326,7 +315,6 @@ models:
     meta:
       blockchain: zksync
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -350,7 +338,6 @@ models:
     meta:
       blockchain: zora
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -374,7 +361,6 @@ models:
     meta:
       blockchain: scroll
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -398,7 +384,6 @@ models:
     meta:
       blockchain: linea
       sector: nft
-      contributors: couralex
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -422,7 +407,6 @@ models:
     meta:
       blockchain: blast
       sector: nft
-      contributors: rantum
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -446,7 +430,6 @@ models:
     meta:
       blockchain: mantle
       sector: nft
-      contributors: rantum
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -470,7 +453,6 @@ models:
     meta:
       blockchain: sei
       sector: nft
-      contributors: petertherock
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -494,7 +476,6 @@ models:
     meta:
       blockchain: ronin
       sector: nft
-      contributors: petertherock
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -518,7 +499,6 @@ models:
     meta:
       blockchain: worldchain
       sector: nft
-      contributors: aalan3
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
@@ -542,7 +522,6 @@ models:
     meta:
       blockchain: kaia
       sector: nft
-      contributors: aalan3
     config:
       tags: [ 'nft', 'transfers' ]
     description: >

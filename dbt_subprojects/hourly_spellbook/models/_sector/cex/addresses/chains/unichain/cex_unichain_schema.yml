@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: unichain
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'unichain']
     description: "All CEX-tied addresses identified on Unichain"

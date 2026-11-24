@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'flashloans', 'aave', 'optimism']
     description: "All lending flashloans transactions on Optimism"
@@ -79,7 +78,6 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'optimism']
     description: "Aave v3 flashloans transactions on Optimism"
@@ -112,7 +110,6 @@ models:
       blockchain: optimism
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'granary', 'optimism']
     description: "Granary flashloans transactions on Optimism"
@@ -145,7 +142,6 @@ models:
       blockchain: optimism
       sector: lending
       project: balancer
-      contributors: hildobby
     config:
       tags: ['lending', 'flashloans', 'balancer', 'optimism']
     description: "Balancer flashloans transactions on Optimism"
@@ -175,7 +171,6 @@ models:
       blockchain: optimism
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'optimism']
     description: "Morpho flashloans transactions on Optimism"

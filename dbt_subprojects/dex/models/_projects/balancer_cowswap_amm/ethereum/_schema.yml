@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: trades
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['balancer', 'cowswap', 'ethereum', 'amm', 'trades']
     description: "Trades on Balancer CoWSwap AMM pools"
@@ -98,7 +97,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_cowswap_amm
-      contributors: viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer CoWSwap AMM liquidity pools created on Ethereum."

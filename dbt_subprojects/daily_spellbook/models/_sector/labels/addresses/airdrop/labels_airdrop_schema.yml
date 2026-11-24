@@ -16,7 +16,6 @@ models:
       sector: labels
       category: airdrop
       project: ['optimism']
-      contributors: soispoke
     config:
       tags: ['labels', 'airdrop', 'optimism']
     description: "Airdrop labels"   

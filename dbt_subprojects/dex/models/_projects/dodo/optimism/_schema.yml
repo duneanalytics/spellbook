@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: dodo_aggregator
-      contributors: owen05
     config:
       tags: ['optimism', 'dodo', 'aggregator', 'trades', 'dex']
     description: >

@@ -7,7 +7,6 @@ models:
       blockchain: arbitrum, avalanche_c, apechain, base, berachain, blast, bnb, celo, ethereum, fantom, gnosis, hemi, hyperevm, katana, linea, mantle, nova, optimism, polygon, scroll, sonic, zkevm, zksync
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Aggregator - formatted for dex.trades
@@ -66,7 +65,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: mlaegn
     config:
       tags: ['gnosis', 'sushiswap', 'pools']
     description: >

@@ -5,7 +5,6 @@ models:
    meta:
     blockchain: fantom
     sector: lending
-    contributors: hildobby
    config:
       tags: ['fantom', 'flashloans']
    description: >

@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: dex_aggregator
       project: kyberswap
-      contributors: nhd98z
     config:
       tags: ['polygon', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >

@@ -4,7 +4,6 @@ models:
   - name: prices_usd_latest
     meta:
       sector: prices
-      contributors: hildobby, 0xRob
       docs_slug: /curated/prices/prices_latest
     config:
       tags: ['prices', 'usd', 'latest']
@@ -34,7 +33,6 @@ models:
   - name: prices_usd_forward_fill
     meta:
       sector: prices
-      contributors: 0xRob
     config:
       tags: [ 'prices', 'usd', 'forward_fill' ]
     description: "Forward-filled USD token prices over the last 24 hours. Symbols are not unique across tokens (for example, ETH); always identify a token by (blockchain, contract_address)."
@@ -70,7 +68,6 @@ models:
   - name: prices_usd_daily
     meta:
       sector: prices
-      contributors: aalan3
       docs_slug: /curated/prices/prices_day
     config:
       tags: ['prices', 'usd', 'daily']
@@ -107,7 +104,6 @@ models:
 
   - name: prices_usd_native
     description: "Native token prices in USD"
-    contributors: krishhh
     columns:
       - name: blockchain
         description: "The blockchain name"

@@ -4,7 +4,6 @@ models:
   - name: balancer_pools_tokens_weights
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
     description: >
@@ -39,7 +38,6 @@ models:
   - name: balancer_pools_metrics_daily
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      contributors: viniabussafi, metacrypto
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >
@@ -88,7 +86,6 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      contributors: msilb7
     config:
       tags: ['balancer', 'amm', 'trades', 'dex', 'incentives']
     description: >
@@ -127,7 +124,6 @@ models:
   - name: balancer_view_pools_latest
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >
@@ -164,7 +160,6 @@ models:
     meta:
       blockchain: arbitrum, base, ethereum, gnosis
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['arbitrum', 'base', 'ethereum', 'gnosis', 'balancer', 'lbp']
     description: >

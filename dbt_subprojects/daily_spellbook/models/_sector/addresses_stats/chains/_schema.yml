@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: arc
       sector: addresses
-      contributors: karimhass
     data_tests:
       - check_seed:
           arguments:
@@ -41,7 +40,6 @@ models:
     meta:
       blockchain: robinhood
       sector: addresses
-      contributors: karimhass
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -70,7 +68,6 @@ models:
     meta:
       blockchain: ethereum
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Ethereum (first funded, contract flag). Use _updated_at for incremental reads."
@@ -109,7 +106,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Arbitrum"
@@ -132,7 +128,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Avalanche"
@@ -155,7 +150,6 @@ models:
     meta:
       blockchain: base
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Base"
@@ -178,7 +172,6 @@ models:
     meta:
       blockchain: bnb
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for BNB"
@@ -201,7 +194,6 @@ models:
     meta:
       blockchain: linea
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Linea"
@@ -224,7 +216,6 @@ models:
     meta:
       blockchain: optimism
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Optimism"
@@ -247,7 +238,6 @@ models:
     meta:
       blockchain: polygon
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Polygon"
@@ -270,7 +260,6 @@ models:
     meta:
       blockchain: zksync
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for zkSync"
@@ -293,7 +282,6 @@ models:
     meta:
       blockchain: monad
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Monad"
@@ -316,7 +304,6 @@ models:
     meta:
       blockchain: hyperevm
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for HyperEVM"
@@ -339,7 +326,6 @@ models:
     meta:
       blockchain: sei
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Sei"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: plasma
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['plasma', 'balancer', 'pools', 'liquidity']
     description: >

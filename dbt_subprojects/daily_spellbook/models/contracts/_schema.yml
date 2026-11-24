@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contract name mapping from Dune name to cleaned name."
@@ -23,7 +22,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on EVM chains. {{ doc('contract_mapping') }}"
@@ -140,7 +138,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'predeploy', 'addresses']
     description: "Mapping of predeploy contracts to its creators and names on EVM chains."
@@ -162,7 +159,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contract creator addresses and corresponding names."
@@ -179,7 +175,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts where we know their mapping, but their creator is not deterministic and the contracts are not verified."
@@ -193,7 +188,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
@@ -217,7 +211,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contract creator addresses that are non-deterministic (i.e. standard factories), and should not be used for contract mapping."
@@ -230,7 +223,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: msilb7
     config:
       tags: ['optimism','op','contracts','disperse']
     description: >
@@ -248,7 +240,6 @@ models:
     meta:
       blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
-      contributors: msilb7
     config:
       tags: ['optimism','op','contracts','predeploy','system']
     description: >

@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: ethereum, optimism, polygon
       project: keep3r_network
-      contributors: 0xr3x
 
     config:
       tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']

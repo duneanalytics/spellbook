@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: blobs
       project: blobs
-      contributors: msilb7, 0xRob, lorenz234, hildobby
     config:
       tags: ['blob', 'ethereum',]
     description: Blob table but enriched with size, blob version hash, blob submitter, base fee, ..
@@ -69,7 +68,6 @@ models:
       blockchain: ethereum
       sector: blobs
       project: blobs
-      contributors: msilb7, 0xRob, lorenz234, hildobby
     config:
       tags: ['blob', 'blobs', 'BLOB_TX_TYPE', 'L1', 'transaction']
     description: Blob submission transactions.
@@ -112,7 +110,6 @@ models:
       blockchain: ethereum
       sector: blobs
       project: blobs
-      contributors: hildobby
     config:
       tags: ['blob', 'blobs', 'ethereum']
     description: Blob submitting address tags
@@ -136,7 +133,6 @@ models:
       blockchain: ethereum
       sector: blobs
       project: blobs
-      contributors: hildobby
     config:
       tags: ['blob', 'blobs', 'ethereum']
     description: Blob submitting address tags

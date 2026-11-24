@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: near
       sector: cex
-      contributors: Sector920
     config:
       tags: ['cex','addresses', 'near']
     description: "All CEX-tied addresses identified on near"

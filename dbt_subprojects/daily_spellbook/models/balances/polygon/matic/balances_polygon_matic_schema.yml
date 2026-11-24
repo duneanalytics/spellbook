@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: balances
       project: matic
-      contributors: Henrystats
     config:
       tags: ['balances', 'polygon', 'matic', 'day', 'Henrystats']
     description: >
@@ -47,7 +46,6 @@ models:
       blockchain: polygon
       sector: balances
       project: matic
-      contributors: Henrystats
     config:
       tags: ['balances', 'polygon', 'matic', 'latest', 'Henrystats']
     description: >

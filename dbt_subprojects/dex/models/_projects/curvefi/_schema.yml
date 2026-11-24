@@ -7,7 +7,6 @@ models:
       blockchain: ethereum
       sector: dex
       project:  curvefi
-      contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'liquidity', 'curve']
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: solana
       sector: dex
       project: sanctum
-      contributors: [ senyor-kodi ]
     config:
       tags: ['solana','dex']
     description: >
@@ -22,7 +21,6 @@ models:
       blockchain: solana
       sector: dex
       project: sanctum
-      contributors: [ senyor-kodi ]
     config:
       tags: ['solana','dex']
     description: >

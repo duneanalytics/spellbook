@@ -11,8 +11,7 @@
     tags = ['thorchain', 'defi', 'pending_liquidity_events', 'fact', 'liquidity'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
-                                  "thorchain",
-                                  \'["jeff-dude"]\') }}'
+                                  "thorchain") }}'
 ) }}
 
 WITH base AS (

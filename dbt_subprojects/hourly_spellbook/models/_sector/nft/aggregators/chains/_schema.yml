@@ -37,7 +37,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: hildobby, soispoke
     config:
       tags: [ 'nft', 'ethereum', 'aggregators' ]
     description: >
@@ -54,7 +53,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: hildobby
     config:
       tags: [ 'nft', 'ethereum', 'aggregators' ]
     description: >
@@ -75,7 +73,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: hildobby, soispoke
     config:
       tags: [ 'nft', 'ethereum', 'aggregators' ]
     description: >
@@ -92,7 +89,6 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: hildobby, 0xRob
     config:
       tags: [ 'nft', 'ethereum', 'aggregators' ]
     description: >

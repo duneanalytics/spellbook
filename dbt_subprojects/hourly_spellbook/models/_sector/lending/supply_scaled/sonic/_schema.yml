@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sonic
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'sonic']
     description: "Hourly lending scaled supply on Sonic"
@@ -49,7 +48,6 @@ models:
       blockchain: sonic
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'sonic']
     description: "Hourly Aave v3 scaled supply on Sonic"

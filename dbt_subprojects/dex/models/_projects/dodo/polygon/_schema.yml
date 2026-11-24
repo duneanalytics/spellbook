@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: dex
       project: dodo_aggregator
-      contributors: owen05
     config:
       tags: ['polygon', 'dodo', 'aggregator', 'trades', 'dex']
     description: >

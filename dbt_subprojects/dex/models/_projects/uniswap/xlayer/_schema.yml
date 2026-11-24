@@ -7,7 +7,6 @@ models:
       blockchain: xlayer
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['xlayer', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -34,7 +33,6 @@ models:
       blockchain: xlayer
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['xlayer', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

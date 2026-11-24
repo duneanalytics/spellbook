@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: ape_store
-      contributors: whale_hunter
     config:
       tags: ["ethereum", "ape_store", "dex", "whale_hunter"]
     description: >

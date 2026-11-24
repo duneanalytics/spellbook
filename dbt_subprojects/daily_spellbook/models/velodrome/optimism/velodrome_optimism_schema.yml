@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: velodrome
-      contributors: msilb7
     config:
       tags: ['optimism','velodrome','velo','dex', 'incentives']
     description: >

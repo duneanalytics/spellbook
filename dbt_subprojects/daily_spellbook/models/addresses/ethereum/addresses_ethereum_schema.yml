@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: ofac
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'ofac', 'sanctioned', 'addresses', 'ethereum']
     description: "Known list of OFAC sanctioned addresses"
@@ -29,7 +28,6 @@ models:
       blockchain: ethereum
       sector: dex, defi
       project: addresses
-      contributors: umer_h_adil
     config:
       tags: ['table', 'dex', 'defi', 'addresses', 'ethereum']
     description: "Known DeFi addresses"
@@ -46,7 +44,6 @@ models:
       blockchain: ethereum
       sector: mev
       project: addresses
-      contributors: hildobby, rantum
     config:
       tags: ['table', 'MEV', 'addresses', 'ethereum']
     description: "Known MEV addresses"
@@ -61,7 +58,6 @@ models:
       blockchain: ethereum
       sector: l2_batch_submitters
       project: addresses
-      contributors: msilb7
     config:
       tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum']
     description: "Known L2 Batch Submitter Addresses"
@@ -86,7 +82,6 @@ models:
       blockchain: ethereum
       sector: l2_batch_submitters
       project: addresses
-      contributors: msilb7
     config:
       tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum', 'optimism']
     description: "Unique combinations of Optimism batch inbox addresses across versions"
@@ -109,7 +104,6 @@ models:
       blockchain: ethereum
       sector: l2_batch_submitters
       project: addresses
-      contributors: msilb7
     config:
       tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum', 'optimism']
     description: "Unique combinations of Optimism output oracle addresses across versions"

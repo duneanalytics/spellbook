@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celo', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Celo"
@@ -15,7 +14,6 @@ models:
       blockchain: celo
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celo', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Celo"
@@ -24,7 +22,6 @@ models:
       blockchain: celo
       sector: bridges
       project: layerzero
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celo', 'bridges', 'flows', 'deposits' ]
     description: "LayerZero's v1 bridge deposits events on Celo"

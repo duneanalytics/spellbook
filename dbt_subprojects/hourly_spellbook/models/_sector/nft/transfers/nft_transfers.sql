@@ -28,8 +28,7 @@
 	filtering_columns=['block_month', 'blockchain'],
 	post_hook='{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
 		spell_type = "sector",
-		spell_name = "nft",
-		contributors = \'["hildobby", "0xRob", "rantum", "petertherock"]\') }}',
+		spell_name = "nft") }}',
 ) }}
 
 -- ci-stamp: 3
