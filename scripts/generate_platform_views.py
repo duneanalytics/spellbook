@@ -47,7 +47,6 @@ models:
    meta:
      blockchain: {platform[1]}
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['nft', 'trades', '{platform[0]}']
    description: "NFT trades view for {platform[0]}"
@@ -60,8 +59,7 @@ models:
         materialized = 'view',
         post_hook='{{{{ expose_spells(\\\'{platform[1]}\\\',
                                     "project",
-                                    "{platform[0]}",
-                                    \\\'["0xRob"]\\\') }}}}')
+                                    "{platform[0]}") }}}}')
 }}}}
 
 SELECT *

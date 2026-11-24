@@ -1,4 +1,5 @@
-{% macro expose_dataset(blockchains, contributors) %}
+{# Keep the unused argument for existing positional and keyword post-hook calls. #}
+{% macro expose_dataset(blockchains, contributors=none) %}
   {%- if target.name == 'prod' -%}
     {%- set properties = {
             'dune.created_by': 'dbt_spellbook',
@@ -6,7 +7,6 @@
             'dune.visible': 'true',
             'dune.data_explorer.blockchains':  blockchains | as_text,
             'dune.data_explorer.category': 'third_party_data',
-            'dune.data_explorer.contributors': contributors | as_text,
           } -%}
     {%- do apply_filtering_columns(properties) -%}
     {%- do apply_unique_key_columns(properties) -%}

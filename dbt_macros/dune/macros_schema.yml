@@ -75,7 +75,7 @@ macros:
   - name: private_data_explorer
     description: >
       Prod post-hook: set dune.public false and dune.visible true with data explorer abstraction metadata
-      (no contributors). For team-private relations that should still appear in the explorer for entitled users.
+      for team-private relations that should still appear in the explorer for entitled users.
     arguments:
       - name: blockchains
         type: string

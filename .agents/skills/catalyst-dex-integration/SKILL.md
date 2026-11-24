@@ -30,7 +30,6 @@ fallback sequence when `query_id` is required: create query with `createDuneQuer
 ## conventions
 - **execution order:** numbered items = execute sequentially. any step that says "run" or "execute" is blocking; complete it before proceeding.
 - **code patterns:** use existing chain patterns as reference (e.g. `dbt_subprojects/dex/models/trades/kaia/`, `.../mezo/`). ordering: mimic existing; if unclear, append. swap chain name in: file paths, model names, schema entries, `blockchain` values.
-- **contributors:** new files: set git username only. existing files: append git username.
 
 ## prep vars
 - retrieve chain metadata: run this sql via the ad-hoc sql sequence above: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). extract: `chain_id`, `name` (display name), `token_address` (native token).
