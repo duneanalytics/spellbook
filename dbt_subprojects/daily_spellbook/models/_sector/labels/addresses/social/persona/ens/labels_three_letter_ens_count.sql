@@ -25,7 +25,7 @@ SELECT
     'social' as category,
     TIMESTAMP '2022-03-03' as created_at,
     now() as updated_at,
-    'personas' as label_type,
+    'persona' as label_type,
     concat('Number of three letter ENS Domains owned: ', CAST(ens_count AS VARCHAR)) as name
 FROM three_letter_ens_count
 WHERE owner is not null
