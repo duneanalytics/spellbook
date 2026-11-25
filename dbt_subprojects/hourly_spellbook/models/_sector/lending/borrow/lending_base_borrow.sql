@@ -14,6 +14,7 @@
 {%
   set models = [
     ref('lending_arbitrum_base_borrow'),
+    ref('lending_arc_base_borrow'),
     ref('lending_avalanche_c_base_borrow'),
     ref('lending_base_base_borrow'),
     ref('lending_bnb_base_borrow'),
