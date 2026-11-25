@@ -174,6 +174,7 @@ models:
       tags: ['lending', 'borrow', 'compound', 'benqi', 'avalanche_c']
     description: "Benqi borrow transactions on Avalanche_c"
     data_tests:
+      - lending_base_borrow_liquidation_counted_once
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:

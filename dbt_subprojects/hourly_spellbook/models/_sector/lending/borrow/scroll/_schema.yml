@@ -133,6 +133,7 @@ models:
       tags: ['lending', 'borrow', 'compound', 'layer_bank', 'scroll']
     description: "LayerBank borrow transactions on Scroll"
     data_tests:
+      - lending_base_borrow_liquidation_counted_once
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
