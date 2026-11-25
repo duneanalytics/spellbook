@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: nft
-      contributors: 0xManny
     config:
       tags: ['tokens', 'avalanche_c', 'nft', 'erc721', 'erc1155']
     description: >
@@ -24,7 +23,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'tokens', 'avalanche_c', 'nft', 'erc721', 'erc1155' ]
     description: >
@@ -52,7 +50,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'nft','avalanche_c' ]
     description: >

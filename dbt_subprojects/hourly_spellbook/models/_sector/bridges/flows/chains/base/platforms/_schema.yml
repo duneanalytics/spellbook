@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Circle's CCTP v1 bridge deposits events on Base"
@@ -23,7 +22,6 @@ models:
       blockchain: base
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Circle's CCTP v1 bridge withdrawals events on Base"
@@ -40,7 +38,6 @@ models:
       blockchain: base
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Celer v1 bridge deposits events on Base"
@@ -57,7 +54,6 @@ models:
       blockchain: base
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Celer v1 bridge withdrawals events on Base"
@@ -74,7 +70,6 @@ models:
       blockchain: base
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Across's v2 bridge deposits events on Base"
@@ -83,7 +78,6 @@ models:
       blockchain: base
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Base"
@@ -92,7 +86,6 @@ models:
       blockchain: base
       sector: bridges
       project: butter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Butter's v2 bridge deposits events on Base"
@@ -101,7 +94,6 @@ models:
       blockchain: base
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Base"
@@ -110,7 +102,6 @@ models:
       blockchain: base
       sector: bridges
       project: synapse
-      contributors: [ 'hildobby']
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'deposits' ]
     description: "Synapse's RFQ bridge deposits events on Base"
@@ -119,7 +110,6 @@ models:
       blockchain: base
       sector: bridges
       project: synapse
-      contributors: [ 'hildobby']
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
     description: "Synapse's RFQ bridge withdrawals events on Base"
@@ -128,7 +118,6 @@ models:
       blockchain: base
       sector: bridges
       project: zkbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on Base"
@@ -137,7 +126,6 @@ models:
       blockchain: base
       sector: bridges
       project: beamer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v2 bridge deposits events on Base"
@@ -146,7 +134,6 @@ models:
       blockchain: base
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Base"
@@ -155,7 +142,6 @@ models:
       blockchain: base
       sector: bridges
       project: connext
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on Base"
@@ -164,7 +150,6 @@ models:
       blockchain: base
       sector: bridges
       project: nitro
-      contributors: [ 'hildobby']
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Base"
@@ -174,7 +159,6 @@ models:
       blockchain: base
       sector: bridges
       project: beamer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v3 bridge deposits events on Base"
@@ -183,7 +167,6 @@ models:
       blockchain: base
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Base"

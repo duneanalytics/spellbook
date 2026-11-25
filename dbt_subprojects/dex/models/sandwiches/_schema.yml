@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora, mantle, unichain
       sector: dex
-      contributors: hildobby, agaperste
       docs_slug: /curated/dex-trades/evm/dex-sandwiches
     config:
       tags: ["dex", "mev", "sandwiches"]
@@ -97,7 +96,6 @@ models:
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
       sector: dex
-      contributors: hildobby
       docs_slug: /curated/dex-trades/evm/dex-sandwiched
     config:
       tags: ["dex", "mev", "sandwiched"]
@@ -140,7 +138,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "ethereum"]
     description: >
@@ -182,7 +179,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "arbitrum"]
     description: >
@@ -224,7 +220,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "avalanche_c"]
     description: >
@@ -266,7 +261,6 @@ models:
     meta:
       blockchain: bnb
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "bnb"]
     description: >
@@ -308,7 +302,6 @@ models:
     meta:
       blockchain: fantom
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "fantom"]
     description: >
@@ -350,7 +343,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "gnosis"]
     description: >
@@ -392,7 +384,6 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "optimism"]
     description: >
@@ -434,7 +425,6 @@ models:
     meta:
       blockchain: polygon
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "polygon"]
     description: >
@@ -476,7 +466,6 @@ models:
     meta:
       blockchain: base
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "base"]
     description: >
@@ -518,7 +507,6 @@ models:
     meta:
       blockchain: zksync
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "zksync"]
     description: >
@@ -560,7 +548,6 @@ models:
     meta:
       blockchain: celo
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "celo"]
     description: >
@@ -602,7 +589,6 @@ models:
     meta:
       blockchain: scroll
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "scroll"]
     description: >
@@ -644,7 +630,6 @@ models:
     meta:
       blockchain: zora
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiches", "zora"]
     description: >
@@ -686,7 +671,6 @@ models:
     meta:
       blockchain: sei
       sector: dex
-      contributors: hildobby, silointern
     config:
       tags: ["dex", "mev", "sandwiches", "sei"]
     description: >
@@ -728,7 +712,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "ethereum"]
     description: >
@@ -770,7 +753,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "arbitrum"]
     description: >
@@ -812,7 +794,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "avalanche_c"]
     description: >
@@ -854,7 +835,6 @@ models:
     meta:
       blockchain: bnb
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "bnb"]
     description: >
@@ -896,7 +876,6 @@ models:
     meta:
       blockchain: fantom
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "fantom"]
     description: >
@@ -938,7 +917,6 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "gnosis"]
     description: >
@@ -980,7 +958,6 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "optimism"]
     description: >
@@ -1022,7 +999,6 @@ models:
     meta:
       blockchain: polygon
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "polygon"]
     description: >
@@ -1064,7 +1040,6 @@ models:
     meta:
       blockchain: base
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "base"]
     description: >
@@ -1106,7 +1081,6 @@ models:
     meta:
       blockchain: celo
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "celo"]
     description: >
@@ -1148,7 +1122,6 @@ models:
     meta:
       blockchain: zksync
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "zksync"]
     description: >
@@ -1190,7 +1163,6 @@ models:
     meta:
       blockchain: scroll
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "scroll"]
     description: >
@@ -1232,7 +1204,6 @@ models:
     meta:
       blockchain: zora
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "zora"]
     description: >
@@ -1274,7 +1245,6 @@ models:
     meta:
       blockchain: sei
       sector: dex
-      contributors: hildobby, silointern
     config:
       tags: ["dex", "mev", "sandwiched", "sei"]
     description: >
@@ -1315,7 +1285,6 @@ models:
     meta:
       blockchain: ethereum, bnb, base
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "whitelist"]
     description: >
@@ -1332,7 +1301,6 @@ models:
     meta:
       blockchain: ethereum, bnb, base
       sector: dex
-      contributors: hildobby
     config:
       tags: ["dex", "mev", "sandwiched", "whitelist"]
     description: >

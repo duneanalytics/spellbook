@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: dex
       project: curvefi
-      contributors: Henrystats
     config:
       tags: ['fantom','pool_tokens', 'curvefi','dex']
     description: >

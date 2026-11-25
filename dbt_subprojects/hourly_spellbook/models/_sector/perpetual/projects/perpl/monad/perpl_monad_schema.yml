@@ -6,7 +6,6 @@ models:
       blockchain: monad
       sector: perpetual
       project: perpl
-      contributors: kkqzhou
     config:
       tags: ['monad', 'perpetual', 'perpl', 'perps']
     description: >

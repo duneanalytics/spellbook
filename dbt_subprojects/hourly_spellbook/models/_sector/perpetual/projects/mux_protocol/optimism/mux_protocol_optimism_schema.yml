@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: mux_protocol
-      contributors: sofiat
     config:
       tags: ['optimism']
     description: >
@@ -91,7 +90,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: mux_protocol
-      contributors: sofiat
     config:
       tags: ['optimism']
     description: >

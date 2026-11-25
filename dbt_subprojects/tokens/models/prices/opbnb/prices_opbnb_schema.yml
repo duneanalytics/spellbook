@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: opbnb
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'opbnb']
     description: "Price tokens on opBNB chain"

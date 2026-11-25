@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sonic
       sector: lending
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "aave", "sonic"]
     description: "All lending supply transactions on Sonic"
@@ -92,7 +91,6 @@ models:
       blockchain: sonic
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "aave", "sonic"]
     description: "Aave v3 supply transactions on Sonic"
@@ -130,7 +128,6 @@ models:
       blockchain: sonic
       sector: lending
       project: Pike
-      contributors: brunota20
     config:
       tags: ["lending", "supply", "pike", "sonic"]
     description: "Pike supply transactions on Sonic"
@@ -168,7 +165,6 @@ models:
       blockchain: sonic
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "sonic"]
     description: "Morpho supply transactions on Sonic"

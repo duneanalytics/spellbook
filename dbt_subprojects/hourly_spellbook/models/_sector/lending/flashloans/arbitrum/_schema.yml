@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'flashloans', 'aave', 'arbitrum']
     description: "All lending flashloans transactions on Arbitrum"
@@ -79,7 +78,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'arbitrum']
     description: "Aave v3 flashloans transactions on Arbitrum"
@@ -112,7 +110,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: radiant
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'radiant', 'arbitrum']
     description: "Radiant flashloans transactions on Arbitrum"
@@ -145,7 +142,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'granary', 'arbitrum']
     description: "Granary flashloans transactions on Arbitrum"
@@ -178,7 +174,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: balancer
-      contributors: hildobby
     config:
       tags: ['lending', 'flashloans', 'balancer', 'arbitrum']
     description: "Balancer flashloans transactions on Arbitrum"
@@ -208,7 +203,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'arbitrum']
     description: "Morpho flashloans transactions on Arbitrum"

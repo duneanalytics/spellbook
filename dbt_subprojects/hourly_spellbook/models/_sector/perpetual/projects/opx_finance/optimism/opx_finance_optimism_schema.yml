@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: opx_finance
-      contributors: kaiblade
     config:
       tags: ['optimism', 'opx_finance', 'perpetuals', 'perps', trades]
     description: >
@@ -94,7 +93,6 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: kaiblade
     config:
       tags: ['optimism', 'perpetuals', 'perps']
     description: >

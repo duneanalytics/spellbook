@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'avalanche_c']
     description: "All Aave transactions involving borrow transactions on Avalanche C"
@@ -71,7 +70,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'avalanche_c']
     description: "All Aave transactions involving flashloans transactions on Avalanche C"
@@ -103,7 +101,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'avalanche_c']
     description: "All Aave transactions involving supply transactions on Avalanche C"
@@ -136,7 +133,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'avalanche_c']
     description: "All Aave market transactions on Avalanche C"
@@ -176,7 +172,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'avalanche_c']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'avalanche_c']
     description: "Hourly aggregated lending market interest rates"

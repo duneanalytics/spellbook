@@ -7,7 +7,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
@@ -109,7 +106,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
@@ -138,7 +134,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
@@ -193,7 +188,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
@@ -228,7 +222,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
@@ -263,7 +256,6 @@ models:
       blockchain: optimism
       sector: dex
       project: velodrome
-      contributors: Henrystats
     config:
       tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >

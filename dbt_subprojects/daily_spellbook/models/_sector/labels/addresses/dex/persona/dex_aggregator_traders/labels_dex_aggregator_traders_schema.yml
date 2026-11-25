@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, gnosis, fantom, arbitrum, polygon, optimism
       sector: labels
       category: dex
-      contributors: gentrexha
     config:
       tags: ['labels', 'dex', 'dex_aggregator']
     description: "DEX traders query labels across chains"

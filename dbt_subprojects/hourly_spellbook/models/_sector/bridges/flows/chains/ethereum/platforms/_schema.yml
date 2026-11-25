@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Circle's CCTP v1 bridge deposits events on Ethereum"
@@ -23,7 +22,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: cctp
-      contributors: [ 'hildobby']
     config:
       tags: [ 'circle', 'bridges', 'flows' , 'withdrawals' ]
     description: "Circle's CCTP v1 bridge withdrawals events on Ethereum"
@@ -40,7 +38,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
     description: "Celer v1 bridge deposits events on Ethereum"
@@ -57,7 +54,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer v1 bridge withdrawals events on Ethereum"
@@ -74,7 +70,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v1 bridge deposits events on Ethereum"
@@ -83,7 +78,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v2 bridge deposits events on Ethereum"
@@ -92,7 +86,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Ethereum"
@@ -101,7 +94,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v3 bridge deposits events on Ethereum"
@@ -110,7 +102,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Ethereum"
@@ -119,7 +110,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: ronin
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ronin', 'bridges', 'flows' , 'deposits' ]
     description: "Ronin's native v1 bridge deposits events on Ethereum"
@@ -128,7 +118,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: ronin
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ronin', 'bridges', 'flows' , 'withdrawals' ]
     description: "Ronin's native v1 bridge withdrawals events on Ethereum"
@@ -137,7 +126,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: ronin
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ronin', 'bridges', 'flows' , 'deposits' ]
     description: "Ronin's native v2 bridge deposits events on Ethereum"
@@ -146,7 +134,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: ronin
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ronin', 'bridges', 'flows' , 'withdrawals' ]
     description: "Ronin's native v2 bridge withdrawals events on Ethereum"
@@ -155,7 +142,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: lighter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Lighter's v1 bridge deposits events on Ethereum"
@@ -164,7 +150,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: lighter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Lighter's v1 bridge withdrawals events on Ethereum"
@@ -173,7 +158,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: avalanche_c_native
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
     description: "Arbitrum's v1 native bridge deposits events on Ethereum"
@@ -182,7 +166,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: avalanche_c_native
-      contributors: [ 'hildobby']
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
     description: "Arbitrum's v1 native bridge deposits events on Ethereum"
@@ -191,7 +174,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: zksync
-      contributors: [ 'hildobby']
     config:
       tags: [ 'zksync', 'bridges', 'flows' , 'deposits' ]
     description: "zkSync's v2 bridge deposits events on Ethereum"
@@ -200,7 +182,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: zksync
-      contributors: [ 'hildobby']
     config:
       tags: [ 'zksync', 'bridges', 'flows' , 'withdrawals' ]
     description: "zkSync's v2 bridge withdrawals events on Ethereum"
@@ -209,7 +190,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
     description: "Arbitrum's v1 native bridge deposits events on Ethereum"
@@ -218,7 +198,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
     description: "Arbitrum's v1 native bridge withdrawals events on Ethereum"
@@ -227,7 +206,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: blast
-      contributors: [ 'hildobby']
     config:
       tags: [ 'blast', 'bridges', 'flows' , 'deposits' ]
     description: "Blast's v1 native bridge deposits events on Ethereum"
@@ -236,7 +214,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: blast
-      contributors: [ 'hildobby']
     config:
       tags: [ 'blast', 'bridges', 'flows' , 'withdrawals' ]
     description: "Blast's v1 native bridge withdrawals events on Ethereum"
@@ -245,7 +222,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: sui
-      contributors: [ 'hildobby']
     config:
       tags: [ 'sui', 'bridges', 'flows' , 'withdrawals' ]
     description: "Sui's v1 native bridge deposits events on Ethereum"
@@ -254,7 +230,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: sui
-      contributors: [ 'hildobby']
     config:
       tags: [ 'sui', 'bridges', 'flows' , 'withdrawals' ]
     description: "Sui's v1 native bridge withdrawals events on Ethereum"
@@ -263,7 +238,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: synapse
-      contributors: [ 'hildobby']
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'deposits' ]
     description: "Synapse's RFQ bridge deposits events on Ethereum"
@@ -272,7 +246,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: synapse
-      contributors: [ 'hildobby']
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
     description: "Synapse's RFQ bridge withdrawals events on Ethereum"
@@ -281,7 +254,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: zkbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on Ethereum"
@@ -290,7 +262,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: near
-      contributors: [ 'hildobby']
     config:
       tags: [ 'near', 'bridges', 'flows' , 'withdrawals' ]
     description: "Near's rainbow v1 bridge deposits events on Ethereum"
@@ -299,7 +270,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: beamer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v2 bridge deposits events on Ethereum"
@@ -308,7 +278,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: beamer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v3 bridge deposits events on Ethereum"
@@ -317,7 +286,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: polygon
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows' , 'deposits' ]
     description: "Polygon's v1 native bridge deposits events on Ethereum"
@@ -326,7 +294,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: polygon
-      contributors: [ 'hildobby']
     config:
       tags: [ 'polygon', 'bridges', 'flows' , 'withdrawals' ]
     description: "Polygon's v1 native bridge withdrawals events on Ethereum"
@@ -335,7 +302,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: allbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
     description: "Allbridge's v1 classic bridge deposits events on Ethereum"
@@ -344,7 +310,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: nitro
-      contributors: [ 'hildobby']
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Ethereum"
@@ -353,7 +318,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Ethereum"
@@ -362,7 +326,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: connext
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on Ethereum"
@@ -371,7 +334,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Ethereum"
@@ -380,7 +342,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: agglayer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'agglayer', 'bridges', 'flows' , 'deposits' ]
     description: "Agglayer's shared bridge deposits events on Ethereum"
@@ -389,7 +350,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: agglayer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'agglayer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Agglayer's shared bridge withdrawals events on Ethereum"
@@ -398,7 +358,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Ethereum"
@@ -407,7 +366,6 @@ models:
       blockchain: ethereum
       sector: bridges
       project: layerzero
-      contributors: [ 'hildobby']
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
     description: "LayerZero's v1 bridge deposits events on Ethereum"

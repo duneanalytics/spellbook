@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: social
       project: friend3
-      contributors: hildobby
     config:
       tags: ['table', 'social', 'bnb', 'trades', 'friend3']
     description: "Friend3 basic trades info"
@@ -76,7 +75,6 @@ models:
     meta:
       blockchain: bnb
       sector: social
-      contributors: hildobby
     config:
       tags: ['table', 'social', 'bnb', 'trades', 'friend3']
     description: "social trades on Avalanche"

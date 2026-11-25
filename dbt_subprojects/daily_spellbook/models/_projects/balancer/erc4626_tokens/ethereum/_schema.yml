@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'token', 'mapping']
     description: >
@@ -35,7 +34,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'token', 'prices']
     description: >

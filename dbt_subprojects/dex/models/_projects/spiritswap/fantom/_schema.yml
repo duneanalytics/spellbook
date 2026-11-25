@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: fantom
       sector: dex
-      contributors: Henrystats
     config:
       tags: ['fantom']
     description: >

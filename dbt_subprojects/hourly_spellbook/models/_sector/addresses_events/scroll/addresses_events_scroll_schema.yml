@@ -6,7 +6,6 @@ models:
       blockchain: scroll
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'scroll']
     description: "Table showing who first funded each scroll address in ETH"
@@ -56,7 +55,6 @@ models:
       blockchain: scroll
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'activity', 'addresses_events', 'scroll']
     description: "Table showing first activity of each scroll Mainnet address"
@@ -96,7 +94,6 @@ models:
       blockchain: scroll
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'scroll']
     description: "Table showing which token was first received for each Scroll address"

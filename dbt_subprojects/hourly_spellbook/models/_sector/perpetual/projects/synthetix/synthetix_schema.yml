@@ -6,7 +6,6 @@ models:
       blockchain: optimism, base
       sector: perpetual
       project: synthetix
-      contributors: msilb7, drethereum, rplust, Henrystats
     config:
       tags: ['optimism', 'base', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps','cross-chain']
     description: >

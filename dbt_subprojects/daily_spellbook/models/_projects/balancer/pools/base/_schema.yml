@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['base', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -33,7 +32,6 @@ models:
     meta:
       blockchain: base
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['base', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -55,7 +53,6 @@ models:
     meta:
       blockchain: base
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['base', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -77,7 +74,6 @@ models:
     meta:
       blockchain: base
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['base', 'balancer', 'lbp']
     description: >

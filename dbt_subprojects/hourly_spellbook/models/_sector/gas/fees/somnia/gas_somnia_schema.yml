@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: somnia
       sector: gas
-      contributors: krishhh
     config:
       tags: ['somnia', 'gas', 'fees']
     description: >

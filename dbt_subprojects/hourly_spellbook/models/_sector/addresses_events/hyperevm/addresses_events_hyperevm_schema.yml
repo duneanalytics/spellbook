@@ -6,7 +6,6 @@ models:
       blockchain: hyperevm
       sector: addresses_events
       project: addresses
-      contributors: kryptaki
     config:
       tags: ['table', 'funded', 'addresses_events', 'hyperevm']
     description: "Table showing who first funded each HyperEVM address with native token"
@@ -48,7 +47,6 @@ models:
       blockchain: hyperevm
       sector: addresses_events
       project: addresses
-      contributors: kryptaki
     config:
       tags: ['table', 'activity', 'addresses_events', 'hyperevm']
     description: "Table showing first activity of each HyperEVM address"
@@ -82,7 +80,6 @@ models:
       blockchain: hyperevm
       sector: addresses_events
       project: addresses
-      contributors: kryptaki
     config:
       tags: ['table', 'received', 'addresses_events', 'hyperevm']
     description: "Table showing which token was first received for each HyperEVM address"

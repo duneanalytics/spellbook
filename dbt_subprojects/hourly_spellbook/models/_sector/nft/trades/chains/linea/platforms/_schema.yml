@@ -6,7 +6,6 @@ models:
      blockchain: linea
      sector: nft
      project: element
-     contributors: ['hildobby' ]
    config:
      tags: [ 'linea', 'nft', 'trades', 'element' ]
    description: "element base trades"

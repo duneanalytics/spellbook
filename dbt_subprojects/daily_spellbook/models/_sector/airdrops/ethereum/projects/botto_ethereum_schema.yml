@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: botto
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'botto']
     description: "List of claim transactions for the $BOTTO airdrop"

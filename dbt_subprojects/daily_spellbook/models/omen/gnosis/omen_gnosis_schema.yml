@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: dex
       project: omen
-      contributors: hdser
     config:
       tags: ['gnosis', 'trades', 'omen', 'dex']
     description: >
@@ -71,7 +70,6 @@ models:
       blockchain: gnosis
       sector: dex
       project: omen
-      contributors: hdser
     config:
       tags: ['gnosis', 'liquidity', 'omen', 'dex']
     description: >

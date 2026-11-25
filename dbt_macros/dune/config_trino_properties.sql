@@ -58,11 +58,8 @@
   {%- endif -%}
 {%- endmacro -%}
 
-{% macro expose_spells(blockchains, spell_type, spell_name, contributors) %}
-  {%- set validated_contributors = tojson(fromjson(contributors | as_text)) -%}
-  {%- if ("%s" % validated_contributors) == "null" -%}
-    {%- do exceptions.raise_compiler_error("Invalid contributors '%s'. The list of contributors must be valid JSON." % contributors) -%}
-  {%- endif -%}
+{# Keep the unused argument for existing positional and keyword post-hook calls. #}
+{% macro expose_spells(blockchains, spell_type, spell_name, contributors=none) %}
   {%- if target.name == 'prod' -%}
     {%- set properties = {
             'dune.created_by': 'dbt_spellbook',
@@ -72,7 +69,6 @@
             'dune.data_explorer.category': 'abstraction',
             'dune.data_explorer.abstraction.type': spell_type,
             'dune.data_explorer.abstraction.name': spell_name,
-            'dune.data_explorer.contributors': validated_contributors,
             'dune.data_explorer.freshness': var('freshness'),
             'dune.vacuum': '{"enabled":true}'
           } -%}

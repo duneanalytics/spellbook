@@ -4,7 +4,6 @@ models:
   - name: raydium_v3_base_trades_backfill
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','microbatch' ]
     description: >
@@ -18,7 +17,6 @@ models:
   - name: raydium_v3_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -32,7 +30,6 @@ models:
   - name: raydium_v3_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','dex']
     description: >
@@ -134,7 +131,6 @@ models:
   - name: raydium_version_clmm_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >
@@ -143,7 +139,6 @@ models:
   - name: raydium_v4_solana_stg_decoded_swaps
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','raydium' ]
       event_time: block_date
@@ -175,7 +170,6 @@ models:
   - name: raydium_v4_base_trades_backfill
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','microbatch' ]
     description: >
@@ -189,7 +183,6 @@ models:
   - name: raydium_v4_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -203,7 +196,6 @@ models:
   - name: raydium_v4_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','dex']
     description: >
@@ -242,7 +234,6 @@ models:
   - name: raydium_v5_solana_stg_decoded_swaps
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','raydium' ]
       event_time: block_date
@@ -256,7 +247,6 @@ models:
   - name: raydium_v5_base_trades_backfill
     meta:
       blockchain: solana
-      contributors: [ 0xsharples ]
     config:
       tags: [ 'solana','dex','microbatch' ]
     description: >
@@ -270,7 +260,6 @@ models:
   - name: raydium_v5_base_trades
     meta:
       blockchain: solana
-      contributors: [ 0xsharples ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -284,7 +273,6 @@ models:
   - name: raydium_v5_trades
     meta:
       blockchain: solana
-      contributors: [ 0xsharples ]
     config:
       tags: ['solana','dex']
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: polygon, arbitrum, ethereum, bnb, base, optimism, scroll, zksync, avalanche_c
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: ['bebop', 'trades', 'dex', 'intents', 'rfq', 'jam']
     description: Bebop trades - formatted for dex.trades

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bitcoin
       sector: prices
-      contributors: cryptokoryo
     config:
       tags: ['prices', 'tokens', 'usd', 'bitcoin' ]
     description: "Price tokens on bitcoin chain"

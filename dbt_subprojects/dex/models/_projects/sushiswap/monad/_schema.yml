@@ -6,7 +6,6 @@ models:
       blockchain: monad
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'monad','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on monad - formatted for dex.trades

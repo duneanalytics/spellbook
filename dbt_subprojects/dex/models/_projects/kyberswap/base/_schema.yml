@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: dex_aggregator
       project: kyberswap
-      contributors: Henrystats
     config:
       tags: ['base', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >

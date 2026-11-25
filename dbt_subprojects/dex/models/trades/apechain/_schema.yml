@@ -24,7 +24,6 @@ models:
       blockchain: apechain
       sector: dex
       project: camelot
-      contributors: hosuke
     config:
       tags: ["apechain", "dex", "trades", "camelot"]
     description: "Camelot apechain base trades"

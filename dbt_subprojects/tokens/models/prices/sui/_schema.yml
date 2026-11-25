@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sui
       sector: prices
-      contributors: krishhh
     config:
       tags: ['prices', 'tokens', 'usd', 'sui']
     description: "Price tokens on SUI chain"

@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: airdrop
       project: pangolin
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'avalanche_c', 'claim', 'pangolin']
     description: "List of claim transactions for the $PNG airdrop"

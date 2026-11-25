@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: dex
       project: odos
-      contributors: sofiat
     config:
       tags: ['base','trades', 'odos','dex']
     description: >
@@ -106,7 +105,6 @@ models:
       blockchain: base
       sector: dex
       project: odos
-      contributors: sofiat
     config:
       tags: ['base','trades', 'odos','dex']
     description: >

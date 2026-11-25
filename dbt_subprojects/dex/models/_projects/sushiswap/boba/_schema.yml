@@ -6,7 +6,6 @@ models:
       blockchain: boba
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'boba','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on boba - formatted for dex.trades

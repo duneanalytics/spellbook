@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: abstract
      project: magiceden
-     contributors: hildobby
    config:
      tags: [ 'magiceden','abstract','events' ]
    description: >

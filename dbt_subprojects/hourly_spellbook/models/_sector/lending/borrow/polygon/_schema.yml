@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave, compound, maybeYonas, pyor_xyz
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'polygon']
     description: "All lending borrow transactions on Polygon"
@@ -93,7 +92,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'polygon']
     description: "Aave v2 borrow transactions on Polygon"
@@ -133,7 +131,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'polygon']
     description: "Aave v3 borrow transactions on Polygon"
@@ -173,7 +170,6 @@ models:
       blockchain: polygon
       sector: lending
       project: compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'borrow', 'compound', 'polygon']
     description: "Compound v3 borrow transactions on Ethereum"
@@ -213,7 +209,6 @@ models:
       blockchain: polygon
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'morpho', 'polygon']
     description: "Morpho borrow transactions on Polygon"

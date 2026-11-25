@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["avalanche_c", "chainlink", "oracle"]
     description: >
@@ -52,7 +51,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
     config:
       tags: ["avalanche_c", "chainlink", "oracle"]
     description: >
@@ -84,7 +82,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["avalanche_c", "chainlink", "oracle"]
     description: >
@@ -108,7 +105,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "avalanche_c"]
     description: >
@@ -160,7 +156,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "avalanche_c"]
     description: >
@@ -195,7 +190,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reverted", "transactions", "avalanche_c"]
     description: >
@@ -222,7 +216,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "daily", "avalanche_c"]
     description: >
@@ -267,7 +260,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "request", "daily", "avalanche_c"]
     description: >
@@ -299,7 +291,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags:
         ["chainlink", "ocr", "reward", "transmission", "logs", "avalanche_c"]
@@ -336,7 +327,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "avalanche_c"]
     description: >
@@ -358,7 +348,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags:
         [
@@ -391,7 +380,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "daily", "avalanche_c"]
     description: >
@@ -416,7 +404,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "daily", "avalanche_c"]
     description: >
@@ -445,7 +432,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "avalanche_c"]
     description: >
@@ -477,7 +463,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "avalanche_c"]
     description: >
@@ -504,7 +489,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "request", "daily", "avalanche_c"]
     description: >
@@ -530,7 +514,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reverted", "transactions", "avalanche_c"]
     description: >
@@ -557,7 +540,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "daily", "avalanche_c"]
     description: >
@@ -582,7 +564,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "avalanche_c"]
     description: >
@@ -598,7 +579,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags:
         ["chainlink", "fm", "reward", "evt", "transfer", "daily", "avalanche_c"]
@@ -624,7 +604,6 @@ models:
       blockchain: "avalanche_c"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags:
         ["chainlink", "automation", "fulfilled", "transactions", "avalanche_c"]
@@ -653,7 +632,6 @@ models:
       blockchain: "avalanche_c"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "gas", "daily", "avalanche_c"]
     description: >
@@ -683,7 +661,6 @@ models:
       blockchain: "avalanche_c"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags:
         [
@@ -727,7 +704,6 @@ models:
       blockchain: "avalanche_c"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "request", "daily", "avalanche_c"]
     description: >
@@ -754,7 +730,6 @@ models:
       blockchain: "avalanche_c"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags:
         ["chainlink", "automation", "reverted", "transactions", "avalanche_c"]
@@ -783,7 +758,6 @@ models:
       blockchain: "avalanche_c"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "reward", "daily", "avalanche_c"]
     description: >
@@ -811,7 +785,6 @@ models:
       blockchain: "avalanche_c"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "performed", "avalanche_c"]
     description: >
@@ -828,7 +801,6 @@ models:
       blockchain: "avalanche_c"
       sector: oracle
       project: chainlink
-      contributors: "linkpool_jon"
     config:
       tags: ["chainlink", "automation", "performed", "daily", "avalanche_c"]
     description: >
@@ -852,7 +824,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "fulfilled", "transactions", "avalanche_c"]
     description: >
@@ -879,7 +850,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "gas", "daily", "avalanche_c"]
     description: >
@@ -907,7 +877,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags:
         ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "avalanche_c"]
@@ -941,7 +910,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags:
         ["chainlink", "vrf", "v1", "random", "request", "logs", "avalanche_c"]
@@ -978,7 +946,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags:
         ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "avalanche_c"]
@@ -1012,7 +979,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "daily", "avalanche_c"]
     description: >
@@ -1037,7 +1003,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "reverted", "transactions", "avalanche_c"]
     description: >
@@ -1064,7 +1029,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "reward", "daily", "avalanche_c"]
     description: >
@@ -1090,7 +1054,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "fulfilled", "avalanche_c"]
     description: >
@@ -1105,7 +1068,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "avalanche_c"]
     description: >
@@ -1128,7 +1090,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "feeds", "daily", "avalanche_c"]
     description: >
@@ -1154,7 +1115,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "feeds", "avalanche_c"]
     description: >
@@ -1169,7 +1129,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "logs", "avalanche_c"]
     description: >
@@ -1197,7 +1156,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags:
         ["chainlink", "read", "requests", "requester", "daily", "avalanche_c"]
@@ -1226,7 +1184,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "requester", "avalanche_c"]
     description: >
@@ -1244,7 +1201,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "avalanche_c"]
     description: >
@@ -1271,7 +1227,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "gas", "daily", "avalanche_c"]
     description: >
@@ -1300,7 +1255,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "request", "daily", "avalanche_c"]
     description: >
@@ -1323,7 +1277,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reverted", "transactions", "avalanche_c"]
     description: >
@@ -1348,7 +1301,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reward", "daily", "avalanche_c"]
     description: >
@@ -1374,7 +1326,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "avalanche_c"]
     description: >
@@ -1398,7 +1349,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "avalanche_c"]
     description: >
@@ -1426,7 +1376,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "traces", "avalanche_c"]
     description: >
@@ -1461,7 +1410,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags:
         ["chainlink", "ccip", "tokens", "transferred", "logs", "avalanche_c"]
@@ -1496,7 +1444,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "transferred", "avalanche_c"]
     description: >
@@ -1526,7 +1473,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "avalanche_c"]
     description: >
@@ -1553,7 +1499,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "avalanche_c"]
     description: >
@@ -1580,7 +1525,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "logs", "avalanche_c"]
     description: >
@@ -1604,7 +1548,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "paid", "logs", "avalanche_c"]
     description: >
@@ -1633,7 +1576,6 @@ models:
       blockchain: "avalanche_c"
 
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "avalanche_c"]
     description: >
@@ -1657,7 +1599,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "avalanche_c"]
     description: >
@@ -1694,7 +1635,6 @@ models:
     meta:
       blockchain: "avalanche_c"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "avalanche_c"]
     description: >

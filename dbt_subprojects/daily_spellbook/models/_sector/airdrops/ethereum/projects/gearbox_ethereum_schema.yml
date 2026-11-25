@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: gearbox
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'gearbox']
     description: "List of claim transactions for the $GEAR airdrop"

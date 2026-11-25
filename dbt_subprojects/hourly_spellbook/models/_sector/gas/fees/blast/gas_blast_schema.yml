@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: blast
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['blast', 'gas', 'fees']
     description: >

@@ -6,7 +6,6 @@ models:
      blockchain: celo
      sector: nft
      project: tofu
-     contributors: tomfutago
    config:
      tags: ['celo', 'nft', 'trades', 'tofu']
    description: "Tofu base trades"

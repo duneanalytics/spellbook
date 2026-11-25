@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sei
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['sei', 'gas', 'fees']
     description: >

@@ -7,7 +7,6 @@ models:
       blockchain: arbitrum
       sector: rwa
       project: rwa
-      contributors: maybeYonas, pyor_xyz
 
     config:
       tags: ['rwa', 'tokens']
@@ -44,7 +43,6 @@ models:
       blockchain: arbitrum
       sector: rwa
       project: rwa
-      contributors: maybeYonas, pyor_xyz
 
     config:
       tags: ['rwa', 'tokens']
@@ -74,7 +72,6 @@ models:
       blockchain: arbitrum
       sector: rwa
       project: rwa
-      contributors: maybeYonas, pyor_xyz
 
     config:
       tags: ['rwa', 'balances']

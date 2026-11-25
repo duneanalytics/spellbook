@@ -6,7 +6,6 @@ models:
       blockchain: nova
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'nova']
     description: "Table showing who first funded each Linea address in ETH"
@@ -55,7 +54,6 @@ models:
       blockchain: nova
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'activity', 'addresses_events', 'nova']
     description: "Table showing first activity of each nova Mainnet address"
@@ -96,7 +94,6 @@ models:
       blockchain: nova
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'nova']
     description: "Table showing which token was first received for each nova address"

@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: openocean
-      contributors: thevaizman
     config:
       tags: [ 'optimism', 'openocean', 'trades', 'dex', 'aggregator' ]
     description: >

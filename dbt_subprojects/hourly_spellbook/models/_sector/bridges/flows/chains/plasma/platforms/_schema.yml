@@ -6,7 +6,6 @@ models:
       blockchain: plasma
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v3 bridge deposits events on Plasma"
@@ -15,7 +14,6 @@ models:
       blockchain: plasma
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Plasma"

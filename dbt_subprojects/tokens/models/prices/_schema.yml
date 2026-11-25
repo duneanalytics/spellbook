@@ -10,7 +10,6 @@ models:
           The prices.solana_hour table provides historical price information for each token. The prices are calculated as the volume weighted average price at the hourly level from our dex_solana.prices_block table.
           If there are no trades at a given interval, the previous price is used until a new trade occurs.
           It is recommended to use the contract_address to refer to a token rather than the token symbol as blockchains do not enforce unique token symbols. 
-      contributors: couralex, jeff-dude, 0xRob
     config:
       tags: [ 'prices', 'hourly']
   
@@ -23,7 +22,6 @@ models:
           The prices.solana_day table provides historical price information for each token. The prices are calculated as the volume weighted average price at the day level from our dex_solana.prices_block table.
           If there are no trades at a given interval, the previous price is used until a new trade occurs.
           It is recommended to use the contract_address to refer to a token rather than the token symbol as blockchains do not enforce unique token symbols. 
-      contributors: couralex, jeff-dude, 0xRob
     config:
       tags: [ 'prices', 'daily']
   
@@ -36,14 +34,12 @@ models:
           The prices.solana_minute table provides historical price information for each token. The prices are calculated as the volume weighted average price at the minute level from our dex_solana.prices_block table.
           If there are no trades at a given interval, the previous price is used until a new trade occurs.
           It is recommended to use the contract_address to refer to a token rather than the token symbol as blockchains do not enforce unique token symbols. 
-      contributors: couralex, jeff-dude, 0xRob
     config:
       tags: [ 'prices', 'daily']
     
   - name: prices_tokens
     meta:
       sector: prices
-      contributors: aalan3, hildobby, pipistrella, viniabussafi, jeff-dude, hosuke
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens list mapping CoinPaprika API Ids to token metadata"
@@ -73,7 +69,6 @@ models:
   - name: prices_native_tokens
     meta:
       sector: prices
-      contributors: aalan3, jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens for native tokens for all chains"

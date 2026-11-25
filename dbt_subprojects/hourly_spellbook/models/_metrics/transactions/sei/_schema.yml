@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: sei
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'sei','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: sei
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'sei','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

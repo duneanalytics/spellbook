@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       project: aragon
-      contributors: Henrystats 
     config:
       tags: [ 'gnosis', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client']
     description: >
@@ -53,7 +52,6 @@ models:
     meta:
       blockchain: gnosis
       project: aragon
-      contributors: Henrystats 
     config:
       tags: [ 'gnosis', 'dao', 'aragon', 'dao creator tools', 'Henrystats']
     description: >

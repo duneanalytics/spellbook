@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'polygon' ]
     description: "EAS schema registry on Polygon"
@@ -27,7 +26,6 @@ models:
       blockchain: polygon
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'polygon' ]
     description: "EAS schema registry details on Polygon"
@@ -50,7 +48,6 @@ models:
       blockchain: polygon
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'polygon' ]
     description: "EAS attestations on Polygon"
@@ -73,7 +70,6 @@ models:
       blockchain: polygon
       sector: attestation
       project: eas
-      contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'polygon' ]
     description: "EAS attestation details on Polygon"

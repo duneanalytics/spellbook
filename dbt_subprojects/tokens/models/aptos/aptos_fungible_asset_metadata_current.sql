@@ -5,8 +5,7 @@
     ,
     post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
         spell_type = "project",
-        spell_name = "fungible_asset",
-        contributors = \'["ying-w"]\') }}'
+        spell_name = "fungible_asset") }}'
 ) }}
 
 WITH latest_metadata AS (

@@ -6,7 +6,6 @@ models:
       blockchain: polygon, optimism, bnb, avalanche_c, arbitrum, gnosis
       sector: dex
       project: zerion
-      contributors: hildobby
     config:
       tags: ['zerion', 'trades', 'dex', 'polygon', 'optimism', 'bnb', 'avalanche_c', 'arbitrum', 'gnosis']
     description: >

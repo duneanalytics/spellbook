@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: validators
-      contributors: soispoke
     config:
       tags: ['labels', 'ethereum', 'validators']
     description: "Known validators exchange addresses on Ethereum"
@@ -47,7 +46,6 @@ models:
       blockchain: bnb
       sector: labels
       project: validators
-      contributors: soispoke
     config:
       tags: ['labels', 'bnb', 'validators']
     description: "Known validators exchange addresses on BNB chain"
@@ -68,7 +66,6 @@ models:
       blockchain: bnb
       sector: labels
       project: validators
-      contributors: soispoke
     config:
       tags: ['labels', 'solana', 'validators']
     description: "Known validators exchange addresses on Solana"
@@ -89,7 +86,6 @@ models:
       blockchain: ethereum, bnb, solana
       sector: labels
       project: validators
-      contributors: soispoke
     config:
       tags: ['labels', 'ethereum', 'bnb', 'solana', 'validators']
     description: "Known validators exchange addresses across blockchains"

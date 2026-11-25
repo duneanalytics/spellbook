@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: corn
       sector: gas
-      contributors: 0xRob, hosuke
     config:
       tags: ['corn', 'gas', 'fees']
     description: >

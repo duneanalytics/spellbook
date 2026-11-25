@@ -11,7 +11,6 @@ models:
             - order_hash
     meta:
       blockchain: solana
-      contributors: [grkhr]
     config:
       tags: ['solana','oneinch','fusion']
     description: >
@@ -117,7 +116,6 @@ models:
             - transfer_trace_address
     meta:
       blockchain: solana
-      contributors: [grkhr]
     config:
       tags: ['solana','oneinch']
     description: >
@@ -153,7 +151,6 @@ models:
             - unique_key
     meta:
       blockchain: solana
-      contributors: [grkhr]
       docs_slug: /trading/solana/oneinch-trades
     config:
       tags: ['solana','oneinch']
@@ -252,7 +249,6 @@ models:
             - block_month
     meta:
       blockchain: solana
-      contributors: [grkhr]
     config:
       tags: ['solana','oneinch']
     description: >

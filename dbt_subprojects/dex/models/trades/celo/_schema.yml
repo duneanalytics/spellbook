@@ -24,7 +24,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, tomfutago
     config:
       tags: [ 'celo', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap celo v3 base trades"
@@ -46,7 +45,6 @@ models:
       blockchain: celo
       sector: dex
       project: mento
-      contributors: tomfutago
     config:
       tags: ['celo', 'dex', 'trades', 'mento']
     description: "Mento trades on Celo"
@@ -67,7 +65,6 @@ models:
       blockchain: celo
       sector: dex
       project: mento
-      contributors: tomfutago
     config:
       tags: ['celo', 'dex', 'trades', 'mento']
     description: "Mento trades on Celo"
@@ -88,7 +85,6 @@ models:
       blockchain: celo
       sector: dex
       project: curvefi
-      contributors: tomfutago
     config:
       tags: ['celo', 'dex', 'trades', 'curvefi']
     description: "Curvefi Celo base trades"
@@ -108,7 +104,6 @@ models:
       blockchain: celo
       sector: dex
       project: sushiswap
-      contributors: tomfutago
     config:
       tags: ['celo', 'dex', 'trades', 'sushiswap']
     description: "Sushiswap Celo base trades"
@@ -128,7 +123,6 @@ models:
       blockchain: celo
       sector: dex
       project: ubeswap
-      contributors: tomfutago
     config:
       tags: ['celo', 'dex', 'trades', 'ubeswap']
     description: "Ubeswap Celo base trades"
@@ -148,7 +142,6 @@ models:
       blockchain: celo
       sector: dex
       project: carbonhood
-      contributors: tomfutago
     config:
       tags: ['celo', 'dex', 'trades', 'carbonhood']
     description: "Carbonhood trades on Celo"
@@ -168,7 +161,6 @@ models:
       blockchain: celo
       sector: dex
       project: carbon_defi
-      contributors: tiagofilipenunes
     config:
       tags: ["celo", "dex", "trades", "carbon_defi"]
     description: "Carbon_defi celo base trades"
@@ -188,7 +180,6 @@ models:
       blockchain: celo
       sector: dex
       project: gooddollar_reserve
-      contributors: tomfutago
     config:
       tags: ['celo', 'dex', 'trades', 'gooddollar_reserve']
     description: "Gooddollar Reserve trades on Celo"
@@ -207,7 +198,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['celo', 'dex', 'trades', 'Uniswap V4']
     description: "Uniswap V4 Trades on Celo"
@@ -228,7 +218,6 @@ models:
       blockchain: celo
       sector: dex
       project: velodrome
-      contributors: cursor
     config:
       tags: [ 'celo', 'dex', 'trades', 'velodrome', 'v2_cl' ]
     description: "velodrome celo concentrated liquidity base trades"

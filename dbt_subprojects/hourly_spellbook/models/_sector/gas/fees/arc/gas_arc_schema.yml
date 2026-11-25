@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arc
       sector: gas
-      contributors: 0xRob
     config:
       tags: ['arc', 'gas', 'fees']
     description: >

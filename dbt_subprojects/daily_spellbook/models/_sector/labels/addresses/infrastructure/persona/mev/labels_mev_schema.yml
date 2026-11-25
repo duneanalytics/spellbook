@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, optimism, polygon, arbitrum
       sector: labels
       project: mev
-      contributors: hildobby
     config:
       tags: ['labels', 'ethereum', 'MEV']
     description: "Known MEV wallets on Ethereum"

@@ -24,7 +24,6 @@ models:
       blockchain: sophon
       sector: dex
       project: syncswap
-      contributors: lgingerich
     config:
       tags: [ 'sophon', 'dex', 'trades', 'syncswap' ]
     description: "SyncSwap V2 sophon base trades"

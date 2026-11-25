@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'base']
     description: "All Aave transactions involving borrow transactions on Base"
@@ -71,7 +70,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'base']
     description: "All Aave transactions involving flashloans transactions on Base"
@@ -103,7 +101,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'base']
     description: "All Aave transactions involving supply transactions on Base"
@@ -136,7 +133,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'base']
     description: "All Aave market transactions on Base"
@@ -176,7 +172,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'base']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'base']
     description: "Hourly aggregated lending market interest rates"
@@ -221,7 +215,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'base']
     description: "Hourly aggregated lending market interest rates"

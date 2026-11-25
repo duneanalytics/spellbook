@@ -7,7 +7,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: tomfutago, hildobby, Henrystats
     config:
       tags: ['celo', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['celo', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: tomfutago, hildobby, Henrystats
     config:
       tags: ['celo', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -110,7 +107,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['celo', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
     description: >
@@ -148,7 +144,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['celo', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -203,7 +198,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['celo', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -238,7 +232,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['celo', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -272,7 +265,6 @@ models:
     meta:
       blockchain: celo
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -288,7 +280,6 @@ models:
       blockchain: celo
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['celo', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -315,7 +306,6 @@ models:
       blockchain: celo
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['celo', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

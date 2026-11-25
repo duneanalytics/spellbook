@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       project: tofu
-      contributors: [ theachenyj ]
     config:
       tags: [ 'bnb','tofu','v1','events' ]
     description: >
@@ -21,7 +20,6 @@ models:
       blockchain: bnb
       sector: nft
       project: liquidifty
-      contributors: bizzyvinci
     config:
       tags: [ 'liquidifty', 'nft', 'trades' ]
     description: "NFT trades on liquidifty on BNB blockchain"
@@ -35,7 +33,6 @@ models:
     meta:
       blockchain: bnb
       project: nftb
-      contributors: [ scoffie ]
     config:
       tags: [ 'bnb','nftb','v1','events' ]
     description: >
@@ -50,7 +47,6 @@ models:
     meta:
       blockchain: bnb
       project: nftrade
-      contributors: [ Henrystats ]
     config:
       tags: [ 'bnb','nftrade','v1','events' ]
     description: >

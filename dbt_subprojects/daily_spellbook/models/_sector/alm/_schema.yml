@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: ethereum
       sector: alm
-      contributors: 0xrusowsky
     config:
       tags: [ 'alm', 'trades' ]
     data_tests:

@@ -11,7 +11,6 @@ models:
             - tx_id
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','jupiter','perps']
     description: >
@@ -63,7 +62,6 @@ models:
             - input_mint
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','jupiter','swaps']
     description: >
@@ -123,7 +121,6 @@ models:
             - input_mint
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','jupiter','swaps']
     description: >
@@ -143,7 +140,6 @@ models:
             - input_mint
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','jupiter','swaps']
     description: >
@@ -161,7 +157,6 @@ models:
             - inner_instruction_index
     meta:
       blockchain: solana
-      contributors: [Eekeyguy]
     config:
       tags: ['solana','jupiter','swaps']
     description: >
@@ -230,7 +225,6 @@ models:
             - jup_version
     meta:
       blockchain: solana
-      contributors: [ilemi]
       docs_slug: /curated/dex-trades/solana/jupiter-aggregator-trades
     config:
       tags: ['solana','jupiter','swaps']
@@ -241,7 +235,6 @@ models:
   - name: jupiter_solana_amms
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['static']
     description: >

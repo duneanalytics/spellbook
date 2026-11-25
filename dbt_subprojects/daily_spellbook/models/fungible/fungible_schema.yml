@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, base
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'base', 'transfers']
     description: >

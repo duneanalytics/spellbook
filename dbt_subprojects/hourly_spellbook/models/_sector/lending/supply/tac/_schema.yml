@@ -6,7 +6,6 @@ models:
       blockchain: tac
       sector: lending
       project: aave, compound, morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'morpho', 'tac']
     description: "All lending supply transactions on Tac"
@@ -93,7 +92,6 @@ models:
       blockchain: tac
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "tac"]
     description: "Morpho supply transactions on Tac"

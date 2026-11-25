@@ -22,7 +22,6 @@ models:
       blockchain: flare
       sector: dex
       project: dex
-      contributors: hosuke
     config:
       tags: ['flare', 'dex', 'trades']
     description: >
@@ -33,7 +32,6 @@ models:
       blockchain: flare
       sector: dex
       project: enosys
-      contributors: hosuke
     config:
       tags: [ 'flare', 'dex', 'trades', 'enosys', 'v2' ]
     description: "Enosys V2 Flare base trades"
@@ -49,7 +47,6 @@ models:
       blockchain: flare
       sector: dex
       project: sparkdex
-      contributors: hosuke
     config:
       tags: ['flare', 'dex', 'trades', 'sparkdex', 'v2']
     description: "SparkDex (UniswapV2 fork) base trades on Flare"
@@ -70,7 +67,6 @@ models:
       blockchain: flare
       sector: dex
       project: sparkdex
-      contributors: hosuke
     config:
       tags: [ 'flare', 'dex', 'trades', 'sparkdex', 'v3' ]
     description: "SparkDex (UniswapV3 fork) base trades on Flare"
@@ -91,7 +87,6 @@ models:
       blockchain: flare
       sector: dex
       project: blazeswap
-      contributors: hosuke
     config:
       tags: [ 'flare', 'dex', 'trades', 'blazeswap' ]
     description: "Blazeswap Flare base trades"

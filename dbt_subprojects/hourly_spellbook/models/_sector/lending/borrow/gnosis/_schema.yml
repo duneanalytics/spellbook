@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: agave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'gnosis']
     description: "All lending borrow transactions on Gnosis"
@@ -93,7 +92,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: agave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'agave', 'gnosis']
     description: "Agave borrow transactions on Gnosis"
@@ -131,7 +129,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'gnosis']
     description: "Aave v3 borrow transactions on Gnosis"
@@ -169,7 +166,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: realt_rmm
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'realt_rmm', 'gnosis']
     description: "RealT RMM v1 borrow transactions on Gnosis"
@@ -209,7 +205,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: realt_rmm
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'realt_rmm', 'gnosis']
     description: "RealT RMM v2 borrow transactions on Gnosis"
@@ -249,7 +244,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: spark
-      contributors: hdser
     config:
       tags: ['lending', 'borrow', 'aave', 'spark', 'gnosis']
     description: "Spark Protocol borrow transactions on Gnosis Chain"

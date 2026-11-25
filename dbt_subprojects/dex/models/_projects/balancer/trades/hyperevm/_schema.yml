@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: hyperevm
       sector: dex
-      contributors: gustavobftorres
     config:
       tags: ['balancer', 'hyperevm', 'amm', 'trades', 'dex']
     description: >
@@ -111,7 +110,6 @@ models:
     meta:
       blockchain: hyperevm
       sector: dex
-      contributors: gustavobftorres
     config:
       tags: [ 'balancer', 'hyperevm', 'amm', 'trades', 'dex', 'beta' ]
     description: >

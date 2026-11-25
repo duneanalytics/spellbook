@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: apechain
       sector: perpetual
-      contributors: principatel
     config:
       tags: ['apechain', 'perpetuals', 'perps', 'gains_network','cross-chain']
     description: >
@@ -89,7 +88,6 @@ models:
   #   meta:
   #     blockchain: base
   #     sector: perpetual
-  #     contributors: princi
   #   config:
   #     tags: ['base', gains network, 'perpetuals', 'perps']
   #   description: >

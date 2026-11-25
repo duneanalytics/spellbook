@@ -4,7 +4,6 @@ models:
   - name: jupiterz_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana', 'dex', 'jupiterz' ]
     description: JupiterZ DEX base trades on Solana.
@@ -17,7 +16,6 @@ models:
   - name: jupiterz_solana_trades
     meta:
       blockchain: solana
-      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana', 'dex', 'jupiterz' ]
     description: JupiterZ DEX trades on Solana (from dex_solana_trades).

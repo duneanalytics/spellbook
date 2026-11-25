@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      contributors: msilb7
     config:
       tags: ['curve','curvefi', 'amm', 'trades', 'dex', 'incentives', 'optimism']
     description: >

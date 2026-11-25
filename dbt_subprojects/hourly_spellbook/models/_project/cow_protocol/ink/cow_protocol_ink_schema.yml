@@ -10,7 +10,6 @@ models:
     meta:
       blockchain: ink
       project: cow_protocol
-      contributors: data-cowwboy
     config:
       tags: ["ink", "cow_protocol", "solver"]
     description: >
@@ -19,7 +18,6 @@ models:
     meta:
       blockchain: ink
       project: cow_protocol
-      contributors: data-cowwboy
     config:
       tags: ["ink", "cow_protocol", "trades", "dex", "aggregator", "auction"]
     description: >
@@ -33,7 +31,6 @@ models:
     meta:
       blockchain: ink
       project: cow_protocol
-      contributors: data-cowwboy
     config:
       tags: [ "ink", "cow_protocol", "eth-flow", "orders"]
     description: >

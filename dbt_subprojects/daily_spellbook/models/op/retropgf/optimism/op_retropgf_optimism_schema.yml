@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: op_retropgf
-      contributors: msilb7
 
     config:
       tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
@@ -44,7 +43,6 @@ models:
     meta:
       blockchain: optimism
       project: op_retropgf
-      contributors: msilb7
 
     config:
       tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
@@ -66,7 +64,6 @@ models:
     meta:
       blockchain: optimism
       project: op_retropgf
-      contributors: msilb7
 
     config:
       tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']
@@ -85,7 +82,6 @@ models:
     meta:
       blockchain: optimism
       project: op_retropgf
-      contributors: msilb7
 
     config:
       tags: ['optimism', 'retropgf', 'rpgf', 'public goods', 'OP']

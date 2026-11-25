@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: agave
-      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'flashloans', 'aave', 'gnosis']
     description: "All lending flashloans transactions on Gnosis"
@@ -79,7 +78,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: agave
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'agave', 'gnosis']
     description: "Agave flashloans transactions on Gnosis"
@@ -112,7 +110,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'gnosis']
     description: "Aave flashloans transactions on Gnosis"
@@ -145,7 +142,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: realt_rmm
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'realt_rmm', 'gnosis']
     description: "RealT RMM v1 flashloans transactions on Gnosis"
@@ -180,7 +176,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: realt_rmm
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'realt_rmm', 'gnosis']
     description: "RealT RMM v2 flashloans transactions on Gnosis"
@@ -215,7 +210,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: balancer
-      contributors: hildobby
     config:
       tags: ['lending', 'flashloans', 'balancer', 'gnosis']
     description: "Balancer flashloans transactions on Gnosis"
@@ -245,7 +239,6 @@ models:
       blockchain: gnosis
       sector: lending
       project: spark
-      contributors: hdser
     config:
       tags: ['lending', 'flashloans', 'aave', 'spark', 'gnosis']
     description: "Spark Protocol flashloans transactions on Gnosis Chain"

@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: dex
       project: mento
-      contributors: tomfutago
     config:
       tags: ['celo', 'mento', 'dex', 'pools']
     description: >
@@ -55,7 +54,6 @@ models:
       blockchain: celo
       sector: dex
       project: mento
-      contributors: tomfutago
     config:
       tags: ['celo', 'mento', 'dex', 'pools']
     description: >
@@ -77,7 +75,6 @@ models:
       blockchain: celo
       sector: dex
       project: mento
-      contributors: tomfutago
     config:
       tags: ['celo', 'mento', 'dex', 'pools']
     description: >

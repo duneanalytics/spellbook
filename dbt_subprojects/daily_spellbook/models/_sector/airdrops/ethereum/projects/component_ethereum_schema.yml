@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: component
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'component']
     description: "List of claim transactions for the $CMP airdrop"

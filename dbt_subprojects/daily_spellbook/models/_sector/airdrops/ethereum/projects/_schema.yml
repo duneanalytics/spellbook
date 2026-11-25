@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: cow_protocol
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'cow_protocol']
     description: "List of claim transactions for the $COW airdrop"
@@ -23,7 +22,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: dydx
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'dydx' ]
     description: "List of claim transactions for the $DYDX airdrop"
@@ -40,7 +38,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: gitcoin
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'gitcoin' ]
     description: "List of claim transactions for the $GTC airdrop"
@@ -57,7 +54,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: paraswap
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'paraswap' ]
     description: "List of claim transactions for the $PSP airdrop"
@@ -74,7 +70,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: pooltogether
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'pooltogether' ]
     description: "List of claim transactions for the $POOL airdrop"
@@ -91,7 +86,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: sudoswap
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'sudoswap' ]
     description: "List of claim transactions for the $SUDO airdrop"
@@ -108,7 +102,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: tornado_cash
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'tornado_cash' ]
     description: "List of claim transactions for the $TORN airdrop"
@@ -125,7 +118,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: safe
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'safe' ]
     description: "List of claim transactions for the $SAFE airdrop"
@@ -142,7 +134,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: uniswap
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'uniswap' ]
     description: "List of claim transactions for the $UNI airdrop"
@@ -159,7 +150,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: oneinch
-      contributors: hildobby
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'oneinch' ]
     description: "List of claim transactions for the $1INCH airdrop"

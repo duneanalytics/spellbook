@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: aptos
       sector: prices
-      contributors: tomfutago
     config:
       tags: ['prices', 'tokens', 'usd', 'aptos']
     description: "Price tokens on Aptos"

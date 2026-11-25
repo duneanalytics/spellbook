@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync, hyperevm, ink, monad, robinhood, ronin, megaeth, tempo
       project: safe
       short_description: "All Safe (formerly Gnosis Safe) multisig wallet addresses across supported chains, with creation version and creation time."
-      contributors: tschubotz, danielpartida, kryptaki
       docs_slug: /curated/labels/safe-safes-all
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync', 'hyperevm', 'ink', 'monad', 'robinhood', 'ronin', 'megaeth', 'tempo']
@@ -36,7 +35,6 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync, hyperevm, ink, monad, robinhood, ronin, megaeth, tempo
       project: safe
-      contributors: kryptaki, danielpartida
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync', 'hyperevm', 'ink', 'monad', 'robinhood', 'ronin', 'megaeth', 'tempo']
     description: "Safe transactions"
@@ -95,7 +93,6 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, gnosis, linea, mantle, optimism, polygon, scroll, sonic, unichain, worldchain, zkevm, zksync
       project: safe
-      contributors: kryptaki, tschubotz, danielpartida
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'gnosis', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync']
     description: "Native gas token transfers into or out of Safes"

@@ -6,7 +6,6 @@ models:
           blockchain: ethereum
           sector: labels
           category: dex
-          contributors: stone
       config:
           tags: ['labels', 'smart_dex_traders', 'dex']
       description: 'Known smart dex traders'
@@ -47,7 +46,6 @@ models:
           blockchain: ethereum
           sector: labels
           category: smart_dex_traders
-          contributors: stone
       config:
           tags: ['labels', 'smart_dex_traders', 'dex']
       description: 'Known smart dex traders on Ethereum'

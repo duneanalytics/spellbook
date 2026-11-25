@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: blur
-      contributors: hildobby
     config:
       tags: ['table', 'loans', 'ethereum', 'blend', 'blur']
     description: "All Blend-related events"

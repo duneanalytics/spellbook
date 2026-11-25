@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       project: tapio
-      contributors: brunota20
     config:
       tags: ["base", "tapio", "liquidity", "dex"]
     description: >

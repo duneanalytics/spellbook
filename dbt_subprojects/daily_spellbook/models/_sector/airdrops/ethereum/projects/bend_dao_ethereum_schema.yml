@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: bend_dao
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'bend_dao']
     description: "List of claim transactions for the $BEND airdrop"

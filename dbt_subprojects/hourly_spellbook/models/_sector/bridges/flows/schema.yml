@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba, abstract, apechain, bob, celo, kaia, katana, mantle, plume, ronin, sonic, sophon, story, taiko, zkevm
       sector: bridges
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'flows', 'deposits' ]
     description: "Bridge deposits events"
@@ -96,7 +95,6 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle
       sector: bridges
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'flows', 'withdrawals' ]
     description: "Bridge withdrawals events"
@@ -145,7 +143,6 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle, boba, abstract, apechain, bob, celo, kaia, katana, plume, ronin, sonic, sophon, story, taiko, zkevm
       sector: bridges
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'flows' ]
     description: "Bridge flows"
@@ -196,7 +193,6 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle, abstract, katana, sonic, taiko, zkevm
       sector: bridges
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'info', 'metadata' ]
     description: "Bridges metadata"

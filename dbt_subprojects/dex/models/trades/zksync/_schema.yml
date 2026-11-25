@@ -24,7 +24,6 @@ models:
       blockchain: zksync
       sector: dex
       project: maverick
-      contributors: get620v, tomfutago
     config:
       tags: [ 'zksync', 'dex', 'trades', 'maverick' ]
     description: "Maverick zksync base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: zksync
       sector: dex
       project: maverick
-      contributors: get620v
     config:
       tags: [ 'zksync', 'dex', 'trades', 'maverick' ]
     description: "Maverick zksync base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: zksync
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed, tomfutago, lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
     description: "Pancakeswap zkSync v2 base trades"
@@ -87,7 +84,6 @@ models:
       blockchain: zksync
       sector: dex
       project: uniswap
-      contributors: intensodefi
     config:
       tags: [ 'zksync', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap zksync v3 base trades"
@@ -108,7 +104,6 @@ models:
       blockchain: zksync
       sector: dex
       project: syncswap
-      contributors: thetroyharris
     config:
       tags: [ 'zksync', 'dex', 'trades', 'syncswap' ]
     description: "SyncSwap V1 zksync base trades"
@@ -129,7 +124,6 @@ models:
       blockchain: zksync
       sector: dex
       project: syncswap
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'syncswap' ]
     description: "SyncSwap V2 zksync base trades"
@@ -150,7 +144,6 @@ models:
       blockchain: zksync
       sector: dex
       project: mute
-      contributors: tomfutago
     config:
       tags: [ 'zksync', 'dex', 'trades', 'mute' ]
     description: "Mute zksync base trades"
@@ -169,7 +162,6 @@ models:
       blockchain: zksync
       sector: dex
       project: pancakeswap
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'pancakeswap' ]
     description: "Pancakeswap V3 zksync base trades"
@@ -190,7 +182,6 @@ models:
       blockchain: zksync
       sector: dex
       project: spacefi
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'spacefi' ]
     description: "SpaceFi V1 zksync base trades"
@@ -209,7 +200,6 @@ models:
       blockchain: zksync
       sector: dex
       project: derpdex
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'derpdex' ]
     description: "DerpDEX V1 zksync base trades"
@@ -228,7 +218,6 @@ models:
       blockchain: zksync
       sector: dex
       project: wagmi
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'wagmi' ]
     description: "Wagmi V1 zksync base trades"
@@ -247,7 +236,6 @@ models:
       blockchain: zksync
       sector: dex
       project: zkswap_finance
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'zkswap_finance' ]
     description: "zkSwap Finance zksync base trades"
@@ -268,7 +256,6 @@ models:
       blockchain: zksync
       sector: dex
       project: zkswap_finance
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'zkswap_finance' ]
     description: "zkSwap Finance V3 zksync base trades"
@@ -289,7 +276,6 @@ models:
       blockchain: zksync
       sector: dex
       project: gemswap
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'gemswap' ]
     description: "Gemswap zksync base trades"
@@ -308,7 +294,6 @@ models:
       blockchain: zksync
       sector: dex
       project: vesync
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'vesync' ]
     description: "veSync V1 zksync base trades"
@@ -327,7 +312,6 @@ models:
       blockchain: zksync
       sector: dex
       project: dracula_finance
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'dracula_finance' ]
     description: "Dracula Finance zksync base trades"
@@ -346,7 +330,6 @@ models:
       blockchain: zksync
       sector: dex
       project: ezkalibur
-      contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'ezkalibur' ]
     description: "eZKalibur V1 zksync base trades"
@@ -367,7 +350,6 @@ models:
       blockchain: zksync
       sector: dex
       project: izumi_finance
-      contributors: thetroyharris
     config:
       tags: [ 'zksync', 'dex', 'trades', 'izumi_finance' ]
     description: "izumi_finance v1 zksync base trades"
@@ -388,7 +370,6 @@ models:
       blockchain: zksync
       sector: dex
       project: izumi_finance
-      contributors: thetroyharris
     config:
       tags: [ 'zksync', 'dex', 'trades', 'izumi_finance' ]
     description: "izumi_finance v2 zksync base trades"
@@ -409,7 +390,6 @@ models:
       blockchain: zksync
       sector: dex
       project: velocore
-      contributors: tomfutago
     config:
       tags: [ 'zksync', 'dex', 'trades', 'velocore' ]
     description: "Velocore v0 zksync base trades"
@@ -430,7 +410,6 @@ models:
       blockchain: zksync
       sector: dex
       project: velocore
-      contributors: tomfutago
     config:
       tags: [ 'zksync', 'dex', 'trades', 'velocore' ]
     description: "Velocore v1 zksync base trades"
@@ -451,7 +430,6 @@ models:
       blockchain: zksync
       sector: dex
       project: velocore
-      contributors: tomfutago
     config:
       tags: [ 'zksync', 'dex', 'trades', 'velocore' ]
     description: "Velocore v2 zksync base trades"

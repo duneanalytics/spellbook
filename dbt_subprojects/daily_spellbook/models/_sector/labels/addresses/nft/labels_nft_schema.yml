@@ -16,7 +16,6 @@ models:
       sector: labels
       category: nft
       project: ['opensea', 'looksrare', 'x2y2', 'magiceden']
-      contributors: soispoke
     config:
       tags: ['labels', 'nft', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "NFT query labels"   
@@ -62,7 +61,6 @@ models:
       sector: labels
       category: nft
       project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
-      contributors: soispoke
     config:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "NFT Platforms users across chains"   
@@ -86,7 +84,6 @@ models:
       sector: labels
       category: nft
       project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
-      contributors: soispoke
     config:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "Top NFT traders based on the number of transactions across chains"   
@@ -110,7 +107,6 @@ models:
       sector: labels
       category: nft
       project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
-      contributors: hildobby
     config:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "Top NFT traders based on the number of transactions across chains in the past 14 days"   
@@ -133,7 +129,6 @@ models:
       blockchain: ethereum, solana
       sector: labels
       project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
-      contributors: soispoke
     config:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "Top NFT traders based on volume in USD across chains"   
@@ -156,7 +151,6 @@ models:
       blockchain: ethereum, solana
       sector: labels
       project: ['labels','opensea', 'looksrare', 'x2y2', 'magiceden']
-      contributors: hildobby
     config:
       tags: ['labels', 'nft_traders', 'ethereum', 'solana', 'opensea', 'looksrare', 'x2y2', 'magiceden']
     description: "Top NFT traders based on volume in USD across chains in the past 14 days"   
@@ -179,7 +173,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: ['labels']
-      contributors: NazihKalo
     config:
       tags: ['labels', 'nft_traders', 'ethereum']
     description: '{{ doc("labels_nft_smart_trader_roi_eth") }}'
@@ -202,7 +195,6 @@ models:
       blockchain: optimism
       sector: labels
       category: nft
-      contributors: kaiblade
     config:
       tags: ['labels', 'nft', 'traders', 'archetypes']
     description: '{{ doc("op_address_archetype_labels_description") }}'
@@ -222,7 +214,6 @@ models:
       blockchain: optimism
       sector: labels
       category: nft
-      contributors: kaiblade
     config:
       tags: ['labels', 'nft', 'minters', 'archetypes']
     description: '{{ doc("op_address_archetype_labels_description") }}'
@@ -242,7 +233,6 @@ models:
       blockchain: optimism
       sector: labels
       category: nft
-      contributors: kaiblade
     config:
       tags: ['labels', 'nft', 'wash traders', 'archetypes']
     description: '{{ doc("op_address_archetype_labels_description") }}'

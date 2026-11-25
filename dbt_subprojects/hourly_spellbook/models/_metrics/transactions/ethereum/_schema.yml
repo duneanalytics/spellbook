@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: ethereum
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'ethereum','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: ethereum
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'ethereum','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

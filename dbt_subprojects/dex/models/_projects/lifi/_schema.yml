@@ -6,7 +6,6 @@ models:
       blockchain: fantom, optimism
       sector: dex
       project: lifi
-      contributors: Henrystats
     config:
       tags: ['fantom', 'optimism', 'lifi','trades', 'dex', 'aggregator', 'Henrystats','cross-chain']
     description: >
@@ -90,7 +89,6 @@ models:
       blockchain: fantom, optimism
       sector: dex
       project: lifi
-      contributors: Henrystats, hosuke
     config:
       tags: [ 'fantom', 'optimism', 'lifi','trades', 'dex', 'aggregator', 'Henrystats','cross-chain' ]
     description: >

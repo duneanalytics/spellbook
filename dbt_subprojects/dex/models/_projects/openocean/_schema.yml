@@ -6,7 +6,6 @@ models:
       blockchain: optimism, fantom, avalanche_c, base, ethereum, bnb
       sector: dex
       project: openocean
-      contributors: thevaizman
     config:
       tags: ['optimism', 'fantom', 'avalanche_c', 'base', 'ethereum', 'bnb', 'openocean', 'trades', 'dex', 'aggregator', 'cross-chain']
     description: >
@@ -90,7 +89,6 @@ models:
       blockchain: optimism, fantom, avalanche_c, base, ethereum, bnb
       sector: dex
       project: openocean
-      contributors: thevaizman
     config:
       tags: ['optimism', 'fantom', 'avalanche_c', 'base', 'ethereum', 'bnb', 'openocean', 'trades', 'dex', 'aggregator', 'cross-chain']
     description: >

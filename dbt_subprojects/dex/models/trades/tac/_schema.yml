@@ -24,7 +24,6 @@ models:
       blockchain: tac
       sector: dex
       project: carbon_defi
-      contributors: tiagofilipenunes
     config:
       tags: ["tac", "dex", "trades", "carbon_defi"]
     description: "Carbon_defi tac base trades"

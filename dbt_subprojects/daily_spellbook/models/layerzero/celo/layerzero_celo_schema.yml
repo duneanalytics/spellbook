@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: celo
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['celo', 'layerzero', 'send']
    description: "LayerZero message send call on celo"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: swell
-      contributors: maybeYonas
     
     config:
       tags: ['swell', 'restaking', 'lrt', 'withdrawals']

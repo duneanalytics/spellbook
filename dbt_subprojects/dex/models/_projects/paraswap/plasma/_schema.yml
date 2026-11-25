@@ -6,7 +6,6 @@ models:
       blockchain: plasma
       sector: dex
       project: paraswap_v6
-      contributors: eptighte
     config:
       tags: ['plasma','paraswap_v6','trades', 'paraswap','dex', "velora"]
     description: >
@@ -107,7 +106,6 @@ models:
       blockchain: plasma
       sector: dex
       project: paraswap
-      contributors: eptighte
     config:
       tags: ['plasma','dex','trades', 'paraswap', "velora"]
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: zerion
-      contributors: hildobby
     config:
       tags: ['arbitrum', 'zerion', 'zerion', 'trades', 'dex']
     description: >

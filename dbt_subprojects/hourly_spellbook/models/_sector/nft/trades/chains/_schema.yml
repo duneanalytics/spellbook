@@ -6,7 +6,6 @@ models:
    meta:
      blockchain: ethereum
      sector: nft
-     contributors: 0xRob
    config:
      tags: ['ethereum', 'nft', 'trades']
    description: "NFT ethereum base trades"
@@ -36,7 +35,6 @@ models:
    meta:
      blockchain: arbitrum
      sector: nft
-     contributors: 0xRob
    config:
      tags: [ 'arbitrum', 'nft', 'trades' ]
    description: "NFT arbitrum base trades"
@@ -56,7 +54,6 @@ models:
    meta:
      blockchain: fantom
      sector: nft
-     contributors: hildobby
    config:
      tags: [ 'fantom', 'nft', 'trades' ]
    description: "NFT Fantom base trades"
@@ -76,7 +73,6 @@ models:
    meta:
      blockchain: abstract
      sector: nft
-     contributors: hildobby
    config:
      tags: [ 'abstract', 'nft', 'trades' ]
    description: "NFT Abstract base trades"
@@ -96,7 +92,6 @@ models:
    meta:
      blockchain: apechain
      sector: nft
-     contributors: 0xr3x
    config:
      tags: [ 'apechain', 'nft', 'trades' ]
    description: "NFT Apechain base trades"

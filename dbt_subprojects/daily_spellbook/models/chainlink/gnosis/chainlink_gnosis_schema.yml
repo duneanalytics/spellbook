@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["gnosis", "chainlink", "oracle"]
     description: >
@@ -52,7 +51,6 @@ models:
     meta:
       blockchain: gnosis
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
     config:
       tags: ["gnosis", "chainlink", "oracle"]
     description: >
@@ -84,7 +82,6 @@ models:
     meta:
       blockchain: gnosis
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["gnosis", "chainlink", "oracle"]
     description: >
@@ -108,7 +105,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "gnosis"]
     description: >
@@ -160,7 +156,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "gnosis"]
     description: >
@@ -195,7 +190,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reverted", "transactions", "gnosis"]
     description: >
@@ -222,7 +216,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "daily", "gnosis"]
     description: >
@@ -267,7 +260,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "request", "daily", "gnosis"]
     description: >
@@ -299,7 +291,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "transmission", "logs", "gnosis"]
     description: >
@@ -335,7 +326,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "gnosis"]
     description: >
@@ -357,7 +347,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "gnosis"]
     description: >
@@ -381,7 +370,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "daily", "gnosis"]
     description: >
@@ -406,7 +394,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "daily", "gnosis"]
     description: >
@@ -435,7 +422,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "gnosis"]
     description: >
@@ -467,7 +453,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "gnosis"]
     description: >
@@ -494,7 +479,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "request", "daily", "gnosis"]
     description: >
@@ -520,7 +504,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reverted", "transactions", "gnosis"]
     description: >
@@ -547,7 +530,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "daily", "gnosis"]
     description: >
@@ -572,7 +554,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "gnosis"]
     description: >
@@ -588,7 +569,6 @@ models:
     meta:
       blockchain: gnosis
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "daily", "gnosis"]
     description: >

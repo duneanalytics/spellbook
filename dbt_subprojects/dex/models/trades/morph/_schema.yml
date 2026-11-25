@@ -24,7 +24,6 @@ models:
       blockchain: morph
       sector: dex
       project: bulba
-      contributors: jeff-dude
     config:
       tags: ["morph", "dex", "trades", "bulba", "v3"]
     description: "bulba morph v3 base trades"

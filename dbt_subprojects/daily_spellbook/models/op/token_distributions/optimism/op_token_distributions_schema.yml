@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: op
-      contributors: msilb7
     config:
       tags: ['optimism','op','grants','distributions']
     description: >
@@ -80,7 +79,6 @@ models:
     meta:
         blockchain: optimism
         project: op
-        contributors: msilb7
     config:
       tags: ['optimism','op','grants','project']
     description: >
@@ -104,7 +102,6 @@ models:
     meta:
       blockchain: optimism
       project: op
-      contributors: msilb7
     config:
       tags: ['optimism','op','grants','project']
     description: >
@@ -134,7 +131,6 @@ models:
     meta:
       blockchain: optimism
       project: op
-      contributors: msilb7
     config:
       tags: ['optimism','op','grants','addresses']
     description: >
@@ -156,7 +152,6 @@ models:
     meta:
       blockchain: optimism
       project: op
-      contributors: msilb7
     config:
       tags: ['optimism','op','grants','addresses']
     description: >

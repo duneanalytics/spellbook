@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zksync
       sector: prices
-      contributors: lgingerich
     config:
       tags: ['prices', 'tokens', 'usd', 'zksync']
     description: "Price tokens on zksync chain"

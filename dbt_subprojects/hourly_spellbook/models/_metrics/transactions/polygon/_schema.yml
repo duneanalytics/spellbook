@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: polygon
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'polygon','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: polygon
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'polygon','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

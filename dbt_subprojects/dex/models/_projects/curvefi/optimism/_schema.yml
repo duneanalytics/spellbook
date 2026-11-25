@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: curve
-      contributors: msilb7
     config:
       tags: ['optimism','curve','dex']
     description: >

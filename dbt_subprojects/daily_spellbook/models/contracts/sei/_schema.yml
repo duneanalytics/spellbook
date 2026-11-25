@@ -6,7 +6,6 @@ models:
     meta:
       blockchain: sei
       sector: contracts
-      contributors: kryptaki
     config:
       tags: ['sei', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Sei."

@@ -7,7 +7,6 @@ models:
       blockchain: ethereum
       sector: alchemy
       project: alchemy
-      contributors: sofiat
 
     config:
       tags: ['alchemy', 'balances']

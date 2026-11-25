@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: blast
       project: fantasy
-      contributors: hildobby
     config:
       tags: ['blast', 'fantasy', 'events']
     description: >
@@ -99,7 +98,6 @@ models:
     meta:
       blockchain: base
       project: fantasy
-      contributors: hildobby
     config:
       tags: ['base', 'fantasy', 'events']
     description: >
@@ -137,7 +135,6 @@ models:
     meta:
       blockchain: base, blast
       project: fantasy
-      contributors: hildobby
     config:
       tags: ['blast', 'base', 'fantasy', 'events']
     description: >

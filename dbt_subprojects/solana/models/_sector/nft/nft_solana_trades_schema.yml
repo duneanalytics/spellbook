@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: solana
       sector: nft
-      contributors: [ilemi]
     config:
       tags: ['magiceden','tensorswap','solana','nft']
     description: >

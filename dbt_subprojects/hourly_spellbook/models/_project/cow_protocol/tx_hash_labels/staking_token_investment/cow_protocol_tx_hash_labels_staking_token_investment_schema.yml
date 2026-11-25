@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: tx_hash_labels
       category: staking_token_investment
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'staking_token_investment', 'dex']
     description: "Trades that bought a staking token"
@@ -47,7 +46,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: staking_token_investment
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'staking_token_investment', 'dex']
     description:  "Trades that bought a staking token"

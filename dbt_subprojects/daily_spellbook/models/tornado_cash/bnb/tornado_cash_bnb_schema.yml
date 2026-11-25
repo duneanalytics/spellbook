@@ -7,7 +7,6 @@ models:
     meta:
       blockchain: bnb
       project: tornado_cash
-      contributors: [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'deposits', 'bnb']
     description: "Tornado Cash Deposits on BNB"
@@ -58,7 +57,6 @@ models:
     meta:
       blockchain: bnb
       project: tornado_cash
-      contributors:  [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'withdrawals', 'bnb']
     description: "Tornado Cash Withdrawals on BNB"

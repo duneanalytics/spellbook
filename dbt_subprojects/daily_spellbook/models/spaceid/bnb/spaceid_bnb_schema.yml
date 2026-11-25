@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: bnb
       project: spaceid
-      contributors: [springzh]
     config:
       tags: ['bnb','spaceid','name','registrations']
     description: >

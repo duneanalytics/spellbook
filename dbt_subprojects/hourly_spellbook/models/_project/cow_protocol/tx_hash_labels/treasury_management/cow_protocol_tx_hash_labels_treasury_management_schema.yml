@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: tx_hash_labels
       category: treasury_management
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'treasury_management', 'dex']
     description: "Trades that came from a DAO"
@@ -47,7 +46,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: treasury_management
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'treasury_management', 'dex']
     description:  "Trades that came from a DAO"

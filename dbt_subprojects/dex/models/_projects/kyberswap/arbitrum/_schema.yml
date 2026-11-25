@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: dex_aggregator
       project: kyberswap
-      contributors: nhd98z
     config:
       tags: ['arbitrum', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >

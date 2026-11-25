@@ -7,7 +7,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -109,7 +106,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -138,7 +134,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
     description: >
@@ -176,7 +171,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: irishlatte19, Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -231,7 +225,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -266,7 +259,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -301,7 +293,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -335,7 +326,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -351,7 +341,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['avalanche_c', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -378,7 +367,6 @@ models:
       blockchain: avalanche_c
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['avalanche_c', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

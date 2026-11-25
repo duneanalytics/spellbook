@@ -6,7 +6,6 @@ models:
       blockchain: sonic
       sector: labels
       project: beets
-      contributors: viniabussafi
     config:
       tags: ['labels', 'fantom', 'balancer', 'pools']
     description: 'Beets liquidity pools created on Sonic.'
@@ -59,7 +58,6 @@ models:
       blockchain: sonic
       sector: labels
       project: beets
-      contributors: viniabussafi
     config:
       tags: ['labels', 'sonic', 'polygon', 'gauges']
     description: 'Beets gauge labels.'

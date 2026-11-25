@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex_aggregator
       project: kyberswap
-      contributors: nhd98z
     config:
       tags: ['optimism', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >

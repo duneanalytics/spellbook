@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'bnb','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on bnb - formatted for dex.trades

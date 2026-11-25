@@ -6,7 +6,6 @@ models:
       blockchain: katana
       sector: perpetual
       project: katanaperps
-      contributors: cursor-agent
     config:
       tags: ['katana', 'perpetuals', 'perps', 'katanaperps']
     description: >

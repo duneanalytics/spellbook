@@ -5,7 +5,6 @@ models:
    meta:
     blockchain: polygon
     sector: lending
-    contributors: hildobby
    config:
       tags: ['polygon', 'flashloans']
    description: >

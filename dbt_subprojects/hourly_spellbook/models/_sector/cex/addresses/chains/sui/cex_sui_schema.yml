@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sui
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'sui']
     description: "All CEX-tied addresses identified on Sui"

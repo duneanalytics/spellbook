@@ -5,7 +5,6 @@ models:
     meta: 
       blockchain: ethereum
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'ethereum']
     description: >
@@ -67,7 +66,6 @@ models:
     meta: 
       blockchain: arbitrum
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'arbitrum']
     description: >
@@ -100,7 +98,6 @@ models:
     meta: 
       blockchain: avalanche_c
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'avalanche_c']
     description: >
@@ -133,7 +130,6 @@ models:
     meta: 
       blockchain: bnb
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'bnb']
     description: >
@@ -166,7 +162,6 @@ models:
     meta: 
       blockchain: fantom
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'fantom']
     description: >
@@ -199,7 +194,6 @@ models:
     meta: 
       blockchain: gnosis
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'gnosis']
     description: >
@@ -232,7 +226,6 @@ models:
     meta: 
       blockchain: optimism
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'optimism']
     description: >
@@ -265,7 +258,6 @@ models:
     meta: 
       blockchain: polygon
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'polygon']
     description: >
@@ -298,7 +290,6 @@ models:
     meta: 
       blockchain: base
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'base']
     description: >
@@ -331,7 +322,6 @@ models:
     meta: 
       blockchain: celo
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'celo']
     description: >
@@ -364,7 +354,6 @@ models:
     meta: 
       blockchain: zksync
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'zksync']
     description: >
@@ -397,7 +386,6 @@ models:
     meta: 
       blockchain: zora
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'zora']
     description: >
@@ -430,7 +418,6 @@ models:
     meta: 
       blockchain: scroll
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'scroll']
     description: >
@@ -463,7 +450,6 @@ models:
     meta: 
       blockchain: goerli
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'goerli']
     description: >
@@ -496,7 +482,6 @@ models:
     meta: 
       blockchain: linea
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'linea']
     description: >
@@ -529,7 +514,6 @@ models:
     meta: 
       blockchain: zkevm
       sector: inscription
-      contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'zkevm']
     description: >

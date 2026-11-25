@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zksync
       sector: lending
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'zksync']
     description: "Hourly lending scaled supply on zkSync"
@@ -49,7 +48,6 @@ models:
       blockchain: zksync
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'zksync']
     description: "Hourly Aave v3 scaled supply on zkSync"

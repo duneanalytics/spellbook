@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: unichain
       sector: gas
-      contributors: 0xRob, soispoke, hosuke, krishhh
     config:
       tags: ['unichain', 'gas', 'fees']
     description: >

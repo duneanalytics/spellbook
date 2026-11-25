@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'polygon']
     description: "All Aave transactions involving borrow transactions on Polygon"
@@ -71,7 +70,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'polygon']
     description: "All Aave transactions involving flashloans transactions on Polygon"
@@ -103,7 +101,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'polygon']
     description: "All Aave transactions involving supply transactions on Polygon"
@@ -136,7 +133,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'polygon']
     description: "All Aave market transactions on Polygon"
@@ -176,7 +172,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'polygon']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: polygon
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'polygon']
     description: "Hourly aggregated lending market interest rates"

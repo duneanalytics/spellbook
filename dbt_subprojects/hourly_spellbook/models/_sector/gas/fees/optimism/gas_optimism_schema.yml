@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['optimism', 'gas', 'fees']
     description: >

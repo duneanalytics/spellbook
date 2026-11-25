@@ -24,7 +24,6 @@ models:
       blockchain: unichain
       sector: dex
       project: uniswap
-      contributors: ilemi
     config:
       tags: [ 'unichain', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap unichain v2 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: unichain
       sector: dex
       project: uniswap
-      contributors: ilemi
     config:
       tags: [ 'unichain', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap unichain v3 base trades"
@@ -66,7 +64,6 @@ models:
       blockchain: unichain
       sector: dex
       project: uniswap
-      contributors: agaperste
     config:
       tags: [ 'unichain', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap unichain v4 base trades"
@@ -87,7 +84,6 @@ models:
       blockchain: unichain
       sector: dex
       project: dyorswap
-      contributors: floryan
     config:
       tags: [ 'unichain', 'dex', 'trades', 'dyorswap', 'v2' ]
     description: "dyorswap unichain v2 base trades (uniswap v2 compatible)"
@@ -108,7 +104,6 @@ models:
       blockchain: unichain
       sector: dex
       project: unichainswap
-      contributors: floryan
     config:
       tags: [ 'unichain', 'dex', 'trades', 'unichainswap', 'v2' ]
     description: "unichainswap unichain v2 base trades (uniswap v2 compatible)"
@@ -124,7 +119,6 @@ models:
       blockchain: unichain
       sector: dex
       project: velodrome
-      contributors: paulapivat
     config:
       tags: [ 'unichain', 'dex', 'trades', 'velodrome', 'uniswap', 'v2' ]
     description: "velodrome unichain base trades"
@@ -147,7 +141,6 @@ models:
       blockchain: unichain
       sector: dex
       project: eulerswap
-      contributors: Henrystats
     config:
       tags: ["unichain", "dex", "trades", "eulerswap"]
     description: "eulerswap unichain base trades"

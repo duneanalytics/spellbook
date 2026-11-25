@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["optimism", "chainlink", "oracle"]
     description: >
@@ -52,7 +51,6 @@ models:
     meta:
       blockchain: optimism
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
     config:
       tags: ["optimism", "chainlink", "oracle"]
     description: >
@@ -84,7 +82,6 @@ models:
     meta:
       blockchain: optimism
       project: chainlink
-      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
     config:
       tags: ["optimism", "chainlink", "oracle"]
     description: >
@@ -108,7 +105,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "optimism"]
     description: >
@@ -160,7 +156,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "optimism"]
     description: >
@@ -195,7 +190,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reverted", "transactions", "optimism"]
     description: >
@@ -222,7 +216,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "gas", "daily", "optimism"]
     description: >
@@ -267,7 +260,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "request", "daily", "optimism"]
     description: >
@@ -299,7 +291,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "transmission", "logs", "optimism"]
     description: >
@@ -335,7 +326,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "optimism"]
     description: >
@@ -357,7 +347,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags:
         ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "optimism"]
@@ -382,7 +371,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_ryan
     config:
       tags: ["chainlink", "ocr", "reward", "daily", "optimism"]
     description: >
@@ -407,7 +395,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "daily", "optimism"]
     description: >
@@ -436,7 +423,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "optimism"]
     description: >
@@ -468,7 +454,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "optimism"]
     description: >
@@ -495,7 +480,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "request", "daily", "optimism"]
     description: >
@@ -521,7 +505,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reverted", "transactions", "optimism"]
     description: >
@@ -548,7 +531,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "daily", "optimism"]
     description: >
@@ -573,7 +555,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "optimism"]
     description: >
@@ -589,7 +570,6 @@ models:
     meta:
       blockchain: optimism
       sector: chainlink
-      contributors: linkpool_jon
     config:
       tags:
         ["chainlink", "fm", "reward", "evt", "transfer", "daily", "optimism"]
@@ -614,7 +594,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "feeds", "daily", "optimism"]
     description: >
@@ -640,7 +619,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "feeds", "optimism"]
     description: >
@@ -655,7 +633,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "logs", "optimism"]
     description: >
@@ -683,7 +660,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "requester", "daily", "optimism"]
     description: >
@@ -711,7 +687,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "read", "requests", "requester", "optimism"]
     description: >
@@ -729,7 +704,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "optimism"]
     description: >
@@ -756,7 +730,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "gas", "daily", "optimism"]
     description: >
@@ -785,7 +758,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "request", "daily", "optimism"]
     description: >
@@ -808,7 +780,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reverted", "transactions", "optimism"]
     description: >
@@ -833,7 +804,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "reward", "daily", "optimism"]
     description: >
@@ -859,7 +829,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "optimism"]
     description: >
@@ -883,7 +852,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "optimism"]
     description: >
@@ -911,7 +879,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "traces", "optimism"]
     description: >
@@ -946,7 +913,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "locked", "logs", "optimism"]
     description: >
@@ -980,7 +946,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "tokens", "transferred", "optimism"]
     description: >
@@ -1010,7 +975,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "optimism"]
     description: >
@@ -1037,7 +1001,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "optimism"]
     description: >
@@ -1064,7 +1027,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "transmitted", "logs", "optimism"]
     description: >
@@ -1088,7 +1050,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "paid", "logs", "optimism"]
     description: >
@@ -1117,7 +1078,6 @@ models:
       blockchain: "optimism"
 
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "optimism"]
     description: >
@@ -1141,7 +1101,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "optimism"]
     description: >
@@ -1178,7 +1137,6 @@ models:
     meta:
       blockchain: "optimism"
       project: chainlink
-      contributors: ["linkpool_jon"]
     config:
       tags: ["chainlink", "ccip", "send", "requested", "logs", "optimism"]
     description: >

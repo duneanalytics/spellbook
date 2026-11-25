@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: tokens
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['table', 'erc20', 'rebase']
     description: >
@@ -24,7 +23,6 @@ models:
     meta:
       blockchain: fantom
       sector: nft
-      contributors: Henrystats
     config:
       tags: ['tokens', 'fantom', 'nft', 'erc721']
     description: >
@@ -43,7 +41,6 @@ models:
     meta:
       blockchain: fantom
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'tokens', 'fantom', 'nft', 'erc721' ]
     description: >
@@ -71,7 +68,6 @@ models:
     meta:
       blockchain: fantom
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'nft','fantom' ]
     description: >

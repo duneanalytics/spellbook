@@ -6,7 +6,6 @@ models:
       blockchain: worldchain
       sector: lending
       project: aave, compound, morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'morpho', 'worldchain']
     description: "All lending supply transactions on Worldchain"
@@ -93,7 +92,6 @@ models:
       blockchain: worldchain
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "worldchain"]
     description: "Morpho supply transactions on Worldchain"

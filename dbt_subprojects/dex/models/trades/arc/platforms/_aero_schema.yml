@@ -7,7 +7,6 @@ models:
       blockchain: arc
       sector: dex
       project: aero
-      contributors: ['thecaptncrunch']
     config:
       tags: ['arc', 'dex', 'trades', 'aero']
     data_tests:

@@ -6,7 +6,6 @@ models:
       blockchain: tempo
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['tempo', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -33,7 +32,6 @@ models:
       blockchain: tempo
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['tempo', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

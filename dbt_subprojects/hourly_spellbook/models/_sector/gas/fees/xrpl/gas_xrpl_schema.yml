@@ -6,7 +6,6 @@ models:
       blockchain: xrpl
       sector: gas
       short_description: "XRPL gas fees per transaction."
-      contributors: krishhh, tomfutago
     config:
       tags: ['xrpl', 'gas', 'fees']
     description: "Gas fees paid per transaction on the XRP Ledger."

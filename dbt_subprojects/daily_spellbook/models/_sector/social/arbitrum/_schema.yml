@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: social
       project: cipher
-      contributors: hildobby
     config:
       tags: ['table', 'social', 'arbitrum', 'trades', 'cipher']
     description: "Cipher basic trades info"
@@ -77,7 +76,6 @@ models:
       blockchain: arbitrum
       sector: social
       project: post_tech
-      contributors: hildobby
     config:
       tags: ['table', 'social', 'arbitrum', 'trades', 'post_tech']
     description: "post.tech basic trades info"
@@ -111,7 +109,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: social
-      contributors: hildobby
     config:
       tags: ['table', 'social', 'arbitrum', 'trades', 'cipher']
     description: "social trades on arbitrum"

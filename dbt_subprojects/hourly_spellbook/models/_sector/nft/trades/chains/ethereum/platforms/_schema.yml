@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: archipelago
-      contributors: 0xRob
     config:
       tags: ['ethereum', 'nft', 'trades', 'archipelago']
     description: "Archipelago base trades"
@@ -41,7 +40,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: superrare
-      contributors: ['0xRob', 'cat']
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'superrare' ]
     description: "Superrare base trades"
@@ -72,7 +70,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: foundation
-      contributors: ['soispoke', 'hildobby', '0xRob']
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'foundation' ]
     description: "foundation base trades"
@@ -111,7 +108,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: cyptopunks
-      contributors: [ 'cat', '0xRob' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'cyptopunks' ]
     description: "cyptopunks base trades"
@@ -146,7 +142,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: blur
-      contributors: [ '0xRob', 'hildobby', 'pandajackson42']
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
     description: "Blur base trades"
@@ -176,7 +171,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: blur
-      contributors: [ '0xRob', 'hildobby', 'pandajackson42']
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
     description: "Blur base trades"
@@ -206,7 +200,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: blur
-      contributors: ['0xRob', 'hildobby']
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
     description: "Blur v2 base trades"
@@ -236,7 +229,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: element
-      contributors: ['0xRob' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'element' ]
     description: "element base trades"
@@ -273,7 +265,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: x2y2
-      contributors: ['0xRob','soispoke','hildobby']
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'x2y2' ]
     description: "x2y2 base trades"
@@ -307,7 +298,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: looksrare
-      contributors: [ '0xRob','soispoke', 'hildobby', 'denze' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
     description: "looksrare v1 base trades"
@@ -342,7 +332,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: looksrare
-      contributors: [ '0xRob','soispoke', 'hildobby', 'denze' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
     description: "looksrare v2 base trades"
@@ -377,7 +366,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: looksrare
-      contributors: [ 'hildobby' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
     description: "looksrare's seaport base trades"
@@ -407,7 +395,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: zora
-      contributors: [ '0xRob', 'hildobby' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
     description: "zora v1 base trades"
@@ -437,7 +424,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: zora
-      contributors: [ '0xRob', 'hildobby' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
     description: "zora v2 base trades"
@@ -471,7 +457,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: zora
-      contributors: [ '0xRob', 'hildobby' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
     description: "zora v3 base trades"
@@ -515,7 +500,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: sudoswap
-      contributors: [ '0xRob','ilemi' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'sudoswap' ]
     description: "sudoswap base trades"
@@ -544,7 +528,6 @@ models:
     meta:
       blockchain: ethereum
       project: sudoswap
-      contributors: [ ilemi ]
     config:
       tags: [ 'ethereum','sudoswap','pool_creations' ]
     description: >
@@ -560,7 +543,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: sudoswap
-      contributors: [ 'ilemi' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'sudoswap' ]
     description: "sudoswap v2 base trades"
@@ -589,7 +571,6 @@ models:
     meta:
       blockchain: ethereum
       project: collectionswap
-      contributors: 0xRob
     config:
       tags: [ 'ethereum','collectionswap','v1','pools' ]
     description: >
@@ -605,7 +586,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: collectionswap
-      contributors: [ '0xRob' ]
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'collectionswap' ]
     description: "collectionswap base trades"
@@ -635,7 +615,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: trove
-      contributors: 0xRob
     config:
       tags: [ 'trove', 'treasure', 'nft', 'trades' ]
     description: "NFT trades on trove on ethereum"
@@ -650,7 +629,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: liquidifty
-      contributors: bizzyvinci
     config:
       tags: [ 'liquidifty', 'nft', 'trades' ]
     description: "NFT trades on liquidifty on ethereum"
@@ -665,7 +643,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: magiceden
-      contributors: hildobby
     config:
       tags: [ 'magiceden', 'nft', 'trades' ]
     description: "NFT trades on Magic Eden on ethereum"
@@ -680,7 +657,6 @@ models:
       blockchain: ethereum
       sector: nft
       project: opensea
-      contributors: 0xRob
     config:
       tags: [ 'opensea', 'nft', 'trades' ]
     description: "NFT trades on opensea v1 on ethereum"
@@ -707,7 +683,6 @@ models:
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
@@ -742,7 +717,6 @@ models:
     meta:
       blockchain: ethereum
       project: opensea
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
@@ -777,7 +751,6 @@ models:
     meta:
       blockchain: ethereum
       project: spaace
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'spaace','base_trades','seaport' ]
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'scroll']
     description: "All lending flashloans transactions on Scroll"
@@ -79,7 +78,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'scroll']
     description: "Aave v3 flashloans transactions on Scroll"
@@ -112,7 +110,6 @@ models:
       blockchain: scroll
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'scroll']
     description: "Morpho flashloans transactions on Scroll"

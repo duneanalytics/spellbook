@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ink
       sector: gas
-      contributors: 0xRob, soispoke, hosuke
     config:
       tags: ['ink', 'gas', 'fees']
     description: >

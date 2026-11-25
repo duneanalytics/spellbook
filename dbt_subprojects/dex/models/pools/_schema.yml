@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
       sector: dex
-      contributors: grkhr
     config:
       tags: ['dex', 'cross-chain', 'pools']
     description: >
@@ -50,7 +49,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
       sector: dex
-      contributors: grkhr
     config:
       tags: ['dex', 'cross-chain', 'pools']
     description: >
@@ -88,7 +86,6 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
       sector: dex
-      contributors: grkhr
     config:
       tags: ['dex', 'cross-chain', 'pools']
     description: >
@@ -117,7 +114,6 @@ models:
     meta:
       blockchain: ethereum, arbitrum, polygon, gnosis
       sector: dex
-      contributors: hildobby
     config:
       tags: ['ethereum', 'arbitrum', 'polygon', 'gnosis', 'dex', 'cross-chain', 'pools']
     description: >

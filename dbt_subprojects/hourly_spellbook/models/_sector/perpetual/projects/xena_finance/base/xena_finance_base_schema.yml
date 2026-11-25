@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: xena_finanace
-      contributors: LLDAO
     config:
       tags: ['base', 'xena_finance', 'perpetuals', 'perps']
     description: >

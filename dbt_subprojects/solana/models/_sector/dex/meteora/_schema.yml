@@ -4,7 +4,6 @@ models:
   - name: meteora_v1_solana_stg_swaps
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
       event_time: block_date
@@ -18,7 +17,6 @@ models:
   - name: meteora_v1_solana_base_trades_backfill
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','microbatch' ]
     description: >
@@ -32,7 +30,6 @@ models:
   - name: meteora_v1_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -45,7 +42,6 @@ models:
   - name: meteora_v2_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi, 0xsandeshk ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -59,7 +55,6 @@ models:
   - name: meteora_v4_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ 0xsandeshk ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -73,7 +68,6 @@ models:
   - name: meteora_v3_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ 0xsandeshk ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -87,7 +81,6 @@ models:
   - name: meteora_v3_solana_excluded_mints
     meta:
       blockchain: solana
-      contributors: [ 0xsandeshk ]
     config:
       tags: [ 'static' ]
     description: >
@@ -103,7 +96,6 @@ models:
   - name: meteora_version_amm_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >
@@ -112,7 +104,6 @@ models:
   - name: meteora_version_dlmm_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >
@@ -121,7 +112,6 @@ models:
   - name: meteora_version_cpamm_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >

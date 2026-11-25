@@ -7,7 +7,6 @@ models:
     meta:
       blockchain: polygon
       project: tornado_cash
-      contributors: [hildobby]
     config:
       tags: ['tornado_cash', 'deposits', 'polygon']
     description: "Tornado Cash Deposits on Polygon"
@@ -58,7 +57,6 @@ models:
     meta:
       blockchain: polygon
       project: tornado_cash
-      contributors:  [hildobby]
     config:
       tags: ['tornado_cash', 'withdrawals', 'polygon']
     description: "Tornado Cash Withdrawals on Polygon"

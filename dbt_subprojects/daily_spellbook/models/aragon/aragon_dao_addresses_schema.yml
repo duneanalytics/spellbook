@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon, ethereum, gnosis, base, arbitrum, zksync
       project: aragon
-      contributors: Henrystats 
     config:
       tags: [ 'polygon', 'ethereum', 'arbitrum', 'gnosis', 'base', 'zksync', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client', 'Aragon App']
     description: >

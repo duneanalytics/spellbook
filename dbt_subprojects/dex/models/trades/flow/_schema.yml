@@ -24,7 +24,6 @@ models:
       blockchain: flow
       sector: dex
       project: izumi_finance
-      contributors: krishg
     config:
       tags: [ 'flow', 'dex', 'trades', 'izumi_finance' ]
     description: "Izumi Finance V3 Flow base trades"

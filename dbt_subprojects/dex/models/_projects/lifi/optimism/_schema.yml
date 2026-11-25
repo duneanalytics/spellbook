@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: dex
       project: lifi_v2
-      contributors: Henrystats
     config:
       tags: ['optimism','lifi_v2','trades', 'lifi','dex']
     description: >
@@ -88,7 +87,6 @@ models:
       blockchain: optimism
       sector: dex
       project: lifi
-      contributors: Henrystats
     config:
       tags: ['optimism','dex','trades', 'lifi']
     description: >

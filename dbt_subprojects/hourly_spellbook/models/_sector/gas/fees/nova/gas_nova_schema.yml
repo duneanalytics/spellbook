@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: nova
       sector: gas
-      contributors: 0xRob, hosuke
     config:
       tags: ['nova', 'gas', 'fees']
     description: >

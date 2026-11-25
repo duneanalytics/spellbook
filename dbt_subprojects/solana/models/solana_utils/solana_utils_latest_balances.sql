@@ -8,8 +8,7 @@
         unique_key = ['address'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
-                                    "solana_utils",
-                                    \'["ilemi"]\') }}')
+                                    "solana_utils") }}')
 }}
 
 WITH

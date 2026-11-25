@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ton
       sector: dex
-      contributors: pshuvalov
       short_description: "Trade notification events from Storm Trade on TON, capturing vault fund flows, fees, referrals, and executor rewards."
     config:
       tags: ['ton', 'stormtrade', 'perpetual']
@@ -65,7 +64,6 @@ models:
     meta:
       blockchain: ton
       sector: dex
-      contributors: pshuvalov
       short_description: "Executed perpetual trading orders on Storm Trade on TON."
     config:
       tags: ['ton', 'stormtrade', 'perpetual']
@@ -169,7 +167,6 @@ models:
     meta:
       blockchain: ton
       sector: dex
-      contributors: pshuvalov
       short_description: "Completed perpetual trading orders on Storm Trade on TON."
     config:
       tags: ['ton', 'stormtrade', 'perpetual']
@@ -247,7 +244,6 @@ models:
     meta:
       blockchain: ton
       sector: dex
-      contributors: pshuvalov
       short_description: "Position update events on Storm Trade on TON, tracking changes to open perpetual positions."
     config:
       tags: ['ton', 'stormtrade', 'perpetual']

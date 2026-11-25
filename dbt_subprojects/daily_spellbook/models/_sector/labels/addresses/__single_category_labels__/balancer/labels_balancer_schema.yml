@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, polygon, optimism, arbitrum, avalanche_c, base, gnosis, zkevm
       sector: labels
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'base', 'gnosis', 'zkevm', 'gauges']
     description: 'Balancer gauge labels.'
@@ -61,7 +60,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'gauges']
     description: 'Balancer gauge labels.'
@@ -85,7 +83,6 @@ models:
       blockchain: polygon
       sector: labels
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'polygon', 'gauges']
     description: 'Balancer gauge labels.'
@@ -109,7 +106,6 @@ models:
       blockchain: arbitrum
       sector: labels
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'arbitrum', 'gauges']
     description: 'Balancer gauge labels.'
@@ -133,7 +129,6 @@ models:
       blockchain: optimism
       sector: labels
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'optimism', 'gauges']
     description: 'Balancer gauge labels.'
@@ -157,7 +152,6 @@ models:
       blockchain: avalanche_c
       sector: labels
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['labels', 'avalanche_c', 'gauges']
     description: 'Balancer gauge labels.'
@@ -181,7 +175,6 @@ models:
       blockchain: base
       sector: labels
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['labels', 'base', 'gauges']
     description: 'Balancer gauge labels.'
@@ -205,7 +198,6 @@ models:
       blockchain: gnosis
       sector: labels
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['labels', 'gnosis', 'gauges']
     description: 'Balancer gauge labels.'
@@ -229,7 +221,6 @@ models:
       blockchain: zkevm
       sector: labels
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['labels', 'zkevm', 'gauges']
     description: 'Balancer gauge labels.'

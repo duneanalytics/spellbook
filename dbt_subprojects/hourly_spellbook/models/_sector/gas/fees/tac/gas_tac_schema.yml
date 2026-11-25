@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: tac
       sector: gas
-      contributors: krishhh
     config:
       tags: ['tac', 'gas', 'fees']
     description: >

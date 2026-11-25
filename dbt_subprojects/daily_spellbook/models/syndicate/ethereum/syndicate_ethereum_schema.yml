@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: syndicate
-      contributors: Henrystats 
     config:
       tags: [ 'ethereum', 'dao', 'syndicate', 'dao creator tools', 'Henrystats' ]
     description: >

@@ -24,7 +24,6 @@ models:
       blockchain: linea
       sector: dex
       project: sushiswap
-      contributors: tomfutago
     config:
       tags: [ 'linea', 'dex', 'trades', 'sushiswap' ]
     description: "Sushiswap v2 Linea base trades"
@@ -43,7 +42,6 @@ models:
       blockchain: linea
       sector: dex
       project: lynex
-      contributors: tomfutago
     config:
       tags: [ 'linea', 'dex', 'trades', 'lynex' ]
     description: "Lynex Linea base trades"
@@ -62,7 +60,6 @@ models:
       blockchain: linea
       sector: dex
       project: nile
-      contributors: tomfutago
     config:
       tags: [ 'linea', 'dex', 'trades', 'nile' ]
     description: "Nile Linea base trades"
@@ -81,7 +78,6 @@ models:
       blockchain: linea
       sector: dex
       project: echodex
-      contributors: tomfutago
     config:
       tags: [ 'linea', 'dex', 'trades', 'echodex' ]
     description: "EchoDex Linea base trades"
@@ -100,7 +96,6 @@ models:
       blockchain: linea
       sector: dex
       project: secta
-      contributors: tomfutago
     config:
       tags: [ 'linea', 'dex', 'trades', 'secta' ]
     description: "Secta Linea base trades"
@@ -119,7 +114,6 @@ models:
       blockchain: linea
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed
     config:
       tags: [ 'linea', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
     description: "Pancakeswap linea v2 base trades"
@@ -141,7 +135,6 @@ models:
       blockchain: linea
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed
     config:
       tags: [ 'linea', 'dex', 'trades', 'pancakeswap' ]
     description: "Pancakeswap V3 linea base trades"
@@ -162,7 +155,6 @@ models:
       blockchain: linea
       sector: dex
       project: horizondex
-      contributors: blanchemaria6
     config:
       tags: [ 'linea', 'dex', 'trades', 'horizondex' ]
     description: "horizondex dex swaps on linea chain"
@@ -183,7 +175,6 @@ models:
       blockchain: linea
       sector: dex
       project: uniswap
-      contributors: chef_seaweed
     config:
       tags: [ 'linea', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap linea v3 base trades"
@@ -204,7 +195,6 @@ models:
       blockchain: linea
       sector: dex
       project: lynex
-      contributors: atarod0
     config:
       tags: [ 'linea', 'dex', 'trades', 'lynex', 'fusion' ]
     description: "lynex linea fusion base trades"
@@ -225,7 +215,6 @@ models:
       blockchain: linea
       sector: dex
       project: swaap
-      contributors: borelien
     config:
       tags: [ 'linea', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 linea base trades"
@@ -246,7 +235,6 @@ models:
       blockchain: linea
       sector: dex
       project: leetswap
-      contributors: kiley79
     config:
       tags: [ 'linea', 'dex', 'trades', 'leetswap' ]
     description: "Leetswap Linea base trades"
@@ -265,7 +253,6 @@ models:
       blockchain: linea
       sector: dex
       project: etherex
-      contributors: discochuck
     config:
       tags: [ 'linea', 'dex', 'trades', 'etherex', 'uniswap', 'v2' ]
     description: "EtherEx linea v2 base trades"
@@ -286,7 +273,6 @@ models:
       blockchain: linea
       sector: dex
       project: etherex
-      contributors: discochuck
     config:
       tags: [ 'linea', 'dex', 'trades', 'etherex', 'v3' ]
     description: "EtherEx V3 linea base trades"

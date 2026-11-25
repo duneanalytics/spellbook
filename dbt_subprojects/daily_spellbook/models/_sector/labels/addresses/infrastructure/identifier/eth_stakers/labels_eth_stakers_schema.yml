@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: eth_stakers
-      contributors: hildobby
     config:
       tags: ['labels', 'ethereum', 'staker', 'staking', 'eth']
     description: "Addresses that have staked ETH"

@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: airdrop
       project: op
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'optimism', 'claim', 'op']
     description: "List of claim transactions for the $OP airdrop"

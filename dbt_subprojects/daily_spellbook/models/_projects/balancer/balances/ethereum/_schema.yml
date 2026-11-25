@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: jacektrocinski, metacrypto, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'balances']
     description: >
@@ -37,7 +36,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'bpt', 'supply', 'changes']
     description: >
@@ -101,7 +99,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'bpt', 'supply', 'changes']
     description: >
@@ -137,7 +134,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'bpt', 'supply', 'changes']
     description: >
@@ -171,7 +167,6 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['ethereum', 'bpt', 'supply', 'changes']
     description: >

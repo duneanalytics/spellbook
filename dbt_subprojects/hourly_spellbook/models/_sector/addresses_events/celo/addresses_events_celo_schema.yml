@@ -6,7 +6,6 @@ models:
       blockchain: celo
       sector: addresses_events
       project: addresses
-      contributors: Henrystats
     config:
       tags: ['table', 'funded', 'addresses_events', 'celo']
     description: "Table showing who first funded each Celo address in CELO"
@@ -55,7 +54,6 @@ models:
       blockchain: celo
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'celo']
     description: "Table showing which token was first received for each Celo address"

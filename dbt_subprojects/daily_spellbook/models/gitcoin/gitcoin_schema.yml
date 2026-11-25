@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, polygon
       sector: donation
-      contributors: hildobby
     config:
         tags: ['ethereum', 'polygon', 'gitcoin', 'grant', 'round']
     description: >
@@ -24,7 +23,6 @@ models:
     meta:
       blockchain: ethereum, polygon
       sector: donation
-      contributors: hildobby
     config:
         tags: ['ethereum', 'polygon', 'gitcoin', 'donation']
     description: >

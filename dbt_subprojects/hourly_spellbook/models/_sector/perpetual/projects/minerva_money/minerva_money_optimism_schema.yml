@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: perpetual
       project: minerva_money
-      contributors: kaiblade
     config:
       tags: ['optimism', 'minerva_money', 'perpetuals', 'perps']
     description: >
@@ -95,7 +94,6 @@ models:
     meta:
       blockchain: optimism
       sector: perpetual
-      contributors: kaiblade
     config:
       tags: ['optimism', minerva_money, 'perpetuals', 'perps']
     description: >

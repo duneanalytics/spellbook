@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'flashloans', 'aave', 'base']
     description: "All lending flashloans transactions on Base"
@@ -79,7 +78,6 @@ models:
       blockchain: base
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'base']
     description: "Aave v3 flashloans transactions on Base"
@@ -112,7 +110,6 @@ models:
       blockchain: base
       sector: lending
       project: seamlessprotocol
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'seamlessprotocol', 'base']
     description: "Seamless Protocol flashloans transactions on Base"
@@ -145,7 +142,6 @@ models:
       blockchain: base
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'granary', 'base']
     description: "Granary flashloans transactions on Base"
@@ -178,7 +174,6 @@ models:
       blockchain: base
       sector: lending
       project: balancer
-      contributors: hildobby
     config:
       tags: ['lending', 'flashloans', 'balancer', 'base']
     description: "Balancer flashloans transactions on Base"
@@ -208,7 +203,6 @@ models:
       blockchain: base
       sector: lending
       project: morpho
-      contributors: 0xDataWolf, tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'base']
     description: "Morpho flashloans transactions on Base"

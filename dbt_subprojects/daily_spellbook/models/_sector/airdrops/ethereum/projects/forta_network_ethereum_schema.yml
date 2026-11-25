@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: forta_network
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'forta_network']
     description: "List of claim transactions for the $FORT airdrop"

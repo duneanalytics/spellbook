@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: nft
       project: chikn
-      contributors: Henrystats
     config:
       tags: ['avalanche', 'nft', 'trades', 'chikn']
     description: "chikn base trades"
@@ -34,7 +33,6 @@ models:
       blockchain: avalanche_c
       sector: nft
       project: campfire
-      contributors: Henrystats
     config:
       tags: ['avalanche', 'nft', 'trades', 'campfore']
     description: "Campfire base trades"
@@ -62,7 +60,6 @@ models:
       blockchain: avalanche_c
       sector: nft
       project: hyperspace
-      contributors: Henrystats
     config:
       tags: ['avalanche', 'nft', 'trades', 'campfore']
     description: "hyperspace base trades"
@@ -90,7 +87,6 @@ models:
       blockchain: avalanche_c
       sector: nft
       project: joepegs
-      contributors: Henrystats
     config:
       tags: ['avalanche', 'nft', 'trades', 'joepegs']
     description: "Joepegs base trades"
@@ -118,7 +114,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: element
-      contributors: 0xRob
     config:
       tags: [ 'avalanche_c','element','trades' ]
     description: >
@@ -133,7 +128,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: opensea
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
@@ -168,7 +162,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: opensea
-      contributors: sohwak, 0xRob
     config:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
@@ -204,7 +197,6 @@ models:
       blockchain: avalanche_c
       sector: nft
       project: salvor
-      contributors: Henrystats
     config:
       tags: ['avalanche', 'nft', 'trades', 'salvor']
     description: "Salvor base trades"
@@ -233,7 +225,6 @@ models:
       blockchain: avalanche_c
       sector: nft
       project: superchief
-      contributors: Henrystats
     config:
       tags: ['avalanche', 'nft', 'trades', 'superchief']
     description: "Superchief base trades"

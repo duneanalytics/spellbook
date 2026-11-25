@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       sector: airdrop
-      contributors: hildobby
     config:
       tags: ['airdrop', 'gnosis', 'claim']
     description: "List of airdrop claim transactions on Gnosis"

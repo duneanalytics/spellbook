@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: gmx
-      contributors: theachenyj
     config:
       tags: ['avalanche_c','gmx','glp']
     description: >

@@ -6,7 +6,6 @@ models:
       blockchain: base
       sector: perpetual
       project: voodoo_trade 
-      contributors: LLDAO
     config:
       tags: ['base','perpetual', 'voodoo_trade','perps']
     description: >

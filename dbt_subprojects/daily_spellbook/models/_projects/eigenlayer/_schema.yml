@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags:   ['eigenlayer', 'restaking', 'withdrawal']
     description: >
@@ -37,7 +36,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: [ 'eigenlayer', 'restaking', 'withdrawal']
     description: >
@@ -54,7 +52,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: haminkang
     config:
       tags: ['eigenlayer', 'restaking', 'slashing', 'withdrawal']
     description: >
@@ -71,7 +68,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: haminkang
     config:
       tags: ['eigenlayer', 'restaking', 'slashing', 'withdrawal']
     description: >
@@ -88,7 +84,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: [ 'eigenlayer', 'restaking', 'deposit' ]
     description: >
@@ -103,7 +98,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: [ 'eigenlayer', 'restaking', 'withdrawal' ]
     description: >
@@ -116,7 +110,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: [ 'eigenlayer', 'restaking', 'netflow' ]
     description: >
@@ -129,7 +122,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'strategy']
     description: >
@@ -150,7 +142,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'avs', 'operator']
     description: >
@@ -169,7 +160,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'avs', 'metadata']
     description: >
@@ -183,7 +173,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'operator', 'metadata']
     description: >
@@ -195,7 +184,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'rewards']
     description: >
@@ -210,7 +198,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'rewards']
     description: >
@@ -223,7 +210,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'programmatic incentive']
     description: >
@@ -235,7 +221,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'programmatic incentive']
     description: >
@@ -248,7 +233,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'delegated shares']
     description: >
@@ -262,7 +246,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'delegated shares']
     description: >
@@ -277,7 +260,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'rewards']
     description: >
@@ -289,7 +271,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'strategy']
     description: >
@@ -300,7 +281,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: [ 'eigenlayer', 'restaking', 'exchange rate' ]
     description: >
@@ -314,7 +294,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'exchange rate']
     description: >
@@ -326,7 +305,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'beacon strategy', 'native eth']
     description: >
@@ -342,7 +320,6 @@ models:
     meta:
       blockchain: ethereum
       sector: restaking
-      contributors: bowenli
     config:
       tags: ['eigenlayer', 'restaking', 'strategy', 'metadata']
     description: >

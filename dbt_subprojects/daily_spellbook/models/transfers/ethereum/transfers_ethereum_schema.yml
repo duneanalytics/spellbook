@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: transfers
       project: eth
-      contributors: msilb7, chuxin
     config:
       tags: ["transfers", "ethereum", "eth"]
     description: "Events of native ETH transfers on Ethereum."

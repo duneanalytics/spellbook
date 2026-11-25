@@ -30,7 +30,6 @@ models:
       blockchain: story
       sector: dex
       project: story_hunt
-      contributors: tomfutago
     config:
       tags: ["story", "dex", "trades", "story_hunt", "static"]
     description: "Story Hunt story base trades"
@@ -50,7 +49,6 @@ models:
       sector: dex
       project: piperx
       version: '2'
-      contributors: tomfutago
     config:
       tags: ["story", "dex", "trades", "piperx", "static"]
     description: "Piperx v2 story base trades"
@@ -72,7 +70,6 @@ models:
       sector: dex
       project: piperx
       version: '3'
-      contributors: tomfutago
     config:
       tags: ["story", "dex", "trades", "piperx", "static"]
     description: "Piperx v3 story base trades"

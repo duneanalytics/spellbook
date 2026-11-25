@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: forefront
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'forefront']
     description: "List of claim transactions for the $FF airdrop"

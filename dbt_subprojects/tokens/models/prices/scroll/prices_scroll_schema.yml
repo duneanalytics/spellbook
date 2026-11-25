@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: scroll
       sector: prices
-      contributors: 0xRob
     config:
       tags: ['prices', 'tokens', 'usd', 'scroll']
     description: "Price tokens on scroll chain"

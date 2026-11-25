@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: cronos
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'cronos']
     description: "Price tokens on Cronos EVM chain"

@@ -6,7 +6,6 @@ models:
      blockchain: blast
      sector: nft
      project: fantasy
-     contributors: hildobby
    config:
      tags: ['blast', 'nft', 'trades', 'fantasy']
    description: "Fantasy base trades"
@@ -21,7 +20,6 @@ models:
      blockchain: blast
      sector: nft
      project: fantasy
-     contributors: hildobby
    config:
      tags: ['blast', 'nft', 'trades', 'blur']
    description: "Blur on blast base trades"
@@ -36,7 +34,6 @@ models:
      blockchain: blast
      sector: nft
      project: opensea
-     contributors: hildobby
    config:
      tags: ['blast', 'nft', 'trades', 'opensea']
    description: "OpenSea on blast base trades"

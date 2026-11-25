@@ -15,7 +15,6 @@ models:
       blockchain: ethereum
       sector: labels
       project: multisig
-      contributors: ilemi, soispoke
     config:
       tags: ['labels', 'ethereum', 'multisig']
     description: "Known multisig DAO wallets on Ethereum"

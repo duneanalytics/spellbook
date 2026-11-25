@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: tx_hash_labels
       category: onramp
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'onramp', 'dex']
     description: "Trades that traded from one stable token to any other token"
@@ -47,7 +46,6 @@ models:
       blockchain: ethereum
       sector: labels
       category: onramp
-      contributors: gentrexha
     config:
       tags: ['labels', 'tx_hash', 'ethereum', 'onramp', 'dex']
     description:  "Trades that traded from one stable token to any other token"

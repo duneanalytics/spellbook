@@ -10,8 +10,7 @@
   tags=['walrus'],
     post_hook='{{ expose_spells(\'["sui"]\',
                               "sector",
-                              "walrus",
-                              \'["krishhh"]\') }}'
+                              "walrus") }}'
 ) }}
 
 {% set walrus_start_date = var('walrus_start_date', '2023-04-12') %}

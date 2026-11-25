@@ -24,7 +24,6 @@ models:
       blockchain: kaia
       sector: dex
       project: dragon_swap
-      contributors: jeff-dude
     config:
       tags: [ 'kaia', 'dex', 'trades', 'dragon_swap' ]
     description: "dragon_swap kaia v2 base trades"
@@ -46,7 +45,6 @@ models:
       blockchain: kaia
       sector: dex
       project: dragon_swap
-      contributors: jeff-dude
     config:
       tags: [ 'kaia', 'dex', 'trades', 'dragon_swap' ]
     description: "dragon_swap V3 kaia base trades"
@@ -68,7 +66,6 @@ models:
       blockchain: kaia
       sector: dex
       project: klay_swap
-      contributors: jeff-dude
     config:
       tags: [ 'kaia', 'dex', 'trades', 'klay_swap' ]
     description: "klay_swap V3 kaia base trades"
@@ -89,7 +86,6 @@ models:
       blockchain: kaia
       sector: dex
       project: neopin
-      contributors: jeff-dude
     config:
       tags: [ 'kaia', 'dex', 'trades', 'neopin' ]
     description: "neopin kaia base trades"
@@ -108,7 +104,6 @@ models:
       blockchain: kaia
       sector: dex
       project: kaia_swap
-      contributors: jeff-dude
     config:
       tags: [ 'kaia', 'dex', 'trades', 'kaia_swap' ]
     description: "kaia_swap V3 kaia base trades"
@@ -124,7 +119,6 @@ models:
       blockchain: kaia
       sector: dex
       project: defi_kingdoms
-      contributors: jeff-dude
     config:
       tags: [ 'kaia', 'dex', 'trades', 'defi_kingdoms' ]
     description: "defi_kingdoms kaia base trades"
@@ -143,7 +137,6 @@ models:
       blockchain: kaia
       sector: dex
       project: cldex
-      contributors: thecaptncrunch
     config:
       tags: [ 'kaia', 'dex', 'trades', 'cldex' ]
     description: "Kaia concentrated liquidity base trades"

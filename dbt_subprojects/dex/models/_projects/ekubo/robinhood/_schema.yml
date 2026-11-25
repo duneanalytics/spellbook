@@ -7,7 +7,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: ekubo
-      contributors: moodysalem
     config:
       tags: ['robinhood', 'pools', 'liquidity', 'ekubo']
     description: >
@@ -52,7 +51,6 @@ models:
       blockchain: robinhood
       sector: dex
       project: ekubo
-      contributors: moodysalem
     config:
       tags: ['robinhood', 'pools', 'liquidity', 'ekubo']
     description: >

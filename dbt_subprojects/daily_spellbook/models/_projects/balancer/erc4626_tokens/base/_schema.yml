@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['base', 'token', 'mapping']
     description: >
@@ -35,7 +34,6 @@ models:
     meta:
       blockchain: base
       project: balancer
-      contributors: viniabussafi
     config:
       tags: ['base', 'token', 'prices']
     description: >

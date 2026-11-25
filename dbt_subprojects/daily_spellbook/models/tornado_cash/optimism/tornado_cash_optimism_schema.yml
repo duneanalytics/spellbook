@@ -7,7 +7,6 @@ models:
     meta:
       blockchain: optimism
       project: tornado_cash
-      contributors: [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'deposits', 'optimism']
     description: "Tornado Cash Deposits on Optimism"
@@ -58,7 +57,6 @@ models:
     meta:
       blockchain: optimism
       project: tornado_cash
-      contributors:  [hildobby, dot2dotseurat]
     config:
       tags: ['tornado_cash', 'withdrawals', 'optimism']
     description: "Tornado Cash Withdrawals on Optimism"

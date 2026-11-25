@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: airdrop
-      contributors: hildobby
     config:
       tags: ['airdrop', 'ethereum', 'claim']
     description: "List of airdrop claim transactions on Ethereum"

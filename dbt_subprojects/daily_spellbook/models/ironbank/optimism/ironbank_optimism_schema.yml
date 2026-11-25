@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: lending
       project: ironbank
-      contributors: michael
     config:
       tags: ['optimism','ironbank','view']
     description: >
@@ -47,7 +46,6 @@ models:
       blockchain: optimism
       sector: lending
       project: ironbank
-      contributors: michael
     config:
       tags: ['optimism','ironbank','view','borrow']
     description: "Borrow data on optimism"
@@ -88,7 +86,6 @@ models:
       blockchain: optimism
       sector: lending
       project: ironbank
-      contributors: michael
     config:
       tags: ['optimism','ironbank','view','mint']
     description: "Mint data on optimism"
@@ -115,7 +112,6 @@ models:
       blockchain: optimism
       sector: lending
       project: ironbank
-      contributors: michael
     config:
       tags: ['optimism','ironbank','view','repay']
     description: "Repay data on optimism"
@@ -140,7 +136,6 @@ models:
       blockchain: optimism
       sector: lending
       project: ironbank
-      contributors: michael
     config:
       tags: ['optimism','ironbank','view','redeem underlying']
     description: "Redeem data on optimism"
@@ -167,7 +162,6 @@ models:
       blockchain: optimism
       sector: lending
       project: ironbank
-      contributors: michael
     config:
       tags: ['optimism','ironbank','view','liquidation']
     description: "Liquidation data on optimism"

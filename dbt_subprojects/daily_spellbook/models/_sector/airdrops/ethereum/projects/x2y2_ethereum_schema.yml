@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: x2y2
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'x2y2']
     description: "List of claim transactions for the $X2Y2 airdrop"

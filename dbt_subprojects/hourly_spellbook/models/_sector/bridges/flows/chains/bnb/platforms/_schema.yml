@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v3 bridge deposits events on bnb"
@@ -15,7 +14,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on bnb"
@@ -24,7 +22,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: synapse
-      contributors: [ 'hildobby']
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'deposits' ]
     description: "Synapse's RFQ bridge deposits events on BNB"
@@ -33,7 +30,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: synapse
-      contributors: [ 'hildobby']
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
     description: "Synapse's RFQ bridge withdrawals events on BNB"
@@ -42,7 +38,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
     description: "Celer's v1 bridge deposits events on BNB"
@@ -51,7 +46,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: celer
-      contributors: [ 'hildobby']
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on BNB"
@@ -60,7 +54,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: zkbridge
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on BNB"
@@ -69,7 +62,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: symbiosis
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on BNB"
@@ -78,7 +70,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: connext
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on BNB"
@@ -87,7 +78,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: nitro
-      contributors: [ 'hildobby']
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on BNB"
@@ -96,7 +86,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on BNB"
@@ -105,7 +94,6 @@ models:
       blockchain: bnb
       sector: bridges
       project: axelar
-      contributors: [ 'hildobby']
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on BNB"

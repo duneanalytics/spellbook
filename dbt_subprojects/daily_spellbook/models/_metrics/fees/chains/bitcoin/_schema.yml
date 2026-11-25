@@ -4,7 +4,6 @@ models:
   - name: metrics_bitcoin_gas_fees_daily
     meta:
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"

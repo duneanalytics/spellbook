@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: decent
-      contributors: [msilb7]
     config:
       tags: ['optimism','decent','nft']
     description: >

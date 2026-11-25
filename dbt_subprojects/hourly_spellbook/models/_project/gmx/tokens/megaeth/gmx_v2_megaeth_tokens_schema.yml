@@ -6,7 +6,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['megaeth', 'gmx', 'event', 'collateral_tokens']
     description: |
@@ -29,7 +28,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['megaeth', 'gmx', 'tokens', 'erc20']
     description: |
@@ -81,7 +79,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['megaeth', 'gmx', 'event', 'markets']
     description: |
@@ -143,7 +140,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['megaeth', 'gmx', 'pools', 'glvs_data']
     description: |

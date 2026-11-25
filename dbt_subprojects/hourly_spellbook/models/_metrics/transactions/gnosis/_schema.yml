@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: gnosis
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'gnosis','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: gnosis
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'gnosis','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

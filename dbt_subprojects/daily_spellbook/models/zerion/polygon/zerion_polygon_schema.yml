@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: dex
       project: zerion
-      contributors: hildobby
     config:
       tags: ['polygon', 'zerion', 'zerion', 'trades', 'dex']
     description: >

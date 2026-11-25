@@ -24,7 +24,6 @@ models:
       blockchain: polygon
       sector: dex
       project: uniswap
-      contributors: agaperste, thevaizman
     config:
       tags: [ 'polygon', 'dex', 'trades', 'uniswap', 'v4' ]
     description: "uniswap polygon v4 base trades"
@@ -45,7 +44,6 @@ models:
       blockchain: polygon
       sector: dex
       project: uniswap
-      contributors: Henrystats, hosuke
     config:
       tags: [ 'polygon', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap polygon v3 trades"
@@ -67,7 +65,6 @@ models:
       blockchain: polygon
       sector: dex
       project: airswap
-      contributors: tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'airswap' ]
     description: "Defiswap polygon base trades"
@@ -87,7 +84,6 @@ models:
       blockchain: polygon
       sector: dex
       project: sushiswap
-      contributors: Henrystats, hosuke, tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'sushiswap', 'v1' ]
     description: "sushiswap polygon v1 trades"
@@ -109,7 +105,6 @@ models:
       blockchain: polygon
       sector: dex
       project: sushiswap
-      contributors: tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'sushiswap', 'v2' ]
     description: "sushiswap polygon v2 trades"
@@ -131,7 +126,6 @@ models:
       blockchain: polygon
       sector: dex
       project: quickswap
-      contributors: nyssarex
     config:
       tags: [ 'polygon', 'dex', 'trades', 'quickswap', 'v2' ]
     description: "quickswap polygon v2 trades"
@@ -153,7 +147,6 @@ models:
       blockchain: polygon
       sector: dex
       project: quickswap
-      contributors: nyssarex
     config:
       tags: [ 'polygon', 'dex', 'trades', 'quickswap', 'v3' ]
     description: "quickswap polygon v3 trades"
@@ -175,7 +168,6 @@ models:
       blockchain: polygon
       sector: dex
       project: apeswap
-      contributors: hosuke
     config:
       tags: [ 'polygon', 'dex', 'trades', 'apeswap' ]
     description: apeswap base trades
@@ -197,7 +189,6 @@ models:
       blockchain: polygon
       sector: dex
       project: balancer
-      contributors: bizzyvinci, thetroyharris, tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 polygon base trades"
@@ -219,7 +210,6 @@ models:
       blockchain: polygon
       sector: dex
       project: honeyswap
-      contributors: 0xr3x, jeff-dude, masquot, soispoke, tomfutago
     config:
       tags: ['polygon', 'dex', 'trades', 'honeyswap', 'v2']
     description: "Honeyswap polygon base trades"
@@ -241,7 +231,6 @@ models:
       blockchain: polygon
       sector: dex
       project: fraxswap
-      contributors: kndlexi, tomfutago
     config:
       tags: ['polygon', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
     description: "Fraxswap polygon base trades"
@@ -263,7 +252,6 @@ models:
       blockchain: polygon
       sector: dex
       project: dodo
-      contributors: owen05, scoffie, tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'dodo' ]
     description: "Dodo polygon base trades"
@@ -289,7 +277,6 @@ models:
       blockchain: polygon
       sector: dex
       project: clipper
-      contributors: 0xRob, amalashkevich, tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'clipper' ]
     description: "clipper polygon base trades"
@@ -314,7 +301,6 @@ models:
       blockchain: polygon
       sector: dex
       project: kyberswap
-      contributors: nhd98z, tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
     description: "kyberswap polygon base trades"
@@ -338,7 +324,6 @@ models:
       blockchain: polygon
       sector: dex
       project: xchange
-      contributors: mike-x7f, tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
     description: "xchange polygon base trades"
@@ -357,7 +342,6 @@ models:
       blockchain: polygon
       sector: dex
       project: dooar
-      contributors: tomfutago
     config:
       tags: [ 'polygon', 'dex', 'trades', 'dooar', 'uniswap' ]
     description: "Dooar polygon base trades"
@@ -376,7 +360,6 @@ models:
       blockchain: polygon
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: [ 'polygon', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap polygon v2 base trades"
@@ -397,7 +380,6 @@ models:
       blockchain: polygon
       sector: dex
       project: smardex
-      contributors: blanchemaria6
     config:
       tags: [ 'base', 'dex', 'trades', 'smardex' ]
     description: "smardex base trades on polygon"
@@ -416,7 +398,6 @@ models:
       blockchain: polygon
       sector: dex
       project: gridex
-      contributors: blanchemaria6
     config:
       tags: [ 'polygon', 'dex', 'trades', 'gridex' ]
     description: "gridex polygon base trades"
@@ -437,7 +418,6 @@ models:
       blockchain: polygon
       sector: dex
       project: swaap
-      contributors: borelien
     config:
       tags: [ 'polygon', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 polygon base trades"
@@ -458,7 +438,6 @@ models:
       blockchain: polygon
       sector: dex
       project: dfyn
-      contributors: letaharouna
     config:
       tags: [ 'polygon', 'dex', 'trades', 'dfyn', 'v2' ]
     description: "dfyn polygon base trades"
@@ -477,7 +456,6 @@ models:
       blockchain: polygon
       sector: dex
       project: jetswap
-      contributors: intensodefi
     config:
       tags: [ 'polygon', 'dex', 'trades', 'jetswap' ]
     description: "jetswap polygon base trades"
@@ -496,7 +474,6 @@ models:
       blockchain: polygon
       sector: dex
       project: gravity_finance
-      contributors: blanchemaria6
     config:
       tags: [ 'polygon', 'dex', 'trades', 'gravity_finance' ]
     description: "gravity_finance polygon base trades"
@@ -514,7 +491,6 @@ models:
       blockchain: polygon
       sector: dex
       project: fluid
-      contributors: maybeYonas, pyor_xyz, thetroyharris
     config:
       tags: ["[polygon", "dex", "trades", "fluid"]
     description: "fluid dex polygon base trades"
@@ -566,7 +542,6 @@ models:
       blockchain: polygon
       sector: dex
       project: metric
-      contributors: mathewae
     config:
       tags: ["polygon", "dex", "trades", "metric"]
     description: "Metric (oracle-based on-chain market maker) polygon base trades, all factory versions (0, 1, 2)"

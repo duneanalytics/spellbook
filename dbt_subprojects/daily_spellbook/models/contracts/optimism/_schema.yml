@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'optimism', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on op mainnet."
@@ -119,7 +118,6 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
@@ -150,7 +148,6 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'optimism', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on op mainnet."
@@ -185,7 +182,6 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['evm', 'optimism', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on op mainnet."
@@ -237,7 +233,6 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "View for backwards query compatability"
@@ -253,7 +248,6 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contributors: chuxin, msilb7
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "View for backwards query compatability"
@@ -269,7 +263,6 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contributors: msilb7
     config:
       tags: ['optimism','op','contracts','disperse']
     description: >
@@ -287,7 +280,6 @@ models:
     meta:
       blockchain: optimism
       sector: contracts
-      contributors: kryptaki
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Optimism."

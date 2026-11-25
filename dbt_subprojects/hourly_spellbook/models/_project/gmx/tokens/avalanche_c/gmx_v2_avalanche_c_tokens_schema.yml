@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['avalanche_c', 'gmx', 'event', 'collateral_tokens']
     description: |
@@ -29,7 +28,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['avalanche_c', 'gmx', 'tokens', 'erc20']
     description: |
@@ -80,7 +78,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['avalanche_c', 'gmx', 'event', 'markets']
     description: |
@@ -142,7 +139,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['avalanche_c', 'gmx', 'pools', 'glvs_data']
     description: |

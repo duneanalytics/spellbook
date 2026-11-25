@@ -7,7 +7,6 @@ models:
       blockchain: optimism, ethereum, polygon, avalanche_c, arbitrum
       sector: lending
       project: aave
-      contributors: msilb7
 
     config:
       tags: ['cross-chain', 'aave', 'aave_v3','tokens','lending', 'borrowing']

@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: governance
       project: governance
-      contributors: chain_l
     config:
       tags: ['optimism','agora','snapshot','governance','proposals']
 
@@ -111,7 +110,6 @@ models:
       blockchain: optimism
       sector: governance
       project: governance
-      contributors: chain_l
     config:
       tags: ['optimism','agora','proposals','governance']
     description: >
@@ -168,7 +166,6 @@ models:
       blockchain: optimism
       sector: governance
       project: governance
-      contributors: chain_l
     config:
       tags: ['optimism','snapshot','proposals','governance']
     description: >
@@ -225,7 +222,6 @@ models:
       blockchain: optimism
       sector: governance
       project: governance
-      contributors: chain_l
     config:
       tags: ['optimism','snapshot','agora','proposals','governance','votes']
     description: >

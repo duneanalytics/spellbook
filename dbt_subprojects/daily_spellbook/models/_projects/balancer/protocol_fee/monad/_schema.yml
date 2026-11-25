@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: monad
       project: balancer_v3
-      contributors: viniabussafi
     config:
       tags: ['monad', 'revenue', 'fees']
     description: >

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: morph
       sector: gas
-      contributors: jeff-dude
     config:
       tags: ['morph', 'gas', 'fees']
     description: >

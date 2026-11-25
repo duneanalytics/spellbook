@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, gnosis, polygon, base, arbitrum, zksync
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'ethereum','gnosis', 'polygon', 'base', 'arbitrum', 'zksync', 'dao', 'dao creator tools', 'henrystats' ]
     description: >
@@ -53,7 +52,6 @@ models:
     meta:
       blockchain: ethereum
       sector: dao
-      contributors: Henrystats 
     config:
       tags: [ 'ethereum', 'steth', 'dao', 'dao creator tools', 'henrystats' ]
     description: >

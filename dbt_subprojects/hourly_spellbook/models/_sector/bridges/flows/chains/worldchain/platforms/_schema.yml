@@ -6,7 +6,6 @@ models:
       blockchain: worldchain
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v2 bridge deposits events on Worldchain"
@@ -15,7 +14,6 @@ models:
       blockchain: worldchain
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Worldchain"
@@ -24,7 +22,6 @@ models:
       blockchain: worldchain
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v3 bridge deposits events on Worldchain"
@@ -33,7 +30,6 @@ models:
       blockchain: worldchain
       sector: bridges
       project: across
-      contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Worldchain"
@@ -42,7 +38,6 @@ models:
       blockchain: worldchain
       sector: bridges
       project: orbiter
-      contributors: [ 'hildobby']
     config:
       tags: [ 'worldchain', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Worldchain"

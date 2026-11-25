@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: odos
-      contributors: amalashkevich
     config:
       tags: ['ethereum','trades', 'odos','dex']
     description: >
@@ -106,7 +105,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: odos
-      contributors: amalashkevich
     config:
       tags: ['ethereum','trades', 'odos','dex']
     description: >

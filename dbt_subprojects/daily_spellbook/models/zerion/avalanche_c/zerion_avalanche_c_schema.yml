@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: zerion
-      contributors: hildobby
     config:
       tags: ['avalanche_c', 'zerion', 'zerion', 'trades', 'dex']
     description: >

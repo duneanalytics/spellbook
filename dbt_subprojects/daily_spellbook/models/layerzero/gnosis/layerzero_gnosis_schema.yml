@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: gnosis
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['gnosis', 'layerzero', 'send']
    description: "LayerZero message send call on gnosis"

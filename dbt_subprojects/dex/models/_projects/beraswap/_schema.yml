@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: berachain
       project: beraswap
-      contributors: hosuke
     config:
       tags: ['berachain', 'beraswap', 'pools_fees']
     description: >

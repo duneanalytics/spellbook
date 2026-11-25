@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: tokens
       project: erc20
-      contributors: msilb7, rantum
     config:
       tags: ['table', 'erc20', 'optimism']
     description: "Manually identified ERC20 Token Addresses, Symbols and Decimals"
@@ -34,7 +33,6 @@ models:
       blockchain: optimism
       sector: tokens
       project: erc20
-      contributors: msilb7
     config:
       tags: ['table', 'erc20', 'optimism']
     description: "Query generated ERC20 Token Addresses, Symbols and Decimals"
@@ -50,7 +48,6 @@ models:
       blockchain: optimism
       sector: tokens
       project: erc20
-      contributors: msilb7
     config:
       tags: ['table', 'erc20', 'optimism']
     description: "All ERC20 tokens that have emitted a transfer event"
@@ -63,7 +60,6 @@ models:
     meta:
       blockchain: optimism
       sector: erc20
-      contributors: msilb7
     config:
       tags: ['tokens', 'optimism', 'bridge', 'erc20']
     description: >
@@ -88,7 +84,6 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: msilb7, dot2dotseurat
     config:
       tags: ['tokens', 'optimism', 'nft', 'erc721', 'erc1155']
     description: >
@@ -105,7 +100,6 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: msilb7, dot2dotseurat
     config:
       tags: [ 'tokens', 'optimism', 'nft', 'erc721', 'erc1155' ]
     description: >
@@ -131,7 +125,6 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: chuxin
     config:
       tags: ['tokens', 'optimism', 'nft', 'erc721','bridge']
     description: >
@@ -156,7 +149,6 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: 0xRob
     config:
       tags: [ 'nft','optimism' ]
     description: >
@@ -177,7 +169,6 @@ models:
     meta:
       blockchain: optimism
       sector: nft
-      contributors: msilb7
     config:
       tags: ['tokens', 'optimism', 'nft']
     description: >

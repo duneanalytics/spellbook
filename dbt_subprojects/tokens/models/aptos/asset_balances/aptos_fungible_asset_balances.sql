@@ -10,8 +10,7 @@
     partition_by = ['block_month'],
     post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
         spell_type = "project",
-        spell_name = "fungible_asset",
-        contributors = \'["ying-w"]\') }}'
+        spell_name = "fungible_asset") }}'
 ) }}
 
 -- Compared to GraphQL endpoint, this table has the following differences:

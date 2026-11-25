@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: sonic
       sector: tokens
-      contributors: hosuke
     config:
       tags: ['tokens', 'sonic', 'prices']
     description: "Token prices and metadata on Sonic"

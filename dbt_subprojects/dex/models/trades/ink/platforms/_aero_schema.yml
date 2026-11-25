@@ -7,7 +7,6 @@ models:
       blockchain: ink
       sector: dex
       project: aero
-      contributors: ['thecaptncrunch']
     config:
       tags: ['ink', 'dex', 'trades', 'aero']
     data_tests:

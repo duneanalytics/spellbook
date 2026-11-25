@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum, avalanche_c, megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'avalanche_c', 'megaeth',  'gmx', 'event', 'collateral_tokens']
     description: |
@@ -34,7 +33,6 @@ models:
       blockchain: arbitrum, avalanche_c, megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'avalanche_c', 'megaeth',  'gmx', 'tokens', 'erc20']
     description: |
@@ -82,7 +80,6 @@ models:
       blockchain: arbitrum, avalanche_c, megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'avalanche_c', 'megaeth',  'gmx', 'event', 'markets']
     description: |
@@ -143,7 +140,6 @@ models:
       blockchain: arbitrum, avalanche_c, megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'avalanche_c', 'megaeth',  'gmx', 'pools', 'glvs_data']
     description: |

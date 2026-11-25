@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'arbitrum']
     description: "All Aave transactions involving borrow transactions on Arbitrum"
@@ -71,7 +70,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'arbitrum']
     description: "All Aave transactions involving flashloans transactions on Arbitrum"
@@ -103,7 +101,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'arbitrum']
     description: "All Aave transactions involving supply transactions on Arbitrum"
@@ -136,7 +133,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'arbitrum']
     description: "All Aave market transactions on Arbitrum"
@@ -176,7 +172,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'arbitrum']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'arbitrum']
     description: "Hourly aggregated lending market interest rates"

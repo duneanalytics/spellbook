@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave, compound, radiant
-      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'arbitrum']
     description: "All lending borrow transactions on Arbitrum"
@@ -93,7 +92,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'arbitrum']
     description: "Aave v3 borrow transactions on Arbitrum"
@@ -131,7 +129,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'borrow', 'compound', 'arbitrum']
     description: "Compound v3 borrow transactions on Ethereum"
@@ -171,7 +168,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: radiant
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'radiant', 'arbitrum']
     description: "Radiant borrow transactions on Arbitrum"
@@ -209,7 +205,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: lodestar
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'lodestar', 'arbitrum']
     description: "Lodestar v0 borrow transactions on Arbitrum"
@@ -249,7 +244,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: lodestar
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'lodestar', 'arbitrum']
     description: "Lodestar v1 borrow transactions on Arbitrum"
@@ -289,7 +283,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'granary', 'arbitrum']
     description: "Granary borrow transactions on Arbitrum"
@@ -327,7 +320,6 @@ models:
       blockchain: arbitrum
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'morpho', 'arbitrum']
     description: "Morpho borrow transactions on Arbitrum"

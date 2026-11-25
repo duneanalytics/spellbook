@@ -6,7 +6,6 @@ models:
       blockchain: monad
       sector: perpetual
       project: leverup
-      contributors: kkqzhou
     config:
       tags: ['monad', 'perpetual', 'leverup', 'perps']
     description: >

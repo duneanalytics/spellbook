@@ -6,7 +6,6 @@ models:
       blockchain: linea
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'linea','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on linea - formatted for dex.trades

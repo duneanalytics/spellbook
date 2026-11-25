@@ -7,7 +7,6 @@ models:
       blockchain: worldchain
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['worldchain', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -53,7 +52,6 @@ models:
       blockchain: worldchain
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['worldchain', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -81,7 +79,6 @@ models:
       blockchain: worldchain
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['worldchain', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -110,7 +107,6 @@ models:
       blockchain: worldchain
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['worldchain', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
     description: >
@@ -148,7 +144,6 @@ models:
       blockchain: worldchain
       sector: dex
       project: uniswap
-      contributors: irishlatte19, Henrystats
     config:
       tags: ['worldchain', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -208,7 +203,6 @@ models:
       blockchain: worldchain
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['worldchain', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -243,7 +237,6 @@ models:
       blockchain: worldchain
       sector: dex
       project: uniswap
-      contributors: Henrystats
     config:
       tags: ['worldchain', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -277,7 +270,6 @@ models:
     meta:
       blockchain: worldchain
       sector: dex
-      contributors: Henrystats
     config:
       tags: [ 'dex' ]
     data_tests:
@@ -293,7 +285,6 @@ models:
       blockchain: worldchain
       sector: dex
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['worldchain', 'dex', 'trades', 'uniswap', 'v4']
     description: >
@@ -320,7 +311,6 @@ models:
       blockchain: worldchain
       sector: dex_aggregator
       project: uniswap
-      contributors: thevaizman
     config:
       tags: ['worldchain', 'dex_aggregator', 'trades', 'uniswap', 'v4']
     description: >

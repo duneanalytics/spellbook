@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'arbitrum','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on arbitrum - formatted for dex.trades

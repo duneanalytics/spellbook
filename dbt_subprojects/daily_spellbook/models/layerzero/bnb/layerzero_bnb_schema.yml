@@ -5,7 +5,6 @@ models:
    meta:
      blockchain: bnb
      project: layerzero
-     contributors: bennyfeng
    config:
      tags: ['bnb', 'layerzero', 'send']
    description: "LayerZero message send call on bnb"

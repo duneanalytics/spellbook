@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ['polygon']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'ar', 'calls']
     description: >
@@ -71,7 +70,6 @@ models:
     meta:
       blockchain: ['polygon']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'lo', 'calls']
     description: >
@@ -137,7 +135,6 @@ models:
     meta:
       blockchain: ['polygon']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'cc', 'calls']
     description: >
@@ -208,7 +205,6 @@ models:
     meta:
       blockchain: ['polygon']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'calls']
     description: >

@@ -4,7 +4,6 @@ models:
   - name: bridge_zksync_native_flows
     meta:
       project: zksync
-      contributors: lgingerich
     config:
       tags: ['bridge','native_bridge', 'flows', 'cross-chain', 'zksync']
     description: >

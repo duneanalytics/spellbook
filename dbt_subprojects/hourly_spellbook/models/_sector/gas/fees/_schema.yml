@@ -5,7 +5,6 @@ models:
     meta:
       sector: gas
       short_description: "Gas fees paid per transaction across all EVM-compatible chains, including base fee, priority fee, and USD-denominated cost."
-      contributors: soispoke, ilemi, 0xRob, jeff-dude, hosuke, tomfutago
       docs_slug: /curated/gas-fees/fees
     description: >
         Gas Fees across chains
@@ -84,7 +83,6 @@ models:
     meta:
       sector: gas_evm
       short_description: "Transaction gas fees across EVM-compatible chains under the explicit gas_evm namespace."
-      contributors: soispoke, ilemi, 0xRob, jeff-dude, hosuke, tomfutago
     config:
       tags: ['gas', 'fees', 'evm']
     description: >

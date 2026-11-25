@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: monad
       project: zeroex
-      contributors: rantum
     config:
       tags: ['monad', '0x', 'settler']
     description: >
@@ -49,7 +48,6 @@ models:
     meta:
       blockchain: monad
       project: zeroex
-      contributors: rantum
     config:
       tags: ['monad','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -144,7 +142,6 @@ models:
     meta:
       blockchain: monad
       project: zeroex
-      contributors: hosuke
     config:
       tags: ['monad', '0x', 'settler']
     description: >

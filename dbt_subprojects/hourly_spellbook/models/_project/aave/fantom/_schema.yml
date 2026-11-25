@@ -6,7 +6,6 @@ models:
       blockchain: fantom
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'fantom']
     description: "All Aave transactions involving borrow transactions on Fantom"
@@ -71,7 +70,6 @@ models:
       blockchain: fantom
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'fantom']
     description: "All Aave transactions involving flashloans transactions on Fantom"
@@ -103,7 +101,6 @@ models:
       blockchain: fantom
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'fantom']
     description: "All Aave transactions involving supply transactions on Fantom"
@@ -136,7 +133,6 @@ models:
       blockchain: fantom
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'fantom']
     description: "All Aave market transactions on Fantom"
@@ -176,7 +172,6 @@ models:
       blockchain: fantom
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'fantom']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: fantom
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'fantom']
     description: "Hourly aggregated lending market interest rates"

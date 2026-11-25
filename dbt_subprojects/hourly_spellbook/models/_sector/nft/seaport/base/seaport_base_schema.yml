@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       project: seaport
-      contributors: hildobby
     config:
       tags: ['seaport', 'base', 'traces']
     description: >
@@ -70,7 +69,6 @@ models:
     meta:
       blockchain: base
       project: seaport
-      contributors: hildobby
     config:
       tags: ['seaport', 'base', 'tagging']
     description: >

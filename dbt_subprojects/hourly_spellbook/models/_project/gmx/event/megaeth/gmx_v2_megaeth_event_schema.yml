@@ -6,7 +6,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['megaeth', 'gmx', 'event', 'market_created']
     description: |
@@ -98,7 +97,6 @@ models:
       blockchain: megaeth
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['megaeth', 'gmx', 'event', 'glv_created']
     description: |

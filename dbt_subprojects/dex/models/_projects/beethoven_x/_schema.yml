@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: jacektrocinski, thetroyharris, tomfutago
     config:
       tags: ['fantom', 'balancer', 'pools_fees']
     description: >

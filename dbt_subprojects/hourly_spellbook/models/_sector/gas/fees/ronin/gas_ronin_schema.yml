@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ronin
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['ronin', 'gas', 'fees']
     description: >

@@ -4,7 +4,6 @@ models:
   - name: manifest_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana', 'dex', 'manifest' ]
     description: Staging model for Manifest swap data from instruction_calls.
@@ -16,7 +15,6 @@ models:
   - name: manifest_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana', 'dex', 'manifest' ]
     description: Manifest DEX base trades on Solana.
@@ -29,7 +27,6 @@ models:
   - name: manifest_solana_trades
     meta:
       blockchain: solana
-      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana', 'dex', 'manifest' ]
     description: Manifest DEX trades on Solana (from dex_solana_trades).

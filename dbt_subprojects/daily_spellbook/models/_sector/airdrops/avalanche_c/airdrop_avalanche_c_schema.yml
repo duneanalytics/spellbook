@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: airdrop
-      contributors: hildobby
     config:
       tags: ['airdrop', 'avalanche_c', 'claim']
     description: "List of airdrop claim transactions on Avalanche"

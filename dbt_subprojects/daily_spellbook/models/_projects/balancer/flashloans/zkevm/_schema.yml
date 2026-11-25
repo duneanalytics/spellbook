@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zkevm
       sector: lending
-      contributors: hildobby, viniabussafi
     config:
       tags: ['zkevm', 'flashloans']
     description: >

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities (where a contract is called and the ETH comes from a different address)
@@ -34,7 +33,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Coinbase's Ethereum staking identified depositor entities
@@ -63,7 +61,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Binance's Ethereum staking identified depositor entities
@@ -92,7 +89,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Bitcoin Suisse's Ethereum staking identified depositor entities
@@ -121,7 +117,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Batch staking contracts identified depositor entities
@@ -150,7 +145,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Batch staking contracts identified depositor entities
@@ -179,7 +173,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Depositor entities identified through withdrawal credentials
@@ -208,7 +201,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby, sankinyue
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities
@@ -237,7 +229,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified tx_from entities
@@ -266,7 +257,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: DARMA Capital's Ethereum staking identified depositor entities
@@ -295,7 +285,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: StakeWise v3 Ethereum staking vaults identified
@@ -324,7 +313,6 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'entities']
     description:  Chorus One's Ethereum staking identified depositor entities

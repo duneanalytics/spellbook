@@ -6,7 +6,6 @@ models:
       blockchain: ethereum, bnb, polygon, solana, arbitrum, optimism, fantom, avalanche_c, gnosis
       sector: labels
       project: cex_tokens
-      contributors: hildobby
     config:
       tags: ['labels', 'cex', 'erc20', 'ethereum', 'bnb', 'polygon', 'solana', 'arbitrum', 'optimism', 'fantom', 'avalanche_c', 'gnosis']
     description: "CEX tokens contract addresses"

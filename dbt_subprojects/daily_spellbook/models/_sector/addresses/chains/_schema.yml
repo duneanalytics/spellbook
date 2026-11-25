@@ -69,7 +69,6 @@ models:
     meta:
       blockchain: ethereum
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Ethereum"
@@ -233,7 +232,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Arbitrum"
@@ -325,7 +323,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Avalanche"
@@ -417,7 +414,6 @@ models:
     meta:
       blockchain: base
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Base"
@@ -509,7 +505,6 @@ models:
     meta:
       blockchain: blast
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Blast"
@@ -601,7 +596,6 @@ models:
     meta:
       blockchain: bnb
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on BNB"
@@ -693,7 +687,6 @@ models:
     meta:
       blockchain: celo
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Celo"
@@ -785,7 +778,6 @@ models:
     meta:
       blockchain: gnosis
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Gnosis"
@@ -877,7 +869,6 @@ models:
     meta:
       blockchain: optimism
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Optimism"
@@ -969,7 +960,6 @@ models:
     meta:
       blockchain: polygon
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Polygon"
@@ -1061,7 +1051,6 @@ models:
     meta:
       blockchain: scroll
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Scroll"
@@ -1153,7 +1142,6 @@ models:
     meta:
       blockchain: zora
       sector: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Zora"
@@ -1245,7 +1233,6 @@ models:
     meta:
       blockchain: hyperevm
       sector: addresses
-      contributors: kyptaki
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on HyperEVM"
@@ -1337,7 +1324,6 @@ models:
     meta:
       blockchain: monad
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Monad"
@@ -1429,7 +1415,6 @@ models:
     meta:
       blockchain: sei
       sector: addresses
-      contributors: kryptaki
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Sei"

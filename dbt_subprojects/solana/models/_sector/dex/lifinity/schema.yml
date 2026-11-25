@@ -4,7 +4,6 @@ models:
   - name: lifinity_v1_stg_swaps
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -17,7 +16,6 @@ models:
   - name: lifinity_v1_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -31,7 +29,6 @@ models:
   - name: lifinity_v1_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','dex']
     description: >
@@ -128,7 +125,6 @@ models:
   - name: lifinity_version_v1_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >
@@ -137,7 +133,6 @@ models:
   - name: lifinity_version_v2_base_trades
     meta:
       blockchain: solana
-      contributors: [krishgka]
     config:
       tags: ['solana','dex']
     description: >
@@ -146,7 +141,6 @@ models:
   - name: lifinity_v2_stg_swaps
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','static' ]
     description: >
@@ -159,7 +153,6 @@ models:
   - name: lifinity_v2_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','static' ]
     description: >
@@ -174,7 +167,6 @@ models:
   - name: lifinity_v2_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
     config:
       tags: ['solana','dex']
     description: >

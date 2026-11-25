@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
-      contributors: niftytable, lgingerich
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Linea for proof verification on Ethereum
@@ -59,7 +58,6 @@ models:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
-      contributors: niftytable, lgingerich
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Scroll for proof verification on Ethereum
@@ -88,7 +86,6 @@ models:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
-      contributors: niftytable, lgingerich
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Starknet for proof verification on Ethereum
@@ -117,7 +114,6 @@ models:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
-      contributors: niftytable, lgingerich
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Polygon zkEVM for proof verification on Ethereum
@@ -146,7 +142,6 @@ models:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
-      contributors: niftytable, lgingerich
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by ZKsync Era for proof verification on Ethereum

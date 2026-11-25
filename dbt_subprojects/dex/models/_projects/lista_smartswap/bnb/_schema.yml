@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex
       project: lista_smartswap
-      contributors: knight_in_kight
     config:
       tags: ["bnb", "lista_smartswap", "dex"]
     description: >

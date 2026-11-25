@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex_aggregator
       project: kyberswap
-      contributors: nhd98z
     config:
       tags: ['ethereum', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >

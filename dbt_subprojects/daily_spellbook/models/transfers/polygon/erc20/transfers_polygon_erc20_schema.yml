@@ -6,7 +6,6 @@ models:
       blockchain: polygon
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz, hosuke, Henrystats
     config:
       tags: ['transfers', 'polygon', 'erc20']
     description: "ERC20 Token Transfers on polygon. This table is updated every 30 minutes."
@@ -52,7 +51,6 @@ models:
       blockchain: polygon
       sector: transfers
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['transfers', 'polygon', 'erc20', 'agg_hour', 'Henrystats']
     data_tests:
@@ -83,7 +81,6 @@ models:
       blockchain: polygon
       sector: transfers
       project: erc20
-      contributors: Henrystats
     config:
       tags: ['transfers', 'polygon', 'erc20', 'agg_day', 'Henrystats']
     data_tests:
@@ -110,7 +107,6 @@ models:
       blockchain: polygon
       sector: transfers
       project: erc20
-      contributors: Henrystats
     description: "ERC20 Token Transfers on polygon per hour."
     config:
       tags: ['transfers', 'polygon', 'erc20', 'rolling_hour', 'Henrystats']
@@ -134,7 +130,6 @@ models:
       blockchain: polygon
       sector: transfers
       project: erc20
-      contributors: Henrystats
     description: "ERC20 Token Transfers on polygon per day."
     config:
       tags: ['transfers', 'polygon', 'erc20', 'rolling_day', 'Henrystats']

@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'order_created']
     description: |
@@ -171,7 +170,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'order_executed']
     description: |      
@@ -220,7 +218,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'order_cancelled']
     description: |
@@ -267,7 +264,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'market_created']
     description: |
@@ -340,7 +336,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum','gmx','event','position_increase']
     description: |
@@ -473,7 +468,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum','gmx','event','position_decrease']
     description: |
@@ -563,7 +557,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'position_fees_collected']
     description: |
@@ -786,7 +779,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'position_fees_info']
     description: |
@@ -871,7 +863,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'order_frozen']
     description: |
@@ -921,7 +912,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'order_updated']
     description: |
@@ -976,7 +966,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'open_interest_in_tokens_updated']
     description: |
@@ -1036,7 +1025,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'open_interest_updated']
     description: |
@@ -1102,7 +1090,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'oracle_price_update']
     description: |
@@ -1159,7 +1146,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'pool_amount_updated']
     description: |
@@ -1219,7 +1205,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_uint']
     description: |
@@ -1273,7 +1258,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'execution_fee_refund']
     description: |
@@ -1315,7 +1299,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'keeper_execution_fee']
     description: |
@@ -1357,7 +1340,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'deposit_cancelled']
     description: |
@@ -1401,7 +1383,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'deposit_created']
     description: |
@@ -1471,7 +1452,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'deposit_executed']
     description: |
@@ -1519,7 +1499,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_created']
     description: |
@@ -1569,7 +1548,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_deposit_cancelled']
     description: |
@@ -1613,7 +1591,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_deposit_created']
     description: |
@@ -1689,7 +1666,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_deposit_executed']
     description: |
@@ -1733,7 +1709,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_shift_cancelled']
     description: |
@@ -1775,7 +1750,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_shift_created']
     description: |
@@ -1825,7 +1799,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_shift_executed']
     description: |
@@ -1865,7 +1838,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_withdrawal_cancelled']
     description: |
@@ -1911,7 +1883,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_withdrawal_created']
     description: |
@@ -1981,7 +1952,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'glv_withdrawal_executed']
     description: |
@@ -2023,7 +1993,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'shift_created']
     description: |
@@ -2081,7 +2050,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'shift_executed']
     description: |
@@ -2123,7 +2091,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'withdrawal_cancelled']
     description: |
@@ -2167,7 +2134,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'withdrawal_created']
     description: |
@@ -2233,7 +2199,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'withdrawal_executed']
     description: |
@@ -2275,7 +2240,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'claimable_funding']
     description: |
@@ -2319,7 +2283,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'funding_fee']
     description: |
@@ -2363,7 +2326,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'swap_fee']
     description: |
@@ -2421,7 +2383,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'position_impact']
     description: |
@@ -2464,7 +2425,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'claimable_collateral_updated']
     data_tests:
@@ -2510,7 +2470,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'claimable_funding_updated']
     data_tests:
@@ -2555,7 +2514,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'clear_pending_action']
     data_tests:
@@ -2592,7 +2550,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'collateral_claimed']
     data_tests:
@@ -2639,7 +2596,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'funding_fees_claimed']
     data_tests:
@@ -2684,7 +2640,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'grant_role']
     data_tests:
@@ -2721,7 +2676,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'revoke_role']
     data_tests:
@@ -2758,7 +2712,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_atomic_oracle_provider']
     data_tests:
@@ -2795,7 +2748,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_data_stream']
     data_tests:
@@ -2836,7 +2788,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_oracle_provider_enabled']
     data_tests:
@@ -2873,7 +2824,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_oracle_provider_for_token']
     data_tests:
@@ -2910,7 +2860,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_price_feed']
     data_tests:
@@ -2953,7 +2902,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_grant_role']
     data_tests:
@@ -2990,7 +2938,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_pending_action']
     data_tests:
@@ -3027,7 +2974,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_revoke_role']
     data_tests:
@@ -3064,7 +3010,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_atomic_oracle_provider']
     data_tests:
@@ -3101,7 +3046,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_data_stream']
     data_tests:
@@ -3142,7 +3086,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_oracle_provider_enabled']
     data_tests:
@@ -3179,7 +3122,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_oracle_provider_for_token']
     data_tests:
@@ -3216,7 +3158,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_price_feed']
     data_tests:
@@ -3259,7 +3200,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'swap_info']
     data_tests:
@@ -3314,7 +3254,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'increment_subaccount_action_count']
     description: |
@@ -3355,7 +3294,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'position_impact_pool_amount_updated']
     description: |
@@ -3396,7 +3334,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'sync_config']
     description: |
@@ -3437,7 +3374,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'bridge', 'event', 'failed']
     description: |
@@ -3481,7 +3417,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'bridge', 'event']
     description: |
@@ -3523,7 +3458,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'bridge', 'event', 'bridge_in']
     description: |
@@ -3566,7 +3500,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'bridge', 'event', 'bridge_out']
     description: |
@@ -3609,7 +3542,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'transfer', 'event', 'transfer_in']
     description: |
@@ -3650,7 +3582,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'transfer', 'event', 'transfer_out']
     description: |
@@ -3693,7 +3624,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: [ai_data_master, gmx-io]
     config:
       tags: ['arbitrum', 'gmx', 'claim_funds', 'event', 'claimed']
     description: |
@@ -3736,7 +3666,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: [ai_data_master, gmx-io]
     config:
       tags: ['arbitrum', 'gmx', 'claim_funds', 'event', 'deposited']
     description: |
@@ -3779,7 +3708,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: [ai_data_master, gmx-io]
     config:
       tags: ['arbitrum', 'gmx', 'claim_funds', 'event']
     description: |
@@ -3824,7 +3752,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: [ai_data_master, gmx-io]
     config:
       tags: ['arbitrum', 'gmx', 'claim_funds', 'event', 'withdrawn']
     description: |
@@ -3867,7 +3794,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: [ai_data_master, gmx-io]
     config:
       tags: ['arbitrum', 'gmx', 'claim_terms', 'event', 'removed']
     description: |
@@ -3902,7 +3828,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: [ai_data_master, gmx-io]
     config:
       tags: ['arbitrum', 'gmx', 'claim_terms', 'event', 'set']
     description: |
@@ -3939,7 +3864,6 @@ models:
       blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'funding']
     description: |

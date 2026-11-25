@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: dex
       project: openocean
-      contributors: thevaizman
     config:
       tags: [ 'bnb', 'openocean', 'trades', 'dex', 'aggregator' ]
     description: >

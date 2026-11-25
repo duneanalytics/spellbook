@@ -7,7 +7,6 @@ models:
       blockchain: optimism
       sector: lending
       project: the_granary
-      contributors: msilb7
 
     config:
       tags: ['the_granary', 'optimism', 'tokens', 'lending']

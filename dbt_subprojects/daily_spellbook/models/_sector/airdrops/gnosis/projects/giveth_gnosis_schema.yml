@@ -6,7 +6,6 @@ models:
       blockchain: gnosis
       sector: airdrop
       project: giveth
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'gnosis', 'claim', 'giveth']
     description: "List of claim transactions for the $GIV airdrop"

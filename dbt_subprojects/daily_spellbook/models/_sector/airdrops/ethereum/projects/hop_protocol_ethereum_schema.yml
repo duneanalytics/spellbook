@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: hop_protocol
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'hop_protocol']
     description: "List of claim transactions for the $HOP airdrop"

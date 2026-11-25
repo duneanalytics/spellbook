@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: solana
       sector: cex
-      contributors: hildobby
     config:
       tags: ['cex','addresses', 'solana']
     description: "All CEX-tied addresses identified on Solana"

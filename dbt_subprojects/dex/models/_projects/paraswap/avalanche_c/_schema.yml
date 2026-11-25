@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: paraswap_v5
-      contributors: Henrystats
     config:
       tags: ['avalanche_c','paraswap_v5','trades', 'paraswap','dex']
     description: >
@@ -103,7 +102,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: paraswap_v6
-      contributors: eptighte, mwamedacen
     config:
       tags: ['avalanche_c','paraswap_v6','trades', 'paraswap','dex']
     description: >
@@ -158,7 +156,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: paraswap
-      contributors: Henrystats
     config:
       tags: ['avalanche_c','dex','trades', 'paraswap']
     description: >

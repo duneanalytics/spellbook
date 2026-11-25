@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: cardano
       sector: prices
-      contributors: cryptokoryo
     config:
       tags: ['prices', 'tokens', 'usd', 'cardano' ]
     description: "Price tokens on cardano chain"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: mantle
       sector: prices
-      contributors: hosuke, rantum
     config:
       tags: ['prices', 'tokens', 'usd', 'mantle']
     description: "Price tokens on mantle L2 chain"

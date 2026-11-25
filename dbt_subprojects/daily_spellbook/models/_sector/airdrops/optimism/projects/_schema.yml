@@ -6,7 +6,6 @@ models:
       blockchain: optimism
       sector: airdrop
       project: velodrome
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'optimism', 'claim', 'velodrome']
     description: "List of claim transactions for the $VELO airdrop"

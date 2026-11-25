@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: boba
       sector: gas
-      contributors: 0xRob, soispoke, hosuke
     config:
       tags: ['boba', 'gas', 'fees']
     description: >

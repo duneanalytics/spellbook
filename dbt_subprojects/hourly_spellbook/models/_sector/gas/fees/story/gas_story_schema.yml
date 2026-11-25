@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: story
       sector: gas
-      contributors: cursor
     config:
       tags: ['story', 'gas', 'fees', 'static']
     description: >

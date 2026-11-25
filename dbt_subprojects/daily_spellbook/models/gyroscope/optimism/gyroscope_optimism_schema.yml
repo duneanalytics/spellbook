@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: gyroscope
-      contributors: fmarrr
     config:
       tags: ["optimism", "gyroscope", "trades"]
     description: trades on gyroscope E-CLP pools on optimism

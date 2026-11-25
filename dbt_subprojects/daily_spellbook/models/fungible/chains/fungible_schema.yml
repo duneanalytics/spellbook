@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'arbitrum', 'transfers']
     description: >
@@ -52,7 +51,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'avalanche_c', 'transfers']
     description: >
@@ -99,7 +97,6 @@ models:
     meta:
       blockchain: bnb
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'bnb', 'transfers']
     description: >
@@ -146,7 +143,6 @@ models:
     meta:
       blockchain: ethereum
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'ethereum', 'transfers']
     description: >
@@ -193,7 +189,6 @@ models:
     meta:
       blockchain: fantom
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'fantom', 'transfers']
     description: >
@@ -240,7 +235,6 @@ models:
     meta:
       blockchain: gnosis
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'gnosis', 'transfers']
     description: >
@@ -287,7 +281,6 @@ models:
     meta:
       blockchain: optimism
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'optimism', 'transfers']
     description: >
@@ -334,7 +327,6 @@ models:
     meta:
       blockchain: polygon
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'polygon', 'transfers']
     description: >
@@ -381,7 +373,6 @@ models:
     meta:
       blockchain: celo
       sector: fungible
-      contributors: hildobby
     config:
       tags: ['fungible', 'celo', 'transfers']
     description: >

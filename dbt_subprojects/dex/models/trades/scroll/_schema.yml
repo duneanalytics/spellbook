@@ -24,7 +24,6 @@ models:
       blockchain: scroll
       sector: dex
       project: uniswap
-      contributors: tomfutago
     config:
       tags: [ 'scroll', 'dex', 'trades', 'uniswap' ]
     description: "Uniswap v3 scroll base trades"
@@ -43,7 +42,6 @@ models:
       blockchain: scroll
       sector: dex
       project: sushiswap
-      contributors: tomfutago
     config:
       tags: [ 'scroll', 'dex', 'trades', 'sushiswap' ]
     description: "Sushiswap v2 scroll base trades"
@@ -62,7 +60,6 @@ models:
       blockchain: scroll
       sector: dex
       project: zebra
-      contributors: tomfutago
     config:
       tags: [ 'scroll', 'dex', 'trades', 'zebra' ]
     description: "Zebra scroll base trades"
@@ -81,7 +78,6 @@ models:
       blockchain: scroll
       sector: dex
       project: scrollswap
-      contributors: tomfutago
     config:
       tags: [ 'scroll', 'dex', 'trades', 'scrollswap' ]
     description: "Zebra scroll base trades"
@@ -100,7 +96,6 @@ models:
       blockchain: scroll
       sector: dex
       project: syncswap
-      contributors: niftytable
     config:
       tags: [ 'scroll', 'dex', 'trades', 'syncswap' ]
     description: "SyncSwap V1 scroll base trades"
@@ -119,7 +114,6 @@ models:
       blockchain: scroll
       sector: dex
       project: nuri
-      contributors: niftytable
     config:
       tags: [ 'scroll', 'dex', 'trades', 'nuri' ]
     description: "Nuri scroll base trades"
@@ -138,7 +132,6 @@ models:
       blockchain: scroll
       sector: dex
       project: izumi_finance
-      contributors: niftytable
     config:
       tags: [ 'scroll', 'dex', 'trades', 'izumi_finance' ]
     description: "izumi_finance scroll base trades"
@@ -157,7 +150,6 @@ models:
       blockchain: scroll
       sector: dex
       project: icecreamswap
-      contributors: intensodefi
     config:
       tags: [ 'scroll', 'dex', 'trades', 'icecreamswap' ]
     description: "icecreamswap v2 scroll base trades"
@@ -176,7 +168,6 @@ models:
       blockchain: scroll
       sector: dex
       project: maverick
-      contributors: get620v
     config:
       tags: [ 'scroll', 'dex', 'trades', 'maverick' ]
     description: "Maverick scroll base trades"
@@ -197,7 +188,6 @@ models:
       blockchain: scroll
       sector: dex
       project: swaap
-      contributors: borelien
     config:
       tags: [ 'scroll', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 scroll base trades"
@@ -218,7 +208,6 @@ models:
       blockchain: scroll
       sector: dex
       project: leetswap
-      contributors: sunshinejulia9 
     config:
       tags: [ 'scroll', 'dex', 'trades', 'leetswap' ]
     description: "leetswap base base trades"
@@ -237,7 +226,6 @@ models:
       blockchain: scroll
       sector: dex
       project: spacefi
-      contributors: annieruth675 
     config:
       tags: [ 'scroll', 'dex', 'trades', 'spacefi' ]
     description: "leetswap base base trades"
@@ -256,7 +244,6 @@ models:
       blockchain: scroll
       sector: dex
       project: punkswap
-      contributors: zionhaley 
     config:
       tags: [ 'scroll', 'dex', 'trades', 'punkswap' ]
     description: "punkswap base base trades"

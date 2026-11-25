@@ -4,7 +4,6 @@ models:
   - name: hop_protocol_optimism_flows
     meta:
       project: hop_protocol
-      contributors: msilb7, soispoke
     config:
       tags: ['bridges','hop_protocol', 'flows', 'cross-chain', 'optimism']
     description: >

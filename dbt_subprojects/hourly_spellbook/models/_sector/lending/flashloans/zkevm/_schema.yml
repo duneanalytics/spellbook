@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zkevm
       sector: lending
-      contributors: hildobby
     config:
       tags: ['lending', 'flashloans', 'zkevm']
     description: "All lending flashloans transactions on zkevm"
@@ -78,7 +77,6 @@ models:
       blockchain: zkevm
       sector: lending
       project: balancer
-      contributors: hildobby
     config:
       tags: ['lending', 'flashloans', 'balancer', 'zkevm']
     description: "Balancer flashloans transactions on zkevm"

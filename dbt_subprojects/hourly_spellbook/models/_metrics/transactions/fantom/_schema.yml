@@ -14,7 +14,6 @@ models:
     meta:
       blockchain: fantom
       sector: metrics
-      contributors: 0xRob
     config:
       tags: [ 'fantom','metrics' ]
     description: "fundamental blockchain transaction metrics"
@@ -29,7 +28,6 @@ models:
     meta:
       blockchain: fantom
       sector: metrics
-      contributors: jeff-dude
     config:
       tags: [ 'fantom','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"

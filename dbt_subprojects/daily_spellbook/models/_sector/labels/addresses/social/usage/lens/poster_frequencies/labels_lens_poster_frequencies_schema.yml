@@ -15,7 +15,6 @@ models:
       blockchain: polygon
       sector: labels
       category: social
-      contributors:  scoffie
     config:
       tags: ['query','labels', 'polygon', 'lens']
     description: "Lens labels"

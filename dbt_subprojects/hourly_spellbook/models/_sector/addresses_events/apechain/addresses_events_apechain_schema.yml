@@ -6,7 +6,6 @@ models:
       blockchain: apechain
       sector: addresses_events
       project: addresses
-      contributors: 0xr3x
     config:
       tags: ['table', 'funded', 'addresses_events', 'apechain']
     description: "Table showing who first funded each apechain address in ETH"
@@ -56,7 +55,6 @@ models:
       blockchain: apechain
       sector: addresses_events
       project: addresses
-      contributors: Henrystats, hildobby, 0xr3x
     config:
       tags: ['table', 'activity', 'addresses_events', 'apechain']
     description: "Table showing first activity of each apechain address"
@@ -97,7 +95,6 @@ models:
       blockchain: apechain
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'apechain']
     description: "Table showing which token was first received for each apechain address"

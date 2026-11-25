@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: hashflow
-      contributors: BroderickBonelli
     config:
       tags: ['ethereum','hashflow','trades','dex','BroderickBonelli']
     description: >

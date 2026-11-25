@@ -6,7 +6,6 @@ models:
       blockchain: nova
       sector: dex
       project: sushiswap
-      contributors: olastenberg
     config:
       tags: [ 'nova','sushiswap','trades','dex','aggregator' ]
     description: Sushiswap Route Aggregator contract on nova - formatted for dex.trades

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: zkevm
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['zkevm', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -33,7 +32,6 @@ models:
     meta:
       blockchain: zkevm
       project: balancer
-      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['zkevm', 'balancer', 'pools', 'tokens', 'weights']
     description: >

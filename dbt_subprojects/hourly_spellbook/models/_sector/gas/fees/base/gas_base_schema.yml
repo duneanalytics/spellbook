@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: base
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['base', 'gas', 'fees']
     description: >

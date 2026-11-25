@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'ethereum','bebop','rfq','trades','dex' ]
     description: Bebop-RFQ contract trades on ethereum - formatted for dex.trades
@@ -108,7 +107,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'ethereum','bebop','jam','trades','dex' ]
     description: Bebop-JAM contract trades on ethereum - formatted for dex.trades
@@ -160,7 +158,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'ethereum','bebop','pmm','trades','dex', 'blend' ]
     description: Bebop-BLEND contract trades on ethereum - formatted for dex.trades
@@ -212,7 +209,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: bebop
-      contributors: alekss
     config:
       tags: [ 'ethereum','bebop','trades','dex' ]
     description: Bebop contract trades on ethereum - formatted for dex.trades

@@ -10,7 +10,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: cow_protocol
-      contributors: harisang
     config:
       tags: ["avalanche_c", "cow_protocol", "solver"]
     description: >
@@ -20,7 +19,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: cow_protocol
-      contributors: harisang
     config:
       tags: ["avalanche_c", "cow_protocol", "trades", "dex", "aggregator", "auction"]
     description: >
@@ -34,7 +32,6 @@ models:
     meta:
       blockchain: avalanche_c
       project: cow_protocol
-      contributors: cowprotocol
     config:
       tags: [ "avalanche_c", "cow_protocol", "eth-flow", "orders"]
     description: >

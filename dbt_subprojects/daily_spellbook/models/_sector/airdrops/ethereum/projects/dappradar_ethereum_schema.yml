@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: dappradar
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'dappradar']
     description: "List of claim transactions for the $RADAR airdrop"

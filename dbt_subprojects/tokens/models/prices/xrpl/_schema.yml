@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: xrpl
       sector: prices
-      contributors: tomfutago
     config:
       tags: ['prices', 'tokens', 'usd', 'xrpl']
     description: "Price tokens on the XRP Ledger"

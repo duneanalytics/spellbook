@@ -11,8 +11,7 @@
     tags = ['thorchain', 'defi', 'bond_actions', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                                   "project",
-                                  "thorchain",
-                                  \'["jeff-dude"]\') }}'
+                                  "thorchain") }}'
 ) }}
 
 WITH block_prices AS (

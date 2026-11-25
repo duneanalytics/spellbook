@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum
     config:
       tags: ['polygon', '0x', 'aggregator']
     description: >
@@ -36,7 +35,6 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: [polygon','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -110,7 +108,6 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum, bakabhai993, danning.sui
     config:
       tags: ['polygon','0x','nft']
     description: >
@@ -182,7 +179,6 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['polygon','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -244,7 +240,6 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum, bakabhai993
     config:
       tags: ['polygon','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -302,7 +297,6 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum
     config:
       tags: ['polygon', '0x', 'settler']
     description: >
@@ -346,7 +340,6 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum
     config:
       tags: ['polygon','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -391,7 +384,6 @@ models:
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: hosuke
     config:
       tags: ['polygon', '0x', 'settler']
     description: >

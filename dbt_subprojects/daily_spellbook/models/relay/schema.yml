@@ -7,7 +7,6 @@ models:
       This model filters by known relay tokens and excludes specific non-user addresses.
     meta:
       project: relay_token_monitoring
-      contributors: [outputlayer]
     config:
       tags: ['relay', 'cross-chain', 'erc20', 'eth', 'token-transfers']
     columns:

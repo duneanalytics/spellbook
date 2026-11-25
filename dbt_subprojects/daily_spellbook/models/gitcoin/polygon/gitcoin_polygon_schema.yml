@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon
       sector: donation
-      contributors: hildobby
     config:
         tags: ['polygon', 'gitcoin', 'donation']
     description: >

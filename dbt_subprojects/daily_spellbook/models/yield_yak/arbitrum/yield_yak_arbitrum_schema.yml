@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: arbitrum
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
     description: >
@@ -53,7 +52,6 @@ models:
     meta:
       blockchain: arbitrum
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
     description: >
@@ -83,7 +81,6 @@ models:
     meta:
       blockchain: arbitrum
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
     description: >
@@ -127,7 +124,6 @@ models:
     meta:
       blockchain: arbitrum
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
@@ -155,7 +151,6 @@ models:
     meta:
       blockchain: arbitrum
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
@@ -184,7 +179,6 @@ models:
     meta:
       blockchain: arbitrum
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
     description: >
@@ -245,7 +239,6 @@ models:
     meta:
       blockchain: arbitrum
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
     description: >
@@ -300,7 +293,6 @@ models:
     meta:
       blockchain: arbitrum
       project: yield_yak
-      contributors: angus_1
     config:
       tags: ['arbitrum', 'yield_yak', 'strategies', 'yield']
     description: >

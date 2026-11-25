@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: hashflow
-      contributors: BroderickBonelli
     config:
       tags: ['avalanche_c','hashflow','trades','dex','BroderickBonelli']
     description: >

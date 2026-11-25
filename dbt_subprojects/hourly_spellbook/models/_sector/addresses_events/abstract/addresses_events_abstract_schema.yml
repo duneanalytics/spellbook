@@ -6,7 +6,6 @@ models:
       blockchain: abstract
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'abstract']
     description: "Table showing who first funded each Abstract address in ETH"
@@ -56,7 +55,6 @@ models:
       blockchain: abstract
       sector: addresses_events
       project: addresses
-      contributors: Henrystats, hildobby
     config:
       tags: ['table', 'activity', 'addresses_events', 'abstract']
     description: "Table showing first activity of each Abstract address"
@@ -97,7 +95,6 @@ models:
       blockchain: abstract
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'abstract']
     description: "Table showing which token was first received for each abstract address"

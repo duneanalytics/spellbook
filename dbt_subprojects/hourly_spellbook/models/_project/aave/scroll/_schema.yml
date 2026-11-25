@@ -6,7 +6,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'scroll']
     description: "All Aave transactions involving borrow transactions on Scroll"
@@ -71,7 +70,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'scroll']
     description: "All Aave transactions involving flashloans transactions on Scroll"
@@ -103,7 +101,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'scroll']
     description: "All Aave transactions involving supply transactions on Scroll"
@@ -136,7 +133,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'scroll']
     description: "All Aave market transactions on Scroll"
@@ -176,7 +172,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'market', 'aave', 'scroll']
     description: "Hourly aggregated lending market transactions"
@@ -201,7 +196,6 @@ models:
       blockchain: scroll
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'interest_rates', 'aave', 'scroll']
     description: "Hourly aggregated lending market interest rates"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: optimism
       project: op_chains
-      contributors: msilb7
 
     config:
       tags: ['optimism', 'chains', 'superchain','op stack','op chains','op']

@@ -6,7 +6,6 @@ models:
       blockchain: bnb
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'bnb']
     description: "All lending flashloans transactions on bnb"
@@ -79,7 +78,6 @@ models:
       blockchain: bnb
       sector: lending
       project: radiant
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'radiant', 'bnb']
     description: "Radiant flashloans transactions on bnb"
@@ -112,7 +110,6 @@ models:
       blockchain: bnb
       sector: lending
       project: aave
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'bnb']
     description: "Aave v3 flashloans transactions on bnb"
@@ -145,7 +142,6 @@ models:
       blockchain: bnb
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'granary', 'bnb']
     description: "Granary flashloans transactions on bnb"
@@ -178,7 +174,6 @@ models:
       blockchain: bnb
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'bnb']
     description: "Morpho flashloans transactions on BNB"

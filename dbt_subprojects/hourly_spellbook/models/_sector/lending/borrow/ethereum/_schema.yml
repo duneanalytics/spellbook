@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave, compound
-      contributors: tomfutago, hildobby, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum']
     description: "Aave v1 borrow transactions on Ethereum"
@@ -93,7 +92,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'ethereum']
     description: "All Aave borrow transactions on Ethereum"
@@ -133,7 +131,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'v2', 'ethereum']
     description: "Aave v2 borrow transactions on Ethereum"
@@ -173,7 +170,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'v3', 'ethereum']
     description: "Aave v3 borrow transactions on Ethereum"
@@ -213,7 +209,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave_lido
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'lido', 'v3', 'ethereum']
     description: "Aave v3 borrow transactions on Ethereum"
@@ -253,7 +248,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave_etherfi
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'etherfi', 'v3', 'ethereum']
     description: "Aave v3 borrow transactions on Ethereum"
@@ -293,7 +287,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave_horizon
-      contributors: 0xsandeshk
     config:
       tags: ['lending', 'borrow', 'aave', 'horizon', 'v3', 'ethereum']
     description: "Aave horizon borrow transactions on Ethereum"
@@ -333,7 +326,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: compound
-      contributors: hildobby
     config:
       tags: ['lending', 'borrow', 'compound', 'v1', 'ethereum']
     description: "Compound v1 borrow transactions on Ethereum"
@@ -368,7 +360,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: compound
-      contributors: bizzyvinci, hosuke, tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'v2', 'ethereum']
     description: "Compound v2 borrow transactions on Ethereum"
@@ -408,7 +399,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'borrow', 'compound', 'v3', 'ethereum']
     description: "Compound v3 borrow transactions on Ethereum"
@@ -448,7 +438,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: radiant
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'radiant', 'ethereum']
     description: "Radiant borrow transactions on Ethereum"
@@ -486,7 +475,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: uwulend
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'uwulend', 'ethereum']
     description: "Uwulend borrow transactions on Ethereum"
@@ -524,7 +512,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: spark
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'spark', 'ethereum']
     description: "Spark Protocol borrow transactions on Ethereum"
@@ -562,7 +549,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: fluxfinance
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'fluxfinance', 'ethereum']
     description: "Flux Finance borrow transactions on Ethereum"
@@ -600,7 +586,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: strike
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'strike', 'ethereum']
     description: "Strike borrow transactions on Ethereum"
@@ -638,7 +623,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'granary', 'ethereum']
     description: "Granary borrow transactions on Ethereum"
@@ -676,7 +660,6 @@ models:
       blockchain: ethereum
       sector: lending
       project: morpho
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'morpho', 'ethereum']
     description: "Morpho borrow transactions on Ethereum"

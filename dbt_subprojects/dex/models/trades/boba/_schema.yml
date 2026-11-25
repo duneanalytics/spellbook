@@ -24,7 +24,6 @@ models:
       blockchain: boba
       sector: dex
       project: icecreamswap
-      contributors: hosuke
     config:
       tags: ["boba", "dex", "trades", "icecreamswap"]
     description: "IceCreamSwap boba base trades"

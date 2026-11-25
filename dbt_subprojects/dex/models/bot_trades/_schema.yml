@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum, base, bnb, avalanche_c
       sector: dex
-      contributors: ["whale_hunter"]
     config:
       tags: ["evm", "dex", "bot", "trades"]
       description: >
@@ -98,7 +97,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: banana_gun
-      contributors: whale_hunter
     config:
       tags: ["evm", "dex", "banana_gun", "trades"]
     description: >
@@ -119,7 +117,6 @@ models:
       blockchain: base
       sector: dex
       project: banana_gun
-      contributors: whale_hunter
     config:
       tags: ["evm", "dex", "banana_gun", "trades"]
     description: >
@@ -140,7 +137,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: pepeboost
-      contributors: whale_hunter
     config:
       tags: ["evm", "dex", "pepeboost", "trades"]
     description: >
@@ -161,7 +157,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: readyswap
-      contributors: whale_hunter
     config:
       tags: ["evm", "dex", "readyswap", "trades"]
     description: >
@@ -182,7 +177,6 @@ models:
       blockchain: ethereum
       sector: dex
       project: flokibot
-      contributors: whale_hunter
     config:
       tags: ["evm", "dex", "flokibot", "trades"]
     description: >
@@ -213,7 +207,6 @@ models:
       blockchain: base
       sector: dex
       project: flokibot
-      contributors: whale_hunter
     config:
       tags: ["evm", "dex", "flokibot", "trades"]
     description: >
@@ -244,7 +237,6 @@ models:
       blockchain: bnb
       sector: dex
       project: flokibot
-      contributors: whale_hunter
     config:
       tags: ["evm", "dex", "flokibot", "trades"]
     description: >

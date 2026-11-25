@@ -6,7 +6,6 @@ models:
       blockchain: ethereum
       sector: airdrop
       project: blur
-      contributors: hildobby
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'blur']
     description: "List of claim transactions for the $BLUR airdrop 1"

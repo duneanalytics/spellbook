@@ -6,7 +6,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'flashloans', 'aave', 'avalanche_c']
     description: "All lending flashloans transactions on Avalanche_c"
@@ -79,7 +78,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'avalanche_c']
     description: "Aave v2 flashloans transactions on Avalanche_c"
@@ -114,7 +112,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'avalanche_c']
     description: "Aave v3 flashloans transactions on Avalanche_c"
@@ -149,7 +146,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: granary
-      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'granary', 'avalanche_c']
     description: "Granary flashloans transactions on Avalanche_c"
@@ -182,7 +178,6 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: balancer
-      contributors: hildobby
     config:
       tags: ['lending', 'flashloans', 'balancer', 'avalanche_c']
     description: "Balancer flashloans transactions on Avalanche"

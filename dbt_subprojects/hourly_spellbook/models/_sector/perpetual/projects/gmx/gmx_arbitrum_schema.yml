@@ -6,7 +6,6 @@ models:
       blockchain: arbitrum
       sector: perpetual
       project: gmx
-      contributors: Henrystats
     config:
       tags: ['arbitrum', 'gmx', 'perpetuals', 'perps']
     description: >

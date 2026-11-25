@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'beethoven_x', 'pools', 'tokens', 'weights']
     description: >
@@ -30,7 +29,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'balancer', 'pools', 'liquidity']
     description: >
@@ -74,7 +72,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'revenue', 'fees']
     description: >
@@ -116,7 +113,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'supply']
     description: >
@@ -140,7 +136,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'prices']
     description: >
@@ -165,7 +160,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'transfers']
     description: >
@@ -194,7 +188,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'supply', 'changes']
     description: >
@@ -243,7 +236,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'supply', 'changes']
     description: >
@@ -279,7 +271,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'supply', 'changes']
     description: >
@@ -319,7 +310,6 @@ models:
     meta:
       blockchain: fantom
       project: beethoven_x
-      contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'supply', 'changes']
     description: >
@@ -344,7 +334,6 @@ models:
   - name: beethoven_x_fantom_pools_metrics_daily
     meta:
       blockchain: fantom
-      contributors: viniabussafi, metacrypto
     config:
       tags: ['fantom', 'jelly_swap', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >

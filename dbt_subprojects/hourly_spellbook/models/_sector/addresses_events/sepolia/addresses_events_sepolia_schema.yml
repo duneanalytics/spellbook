@@ -6,7 +6,6 @@ models:
       blockchain: sepolia
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'sepolia']
     description: "Table showing who first funded each Sepolia address in testnet ETH"
@@ -55,7 +54,6 @@ models:
       blockchain: sepolia
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'activity', 'addresses_events', 'sepolia']
     description: "Table showing first activity of each Sepolia Mainnet address"
@@ -96,7 +94,6 @@ models:
       blockchain: sepolia
       sector: addresses_events
       project: addresses
-      contributors: hildobby
     config:
       tags: ['table', 'received', 'addresses_events', 'sepolia']
     description: "Table showing which token was first received for each sepolia address"

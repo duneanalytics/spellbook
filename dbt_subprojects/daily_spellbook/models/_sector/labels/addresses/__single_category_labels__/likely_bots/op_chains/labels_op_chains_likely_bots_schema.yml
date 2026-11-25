@@ -6,7 +6,6 @@ models:
       blockchain: optimism, base
       sector: labels
       category: bot_contracts
-      contributors: msilb7
     config:
       tags: ['labels', 'optimism','base','op chain','bots','prod_exclude']
     description: "Likely bot contract labels"
@@ -60,7 +59,6 @@ models:
       blockchain: optimism, base
       sector: labels
       category: bot_addresses
-      contributors: msilb7
     config:
       tags: ['labels', 'optimism','base','op chain','bots','prod_exclude']
     description: "Likely bot address labels"

@@ -6,7 +6,6 @@ models:
       blockchain: corn
       sector: lending
       project: aave, compound, morpho
-      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'morpho', 'corn']
     description: "All lending supply transactions on Corn"
@@ -93,7 +92,6 @@ models:
       blockchain: corn
       sector: lending
       project: morpho
-      contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "corn"]
     description: "Morpho supply transactions on Corn"

@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: robinhood
       sector: prices
-      contributors: hosuke
     config:
       tags: ['prices', 'tokens', 'usd', 'robinhood']
     description: "Price tokens on Robinhood EVM chain"

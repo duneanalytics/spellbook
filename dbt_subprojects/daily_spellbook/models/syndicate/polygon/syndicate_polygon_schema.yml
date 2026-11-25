@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: polygon
       project: syndicate
-      contributors: Henrystats 
     config:
       tags: [ 'polygon', 'dao', 'syndicate', 'dao creator tools', 'Henrystats' ]
     description: >

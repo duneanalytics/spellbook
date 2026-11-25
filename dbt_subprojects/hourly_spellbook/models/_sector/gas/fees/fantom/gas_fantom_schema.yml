@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: fantom
       sector: gas
-      contributors: 0xRob, soispoke
     config:
       tags: ['fantom', 'gas', 'fees']
     description: >

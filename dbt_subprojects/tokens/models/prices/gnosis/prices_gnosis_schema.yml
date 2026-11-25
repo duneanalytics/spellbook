@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: gnosis
       sector: prices
-      contributors: aalan3, jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd', 'gnosis']
     description: "Price tokens on gnosis chain"
