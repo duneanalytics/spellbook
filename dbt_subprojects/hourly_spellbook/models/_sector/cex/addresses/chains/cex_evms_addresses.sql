@@ -1344,7 +1344,6 @@ FROM (VALUES
     , (0xc882b111a75c0c657fc507c04fbfcd2cc984f071, 'Gate.io', 'Gate.io 5', 'web3_data', date '2023-02-07')
     , (0x05ee546c1a62f90d7acbffd6d846c9c54c7cf94c, 'Gate.io', 'Gate.io 6', 'hildobby', date '2023-09-09')
     , (0x85faa6c1f2450b9caea300838981c2e6e120c35c, 'Gate.io', 'Gate.io 7', 'hildobby', date '2024-04-20')
-    , (0x925206b8a707096ed26ae47c84747fe0bb734f59, 'Gate.io', 'Gate.io 8', 'hildobby', date '2024-04-20')
     , (0xeb01f8cdae433e7b55023ff0b2da44c4c712dce2, 'Gate.io', 'Gate.io 9', 'hildobby', date '2024-04-20')
     , (0xb7715cb185990a1d7fede7bb5a3c369296018279, 'Gate.io', 'Gate.io 10', 'hildobby', date '2025-06-25')
     , (0x6596da8b65995d5feacff8c2936f0b7a2051b0d0, 'Gate.io', 'Gate.io Gas Supplier 1', 'web3_data', date '2023-02-07')
