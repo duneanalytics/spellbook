@@ -61,8 +61,6 @@ dispatch:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   dex:
-    +persist_docs:
-      columns: true
     +post-hook:
       - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_scaling_min_data_processed', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true

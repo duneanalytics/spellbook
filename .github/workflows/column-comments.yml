@@ -1,0 +1,59 @@
+name: Column comment persistence
+
+on:
+  pull_request:
+    paths:
+      - 'dbt_macros/dune/column_comments.sql'
+      - 'dbt_macros/dune/backfill_column_comments.sql'
+      - 'dbt_macros/tests/test_*column_comments*.py'
+      - '.github/workflows/column-comments.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: column-comments-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  trino:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          python-version: '3.13'
+      - run: uv sync --locked
+      - name: Start isolated Trino with a memory catalog
+        run: |
+          mkdir -p "${RUNNER_TEMP}/comment-trino"
+          echo 'connector.name=memory' > "${RUNNER_TEMP}/comment-trino/memory.properties"
+          cat > "${RUNNER_TEMP}/comment-trino/config.properties" <<'EOF'
+          coordinator=true
+          node-scheduler.include-coordinator=true
+          http-server.http.port=8080
+          discovery.uri=http://localhost:8080
+          query.max-memory=1GB
+          query.max-memory-per-node=512MB
+          EOF
+          docker run -d --name comment-trino --memory=4g -p 18080:8080 \
+            -e JAVA_TOOL_OPTIONS=-Xmx2G \
+            -v "${RUNNER_TEMP}/comment-trino/memory.properties:/etc/trino/catalog/memory.properties:ro" \
+            -v "${RUNNER_TEMP}/comment-trino/config.properties:/etc/trino/config.properties:ro" \
+            trinodb/trino@sha256:ada485e4bffb90f859b401dc04c393d147b5840846ef66b27110662eb2675854
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://localhost:18080/v1/info | jq -e '.starting == false' >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs comment-trino
+          exit 1
+      - name: Build and rerun a view and incremental model, then backfill comments
+        env:
+          COLUMN_COMMENTS_TRINO_PORT: '18080'
+        run: uv run python -m unittest discover -s dbt_macros/tests -p 'test_*column_comments*.py' -v
+      - name: Stop isolated Trino
+        if: always()
+        run: docker rm -f comment-trino || true
