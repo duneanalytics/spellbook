@@ -29,6 +29,7 @@
     ref('lending_plasma_base_borrow'),
     ref('lending_plume_base_borrow'),
     ref('lending_polygon_base_borrow'),
+    ref('lending_robinhood_base_borrow'),
     ref('lending_scroll_base_borrow'),
     ref('lending_sonic_base_borrow'),
     ref('lending_tac_base_borrow'),

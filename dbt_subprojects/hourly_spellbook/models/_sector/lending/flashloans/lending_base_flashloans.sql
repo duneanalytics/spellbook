@@ -25,6 +25,7 @@
     ref('lending_optimism_base_flashloans'),
     ref('lending_plasma_base_flashloans'),
     ref('lending_polygon_base_flashloans'),
+    ref('lending_robinhood_base_flashloans'),
     ref('lending_scroll_base_flashloans'),
     ref('lending_sonic_base_flashloans'),
     ref('lending_tac_base_flashloans'),
