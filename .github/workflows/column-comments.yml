@@ -7,6 +7,8 @@ on:
       - 'dbt_macros/dune/backfill_column_comments.sql'
       - 'dbt_macros/tests/test_*column_comments*.py'
       - '.github/workflows/column-comments.yml'
+      - 'uv.lock'
+      - 'pyproject.toml'
 
 permissions:
   contents: read
