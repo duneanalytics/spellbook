@@ -24,6 +24,7 @@ FROM
     , ('usdt-tether', 'USDT', 0x1e4a5963abfd975d8c9021ce480b42188849d41d, 6)
     , ('usdt-tether', 'USDT0', 0x779ded0c9e1022225f8e0630b35a9b54be713736, 6)
     , ('usdc-usd-coin', 'USDC', 0x74b7f16337b8972027f6196a17a631ac6de26d22, 6)
+    , ('usdc-usd-coin', 'USDC', 0xb6ceceab302e2e4948951ee7843fc24e92933061, 6) -- Circle native USDC
     , ('usdce-usd-coine', 'USDC.e', 0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035, 6)
     , ('wbtc-wrapped-bitcoin', 'WBTC', 0xea034fb02eb1808c2cc3adbc15f447b93cbe08e1, 8)
     , ('dai-dai', 'DAI', 0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4, 18)
