@@ -281,9 +281,10 @@ base_borrow as (
   select
     'repay' as transaction_type,
     contract_address as comet_contract_address,
-    supply_from as borrower,
+    -- Comet's Supply(from, dst, amount) takes the tokens from `from` and reduces the debt of `dst`
+    supply_dst as borrower,
     cast(null as varbinary) as on_behalf_of,
-    supply_dst as repayer,
+    supply_from as repayer,
     cast(null as varbinary) as liquidator,
     -1 * cast(amount_repaid as double) as amount,
     cast(amount_repaid as uint256) as amount_raw,
