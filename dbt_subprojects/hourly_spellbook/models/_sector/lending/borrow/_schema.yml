@@ -12,6 +12,12 @@ models:
       tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
     description: "All lending transactions involving borrow transactions"
     data_tests:
+      - lending_sector_union_includes_all_chain_models:
+          arguments:
+            union_model_name: lending_base_borrow
+            # Tron is served from lending_tron.* and is not part of the cross-chain table
+            exclude:
+              - lending_tron_base_borrow
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
