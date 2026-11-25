@@ -1,0 +1,16 @@
+version: 2
+
+seeds:
+  - name: byreal_solana_base_trades_seed
+    description: Two swaps in opposite directions through the same Byreal pool, checked against SPL transfers.
+    config:
+      column_types:
+        block_month: date
+        block_date: date
+        surrogate_key: decimal(38,0)
+        tx_id: varchar
+        project_program_id: varchar
+        token_sold_mint_address: varchar
+        token_bought_mint_address: varchar
+        token_sold_amount_raw: uint256
+        token_bought_amount_raw: uint256
