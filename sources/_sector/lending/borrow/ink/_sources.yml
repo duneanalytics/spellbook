@@ -7,3 +7,8 @@ sources:
       - name: MorphoBlue_evt_Borrow
       - name: MorphoBlue_evt_Repay
       - name: MorphoBlue_evt_Liquidate
+  - name: aave_v3_ink
+    tables:
+      - name: L2Pool_evt_Borrow
+      - name: L2Pool_evt_Repay
+      - name: L2Pool_evt_LiquidationCall
