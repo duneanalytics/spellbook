@@ -18,7 +18,7 @@
 {% endmacro %}
 
 {% macro all_evm_testnet_chains() %}
-   {{ return(['goerli']) }}
+   {{ return([]) }}
 {% endmacro %}
 
 {% macro all_evm_mainnets_testnets_chains() %}

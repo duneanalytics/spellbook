@@ -482,7 +482,7 @@ models:
 
   - name: evms_info
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, ink, sophon
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin, ink, sophon
       sector: evms
     config:
       tags: ["evms", "info"]
@@ -520,7 +520,7 @@ models:
 
   - name: evms_non_app_method_ids
     meta:
-      blockchain: ethereum, optimism, arbitrum, polygon, gnosis, avalanche_c, fantom, goerli, bnb, base, celo, ronin
+      blockchain: ethereum, optimism, arbitrum, polygon, gnosis, avalanche_c, fantom, bnb, base, celo, ronin
       project: method_ids
     config:
       tags: ["method_ids", "methods", "function", "signature"]
@@ -543,7 +543,7 @@ models:
 
   - name: evm_smart_account_method_ids
     meta:
-      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
+      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,bnb,base,celo,zora
       project: method_ids
     config:
       tags: ["method_ids", "methods", "function", "signature"]
@@ -565,7 +565,7 @@ models:
 
   - name: base_evm_smart_account_method_ids
     meta:
-      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
+      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,bnb,base,celo,zora
       project: method_ids
     config:
       tags: ["method_ids", "methods", "function", "signature"]

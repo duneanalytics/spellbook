@@ -30,7 +30,6 @@ FROM (
         , (137, 'polygon', 'Polygon PoS', 'Layer 1', NULL, 'POL', 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 'https://polygonscan.com/', timestamp '2020-05-30 16:30', NULL, NULL, NULL, true, NULL)
         , (250, 'fantom', 'Fantom', 'Layer 1', NULL, 'FTM', 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83, 'https://ftmscan.com/', timestamp '2019-12-27 03:56', NULL, NULL, NULL, true, NULL)
         , (56, 'bnb', 'BNB', 'Layer 1', NULL, 'BNB', 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c, 'https://bscscan.com/', timestamp '2020-08-29 03:24', NULL, NULL, NULL, true, NULL)
-        , (5, 'goerli', 'Goerli', 'Testnet', NULL, 'tETH', 0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6, 'https://goerli.etherscan.io/', timestamp '2015-07-30 03:26', NULL, NULL, NULL, false, NULL)
         , (42220, 'celo', 'Celo', 'Layer 1', NULL, 'CELO', 0x471EcE3750Da237f93B8E339c536989b8978a438, 'https://celoscan.io/', timestamp '2020-04-22 16:00', NULL, NULL, NULL, true, NULL)
         , (8453, 'base', 'Base', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://basescan.org/', timestamp '2023-06-15 00:35', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (7777777, 'zora', 'ZORA', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.zora.energy/', timestamp '2023-06-14 00:03', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')

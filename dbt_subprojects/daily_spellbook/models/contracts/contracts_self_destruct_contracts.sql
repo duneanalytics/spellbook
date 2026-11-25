@@ -24,7 +24,6 @@
 -- ,('contracts_celo_find_self_destruct_contracts')
 -- ,('contracts_fantom_find_self_destruct_contracts')
 -- ,('contracts_gnosis_find_self_destruct_contracts')
--- ,('contracts_goerli_find_self_destruct_contracts')
 -- ,('contracts_polygon_find_self_destruct_contracts')
 
 SELECT *

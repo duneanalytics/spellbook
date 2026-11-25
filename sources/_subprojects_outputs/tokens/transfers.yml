@@ -136,10 +136,6 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
-  - name: tokens_goerli
-    tables:
-      - name: transfers
-
   - name: tokens_hemi
     tables:
       - name: transfers
