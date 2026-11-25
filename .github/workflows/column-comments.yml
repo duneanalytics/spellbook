@@ -42,7 +42,7 @@ jobs:
             -v "${RUNNER_TEMP}/comment-trino/memory.properties:/etc/trino/catalog/memory.properties:ro" \
             -v "${RUNNER_TEMP}/comment-trino/config.properties:/etc/trino/config.properties:ro" \
             trinodb/trino@sha256:ada485e4bffb90f859b401dc04c393d147b5840846ef66b27110662eb2675854
-          for attempt in $(seq 1 60); do
+          for ((attempt = 0; attempt < 60; attempt++)); do
             if curl -fsS http://localhost:18080/v1/info | jq -e '.starting == false' >/dev/null; then
               exit 0
             fi
