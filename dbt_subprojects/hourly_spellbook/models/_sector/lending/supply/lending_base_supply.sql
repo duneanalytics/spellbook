@@ -25,6 +25,7 @@
     ref('lending_ink_base_supply'),
     ref('lending_katana_base_supply'),
     ref('lending_linea_base_supply'),
+    ref('lending_monad_base_supply'),
     ref('lending_optimism_base_supply'),
     ref('lending_plasma_base_supply'),
     ref('lending_plume_base_supply'),
