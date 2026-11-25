@@ -446,38 +446,6 @@ models:
       - *vin
       - *vout
 
-  - name: inscription_goerli_mints
-    meta: 
-      blockchain: goerli
-      sector: inscription
-    config:
-      tags: ['inscriptions', 'mints', 'goerli']
-    description: >
-      Inscription mints on Goerli Testnet
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - blockchain
-              - tx_hash
-    columns: 
-      - *blockchain
-      - *block_time
-      - *block_month
-      - *block_number
-      - *tx_hash
-      - *tx_index
-      - *tx_from
-      - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *amount
-      - *full_inscription
-      - *vin
-      - *vout
-
   - name: inscription_linea_mints
     meta: 
       blockchain: linea

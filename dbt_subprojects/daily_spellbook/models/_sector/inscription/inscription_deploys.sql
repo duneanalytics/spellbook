@@ -24,7 +24,6 @@
      , (ref('inscription_zora_deploys'))
      , (ref('inscription_scroll_deploys'))
      , (ref('inscription_zksync_deploys'))
-     , (ref('inscription_goerli_deploys'))
      , (ref('inscription_linea_deploys'))
      , (ref('inscription_zkevm_deploys'))
 ] %}

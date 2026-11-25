@@ -141,26 +141,6 @@ models:
       - *model_name
       - *label_type
 
-  - name: labels_contract_deployers_goerli
-    meta:
-      blockchain: goerli
-      sector: labels
-      project: contract_deployers
-    config:
-      tags: ['labels', 'goerli', 'contract_deployers']
-    description: "Smart contract deployers on Goerli"
-    columns:
-      - *blockchain 
-      - *address
-      - *name
-      - *category
-      - *contributor
-      - *source
-      - *created_at
-      - *updated_at
-      - *model_name
-      - *label_type
-
   - name: labels_contract_deployers_optimism
     meta:
       blockchain: optimism
@@ -203,11 +183,11 @@ models:
 
   - name: labels_contract_deployers
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, goerli, optimism, polygon
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon
       sector: labels
       project: contract_deployers
     config:
-      tags: ['labels', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'contract_deployers']
+      tags: ['labels', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'optimism', 'polygon', 'contract_deployers']
     description: "Smart contract deployers across blockchains"
     columns:
       - *blockchain 

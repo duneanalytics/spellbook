@@ -24,7 +24,6 @@
      , (ref('inscription_zora_all'))
      , (ref('inscription_zksync_all'))
      , (ref('inscription_scroll_all'))
-     , (ref('inscription_goerli_all'))
      , (ref('inscription_linea_all'))
      , (ref('inscription_zkevm_all'))
 ] %}
