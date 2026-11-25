@@ -11,6 +11,8 @@
   )
 }}
 
+-- ci-stamp: 1 (rebuild in CI so the seed test sees 0x13 swaps from staging)
+
 {{ solana_amm_base_trades(
     project = 'bisonfi'
     , project_main_id = 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi'
