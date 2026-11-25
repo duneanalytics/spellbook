@@ -82,10 +82,6 @@ sources:
     tables:
       - name: first_funded_by
       - name: first_token_received
-  - name: addresses_events_goerli
-    tables:
-      - name: first_funded_by
-      - name: first_token_received
   - name: addresses_events_sei
     tables:
       - name: first_funded_by

@@ -12,7 +12,6 @@
     , ref('labels_contract_deployers_ethereum')
     , ref('labels_contract_deployers_fantom')
     , ref('labels_contract_deployers_gnosis')
-    , ref('labels_contract_deployers_goerli')
     , ref('labels_contract_deployers_optimism')
     , ref('labels_contract_deployers_polygon')
 ] %}

@@ -22,7 +22,7 @@ def main():
     chains = [
         "abstract", "apechain", "arbitrum", "nova", "avalanche_c", "b3", "base",
         "berachain", "blast", "bnb", "bob", "boba", "celo", "corn", "degen",
-        "ethereum", "fantom", "flare", "gnosis", "goerli", "ink", "kaia", "lens", "linea",
+        "ethereum", "fantom", "flare", "gnosis", "ink", "kaia", "lens", "linea",
         "mantle", "mode", "opbnb", "optimism", "plume", "polygon", "zkevm", "ronin",
         "scroll", "sei", "shape", "sepolia", "sonic", "sophon", "unichain", "viction",
         "worldchain", "zksync", "zora"

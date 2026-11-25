@@ -3,10 +3,10 @@ version: 2
 models:
   - name: dex_info
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, solana
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, solana
       sector: dex
     config:
-      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'solana', 'info']
+      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'solana', 'info']
     description: >
         DEXs info
     data_tests:

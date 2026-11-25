@@ -24,7 +24,6 @@
      , (ref('inscription_zora_mints'))
      , (ref('inscription_scroll_mints'))
      , (ref('inscription_zksync_mints'))
-     , (ref('inscription_goerli_mints'))
      , (ref('inscription_linea_mints'))
      , (ref('inscription_zkevm_mints'))
 ] %}

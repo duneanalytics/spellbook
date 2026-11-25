@@ -16,7 +16,6 @@
     ,'gnosis'
     ,'avalanche_c'
     ,'fantom'
-    ,'goerli'
     ,'bnb'
     ,'base'
     ,'celo'
