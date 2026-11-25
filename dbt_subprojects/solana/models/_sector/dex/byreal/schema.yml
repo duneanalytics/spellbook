@@ -23,6 +23,11 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+      - check_seed:
+          arguments:
+            seed_file: ref('byreal_solana_base_trades_seed')
+            match_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+            check_columns: [ 'tx_id', 'project_program_id', 'token_sold_mint_address', 'token_bought_mint_address', 'token_sold_amount_raw', 'token_bought_amount_raw' ]
 
   - name: byreal_solana_trades
     meta:

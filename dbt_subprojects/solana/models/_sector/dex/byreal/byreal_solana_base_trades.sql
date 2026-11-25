@@ -11,6 +11,7 @@
   )
 }}
 
+-- ci-stamp: 1 (test the newly selected calls against rebuilt base trades)
 {{ solana_amm_base_trades(
     project = 'byreal'
     , project_main_id = 'REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2'
