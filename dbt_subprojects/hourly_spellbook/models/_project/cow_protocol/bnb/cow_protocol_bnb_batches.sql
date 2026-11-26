@@ -13,17 +13,23 @@
 }}
 
 with
+solver_periods as (
+    {{ cow_protocol_solver_periods('bnb') }}
+),
+
 solvers_ranked as (
     select
         t.block_date,
         t.block_number,
         t.tx_hash,
         t."from" as solver,
-        solvers.name,
         row_number() over (partition by t.tx_hash order by t.trace_address asc nulls first) as rn
     from {{ source('bnb', 'traces') }} t
-        inner join {{ ref('cow_protocol_bnb_solvers') }} solvers
-            on t."from" = solvers.address
+        inner join solver_periods as sp
+            on t."from" = sp.solver
+            and sp.is_active
+            and t.block_number >= sp.start_block
+            and (sp.end_block is null or t.block_number < sp.end_block)
     {% if is_incremental() %}
     where {{ incremental_predicate('t.block_time') }}
     {% else %}
@@ -37,7 +43,6 @@ batch_counts as (
            s.evt_block_time,
            s.evt_tx_hash,
            sr.solver,
-           sr.name,
            sum(
                case
                    when selector != 0x2e1a7d4d -- unwrap
@@ -65,7 +70,7 @@ batch_counts as (
     {% if is_incremental() %}
     where {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, sr.solver, sr.name
+    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, sr.solver
 ),
 
 batch_values as (
