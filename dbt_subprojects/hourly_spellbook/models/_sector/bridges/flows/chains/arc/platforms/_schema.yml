@@ -1,0 +1,29 @@
+version: 2
+
+models:
+
+  - name: bridges_arc_aero_v1_deposits
+    description: "Aero Metarouter-attributed USDC bridge deposits on arc; bridge leg only, including ICA recipients."
+    config:
+      tags: ['arc', 'bridges', 'flows', 'deposits', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: bridge_transfer_id
+        description: "Hyperlane message ID, shared by the source dispatch and destination processing."
+        data_tests: [not_null]
+
+  - name: bridges_arc_aero_v1_withdrawals
+    description: "Aero Metarouter-attributed USDC bridge withdrawals on arc; bridge leg only, including ICA recipients."
+    config:
+      tags: ['arc', 'bridges', 'flows', 'withdrawals', 'aero']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['tx_hash', 'evt_index']
+    columns:
+      - name: bridge_transfer_id
+        description: "Hyperlane message ID, shared by the source dispatch and destination processing."
+        data_tests: [not_null]
