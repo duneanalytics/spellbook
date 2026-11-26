@@ -7,11 +7,6 @@
   {{ return("U&'" ~ escaped ~ "'") }}
 {% endmacro %}
 
-{% macro column_comment_statement(relation, name, description) %}
-  {{ return('comment on column ' ~ relation ~ '.' ~ adapter.quote(name)
-      ~ ' is ' ~ column_comment_literal(description)) }}
-{% endmacro %}
-
 {% macro column_comment_statements(relation, columns, strict=false) %}
   {% if not execute or not columns %}{{ return([]) }}{% endif %}
   {% set sql %}
@@ -36,24 +31,20 @@
     {% else %}
       {% set description = column.get('description') or none %}
       {% if current[physical] != description %}
-        {% do statements.append(column_comment_statement(relation, physical, description)) %}
+        {% do statements.append('comment on column ' ~ relation ~ '.' ~ adapter.quote(physical)
+            ~ ' is ' ~ column_comment_literal(description)) %}
       {% endif %}
     {% endif %}
   {% endfor %}
   {{ return(statements) }}
 {% endmacro %}
 
-{% macro trino__alter_column_comment(relation, column_dict) %}
-  {{ return(column_comment_statements(relation, column_dict) | join(';\n')) }}
-{% endmacro %}
-
-{# Older dbt versions run even an empty alter_column_comment result. Guard it here. #}
+{# Match physical Trino names before dbt's case-sensitive validation of quoted columns. #}
 {% macro trino__persist_docs(relation, model, for_relation=true, for_columns=true) %}
-  {% if for_relation and config.persist_relation_docs() and model.description %}
-    {% do run_query(alter_relation_comment(relation, model.description)) %}
-  {% endif %}
+  {% do dbt.default__persist_docs(relation, model, for_relation, false) %}
   {% if for_columns and config.persist_column_docs() and model.columns %}
-    {% set sql = trino__alter_column_comment(relation, model.columns) %}
-    {% if sql | trim %}{% do run_query(sql) %}{% endif %}
+    {% for sql in column_comment_statements(relation, model.columns) %}
+      {% do run_query(sql) %}
+    {% endfor %}
   {% endif %}
 {% endmacro %}

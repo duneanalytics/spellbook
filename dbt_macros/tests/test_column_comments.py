@@ -10,6 +10,7 @@ from dbt.adapters.sql.connections import SQLConnectionManager
 from dbt.adapters.trino.connections import TrinoConnectionManager
 from dbt.clients.jinja import MacroGenerator, MacroStack
 from dbt.contracts.graph.nodes import Macro
+from dbt.include.global_project import PACKAGE_PATH
 from dbt.node_types import NodeType
 from dbt_common.exceptions import CompilationError, MacroReturn
 
@@ -63,8 +64,10 @@ class ColumnCommentsTest(unittest.TestCase):
             "run_query": run_query, "log": lambda *args, **kwargs: None,
         }
         stack = MacroStack()
-        for filename in ("column_comments.sql", "backfill_column_comments.sql"):
-            source = (MACRO_DIR / filename).read_text()
+        for path in (MACRO_DIR / "column_comments.sql", MACRO_DIR / "backfill_column_comments.sql",
+                     Path(PACKAGE_PATH) / "macros/adapters/persist_docs.sql"):
+            filename = path.name
+            source = path.read_text()
             for match in re.finditer(r"{% macro (\w+).*?{% endmacro %}", source, re.S):
                 name = match[1]
                 macro = Macro(
@@ -73,6 +76,7 @@ class ColumnCommentsTest(unittest.TestCase):
                     unique_id=f"macro.test.{name}", macro_sql=match[0],
                 )
                 self.ctx[name] = MacroGenerator(macro, self.ctx, stack=stack)
+        self.ctx["dbt"] = SimpleNamespace(default__persist_docs=self.ctx["default__persist_docs"])
 
     def persist(self):
         self.ctx["trino__persist_docs"](self.relation, self.node)
@@ -89,11 +93,12 @@ class ColumnCommentsTest(unittest.TestCase):
             'comment on column "hive"."demo"."amounts"."Owner" is U&\'Owner\';\n'
             'comment on column "hive"."demo"."amounts"."amount" is null'
         )
-        self.assertEqual(self.writes, [expected])
+        self.assertEqual(";\n".join(self.writes), expected)
         # Run the real dbt-trino splitter/filter, not a reconstruction of its regex.
         manager = object.__new__(TrinoConnectionManager)
         with patch.object(SQLConnectionManager, "add_query", return_value=(object(), object())) as sent:
-            manager.add_query(expected)
+            for sql in self.writes:
+                manager.add_query(sql)
         self.assertEqual(len(sent.call_args_list), 3)
         self.assertIn("\\002D\\002D", sent.call_args_list[0].args[0])
 
@@ -111,13 +116,18 @@ class ColumnCommentsTest(unittest.TestCase):
                         ("owner", "old owner"), ("amount", "stale")]
         self.persist()
         self.assertEqual(self.writes, [
-            'comment on column "hive"."demo"."amounts"."owner" is U&\'Owner\';\n'
+            'comment on column "hive"."demo"."amounts"."owner" is U&\'Owner\'',
             'comment on column "hive"."demo"."amounts"."amount" is null',
         ])
 
-    def test_preview_is_offline_and_apply_uses_the_same_writer(self):
+    def test_preview_reads_current_metadata_and_apply_uses_the_same_plan(self):
+        self.current = [("from", self.node["columns"]["FROM"]["description"]),
+                        ("owner", "old owner"), ("amount", None)]
         preview = self.backfill()
-        self.assertEqual(self.reads, [])
+        self.assertTrue(self.reads)
+        self.assertEqual(preview, [
+            'comment on column "hive"."demo"."amounts"."owner" is U&\'Owner\'',
+        ])
         self.assertEqual(self.writes, [])
         applied = self.backfill(dry_run=False)
         self.assertEqual(preview, applied)
@@ -138,9 +148,11 @@ class ColumnCommentsTest(unittest.TestCase):
     def test_all_physical_columns_are_checked_before_first_write(self):
         missing = {**self.node, "columns": {"missing": {"description": "absent"}}}
         self.ctx["graph"].nodes["model.demo.missing"] = missing
-        with self.assertRaisesRegex(CompilationError, "Documented column not found"):
-            self.backfill(["model.demo.amounts", "model.demo.missing"], dry_run=False)
-        self.assertEqual(self.writes, [])
+        for dry_run in (True, False):
+            with self.subTest(dry_run=dry_run), self.assertRaisesRegex(
+                    CompilationError, "Documented column not found"):
+                self.backfill(["model.demo.amounts", "model.demo.missing"], dry_run=dry_run)
+            self.assertEqual(self.writes, [])
 
     def test_missing_relations_and_empty_documentation_skip_writes(self):
         self.ctx["adapter"].get_relation = lambda **kwargs: None
