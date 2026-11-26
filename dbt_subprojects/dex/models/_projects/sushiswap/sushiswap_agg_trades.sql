@@ -30,6 +30,7 @@
     ref('sushiswap_agg_optimism_trades'),
     ref('sushiswap_agg_plasma_trades'),
     ref('sushiswap_agg_polygon_trades'),
+    ref('sushiswap_agg_robinhood_trades'),
     ref('sushiswap_agg_scroll_trades'),
     ref('sushiswap_agg_sonic_trades'),
     ref('sushiswap_agg_taiko_trades'),
