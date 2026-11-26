@@ -30,6 +30,7 @@ FROM (VALUES
     , ('bancor', 'Bancor', 'Direct', 'Bancor')
     , ('ellipsis_finance', 'Ellipsis', 'Direct', 'Ellipsisfi')
     , ('lista_smartswap', 'Lista SmartSwap', 'Direct', 'lista_dao')
+    , ('lista', 'Lista', 'Direct', 'lista_dao')
     , ('babyswap', 'BabySwap', 'Direct', 'babyswap_bsc')
     , ('apeswap', 'ApeSwap', 'Direct', 'ape_swap')
     , ('shibaswap', 'ShibaSwap', 'Direct', 'ShibaSwapDEX')
