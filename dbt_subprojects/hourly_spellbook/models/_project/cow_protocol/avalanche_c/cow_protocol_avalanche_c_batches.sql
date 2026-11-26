@@ -13,6 +13,10 @@
 }}
 
 with
+solver_periods as (
+    {{ cow_protocol_solver_periods('avalanche_c') }}
+),
+
 solvers_ranked as (
     select
         t.block_date,
@@ -24,6 +28,11 @@ solvers_ranked as (
     from {{ source('avalanche_c', 'traces') }} t
         inner join {{ ref('cow_protocol_avalanche_c_solvers') }} solvers
             on t."from" = solvers.address
+        -- only count an address as solver while it is on the allow list
+        inner join solver_periods sp
+            on t."from" = sp.solver
+            and t.block_number >= sp.start_block
+            and (sp.end_block is null or t.block_number < sp.end_block)
     {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}
     {% endif %}
