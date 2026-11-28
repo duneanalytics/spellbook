@@ -15,7 +15,7 @@ SELECT
 FROM
 (
     VALUES
-
+    ('tgbp-tokenised-gbp', 'gnosis', 'tGBP', 0x1F34490F8e8E776FFc547b39B864364035Eaf44F, 18),
     -- Query for Popular Traded Tokens on Gnosis Chain without prices: https://dune.com/queries/1719783
     ('dai-dai', 'gnosis', 'WXDAI', 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d, 18),
     ('usdc-usd-coin', 'gnosis', 'USDC', 0xddafbb505ad214d7b80b1f830fccc89b60fb7a83, 6),

@@ -15,6 +15,7 @@ SELECT
 FROM
 (
     VALUES
+    ('tgbp-tokenised-gbp', 'arbitrum', 'tGBP', 0x27f6c8289550fCE67f6B50BeD1F519966aFE5287, 18),
     ('dlcbtc-dlcbtc', 'arbitrum', 'DLCBTC', 0x050C24dBf1eEc17babE5fc585F06116A259CC77A, 8),
     ('0xbtc-0xbitcoin','arbitrum','0xBTC',0x7cb16cb78ea464ad35c8a50abf95dff3c9e09d5d,8),
     ('aave-new','arbitrum','AAVE',0xba5ddd1f9d7f570dc94a51479a000e3bce967196,18),
