@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: labels_squeeze
+    meta:
+      blockchain: base, robinhood, solana
+      sector: labels
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['labels', 'squeeze', 'launchpad']
+    description: "Squeeze launchpad identifier labels (integrator, Airlocks, LaunchLab PDAs)"
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Address (EVM) or Solana pubkey"
+      - name: name
+        description: "Label name"
+      - name: category
+        description: "Label category"
+      - name: contributor
+        description: "Contributor"
+      - name: source
+        description: "static | query"
+      - name: created_at
+        description: "Created at"
+      - name: updated_at
+        description: "Updated at"
+      - name: model_name
+        description: "Model name"
+      - name: label_type
+        description: "identifier | usage | persona"

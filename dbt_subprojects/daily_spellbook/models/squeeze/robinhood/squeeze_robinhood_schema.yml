@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: squeeze_robinhood_deployments
+    meta:
+      blockchain: robinhood
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['robinhood', 'squeeze', 'launchpad', 'doppler']
+    description: >
+      Tokens launched through Squeeze on Robinhood Chain (4663) via Doppler Airlock
+      where integrator = 0x6C61feE73584670AbEd65101946734006DAB12d6.
+      Chain raw data is supported on Dune; decoded Airlock call table requires ABI submit.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['token']
+    columns:
+      - name: token
+        description: ERC-20 asset address from Airlock create
+        data_tests:
+          - not_null
+
+  - name: squeeze_robinhood_trades
+    meta:
+      blockchain: robinhood
+      project: squeeze
+      contributors: flockain
+    config:
+      tags: ['robinhood', 'squeeze', 'launchpad', 'dex']
+    description: >
+      dex.trades rows touching Squeeze-launched Robinhood tokens (attribution).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_month
+              - blockchain
+              - tx_hash
+              - evt_index
