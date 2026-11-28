@@ -32,6 +32,7 @@
 ,ref('opensea_v3_ethereum_base_trades')
 ,ref('opensea_v4_ethereum_base_trades')
 ,ref('spaace_v1_ethereum_base_trades')
+,ref('gondi_v1_ethereum_base_trades')
 ] %}
 
 with base_union as (
