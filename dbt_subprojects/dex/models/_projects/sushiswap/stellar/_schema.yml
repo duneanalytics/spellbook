@@ -1,0 +1,280 @@
+version: 2
+
+models:
+  - name: sushiswap_v3_stellar_factories
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: sushiswap
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'sushiswap', 'v3', 'factories']
+    description: >
+      Canonical SushiSwap V3 contract ids on Stellar (factory, position manager, tick lens, quoter).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - contract_id
+    columns:
+      - name: blockchain
+        description: "Blockchain the contract is deployed on"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "SushiSwap pool version"
+      - name: contract_id
+        description: "Stellar contract id (C... strkey)"
+        data_tests:
+          - not_null
+      - name: contract_name
+        description: "Logical contract role (factory, position_manager, tick_lens, quoter)"
+
+  - name: sushiswap_v3_stellar_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: sushiswap
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'sushiswap', 'v3', 'events']
+    description: >
+      Raw index of successful SushiSwap V3 Stellar contract events from
+      stellar.history_contract_events. Follows factory contracts plus pool
+      addresses seen on factory pool_created events. The only decode is
+      event_name from topics_decoded.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Blockchain name"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "SushiSwap pool version"
+      - name: block_time
+        description: "Ledger close timestamp"
+      - name: ledger_sequence
+        description: "Stellar ledger sequence"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: transaction_id
+        description: "Transaction identifier (TOID)"
+      - name: operation_id
+        description: "Operation identifier (TOID); nullable on some source rows"
+      - name: contract_id
+        description: "Emitting contract id"
+      - name: event_name
+        description: "Soroban event name from topics_decoded"
+      - name: topics_decoded
+        description: "Raw decoded topics JSON"
+      - name: data_decoded
+        description: "Raw decoded data JSON"
+
+  - name: sushiswap_v3_stellar_pool_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: sushiswap
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'sushiswap', 'v3', 'pools', 'events']
+    description: >
+      Factory and pool lifecycle events decoded from sushiswap_v3_stellar_evt.
+      Includes pool_created, init, upgrades, migrations, and factory admin events.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Blockchain name"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "SushiSwap pool version"
+      - name: block_time
+        description: "Ledger close timestamp"
+      - name: ledger_sequence
+        description: "Stellar ledger sequence"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: transaction_id
+        description: "Transaction identifier (TOID)"
+      - name: operation_id
+        description: "Operation identifier (TOID); nullable on some source rows"
+      - name: contract_id
+        description: "Emitting contract id"
+      - name: event_name
+        description: "Decoded Soroban event name"
+      - name: pool_address
+        description: "Pool contract id from pool_created events"
+      - name: token0
+        description: "Token0 contract id"
+      - name: token1
+        description: "Token1 contract id"
+      - name: fee
+        description: "Pool fee in hundredths of a bip"
+      - name: tick_spacing
+        description: "Pool tick spacing"
+      - name: sender
+        description: "Event sender"
+      - name: tick
+        description: "Pool tick after init"
+      - name: sqrt_price_x96
+        description: "sqrtPriceX96 after init"
+
+  - name: sushiswap_v3_stellar_pools
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: sushiswap
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'sushiswap', 'v3', 'pools']
+    description: >
+      SushiSwap V3 Stellar pool registry. One row per pool from
+      sushiswap_v3_stellar_pool_evt where created_rank = 1.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - pool
+    columns:
+      - name: blockchain
+        description: "Blockchain the DEX is deployed on"
+      - name: project
+        description: "Project name of the DEX"
+      - name: version
+        description: "Version of the pool"
+      - name: pool
+        description: "Pool contract id"
+        data_tests:
+          - not_null
+      - name: fee
+        description: "Pool fee in hundredths of a bip"
+      - name: token0
+        description: "First token in the pool"
+      - name: token1
+        description: "Second token in the pool"
+      - name: tick_spacing
+        description: "Pool tick spacing"
+      - name: creation_block_time
+        description: "Ledger close time when the pool was created"
+      - name: creation_block_number
+        description: "Ledger sequence when the pool was created"
+      - name: contract_address
+        description: "Factory contract that created the pool"
+      - name: tx_hash
+        description: "Transaction hash of the first pool_created event"
+
+  - name: sushiswap_v3_stellar_liquidity_evt
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: sushiswap
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'sushiswap', 'v3', 'liquidity', 'events']
+    description: >
+      Mint, burn, and collect events decoded from sushiswap_v3_stellar_evt.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over block date, transaction, operation, contract, event, and raw payload"
+        data_tests:
+          - not_null
+      - name: event_name
+        description: "Decoded Soroban event name: mint, burn, or collect"
+      - name: pool
+        description: "Pool contract id"
+      - name: amount
+        description: "Liquidity delta for mint/burn"
+      - name: amount0
+        description: "Token0 amount"
+      - name: amount1
+        description: "Token1 amount"
+      - name: tick_lower
+        description: "Lower tick of the position"
+      - name: tick_upper
+        description: "Upper tick of the position"
+      - name: owner
+        description: "Position owner"
+      - name: sender
+        description: "Mint sender when present"
+      - name: recipient
+        description: "Collect recipient when present"
+
+  - name: sushiswap_v3_stellar_base_liquidity_events
+    meta:
+      blockchain: stellar
+      sector: dex
+      project: sushiswap
+      contributors: ryeblocks
+    config:
+      tags: ['stellar', 'sushiswap', 'v3', 'liquidity']
+    description: >
+      Structured SushiSwap V3 Stellar liquidity events. Mint amounts are positive
+      (tokens into the pool); burn and collect amounts are signed negative.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - block_date
+              - surrogate_key
+    columns:
+      - name: block_date
+        description: "Ledger close date; partition and unique-key column"
+        data_tests:
+          - not_null
+      - name: surrogate_key
+        description: "dbt surrogate key over the deduplicated liquidity event identity"
+        data_tests:
+          - not_null
+      - name: event_type
+        description: "mint, burn, or collect"
+      - name: pool
+        description: "Pool contract id"
+      - name: liquidity_raw
+        description: "Signed liquidity delta; negative on burn"
+      - name: amount0_raw
+        description: "Signed token0 amount; negative on burn and collect"
+      - name: amount1_raw
+        description: "Signed token1 amount; negative on burn and collect"
+      - name: tick_lower
+        description: "Lower tick of the position"
+      - name: tick_upper
+        description: "Upper tick of the position"
+      - name: tx_hash
+        description: "Transaction hash"
