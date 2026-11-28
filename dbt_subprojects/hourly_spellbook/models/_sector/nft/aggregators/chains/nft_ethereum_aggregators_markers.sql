@@ -103,6 +103,7 @@
     , (0xa8a9c101, 'Magically', null)
     , (0x09616c6c64617461, 'Rarible', null)
     , (0x61598d6d, 'Flip', null)
+    , (0xe8feb17d, 'GONDI', null) -- first 4 bytes of keccak256('gondi.xyz'), appended to Seaport calldata by gondi.xyz
     ) AS temp_table (hash_marker ,aggregator_name, router_name)
   )
 
